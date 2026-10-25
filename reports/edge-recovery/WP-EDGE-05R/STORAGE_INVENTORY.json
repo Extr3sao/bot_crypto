@@ -1,0 +1,3872 @@
+{
+  "as_of_utc": "2026-10-14T05:45:20Z",
+  "breakdown": {
+    "data": [
+      {
+        "bytes": 152011058,
+        "files": 132,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/raw/"
+      },
+      {
+        "bytes": 18591421,
+        "files": 366,
+        "owner": "st6",
+        "owner_basis": "path prefix 'data/st6'",
+        "path": "data/st6/"
+      },
+      {
+        "bytes": 18079468,
+        "files": 115,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/forward/"
+      },
+      {
+        "bytes": 5797681,
+        "files": 94,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/rfc049/"
+      },
+      {
+        "bytes": 4364181,
+        "files": 19,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/swing/"
+      },
+      {
+        "bytes": 3387535,
+        "files": 28,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/rfc048/"
+      },
+      {
+        "bytes": 1951396,
+        "files": 89,
+        "owner": "wp8-recovery",
+        "owner_basis": "path prefix 'data/recovery'",
+        "path": "data/recovery/"
+      },
+      {
+        "bytes": 1169146,
+        "files": 3,
+        "owner": "rfc035e",
+        "owner_basis": "path prefix 'data/rfc035e'",
+        "path": "data/rfc035e/"
+      },
+      {
+        "bytes": 766793,
+        "files": 4,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/rfc035s3/"
+      },
+      {
+        "bytes": 607802,
+        "files": 7,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/economic001/"
+      },
+      {
+        "bytes": 108340,
+        "files": 9,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/rfc046/"
+      },
+      {
+        "bytes": 1517,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/pgate035/"
+      },
+      {
+        "bytes": 1241,
+        "files": 4,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/storage/"
+      },
+      {
+        "bytes": 55,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/backtests/"
+      },
+      {
+        "bytes": 55,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "data/processed/"
+      }
+    ],
+    "evidence": [
+      {
+        "bytes": 1935629,
+        "files": 12,
+        "owner": "cap-003/004",
+        "owner_basis": "path prefix 'evidence/real_decisions'",
+        "path": "evidence/real_decisions/"
+      }
+    ],
+    "reports": [
+      {
+        "bytes": 1741975946,
+        "files": 1132,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-continuous/"
+      },
+      {
+        "bytes": 1180950503,
+        "files": 52,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/cap004/"
+      },
+      {
+        "bytes": 556464980,
+        "files": 421,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab/"
+      },
+      {
+        "bytes": 377691470,
+        "files": 107,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward/"
+      },
+      {
+        "bytes": 244128462,
+        "files": 75,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc010/"
+      },
+      {
+        "bytes": 96907173,
+        "files": 67,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-v1/"
+      },
+      {
+        "bytes": 87857916,
+        "files": 163,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper-burn-in/"
+      },
+      {
+        "bytes": 54926914,
+        "files": 22,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/positioning-data/"
+      },
+      {
+        "bytes": 49684360,
+        "files": 122,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-ops01/"
+      },
+      {
+        "bytes": 45473165,
+        "files": 205,
+        "owner": "WP-EDGE-00",
+        "owner_basis": "path prefix 'reports/edge-recovery'",
+        "path": "reports/edge-recovery/"
+      },
+      {
+        "bytes": 44491687,
+        "files": 155,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha-diversified-v1/"
+      },
+      {
+        "bytes": 41739826,
+        "files": 130,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-baseline/"
+      },
+      {
+        "bytes": 39394771,
+        "files": 94,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-cert01/"
+      },
+      {
+        "bytes": 37590227,
+        "files": 220,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-headcert/"
+      },
+      {
+        "bytes": 35884253,
+        "files": 86,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-08/"
+      },
+      {
+        "bytes": 30022948,
+        "files": 147,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-06/"
+      },
+      {
+        "bytes": 29633312,
+        "files": 219,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/autonomous-paper/"
+      },
+      {
+        "bytes": 25424538,
+        "files": 252,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-recert-7b14297/"
+      },
+      {
+        "bytes": 25083532,
+        "files": 300,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-headcert-222078b/"
+      },
+      {
+        "bytes": 23705043,
+        "files": 55,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-03/"
+      },
+      {
+        "bytes": 22183894,
+        "files": 79,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/managed-futures-v1/"
+      },
+      {
+        "bytes": 19462484,
+        "files": 54,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha-expansion-v1/"
+      },
+      {
+        "bytes": 17426054,
+        "files": 51,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha-recovery-v1-4/"
+      },
+      {
+        "bytes": 15307771,
+        "files": 40,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/carry/"
+      },
+      {
+        "bytes": 14218320,
+        "files": 205,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper-lab/"
+      },
+      {
+        "bytes": 13098885,
+        "files": 257,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/perp-tsmom/"
+      },
+      {
+        "bytes": 11891193,
+        "files": 72,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/wp-strat-08/"
+      },
+      {
+        "bytes": 9520849,
+        "files": 53,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-05/"
+      },
+      {
+        "bytes": 6627864,
+        "files": 21,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-04/"
+      },
+      {
+        "bytes": 5824336,
+        "files": 18,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc020/"
+      },
+      {
+        "bytes": 5808677,
+        "files": 7,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-v2/"
+      },
+      {
+        "bytes": 5704233,
+        "files": 14,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-audit/"
+      },
+      {
+        "bytes": 5057315,
+        "files": 44,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-07/"
+      },
+      {
+        "bytes": 3852337,
+        "files": 46,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-smoke/"
+      },
+      {
+        "bytes": 3752984,
+        "files": 108,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/edge-discovery/"
+      },
+      {
+        "bytes": 3113034,
+        "files": 20,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/baseline/"
+      },
+      {
+        "bytes": 3050638,
+        "files": 16,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha002/"
+      },
+      {
+        "bytes": 2996518,
+        "files": 93,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/external-alpha/"
+      },
+      {
+        "bytes": 2347506,
+        "files": 23,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper-strategy-lifecycle-shadow-02/"
+      },
+      {
+        "bytes": 2255256,
+        "files": 46,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha001/"
+      },
+      {
+        "bytes": 1487269,
+        "files": 33,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/agentic-campaign-cap003/"
+      },
+      {
+        "bytes": 1289539,
+        "files": 46,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/small-capital-v1/"
+      },
+      {
+        "bytes": 906632,
+        "files": 61,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-smoke-cert4/"
+      },
+      {
+        "bytes": 855770,
+        "files": 22,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-writercert/"
+      },
+      {
+        "bytes": 770619,
+        "files": 40,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-smoke-cert2/"
+      },
+      {
+        "bytes": 758773,
+        "files": 14,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper/"
+      },
+      {
+        "bytes": 757879,
+        "files": 40,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-smoke-cert/"
+      },
+      {
+        "bytes": 752042,
+        "files": 14,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/agentic-pilot-cap002/"
+      },
+      {
+        "bytes": 747579,
+        "files": 35,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/small-capital-dual-momentum-v1/"
+      },
+      {
+        "bytes": 702082,
+        "files": 40,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-lab-smoke-cert3/"
+      },
+      {
+        "bytes": 667213,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/dashboard.log"
+      },
+      {
+        "bytes": 547228,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-storage-policy/"
+      },
+      {
+        "bytes": 493381,
+        "files": 16,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-diskguard/"
+      },
+      {
+        "bytes": 477518,
+        "files": 15,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/manifest-blocked-probe/"
+      },
+      {
+        "bytes": 474683,
+        "files": 37,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper-strategy-lifecycle-shadow-01/"
+      },
+      {
+        "bytes": 450463,
+        "files": 32,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc035/"
+      },
+      {
+        "bytes": 411520,
+        "files": 22,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha003/"
+      },
+      {
+        "bytes": 406696,
+        "files": 14,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/cap004d/"
+      },
+      {
+        "bytes": 353734,
+        "files": 39,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/structural-carry/"
+      },
+      {
+        "bytes": 319054,
+        "files": 56,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-preservation-check/"
+      },
+      {
+        "bytes": 277566,
+        "files": 36,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/generalization/"
+      },
+      {
+        "bytes": 224350,
+        "files": 33,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/directional/"
+      },
+      {
+        "bytes": 215523,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/headcert-222078b.log"
+      },
+      {
+        "bytes": 205008,
+        "files": 16,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc035e/"
+      },
+      {
+        "bytes": 198035,
+        "files": 32,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-lifecycle-verification/"
+      },
+      {
+        "bytes": 181656,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/recert-7b14297.log"
+      },
+      {
+        "bytes": 179394,
+        "files": 19,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/cap004c/"
+      },
+      {
+        "bytes": 177141,
+        "files": 15,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/obs-strat-01/"
+      },
+      {
+        "bytes": 161964,
+        "files": 13,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/profitability_gate035/"
+      },
+      {
+        "bytes": 157446,
+        "files": 21,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/data-integrity/"
+      },
+      {
+        "bytes": 152646,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-headcert.log"
+      },
+      {
+        "bytes": 143901,
+        "files": 47,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha-recovery-v1-1/"
+      },
+      {
+        "bytes": 137382,
+        "files": 22,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/profitability-v2/"
+      },
+      {
+        "bytes": 127713,
+        "files": 12,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/runs/"
+      },
+      {
+        "bytes": 112922,
+        "files": 18,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/business-opportunity-radar/"
+      },
+      {
+        "bytes": 107896,
+        "files": 22,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/wp-strat-09/"
+      },
+      {
+        "bytes": 107116,
+        "files": 29,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha-recovery-v1-2/"
+      },
+      {
+        "bytes": 105781,
+        "files": 4,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc046/"
+      },
+      {
+        "bytes": 103587,
+        "files": 36,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha-recovery-v1/"
+      },
+      {
+        "bytes": 96462,
+        "files": 24,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-dashboard-independent-verification/"
+      },
+      {
+        "bytes": 93819,
+        "files": 18,
+        "owner": "strategy-lifecycle",
+        "owner_basis": "path prefix 'reports/strategy-lifecycle-independent-verification'",
+        "path": "reports/strategy-lifecycle-independent-verification/"
+      },
+      {
+        "bytes": 93112,
+        "files": 18,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/source-runtime-verification/"
+      },
+      {
+        "bytes": 88480,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/smoke-cert4.log"
+      },
+      {
+        "bytes": 86184,
+        "files": 22,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/managed-futures-decision/"
+      },
+      {
+        "bytes": 84873,
+        "files": 35,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper-certification/"
+      },
+      {
+        "bytes": 81950,
+        "files": 36,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/execution-economics/"
+      },
+      {
+        "bytes": 81457,
+        "files": 7,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/source-runtime-reconciliation/"
+      },
+      {
+        "bytes": 80465,
+        "files": 28,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/cap004b/"
+      },
+      {
+        "bytes": 78877,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/smoke-cert2.log"
+      },
+      {
+        "bytes": 78143,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/smoke-cert3.log"
+      },
+      {
+        "bytes": 78109,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/smoke-cert.log"
+      },
+      {
+        "bytes": 71203,
+        "files": 29,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/arp-012-exp-019-independent/"
+      },
+      {
+        "bytes": 64956,
+        "files": 18,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-closure/"
+      },
+      {
+        "bytes": 64955,
+        "files": 23,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/exp-arp-008-oos-verification/"
+      },
+      {
+        "bytes": 64173,
+        "files": 43,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/source-ingestion/"
+      },
+      {
+        "bytes": 63440,
+        "files": 24,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-dynamic/"
+      },
+      {
+        "bytes": 62275,
+        "files": 19,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-lifecycle-hardening/"
+      },
+      {
+        "bytes": 60902,
+        "files": 18,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/post-oos-recovery/"
+      },
+      {
+        "bytes": 58635,
+        "files": 23,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/tsmom-remediation/"
+      },
+      {
+        "bytes": 58594,
+        "files": 31,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha-recovery-v1-3/"
+      },
+      {
+        "bytes": 56978,
+        "files": 18,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/profitability-operating-model/"
+      },
+      {
+        "bytes": 53979,
+        "files": 19,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc000/"
+      },
+      {
+        "bytes": 47821,
+        "files": 20,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-lifecycle-persistence/"
+      },
+      {
+        "bytes": 44321,
+        "files": 14,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/business-freeze/"
+      },
+      {
+        "bytes": 43111,
+        "files": 11,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-lifecycle-gate0/"
+      },
+      {
+        "bytes": 35135,
+        "files": 10,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/failure-injection/"
+      },
+      {
+        "bytes": 34486,
+        "files": 8,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/reentry-watch/"
+      },
+      {
+        "bytes": 33231,
+        "files": 10,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-lifecycle-router/"
+      },
+      {
+        "bytes": 32277,
+        "files": 11,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc030-short-data/"
+      },
+      {
+        "bytes": 30509,
+        "files": 21,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/arp-011-exp-019/"
+      },
+      {
+        "bytes": 30070,
+        "files": 13,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc030/"
+      },
+      {
+        "bytes": 29441,
+        "files": 10,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/orthogonal-data/"
+      },
+      {
+        "bytes": 28180,
+        "files": 11,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/agentic-spike-cap001/"
+      },
+      {
+        "bytes": 27597,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC029_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 26106,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC038_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 24130,
+        "files": 19,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/arp-010-exp-022/"
+      },
+      {
+        "bytes": 23880,
+        "files": 11,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/agentic-spike-cap002/"
+      },
+      {
+        "bytes": 23757,
+        "files": 17,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/arp-009-exp-021/"
+      },
+      {
+        "bytes": 22748,
+        "files": 2,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/recovery/"
+      },
+      {
+        "bytes": 20802,
+        "files": 34,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/managed-futures-refutation/"
+      },
+      {
+        "bytes": 20670,
+        "files": 11,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/strategy-lifecycle/"
+      },
+      {
+        "bytes": 11664,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/status-failinject.json"
+      },
+      {
+        "bytes": 10793,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/CAP003_CAMPAIGN_REPORT.json"
+      },
+      {
+        "bytes": 10587,
+        "files": 6,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/rfc021/"
+      },
+      {
+        "bytes": 10114,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/CAP003_CAMPAIGN_REPORT.md"
+      },
+      {
+        "bytes": 9230,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC028_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 9222,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/CAP002_REAL_PILOT_REPORT.json"
+      },
+      {
+        "bytes": 8274,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/CAP002_REAL_PILOT_REPORT.md"
+      },
+      {
+        "bytes": 8100,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC010B_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 7668,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC036_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 7548,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/recovery_pytest.log"
+      },
+      {
+        "bytes": 7378,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/EDGE_DISCOVERY_SPRINT002_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 7350,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC023_GENERALIZATION_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 6796,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/microstructure-forward-headcert-report.log"
+      },
+      {
+        "bytes": 5987,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC041_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 5686,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC037_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 5494,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC020_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 5156,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/headcert_replay.log"
+      },
+      {
+        "bytes": 5145,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/recert-replay.log"
+      },
+      {
+        "bytes": 5092,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/cert01_replay.log"
+      },
+      {
+        "bytes": 5016,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/final_pytest.log"
+      },
+      {
+        "bytes": 3928,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC025_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 3896,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC023_GENERALIZATION_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 3729,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC021_EDGE001_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 3630,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/ALPHA_SCORECARD.json"
+      },
+      {
+        "bytes": 3513,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/CAP002_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 3500,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/ECONOMIC_STRATEGY_CHECKPOINT.md"
+      },
+      {
+        "bytes": 3453,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC040_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 3428,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/headcert_report.log"
+      },
+      {
+        "bytes": 3372,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/cert01_report.log"
+      },
+      {
+        "bytes": 3243,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC026_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 3115,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC039_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 2950,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/CAP002_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 2835,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC030_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 2814,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper-lab-ops-hardening/"
+      },
+      {
+        "bytes": 2811,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC031_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 2769,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC041_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 2746,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/EDGE_DISCOVERY_SPRINT002_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 2624,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/PROFITABILITY_DECISION.md"
+      },
+      {
+        "bytes": 2608,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/EDGE_DISCOVERY_SPRINT001_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 2587,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC030_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 2427,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/alpha001_driver.log"
+      },
+      {
+        "bytes": 2286,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC027_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 2214,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC032_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 2212,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC033_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 2201,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper-lab-continuous-02.launch.log"
+      },
+      {
+        "bytes": 2159,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/final_pytest2.log"
+      },
+      {
+        "bytes": 2159,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/recovery_pytest2.log"
+      },
+      {
+        "bytes": 2154,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC040_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 2128,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC031_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 2026,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/CAP001_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 1986,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/CAP001_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1887,
+        "files": 2,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/tmp-guard-debug/"
+      },
+      {
+        "bytes": 1885,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/paper-lab-cert-01.launch.log"
+      },
+      {
+        "bytes": 1747,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC038_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1620,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC039_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 1620,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC042_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 1590,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC034_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1589,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC035_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 1505,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC043_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1423,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC025_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1416,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC032_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1407,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC035_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1395,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC033_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1263,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC042_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1114,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/_rfc033_universe_probe.txt"
+      },
+      {
+        "bytes": 1110,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC028_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1059,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC034_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 1031,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC037_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 1019,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/ALPHA_SCORECARD.md"
+      },
+      {
+        "bytes": 989,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/FINAL_STRATEGIC_PROJECT_DECISION.md"
+      },
+      {
+        "bytes": 984,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/carry_run.log"
+      },
+      {
+        "bytes": 883,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC044_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 860,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC029_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 853,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC043_FINAL_REPORT.json"
+      },
+      {
+        "bytes": 763,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC026_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 757,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/mf_ef.log"
+      },
+      {
+        "bytes": 748,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/mf_cd.log"
+      },
+      {
+        "bytes": 740,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/mf_ab.log"
+      },
+      {
+        "bytes": 724,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/fetch_baseline.log"
+      },
+      {
+        "bytes": 713,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC036_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 654,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/fetch_extended_v1_4.log"
+      },
+      {
+        "bytes": 634,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC044_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 593,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/carry_fetch.log"
+      },
+      {
+        "bytes": 327,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/RFC027_FINAL_REPORT.md"
+      },
+      {
+        "bytes": 193,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/_rfc033_fetch.log"
+      },
+      {
+        "bytes": 55,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/.gitkeep"
+      },
+      {
+        "bytes": 0,
+        "files": 1,
+        "owner": "UNATTRIBUTED",
+        "owner_basis": "no rule matched",
+        "path": "reports/status-failinject.err"
+      }
+    ]
+  },
+  "figures": [
+    {
+      "as_of_utc": "2026-10-14T05:45:20Z",
+      "figure": "volume_free_bytes",
+      "measurement_scope": "volume C: as seen from C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+      "note": "",
+      "run_id": "EDGE05R-STORE-20261014T054520Z",
+      "source_artifact": "operating system, disk_usage of the repository volume",
+      "source_digest": "b3a2bd4835cac7fdf8085259599af9adbd5b9ce9c9b54a339db7068250cd7182",
+      "unit": "bytes",
+      "value": 5883957248
+    },
+    {
+      "as_of_utc": "2026-10-14T05:45:20Z",
+      "figure": "repo_bytes",
+      "measurement_scope": "every file under the repository root, excluding .git internals",
+      "note": "",
+      "run_id": "EDGE05R-STORE-20261014T054520Z",
+      "source_artifact": "repository tree walk (this script)",
+      "source_digest": "939ea912177ea0dd9422d6fa829d77fe75eb14eb867d3d602a32c4fba441a68c",
+      "unit": "bytes",
+      "value": 5724066394
+    },
+    {
+      "as_of_utc": "2026-10-14T05:45:20Z",
+      "figure": "safe_reclaimable_bytes",
+      "measurement_scope": "tool caches only, each verified untracked and ignored",
+      "note": "",
+      "run_id": "EDGE05R-STORE-20261014T054520Z",
+      "source_artifact": "git check-ignore + git ls-files + a walk for cache names",
+      "source_digest": "8aab0cc4229358814da8a28d77cf508518a8d127e385f616d6af6a665128183e",
+      "unit": "bytes",
+      "value": 20771371
+    }
+  ],
+  "generated_at_utc": "2026-10-14T05:45:20Z",
+  "host": "DESKTOP-4CHO695",
+  "hypothetical": true,
+  "largest_files": [
+    {
+      "bytes": 572094612,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/cap004/archive/legacy-20261007T1556Z/daily/2026-10-06.json.gz"
+    },
+    {
+      "bytes": 497792507,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/cap004/archive/legacy-20261007T1556Z/daily/2026-10-07.json.gz"
+    },
+    {
+      "bytes": 184804352,
+      "owner": "UNATTRIBUTED",
+      "path": ".venv/Lib/site-packages/_polars_runtime_32/_polars_runtime.pyd"
+    },
+    {
+      "bytes": 109504796,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/cap004/archive/legacy-20261007T1556Z/cycles.jsonl.gz"
+    },
+    {
+      "bytes": 56455753,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward/segments/binance/perp/ETHUSDT/book_ticker/2026-09-28/160000.jsonl.gz"
+    },
+    {
+      "bytes": 53034820,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward/segments/binance/perp/BTCUSDT/book_ticker/2026-09-28/160000.jsonl.gz"
+    },
+    {
+      "bytes": 42317811,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/rfc010/runs/RFC010B-SAMPLE-1/traces.jsonl"
+    },
+    {
+      "bytes": 32816640,
+      "owner": "UNATTRIBUTED",
+      "path": ".venv/Lib/site-packages/numpy.libs/libscipy_openblas64_-caad452230ae4ddb57899b8b3a33c55c.dll"
+    },
+    {
+      "bytes": 32307712,
+      "owner": "UNATTRIBUTED",
+      "path": ".venv/Scripts/ruff.exe"
+    },
+    {
+      "bytes": 29749380,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward/segments/binance/spot/BTCUSDT/book_ticker/2026-09-28/160000.jsonl.gz"
+    },
+    {
+      "bytes": 29451901,
+      "owner": "UNATTRIBUTED",
+      "path": "data/raw/alpha002/CAPTURE_LOG.jsonl"
+    },
+    {
+      "bytes": 29170755,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward/segments/binance/perp/ETHUSDT/book_ticker/2026-09-28/150000.jsonl.gz"
+    },
+    {
+      "bytes": 27913497,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward/segments/binance/perp/BTCUSDT/book_ticker/2026-09-28/150000.jsonl.gz"
+    },
+    {
+      "bytes": 26067129,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_ticker/2026-09-30/020000.jsonl.gz"
+    },
+    {
+      "bytes": 24323616,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward/segments/binance/perp/SOLUSDT/book_ticker/2026-09-28/160000.jsonl.gz"
+    },
+    {
+      "bytes": 24253179,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward-lab/segments/binance/perp/BTCUSDT/book_ticker/2026-10-01/180000.jsonl.gz"
+    },
+    {
+      "bytes": 24098286,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward-lab/segments/binance/perp/ETHUSDT/book_ticker/2026-10-01/180000.jsonl.gz"
+    },
+    {
+      "bytes": 23265449,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward-lab/segments/binance/perp/BTCUSDT/book_ticker/2026-10-01/161500.jsonl.gz"
+    },
+    {
+      "bytes": 22823343,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward/segments/binance/spot/ETHUSDT/book_ticker/2026-09-28/160000.jsonl.gz"
+    },
+    {
+      "bytes": 21137556,
+      "owner": "UNATTRIBUTED",
+      "path": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_ticker/2026-09-30/194500.jsonl.gz"
+    }
+  ],
+  "order_sent": false,
+  "promotion": "NONE",
+  "reclaim_plan": {
+    "nothing_else_is_proposed": "market data, evidence, other workstreams' artefacts, source and the environment are sized here and left alone: deleting them is a decision for the owner, not a cleanup",
+    "paths": [
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 10408249,
+        "files": 108,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 2768796,
+        "files": 108,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/abstract/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 705544,
+        "files": 50,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/rich/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 601116,
+        "files": 32,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/research/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 572617,
+        "files": 17,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pydantic/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 544374,
+        "files": 6,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/base/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 519017,
+        "files": 25,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pydantic/_internal/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 281478,
+        "files": 21,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/structlog/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 275775,
+        "files": 17,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/yaml/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 261738,
+        "files": 18,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/requests/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 259779,
+        "files": 12,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/urllib3/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 232708,
+        "files": 13,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/marshmallow/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 223659,
+        "files": 13,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/attr/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 188069,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 175903,
+        "files": 13,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pydantic_settings/sources/providers/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 166167,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pydantic_core/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 163965,
+        "files": 8,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/toolz/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 138008,
+        "files": 9,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/abi/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 127685,
+        "files": 9,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ecdsa/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 117598,
+        "files": 7,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/charset_normalizer/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 115096,
+        "files": 13,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/urllib3/util/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 93636,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": "scripts/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 91024,
+        "files": 9,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pygments/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 89350,
+        "files": 9,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/tenacity/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 84039,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pygments/lexers/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 76731,
+        "files": 5,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/starkware/crypto/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 76039,
+        "files": 6,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/market_data/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 75883,
+        "files": 17,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/utils/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 75709,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/primitives/serialization/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 74048,
+        "files": 6,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/parsimonious/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 64716,
+        "files": 7,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/coincurve/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 63925,
+        "files": 7,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/backtesting/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 58404,
+        "files": 4,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/msgpack/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 57828,
+        "files": 5,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/idna/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 54879,
+        "files": 8,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/config/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 53379,
+        "files": 6,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/bip/bip32/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 52454,
+        "files": 4,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pydantic_settings/sources/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 48545,
+        "files": 7,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/primitives/asymmetric/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 44374,
+        "files": 5,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pydantic_settings/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 42353,
+        "files": 6,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/colorama/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 40557,
+        "files": 4,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/dotenv/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 40117,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pygments/filters/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 36553,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/typing_inspection/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 34565,
+        "files": 7,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/indicators/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 34211,
+        "files": 9,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/typing/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 33179,
+        "files": 8,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/bip/utils/misc/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 28203,
+        "files": 5,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/sympy/external/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 27129,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/bip/bip32/base/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 25338,
+        "files": 6,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/primitives/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 22490,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 22068,
+        "files": 4,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/primitives/ciphers/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 20570,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/annotated_types/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 19913,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pydantic/plugin/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 19902,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/storage/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 18150,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/mnemonic/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 16615,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/tenacity/asyncio/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 14194,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/domain/events/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 13587,
+        "files": 5,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/starknet/hash/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 13090,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/account/encode_typed_data/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 12182,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/lighter_client/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 11965,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/_distutils_hack/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 11576,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/keccak/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 11515,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/starknet/utils/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 11387,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/account/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 11230,
+        "files": 4,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 9929,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/decrepit/ciphers/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 9480,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/bip/base58/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 8943,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/urllib3/contrib/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 8923,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/utils/curried/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 6863,
+        "files": 4,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/abi/utils/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 6739,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/pygments/styles/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 6376,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/urllib3/http2/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 6352,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/hexbytes/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 6153,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/bip/utils/crypto/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 4446,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/rich/_unicode_data/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 3782,
+        "files": 3,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/toolz/curried/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 3712,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/starknet/cairo/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 3530,
+        "files": 4,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/starknet/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 2733,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/certifi/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 2422,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/starknet/models/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 1528,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/sympy/core/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 762,
+        "files": 2,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/bip/utils/typing/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 583,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/backends/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 549,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 416,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/ethereum/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 391,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 374,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/bip/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 286,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": "src/trading_bot/domain/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "repository tool cache",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 278,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/decrepit/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 222,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/bip/utils/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 222,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/starkware/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 218,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/ccxt/static_dependencies/sympy/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      },
+      {
+        "basis": "the tool that wrote it regenerates it; git tracks none of it and .gitignore names it",
+        "bytes": 216,
+        "files": 1,
+        "ignored_by_gitignore": true,
+        "path": ".venv/Lib/site-packages/cryptography/hazmat/bindings/__pycache__",
+        "regenerable": true,
+        "regenerated_by": "python (bytecode cache)",
+        "safe_to_reclaim": true,
+        "scope": "interpreter bytecode inside the project environment",
+        "tracked_by_git": false
+      }
+    ],
+    "rule": "only a tool cache a tool regenerates, that git does not track and that .gitignore names; every row carries its own three checks",
+    "safe_reclaimable_by_scope": {
+      "interpreter bytecode inside the project environment": {
+        "bytes": 19812280,
+        "mib": 18.89
+      },
+      "repository tool cache": {
+        "bytes": 959091,
+        "mib": 0.91
+      }
+    },
+    "safe_reclaimable_bytes": 20771371,
+    "safe_reclaimable_mib": 19.81
+  },
+  "repo_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "run_id": "EDGE05R-STORE-20261014T054520Z",
+  "schema_version": "EDGE05R_STORAGE_INVENTORY_V1",
+  "subtrees": [
+    {
+      "bytes": 4961795121,
+      "category": "EVIDENCE",
+      "files": 7032,
+      "largest_members": [
+        {
+          "bytes": 572094612,
+          "path": "cap004/archive/legacy-20261007T1556Z/daily/2026-10-06.json.gz"
+        },
+        {
+          "bytes": 497792507,
+          "path": "cap004/archive/legacy-20261007T1556Z/daily/2026-10-07.json.gz"
+        },
+        {
+          "bytes": 109504796,
+          "path": "cap004/archive/legacy-20261007T1556Z/cycles.jsonl.gz"
+        },
+        {
+          "bytes": 56455753,
+          "path": "microstructure-forward/segments/binance/perp/ETHUSDT/book_ticker/2026-09-28/160000.jsonl.gz"
+        },
+        {
+          "bytes": 53034820,
+          "path": "microstructure-forward/segments/binance/perp/BTCUSDT/book_ticker/2026-09-28/160000.jsonl.gz"
+        },
+        {
+          "bytes": 42317811,
+          "path": "rfc010/runs/RFC010B-SAMPLE-1/traces.jsonl"
+        },
+        {
+          "bytes": 29749380,
+          "path": "microstructure-forward/segments/binance/spot/BTCUSDT/book_ticker/2026-09-28/160000.jsonl.gz"
+        },
+        {
+          "bytes": 29170755,
+          "path": "microstructure-forward/segments/binance/perp/ETHUSDT/book_ticker/2026-09-28/150000.jsonl.gz"
+        }
+      ],
+      "owner": "mixed \u2014 see the breakdown",
+      "owner_basis": "its children are attributed one by one below",
+      "path": "reports/",
+      "tree_digest": "957885daf4b102dab2330b45578a37ad558b73fdd4e86dbc8989bb1dc298ead8"
+    },
+    {
+      "bytes": 475646092,
+      "category": "ENVIRONMENT",
+      "files": 11333,
+      "largest_members": [
+        {
+          "bytes": 184804352,
+          "path": "Lib/site-packages/_polars_runtime_32/_polars_runtime.pyd"
+        },
+        {
+          "bytes": 32816640,
+          "path": "Lib/site-packages/numpy.libs/libscipy_openblas64_-caad452230ae4ddb57899b8b3a33c55c.dll"
+        },
+        {
+          "bytes": 32307712,
+          "path": "Scripts/ruff.exe"
+        },
+        {
+          "bytes": 19368960,
+          "path": "Lib/site-packages/fb62009ad6f7d3457273__mypyc.cp311-win_amd64.pyd"
+        },
+        {
+          "bytes": 9907712,
+          "path": "Lib/site-packages/cryptography/hazmat/bindings/_rust.pyd"
+        },
+        {
+          "bytes": 5240320,
+          "path": "Lib/site-packages/pydantic_core/_pydantic_core.cp311-win_amd64.pyd"
+        },
+        {
+          "bytes": 4059648,
+          "path": "Lib/site-packages/numpy/_core/_multiarray_umath.cp311-win_amd64.pyd"
+        },
+        {
+          "bytes": 2456576,
+          "path": "Lib/site-packages/ast_serialize/ast_serialize.pyd"
+        }
+      ],
+      "owner": "n/a \u2014 not a workstream",
+      "owner_basis": "a kind of bytes, not an owner",
+      "path": ".venv/",
+      "tree_digest": "9f5f99f743821723bccb69171565b0950a438fea4649dade9e6d985fa18eb787"
+    },
+    {
+      "bytes": 206837689,
+      "category": "MARKET_DATA_AND_LIVE_STATE",
+      "files": 873,
+      "largest_members": [
+        {
+          "bytes": 29451901,
+          "path": "raw/alpha002/CAPTURE_LOG.jsonl"
+        },
+        {
+          "bytes": 13389298,
+          "path": "raw/alpha003/price/BTCUSDT_5m.json"
+        },
+        {
+          "bytes": 13290347,
+          "path": "raw/alpha003/price/ETHUSDT_5m.json"
+        },
+        {
+          "bytes": 12567167,
+          "path": "raw/alpha003/price/XRPUSDT_5m.json"
+        },
+        {
+          "bytes": 12167810,
+          "path": "raw/alpha003/price/SOLUSDT_5m.json"
+        },
+        {
+          "bytes": 4497888,
+          "path": "raw/alpha003/price/BTCUSDT_15m.json"
+        },
+        {
+          "bytes": 4466466,
+          "path": "raw/alpha003/price/ETHUSDT_15m.json"
+        },
+        {
+          "bytes": 4223041,
+          "path": "raw/alpha003/price/XRPUSDT_15m.json"
+        }
+      ],
+      "owner": "mixed \u2014 see the breakdown",
+      "owner_basis": "its children are attributed one by one below",
+      "path": "data/",
+      "tree_digest": "55f0e34bb3de47038225f8b3b6e9af42589d28d9f5f0f537064a694d4c8488ec"
+    },
+    {
+      "bytes": 47450120,
+      "category": "VERSION_HISTORY",
+      "files": 5050,
+      "largest_members": [
+        {
+          "bytes": 19529821,
+          "path": "objects/pack/pack-437efc17a9b6d0cc308bc6db778d1a9d1a7c71b9.pack"
+        },
+        {
+          "bytes": 1680168,
+          "path": "objects/bb/100e53ddf3869e881874ad7f1f6cd7170d75cb"
+        },
+        {
+          "bytes": 895441,
+          "path": "objects/f8/b70fc5edb5e59773365f159497e31b7ffbbe80"
+        },
+        {
+          "bytes": 603495,
+          "path": "objects/05/5ad6cb0c261061091fc8e0371a68be6200d103"
+        },
+        {
+          "bytes": 548764,
+          "path": "objects/46/7b6fca4dda1b29750d8836720ac9cc491a7c66"
+        },
+        {
+          "bytes": 546985,
+          "path": "objects/07/25e2a422ec27b67e5b8059d2e90d344e6add8d"
+        },
+        {
+          "bytes": 442893,
+          "path": "objects/fa/987263f0b59016a257fd96d6f4645ec8707e87"
+        },
+        {
+          "bytes": 364028,
+          "path": "rfc048_baseline/RISK_SCENARIOS.json"
+        }
+      ],
+      "owner": "n/a \u2014 not a workstream",
+      "owner_basis": "a kind of bytes, not an owner",
+      "path": ".git/",
+      "tree_digest": "85bfe29069bbaa934772a5cf56bfefb55467c1d3c658fa30354f50b30839633d"
+    },
+    {
+      "bytes": 8096104,
+      "category": "SOURCE",
+      "files": 321,
+      "largest_members": [
+        {
+          "bytes": 137668,
+          "path": "st6_forward_regime.py"
+        },
+        {
+          "bytes": 137639,
+          "path": "rfc035s2_search.py"
+        },
+        {
+          "bytes": 117224,
+          "path": "rfc049b_admission.py"
+        },
+        {
+          "bytes": 103309,
+          "path": "rfc035s3_closure.py"
+        },
+        {
+          "bytes": 87778,
+          "path": "forward_collection_verification.py"
+        },
+        {
+          "bytes": 84284,
+          "path": "pgate035_closure.py"
+        },
+        {
+          "bytes": 82302,
+          "path": "economic001_closure.py"
+        },
+        {
+          "bytes": 78956,
+          "path": "st6_close_verify.py"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "scripts/",
+      "tree_digest": "3f6df4aca20eac6fa1e584db1b17f24da74441fb7cf165be0b01124a4d18e442"
+    },
+    {
+      "bytes": 8076051,
+      "category": "OPERATIONAL_LOGS",
+      "files": 93,
+      "largest_members": [
+        {
+          "bytes": 7527040,
+          "path": "alpha002_capture.log"
+        },
+        {
+          "bytes": 79978,
+          "path": "cap004_supervisor.log"
+        },
+        {
+          "bytes": 33937,
+          "path": "wp7_tmp/rehearsal_adversarial.json"
+        },
+        {
+          "bytes": 33881,
+          "path": "wp8_tmp/adversarial.json"
+        },
+        {
+          "bytes": 32954,
+          "path": "wp7_tmp/wp6_gate.py"
+        },
+        {
+          "bytes": 30898,
+          "path": "wp7_tmp/ADVERSARIAL_BASELINE.json"
+        },
+        {
+          "bytes": 22324,
+          "path": "wp7_tmp/rehearsal_adversarial.md"
+        },
+        {
+          "bytes": 19459,
+          "path": "wp7_tmp/ADVERSARIAL_BASELINE.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "logs/",
+      "tree_digest": "1e0dceb439d0dd211c19d904f5b87ad4eda91a625484572032a82da47355440f"
+    },
+    {
+      "bytes": 5491896,
+      "category": "SOURCE",
+      "files": 425,
+      "largest_members": [
+        {
+          "bytes": 174661,
+          "path": "trading_bot/research/edge01/campaign.py"
+        },
+        {
+          "bytes": 99028,
+          "path": "trading_bot/research/edge05/watchdog.py"
+        },
+        {
+          "bytes": 92838,
+          "path": "trading_bot/research/forward/collector.py"
+        },
+        {
+          "bytes": 89243,
+          "path": "trading_bot/research/edge03/autonomous.py"
+        },
+        {
+          "bytes": 75532,
+          "path": "trading_bot/autonomous/runtime.py"
+        },
+        {
+          "bytes": 69992,
+          "path": "trading_bot/research/strategic_profitability_v2.py"
+        },
+        {
+          "bytes": 63684,
+          "path": "trading_bot/research/forward/reporting.py"
+        },
+        {
+          "bytes": 60946,
+          "path": "trading_bot/research/__pycache__/campaign_reporting.cpython-311.pyc"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "src/",
+      "tree_digest": "e01dc1f9ca12a0bdee2f9dfd69c4ef95a78e018fe8291703fb41fc5ea5a5b30d"
+    },
+    {
+      "bytes": 2808510,
+      "category": "SOURCE",
+      "files": 251,
+      "largest_members": [
+        {
+          "bytes": 76434,
+          "path": "unit/research/test_st6_scheduler.py"
+        },
+        {
+          "bytes": 57488,
+          "path": "unit/forward/test_forward_collector_replay.py"
+        },
+        {
+          "bytes": 54893,
+          "path": "unit/research/test_edge04_autonomous.py"
+        },
+        {
+          "bytes": 45868,
+          "path": "unit/scanner/test_universe_scanner.py"
+        },
+        {
+          "bytes": 43781,
+          "path": "unit/research/test_edge05_watchdog.py"
+        },
+        {
+          "bytes": 35700,
+          "path": "unit/research/test_campaign_supervisor.py"
+        },
+        {
+          "bytes": 35511,
+          "path": "unit/research/test_st6_forward_regime.py"
+        },
+        {
+          "bytes": 35261,
+          "path": "unit/research/test_campaign_runtime.py"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "tests/",
+      "tree_digest": "18fcb0fae28d4fb168a855c4166a0fb3273247d2ab6219b670b74a23c4b6967a"
+    },
+    {
+      "bytes": 2645703,
+      "category": "EVIDENCE",
+      "files": 514,
+      "largest_members": [
+        {
+          "bytes": 107730,
+          "path": "FORWARD_DATA_EVIDENCE.json"
+        },
+        {
+          "bytes": 58435,
+          "path": "MICROSTRUCTURE_RESULTS_V2.json"
+        },
+        {
+          "bytes": 39239,
+          "path": "FORWARD_DATA_QUALITY_REPORT.json"
+        },
+        {
+          "bytes": 38592,
+          "path": "research/source_reviews/SRC-BOOK-001_REVIEW.md"
+        },
+        {
+          "bytes": 34826,
+          "path": "rfc/RFC-046_CONTROLLED_DISCOVERY.md"
+        },
+        {
+          "bytes": 33979,
+          "path": "MICROSTRUCTURE_FORWARD_COLLECTION_INDEPENDENT_VERIFICATION.json"
+        },
+        {
+          "bytes": 28651,
+          "path": "COST_MODEL_V3.json"
+        },
+        {
+          "bytes": 27971,
+          "path": "specs/TSK-103-universe-scanner/05-tasks.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "docs/",
+      "tree_digest": "e3e094ec63fc7b66d23ead26470df0ca7056f3b75835426871c85824df8f4bd4"
+    },
+    {
+      "bytes": 1935629,
+      "category": "EVIDENCE",
+      "files": 12,
+      "largest_members": [
+        {
+          "bytes": 468370,
+          "path": "real_decisions/operations.jsonl"
+        },
+        {
+          "bytes": 361775,
+          "path": "real_decisions/raw_evidence/23ca81838ef3e6e6f3e5147d169d6a4cea5c34794e5719edbae1685aebc4351a.json"
+        },
+        {
+          "bytes": 354553,
+          "path": "real_decisions/raw_evidence/20d53343a19b41f38a6d6060e7dd112b9832e9c5107f6918b740abee4b8636d4.json"
+        },
+        {
+          "bytes": 346287,
+          "path": "real_decisions/raw_evidence/c8f2d713bbf024e66bf2485cc82240aa83a40a43f023adf38bda7bbaabe4f25a.json"
+        },
+        {
+          "bytes": 344411,
+          "path": "real_decisions/raw_evidence/beedab19f5a11e49376f1d81f731a02051e930ef4cca5e0033692508a2577be6.json"
+        },
+        {
+          "bytes": 23236,
+          "path": "real_decisions/decisions.jsonl"
+        },
+        {
+          "bytes": 16015,
+          "path": "real_decisions/heartbeat.json"
+        },
+        {
+          "bytes": 5315,
+          "path": "real_decisions/evaluations.jsonl"
+        }
+      ],
+      "owner": "mixed \u2014 see the breakdown",
+      "owner_basis": "its children are attributed one by one below",
+      "path": "evidence/",
+      "tree_digest": "d66ef30a577c661c25b97468b8c799eb33b02dd9399ed2ab597f2fa0e033d37c"
+    },
+    {
+      "bytes": 1130398,
+      "category": "EVIDENCE",
+      "files": 82,
+      "largest_members": [
+        {
+          "bytes": 235128,
+          "path": "edge05r/inventory_first.json"
+        },
+        {
+          "bytes": 115982,
+          "path": "edge05r/render_check/RUN_REPORT.json"
+        },
+        {
+          "bytes": 35922,
+          "path": "edge05r/inventory_first.md"
+        },
+        {
+          "bytes": 34071,
+          "path": "COST_BARRIER_ADVERSARIAL_REPORT.json"
+        },
+        {
+          "bytes": 34041,
+          "path": "cert_final2/adversarial.json"
+        },
+        {
+          "bytes": 34041,
+          "path": "cert_final1/adversarial.json"
+        },
+        {
+          "bytes": 34037,
+          "path": "adv2.json"
+        },
+        {
+          "bytes": 33881,
+          "path": "certrun/adversarial.json"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".ci/",
+      "tree_digest": "7e728fb3a7f2cc01fc795d7ffe57f2cbf4cac9ffc92fca045e7785a3fceb1663"
+    },
+    {
+      "bytes": 958763,
+      "category": "EVIDENCE",
+      "files": 105,
+      "largest_members": [
+        {
+          "bytes": 130805,
+          "path": "profitability/source_registry.json"
+        },
+        {
+          "bytes": 76785,
+          "path": "rfc035s3/artifact_copies/reports/rfc035/search_round_2/SOURCE_REGISTRY.json"
+        },
+        {
+          "bytes": 73689,
+          "path": "rfc035s3/artifact_copies/reports/rfc035/search_round_2/CANDIDATE_MATRIX.json"
+        },
+        {
+          "bytes": 62067,
+          "path": "rfc035s3/artifact_copies/reports/rfc035/search_round_2/CANDIDATE_MATRIX.md"
+        },
+        {
+          "bytes": 49570,
+          "path": "rfc035s3/artifact_copies/reports/rfc035/search_round_2/SOURCE_REGISTRY.md"
+        },
+        {
+          "bytes": 41423,
+          "path": "rfc035s3/artifact_copies/reports/rfc035e/SOURCE_REPLICATION.md"
+        },
+        {
+          "bytes": 41232,
+          "path": "rfc035s3/artifact_copies/reports/rfc035e/SOURCE_REPLICATION.json"
+        },
+        {
+          "bytes": 31072,
+          "path": "profitability/source_registry.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "research/",
+      "tree_digest": "3d4ff6f89e7ff76b0be3146e57dc2e358417275299bfd1399239f5855f473865"
+    },
+    {
+      "bytes": 573508,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "uv.lock",
+      "tree_digest": "5508a885c5437b84fb11b07681e3126bb0709593775d2f656e4826f38fe4138b"
+    },
+    {
+      "bytes": 197476,
+      "category": "SOURCE",
+      "files": 6,
+      "largest_members": [
+        {
+          "bytes": 130724,
+          "path": "decisions.md"
+        },
+        {
+          "bytes": 26156,
+          "path": "backlog.md"
+        },
+        {
+          "bytes": 19219,
+          "path": "sprint-002.md"
+        },
+        {
+          "bytes": 13438,
+          "path": "sprint-003.md"
+        },
+        {
+          "bytes": 4084,
+          "path": "roadmap.md"
+        },
+        {
+          "bytes": 3855,
+          "path": "sprint-001.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "tasks/",
+      "tree_digest": "63676987a96dea212271cc5265361aed21e6bcb5bfafc5d17c3f3b0948c09872"
+    },
+    {
+      "bytes": 139165,
+      "category": "SOURCE",
+      "files": 6,
+      "largest_members": [
+        {
+          "bytes": 117436,
+          "path": "retrieval-log.md"
+        },
+        {
+          "bytes": 8705,
+          "path": "codebase-map.md"
+        },
+        {
+          "bytes": 5027,
+          "path": "dependency-map.md"
+        },
+        {
+          "bytes": 3116,
+          "path": "impact-analysis.md"
+        },
+        {
+          "bytes": 2829,
+          "path": "trading-domain-notes.md"
+        },
+        {
+          "bytes": 2052,
+          "path": "exchange-api-notes.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "context/",
+      "tree_digest": "963db485a9653f27680f89d49d77036642e30f0cfbfd97ae447418923b738530"
+    },
+    {
+      "bytes": 64779,
+      "category": "SOURCE",
+      "files": 16,
+      "largest_members": [
+        {
+          "bytes": 28172,
+          "path": "strategy_admission.json"
+        },
+        {
+          "bytes": 4811,
+          "path": "strategies.yaml"
+        },
+        {
+          "bytes": 4811,
+          "path": "realdata/strategies.yaml"
+        },
+        {
+          "bytes": 2887,
+          "path": "microstructure_preregistration.json"
+        },
+        {
+          "bytes": 2873,
+          "path": "realdata/indicators.yaml"
+        },
+        {
+          "bytes": 2873,
+          "path": "indicators.yaml"
+        },
+        {
+          "bytes": 2640,
+          "path": "realdata/assets.yaml"
+        },
+        {
+          "bytes": 2468,
+          "path": "assets.yaml"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "config/",
+      "tree_digest": "a663cfdf6ecb895360099e593cb91bed13ad75a431b697eeeefdad4029e29976"
+    },
+    {
+      "bytes": 43399,
+      "category": "SOURCE",
+      "files": 23,
+      "largest_members": [
+        {
+          "bytes": 7471,
+          "path": "methodology-hybrid.md"
+        },
+        {
+          "bytes": 7024,
+          "path": "orchestration.md"
+        },
+        {
+          "bytes": 1830,
+          "path": "agents/backtest-engineer.md"
+        },
+        {
+          "bytes": 1734,
+          "path": "commands/11-release-live.md"
+        },
+        {
+          "bytes": 1724,
+          "path": "agents/execution-engineer.md"
+        },
+        {
+          "bytes": 1664,
+          "path": "agents/quant-researcher.md"
+        },
+        {
+          "bytes": 1560,
+          "path": "agents/strategy-engineer.md"
+        },
+        {
+          "bytes": 1517,
+          "path": "agents/context-engineer.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".ai/",
+      "tree_digest": "7d0953bd6758b3e990ceab88d92c78807491e1e2b3737ab9e40809c3d869fd47"
+    },
+    {
+      "bytes": 39962,
+      "category": "SOURCE",
+      "files": 5,
+      "largest_members": [
+        {
+          "bytes": 10428,
+          "path": "workflows/ci.yml"
+        },
+        {
+          "bytes": 10140,
+          "path": "CODEOWNERS"
+        },
+        {
+          "bytes": 7407,
+          "path": "PULL_REQUEST_TEMPLATE.md"
+        },
+        {
+          "bytes": 6272,
+          "path": "workflows/recovery-determinism.yml"
+        },
+        {
+          "bytes": 5715,
+          "path": "workflows/cost-barrier-gate.yml"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".github/",
+      "tree_digest": "c8efa563d72f8b7d9f63f1d6fd77e94df6efc8aa545d09da12614a5ca06291ef"
+    },
+    {
+      "bytes": 25126,
+      "category": "SOURCE",
+      "files": 8,
+      "largest_members": [
+        {
+          "bytes": 7693,
+          "path": "features/market_scanner.feature"
+        },
+        {
+          "bytes": 5888,
+          "path": "features/multi_exchange.feature"
+        },
+        {
+          "bytes": 2420,
+          "path": "features/emergency_pause.feature"
+        },
+        {
+          "bytes": 1948,
+          "path": "features/risk_manager.feature"
+        },
+        {
+          "bytes": 1874,
+          "path": "features/signal_generation.feature"
+        },
+        {
+          "bytes": 1846,
+          "path": "features/paper_trading.feature"
+        },
+        {
+          "bytes": 1736,
+          "path": "features/backtesting.feature"
+        },
+        {
+          "bytes": 1721,
+          "path": "features/execution_engine.feature"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "bdd/",
+      "tree_digest": "ece99e0ff487d061617ae08e16437454b4810b3612ced073f74a2b5365d8d05a"
+    },
+    {
+      "bytes": 18989,
+      "category": "SOURCE",
+      "files": 3,
+      "largest_members": [
+        {
+          "bytes": 15870,
+          "path": "release-gates.md"
+        },
+        {
+          "bytes": 1709,
+          "path": "code-quality.md"
+        },
+        {
+          "bytes": 1410,
+          "path": "risk-quality-gates.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "quality/",
+      "tree_digest": "921ef98c8d5cb6fe98c08c5ed233154e6c96f974cae6cd620fe923aeafc6ba1d"
+    },
+    {
+      "bytes": 10493,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "PAPER_DATA_24H_REPORT.json",
+      "tree_digest": "a1d2f1de84c3ad3b11d8408763ea8bed7eb36f1c5c61761c2616f9d3ced5777e"
+    },
+    {
+      "bytes": 10385,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".gitignore",
+      "tree_digest": "62b52e465b2e6ef1ef429bc0424fb7b61ff77139fc05a696d1d2f2c126f93de6"
+    },
+    {
+      "bytes": 10322,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "README.md",
+      "tree_digest": "4805df6d7ab7c41edb91ad108c8f024986a167a45a688ef27b652ab5279d9d43"
+    },
+    {
+      "bytes": 10048,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "pr-body-TASK-103.5.md",
+      "tree_digest": "2d0cbb914862627500769e92e789f1756f111e479b50de5e99ce805ee97e70aa"
+    },
+    {
+      "bytes": 9824,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "PAPER_DATA_24H_REPORT.md",
+      "tree_digest": "150faa294f7aeea8692e45f553480daa830c4f6314bc5b546410511b23aa748e"
+    },
+    {
+      "bytes": 8458,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "AGENTS.md",
+      "tree_digest": "3191e2726c0b70a9cedddec34157baf862067183cb394e14a4c0dcd24da434c5"
+    },
+    {
+      "bytes": 7335,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "pyproject.toml",
+      "tree_digest": "83d072d27d0a6b2e3e420a7e2b88c0e78d25988c6a0849dac25c9d2a8e208fd1"
+    },
+    {
+      "bytes": 6645,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "reqs.txt",
+      "tree_digest": "cdbc6e764f6088c7f354d92aea8cae5f61d7874af9173a29b7cac8d6e1c3d651"
+    },
+    {
+      "bytes": 4887,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "FINAL_REPORT.md",
+      "tree_digest": "549951881aeca1c6c487fa80803ecc79412eddae5e9928ddd920d5bbe7bf2770"
+    },
+    {
+      "bytes": 3904,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "RUN_REPORT.md",
+      "tree_digest": "4ecccbb255ec1d337c673c5839b0e89c44f668a35cee84c6f785ebf281a2a062"
+    },
+    {
+      "bytes": 3200,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "RUN_REPORT.json",
+      "tree_digest": "c40f7727f9118fcd1f29d12a259143ab66b381263dfd6a16ed54e59e55a245c0"
+    },
+    {
+      "bytes": 2173,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".env.example",
+      "tree_digest": "2be0ae9a97756780f65af715a8691222632621c379567f7b05085827469b4445"
+    },
+    {
+      "bytes": 1241,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "docker-compose.yml",
+      "tree_digest": "fc165d98440f0b2571e5f7511f6299d0d18653c78539f339694ff068aa9353c1"
+    },
+    {
+      "bytes": 1017,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".gitattributes",
+      "tree_digest": "df5de0bd93e45f8e5282c29281a56bb7b259b5dbb8d83a8da4042b2b5c6d5444"
+    },
+    {
+      "bytes": 824,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [
+        {
+          "bytes": 824,
+          "path": "README.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "evals/",
+      "tree_digest": "68d92540e5a453ec74b35a0f8a674e47c8e09c3711d70fb295793acb62a00ce6"
+    },
+    {
+      "bytes": 659,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [
+        {
+          "bytes": 659,
+          "path": "README.md"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "notebooks/",
+      "tree_digest": "73d97198a0c8cf9218cfe1681cea18fa625571b340266379d7d24f5910b39f2c"
+    },
+    {
+      "bytes": 456,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".rfc048v_certify.log",
+      "tree_digest": "d011a713b6d7564b692acec31ff5f5564b738a2cfd51dd027362c8809f163731"
+    },
+    {
+      "bytes": 37,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [
+        {
+          "bytes": 37,
+          "path": "project-id"
+        }
+      ],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".freebuff/",
+      "tree_digest": "6c56b047e32e8d0c475d97092fb7f8946c69b275ae1c957b6ad4b36e4c8368ea"
+    },
+    {
+      "bytes": 6,
+      "category": "UNCLASSIFIED",
+      "files": 1,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": ".python-version",
+      "tree_digest": "ceba8fa5c10f40fbed8feb7eb5238b63dda568908acfd874ee413747b29936c8"
+    },
+    {
+      "bytes": 0,
+      "category": "UNCLASSIFIED",
+      "files": 0,
+      "largest_members": [],
+      "owner": "repository tooling",
+      "owner_basis": "a repository file, not a workstream's artefact",
+      "path": "-p/",
+      "tree_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "totals": {
+    "repo_bytes": 5724066394,
+    "repo_files": 26178,
+    "repo_gib": 5.331,
+    "share_of_volume": 2.24
+  },
+  "volume": {
+    "anchor": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "critical_floor_bytes": 2147483648,
+    "drive": "C:",
+    "free_bytes": 5883957248,
+    "free_gib": 5.48,
+    "healthy_floor_bytes": 5368709120,
+    "reading": "free space is a property of the volume, so it is measured at the repository root; the floors are the ones the lane's own guard declares",
+    "total_bytes": 255041990656,
+    "used_bytes": 249158033408,
+    "used_percent": 97.69
+  }
+}

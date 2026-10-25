@@ -1,0 +1,118 @@
+{
+  "schema": "tap.audit-run/v1",
+  "run_id": "run-20261023T201915Z-G-2",
+  "task": "G-2",
+  "title": "Hot activation of the kill switch",
+  "contract": "docs/audit/G-2.md",
+  "branch": "audit/mt0004-negative-controls",
+  "baseline": "27db70efe1839ef1b421a0ce53b2744d70b882d5",
+  "verified_commit": "00671e6250a5589ff60c44d3ce9387eebf217948",
+  "verified_commit_note": "The export of this commit passed 10/10; the record commit that adds FINAL_REPORT.md and verification.json comes after it and is not itself re-verified.",
+  "record_commit": "the commit that introduced this file",
+  "record_commit_note": "A file cannot contain the hash of the commit that adds it; use `git log -1 --format=%H -- docs/audit/runs/run-20261023T201915Z-G-2/RUN_REPORT.json`.",
+  "mode": "offline-only",
+  "checkout_tested": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "verification_input": "git archive export of the verified commit, not the working tree",
+  "preflight": {
+    "gate": "G2-01",
+    "result": "READY",
+    "broker_dispatch_sites_in_autonomous_runtime": 1,
+    "broker_dispatch_line": 1455,
+    "execute_paper_callers": 1,
+    "process_authority": "DecisionEngine() -> process_kill_switch()",
+    "existing_operator_channel": "STOP file in run_dir (paper_loop.StopController)",
+    "main_contains_gate_commit": false
+  },
+  "tests": {
+    "focal_new_suite": 12,
+    "focal_cli_contract": 15,
+    "focal_total": 27,
+    "regression_with_autonomous_and_audit_guard": 362,
+    "regression_exit_code": 0,
+    "ruff_changed_files": "clean",
+    "ruff_format_changed_files": "clean (runtime.py drift predates this run)",
+    "mypy_changed_sources": "clean",
+    "ruff_repo_wide_preexisting_findings": 34,
+    "ruff_repo_wide_note": "all in research/edge0*, risk/manager.py, ops/windowless.py; none touched by this run"
+  },
+  "mutants": {
+    "harness": "scripts/audit/g2_mutants.py",
+    "baseline": "green",
+    "total": 7,
+    "killed": 7,
+    "survivors": [],
+    "note": "M1's first formulation was an equivalent mutant and survived; it was re-specified to remove the property rather than one redundant line.",
+    "resolved_rev": "1f33421c4165158ee0af689301512436961a1b18"
+  },
+  "runtime_trace": {
+    "script": "offline_trace.py",
+    "verdict": "OPERATIONAL_THEN_ENGAGED_NO_NEW_ORDER",
+    "steps": [
+      {
+        "phase": "operational",
+        "gate_engaged": false,
+        "mode": "TRADE_PAPER",
+        "order_created": true,
+        "broker_calls": 1,
+        "switch_state": "normal"
+      },
+      {
+        "phase": "engaged",
+        "gate_engaged": true,
+        "mode": "TRADE_PAPER",
+        "order_created": false,
+        "broker_calls": 1,
+        "switch_state": "halted"
+      },
+      {
+        "phase": "engaged (second cycle)",
+        "gate_engaged": true,
+        "mode": "TRADE_PAPER",
+        "order_created": false,
+        "broker_calls": 1,
+        "switch_state": "halted"
+      }
+    ],
+    "engine": "hostile: always returns TRADE_PAPER and order_authorised",
+    "note": "The decision engine still says TRADE_PAPER in rows 2 and 3; the order is refused at the dispatch boundary, not by rule 0."
+  },
+  "verification": {
+    "tool": "reports/multiagent-audit/tools/verify_g2.py",
+    "passed": 10,
+    "total": 10,
+    "exit_code": 0,
+    "verdict": "VERIFIED_SCOPED",
+    "independence": "PROCEDURALLY_SEPARATED / same author",
+    "checks": [
+      "V-1 ACC-G2-12 scope",
+      "V-2 ACC-G2-02 single guarded dispatch",
+      "V-3 ACC-G2-04 shared lock released in finally",
+      "V-4 ACC-G2-01/03/07 engage, repeat, no rearm",
+      "V-5 ACC-G2-03 duplicate reported as duplicate",
+      "V-6 ACC-G2-05 unreadable control path fails closed",
+      "V-7 ACC-G2-10 open gate control (anti-vacuity)",
+      "V-8 ACC-G2-01/07 CLI request vs disarm refusal",
+      "V-9 ACC-G2-11 offline trace reproduced",
+      "V-10 ACC-G2-10 focal suites in the export"
+    ]
+  },
+  "gaps": {
+    "G-1": "open: engaged state is memory only",
+    "G-2": "closed for scripts/autonomous_paper.py only",
+    "G-3": "open, unmeasured live path",
+    "G-4": "open: paper_cycle.py bypasses rule 0 and the gate",
+    "D-6": "open, inherited subprocess path defect untouched"
+  },
+  "false_success_known": 0,
+  "artifacts": {
+    "RUN_REPORT.md": "c88786f09ebd0c2193a6237bd6627a38daa3e591dca5fe2a9a0c51bf136c269f",
+    "FINAL_REPORT.md": "3dfb3cf477de1fb54f1ff2275bc8d63f5a5c9929c7f93fcc93e61983b7feaa2d",
+    "COMMITS.md": "6cb29092b8a654754d86d2d7ac88bcf7f84e78fc82b9c35f58475ed1a487c234",
+    "offline_trace.py": "43aa1ff949d78977210e5c6b02b307ba73407b7df3febb33402985308148f83f",
+    "offline_trace.json": "7b9fe2615324ead70c641919407a218501e42386b76600f35e99c8479d69b1d7",
+    "mutants.json": "95a3e6da82987629680e06ff5651a0a41b89ab55f52e88768344daed459ffabf",
+    "verification.json": "bd7cc5feed696884f57e40c8e63c8509dbfcde31d97c150fdfda305ac92bf437",
+    "verify_g2.py": "34e53b1f4646181aa75f032592f46b8b9d26de8deaaaaf829f477b159d63729a"
+  },
+  "artifacts_note": "This file does not hash itself. Every other artifact above is hashed after its final write."
+}

@@ -1,0 +1,44 @@
+{
+  "blocked": {},
+  "events": 500,
+  "events_sha256": "36c7f4f68bbb914014d78dd42b091b236c71a486c062c822855af29379b654d1",
+  "generated_at_utc": "2026-10-19T08:00:12Z",
+  "max_skew_ms": 5000,
+  "schema_version": "MINUTE_COLLECTOR_MANIFEST_V1",
+  "settle_ms": 2500,
+  "skew_ms": -195,
+  "source": "binance_spot_rest_1m",
+  "stale_after_ms": 150000,
+  "symbols": {
+    "BTCUSDT": {
+      "contiguous_tail_minutes": 276,
+      "dropped_prefix_minutes": 0,
+      "first_open_ms": 1792380240000,
+      "first_open_utc": "2026-10-19T03:24:00Z",
+      "gaps": [],
+      "health": {
+        "reason": "the last closed minute arrived inside its window",
+        "state": "OK"
+      },
+      "last_open_ms": 1792396740000,
+      "last_open_utc": "2026-10-19T07:59:00Z",
+      "minutes": 276,
+      "sha256": "54b28822c4e2ae3a626f22c8fb6bf8ff74cacd01acb59b1f8d0760f8df81a703"
+    },
+    "ETHUSDT": {
+      "contiguous_tail_minutes": 276,
+      "dropped_prefix_minutes": 0,
+      "first_open_ms": 1792380240000,
+      "first_open_utc": "2026-10-19T03:24:00Z",
+      "gaps": [],
+      "health": {
+        "reason": "the last closed minute arrived inside its window",
+        "state": "OK"
+      },
+      "last_open_ms": 1792396740000,
+      "last_open_utc": "2026-10-19T07:59:00Z",
+      "minutes": 276,
+      "sha256": "c91f4844ef9e08422eb6bf2b8e2c9b456fe1f4a0383d4e96b93427ea507c1506"
+    }
+  }
+}

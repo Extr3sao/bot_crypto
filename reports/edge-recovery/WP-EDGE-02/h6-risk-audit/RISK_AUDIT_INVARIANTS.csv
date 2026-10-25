@@ -1,0 +1,151 @@
+invariant,scope,arm,result,detail
+accounting_final_equity,DEV:BASE,frozen_market,PASS,"start 10,000.0000 + net -496.4298 = 9,503.5702 vs final 9,503.5702"
+cash_never_negative,DEV:BASE,frozen_market,PASS,"lowest equity mark 9,503.5702 (>= 0)"
+sizing_at_or_below_configured_risk,DEV:BASE,frozen_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,DEV:BASE,frozen_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,DEV:BASE,frozen_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,DEV:BASE,frozen_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,DEV:BASE,frozen_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,DEV:BASE,frozen_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,DEV:BASE,frozen_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,DEV:BASE,frozen_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,DEV:BASE,plan_market,PASS,"start 10,000.0000 + net -496.4298 = 9,503.5702 vs final 9,503.5702"
+cash_never_negative,DEV:BASE,plan_market,PASS,"lowest equity mark 9,503.5702 (>= 0)"
+sizing_at_or_below_configured_risk,DEV:BASE,plan_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,DEV:BASE,plan_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,DEV:BASE,plan_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,DEV:BASE,plan_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,DEV:BASE,plan_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,DEV:BASE,plan_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,DEV:BASE,plan_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,DEV:BASE,plan_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,DEV:BASE,plan_limit,PASS,"start 10,000.0000 + net -495.8756 = 9,504.1244 vs final 9,504.1244"
+cash_never_negative,DEV:BASE,plan_limit,PASS,"lowest equity mark 9,504.1244 (>= 0)"
+sizing_at_or_below_configured_risk,DEV:BASE,plan_limit,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,DEV:BASE,plan_limit,PASS,0 cap violation(s)
+notional_at_or_above_minimum,DEV:BASE,plan_limit,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,DEV:BASE,plan_limit,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,DEV:BASE,plan_limit,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,DEV:BASE,plan_limit,PASS,"686 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,DEV:BASE,plan_limit,PASS,"183 refused orders, 0 without a reason"
+no_duplicate_refusals,DEV:BASE,plan_limit,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,DEV:2X_FEES,frozen_market,PASS,"start 10,000.0000 + net -501.7200 = 9,498.2800 vs final 9,498.2800"
+cash_never_negative,DEV:2X_FEES,frozen_market,PASS,"lowest equity mark 9,498.2800 (>= 0)"
+sizing_at_or_below_configured_risk,DEV:2X_FEES,frozen_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,DEV:2X_FEES,frozen_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,DEV:2X_FEES,frozen_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,DEV:2X_FEES,frozen_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,DEV:2X_FEES,frozen_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,DEV:2X_FEES,frozen_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,DEV:2X_FEES,frozen_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,DEV:2X_FEES,frozen_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,DEV:2X_FEES,plan_market,PASS,"start 10,000.0000 + net -501.7200 = 9,498.2800 vs final 9,498.2800"
+cash_never_negative,DEV:2X_FEES,plan_market,PASS,"lowest equity mark 9,498.2800 (>= 0)"
+sizing_at_or_below_configured_risk,DEV:2X_FEES,plan_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,DEV:2X_FEES,plan_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,DEV:2X_FEES,plan_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,DEV:2X_FEES,plan_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,DEV:2X_FEES,plan_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,DEV:2X_FEES,plan_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,DEV:2X_FEES,plan_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,DEV:2X_FEES,plan_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,DEV:2X_FEES,plan_limit,PASS,"start 10,000.0000 + net -495.5453 = 9,504.4547 vs final 9,504.4547"
+cash_never_negative,DEV:2X_FEES,plan_limit,PASS,"lowest equity mark 9,504.4547 (>= 0)"
+sizing_at_or_below_configured_risk,DEV:2X_FEES,plan_limit,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,DEV:2X_FEES,plan_limit,PASS,0 cap violation(s)
+notional_at_or_above_minimum,DEV:2X_FEES,plan_limit,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,DEV:2X_FEES,plan_limit,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,DEV:2X_FEES,plan_limit,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,DEV:2X_FEES,plan_limit,PASS,"654 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,DEV:2X_FEES,plan_limit,PASS,"338 refused orders, 0 without a reason"
+no_duplicate_refusals,DEV:2X_FEES,plan_limit,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,VAL:BASE,frozen_market,PASS,"start 10,000.0000 + net -479.1833 = 9,520.8167 vs final 9,520.8167"
+cash_never_negative,VAL:BASE,frozen_market,PASS,"lowest equity mark 9,520.8167 (>= 0)"
+sizing_at_or_below_configured_risk,VAL:BASE,frozen_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,VAL:BASE,frozen_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,VAL:BASE,frozen_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,VAL:BASE,frozen_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,VAL:BASE,frozen_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,VAL:BASE,frozen_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,VAL:BASE,frozen_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,VAL:BASE,frozen_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,VAL:BASE,plan_market,PASS,"start 10,000.0000 + net -479.1833 = 9,520.8167 vs final 9,520.8167"
+cash_never_negative,VAL:BASE,plan_market,PASS,"lowest equity mark 9,520.8167 (>= 0)"
+sizing_at_or_below_configured_risk,VAL:BASE,plan_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,VAL:BASE,plan_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,VAL:BASE,plan_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,VAL:BASE,plan_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,VAL:BASE,plan_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,VAL:BASE,plan_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,VAL:BASE,plan_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,VAL:BASE,plan_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,VAL:BASE,plan_limit,PASS,"start 10,000.0000 + net -357.4449 = 9,642.5551 vs final 9,642.5551"
+cash_never_negative,VAL:BASE,plan_limit,PASS,"lowest equity mark 9,642.5551 (>= 0)"
+sizing_at_or_below_configured_risk,VAL:BASE,plan_limit,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,VAL:BASE,plan_limit,PASS,0 cap violation(s)
+notional_at_or_above_minimum,VAL:BASE,plan_limit,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,VAL:BASE,plan_limit,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,VAL:BASE,plan_limit,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,VAL:BASE,plan_limit,PASS,"350 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,VAL:BASE,plan_limit,PASS,"15 refused orders, 0 without a reason"
+no_duplicate_refusals,VAL:BASE,plan_limit,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,OOS:BASE,frozen_market,PASS,"start 10,000.0000 + net -94.8077 = 9,905.1923 vs final 9,905.1923"
+cash_never_negative,OOS:BASE,frozen_market,PASS,"lowest equity mark 9,905.1923 (>= 0)"
+sizing_at_or_below_configured_risk,OOS:BASE,frozen_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,OOS:BASE,frozen_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,OOS:BASE,frozen_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,OOS:BASE,frozen_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,OOS:BASE,frozen_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,OOS:BASE,frozen_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,OOS:BASE,frozen_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,OOS:BASE,frozen_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,OOS:BASE,plan_market,PASS,"start 10,000.0000 + net -94.8077 = 9,905.1923 vs final 9,905.1923"
+cash_never_negative,OOS:BASE,plan_market,PASS,"lowest equity mark 9,905.1923 (>= 0)"
+sizing_at_or_below_configured_risk,OOS:BASE,plan_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,OOS:BASE,plan_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,OOS:BASE,plan_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,OOS:BASE,plan_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,OOS:BASE,plan_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,OOS:BASE,plan_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,OOS:BASE,plan_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,OOS:BASE,plan_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,OOS:BASE,plan_limit,PASS,"start 10,000.0000 + net -55.7084 = 9,944.2916 vs final 9,944.2916"
+cash_never_negative,OOS:BASE,plan_limit,PASS,"lowest equity mark 9,944.2916 (>= 0)"
+sizing_at_or_below_configured_risk,OOS:BASE,plan_limit,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,OOS:BASE,plan_limit,PASS,0 cap violation(s)
+notional_at_or_above_minimum,OOS:BASE,plan_limit,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,OOS:BASE,plan_limit,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,OOS:BASE,plan_limit,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,OOS:BASE,plan_limit,PASS,"66 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,OOS:BASE,plan_limit,PASS,"4 refused orders, 0 without a reason"
+no_duplicate_refusals,OOS:BASE,plan_limit,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,OOS:2X_FEES,frozen_market,PASS,"start 10,000.0000 + net -133.2011 = 9,866.7989 vs final 9,866.7989"
+cash_never_negative,OOS:2X_FEES,frozen_market,PASS,"lowest equity mark 9,866.7989 (>= 0)"
+sizing_at_or_below_configured_risk,OOS:2X_FEES,frozen_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,OOS:2X_FEES,frozen_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,OOS:2X_FEES,frozen_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,OOS:2X_FEES,frozen_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,OOS:2X_FEES,frozen_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,OOS:2X_FEES,frozen_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,OOS:2X_FEES,frozen_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,OOS:2X_FEES,frozen_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,OOS:2X_FEES,plan_market,PASS,"start 10,000.0000 + net -133.2011 = 9,866.7989 vs final 9,866.7989"
+cash_never_negative,OOS:2X_FEES,plan_market,PASS,"lowest equity mark 9,866.7989 (>= 0)"
+sizing_at_or_below_configured_risk,OOS:2X_FEES,plan_market,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,OOS:2X_FEES,plan_market,PASS,0 cap violation(s)
+notional_at_or_above_minimum,OOS:2X_FEES,plan_market,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,OOS:2X_FEES,plan_market,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,OOS:2X_FEES,plan_market,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,OOS:2X_FEES,plan_market,PASS,"0 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,OOS:2X_FEES,plan_market,PASS,"0 refused orders, 0 without a reason"
+no_duplicate_refusals,OOS:2X_FEES,plan_market,PASS,"0 duplicated (asset, instant, reason) refusal(s)"
+accounting_final_equity,OOS:2X_FEES,plan_limit,PASS,"start 10,000.0000 + net -87.9506 = 9,912.0494 vs final 9,912.0494"
+cash_never_negative,OOS:2X_FEES,plan_limit,PASS,"lowest equity mark 9,912.0494 (>= 0)"
+sizing_at_or_below_configured_risk,OOS:2X_FEES,plan_limit,PASS,0 violation(s) of the configured risk per trade
+notional_within_caps,OOS:2X_FEES,plan_limit,PASS,0 cap violation(s)
+notional_at_or_above_minimum,OOS:2X_FEES,plan_limit,PASS,0 entry(ies) below the minimum notional
+open_positions_within_limit,OOS:2X_FEES,plan_limit,PASS,0 observation(s) above the open-position limit
+trades_per_day_within_limit,OOS:2X_FEES,plan_limit,PASS,0 day(s) above the daily trade limit
+one_outcome_per_order,OOS:2X_FEES,plan_limit,PASS,"54 orders, 0 with an unknown outcome and 0 left resting"
+refusals_are_attributed,OOS:2X_FEES,plan_limit,PASS,"2 refused orders, 0 without a reason"
+no_duplicate_refusals,OOS:2X_FEES,plan_limit,PASS,"0 duplicated (asset, instant, reason) refusal(s)"

@@ -1,0 +1,463 @@
+{
+  "blockers": [],
+  "cells": [
+    {
+      "bars_per_symbol": 13248,
+      "cell_id": "ema_crossover@5m",
+      "expected_evaluations": 39507,
+      "family": "ema_crossover",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "ema_crossover@1h",
+      "expected_evaluations": 3075,
+      "family": "ema_crossover",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "ema_crossover@4h",
+      "expected_evaluations": 591,
+      "family": "ema_crossover",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 13248,
+      "cell_id": "momentum@5m",
+      "expected_evaluations": 39507,
+      "family": "momentum",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "momentum@1h",
+      "expected_evaluations": 3075,
+      "family": "momentum",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "momentum@4h",
+      "expected_evaluations": 591,
+      "family": "momentum",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 13248,
+      "cell_id": "breakout@5m",
+      "expected_evaluations": 39507,
+      "family": "breakout",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "breakout@1h",
+      "expected_evaluations": 3075,
+      "family": "breakout",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "breakout@4h",
+      "expected_evaluations": 591,
+      "family": "breakout",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 13248,
+      "cell_id": "mean_reversion@5m",
+      "expected_evaluations": 39507,
+      "family": "mean_reversion",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "mean_reversion@1h",
+      "expected_evaluations": 3075,
+      "family": "mean_reversion",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "mean_reversion@4h",
+      "expected_evaluations": 591,
+      "family": "mean_reversion",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 13248,
+      "cell_id": "trend@5m",
+      "expected_evaluations": 39507,
+      "family": "trend",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "trend@1h",
+      "expected_evaluations": 3075,
+      "family": "trend",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "trend@4h",
+      "expected_evaluations": 591,
+      "family": "trend",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 13248,
+      "cell_id": "volatility@5m",
+      "expected_evaluations": 39507,
+      "family": "volatility",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "volatility@1h",
+      "expected_evaluations": 3075,
+      "family": "volatility",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "volatility@4h",
+      "expected_evaluations": 591,
+      "family": "volatility",
+      "lane": "A",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "vol_regime_breakout@1h",
+      "expected_evaluations": 1083,
+      "family": "vol_regime_breakout",
+      "lane": "B",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 743
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "vol_regime_breakout@4h",
+      "expected_evaluations": 0,
+      "family": "vol_regime_breakout",
+      "lane": "B",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 743
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "trend_pullback@1h",
+      "expected_evaluations": 2643,
+      "family": "trend_pullback",
+      "lane": "B",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 223
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "trend_pullback@4h",
+      "expected_evaluations": 159,
+      "family": "trend_pullback",
+      "lane": "B",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 223
+    },
+    {
+      "bars_per_symbol": 1104,
+      "cell_id": "mean_reversion_vol_liq@1h",
+      "expected_evaluations": 1083,
+      "family": "mean_reversion_vol_liq",
+      "lane": "B",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "1h",
+      "warmup_bars": 743
+    },
+    {
+      "bars_per_symbol": 276,
+      "cell_id": "mean_reversion_vol_liq@4h",
+      "expected_evaluations": 0,
+      "family": "mean_reversion_vol_liq",
+      "lane": "B",
+      "observed_evaluations": null,
+      "observed_signals": null,
+      "parameter_hash": "",
+      "state": "NOT_RUN",
+      "symbols": 3,
+      "timeframe": "4h",
+      "warmup_bars": 743
+    }
+  ],
+  "config": {
+    "files": {
+      "config/risk.yaml": {
+        "sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e"
+      },
+      "config/runtime.yaml": {
+        "sha256": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159"
+      },
+      "config/vision.yaml": {
+        "sha256": "ba817ef6f2c8768ee8bd094ffbdb0f705281f7056466c95cd0b2016e6e3fd766"
+      }
+    },
+    "matches_design_invariants": true
+  },
+  "dataset": {
+    "manifest_matches": true,
+    "manifest_sha256_expected": "06339ca29a2334fb95d4c3773c7ef8b6f27b524c274dbd37c1e708704cf654ba",
+    "manifest_sha256_observed": "06339ca29a2334fb95d4c3773c7ef8b6f27b524c274dbd37c1e708704cf654ba",
+    "state": "OK",
+    "symbols": {
+      "BTCUSDT": {
+        "bytes_expected": 1474761,
+        "bytes_observed": 1474761,
+        "file": "BTCUSDT.1m.jsonl.gz",
+        "matches": true,
+        "sha256_expected": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814",
+        "sha256_observed": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814"
+      },
+      "ETHUSDT": {
+        "bytes_expected": 1375601,
+        "bytes_observed": 1375601,
+        "file": "ETHUSDT.1m.jsonl.gz",
+        "matches": true,
+        "sha256_expected": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6",
+        "sha256_observed": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6"
+      },
+      "SOLUSDT": {
+        "bytes_expected": 1077312,
+        "bytes_observed": 1077312,
+        "file": "SOLUSDT.1m.jsonl.gz",
+        "matches": true,
+        "sha256_expected": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32",
+        "sha256_observed": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+      }
+    }
+  },
+  "generated_at_utc": "2026-10-21T07:25:56Z",
+  "git": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_paths": 268,
+    "head": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+    "reported_003n_commits": {
+      "design": "98009257a7c36589291f9e0d9797b438837f24b2",
+      "sealed_checkout": "6b0dac1"
+    }
+  },
+  "governance": {
+    "economic_edge": "NOT_EVALUATED",
+    "live_trading": "DISABLED",
+    "orders_authorised": 0,
+    "paper_promotion": "NOT_AUTHORIZED"
+  },
+  "run_id": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
+  "schema_version": "AI_BOTS_003O_BASELINE_V1",
+  "source_003n": {
+    "design_sha256": "a0776fa3fbe6d2e122b52d0a381c3e15759a50f64fbd64c73e060ced25773714",
+    "holdout_status": "CLOSED",
+    "path": "reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001",
+    "read_only": true,
+    "screening_sha256": "225dbad0cc4135b7101e87a938db0cffa3c8ce5a4bde1cf1a7508b5027013e57",
+    "seal": {
+      "checked": 29,
+      "failed": [],
+      "state": "OK"
+    },
+    "signals_sha256": "4a8f4626c388b781f4c2b66f9fcec171b7e38bf0a4d70d5b0d9bf1935c3de1d2"
+  },
+  "state": "OK",
+  "windows": {
+    "bars": {
+      "1h": {
+        "bars": 1104,
+        "interval_ms": 3600000,
+        "lane_a_evaluations": 1025,
+        "minutes_per_bar": 60,
+        "research_minutes": 66240
+      },
+      "4h": {
+        "bars": 276,
+        "interval_ms": 14400000,
+        "lane_a_evaluations": 197,
+        "minutes_per_bar": 240,
+        "research_minutes": 66240
+      },
+      "5m": {
+        "bars": 13248,
+        "interval_ms": 300000,
+        "lane_a_evaluations": 13169,
+        "minutes_per_bar": 5,
+        "research_minutes": 66240
+      }
+    },
+    "holdout": {
+      "end_utc": "2026-08-20T00:00:00Z",
+      "opened": false,
+      "start_utc": "2026-08-06T00:00:00Z"
+    },
+    "partitions": {
+      "IS": [
+        "2026-06-21T00:00:00Z",
+        "2026-07-11T00:00:00Z"
+      ],
+      "TEST": [
+        "2026-07-26T00:00:00Z",
+        "2026-08-06T00:00:00Z"
+      ],
+      "VAL": [
+        "2026-07-11T00:00:00Z",
+        "2026-07-26T00:00:00Z"
+      ]
+    }
+  }
+}

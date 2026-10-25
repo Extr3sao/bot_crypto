@@ -1,0 +1,88 @@
+{
+  "authority_chain": [
+    "Market Data",
+    "Signal",
+    "TradeProposal",
+    "StrategyRouter/Decision",
+    "Deterministic Risk",
+    "Paper Broker/Execution",
+    "Reconciliation",
+    "Evidence"
+  ],
+  "modules": [
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "trading_bot.market_data",
+      "path": "src\\trading_bot\\market_data",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "module": "trading_bot.execution",
+      "path": "src\\trading_bot\\execution",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "trading_bot.paper",
+      "path": "src\\trading_bot\\paper",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "module": "trading_bot.risk",
+      "path": "src\\trading_bot\\risk",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RESEARCH_ONLY",
+      "module": "trading_bot.backtesting",
+      "path": "src\\trading_bot\\backtesting",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "trading_bot.strategies",
+      "path": "src\\trading_bot\\strategies",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RESEARCH_ONLY",
+      "module": "trading_bot.research",
+      "path": "src\\trading_bot\\research",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "trading_bot.observability",
+      "path": "src\\trading_bot\\observability",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "trading_bot.portfolio",
+      "path": "src\\trading_bot\\portfolio",
+      "present": true
+    },
+    {
+      "basis": "presence in the tree plus the entrypoint that imports it",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "trading_bot.storage",
+      "path": "src\\trading_bot\\storage",
+      "present": true
+    }
+  ],
+  "note": "classification is by presence and reachability from an entrypoint, not by intent; a module that exists but no entrypoint imports is not authoritative",
+  "schema_version": "EDGE14_RUNTIME_AUTHORITY_MAP_V1",
+  "third_parties_are_not_runtime": "an external engine is a hypothesis source or a benchmark; it cannot send an order and cannot replace Risk or Execution",
+  "work_package": "WP-EDGE-14A"
+}

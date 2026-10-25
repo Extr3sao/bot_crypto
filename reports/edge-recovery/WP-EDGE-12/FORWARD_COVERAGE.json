@@ -1,0 +1,591 @@
+{
+  "coverage_required": 0.9,
+  "days_total": 230,
+  "days_with_any_data": 230,
+  "densely_covered_but_backfilled": 228,
+  "densely_covered_but_backfilled_days": [
+    "2026-03-01",
+    "2026-03-02",
+    "2026-03-03",
+    "2026-03-04",
+    "2026-03-05",
+    "2026-03-06",
+    "2026-03-07",
+    "2026-03-08",
+    "2026-03-09",
+    "2026-03-10",
+    "2026-03-11",
+    "2026-03-12",
+    "2026-03-13",
+    "2026-03-14",
+    "2026-03-15",
+    "2026-03-16",
+    "2026-03-17",
+    "2026-03-18",
+    "2026-03-19",
+    "2026-03-20",
+    "2026-03-21",
+    "2026-03-22",
+    "2026-03-23",
+    "2026-03-24",
+    "2026-03-25",
+    "2026-03-26",
+    "2026-03-27",
+    "2026-03-28",
+    "2026-03-29",
+    "2026-03-30",
+    "2026-03-31",
+    "2026-04-01",
+    "2026-04-02",
+    "2026-04-03",
+    "2026-04-04",
+    "2026-04-05",
+    "2026-04-06",
+    "2026-04-07",
+    "2026-04-08",
+    "2026-04-09",
+    "2026-04-10",
+    "2026-04-11",
+    "2026-04-12",
+    "2026-04-13",
+    "2026-04-14",
+    "2026-04-15",
+    "2026-04-16",
+    "2026-04-17",
+    "2026-04-18",
+    "2026-04-19",
+    "2026-04-20",
+    "2026-04-21",
+    "2026-04-22",
+    "2026-04-23",
+    "2026-04-24",
+    "2026-04-25",
+    "2026-04-26",
+    "2026-04-27",
+    "2026-04-28",
+    "2026-04-29",
+    "2026-04-30",
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-09",
+    "2026-05-10",
+    "2026-05-11",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-19",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-22",
+    "2026-05-23",
+    "2026-05-24",
+    "2026-05-25",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31",
+    "2026-06-01",
+    "2026-06-02",
+    "2026-06-03",
+    "2026-06-04",
+    "2026-06-05",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14",
+    "2026-06-15",
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18",
+    "2026-06-19",
+    "2026-06-20",
+    "2026-06-21",
+    "2026-06-22",
+    "2026-06-23",
+    "2026-06-24",
+    "2026-06-25",
+    "2026-06-26",
+    "2026-06-27",
+    "2026-06-28",
+    "2026-06-29",
+    "2026-06-30",
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-03",
+    "2026-07-04",
+    "2026-07-05",
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-08",
+    "2026-07-09",
+    "2026-07-10",
+    "2026-07-11",
+    "2026-07-12",
+    "2026-07-13",
+    "2026-07-14",
+    "2026-07-15",
+    "2026-07-16",
+    "2026-07-17",
+    "2026-07-18",
+    "2026-07-19",
+    "2026-07-20",
+    "2026-07-21",
+    "2026-07-22",
+    "2026-07-23",
+    "2026-07-24",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29",
+    "2026-07-30",
+    "2026-07-31",
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-05",
+    "2026-08-06",
+    "2026-08-07",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-10",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-13",
+    "2026-08-14",
+    "2026-08-15",
+    "2026-08-16",
+    "2026-08-17",
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-22",
+    "2026-08-23",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-29",
+    "2026-08-30",
+    "2026-08-31",
+    "2026-09-01",
+    "2026-09-02",
+    "2026-09-03",
+    "2026-09-04",
+    "2026-09-05",
+    "2026-09-06",
+    "2026-09-07",
+    "2026-09-08",
+    "2026-09-09",
+    "2026-09-10",
+    "2026-09-11",
+    "2026-09-12",
+    "2026-09-13",
+    "2026-09-14",
+    "2026-09-15",
+    "2026-09-16",
+    "2026-09-17",
+    "2026-09-18",
+    "2026-09-19",
+    "2026-09-20",
+    "2026-09-21",
+    "2026-09-22",
+    "2026-09-23",
+    "2026-09-24",
+    "2026-09-25",
+    "2026-09-26",
+    "2026-09-27",
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30",
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-03",
+    "2026-10-04",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08",
+    "2026-10-09",
+    "2026-10-10",
+    "2026-10-11",
+    "2026-10-12",
+    "2026-10-13",
+    "2026-10-14"
+  ],
+  "hypothetical": true,
+  "not_counted": "days before the observation epoch, and days whose bars arrived long after they closed, are not forward observation days: a backfill is history, not an observation",
+  "order_sent": false,
+  "primary_assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "primary_series": [
+    "1h:BTC",
+    "1h:ETH",
+    "1h:SOL"
+  ],
+  "promotion": "NONE",
+  "prospectively_observed": 1,
+  "prospectively_observed_days": [
+    "2026-10-15"
+  ],
+  "reached": false,
+  "reading_rule": "a bar counts as prospectively observed only when it was stored within its timeframe's lag bound of closing; a dense day whose bars arrived later is backfilled and is not an observation of the future",
+  "recent_days": [
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-01",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-02",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-03",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-04",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-05",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-06",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-07",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-08",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-09",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-10",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.0,
+        "1h:ETH": 0.0,
+        "1h:SOL": 0.0
+      },
+      "day": "2026-10-11",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 0,
+        "1h:ETH": 0,
+        "1h:SOL": 0
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.083333,
+        "1h:ETH": 0.083333,
+        "1h:SOL": 0.083333
+      },
+      "day": "2026-10-12",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 2,
+        "1h:ETH": 2,
+        "1h:SOL": 2
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.583333,
+        "1h:ETH": 0.583333,
+        "1h:SOL": 0.583333
+      },
+      "day": "2026-10-13",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 14,
+        "1h:ETH": 14,
+        "1h:SOL": 14
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.791667,
+        "1h:ETH": 0.791667,
+        "1h:SOL": 0.791667
+      },
+      "day": "2026-10-14",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 19,
+        "1h:ETH": 19,
+        "1h:SOL": 19
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "PROSPECTIVELY_OBSERVED",
+      "coverage": {
+        "1h:BTC": 0.916667,
+        "1h:ETH": 0.916667,
+        "1h:SOL": 0.916667
+      },
+      "day": "2026-10-15",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": true,
+      "prospectively_observed_bars": {
+        "1h:BTC": 22,
+        "1h:ETH": 22,
+        "1h:SOL": 22
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    }
+  ],
+  "remaining_days": 59,
+  "required_days": 60,
+  "rule": "a day counts only if every primary asset holds at least 90% of the 24 hourly bars the calendar expects for it, and every one of those bars was stored within its timeframe's lag bound of closing ({'1h': 7200000, '15m': 1800000})"
+}

@@ -1,0 +1,396 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02e/EXP-004A/2026-10-21",
+  "rfc": "RFC-EXP004A-051-02E",
+  "verifier": "verifier-d/EXP-004A/WP-051-02E",
+  "builder": "builder/EXP-004A/WP-051-02E",
+  "independent_of_builder": true,
+  "generated_at_utc": "2026-10-22T13:50:24Z",
+  "duration_s": 42.1,
+  "head": "f20dff9b71fd10a5f110ab6cae88e817c6f5d428",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "capture_status_verified": "PENDING_WINDOW",
+  "status": "FAIL",
+  "controls": {
+    "TECHNICAL_VERIFICATION": {
+      "checks": 6,
+      "failed": [],
+      "verdict": "PASS"
+    },
+    "PROVENANCE_VERIFICATION": {
+      "checks": 9,
+      "failed": [],
+      "verdict": "PASS"
+    },
+    "TEMPORAL_VERIFICATION": {
+      "checks": 5,
+      "failed": [
+        "V-TEMP-01",
+        "V-TEMP-02"
+      ],
+      "verdict": "FAIL"
+    },
+    "ARTIFACT_INTEGRITY": {
+      "checks": 5,
+      "failed": [],
+      "verdict": "PASS"
+    },
+    "POLICY_COMPLIANCE": {
+      "checks": 6,
+      "failed": [],
+      "verdict": "PASS"
+    }
+  },
+  "checks": [
+    {
+      "check_id": "V-TECH-01",
+      "control": "TECHNICAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "every required field is present",
+      "evidence": {
+        "missing": []
+      }
+    },
+    {
+      "check_id": "V-TECH-02",
+      "control": "TECHNICAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "commit, digest, window and governance status are the anchored ones",
+      "evidence": {
+        "drift": {}
+      }
+    },
+    {
+      "check_id": "V-TECH-03",
+      "control": "TECHNICAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "generator at fc036d967923 is sha256 af1ab7cc23980dad..., would-run blob 052832c2252a...",
+      "evidence": {
+        "committed_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+        "committed_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+        "would_run_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+        "dirty": false
+      }
+    },
+    {
+      "check_id": "V-TECH-04",
+      "control": "TECHNICAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "phase 1 sha256 8946f871a97b7575..., blob 43c9deea29a8..., dirty=False",
+      "evidence": {
+        "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+        "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+        "dirty": false
+      }
+    },
+    {
+      "check_id": "V-TECH-05",
+      "control": "TECHNICAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "19 sealed 02D artefacts, 0 drifted",
+      "evidence": {
+        "sealed": 19,
+        "drifted": []
+      }
+    },
+    {
+      "check_id": "V-TECH-06",
+      "control": "TECHNICAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "declaration committed at 2026-10-21T15:21:23.000Z, window opens 2026-10-22T00:00:00Z, dirty=False",
+      "evidence": {
+        "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+        "commit_utc": "2026-10-21T15:21:23.000Z"
+      }
+    },
+    {
+      "check_id": "V-PROV-01",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "eligible rehearsal exit 0, 1 file(s), verbatim=True (written under a temporary directory, never data/exp004a)",
+      "evidence": {
+        "exit_code": 0,
+        "verbatim": true
+      }
+    },
+    {
+      "check_id": "V-PROV-02",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "re-running into an existing dataset returns 2; a dataset is written once",
+      "evidence": {
+        "exit_code": 2
+      }
+    },
+    {
+      "check_id": "V-PROV-03",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "bar fetched before the declaration took effect: exit 5, 0 file(s)",
+      "evidence": {
+        "exit_code": 5,
+        "written": []
+      }
+    },
+    {
+      "check_id": "V-PROV-04",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "no bar opens inside the window: exit 3, 0 file(s)",
+      "evidence": {
+        "exit_code": 3,
+        "written": []
+      }
+    },
+    {
+      "check_id": "V-PROV-05",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "empty source: exit 4, 0 file(s)",
+      "evidence": {
+        "exit_code": 4,
+        "written": []
+      }
+    },
+    {
+      "check_id": "V-PROV-06",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "st6:tape exit 2; the freeze defines no round-to-window rule",
+      "evidence": {
+        "exit_code": 2
+      }
+    },
+    {
+      "check_id": "V-PROV-07",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "a period past the declared window returns 2",
+      "evidence": {
+        "exit_code": 2
+      }
+    },
+    {
+      "check_id": "V-PROV-08",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "a declaration citing another generator blob is refused with GENERATOR_BLOB_MISMATCH (exit 2)",
+      "evidence": {
+        "exit_code": 2,
+        "stderr": "{\"defects\": [{\"code\": \"GENERATOR_BLOB_MISMATCH\", \"detail\": \"scripts/exp004a_capture.py at fc036d967923f09a6092cb0e5de7409afd07ebd7 hashes to af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8\"}, {\"code\": \"DECLARATION_NOT_COMMITTED\", \"detail\": \"C:/Users/GVLLFR~1/AppData/Local/Temp/wp051-02e-verify-sfxnz_se/doctored/EXP-004A.datasets.phase2.json is not in Git; an authored timestamp alo"
+      }
+    },
+    {
+      "check_id": "V-PROV-09",
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "detail": "the probes wrote nothing into data/exp004a: 2 file(s) before, 2 after, digests identical",
+      "evidence": {
+        "before": {
+          "admission_1h+15m.jsonl": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+          "admission_1h.jsonl": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+        },
+        "after": {
+          "admission_1h+15m.jsonl": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+          "admission_1h.jsonl": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+        }
+      }
+    },
+    {
+      "check_id": "V-TEMP-01",
+      "control": "TEMPORAL_VERIFICATION",
+      "status": "FAIL",
+      "detail": "builder claims BEFORE_WINDOW, this verifier's clock says OPEN at 2026-10-22T13:50:17.037Z",
+      "evidence": {
+        "claimed": "BEFORE_WINDOW",
+        "observed": "OPEN",
+        "instant_utc": "2026-10-22T13:50:17.037Z"
+      }
+    },
+    {
+      "check_id": "V-TEMP-02",
+      "control": "TEMPORAL_VERIFICATION",
+      "status": "FAIL",
+      "detail": "capture status 'PENDING_WINDOW' with 0 published dataset(s) against a OPEN window",
+      "evidence": {
+        "claimed_status": "PENDING_WINDOW",
+        "published": []
+      }
+    },
+    {
+      "check_id": "V-TEMP-03",
+      "control": "TEMPORAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "external_timestamp='UNAVAILABLE', time_proof='TIME_PROOF_WEAK'",
+      "evidence": {
+        "external_timestamp": "UNAVAILABLE",
+        "time_proof": "TIME_PROOF_WEAK"
+      }
+    },
+    {
+      "check_id": "V-TEMP-04",
+      "control": "TEMPORAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "issued <= effective <= window start, and no capture predates the window",
+      "evidence": {
+        "effective_from_utc": "2026-10-21T16:00:00.000Z",
+        "capture_started_at_utc": "2026-10-21T19:25:58Z"
+      }
+    },
+    {
+      "check_id": "V-TEMP-05",
+      "control": "TEMPORAL_VERIFICATION",
+      "status": "PASS",
+      "detail": "the run report says C_013='TIME_PROOF_WEAK'; without an external attestation it must stay weak",
+      "evidence": {
+        "c_013": "TIME_PROOF_WEAK"
+      }
+    },
+    {
+      "check_id": "V-ART-01",
+      "control": "ARTIFACT_INTEGRITY",
+      "status": "PASS",
+      "detail": "7 of 7 required artefacts present",
+      "evidence": {
+        "absent": []
+      }
+    },
+    {
+      "check_id": "V-ART-02",
+      "control": "ARTIFACT_INTEGRITY",
+      "status": "PASS",
+      "detail": "6 digest(s) declared, 0 do not match the file on disk",
+      "evidence": {
+        "declared": 6,
+        "mismatched": []
+      }
+    },
+    {
+      "check_id": "V-ART-03",
+      "control": "ARTIFACT_INTEGRITY",
+      "status": "PASS",
+      "detail": "capture report names 0 dataset(s); data/exp004a holds 0 dataset(s) and 0 manifest(s)",
+      "evidence": {
+        "published": [],
+        "datasets": [],
+        "manifests": []
+      }
+    },
+    {
+      "check_id": "V-ART-04",
+      "control": "ARTIFACT_INTEGRITY",
+      "status": "PASS",
+      "detail": "2 admission ledger digest(s) declared, 0 drifted",
+      "evidence": {
+        "drift": {},
+        "declared": 2
+      }
+    },
+    {
+      "check_id": "V-ART-05",
+      "control": "ARTIFACT_INTEGRITY",
+      "status": "PASS",
+      "detail": "0 sealed path(s) modified in the worktree",
+      "evidence": {
+        "dirty": []
+      }
+    },
+    {
+      "check_id": "V-POL-01",
+      "control": "POLICY_COMPLIANCE",
+      "status": "PASS",
+      "detail": "the verifier imports no trading_bot module and no builder script",
+      "evidence": {
+        "imports": [
+          "__future__",
+          "argparse",
+          "ast",
+          "dataclasses",
+          "datetime",
+          "hashlib",
+          "json",
+          "pathlib",
+          "subprocess",
+          "sys",
+          "tempfile",
+          "time",
+          "typing"
+        ]
+      }
+    },
+    {
+      "check_id": "V-POL-02",
+      "control": "POLICY_COMPLIANCE",
+      "status": "PASS",
+      "detail": "builder role 'builder' in the preflight; verifier id verifier-d/EXP-004A/WP-051-02E",
+      "evidence": {
+        "builder_id": "builder/EXP-004A/WP-051-02E",
+        "verifier_id": "verifier-d/EXP-004A/WP-051-02E",
+        "builder_role": "builder"
+      }
+    },
+    {
+      "check_id": "V-POL-03",
+      "control": "POLICY_COMPLIANCE",
+      "status": "PASS",
+      "detail": "6 gate states checked, 0 wrong: []",
+      "evidence": {
+        "wrong": {}
+      }
+    },
+    {
+      "check_id": "V-POL-04",
+      "control": "POLICY_COMPLIANCE",
+      "status": "PASS",
+      "detail": "WP_051_02E='PENDING_WINDOW' with 0 published dataset(s); without a prospective capture only ['PENDING_WINDOW'] is available",
+      "evidence": {
+        "wp": "PENDING_WINDOW",
+        "published": []
+      }
+    },
+    {
+      "check_id": "V-POL-05",
+      "control": "POLICY_COMPLIANCE",
+      "status": "PASS",
+      "detail": "L-01 probe: a bar stamped as fetched in the future returns 0; the run report declares 0",
+      "evidence": {
+        "observed": {
+          "future_ingest_exit_code": 0,
+          "future_ingest_published": [
+            "EXP-004A-1H-BTC.jsonl"
+          ]
+        },
+        "declared": 0
+      }
+    },
+    {
+      "check_id": "V-POL-06",
+      "control": "POLICY_COMPLIANCE",
+      "status": "PASS",
+      "detail": "economic executions recorded by builder and verifier: [0, 0, 0]",
+      "evidence": {
+        "executions": [
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "anchors": {
+    "phase1_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+    "phase1_git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+    "generator_commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "generator_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+    "generator_git_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+    "capture_window": [
+      "2026-10-22T00:00:00Z",
+      "2027-01-20T00:00:00Z"
+    ],
+    "effective_from_utc": "2026-10-21T16:00:00Z"
+  },
+  "temporal_proof": "TIME_PROOF_WEAK",
+  "external_timestamp": "UNAVAILABLE",
+  "not_a_certification": "a PASS here means the builder's claim matched the evidence at this instant. No prospective capture exists unless the capture report names one, and the certification, paper validation and promotion gates are untouched by this verdict.",
+  "economic_executions": 0
+}

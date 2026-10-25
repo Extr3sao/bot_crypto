@@ -1,0 +1,126 @@
+{
+  "files": {
+    "alerts.jsonl": {
+      "bytes": 6575,
+      "sha256": "e2ecc0c636fcdd4317cbaa0336713a39ea5bd8f9ac75a91c8bcfbccbeddfdb37"
+    },
+    "coverage.json": {
+      "bytes": 122155,
+      "sha256": "35d18240bd2ed9b9378c4ec1bfa77a3016c8902b4d87084238014eb30f24ea1f"
+    },
+    "daily/2026-10-13.json": {
+      "bytes": 143050,
+      "sha256": "9bfd37e08e96e13f9665c5cf37b8889d1cc6148690cac537b02060853394d5cc"
+    },
+    "daily/2026-10-14.json": {
+      "bytes": 148252,
+      "sha256": "ebe0da1bdaf57ff254917a304d84c01d5429747e4364143313fb7f14427a5ad2"
+    },
+    "daily/2026-10-15.json": {
+      "bytes": 145294,
+      "sha256": "361defa0e82ec2c1baa81007f6b56044a93fa248fb121c141d6781cf931af055"
+    },
+    "derived_refresh.jsonl": {
+      "bytes": 86360,
+      "sha256": "68ef02575bca7c3b7bddc02b2d43f5666bc4ac6927dbdd75a08c83d2fac463d2"
+    },
+    "health.json": {
+      "bytes": 6154,
+      "sha256": "848b29e8c639e75261883772c0c9e3a9c54ec5d2fa71489fe6bd6a24be2b88f0"
+    },
+    "install.json": {
+      "bytes": 3468,
+      "sha256": "475153d6241cdcd1d5f8276215ffdfe25d3c7637d2ff2178a9b16cfc16c9c830"
+    },
+    "ledger/INGEST_LEDGER.jsonl": {
+      "bytes": 1411380,
+      "sha256": "9287a3261b02b75d3342ad5d046829c2c031e9697bf2c57d2609f08ce5d106f9"
+    },
+    "publication/CUMULATIVE.json": {
+      "bytes": 49446,
+      "sha256": "c0f4e5b0d268640d308012763b75e56be1f8190a39fcc3af304c745b9284d69c"
+    },
+    "publication/CUMULATIVE.md": {
+      "bytes": 5524,
+      "sha256": "72c4239f693f0a5bb0773e6cd2f04b20f79e3161df8fd7144c7ef9a43c65eff5"
+    },
+    "publication/DAILY_2026-10-13.md": {
+      "bytes": 3548,
+      "sha256": "3634bf970619eeb6f9e114e7f065b19ed8c2c5590fcb205c9c23a0996f926022"
+    },
+    "publication/DAILY_2026-10-14.md": {
+      "bytes": 3699,
+      "sha256": "5f466e9c9152d8b131bb366655fd870baeec30d07889794e12f7468d99511647"
+    },
+    "publication/DAILY_2026-10-15.md": {
+      "bytes": 3612,
+      "sha256": "32ba55d330d216895c5166f6750d3ed76f3cae9f0d45ecaa9fe576ec3caec21f"
+    },
+    "publication/DAILY_REPORTS.json": {
+      "bytes": 150298,
+      "sha256": "9de5eac76257b5edcc1f8ffdb3b49a09234cc8bae7249930944703c9bab50633"
+    },
+    "publication/LATEST.json": {
+      "bytes": 3887,
+      "sha256": "99c5d19b3ce6c607ac7b234c588ef3bee6432dbe448b99beb39a6a943da3c886"
+    },
+    "publication/OBSERVATION.json": {
+      "bytes": 1289161,
+      "sha256": "3d511393717e2480b913c64a50a1c4b3dac0b822b3f72734ccf941dd3bfb94be"
+    },
+    "publication/SHADOW_DECISIONS.jsonl": {
+      "bytes": 59304,
+      "sha256": "86494c33acf997613bcd1becd5e128f70c937887ed0dbe42581728bcc0c5501a"
+    },
+    "publication/SHADOW_EQUITY.csv": {
+      "bytes": 65480,
+      "sha256": "5e78bb19e8b3a32625fbeb3c041772450d1ce65e9b6ab135c3979244603f6de1"
+    },
+    "publication/SHADOW_REFUSALS.csv": {
+      "bytes": 67755,
+      "sha256": "7dc29c8d21fbc337badda1dec9620b335a752a638180f384b5406ba8d4b1b80d"
+    },
+    "publication/SHADOW_SIGNALS.csv": {
+      "bytes": 40525,
+      "sha256": "c04daaaa69135eeb26cdf7fd607612313b19b7d98e9451f0ca068a72ae5f6df7"
+    },
+    "publication/SHADOW_TRADES.csv": {
+      "bytes": 20884,
+      "sha256": "6e448ac63081592c9cac8c9a1ccfb9b75a61120cfe3eff6744150c99b809f71c"
+    },
+    "publication/risk-parity/PARITY.json": {
+      "bytes": 597905,
+      "sha256": "4a9e1fe97fa508d2e81ced0a039fdac1e954a8980ca232d5f0fd2ec4361fdc39"
+    },
+    "publication/risk-parity/PARITY.md": {
+      "bytes": 46657,
+      "sha256": "d3137ca781359ea6a7a029d5cb80e21b83cfa6c00896cc46ad199c7f56401044"
+    },
+    "publication/risk-parity/PARITY_CASES.csv": {
+      "bytes": 136989,
+      "sha256": "548b77a42127df3fa632008067f0b23fcb4f17e2d366a93ca831c886dad2e637"
+    },
+    "resource_budget.json": {
+      "bytes": 17836,
+      "sha256": "360149fc311abec4dfc3af93548a8afbe4cf61369798af7aaa3f9777d2d509b4"
+    },
+    "runs.jsonl": {
+      "bytes": 792142,
+      "sha256": "e60df0293a1197cb12866d181c7be1576d41f5d749ee78d19ce5ff09844248a8"
+    },
+    "slot_ledger_repair.json": {
+      "bytes": 774,
+      "sha256": "1b4e453e804c3fec3b6091cd9e605b72f164d03918c84a5ed5844f66d988a352"
+    },
+    "slots.jsonl": {
+      "bytes": 35121,
+      "sha256": "b63269e0f47b2ae5a359ad9b6b49c9775c21e862c1decd06b697315cc98bbfc6"
+    }
+  },
+  "generated_at_utc": "2026-10-15T15:45:51Z",
+  "hypothetical": true,
+  "order_sent": false,
+  "reading": "a dated snapshot of the whole live state root: the run log and the daily evidence are the durable record, the digests here pin the bytes that were live when the snapshot was taken, and the copy is whole so the byte budget can be checked against the same tree the reading describes",
+  "schema_version": "EDGE04_TICK_V1",
+  "superseded_copies_dropped": []
+}

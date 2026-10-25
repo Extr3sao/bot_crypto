@@ -1,0 +1,127 @@
+{
+  "schema": "tap.audit-run/v1",
+  "run_id": "run-20261024T064739Z-G-1",
+  "task": "G-1",
+  "title": "The stop survives the process over the same run directory",
+  "contract": "docs/audit/G-1.md",
+  "branch": "audit/mt0004-negative-controls",
+  "baseline": "5238c05e2f11527606ec2afc89966dc1500a281d",
+  "verified_commit": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+  "verified_commit_note": "The export of this commit passed 13/13; the record commit that adds FINAL_REPORT.md and verification.json comes after it and is not itself re-verified.",
+  "record_commit": "the commit that introduced this file",
+  "record_commit_note": "A file cannot contain the hash of the commit that adds it; use `git log -1 --format=%H -- docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.json`.",
+  "mode": "offline-only",
+  "checkout_tested": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "verification_input": "git archive export of the verified commit, not the working tree",
+  "preflight": {
+    "gate": "G1-01",
+    "result": "READY",
+    "broker_dispatch_sites_in_autonomous_runtime": 1,
+    "broker_dispatch_line": 1483,
+    "gate_constructed_at": "runtime.py:353-356",
+    "restore_point": "HotStopGate.__post_init__",
+    "dispatch_before_construction": "none (startup reconciliation has no execute_signal)",
+    "run_dir": "<repo>/<--run-root>/<--run-id>",
+    "run_id_default": "UTC timestamp (scripts/autonomous_paper.py:329-330)",
+    "supervised_restart_reuses_run_dir": true,
+    "main_contains_gate_commit": false
+  },
+  "changes": {
+    "runtime_source_modified": false,
+    "decision_source_modified": false,
+    "files_touched": [
+      "src/trading_bot/autonomous/hot_stop.py",
+      "src/trading_bot/app.py",
+      "tests/unit/autonomous/test_kill_switch_persistence.py",
+      "tests/unit/autonomous/test_hot_engage.py",
+      "tests/unit/autonomous/test_decision_kill_switch.py",
+      "scripts/audit/g1_mutants.py",
+      "scripts/audit/g1_restart_probe.py",
+      "docs/audit/G-1.md",
+      "docs/audit/AUDIT_BACKLOG.yaml",
+      "docs/audit/runtime_authority_map.md",
+      "docs/audit/runs/run-20261024T064739Z-G-1/"
+    ]
+  },
+  "tests": {
+    "focal_persistence": 20,
+    "g2_suites_hot_then_decision": 41,
+    "g2_suites_decision_then_hot": 41,
+    "cli_contract": 15,
+    "regression_autonomous": 360,
+    "audit_guard": 8,
+    "total_test_results": 485,
+    "total_test_results_note": "sum of the six invocations; the focal file is counted once alone and once inside the regression run",
+    "all_exit_codes": 0,
+    "ruff_changed_files": "clean",
+    "mypy_changed_sources": "clean",
+    "ruff_format_changed_files": "clean except test_decision_kill_switch.py, whose drift at line 165 already exists at HEAD and was left untouched",
+    "ruff_repo_wide_findings": 180,
+    "ruff_repo_wide_note": "all pre-existing and outside this run's files: scripts/rfc049*, research/edge0*, reports/ai-bots/**, etc. The command is `ruff check .`; G-2 reported a narrower invocation, so the counts are not comparable."
+  },
+  "mutants": {
+    "harness": "scripts/audit/g1_mutants.py",
+    "command": "uv run --frozen python scripts/audit/g1_mutants.py --rev 9df2aa8f",
+    "baseline": "green",
+    "total": 8,
+    "killed": 8,
+    "survivors": [],
+    "matrix": "docs/audit/runs/run-20261024T064739Z-G-1/mutants.json"
+  },
+  "cross_process": {
+    "artifact": "docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.json",
+    "producer": "docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.py",
+    "blocked": {
+      "broker_calls": 0,
+      "orders_created": 0,
+      "engaged_before_first_cycle": true,
+      "restored": true,
+      "risk_verdict": "PASS"
+    },
+    "control": {
+      "broker_calls": 1,
+      "orders_created": 1,
+      "engaged_before_first_cycle": false
+    },
+    "cli_claimed_enforcement": false
+  },
+  "verification": {
+    "tool": "docs/audit/runs/run-20261024T064739Z-G-1/verify_g1.py",
+    "independence": "PROCEDURALLY_SEPARATED",
+    "checks_passed": 13,
+    "checks_total": 13,
+    "verdict": "VERIFIED_SCOPED",
+    "artifact": "docs/audit/runs/run-20261024T064739Z-G-1/verification.json"
+  },
+  "defects_found": [
+    {
+      "id": "G1-D-1",
+      "finding": "G-2's suite was order dependent: one test engaged the process-wide authority, so test_decision_kill_switch.py failed when run after it (1 failed, 54 passed at baseline).",
+      "resolution": "inject a fresh switch; add a non-engaging test for the default wiring; both orders pass 41/41"
+    },
+    {
+      "id": "G1-D-2",
+      "finding": "the CLI marker write had no fsync",
+      "resolution": "write_control_file: flush + fsync + os.replace + directory fsync where available"
+    },
+    {
+      "id": "G1-D-3",
+      "finding": "decision.py's process_kill_switch docstring still describes G-1 as open",
+      "resolution": "not edited (forbidden path); recorded in G-1.md section 10 and corrected in the map/backlog"
+    }
+  ],
+  "gaps": {
+    "G-1": "closed for the autonomous runtime, scoped to one run directory",
+    "G-2": "unchanged and re-verified (41 tests in each collection order)",
+    "G-3": "open — live paths were not measured",
+    "G-4": "open — paper_cycle.py:510 still dispatches without the gate",
+    "D-6": "open — untouched"
+  },
+  "limits": [
+    "a new --run-id or --run-root boots operational; pinned by a test and stated in the contract",
+    "the supervisor binary was not executed; only its --run-id wiring was inspected",
+    "no power-loss durability claim: the directory fsync is skipped on Windows",
+    "no PAPER run against a real feed, no live order, no credentials, no deployment",
+    "the filesystem permission on run_dir is the authorisation boundary, not authentication"
+  ]
+}

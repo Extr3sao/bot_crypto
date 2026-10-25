@@ -17,6 +17,7 @@ import argparse
 import asyncio
 import json
 import sys
+import time
 from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -59,6 +60,43 @@ def parse_args() -> argparse.Namespace:
         help="Data provider: fake (demo, no credentials) or ccxt (read-only)",
     )
     parser.add_argument("--config-dir", default="config", help="Config directory (default config)")
+    parser.add_argument(
+        "--state-path",
+        default=None,
+        help=(
+            "Durable paper-state file (default data/storage/paper_state.json; "
+            "PAPER_STATE_PATH env overrides for tests)"
+        ),
+    )
+    parser.add_argument(
+        "--ledger",
+        default=None,
+        help=(
+            "Admission ledger (default config/strategy_admission.json; "
+            "ADMISSION_LEDGER_PATH env overrides for tests)"
+        ),
+    )
+    parser.add_argument(
+        "--fresh",
+        action="store_true",
+        help=(
+            "Rotate any existing durable state before starting (explicit fresh "
+            "book). Default is fail-closed recovery of the persisted book."
+        ),
+    )
+    parser.add_argument(
+        "--burnin-events",
+        default=None,
+        help="Append one JSONL event per session to this path (burn-in observability).",
+    )
+    parser.add_argument(
+        "--run-dir",
+        default=None,
+        help=(
+            "Operator-stop directory (default data/storage/paper; PAPER_RUN_DIR "
+            "overrides for tests). The live kill-switch CLI writes <run-dir>/KILL_SWITCH."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -157,14 +195,83 @@ def _default_indicators(candles: Sequence[OHLCV]) -> dict[str, Any]:
     return out
 
 
-def build_cycle_engine(settings: Settings, broker: PaperBroker) -> PaperCycleEngine:
+def _default_state_path() -> Path:
+    import os
+
+    env_path = os.environ.get("PAPER_STATE_PATH", "")
+    if env_path:
+        return Path(env_path)
+    return Path("data/storage/paper_state.json")
+
+
+def _default_ledger_path() -> Path:
+    """Committed admission ledger: the launcher's authority (DEF-AUTO-4)."""
+    import os
+
+    env_path = os.environ.get("ADMISSION_LEDGER_PATH", "")
+    if env_path:
+        return Path(env_path)
+    return Path(__file__).resolve().parents[1] / "config" / "strategy_admission.json"
+
+
+def _default_run_dir() -> Path:
+    """Where the paper process watches for ``KILL_SWITCH``.
+
+    ``data/storage`` is local runtime state (gitignored), not an evidence tree;
+    the marker is an operator control, not a report. ``PAPER_RUN_DIR`` exists so
+    tests and supervisors can give each process a private control directory.
+    """
+    import os
+
+    env_path = os.environ.get("PAPER_RUN_DIR", "")
+    if env_path:
+        return Path(env_path)
+    return Path("data/storage/paper")
+
+
+def _rotate_state(path: Path) -> None:
+    """Explicit fresh-book request: back up the existing state, never delete.
+
+    The previous book stays on disk as ``<name>.<ts>.bak`` so no economic
+    history is silently destroyed ( destruction requires a human action).
+    """
+    if not path.exists():
+        return
+    stamp = int(time.time_ns() // 1_000_000)
+    backup = path.with_name(f"{path.name}.{stamp}.bak")
+    path.replace(backup)
+    print(f"[startup] --fresh: previous state rotated to {backup}")
+
+
+def build_cycle_engine(
+    settings: Settings,
+    broker: PaperBroker,
+    *,
+    assets: Sequence[str] = ("BTC", "ETH", "SOL"),
+    timeframe: str = "5m",
+    ledger_path: Path | str | None = None,
+    run_dir: Path | str | None = None,
+    hot_stop: Any | None = None,
+) -> PaperCycleEngine:
     """Compose the canonical decision cycle (CP-PO-002, FASE 7B-8B).
+
     Uses ONLY canonical components: CryptoAssetAgentRegistry (context),
     StrategyRouter (routing - the single router), the six committed
     AlphaFamilies (generation), signal_adapter (conversion),
     CandidatePortfolio (consolidation), RiskManager (risk) and the shared
     PaperBroker (execution). No strategy logic lives here.
+
+    DEF-AUTO-4: this used to hand the router a map that declared every family
+    ``CONFIRMED``, which made the router's confirmation gate a formality and
+    let a family that research had rejected trade paper money. The map is now
+    built from the admission ledger, and the router keeps ``require_confirmed``
+    on, so the gate and the ledger say the same thing. The ledger is read fail
+    closed: a missing or unreadable ledger stops the launcher.
     """
+    from trading_bot.autonomous.admission_ledger import AdmissionLedger
+    from trading_bot.autonomous.decision import process_kill_switch
+    from trading_bot.autonomous.hot_stop import HotStopGate
+    from trading_bot.autonomous.strategy_state import StrategyRegistry
     from trading_bot.execution.idempotency import IdempotencyGuard
     from trading_bot.paper.paper_cycle import PaperCycleEngine
     from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
@@ -176,12 +283,10 @@ def build_cycle_engine(settings: Settings, broker: PaperBroker) -> PaperCycleEng
         TrendFamily,
         VolatilityFamily,
     )
+    from trading_bot.research.router_gates import RouterGates
     from trading_bot.research.strategy_router import StrategyRouter
     from trading_bot.risk.manager import RiskManager
 
-    # Default paper map: one preregistered entry per canonical family.
-    # Deterministic (dict order = score tie-break; EMA baseline first).
-    # Regime list empty = eligible in any regime (router base score).
     family_classes = {
         "ema_crossover": EmaCrossoverFamily,
         "momentum": MomentumFamily,
@@ -191,27 +296,35 @@ def build_cycle_engine(settings: Settings, broker: PaperBroker) -> PaperCycleEng
         "volatility": VolatilityFamily,
     }
     families = {name: cls() for name, cls in family_classes.items()}
-    strategy_map = {
-        name: {
-            "family": name,
-            "regimes": [],
-            "direction": "BOTH",
-            "enabled": True,
-            "status": "CONFIRMED",
-            "priority": 0.0,
-        }
-        for name in family_classes
-    }
+
+    if hot_stop is None and run_dir is not None:
+        hot_stop = HotStopGate(kill_switch=process_kill_switch(), run_dir=run_dir)
+
+    ledger = AdmissionLedger.load(ledger_path or _default_ledger_path())
+    registry = StrategyRegistry.from_ledger(ledger, assets=list(assets))
+    for line in registry.describe(timeframe):
+        print(line)
+    strategy_map = registry.strategy_map(timeframe)
 
     return PaperCycleEngine(
         asset_registry=CryptoAssetAgentRegistry(),
-        router=StrategyRouter(),
+        # §38/DEF-AUTO-3 — freshness budgeted from the timeframe, not a constant.
+        router=StrategyRouter(gates=RouterGates(timeframe=timeframe)),
         strategy_map=strategy_map,
         families=families,
         risk_manager=RiskManager(risk=settings.risk, equity=broker.equity),
         broker=broker,
         indicator_fn=_default_indicators,
         idempotency=IdempotencyGuard(),
+        # WP-EDGE-017/P0.4: the four declared defensive blocks are evaluated on the
+        # real paper entrypoint, fail closed. The policy comes from
+        # config/risk.yaml through the runtime's own loader; nothing is re-typed
+        # and the weekend flag is not changed here.
+        defensive_blocks=settings.risk.blocks,
+        # G-4 — the paper route consults the SAME operator stop as the autonomous
+        # runtime. It is built before the engine, so a marker left by an earlier
+        # process is adopted before any cycle can run.
+        hot_stop=hot_stop,
     )
 
 
@@ -235,30 +348,97 @@ async def main() -> int:
         )
         return 1
 
-    from trading_bot.paper.broker import PaperBroker
+    from trading_bot.paper.durable_broker import DurablePaperBroker
+    from trading_bot.paper.paper_runtime_state import save_session_state
+    from trading_bot.paper.paper_state_store import PaperStateStore
+    from trading_bot.paper.reconciliation_v4 import StartupReconcilerV4
     from trading_bot.paper.snapshot_history import FetcherBarReader
 
-    scanner_factory, data_source = build_scanner_factory(settings, args.provider)
-    broker = PaperBroker(equity=args.balance)
-    cycle_engine = build_cycle_engine(settings, broker)
+    state_path = Path(args.state_path) if args.state_path else _default_state_path()
+    if args.fresh:
+        _rotate_state(state_path)
 
-    orchestrator = PaperOrchestrator(
-        settings=settings,
-        scanner_factory=scanner_factory,
-        broker=broker,
-        max_sessions=args.max_cycles,
-        interval_seconds=args.interval,
-        cycle_engine=cycle_engine,
-        cycle_history_reader=FetcherBarReader(data_source),
+    run_dir = Path(args.run_dir) if args.run_dir else _default_run_dir()
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    scanner_factory, data_source = build_scanner_factory(settings, args.provider)
+    broker = DurablePaperBroker(equity=args.balance)
+    cycle_engine = build_cycle_engine(
+        settings,
+        broker,
+        assets=assets,
+        timeframe=args.timeframe,
+        ledger_path=Path(args.ledger) if args.ledger else _default_ledger_path(),
+        run_dir=run_dir,
     )
+    store = PaperStateStore(state_path)
+    broker.attach_durability(
+        store=store,
+        risk=cycle_engine.risk_manager,
+        idempotency=cycle_engine.idempotency,
+        run_id="paper-cli",
+    )
+    reconciler = StartupReconcilerV4(
+        store=store,
+        broker=broker,
+        risk_manager=cycle_engine.risk_manager,
+        idempotency=cycle_engine.idempotency,
+    )
+    report = reconciler.reconcile()
+    print("[startup] reconciliation=" + report.status)
+    if report.status in ("RECOVERED", "FATAL", "MISMATCH"):
+        print(json.dumps(report.to_dict(), ensure_ascii=False, indent=2, default=str))
+    if report.status == "FATAL":
+        print(
+            "Refusing to start: durable paper state is unreadable/corrupt "
+            "(fail closed). Inspect the .corrupt backup and resolve manually.",
+            file=sys.stderr,
+        )
+        return 1
+
+    # The reconciler adopted the durable order ledger; bind the runtime id so
+    # every boundary write from here on names the restored book.
+    broker.attach_durability(
+        store=store,
+        risk=cycle_engine.risk_manager,
+        idempotency=cycle_engine.idempotency,
+        run_id=report.restored_run_id or "paper-cli",
+    )
+
+    async def _run_with_persistence() -> dict[str, Any]:
+        orchestrator = PaperOrchestrator(
+            settings=settings,
+            scanner_factory=scanner_factory,
+            broker=broker,
+            max_sessions=args.max_cycles,
+            interval_seconds=args.interval,
+            cycle_engine=cycle_engine,
+            cycle_history_reader=FetcherBarReader(data_source, timeframe=args.timeframe),
+            state_store=store,
+            burnin_events_path=args.burnin_events,
+        )
+        try:
+            await orchestrator.run()
+        finally:
+            # Final durable snapshot (belt and braces: the runner already
+            # persists after every session; this covers interval-timer deaths).
+            save_session_state(
+                store=store,
+                run_id=report.restored_run_id or "",
+                broker=broker,
+                risk=cycle_engine.risk_manager,
+                idempotency=cycle_engine.idempotency,
+            )
+            print("[startup] paper state saved to " + str(store.path))
+        return orchestrator.status()
 
     print(
         f"Starting PAPER trading loop — assets={assets} timeframe={args.timeframe} "
         f"interval={args.interval}s provider={args.provider} balance={args.balance}"
     )
-    await orchestrator.run()
+    status = await _run_with_persistence()
     print("Paper trading loop stopped.")
-    print(json.dumps(orchestrator.status(), ensure_ascii=False, indent=2, default=str))
+    print(json.dumps(status, ensure_ascii=False, indent=2, default=str))
     return 0
 
 

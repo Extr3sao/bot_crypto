@@ -1,0 +1,312 @@
+{
+  "clone_probe": {
+    "clone_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14_clones",
+    "fetched": [
+      {
+        "fetch_exit": 0,
+        "id": "SRC-01",
+        "pin_resolves": true,
+        "pinned_sha": "b33068949fc16e69e288e0a5bef5bd1f086f0a27",
+        "repo": "freqtrade/freqtrade",
+        "steps": [
+          {
+            "command": "init --quiet",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "remote add origin https://github.com/freqtrade/freqtrade",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "fetch --depth 1 origin b33068949fc16e69e288e0a5bef5bd1f086f0a27",
+            "exit_code": 0,
+            "output": "From https://github.com/freqtrade/freqtrade\n * branch            b33068949fc16e69e288e0a5bef5bd1f086f0a27 -> FETCH_HEAD"
+          },
+          {
+            "command": "update-ref refs/edge14/SRC-01 b33068949fc16e69e288e0a5bef5bd1f086f0a27",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "cat-file -e b33068949fc16e69e288e0a5bef5bd1f086f0a27^{commit}",
+            "exit_code": 0,
+            "output": ""
+          }
+        ],
+        "target": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14_clones\\SRC-01"
+      },
+      {
+        "fetch_exit": 0,
+        "id": "SRC-02",
+        "pin_resolves": true,
+        "pinned_sha": "5e642997f9623d67b63543962eab46caca30e613",
+        "repo": "jesse-ai/jesse",
+        "steps": [
+          {
+            "command": "init --quiet",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "remote add origin https://github.com/jesse-ai/jesse",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "fetch --depth 1 origin 5e642997f9623d67b63543962eab46caca30e613",
+            "exit_code": 0,
+            "output": "From https://github.com/jesse-ai/jesse\n * branch            5e642997f9623d67b63543962eab46caca30e613 -> FETCH_HEAD"
+          },
+          {
+            "command": "update-ref refs/edge14/SRC-02 5e642997f9623d67b63543962eab46caca30e613",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "cat-file -e 5e642997f9623d67b63543962eab46caca30e613^{commit}",
+            "exit_code": 0,
+            "output": ""
+          }
+        ],
+        "target": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14_clones\\SRC-02"
+      },
+      {
+        "fetch_exit": 0,
+        "id": "SRC-03",
+        "pin_resolves": true,
+        "pinned_sha": "7a8768de9784dda35a7b261a7ade1dbfbff50919",
+        "repo": "vnpy/vnpy_ctastrategy",
+        "steps": [
+          {
+            "command": "init --quiet",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "remote add origin https://github.com/vnpy/vnpy_ctastrategy",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "fetch --depth 1 origin 7a8768de9784dda35a7b261a7ade1dbfbff50919",
+            "exit_code": 0,
+            "output": "From https://github.com/vnpy/vnpy_ctastrategy\n * branch            7a8768de9784dda35a7b261a7ade1dbfbff50919 -> FETCH_HEAD"
+          },
+          {
+            "command": "update-ref refs/edge14/SRC-03 7a8768de9784dda35a7b261a7ade1dbfbff50919",
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": "cat-file -e 7a8768de9784dda35a7b261a7ade1dbfbff50919^{commit}",
+            "exit_code": 0,
+            "output": ""
+          }
+        ],
+        "target": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14_clones\\SRC-03"
+      }
+    ],
+    "network_probe": {
+      "available": true,
+      "command": "git ls-remote --heads https://github.com/jesse-ai/jesse master",
+      "output": "5e642997f9623d67b63543962eab46caca30e613\trefs/heads/master\n",
+      "reason": "reached the remote"
+    },
+    "note": "each directory holds exactly one fetched commit and no working tree; nothing was installed, imported or run",
+    "status": "CLONED"
+  },
+  "license_preflight": {
+    "default_verdict": "no GPL/AGPL code is copied into this project by default; a clone that is studied stays outside the checkout and never becomes a runtime component",
+    "not_copyable": [
+      "SRC-01",
+      "SRC-05",
+      "SRC-09"
+    ],
+    "sources": [
+      {
+        "classification": "ADOPT_P0",
+        "copy_rule": "NO_COPY",
+        "declared_license": "GPL-3.0",
+        "id": "SRC-01",
+        "may_copy_into_this_project": false,
+        "repo": "freqtrade/freqtrade",
+        "runtime_impact": "none: a clone is a study, never a runtime component",
+        "sha": "b33068949fc16e69e288e0a5bef5bd1f086f0a27",
+        "use": "separate benchmark; lookahead-analysis and recursive-analysis methodology"
+      },
+      {
+        "classification": "ADOPT_P0",
+        "copy_rule": "COPY_WITH_ATTRIBUTION",
+        "declared_license": "MIT",
+        "id": "SRC-02",
+        "may_copy_into_this_project": true,
+        "repo": "jesse-ai/jesse",
+        "runtime_impact": "none: a clone is a study, never a runtime component",
+        "sha": "5e642997f9623d67b63543962eab46caca30e613",
+        "use": "independent broker/backtest to reconcile fills and PnL"
+      },
+      {
+        "classification": "ADOPT_P0",
+        "copy_rule": "COPY_WITH_ATTRIBUTION",
+        "declared_license": "MIT",
+        "id": "SRC-03",
+        "may_copy_into_this_project": true,
+        "repo": "vnpy/vnpy_ctastrategy",
+        "runtime_impact": "none: a clone is a study, never a runtime component",
+        "sha": "7a8768de9784dda35a7b261a7ade1dbfbff50919",
+        "use": "hypothesis source: Dual Thrust, King Keltner, ATR-RSI"
+      },
+      {
+        "classification": "ADOPT_P1_EXPERIMENT",
+        "copy_rule": "COPY_WITH_NOTICE",
+        "declared_license": "Apache-2.0",
+        "id": "SRC-04",
+        "may_copy_into_this_project": true,
+        "repo": "hummingbot/hummingbot",
+        "runtime_impact": "none: a clone is a study, never a runtime component",
+        "sha": "9af100d6822da7d2d0291a906c730ef172284ee2",
+        "use": "maker/queue/partial-fill study; requires L2"
+      },
+      {
+        "classification": "EXPERIMENT",
+        "copy_rule": "LINK_ONLY_NO_VENDOR",
+        "declared_license": "LGPL-3.0",
+        "id": "SRC-05",
+        "may_copy_into_this_project": false,
+        "repo": "nautechsystems/nautilus_trader",
+        "runtime_impact": "none: a clone is a study, never a runtime component",
+        "sha": "5b1b5b8c5ad9ddf784827d55723dd26ddeaf8d08",
+        "use": "event/order replay; independent comparator"
+      },
+      {
+        "classification": "REUSE_CURRENT",
+        "copy_rule": "COPY_WITH_ATTRIBUTION",
+        "declared_license": "MIT",
+        "id": "SRC-06",
+        "may_copy_into_this_project": true,
+        "repo": "ccxt/ccxt",
+        "runtime_impact": "none: a clone is a study, never a runtime component",
+        "sha": "2c81f0a11d7785f30c4714e6bb2cb59d0738d38e",
+        "use": "continue with the current dependency"
+      },
+      {
+        "classification": "EXPERIMENT_CONDITIONAL",
+        "copy_rule": "NO_COPY_UNTIL_LICENCE_READ",
+        "declared_license": "AGC-3.0? (README says AGPL; validate the LICENSE file)",
+        "id": "SRC-09",
+        "may_copy_into_this_project": false,
+        "repo": "bmoscon/cryptofeed",
+        "runtime_impact": "none: a clone is a study, never a runtime component",
+        "sha": "bd0fe96093837262ce2c89ebc00286f48495fdad",
+        "use": "WS L2/tape, only if a data deficiency is measured"
+      },
+      {
+        "classification": "DEFER",
+        "copy_rule": "COPY_WITH_NOTICE",
+        "declared_license": "Apache-2.0",
+        "id": "SRC-12",
+        "may_copy_into_this_project": true,
+        "repo": "TauricResearch/TradingAgents",
+        "runtime_impact": "none: a clone is a study, never a runtime component",
+        "sha": "1394a3f72aa4393e1a98f51b382434c4b4c2d972",
+        "use": "research agents"
+      }
+    ]
+  },
+  "order_sent": false,
+  "parity_plan": {
+    "common_execution_assumptions": {
+      "entry": "next bar open after the signal bar closes",
+      "exit": "next bar open after the exit condition",
+      "fees_bps_per_side": 10.0,
+      "fills": "one bar, no partials assumed",
+      "lot_tick_min_notional": "venue minimums from the gate artefact",
+      "slippage_bps": "from the admission scenario impact for the asset",
+      "spread_bps": "from the admission scenario spread for the asset"
+    },
+    "common_market_data": {
+      "assets": [
+        "BTC/USDT",
+        "ETH/USDT"
+      ],
+      "fingerprint": "sha256 over the canonical OHLCV matrix per asset",
+      "gaps": "counted and declared, never interpolated",
+      "period": "OOS window already held out from EDGE-07/08 selection",
+      "point_in_time": "decision uses bars whose close_time <= decision_time",
+      "timeframe": "1h"
+    },
+    "engines": [
+      "trading_agentic",
+      "jesse(SRC-02)"
+    ],
+    "neutral_strategy": {
+      "id": "NEUTRAL_MA_CROSS_1H",
+      "rule": "long when ema(12) > ema(26) on closed 1h bars, flat otherwise",
+      "why_neutral": "one plain rule, no fitted parameters, so a divergence is a model bug not a tuning choice"
+    },
+    "order_sent": false,
+    "preregistered_tolerance": {
+      "declared_before_run": true,
+      "equity_relative_diff_max": 0.02,
+      "on_exceed": "quantify and explain the model difference; never adjust the output by hand",
+      "per_trade_net_bps_diff_max": 1.0,
+      "trade_count_diff_max": 1
+    },
+    "promotion": "NONE"
+  },
+  "pin_verification": {
+    "n_pins_resolved": 3,
+    "n_verified": 3,
+    "note": "a pin that does not resolve is not reproducible, and a licence is read from the licence file at the pinned commit, never from the README",
+    "status": "PINS_VERIFIED",
+    "verified": [
+      {
+        "declared_family": "GPL",
+        "declared_license": "GPL-3.0",
+        "declared_matches_file": true,
+        "fetch_output": "",
+        "id": "SRC-01",
+        "licence_family_from_file": "GPL",
+        "licence_file_found": true,
+        "licence_reason": "copyleft: methodology is studied, code is not copied",
+        "licence_rule": "NO_COPY",
+        "pin_resolves": true,
+        "pinned_sha": "b33068949fc16e69e288e0a5bef5bd1f086f0a27",
+        "repo": "freqtrade/freqtrade"
+      },
+      {
+        "declared_family": "MIT",
+        "declared_license": "MIT",
+        "declared_matches_file": true,
+        "fetch_output": "",
+        "id": "SRC-02",
+        "licence_family_from_file": "MIT",
+        "licence_file_found": true,
+        "licence_reason": "permissive: attribution kept",
+        "licence_rule": "COPY_WITH_ATTRIBUTION",
+        "pin_resolves": true,
+        "pinned_sha": "5e642997f9623d67b63543962eab46caca30e613",
+        "repo": "jesse-ai/jesse"
+      },
+      {
+        "declared_family": "MIT",
+        "declared_license": "MIT",
+        "declared_matches_file": true,
+        "fetch_output": "",
+        "id": "SRC-03",
+        "licence_family_from_file": "MIT",
+        "licence_file_found": true,
+        "licence_reason": "permissive: attribution kept",
+        "licence_rule": "COPY_WITH_ATTRIBUTION",
+        "pin_resolves": true,
+        "pinned_sha": "7a8768de9784dda35a7b261a7ade1dbfbff50919",
+        "repo": "vnpy/vnpy_ctastrategy"
+      }
+    ]
+  },
+  "promotion": "NONE",
+  "schema_version": "EDGE14_BENCHMARK_PARITY_V1",
+  "work_package": "WP-EDGE-14C"
+}

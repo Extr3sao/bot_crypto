@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02d/EXP-004A/2026-10-21",
+  "role": "builder",
+  "generated_at_utc": "2026-10-21T15:37:10Z",
+  "started_at_utc": "2026-10-21T15:37:09Z",
+  "repo": {
+    "head": "421590ced3ed435c95c92c09aed6b7bbe1898185",
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003"
+  },
+  "declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95"
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "blob_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+  },
+  "status": "PASS",
+  "checks": [
+    {
+      "control": "DECLARATION_SCHEMA",
+      "status": "PASS",
+      "detail": "4 entries, schema 3.0",
+      "seconds": 0.0,
+      "evidence": {}
+    },
+    {
+      "control": "ORIGINAL_DECLARATION_UNCHANGED",
+      "status": "PASS",
+      "detail": "sha256 8946f871a97b7575... unchanged",
+      "seconds": 0.0416,
+      "evidence": {
+        "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+      }
+    },
+    {
+      "control": "SUPERSEDES_LINK",
+      "status": "PASS",
+      "detail": "successor cites blob 43c9deea29a8...",
+      "seconds": 0.0347,
+      "evidence": {
+        "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7"
+      }
+    },
+    {
+      "control": "GENERATOR_COMMIT_FULL_SHA",
+      "status": "PASS",
+      "detail": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+      "seconds": 0.0368,
+      "evidence": {
+        "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7"
+      }
+    },
+    {
+      "control": "GENERATOR_BYTES_MATCH_COMMIT",
+      "status": "PASS",
+      "detail": "scripts/exp004a_capture.py at fc036d96 is blob 052832c2252a... / sha256 af1ab7cc23980dad...",
+      "seconds": 0.1037,
+      "evidence": {
+        "blob_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+        "git_blob": "052832c2252a719c63d0859628ada648c799c6ce"
+      }
+    },
+    {
+      "control": "GENERATOR_WORKTREE_CLEAN",
+      "status": "PASS",
+      "detail": "generator path is clean",
+      "seconds": 0.0436,
+      "evidence": {}
+    },
+    {
+      "control": "TEMPORAL_ORDER",
+      "status": "PASS",
+      "detail": "effective 2026-10-21T16:00:00.000Z precedes the window 2026-10-22T00:00:00.000Z",
+      "seconds": 0.0001,
+      "evidence": {
+        "issued_at_utc": "2026-10-21T15:20:56.000Z",
+        "effective_from_utc": "2026-10-21T16:00:00.000Z",
+        "window_start_utc": "2026-10-22T00:00:00.000Z"
+      }
+    },
+    {
+      "control": "DECLARATION_COMMITTED_BEFORE_WINDOW",
+      "status": "PASS",
+      "detail": "commit a179ed0d74bf... at 2026-10-21T15:21:23+00:00 precedes the window",
+      "seconds": 0.102,
+      "evidence": {
+        "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+        "committed_at_utc": "2026-10-21T15:21:23+00:00"
+      }
+    },
+    {
+      "control": "ENTRIES_UNCHANGED_EXCEPT_COMMIT",
+      "status": "PASS",
+      "detail": "every field except generator_code_commit equals phase 1",
+      "seconds": 0.0,
+      "evidence": {}
+    },
+    {
+      "control": "CAPTURE_WINDOW_UNCHANGED",
+      "status": "PASS",
+      "detail": "2026-10-22T00:00:00Z to 2027-01-20T00:00:00Z",
+      "seconds": 0.0003,
+      "evidence": {
+        "capture_window": [
+          "2026-10-22T00:00:00Z",
+          "2027-01-20T00:00:00Z"
+        ]
+      }
+    },
+    {
+      "control": "DATASETS_ABSENT_BEFORE_WINDOW",
+      "status": "PASS",
+      "detail": "no declared dataset exists yet",
+      "seconds": 0.0002,
+      "evidence": {}
+    },
+    {
+      "control": "ST6_TAPE_STILL_REFUSED",
+      "status": "PASS",
+      "detail": "st6:tape refused: EXP-004A-ST6-TAPE declares timeframe '4h slot, 3 rounds of 15s', which is not a bar series; a slice rule for it is not defined by the declaration. Refusing rather than inventing one (this is the st6:tape case).",
+      "seconds": 0.0019,
+      "evidence": {
+        "refusal": "EXP-004A-ST6-TAPE declares timeframe '4h slot, 3 rounds of 15s', which is not a bar series; a slice rule for it is not defined by the declaration. Refusing rather than inventing one (this is the st6:tape case)."
+      }
+    },
+    {
+      "control": "OVERWRITE_REFUSED",
+      "status": "PASS",
+      "detail": "write_slice refuses an existing target",
+      "seconds": 0.0008,
+      "evidence": {}
+    },
+    {
+      "control": "WRITE_PERMISSION",
+      "status": "PASS",
+      "detail": "data\\exp004a writable",
+      "seconds": 0.0001,
+      "evidence": {}
+    },
+    {
+      "control": "NO_LIVE_ORDER_PATH",
+      "status": "PASS",
+      "detail": "no network client, credential or venue client in the extractor",
+      "seconds": 0.0002,
+      "evidence": {}
+    }
+  ],
+  "failed_controls": [],
+  "defects": [],
+  "provenance_record": {
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "declaration_path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "declaration_commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "generator": {
+      "path": "scripts/exp004a_capture.py",
+      "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+      "sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+    },
+    "supersedes": {
+      "path": "config/preregistrations/EXP-004A.datasets.json",
+      "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+    },
+    "temporal": {
+      "effective_from_utc": "2026-10-21T16:00:00.000Z",
+      "capture_window": {
+        "start_utc": "2026-10-22T00:00:00.000Z",
+        "end_utc": "2027-01-20T00:00:00.000Z"
+      },
+      "basis": "GIT_ANCESTRY_PLUS_INGEST_CLOCK",
+      "external_timestamp": "UNAVAILABLE",
+      "reading": "eligible captures must open at or after the declared window and must have been fetched at or after the declaration's effective instant; the declaration's commit must be an ancestor of the capture's commit"
+    }
+  },
+  "authorize_error": null,
+  "not_a_certification": "PASS here means the twelve provenance controls held on this checkout at this instant. It does not authorise a run, does not validate 90 days, and does not promote anything.",
+  "economic_executions": 0
+}

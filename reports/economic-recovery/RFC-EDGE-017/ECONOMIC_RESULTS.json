@@ -1,0 +1,33 @@
+{
+  "baseline_net_1x_usdt": -239.7503,
+  "book": "one shared 10 000 USDT portfolio, three symbols",
+  "by_symbol": {
+    "BTC/USDT": {
+      "execution_usdt": 11.243971,
+      "fees_usdt": 47.0,
+      "net_usdt": -58.613298,
+      "reference_gross_usdt": -0.369327,
+      "trades": 47
+    },
+    "ETH/USDT": {
+      "execution_usdt": 13.387302,
+      "fees_usdt": 56.0,
+      "net_usdt": -110.659875,
+      "reference_gross_usdt": -41.272573,
+      "trades": 56
+    },
+    "SOL/USDT": {
+      "execution_usdt": 15.70318,
+      "fees_usdt": 43.0,
+      "net_usdt": -69.497316,
+      "reference_gross_usdt": -10.794136,
+      "trades": 43
+    }
+  },
+  "cost_model": "trading_bot.research.economic_recovery.alpha15.cost_for",
+  "fills_at_1x": 146,
+  "net_realised_usdt": -238.770489,
+  "reading": "the 1x net is what the book itself realized after paying every cost; the 2x/3x numbers in NET_RISK_REPLAY are projections and the fill counts there are real re-runs under those costs",
+  "schema_version": "EDGE17_ECONOMIC_RESULTS_V1",
+  "verdict": "NO_RESTATED_EDGE_SURVIVES"
+}

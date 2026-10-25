@@ -1,0 +1,853 @@
+2026-10-18 19:04:55 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:55 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:04:55 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:55 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:04:56 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:56 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=118.704839615788 quantity=4.2121281795952905 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:56 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:04:56 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=5.8333948695037225 quantity=85.71338151887147 side=buy symbol=UNI/USDT
+2026-10-18 19:04:56 [info     ] paper.fill_closed              entry_commission=0.5 equity=9996.198764657092 exit_commission=0.5 gross_pnl=-2.8012353429081482 net_pnl=-3.8012353429081482 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:04:56 [info     ] paper.fill_closed              entry_commission=0.5 equity=9992.400705359378 exit_commission=0.5 gross_pnl=-2.7980592977155525 net_pnl=-3.7980592977155525 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:04:56 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081482 equity=9996.198764657092 pnl=-3.8012353429081482 weekly_pnl=-3.8012353429081482
+2026-10-18 19:04:56 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.5992946406237 equity=9992.400705359378 pnl=-3.7980592977155525 weekly_pnl=-7.5992946406237
+2026-10-18 19:04:57 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:57 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=126.49117191731865 quantity=3.9528450280058007 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:57 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:04:57 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=5.483185053841995 quantity=91.18787622344729 side=buy symbol=UNI/USDT
+2026-10-18 19:04:57 [info     ] paper.fill_closed              entry_commission=0.5 equity=9988.59947001647 exit_commission=0.5 gross_pnl=-2.8012353429081442 net_pnl=-3.8012353429081442 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:04:57 [info     ] paper.fill_closed              entry_commission=0.5 equity=9984.801410718754 exit_commission=0.5 gross_pnl=-2.7980592977155725 net_pnl=-3.7980592977155725 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:04:57 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081442 equity=9988.59947001647 pnl=-3.8012353429081442 weekly_pnl=-11.400529983531845
+2026-10-18 19:04:57 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623716 equity=9984.801410718754 pnl=-3.7980592977155725 weekly_pnl=-15.198589281247418
+2026-10-18 19:04:59 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:59 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=148.66088176776847 quantity=3.363359574182253 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:59 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:04:59 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=7.036215496380757 quantity=71.06092760478793 side=buy symbol=UNI/USDT
+2026-10-18 19:04:59 [info     ] paper.fill_closed              entry_commission=0.5 equity=9981.000175375846 exit_commission=0.5 gross_pnl=-2.801235342908175 net_pnl=-3.801235342908175 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:04:59 [info     ] paper.fill_closed              entry_commission=0.5 equity=9977.20211607813 exit_commission=0.5 gross_pnl=-2.7980592977156014 net_pnl=-3.7980592977156014 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:04:59 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908175 equity=9981.000175375846 pnl=-3.801235342908175 weekly_pnl=-18.999824624155593
+2026-10-18 19:04:59 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623777 equity=9977.20211607813 pnl=-3.7980592977156014 weekly_pnl=-22.797883921871193
+2026-10-18 19:04:59 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:04:59 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:00 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:00 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:01 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:01 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=203.59295145761985 quantity=2.455880699308397 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:01 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:01 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=9.305875281710744 quantity=53.72949721158122 side=buy symbol=UNI/USDT
+2026-10-18 19:05:01 [info     ] paper.fill_closed              entry_commission=0.5 equity=9973.400880735222 exit_commission=0.5 gross_pnl=-2.8012353429081256 net_pnl=-3.8012353429081256 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:01 [info     ] paper.fill_closed              entry_commission=0.5 equity=9969.602821437507 exit_commission=0.5 gross_pnl=-2.7980592977155276 net_pnl=-3.7980592977155276 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:01 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081256 equity=9973.400880735222 pnl=-3.8012353429081256 weekly_pnl=-3.8012353429081256
+2026-10-18 19:05:01 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623653 equity=9969.602821437507 pnl=-3.7980592977155276 weekly_pnl=-7.599294640623653
+2026-10-18 19:05:03 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:03 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=193.38806901237155 quantity=2.585474908320294 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:03 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:03 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=8.664491019313123 quantity=57.706794188545125 side=buy symbol=UNI/USDT
+2026-10-18 19:05:03 [info     ] paper.fill_closed              entry_commission=0.5 equity=9972.055332802844 exit_commission=0.5 gross_pnl=3.452511365336933 net_pnl=2.452511365336933 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:03 [info     ] paper.fill_closed              entry_commission=0.5 equity=9968.257273505127 exit_commission=0.5 gross_pnl=-2.7980592977156435 net_pnl=-3.7980592977156435 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:03 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.452511365336933 equity=9972.055332802844 pnl=2.452511365336933 weekly_pnl=-5.146783275286721
+2026-10-18 19:05:03 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323787105 equity=9968.257273505127 pnl=-3.7980592977156435 weekly_pnl=-8.944842573002365
+2026-10-18 19:05:03 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:03 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=170.32989177441556 quantity=2.93548005456493 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:03 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:03 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=7.808778349730527 quantity=64.03050228942078 side=buy symbol=UNI/USDT
+2026-10-18 19:05:03 [info     ] paper.fill_closed              entry_commission=0.5 equity=9964.45603816222 exit_commission=0.5 gross_pnl=-2.8012353429081567 net_pnl=-3.8012353429081567 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:03 [info     ] paper.fill_closed              entry_commission=0.5 equity=9960.657978864503 exit_commission=0.5 gross_pnl=-2.7980592977156107 net_pnl=-3.7980592977156107 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:03 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081567 equity=9964.45603816222 pnl=-3.8012353429081567 weekly_pnl=-12.746077915910522
+2026-10-18 19:05:03 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623768 equity=9960.657978864503 pnl=-3.7980592977156107 weekly_pnl=-16.544137213626133
+2026-10-18 19:05:04 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:04 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:05 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:05 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=262.7624809034063 quantity=1.9028591840088624 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:05 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:05 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=12.1261649572083 quantity=41.23315176434072 side=buy symbol=UNI/USDT
+2026-10-18 19:05:05 [info     ] paper.fill_closed              entry_commission=0.5 equity=9956.856743521595 exit_commission=0.5 gross_pnl=-2.801235342908154 net_pnl=-3.801235342908154 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:05 [info     ] paper.fill_closed              entry_commission=0.5 equity=9953.05868422388 exit_commission=0.5 gross_pnl=-2.7980592977155454 net_pnl=-3.7980592977155454 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:05 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908154 equity=9956.856743521595 pnl=-3.801235342908154 weekly_pnl=-3.801235342908154
+2026-10-18 19:05:05 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623699 equity=9953.05868422388 pnl=-3.7980592977155454 weekly_pnl=-7.599294640623699
+2026-10-18 19:05:06 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:06 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=268.8618245096496 quantity=1.859691315090569 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:06 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:06 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=13.42674415262862 quantity=37.239109818154425 side=buy symbol=UNI/USDT
+2026-10-18 19:05:06 [info     ] paper.fill_closed              entry_commission=0.5 equity=9949.257448880973 exit_commission=0.5 gross_pnl=-2.80123534290817 net_pnl=-3.80123534290817 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:06 [info     ] paper.fill_closed              entry_commission=0.5 equity=9951.705645119719 exit_commission=0.5 gross_pnl=3.4481962387453637 net_pnl=2.4481962387453637 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:06 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.80123534290817 equity=9949.257448880973 pnl=-3.80123534290817 weekly_pnl=-11.40052998353187
+2026-10-18 19:05:06 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=-1.3530391041628063 equity=9951.705645119719 pnl=2.4481962387453637 weekly_pnl=-8.952333744786506
+2026-10-18 19:05:07 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:07 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=286.05651675041906 quantity=1.7479063427044528 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:07 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:07 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=15.326882552461822 quantity=32.62242000541 side=buy symbol=UNI/USDT
+2026-10-18 19:05:07 [info     ] paper.fill_closed              entry_commission=0.5 equity=9947.904409776811 exit_commission=0.5 gross_pnl=-2.8012353429081034 net_pnl=-3.8012353429081034 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:07 [info     ] paper.fill_closed              entry_commission=0.5 equity=9944.106350479095 exit_commission=0.5 gross_pnl=-2.798059297715578 net_pnl=-3.798059297715578 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:07 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081034 equity=9947.904409776811 pnl=-3.8012353429081034 weekly_pnl=-12.75356908769461
+2026-10-18 19:05:07 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623681 equity=9944.106350479095 pnl=-3.798059297715578 weekly_pnl=-16.551628385410186
+2026-10-18 19:05:08 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:08 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=297.1868444159494 quantity=1.6824432487334087 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:08 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:08 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=14.72302077031367 quantity=33.96042210360528 side=buy symbol=UNI/USDT
+2026-10-18 19:05:08 [info     ] paper.fill_closed              entry_commission=0.5 equity=9940.305115136187 exit_commission=0.5 gross_pnl=-2.801235342908181 net_pnl=-3.801235342908181 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:08 [info     ] paper.fill_closed              entry_commission=0.5 equity=9936.507055838472 exit_commission=0.5 gross_pnl=-2.7980592977155303 net_pnl=-3.7980592977155303 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:08 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908181 equity=9940.305115136187 pnl=-3.801235342908181 weekly_pnl=-20.35286372831837
+2026-10-18 19:05:08 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623711 equity=9936.507055838472 pnl=-3.7980592977155303 weekly_pnl=-24.150923026033897
+2026-10-18 19:05:09 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:09 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:10 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:10 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=291.21442472220696 quantity=1.7169479172501712 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:10 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:10 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.904425023002588 quantity=25.12004237360155 side=buy symbol=UNI/USDT
+2026-10-18 19:05:10 [info     ] paper.fill_closed              entry_commission=0.5 equity=9938.959567203809 exit_commission=0.5 gross_pnl=3.4525113653369712 net_pnl=2.4525113653369712 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:10 [info     ] paper.fill_closed              entry_commission=0.5 equity=9935.161507906094 exit_commission=0.5 gross_pnl=-2.7980592977155174 net_pnl=-3.7980592977155174 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:10 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.4525113653369712 equity=9938.959567203809 pnl=2.4525113653369712 weekly_pnl=2.4525113653369712
+2026-10-18 19:05:10 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323785462 equity=9935.161507906094 pnl=-3.7980592977155174 weekly_pnl=-1.3455479323785462
+2026-10-18 19:05:11 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:11 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=302.8194678085083 quantity=1.6511487970653898 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:11 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:11 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.003485257225964 quantity=26.31096313292731 side=buy symbol=UNI/USDT
+2026-10-18 19:05:11 [info     ] paper.fill_closed              entry_commission=0.5 equity=9931.360272563186 exit_commission=0.5 gross_pnl=-2.8012353429081216 net_pnl=-3.8012353429081216 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:11 [info     ] paper.fill_closed              entry_commission=0.5 equity=9927.562213265472 exit_commission=0.5 gross_pnl=-2.7980592977155494 net_pnl=-3.7980592977155494 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:11 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081216 equity=9931.360272563186 pnl=-3.8012353429081216 weekly_pnl=-5.146783275286667
+2026-10-18 19:05:11 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623671 equity=9927.562213265472 pnl=-3.7980592977155494 weekly_pnl=-8.944842573002216
+2026-10-18 19:05:11 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:11 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=412.96543823801625 quantity=1.2107550746457882 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:11 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:11 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=20.901822578007188 quantity=23.921358921403243 side=buy symbol=UNI/USDT
+2026-10-18 19:05:11 [info     ] paper.fill_closed              entry_commission=0.5 equity=9930.014724630808 exit_commission=0.5 gross_pnl=3.452511365336932 net_pnl=2.452511365336932 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:11 [info     ] paper.fill_closed              entry_commission=0.5 equity=9926.216665333093 exit_commission=0.5 gross_pnl=-2.798059297715546 net_pnl=-3.798059297715546 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:11 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.452511365336932 equity=9930.014724630808 pnl=2.452511365336932 weekly_pnl=-6.492331207665284
+2026-10-18 19:05:11 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323786137 equity=9926.216665333093 pnl=-3.798059297715546 weekly_pnl=-10.29039050538083
+2026-10-18 19:05:13 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:13 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:14 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:14 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=477.1429655227155 quantity=1.0479039535922832 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:14 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:14 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=18.383613883504704 quantity=27.198134336831416 side=buy symbol=UNI/USDT
+2026-10-18 19:05:14 [info     ] paper.fill_closed              entry_commission=0.5 equity=9922.415429990186 exit_commission=0.5 gross_pnl=-2.8012353429081425 net_pnl=-3.8012353429081425 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:14 [info     ] paper.fill_closed              entry_commission=0.5 equity=9918.617370692471 exit_commission=0.5 gross_pnl=-2.7980592977155507 net_pnl=-3.7980592977155507 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:14 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081425 equity=9922.415429990186 pnl=-3.8012353429081425 weekly_pnl=-3.8012353429081425
+2026-10-18 19:05:14 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623693 equity=9918.617370692471 pnl=-3.7980592977155507 weekly_pnl=-7.599294640623693
+2026-10-18 19:05:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:15 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=484.557520694716 quantity=1.0318692387296846 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:15 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.182692622897434 quantity=26.06516247897204 side=buy symbol=UNI/USDT
+2026-10-18 19:05:15 [info     ] paper.fill_closed              entry_commission=0.5 equity=9914.816135349563 exit_commission=0.5 gross_pnl=-2.8012353429081274 net_pnl=-3.8012353429081274 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:15 [info     ] paper.fill_closed              entry_commission=0.5 equity=9911.018076051847 exit_commission=0.5 gross_pnl=-2.798059297715587 net_pnl=-3.798059297715587 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:15 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081274 equity=9914.816135349563 pnl=-3.8012353429081274 weekly_pnl=-11.40052998353182
+2026-10-18 19:05:15 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.5992946406237145 equity=9911.018076051847 pnl=-3.798059297715587 weekly_pnl=-15.198589281247408
+2026-10-18 19:05:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:15 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=505.8467583647462 quantity=0.988441641133281 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:15 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=20.418332912499338 quantity=24.48779741924566 side=buy symbol=UNI/USDT
+2026-10-18 19:05:15 [info     ] paper.fill_closed              entry_commission=0.5 equity=9907.21684070894 exit_commission=0.5 gross_pnl=-2.8012353429081682 net_pnl=-3.8012353429081682 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:15 [info     ] paper.fill_closed              entry_commission=0.5 equity=9903.418781411223 exit_commission=0.5 gross_pnl=-2.798059297715557 net_pnl=-3.798059297715557 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:15 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081682 equity=9907.21684070894 pnl=-3.8012353429081682 weekly_pnl=-18.999824624155575
+2026-10-18 19:05:15 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623725 equity=9903.418781411223 pnl=-3.798059297715557 weekly_pnl=-22.797883921871133
+2026-10-18 19:05:17 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:17 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=512.0430438569155 quantity=0.9764804072599007 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:17 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:17 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=21.556414753452625 quantity=23.194951744928574 side=buy symbol=UNI/USDT
+2026-10-18 19:05:17 [info     ] paper.fill_closed              entry_commission=0.5 equity=9905.87129277656 exit_commission=0.5 gross_pnl=3.452511365336932 net_pnl=2.452511365336932 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:17 [info     ] paper.fill_closed              entry_commission=0.5 equity=9902.073233478843 exit_commission=0.5 gross_pnl=-2.7980592977155827 net_pnl=-3.7980592977155827 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:17 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.452511365336932 equity=9905.87129277656 pnl=2.452511365336932 weekly_pnl=-20.3453725565342
+2026-10-18 19:05:17 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323786506 equity=9902.073233478843 pnl=-3.7980592977155827 weekly_pnl=-24.143431854249783
+2026-10-18 19:05:18 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:18 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:19 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:19 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:20 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:20 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:20 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:20 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=118.704839615788 quantity=4.2121281795952905 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:20 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:20 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=5.8333948695037225 quantity=85.71338151887147 side=buy symbol=UNI/USDT
+2026-10-18 19:05:20 [info     ] paper.fill_closed              entry_commission=0.5 equity=10013.709255440179 exit_commission=0.5 gross_pnl=14.70925544017817 net_pnl=13.70925544017817 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:20 [info     ] paper.fill_closed              entry_commission=0.5 equity=10002.41568949871 exit_commission=0.5 gross_pnl=-10.293565941468644 net_pnl=-11.293565941468644 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:20 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=13.70925544017817 equity=10013.709255440179 pnl=13.70925544017817 weekly_pnl=13.70925544017817
+2026-10-18 19:05:20 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=2.4156894987095257 equity=10002.41568949871 pnl=-11.293565941468644 weekly_pnl=2.4156894987095257
+2026-10-18 19:05:22 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:22 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=126.49117191731865 quantity=3.9528450280058007 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:22 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:22 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=5.483185053841995 quantity=91.18787622344729 side=buy symbol=UNI/USDT
+2026-10-18 19:05:22 [info     ] paper.fill_closed              entry_commission=0.5 equity=9991.109958105908 exit_commission=0.5 gross_pnl=-10.305731392802409 net_pnl=-11.305731392802409 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:22 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.305731392802409 equity=9991.109958105908 pnl=-11.305731392802409 weekly_pnl=-8.890041894092883
+2026-10-18 19:05:22 [info     ] paper.fill_closed              entry_commission=0.5 equity=9979.81639216444 exit_commission=0.5 gross_pnl=-10.293565941468652 net_pnl=-11.293565941468652 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:22 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-22.59929733427106 equity=9974.813073987407 pnl=-11.293565941468652 weekly_pnl=-20.183607835561535
+2026-10-18 19:05:23 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:23 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=148.66088176776847 quantity=3.363359574182253 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:23 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:24 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=7.036215496380757 quantity=71.06092760478793 side=buy symbol=UNI/USDT
+2026-10-18 19:05:24 [info     ] paper.fill_closed              entry_commission=0.5 equity=9968.510660771637 exit_commission=0.5 gross_pnl=-10.305731392802384 net_pnl=-11.305731392802384 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:24 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.305731392802384 equity=9968.510660771637 pnl=-11.305731392802384 weekly_pnl=-31.489339228363917
+2026-10-18 19:05:24 [info     ] paper.fill_closed              entry_commission=0.5 equity=9957.217094830168 exit_commission=0.5 gross_pnl=-10.293565941468634 net_pnl=-11.293565941468634 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:24 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-22.599297334271018 equity=9960.844633536815 pnl=-11.293565941468634 weekly_pnl=-42.78290516983255
+2026-10-18 19:05:24 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:24 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:25 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:25 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:26 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:26 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=203.59295145761985 quantity=2.455880699308397 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:26 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:26 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=9.305875281710744 quantity=53.72949721158122 side=buy symbol=UNI/USDT
+2026-10-18 19:05:26 [info     ] paper.fill_closed              entry_commission=0.5 equity=9945.9235288887 exit_commission=0.5 gross_pnl=-10.293565941468614 net_pnl=-11.293565941468614 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:26 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.293565941468614 equity=9945.9235288887 pnl=-11.293565941468614 weekly_pnl=-11.293565941468614
+2026-10-18 19:05:26 [info     ] paper.fill_closed              entry_commission=0.5 equity=9934.617797495897 exit_commission=0.5 gross_pnl=-10.305731392802336 net_pnl=-11.305731392802336 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:26 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-22.59929733427095 equity=9932.938855545935 pnl=-11.305731392802336 weekly_pnl=-22.59929733427095
+2026-10-18 19:05:28 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:28 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=193.38806901237155 quantity=2.585474908320294 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:28 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:28 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=8.664491019313123 quantity=57.706794188545125 side=buy symbol=UNI/USDT
+2026-10-18 19:05:28 [info     ] paper.fill_closed              entry_commission=0.5 equity=9923.324231554428 exit_commission=0.5 gross_pnl=-10.293565941468623 net_pnl=-11.293565941468623 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:28 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.293565941468623 equity=9921.895212754926 pnl=-11.293565941468623 weekly_pnl=-33.89286327573957
+2026-10-18 19:05:28 [info     ] paper.fill_closed              entry_commission=0.5 equity=9937.033486994607 exit_commission=0.5 gross_pnl=14.70925544017814 net_pnl=13.70925544017814 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:28 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.4156894987095168 equity=9943.160237614387 pnl=13.70925544017814 weekly_pnl=-20.183607835561432
+2026-10-18 19:05:28 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:28 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=170.32989177441556 quantity=2.93548005456493 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:28 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:28 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=7.808778349730527 quantity=64.03050228942078 side=buy symbol=UNI/USDT
+2026-10-18 19:05:28 [info     ] paper.fill_closed              entry_commission=0.5 equity=9925.727755601805 exit_commission=0.5 gross_pnl=-10.305731392802373 net_pnl=-11.305731392802373 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:28 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.305731392802373 equity=9925.727755601805 pnl=-11.305731392802373 weekly_pnl=-31.489339228363804
+2026-10-18 19:05:28 [info     ] paper.fill_closed              entry_commission=0.5 equity=9939.41921180618 exit_commission=0.5 gross_pnl=14.69145620437495 net_pnl=13.69145620437495 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:28 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.385724811572576 equity=9952.021238852225 pnl=13.69145620437495 weekly_pnl=-17.797883023988852
+2026-10-18 19:05:29 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:29 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:30 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:30 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=262.7624809034063 quantity=1.9028591840088624 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:30 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:30 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=12.1261649572083 quantity=41.23315176434072 side=buy symbol=UNI/USDT
+2026-10-18 19:05:30 [info     ] paper.fill_closed              entry_commission=0.5 equity=9928.113480413378 exit_commission=0.5 gross_pnl=-10.305731392802434 net_pnl=-11.305731392802434 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:30 [info     ] paper.fill_closed              entry_commission=0.5 equity=9941.804936617753 exit_commission=0.5 gross_pnl=14.691456204374873 net_pnl=13.691456204374873 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:30 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.305731392802434 equity=9928.113480413378 pnl=-11.305731392802434 weekly_pnl=-11.305731392802434
+2026-10-18 19:05:30 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.385724811572439 equity=9941.804936617753 pnl=13.691456204374873 weekly_pnl=2.385724811572439
+2026-10-18 19:05:32 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:32 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=268.8618245096496 quantity=1.859691315090569 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:32 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:32 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=13.42674415262862 quantity=37.239109818154425 side=buy symbol=UNI/USDT
+2026-10-18 19:05:32 [info     ] paper.fill_closed              entry_commission=0.5 equity=9930.49920522495 exit_commission=0.5 gross_pnl=-10.305731392802334 net_pnl=-11.305731392802334 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:32 [info     ] paper.fill_closed              entry_commission=0.5 equity=9944.190661429326 exit_commission=0.5 gross_pnl=14.691456204374873 net_pnl=13.691456204374873 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:32 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.305731392802334 equity=9935.123946274132 pnl=-11.305731392802334 weekly_pnl=-8.920006581229895
+2026-10-18 19:05:32 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.3857248115725387 equity=9948.815402478507 pnl=13.691456204374873 weekly_pnl=4.771449623144978
+2026-10-18 19:05:32 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:32 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=286.05651675041906 quantity=1.7479063427044528 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:32 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:32 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=15.326882552461822 quantity=32.62242000541 side=buy symbol=UNI/USDT
+2026-10-18 19:05:32 [info     ] paper.fill_closed              entry_commission=0.5 equity=9932.897095487857 exit_commission=0.5 gross_pnl=-10.293565941468582 net_pnl=-11.293565941468582 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:32 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.293565941468582 equity=9932.897095487857 pnl=-11.293565941468582 weekly_pnl=-6.522116318323604
+2026-10-18 19:05:32 [info     ] paper.fill_closed              entry_commission=0.5 equity=9946.606350928036 exit_commission=0.5 gross_pnl=14.709255440178191 net_pnl=13.709255440178191 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:32 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.415689498709609 equity=9939.213511543745 pnl=13.709255440178191 weekly_pnl=7.187139121854587
+2026-10-18 19:05:33 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:33 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=297.1868444159494 quantity=1.6824432487334087 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:33 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:33 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=14.72302077031367 quantity=33.96042210360528 side=buy symbol=UNI/USDT
+2026-10-18 19:05:33 [info     ] paper.fill_closed              entry_commission=0.5 equity=9935.300619535234 exit_commission=0.5 gross_pnl=-10.305731392802384 net_pnl=-11.305731392802384 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:33 [info     ] paper.fill_closed              entry_commission=0.5 equity=9948.992075739608 exit_commission=0.5 gross_pnl=14.691456204374854 net_pnl=13.691456204374854 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:33 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.305731392802384 equity=9935.300619535234 pnl=-11.305731392802384 weekly_pnl=-4.118592270947797
+2026-10-18 19:05:33 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.3857248115724694 equity=9948.992075739608 pnl=13.691456204374854 weekly_pnl=9.572863933427056
+2026-10-18 19:05:34 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:34 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:36 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:36 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=291.21442472220696 quantity=1.7169479172501712 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:36 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:36 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.904425023002588 quantity=25.12004237360155 side=buy symbol=UNI/USDT
+2026-10-18 19:05:36 [info     ] paper.fill_closed              entry_commission=0.5 equity=9937.69850979814 exit_commission=0.5 gross_pnl=-10.293565941468561 net_pnl=-11.293565941468561 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:36 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.293565941468561 equity=9937.69850979814 pnl=-11.293565941468561 weekly_pnl=-11.293565941468561
+2026-10-18 19:05:36 [info     ] paper.fill_closed              entry_commission=0.5 equity=9926.392778405338 exit_commission=0.5 gross_pnl=-10.305731392802388 net_pnl=-11.305731392802388 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:36 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-22.59929733427095 equity=9921.65779711939 pnl=-11.305731392802388 weekly_pnl=-22.59929733427095
+2026-10-18 19:05:37 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:37 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=302.8194678085083 quantity=1.6511487970653898 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:37 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:37 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.003485257225964 quantity=26.31096313292731 side=buy symbol=UNI/USDT
+2026-10-18 19:05:37 [info     ] paper.fill_closed              entry_commission=0.5 equity=9915.087047012536 exit_commission=0.5 gross_pnl=-10.30573139280233 net_pnl=-11.30573139280233 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:37 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.30573139280233 equity=9915.11762209528 pnl=-11.30573139280233 weekly_pnl=-33.90502872707328
+2026-10-18 19:05:37 [info     ] paper.fill_closed              entry_commission=0.5 equity=9928.77850321691 exit_commission=0.5 gross_pnl=14.691456204374788 net_pnl=13.691456204374788 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:37 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.385724811572457 equity=9936.582631078247 pnl=13.691456204374788 weekly_pnl=-20.21357252269849
+2026-10-18 19:05:37 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:37 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=412.96543823801625 quantity=1.2107550746457882 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:37 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:37 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=20.901822578007188 quantity=23.921358921403243 side=buy symbol=UNI/USDT
+2026-10-18 19:05:37 [info     ] paper.fill_closed              entry_commission=0.5 equity=9942.48775865709 exit_commission=0.5 gross_pnl=14.709255440178191 net_pnl=13.709255440178191 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:37 [info     ] paper.fill_closed              entry_commission=0.5 equity=9931.19419271562 exit_commission=0.5 gross_pnl=-10.293565941468612 net_pnl=-11.293565941468612 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:37 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=13.709255440178191 equity=9942.48775865709 pnl=13.709255440178191 weekly_pnl=-6.5043170825203
+2026-10-18 19:05:37 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=2.415689498709579 equity=9931.19419271562 pnl=-11.293565941468612 weekly_pnl=-17.797883023988913
+2026-10-18 19:05:38 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:38 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:40 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:40 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=477.1429655227155 quantity=1.0479039535922832 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:40 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:40 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=18.383613883504704 quantity=27.198134336831416 side=buy symbol=UNI/USDT
+2026-10-18 19:05:40 [info     ] paper.fill_closed              entry_commission=0.5 equity=9944.9034481558 exit_commission=0.5 gross_pnl=14.709255440178211 net_pnl=13.709255440178211 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:40 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=13.709255440178211 equity=9944.9034481558 pnl=13.709255440178211 weekly_pnl=13.709255440178211
+2026-10-18 19:05:40 [info     ] paper.fill_closed              entry_commission=0.5 equity=9958.594904360174 exit_commission=0.5 gross_pnl=14.691456204374866 net_pnl=13.691456204374866 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:40 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=27.400711644553077 equity=9954.754595858185 pnl=13.691456204374866 weekly_pnl=27.400711644553077
+2026-10-18 19:05:40 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:40 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=484.557520694716 quantity=1.0318692387296846 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:40 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:40 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.182692622897434 quantity=26.06516247897204 side=buy symbol=UNI/USDT
+2026-10-18 19:05:40 [info     ] paper.fill_closed              entry_commission=0.5 equity=9947.289172967372 exit_commission=0.5 gross_pnl=-10.30573139280233 net_pnl=-11.30573139280233 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:40 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.30573139280233 equity=9945.543778275522 pnl=-11.30573139280233 weekly_pnl=16.094980251750748
+2026-10-18 19:05:40 [info     ] paper.fill_closed              entry_commission=0.5 equity=9960.980629171747 exit_commission=0.5 gross_pnl=14.691456204374868 net_pnl=13.691456204374868 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:40 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.385724811572537 equity=9969.462876447378 pnl=13.691456204374868 weekly_pnl=29.786436456125614
+2026-10-18 19:05:41 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:41 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=505.8467583647462 quantity=0.988441641133281 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:41 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:41 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=20.418332912499338 quantity=24.48779741924566 side=buy symbol=UNI/USDT
+2026-10-18 19:05:41 [info     ] paper.fill_closed              entry_commission=0.5 equity=9949.674897778945 exit_commission=0.5 gross_pnl=-10.3057313928023 net_pnl=-11.3057313928023 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:41 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-11.3057313928023 equity=9949.674897778945 pnl=-11.3057313928023 weekly_pnl=18.480705063323313
+2026-10-18 19:05:41 [info     ] paper.fill_closed              entry_commission=0.5 equity=9963.36635398332 exit_commission=0.5 gross_pnl=14.691456204374843 net_pnl=13.691456204374843 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:41 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.3857248115725422 equity=9962.206826278125 pnl=13.691456204374843 weekly_pnl=32.17216126769816
+2026-10-18 19:05:42 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:42 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=512.0430438569155 quantity=0.9764804072599007 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:42 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:42 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=21.556414753452625 quantity=23.194951744928574 side=buy symbol=UNI/USDT
+2026-10-18 19:05:42 [info     ] paper.fill_closed              entry_commission=0.5 equity=9977.057810187694 exit_commission=0.5 gross_pnl=14.691456204374854 net_pnl=13.691456204374854 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:42 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=13.691456204374854 equity=9982.372129917801 pnl=13.691456204374854 weekly_pnl=45.86361747207301
+2026-10-18 19:05:42 [info     ] paper.fill_closed              entry_commission=0.5 equity=9965.752078794892 exit_commission=0.5 gross_pnl=-10.305731392802302 net_pnl=-11.305731392802302 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:42 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=2.385724811572551 equity=9962.032665717576 pnl=-11.305731392802302 weekly_pnl=34.55788607927071
+2026-10-18 19:05:44 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:44 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:45 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:45 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:46 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:46 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:46 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:46 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=120.99946404966228 quantity=4.132249708104352 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:46 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:46 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=5.893931137639535 quantity=84.83302371941953 side=buy symbol=UNI/USDT
+2026-10-18 19:05:46 [info     ] paper.fill_closed              entry_commission=0.5 equity=9996.198764657092 exit_commission=0.5 gross_pnl=-2.80123534290814 net_pnl=-3.80123534290814 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:46 [info     ] paper.fill_closed              entry_commission=0.5 equity=9992.400705359376 exit_commission=0.5 gross_pnl=-2.798059297715559 net_pnl=-3.798059297715559 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:46 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.80123534290814 equity=9996.198764657092 pnl=-3.80123534290814 weekly_pnl=-3.80123534290814
+2026-10-18 19:05:46 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.5992946406236985 equity=9992.400705359376 pnl=-3.798059297715559 weekly_pnl=-7.5992946406236985
+2026-10-18 19:05:48 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:48 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=120.14097868873108 quantity=4.161777317424989 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:48 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:48 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=5.281264080126177 quantity=94.67430380570067 side=buy symbol=UNI/USDT
+2026-10-18 19:05:48 [info     ] paper.fill_closed              entry_commission=0.5 equity=9988.599470016468 exit_commission=0.5 gross_pnl=-2.801235342908179 net_pnl=-3.801235342908179 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:48 [info     ] paper.fill_closed              entry_commission=0.5 equity=9991.047666255214 exit_commission=0.5 gross_pnl=3.448196238745328 net_pnl=2.448196238745328 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:05:48 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908179 equity=9988.599470016468 pnl=-3.801235342908179 weekly_pnl=-11.400529983531877
+2026-10-18 19:05:48 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=-1.3530391041628507 equity=9991.047666255214 pnl=2.448196238745328 weekly_pnl=-8.952333744786548
+2026-10-18 19:05:49 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:49 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=150.2239447532124 quantity=3.3283642020012123 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:49 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:49 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=7.156687672968391 quantity=69.86472273878262 side=buy symbol=UNI/USDT
+2026-10-18 19:05:49 [info     ] paper.fill_closed              entry_commission=0.5 equity=9987.246430912306 exit_commission=0.5 gross_pnl=-2.8012353429080967 net_pnl=-3.8012353429080967 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:49 [info     ] paper.fill_closed              entry_commission=0.5 equity=9983.44837161459 exit_commission=0.5 gross_pnl=-2.798059297715555 net_pnl=-3.798059297715555 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:49 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429080967 equity=9987.246430912306 pnl=-3.8012353429080967 weekly_pnl=-12.753569087694645
+2026-10-18 19:05:49 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623652 equity=9983.44837161459 pnl=-3.798059297715555 weekly_pnl=-16.5516283854102
+2026-10-18 19:05:50 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:50 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:50 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:50 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:52 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:52 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=209.0236958712404 quantity=2.3920732906186983 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:52 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:52 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=9.489985584801481 quantity=52.68711901952371 side=buy symbol=UNI/USDT
+2026-10-18 19:05:52 [info     ] paper.fill_closed              entry_commission=0.5 equity=9985.900882979926 exit_commission=0.5 gross_pnl=3.4525113653369397 net_pnl=2.4525113653369397 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:52 [info     ] paper.fill_closed              entry_commission=0.5 equity=9982.10282368221 exit_commission=0.5 gross_pnl=-2.798059297715625 net_pnl=-3.798059297715625 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:52 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.4525113653369397 equity=9985.900882979926 pnl=2.4525113653369397 weekly_pnl=2.4525113653369397
+2026-10-18 19:05:52 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323786852 equity=9982.10282368221 pnl=-3.798059297715625 weekly_pnl=-1.3455479323786852
+2026-10-18 19:05:53 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:53 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=196.73606197991458 quantity=2.5414761023886236 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:53 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:53 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=8.836694188671363 quantity=56.58224550092497 side=buy symbol=UNI/USDT
+2026-10-18 19:05:53 [info     ] paper.fill_closed              entry_commission=0.5 equity=9978.301588339302 exit_commission=0.5 gross_pnl=-2.801235342908086 net_pnl=-3.801235342908086 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:53 [info     ] paper.fill_closed              entry_commission=0.5 equity=9974.503529041585 exit_commission=0.5 gross_pnl=-2.7980592977155894 net_pnl=-3.7980592977155894 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:53 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908086 equity=9978.301588339302 pnl=-3.801235342908086 weekly_pnl=-5.146783275286771
+2026-10-18 19:05:53 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623675 equity=9974.503529041585 pnl=-3.7980592977155894 weekly_pnl=-8.944842573002362
+2026-10-18 19:05:54 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:54 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=153.42102818699456 quantity=3.2590056650551427 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:54 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:54 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=7.2976721387590695 quantity=68.51499909737277 side=buy symbol=UNI/USDT
+2026-10-18 19:05:54 [info     ] paper.fill_closed              entry_commission=0.5 equity=9970.702293698678 exit_commission=0.5 gross_pnl=-2.8012353429080594 net_pnl=-3.8012353429080594 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:54 [info     ] paper.fill_closed              entry_commission=0.5 equity=9966.904234400963 exit_commission=0.5 gross_pnl=-2.798059297715523 net_pnl=-3.798059297715523 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:54 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429080594 equity=9970.702293698678 pnl=-3.8012353429080594 weekly_pnl=-12.746077915910421
+2026-10-18 19:05:54 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623583 equity=9966.904234400963 pnl=-3.798059297715523 weekly_pnl=-16.544137213625945
+2026-10-18 19:05:55 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:55 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:56 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:56 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=260.8676168238655 quantity=1.9166809820537964 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:56 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:56 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=12.276354938153514 quantity=40.72870184341583 side=buy symbol=UNI/USDT
+2026-10-18 19:05:56 [info     ] paper.fill_closed              entry_commission=0.5 equity=9963.102999058056 exit_commission=0.5 gross_pnl=-2.801235342908106 net_pnl=-3.801235342908106 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:56 [info     ] paper.fill_closed              entry_commission=0.5 equity=9959.30493976034 exit_commission=0.5 gross_pnl=-2.7980592977155267 net_pnl=-3.7980592977155267 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:56 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908106 equity=9963.102999058056 pnl=-3.801235342908106 weekly_pnl=-3.801235342908106
+2026-10-18 19:05:56 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623633 equity=9959.30493976034 pnl=-3.7980592977155267 weekly_pnl=-7.599294640623633
+2026-10-18 19:05:57 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:57 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=278.09728809563916 quantity=1.797931951886015 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:57 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:57 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=13.66718820606723 quantity=36.58396975743969 side=buy symbol=UNI/USDT
+2026-10-18 19:05:57 [info     ] paper.fill_closed              entry_commission=0.5 equity=9961.757451125677 exit_commission=0.5 gross_pnl=3.452511365336903 net_pnl=2.452511365336903 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:57 [info     ] paper.fill_closed              entry_commission=0.5 equity=9957.959391827962 exit_commission=0.5 gross_pnl=-2.7980592977155223 net_pnl=-3.7980592977155223 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:57 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.452511365336903 equity=9961.757451125677 pnl=2.452511365336903 weekly_pnl=-5.1467832752867295
+2026-10-18 19:05:57 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323786195 equity=9957.959391827962 pnl=-3.7980592977155223 weekly_pnl=-8.944842573002251
+2026-10-18 19:05:58 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:58 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=287.67054918104054 quantity=1.7380993689601973 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:58 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:58 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=15.314775298834657 quantity=32.64820999613663 side=buy symbol=UNI/USDT
+2026-10-18 19:05:58 [info     ] paper.fill_closed              entry_commission=0.5 equity=9960.411903193299 exit_commission=0.5 gross_pnl=3.4525113653369157 net_pnl=2.4525113653369157 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:05:58 [info     ] paper.fill_closed              entry_commission=0.5 equity=9956.613843895584 exit_commission=0.5 gross_pnl=-2.798059297715537 net_pnl=-3.798059297715537 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:58 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.4525113653369157 equity=9960.411903193299 pnl=2.4525113653369157 weekly_pnl=-6.492331207665336
+2026-10-18 19:05:58 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323786212 equity=9956.613843895584 pnl=-3.798059297715537 weekly_pnl=-10.290390505380874
+2026-10-18 19:05:59 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:59 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=291.63617189602877 quantity=1.7144649675975552 side=sell symbol=AAVE/USDT
+2026-10-18 19:05:59 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:05:59 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=14.185898973035915 quantity=35.246268209747114 side=buy symbol=UNI/USDT
+2026-10-18 19:05:59 [info     ] paper.fill_closed              entry_commission=0.5 equity=9952.812608552676 exit_commission=0.5 gross_pnl=-2.8012353429081527 net_pnl=-3.8012353429081527 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:05:59 [info     ] paper.fill_closed              entry_commission=0.5 equity=9949.01454925496 exit_commission=0.5 gross_pnl=-2.7980592977155574 net_pnl=-3.7980592977155574 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:05:59 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081527 equity=9952.812608552676 pnl=-3.8012353429081527 weekly_pnl=-14.091625848289027
+2026-10-18 19:05:59 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.59929464062371 equity=9949.01454925496 pnl=-3.7980592977155574 weekly_pnl=-17.889685146004584
+2026-10-18 19:06:00 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:00 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:01 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:01 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=292.325758507254 quantity=1.710420602526522 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:01 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:01 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=20.0028840111772 quantity=24.996395505798578 side=buy symbol=UNI/USDT
+2026-10-18 19:06:01 [info     ] paper.fill_closed              entry_commission=0.5 equity=9945.213313912052 exit_commission=0.5 gross_pnl=-2.8012353429081727 net_pnl=-3.8012353429081727 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:01 [info     ] paper.fill_closed              entry_commission=0.5 equity=9941.415254614336 exit_commission=0.5 gross_pnl=-2.798059297715557 net_pnl=-3.798059297715557 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:01 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081727 equity=9945.213313912052 pnl=-3.8012353429081727 weekly_pnl=-3.8012353429081727
+2026-10-18 19:06:01 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.59929464062373 equity=9941.415254614336 pnl=-3.798059297715557 weekly_pnl=-7.59929464062373
+2026-10-18 19:06:02 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:02 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=301.4083137577111 quantity=1.65887925839341 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:02 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:02 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=18.821075973239868 quantity=26.565962578914654 side=buy symbol=UNI/USDT
+2026-10-18 19:06:02 [info     ] paper.fill_closed              entry_commission=0.5 equity=9937.614019271428 exit_commission=0.5 gross_pnl=-2.8012353429080927 net_pnl=-3.8012353429080927 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:02 [info     ] paper.fill_closed              entry_commission=0.5 equity=9933.815959973712 exit_commission=0.5 gross_pnl=-2.7980592977155854 net_pnl=-3.7980592977155854 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:02 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429080927 equity=9937.614019271428 pnl=-3.8012353429080927 weekly_pnl=-11.400529983531822
+2026-10-18 19:06:02 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623678 equity=9933.815959973712 pnl=-3.7980592977155854 weekly_pnl=-15.198589281247408
+2026-10-18 19:06:03 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:03 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=417.76556069267565 quantity=1.1968435099604084 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:03 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:03 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=20.128959544815423 quantity=24.839833320087525 side=buy symbol=UNI/USDT
+2026-10-18 19:06:03 [info     ] paper.fill_closed              entry_commission=0.5 equity=9930.014724630804 exit_commission=0.5 gross_pnl=-2.801235342908136 net_pnl=-3.801235342908136 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:03 [info     ] paper.fill_closed              entry_commission=0.5 equity=9932.46292086955 exit_commission=0.5 gross_pnl=3.448196238745268 net_pnl=2.448196238745268 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:06:03 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908136 equity=9930.014724630804 pnl=-3.801235342908136 weekly_pnl=-18.999824624155544
+2026-10-18 19:06:03 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=-1.353039104162868 equity=9932.46292086955 pnl=2.448196238745268 weekly_pnl=-16.551628385410275
+2026-10-18 19:06:04 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:04 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:05 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:05 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=476.3494412193635 quantity=1.0496495990844361 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:05 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:05 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=18.507287978406964 quantity=27.016384063584344 side=buy symbol=UNI/USDT
+2026-10-18 19:06:06 [info     ] paper.fill_closed              entry_commission=0.5 equity=9928.661685526642 exit_commission=0.5 gross_pnl=-2.801235342908135 net_pnl=-3.801235342908135 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:06 [info     ] paper.fill_closed              entry_commission=0.5 equity=9924.863626228926 exit_commission=0.5 gross_pnl=-2.798059297715649 net_pnl=-3.798059297715649 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:06 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908135 equity=9928.661685526642 pnl=-3.801235342908135 weekly_pnl=-3.801235342908135
+2026-10-18 19:06:06 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623784 equity=9924.863626228926 pnl=-3.798059297715649 weekly_pnl=-7.599294640623784
+2026-10-18 19:06:06 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:06 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=503.69304945577454 quantity=0.9926680555553332 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:06 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:06 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.3295806255807 quantity=25.86708991183708 side=buy symbol=UNI/USDT
+2026-10-18 19:06:06 [info     ] paper.fill_closed              entry_commission=0.5 equity=9927.316137594262 exit_commission=0.5 gross_pnl=3.452511365336922 net_pnl=2.452511365336922 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:06:06 [info     ] paper.fill_closed              entry_commission=0.5 equity=9923.518078296545 exit_commission=0.5 gross_pnl=-2.798059297715574 net_pnl=-3.798059297715574 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:06 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.452511365336922 equity=9927.316137594262 pnl=2.452511365336922 weekly_pnl=-5.146783275286862
+2026-10-18 19:06:06 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.345547932378652 equity=9923.518078296545 pnl=-3.798059297715574 weekly_pnl=-8.944842573002436
+2026-10-18 19:06:07 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:07 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=494.5765145751992 quantity=1.0109659178407595 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:07 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:07 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=20.281550964496603 quantity=24.652946950421267 side=buy symbol=UNI/USDT
+2026-10-18 19:06:07 [info     ] paper.fill_closed              entry_commission=0.5 equity=9919.716842953638 exit_commission=0.5 gross_pnl=-2.8012353429081545 net_pnl=-3.8012353429081545 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:07 [info     ] paper.fill_closed              entry_commission=0.5 equity=9915.918783655923 exit_commission=0.5 gross_pnl=-2.7980592977155334 net_pnl=-3.7980592977155334 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:07 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081545 equity=9919.716842953638 pnl=-3.8012353429081545 weekly_pnl=-12.74607791591059
+2026-10-18 19:06:07 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623688 equity=9915.918783655923 pnl=-3.7980592977155334 weekly_pnl=-16.544137213626122
+2026-10-18 19:06:08 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:08 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=522.143988610037 quantity=0.9575902641932449 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:08 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:08 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=21.64116552884276 quantity=23.10411605759466 side=buy symbol=UNI/USDT
+2026-10-18 19:06:08 [info     ] paper.fill_closed              entry_commission=0.5 equity=9918.37129502126 exit_commission=0.5 gross_pnl=3.4525113653368287 net_pnl=2.4525113653368287 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:06:08 [info     ] paper.fill_closed              entry_commission=0.5 equity=9914.573235723545 exit_commission=0.5 gross_pnl=-2.7980592977155405 net_pnl=-3.7980592977155405 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:08 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.4525113653368287 equity=9918.37129502126 pnl=2.4525113653368287 weekly_pnl=-14.091625848289294
+2026-10-18 19:06:08 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323787118 equity=9914.573235723545 pnl=-3.7980592977155405 weekly_pnl=-17.889685146004833
+2026-10-18 19:06:10 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:10 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:11 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:11 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:12 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:12 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=116.72702526272305 quantity=4.283498177689582 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:12 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:12 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=5.769156383316628 quantity=86.66778412280709 side=buy symbol=UNI/USDT
+2026-10-18 19:06:12 [info     ] paper.fill_closed              entry_commission=0.5 equity=9996.198764657092 exit_commission=0.5 gross_pnl=-2.80123534290817 net_pnl=-3.80123534290817 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:12 [info     ] paper.fill_closed              entry_commission=0.5 equity=9992.400705359376 exit_commission=0.5 gross_pnl=-2.798059297715574 net_pnl=-3.798059297715574 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:12 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.80123534290817 equity=9996.198764657092 pnl=-3.80123534290817 weekly_pnl=-3.80123534290817
+2026-10-18 19:06:12 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623744 equity=9992.400705359376 pnl=-3.798059297715574 weekly_pnl=-7.599294640623744
+2026-10-18 19:06:13 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:13 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=127.63248772894079 quantity=3.9174978792380344 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:13 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:13 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=5.4922905090492 quantity=91.03669938365255 side=buy symbol=UNI/USDT
+2026-10-18 19:06:13 [info     ] paper.fill_closed              entry_commission=0.5 equity=9988.599470016468 exit_commission=0.5 gross_pnl=-2.801235342908075 net_pnl=-3.801235342908075 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:13 [info     ] paper.fill_closed              entry_commission=0.5 equity=9991.047666255214 exit_commission=0.5 gross_pnl=3.448196238745337 net_pnl=2.448196238745337 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:06:13 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908075 equity=9988.599470016468 pnl=-3.801235342908075 weekly_pnl=-11.400529983531818
+2026-10-18 19:06:13 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=-1.3530391041627379 equity=9991.047666255214 pnl=2.448196238745337 weekly_pnl=-8.95233374478648
+2026-10-18 19:06:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:15 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=149.07163553184614 quantity=3.3540921330616587 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:15 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=7.098552843568544 quantity=70.43689200017886 side=buy symbol=UNI/USDT
+2026-10-18 19:06:15 [info     ] paper.fill_closed              entry_commission=0.5 equity=9993.50017762055 exit_commission=0.5 gross_pnl=3.4525113653368757 net_pnl=2.4525113653368757 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:06:15 [info     ] paper.fill_closed              entry_commission=0.5 equity=9989.702118322835 exit_commission=0.5 gross_pnl=-2.7980592977155285 net_pnl=-3.7980592977155285 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:15 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.4525113653368757 equity=9993.50017762055 pnl=2.4525113653368757 weekly_pnl=-6.499822379449605
+2026-10-18 19:06:15 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-1.3455479323786528 equity=9989.702118322835 pnl=-3.7980592977155285 weekly_pnl=-10.297881677165133
+2026-10-18 19:06:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:16 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:16 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:17 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:17 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=203.49800837346564 quantity=2.457026503583195 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:17 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:17 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=9.283461853508394 quantity=53.85921845642535 side=buy symbol=UNI/USDT
+2026-10-18 19:06:17 [info     ] paper.fill_closed              entry_commission=0.5 equity=9985.900882979928 exit_commission=0.5 gross_pnl=-2.8012353429081536 net_pnl=-3.8012353429081536 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:17 [info     ] paper.fill_closed              entry_commission=0.5 equity=9982.102823682213 exit_commission=0.5 gross_pnl=-2.7980592977155228 net_pnl=-3.7980592977155228 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:17 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081536 equity=9985.900882979928 pnl=-3.8012353429081536 weekly_pnl=-3.8012353429081536
+2026-10-18 19:06:17 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623676 equity=9982.102823682213 pnl=-3.7980592977155228 weekly_pnl=-7.599294640623676
+2026-10-18 19:06:19 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:19 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=190.8975620048739 quantity=2.619205791571263 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:19 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:19 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=8.555725856563324 quantity=58.44039516722439 side=buy symbol=UNI/USDT
+2026-10-18 19:06:19 [info     ] paper.fill_closed              entry_commission=0.5 equity=9978.301588339305 exit_commission=0.5 gross_pnl=-2.801235342908096 net_pnl=-3.801235342908096 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:19 [info     ] paper.fill_closed              entry_commission=0.5 equity=9974.50352904159 exit_commission=0.5 gross_pnl=-2.7980592977155174 net_pnl=-3.7980592977155174 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:19 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908096 equity=9978.301588339305 pnl=-3.801235342908096 weekly_pnl=-11.400529983531772
+2026-10-18 19:06:19 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623613 equity=9974.50352904159 pnl=-3.7980592977155174 weekly_pnl=-15.19858928124729
+2026-10-18 19:06:20 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:20 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=175.1679914627367 quantity=2.8544027697341297 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:20 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:20 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=7.949662755573873 quantity=62.89574984164292 side=buy symbol=UNI/USDT
+2026-10-18 19:06:20 [info     ] paper.fill_closed              entry_commission=0.5 equity=9970.702293698683 exit_commission=0.5 gross_pnl=-2.8012353429081287 net_pnl=-3.8012353429081287 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:20 [info     ] paper.fill_closed              entry_commission=0.5 equity=9966.904234400967 exit_commission=0.5 gross_pnl=-2.798059297715572 net_pnl=-3.798059297715572 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:20 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081287 equity=9970.702293698683 pnl=-3.8012353429081287 weekly_pnl=-18.99982462415542
+2026-10-18 19:06:20 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.5992946406237 equity=9966.904234400967 pnl=-3.798059297715572 weekly_pnl=-22.79788392187099
+2026-10-18 19:06:20 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:20 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:22 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:22 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=265.33793698619985 quantity=1.884389415547483 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:22 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:22 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=12.538812180005145 quantity=39.87618546494528 side=buy symbol=UNI/USDT
+2026-10-18 19:06:22 [info     ] paper.fill_closed              entry_commission=0.5 equity=9963.10299905806 exit_commission=0.5 gross_pnl=-2.8012353429081016 net_pnl=-3.8012353429081016 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:22 [info     ] paper.fill_closed              entry_commission=0.5 equity=9959.304939760344 exit_commission=0.5 gross_pnl=-2.7980592977155365 net_pnl=-3.7980592977155365 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:22 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081016 equity=9963.10299905806 pnl=-3.8012353429081016 weekly_pnl=-3.8012353429081016
+2026-10-18 19:06:22 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623638 equity=9959.304939760344 pnl=-3.7980592977155365 weekly_pnl=-7.599294640623638
+2026-10-18 19:06:24 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:24 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=264.28456845253106 quantity=1.891900094385596 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:24 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:24 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=13.49388437728834 quantity=37.05382275555538 side=buy symbol=UNI/USDT
+2026-10-18 19:06:24 [info     ] paper.fill_closed              entry_commission=0.5 equity=9955.503704417437 exit_commission=0.5 gross_pnl=-2.801235342908106 net_pnl=-3.801235342908106 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:24 [info     ] paper.fill_closed              entry_commission=0.5 equity=9957.951900656182 exit_commission=0.5 gross_pnl=3.4481962387453176 net_pnl=2.4481962387453176 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:06:24 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908106 equity=9955.503704417437 pnl=-3.801235342908106 weekly_pnl=-11.400529983531744
+2026-10-18 19:06:24 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=-1.3530391041627885 equity=9957.951900656182 pnl=2.4481962387453176 weekly_pnl=-8.952333744786426
+2026-10-18 19:06:25 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:25 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=287.78847848556893 quantity=1.7373871345758978 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:25 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:25 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=14.87080931252292 quantity=33.622917858205795 side=buy symbol=UNI/USDT
+2026-10-18 19:06:25 [info     ] paper.fill_closed              entry_commission=0.5 equity=9954.150665313275 exit_commission=0.5 gross_pnl=-2.8012353429081256 net_pnl=-3.8012353429081256 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:25 [info     ] paper.fill_closed              entry_commission=0.5 equity=9950.352606015558 exit_commission=0.5 gross_pnl=-2.7980592977155845 net_pnl=-3.7980592977155845 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:25 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081256 equity=9954.150665313275 pnl=-3.8012353429081256 weekly_pnl=-12.75356908769455
+2026-10-18 19:06:25 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.59929464062371 equity=9950.352606015558 pnl=-3.7980592977155845 weekly_pnl=-16.551628385410137
+2026-10-18 19:06:27 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:27 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=302.62058703222743 quantity=1.6522339240150663 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:27 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:27 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=15.21231391276677 quantity=32.86810953725983 side=buy symbol=UNI/USDT
+2026-10-18 19:06:27 [info     ] paper.fill_closed              entry_commission=0.5 equity=9946.55137067265 exit_commission=0.5 gross_pnl=-2.801235342908146 net_pnl=-3.801235342908146 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:27 [info     ] paper.fill_closed              entry_commission=0.5 equity=9942.753311374936 exit_commission=0.5 gross_pnl=-2.79805929771554 net_pnl=-3.79805929771554 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:27 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908146 equity=9946.55137067265 pnl=-3.801235342908146 weekly_pnl=-20.352863728318283
+2026-10-18 19:06:27 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623686 equity=9942.753311374936 pnl=-3.79805929771554 weekly_pnl=-24.150923026033823
+2026-10-18 19:06:29 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:29 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:30 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:30 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=290.15106217967985 quantity=1.723240288158478 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:30 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:30 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.307967676957002 quantity=25.896045009269542 side=buy symbol=UNI/USDT
+2026-10-18 19:06:30 [info     ] paper.fill_closed              entry_commission=0.5 equity=9938.952076032028 exit_commission=0.5 gross_pnl=-2.8012353429081394 net_pnl=-3.8012353429081394 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:30 [info     ] paper.fill_closed              entry_commission=0.5 equity=9941.400272270774 exit_commission=0.5 gross_pnl=3.448196238745326 net_pnl=2.448196238745326 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:06:30 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081394 equity=9938.952076032028 pnl=-3.8012353429081394 weekly_pnl=-3.8012353429081394
+2026-10-18 19:06:30 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=-1.3530391041628134 equity=9941.400272270774 pnl=2.448196238745326 weekly_pnl=-1.3530391041628134
+2026-10-18 19:06:31 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:31 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=305.27599518588767 quantity=1.6378621571458365 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:31 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:31 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=19.041407977264765 quantity=26.25856242337723 side=buy symbol=UNI/USDT
+2026-10-18 19:06:31 [info     ] paper.fill_closed              entry_commission=0.5 equity=9943.85278363611 exit_commission=0.5 gross_pnl=3.4525113653369237 net_pnl=2.4525113653369237 reason=take_profit symbol=AAVE/USDT
+2026-10-18 19:06:31 [info     ] paper.fill_closed              entry_commission=0.5 equity=9946.300979874855 exit_commission=0.5 gross_pnl=3.448196238745406 net_pnl=2.448196238745406 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:06:31 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.4525113653369237 equity=9943.85278363611 pnl=2.4525113653369237 weekly_pnl=1.0994722611741103
+2026-10-18 19:06:31 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=4.90070760408233 equity=9946.300979874855 pnl=2.448196238745406 weekly_pnl=3.5476684999195163
+2026-10-18 19:06:32 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:32 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=412.2438707984442 quantity=1.2128743091597396 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:32 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:32 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=21.52979880746233 quantity=23.223626215526807 side=buy symbol=UNI/USDT
+2026-10-18 19:06:32 [info     ] paper.fill_closed              entry_commission=0.5 equity=9942.499744531948 exit_commission=0.5 gross_pnl=-2.8012353429081283 net_pnl=-3.8012353429081283 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:32 [info     ] paper.fill_closed              entry_commission=0.5 equity=9938.701685234231 exit_commission=0.5 gross_pnl=-2.7980592977156142 net_pnl=-3.7980592977156142 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:32 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081283 equity=9942.499744531948 pnl=-3.8012353429081283 weekly_pnl=-0.253566842988612
+2026-10-18 19:06:32 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623743 equity=9938.701685234231 pnl=-3.7980592977156142 weekly_pnl=-4.051626140704226
+2026-10-18 19:06:33 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:33 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:34 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:34 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=468.6220735700971 quantity=1.0669578498316499 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:34 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:34 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=18.18639572731349 quantity=27.493078205104055 side=buy symbol=UNI/USDT
+2026-10-18 19:06:34 [info     ] paper.fill_closed              entry_commission=0.5 equity=9934.900449891324 exit_commission=0.5 gross_pnl=-2.801235342908168 net_pnl=-3.801235342908168 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:34 [info     ] paper.fill_closed              entry_commission=0.5 equity=9937.348646130069 exit_commission=0.5 gross_pnl=3.4481962387453735 net_pnl=2.4481962387453735 reason=take_profit symbol=UNI/USDT
+2026-10-18 19:06:34 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908168 equity=9934.900449891324 pnl=-3.801235342908168 weekly_pnl=-3.801235342908168
+2026-10-18 19:06:34 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=-1.3530391041627943 equity=9937.348646130069 pnl=2.4481962387453735 weekly_pnl=-1.3530391041627943
+2026-10-18 19:06:35 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:35 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=486.8381535161886 quantity=1.0270353635777105 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:35 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:35 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=18.99548046143941 quantity=26.32205071174661 side=buy symbol=UNI/USDT
+2026-10-18 19:06:35 [info     ] paper.fill_closed              entry_commission=0.5 equity=9933.547410787161 exit_commission=0.5 gross_pnl=-2.801235342908132 net_pnl=-3.801235342908132 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:35 [info     ] paper.fill_closed              entry_commission=0.5 equity=9929.749351489447 exit_commission=0.5 gross_pnl=-2.7980592977155454 net_pnl=-3.7980592977155454 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:35 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.801235342908132 equity=9933.547410787161 pnl=-3.801235342908132 weekly_pnl=-5.154274447070926
+2026-10-18 19:06:35 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623677 equity=9929.749351489447 pnl=-3.7980592977155454 weekly_pnl=-8.952333744786472
+2026-10-18 19:06:36 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:36 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=519.5085684740935 quantity=0.962448033280001 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:36 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:36 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=20.34278765226374 quantity=24.578735645621318 side=buy symbol=UNI/USDT
+2026-10-18 19:06:36 [info     ] paper.fill_closed              entry_commission=0.5 equity=9925.94811614654 exit_commission=0.5 gross_pnl=-2.8012353429081984 net_pnl=-3.8012353429081984 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:36 [info     ] paper.fill_closed              entry_commission=0.5 equity=9922.150056848823 exit_commission=0.5 gross_pnl=-2.7980592977155583 net_pnl=-3.7980592977155583 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:36 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081984 equity=9925.94811614654 pnl=-3.8012353429081984 weekly_pnl=-12.75356908769467
+2026-10-18 19:06:36 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623757 equity=9922.150056848823 pnl=-3.7980592977155583 weekly_pnl=-16.55162838541023
+2026-10-18 19:06:37 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:37 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=509.60250689370946 quantity=0.9811568688069419 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:37 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:37 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=21.48187009269034 quantity=23.275441004092823 side=buy symbol=UNI/USDT
+2026-10-18 19:06:37 [info     ] paper.fill_closed              entry_commission=0.5 equity=9918.348821505915 exit_commission=0.5 gross_pnl=-2.8012353429081776 net_pnl=-3.8012353429081776 reason=stop_loss symbol=AAVE/USDT
+2026-10-18 19:06:37 [info     ] paper.fill_closed              entry_commission=0.5 equity=9914.550762208199 exit_commission=0.5 gross_pnl=-2.798059297715575 net_pnl=-3.798059297715575 reason=stop_loss symbol=UNI/USDT
+2026-10-18 19:06:37 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.8012353429081776 equity=9918.348821505915 pnl=-3.8012353429081776 weekly_pnl=-20.352863728318408
+2026-10-18 19:06:37 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-7.599294640623753 equity=9914.550762208199 pnl=-3.798059297715575 weekly_pnl=-24.150923026033983
+2026-10-18 19:06:39 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=sell symbol=AAVE/USDT
+2026-10-18 19:06:39 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=UNI/USDT
+2026-10-18 19:06:39 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=BTC/USDT
+2026-10-18 19:06:39 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=100.02393211860658 quantity=4.998803680374302 side=buy symbol=BTC/USDT
+2026-10-18 19:06:53 [info     ] paper.fill_closed              entry_commission=0.5 equity=9983.76794175752 exit_commission=0.5 gross_pnl=-15.232058242480727 net_pnl=-16.232058242480726 reason=stop_loss symbol=BTC/USDT
+2026-10-18 19:06:53 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-16.232058242480726 equity=9983.14830979495 pnl=-16.232058242480726 weekly_pnl=-16.232058242480726
+{
+  "bars": 1000,
+  "decision_every_bars": 24,
+  "git": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_paths": 181,
+    "head": "ffbc0cad593bbe3a8202a99d6c90fd9a499fda03"
+  },
+  "prospective_paper_validated": false,
+  "provider": "replay (scripted transport; NOT a model)",
+  "python": "3.11.15",
+  "real_model_called": false,
+  "scenarios": [
+    {
+      "chain": {
+        "head_sha256": "0d08395505522e08a5fc2aec69673fcf47d57b520490d6b66d5e6125ad29596b",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16,
+        "requote:WAITING_FOR_QUOTE": 50
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_ledger.jsonl",
+      "name": "real_900ms",
+      "net_realised_usdt": -97.926767,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "1e01f0dbfbef0f6eef619f166ab3027fef30a5241e34f6b99cd6309ff1db35ae",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16,
+        "requote:WAITING_FOR_QUOTE": 50
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_wide_stop_ledger.jsonl",
+      "name": "real_900ms_wide_stop",
+      "net_realised_usdt": -34.247921,
+      "policy_override": {
+        "default_stop_loss_pct": 2.0,
+        "default_take_profit_pct": 3.0
+      },
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "0388ca3b48e0b3036fb0698174cb1b2055329d60f205ed120abe65ea473fb89f",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 0,
+      "ledger": "evidence\\real_0ms_ledger.jsonl",
+      "name": "real_0ms",
+      "net_realised_usdt": -85.426764,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "9f2eddd392c91f3b9ad7d5418f93bb00f561df49984b567a7bd71b808a34cf13",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 62,
+          "FILL": 34,
+          "GUARD_REJECT": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 208,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 14,
+        "guard:DATA_GAP": 2,
+        "requote:WAITING_FOR_QUOTE": 48
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_hole_ledger.jsonl",
+      "name": "real_900ms_hole",
+      "net_realised_usdt": -85.449238,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "b0909f1f661be8015f507e2976dc30c77bc32294e4a1c938af49131092ae1408",
+        "kinds": {
+          "CLOSE": 1,
+          "DECISION": 114,
+          "DECISION_OUTCOME": 5,
+          "FILL": 1,
+          "GUARD_REJECT": 1,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 124,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 1,
+      "counters": {
+        "action:LONG": 58,
+        "action:NO_TRADE": 56,
+        "closed_trades": 1,
+        "dropped:ALREADY_LONG": 52,
+        "dropped:MODEL_NO_TRADE": 56,
+        "fills": 1,
+        "gap_exits": 1,
+        "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+        "risk_blocked:daily_loss_limit": 4
+      },
+      "fills": 1,
+      "gap_exits": 1,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 0,
+      "ledger": "evidence\\synthetic_gap_open_ledger.jsonl",
+      "name": "synthetic_gap_open",
+      "net_realised_usdt": -16.232058,
+      "policy_override": {
+        "max_daily_loss_pct": 0.05
+      },
+      "synthetic_dataset": true
+    }
+  ],
+  "tool": "ai_bots_003c_capture",
+  "window_bars": 120
+}

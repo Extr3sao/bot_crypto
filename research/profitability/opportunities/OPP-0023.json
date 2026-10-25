@@ -1,0 +1,80 @@
+{
+  "opportunity_id": "OPP-0023",
+  "title": "Karaptic Research — published-strategy replication series net of fees and slippage",
+  "source_ids": [
+    "S2-27"
+  ],
+  "economic_hypothesis": "win rates of 85-100% before a timing correction and 63% after it, net of costs as described by the site",
+  "market": "(Binance spot per the site description)",
+  "assets": "UNKNOWN",
+  "timeframe": "UNKNOWN",
+  "entry_rules": "only the summary was read",
+  "exit_rules": "the summary mentions triple-barrier and maximum-adverse-excursion exits in the literature review; UNKNOWN; UNKNOWN; UNKNOWN",
+  "risk_rules": "UNKNOWN; none (24/7)",
+  "parameters": "UNKNOWN",
+  "claimed_period": "eleven weekly walk-forward cohorts are mentioned",
+  "claimed_metrics": "win rates of 85% (core tier) and 100% (narrow tier) on the pre-patch walk-forward sample, and 63% once detection timestamps were made honest",
+  "transaction_cost_model": "the series states it evaluates net of fees, slippage and execution costs",
+  "required_data": "Binance klines (the site's stated input)",
+  "external_code": "no code",
+  "external_results": "an independent replication venue that reports its own net-of-cost results and its own honest-timestamp correction",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the site's own honest-timestamp re-run cut the headline win rate from 85-100% to 63%, which is precisely the kind of correction this project's methodology demands",
+    "it is a venue for replications rather than an external strategy: the notes describe the author's own detector as well",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (the series states it evaluates net of fees, slippage and execution costs)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "market",
+    "assets",
+    "timeframe",
+    "entry_long",
+    "entry_short",
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "parameters",
+    "sizing_rule",
+    "execution_assumption",
+    "warmup",
+    "original_period",
+    "implementation_source",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_COMPARABLE_YET: the site's own cost assumptions are not the project's 23.791 bps floor, and no position-level data was read",
+  "evidence_quality": "E3 — an independent replication venue that reports its own net-of-cost results and its own honest-timestamp correction",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "HIGH",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_2_WATCH",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 2,
+    "CODE_AVAILABILITY": 1,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 4,
+    "OOS_EVIDENCE": 4,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 5,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 21,
+  "rank": "WATCH",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "5/21",
+  "gaps_to_p0": [
+    "read the notes themselves and their per-strategy rule sets",
+    "separate the venue's own system (Klines) from the strategies it replicates"
+  ],
+  "rejection_reason_codes": [
+    "SOURCE_READ_LEVEL_INSUFFICIENT",
+    "NO_CODE",
+    "RULES_INCOMPLETE_MATERIAL_FIELDS"
+  ]
+}

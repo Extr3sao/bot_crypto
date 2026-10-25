@@ -1,0 +1,74 @@
+{
+  "schema_version": "REA_FINDINGS_V1",
+  "generated_at": "2026-10-17",
+  "rea_version_probed": "rea-agents@6.4.0",
+  "runtime_role": "research tool outside the trading runtime; nothing in src/ imports REA",
+  "executed": [
+    {
+      "evidence_id": "rea-doctor-2026-10-17",
+      "command": "npx -y rea-agents@6.4.0 doctor --json",
+      "exit_code": 1,
+      "artifact": "rea/doctor.json",
+      "observed": {
+        "healthy": false,
+        "environment_healthy": false,
+        "node": {"ok": true, "detail": "22.20.0"},
+        "host": {"ok": true, "detail": "win32 x64"},
+        "hopper": {"ok": false, "classification": "missing_analysis_engine"},
+        "ghidra": {"ok": false, "classification": "missing_analysis_engine"}
+      },
+      "interpretation": "The CLI runs on the host, but no binary analysis engines are installed. Static JavaScript and web-capture capabilities remain listed; native/JS runtime analysis is unavailable."
+    },
+    {
+      "evidence_id": "rea-help-2026-10-17",
+      "command": "npx -y rea-agents@6.4.0 --help",
+      "exit_code": 0,
+      "artifact": "rea/help.txt",
+      "observed_capabilities": [
+        "analyze",
+        "analyze-javascript-application",
+        "analyze-web-bundle",
+        "capture-browser-scenario",
+        "compare-application-versions",
+        "compare-web-captures",
+        "list-browser-targets",
+        "list-javascript-runtime-targets"
+      ],
+      "interpretation": "Capabilities are confirmed by --help of the installed version, not assumed from upstream documentation."
+    }
+  ],
+  "not_executed": [
+    {
+      "evidence_id": "rea-analyze-js-nof1",
+      "command": "npx -y rea-agents@6.4.0 analyze-javascript-application <build-js> --json",
+      "status": "NOT_EXECUTED",
+      "reason": "No local build of nof1.ai exists and its AGPL licence forbids importing it into this repository. Analysing a downloaded build would produce an evidence artifact we cannot ship, so it was not done and no REA evidence_id is claimed.",
+      "consequence": "No pattern is attributed to nof1.ai internals; only its public description is cited."
+    },
+    {
+      "evidence_id": "rea-browser-targets",
+      "command": "npx -y rea-agents@6.4.0 list-browser-targets",
+      "status": "NOT_EXECUTED",
+      "reason": "No loopback CDP browser owned by this task, and no authorisation to inspect a third-party session.",
+      "consequence": "UI behaviour of external projects is outside the audit."
+    },
+    {
+      "evidence_id": "rea-python-sources",
+      "command": "AST/source audit of FenixAI, Semantic Signal and TradingAgents",
+      "status": "NOT_EXECUTED",
+      "reason": "No local clones; no licence review completed for copying. They are read as public references only.",
+      "consequence": "Adoptions are limited to patterns we re-implemented from the RFC, with our own tests."
+    }
+  ],
+  "claims_supported_by_our_evidence": [
+    "Our chart is causal and deterministic: same window produces the same bytes (tests/unit/vision).",
+    "An opinion cannot carry size, leverage or an order; forbidden keys are refused by name.",
+    "One RiskManager and one PaperBroker serve both bots; bot modules cannot import either.",
+    "The CTX control sends zero images while the visual bot sends one PNG per decision."
+  ],
+  "claims_not_made": [
+    "That any external project has been functionally validated.",
+    "That a model has seen a chart in this environment.",
+    "That the bots have an economic edge."
+  ]
+}

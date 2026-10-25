@@ -1,0 +1,109 @@
+{
+  "experiment_id": "EXP-004A",
+  "schema_version": "2.0",
+  "phase": 1,
+  "note": "Every digest here is null on purpose. The bytes are slices that do not exist until the capture window closes, and creating them early would make the protocol describe data somebody had already seen. Phase 2 fills these digests in a commit the gate requires to be later than capture.end_utc.",
+  "entries": [
+    {
+      "dataset_id": "EXP-004A-1H-BTC",
+      "asset": "BTC",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "period_start_utc": "2026-10-22T00:00:00Z",
+      "period_end_utc": "2027-01-20T00:00:00Z",
+      "raw_file": "data/exp004a/EXP-004A-1H-BTC.raw.jsonl",
+      "raw_sha256": null,
+      "normalized_file": "data/exp004a/EXP-004A-1H-BTC.jsonl",
+      "normalized_sha256": null,
+      "generator_command": "python scripts/exp004a_capture.py --slice 1h:BTC",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "generator_code_commit": "0000000000000000000000000000000000000000",
+      "row_count": 2160,
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    },
+    {
+      "dataset_id": "EXP-004A-1H-ETH",
+      "asset": "ETH",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "period_start_utc": "2026-10-22T00:00:00Z",
+      "period_end_utc": "2027-01-20T00:00:00Z",
+      "raw_file": "data/exp004a/EXP-004A-1H-ETH.raw.jsonl",
+      "raw_sha256": null,
+      "normalized_file": "data/exp004a/EXP-004A-1H-ETH.jsonl",
+      "normalized_sha256": null,
+      "generator_command": "python scripts/exp004a_capture.py --slice 1h:ETH",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "generator_code_commit": "0000000000000000000000000000000000000000",
+      "row_count": 2160,
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    },
+    {
+      "dataset_id": "EXP-004A-1H-SOL",
+      "asset": "SOL",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "period_start_utc": "2026-10-22T00:00:00Z",
+      "period_end_utc": "2027-01-20T00:00:00Z",
+      "raw_file": "data/exp004a/EXP-004A-1H-SOL.raw.jsonl",
+      "raw_sha256": null,
+      "normalized_file": "data/exp004a/EXP-004A-1H-SOL.jsonl",
+      "normalized_sha256": null,
+      "generator_command": "python scripts/exp004a_capture.py --slice 1h:SOL",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "generator_code_commit": "0000000000000000000000000000000000000000",
+      "row_count": 2160,
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    },
+    {
+      "dataset_id": "EXP-004A-ST6-TAPE",
+      "asset": "BTC,ETH,SOL,XRP",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "4h slot, 3 rounds of 15s",
+      "provider": "ST-6 forward regime collector (bookTicker + depth 100)",
+      "source_url": "https://api.binance.com/api/v3/ticker/bookTicker",
+      "period_start_utc": "2026-10-22T00:00:00Z",
+      "period_end_utc": "2027-01-20T00:00:00Z",
+      "raw_file": "data/exp004a/EXP-004A-ST6-TAPE.raw.jsonl",
+      "raw_sha256": null,
+      "normalized_file": "data/exp004a/EXP-004A-ST6-TAPE.jsonl",
+      "normalized_sha256": null,
+      "generator_command": "python scripts/exp004a_capture.py --slice st6:tape",
+      "generator_parameters": {
+        "size_usdt_walked": 200.0,
+        "declared_notional_usdt": 500.0,
+        "rounds_per_window": 3
+      },
+      "generator_code_commit": "0000000000000000000000000000000000000000",
+      "row_count": 2700,
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1",
+      "note": "The tape walked 200 USDT, not the declared 500. Phase 2 does not fix that by scaling; the rule reports DECLARED_SIZE_NOT_WALKED and a lower bound unless the collector is extended before the capture starts."
+    }
+  ]
+}

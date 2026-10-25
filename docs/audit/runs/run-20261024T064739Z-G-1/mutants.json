@@ -1,0 +1,133 @@
+{
+  "tool": "scripts/audit/g1_mutants.py",
+  "criterion": "G-1 ACC-G1-11",
+  "source": "rev",
+  "rev": "9df2aa8f",
+  "target_tests": [
+    "tests/unit/autonomous/test_kill_switch_persistence.py"
+  ],
+  "python": "3.11.15",
+  "resolved_source": "9df2aa8f",
+  "resolved_rev": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+  "baseline": {
+    "variant": "baseline",
+    "description": "unmutated tree (control)",
+    "criterion": "ACC-G1-12",
+    "exit_code": 0,
+    "killed": false,
+    "duration_s": 9.21,
+    "failing_tests": []
+  },
+  "variants": [
+    {
+      "variant": "baseline",
+      "description": "unmutated tree (control)",
+      "criterion": "ACC-G1-12",
+      "exit_code": 0,
+      "killed": false,
+      "duration_s": 9.21,
+      "failing_tests": []
+    },
+    {
+      "variant": "M1",
+      "description": "the gate does not read the marker at construction (restart boots open)",
+      "criterion": "ACC-G1-03/04",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 8.5,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_marker_left_by_a_previous_process_engages_at_construction",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_restore_is_recorded_as_a_restored_event",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_directory_marker_fails_closed",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_an_unreadable_control_path_fails_closed",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_an_empty_marker_is_still_a_stop"
+      ]
+    },
+    {
+      "variant": "M2",
+      "description": "an unreadable control path fails open at boot",
+      "criterion": "ACC-G1-08",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 8.39,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_an_unreadable_control_path_fails_closed"
+      ]
+    },
+    {
+      "variant": "M3",
+      "description": "presence treats every lstat failure as absence",
+      "criterion": "ACC-G1-08",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 8.19,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_an_unreadable_control_path_fails_closed"
+      ]
+    },
+    {
+      "variant": "M4",
+      "description": "engage never writes the marker (the stop dies with the process)",
+      "criterion": "ACC-G1-05",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 8.11,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_engage_persists_the_marker_for_the_next_process",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_failed_marker_write_is_reported_and_the_gate_stays_closed"
+      ]
+    },
+    {
+      "variant": "M5",
+      "description": "a failed atomic replace rewrites the marker in place",
+      "criterion": "ACC-G1-09",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 8.24,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_failed_replace_leaves_the_previous_marker_intact"
+      ]
+    },
+    {
+      "variant": "M6",
+      "description": "an existing but empty marker is treated as permission to trade",
+      "criterion": "ACC-G1-08",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 8.04,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_an_empty_marker_is_still_a_stop"
+      ]
+    },
+    {
+      "variant": "M7",
+      "description": "restore blocks the boundary but leaves rule 0 disarmed",
+      "criterion": "ACC-G1-03",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 10.01,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_marker_left_by_a_previous_process_engages_at_construction",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_restore_is_recorded_as_a_restored_event",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_the_runtime_default_gate_restores_from_the_marker"
+      ]
+    },
+    {
+      "variant": "M8",
+      "description": "a restored stop is recorded as an ordinary hot engage",
+      "criterion": "ACC-G1-03",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 8.62,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_marker_left_by_a_previous_process_engages_at_construction",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_restore_is_recorded_as_a_restored_event",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_directory_marker_fails_closed",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_crash_after_persisting_before_the_ack_still_blocks",
+        "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_deleting_the_audit_trail_does_not_rearm"
+      ]
+    }
+  ],
+  "total_seconds": 97.95,
+  "all_mutants_killed": true
+}

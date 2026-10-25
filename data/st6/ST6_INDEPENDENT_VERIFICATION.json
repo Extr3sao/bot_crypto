@@ -1,0 +1,36 @@
+{
+  "artifact": "ST6_INDEPENDENT_VERIFICATION",
+  "verifier": "scripts/st6_forward_regime_verify.py",
+  "builder": "scripts/st6_forward_regime.py",
+  "builder_equals_verifier": false,
+  "verified_artifacts": [
+    "data/st6/ST6_PERIOD.json",
+    "data/st6/ST6_WINDOWS.jsonl",
+    "data/st6/ST6_OBSERVATIONS.jsonl",
+    "data/st6/ST6_REGIME_COVERAGE.json",
+    "data/st6/ST6_MODEL_DRIFT.json",
+    "data/st6/ST6_FORWARD_REGIME_REPORT.json"
+  ],
+  "verified_hashes": {
+    "ST6_PERIOD.json": "5dd14bc8eac887786129d06e5aafed3de25b203764cb06033e39df0188cc5cae",
+    "ST6_WINDOWS.jsonl": "4153f5920c8d514001ae9bc2bc2c4d4fdff1dfa0559dc6df7c5d610958f47eff",
+    "ST6_OBSERVATIONS.jsonl": "2b1fb3c756191334d4e73f953335ebc12b3323629f480440a389f246b098ea2e",
+    "ST6_REGIME_COVERAGE.json": "7f521147dc9bd1a867f02652dfad2077f386b90cbd3d3f7c1e9c44fa42689764",
+    "ST6_MODEL_DRIFT.json": "96e2d6ec9c4f2efff51ba157c3eaf6a38b5216fc3b4291f05d8a81680fe626f8",
+    "ST6_FORWARD_REGIME_REPORT.json": "1bd5fea6009c43c85d4d5bd1c0d45056410f06dae3392c6148fe9ee0ba646f58"
+  },
+  "raw_windows_verified": [
+    "20261008T162202Z"
+  ],
+  "generated_at_utc": "2026-10-08T16:55:46Z",
+  "checks_total": 290,
+  "checks_passed": 290,
+  "mismatches": 0,
+  "failures": [],
+  "false_success": 0,
+  "status": "PASS",
+  "verdict": "ST6_FORWARD_EVIDENCE_VERIFIED",
+  "builder_outcome_corroborated": "INSUFFICIENT_REGIME_COVERAGE",
+  "builder_coverage_token_corroborated": "REGIME_COVERAGE_INSUFFICIENT",
+  "method": "spread and depth recomputed from the raw window bytes through a cumulative-capacity walk; statistics, coverage, thresholds, the ST-6 verdict and the breach list re-derived independently; governance re-read from configuration and from the builder's syntax tree"
+}

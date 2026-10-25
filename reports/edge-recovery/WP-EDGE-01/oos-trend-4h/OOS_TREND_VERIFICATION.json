@@ -1,0 +1,261 @@
+{
+  "experiment": "oos",
+  "dir": "reports\\edge-recovery\\WP-EDGE-01\\oos-trend-4h",
+  "checks": [
+    {
+      "check": "ARTIFACTS_PRESENT",
+      "ok": true,
+      "detail": "7 artefactos, digests y tamanos verificados"
+    },
+    {
+      "check": "PARAMS_UNCHANGED",
+      "ok": true,
+      "detail": "params_hash d073a2d686b9… on every run"
+    },
+    {
+      "check": "EQUITY_CONSERVATION",
+      "ok": true,
+      "detail": "16 libros: capital inicial + suma de operaciones = capital final, al centavo"
+    },
+    {
+      "check": "COST_SPLIT_IDENTITY",
+      "ok": true,
+      "detail": "770 operaciones cuadran gross - costes - fees = net"
+    },
+    {
+      "check": "ARM_METRICS_RECOMPUTED",
+      "ok": true,
+      "detail": "DEV:BASE/combined: 223 ops; DEV:BASE/BTC: 71 ops; DEV:BASE/ETH: 94 ops; DEV:BASE/SOL: 58 ops; VAL:BASE/combined: 58 ops; VAL:BASE/BTC: 20 ops; VAL:BASE/ETH: 19 ops; VAL:BASE/SOL: 19 ops; OOS:BASE/combined: 52 ops; OOS:BASE/BTC: 18 ops; OOS:BASE/ETH: 16 ops; OOS:BASE/SOL: 18 ops; OOS:2X_FEES/combined: 52 ops; OOS:2X_FEES/BTC: 18 ops; OOS:2X_FEES/ETH: 16 ops; OOS:2X_FEES/SOL: 18 ops"
+    },
+    {
+      "check": "MARKET_CONTEXT_ATTRIBUTION",
+      "ok": true,
+      "detail": "770 operaciones atribuidas desde 2596 dias de benchmark (BEAR=80, BULL=596, SIDEWAYS=46, UNDEFINED=48)"
+    },
+    {
+      "check": "WINDOW_IS_DECLARED",
+      "ok": true,
+      "detail": "DEV:BASE: 446 operaciones dentro de DEV; VAL:BASE: 116 operaciones dentro de VAL; OOS:BASE: 104 operaciones dentro de OOS; OOS:2X_FEES: 104 operaciones dentro de OOS"
+    },
+    {
+      "check": "VERDICT_RECOMPUTED",
+      "ok": true,
+      "detail": "NOT_SUFFICIENT_EVIDENCE: falla no_single_trade_carries_the_net"
+    },
+    {
+      "check": "ASSET_BOOKS_RECOMPUTED",
+      "ok": true,
+      "detail": "DEV:BASE/BTC: 71 ops, 1,003.97 USDT; DEV:BASE/ETH: 94 ops, 481.61 USDT; DEV:BASE/SOL: 58 ops, 357.16 USDT; VAL:BASE/BTC: 20 ops, 176.69 USDT; VAL:BASE/ETH: 19 ops, -98.30 USDT; VAL:BASE/SOL: 19 ops, -71.67 USDT; OOS:BASE/BTC: 18 ops, 3.06 USDT; OOS:BASE/ETH: 16 ops, 281.60 USDT; OOS:BASE/SOL: 18 ops, -75.55 USDT; OOS:2X_FEES/BTC: 18 ops, -14.68 USDT; OOS:2X_FEES/ETH: 16 ops, 266.79 USDT; OOS:2X_FEES/SOL: 18 ops, -90.10 USDT"
+    },
+    {
+      "check": "PERIODS_RECOMPUTED",
+      "ok": true,
+      "detail": "DEV:BASE: 3 periodos; VAL:BASE: 3 periodos; OOS:BASE: 3 periodos; OOS:2X_FEES: 3 periodos"
+    },
+    {
+      "check": "REGIMES_RECOMPUTED",
+      "ok": true,
+      "detail": "DEV:BASE: 1 etiquetas de candidate_trend_state; DEV:BASE: 4 etiquetas de benchmark_market_context; VAL:BASE: 1 etiquetas de candidate_trend_state; VAL:BASE: 2 etiquetas de benchmark_market_context; OOS:BASE: 1 etiquetas de candidate_trend_state; OOS:BASE: 3 etiquetas de benchmark_market_context; OOS:2X_FEES: 1 etiquetas de candidate_trend_state; OOS:2X_FEES: 3 etiquetas de benchmark_market_context"
+    },
+    {
+      "check": "BUY_AND_HOLD_CONSISTENT",
+      "ok": true,
+      "detail": "12 referencias de buy & hold coherentes y dentro de su ventana"
+    },
+    {
+      "check": "DECISION_IS_OOS",
+      "ok": true,
+      "detail": "decision en OOS (BASE y 2x fees), referencias DEV, VAL, OOS; admit del WP: INSUFFICIENT_EVIDENCE"
+    }
+  ],
+  "passed": 13,
+  "total": 13,
+  "self_test": {
+    "baseline_all_green": true,
+    "baseline": {
+      "ARTIFACTS_PRESENT": true,
+      "PARAMS_UNCHANGED": true,
+      "EQUITY_CONSERVATION": true,
+      "COST_SPLIT_IDENTITY": true,
+      "ARM_METRICS_RECOMPUTED": true,
+      "MARKET_CONTEXT_ATTRIBUTION": true,
+      "WINDOW_IS_DECLARED": true,
+      "VERDICT_RECOMPUTED": true,
+      "ASSET_BOOKS_RECOMPUTED": true,
+      "PERIODS_RECOMPUTED": true,
+      "REGIMES_RECOMPUTED": true,
+      "BUY_AND_HOLD_CONSISTENT": true,
+      "DECISION_IS_OOS": true
+    },
+    "mutations": [
+      {
+        "mutation": "gross_plus_25",
+        "expected_check": "COST_SPLIT_IDENTITY",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/ETH: gross 51.9745 - costs 0.1847 - fees 0.9745 != net 25.8153"
+      },
+      {
+        "mutation": "drop_a_trade",
+        "expected_check": "EQUITY_CONSERVATION",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "EQUITY_CONSERVATION",
+          "REGIMES_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/combined: 222 trade rows but 223 declared; DEV:BASE/combined: start 10,000.00 + net 1,895.36 = 11,895.36 != final equity 11,921.18; DEV:BASE/combined: the rows sum to 1,895.3639 but the payload says 1921.1792"
+      },
+      {
+        "mutation": "metrics_tampered",
+        "expected_check": "ARM_METRICS_RECOMPUTED",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "EQUITY_CONSERVATION"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/combined: net_usdt declared 1971.1792 vs recomputed 1,921.179170"
+      },
+      {
+        "mutation": "window_moved",
+        "expected_check": "WINDOW_IS_DECLARED",
+        "detected": [
+          "BUY_AND_HOLD_CONSISTENT",
+          "WINDOW_IS_DECLARED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE: declares 1554076800000..1738540800000 but DEV is 1546300800000..1703980800000"
+      },
+      {
+        "mutation": "out_of_window_trade",
+        "expected_check": "WINDOW_IS_DECLARED",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "WINDOW_IS_DECLARED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/ETH: entry_ts=1546214400000 outside DEV"
+      },
+      {
+        "mutation": "market_context_flipped",
+        "expected_check": "MARKET_CONTEXT_ATTRIBUTION",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "MARKET_CONTEXT_ATTRIBUTION",
+          "REGIMES_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/ETH @ 1550448000000: market_context 'BULL' != 'UNDEFINED' readable at that instant"
+      },
+      {
+        "mutation": "artifact_touched",
+        "expected_check": "ARTIFACTS_PRESENT",
+        "detected": [
+          "ARTIFACTS_PRESENT"
+        ],
+        "expected_check_failed": true,
+        "detail": "OOS_TREND.md: sha256 does not match the inventory; OOS_TREND.md: 6325 bytes, inventory says 6288"
+      },
+      {
+        "mutation": "verdict_flipped",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "el payload dice 'SUFFICIENT_EVIDENCE_FOR_PAPER', la regla da 'NOT_SUFFICIENT_EVIDENCE'"
+      },
+      {
+        "mutation": "rule_relaxed",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "decision_rule.min_oos_trades = 1, se esperaba 30"
+      },
+      {
+        "mutation": "params_retuned",
+        "expected_check": "PARAMS_UNCHANGED",
+        "detected": [
+          "PARAMS_UNCHANGED"
+        ],
+        "expected_check_failed": true,
+        "detail": "experiment.frozen_params != the restated ruleset: {'ema_fast': 50, 'ema_slow': 200, 'breakout_lookback': 20, 'atr_period': 14, 'trailing_atr': 2.0, 'exit_ema': 50, 'cost_margin': 1.5}"
+      },
+      {
+        "mutation": "asset_net_tampered",
+        "expected_check": "ASSET_BOOKS_RECOMPUTED",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ASSET_BOOKS_RECOMPUTED",
+          "EQUITY_CONSERVATION"
+        ],
+        "expected_check_failed": true,
+        "detail": "OOS:BASE/BTC: net_usdt declarado 126.0607 vs 3.060695; OOS:BASE/BTC: net_usdt difiere entre el CSV y el JSON"
+      },
+      {
+        "mutation": "period_net_tampered",
+        "expected_check": "PERIODS_RECOMPUTED",
+        "detected": [
+          "PERIODS_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "OOS:BASE/2025H1: neto declarado 99.7467 vs 22.7467; OOS:BASE/2025H1: el CSV de periodos no coincide con el JSON"
+      },
+      {
+        "mutation": "regime_net_tampered",
+        "expected_check": "REGIMES_RECOMPUTED",
+        "detected": [
+          "REGIMES_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "OOS:BASE/benchmark_market_context/BEAR: neto declarado -16.8791 vs -58.8791; OOS:BASE/benchmark_market_context/BEAR: el CSV de regimenes no coincide con el JSON"
+      },
+      {
+        "mutation": "buy_and_hold_tampered",
+        "expected_check": "BUY_AND_HOLD_CONSISTENT",
+        "detected": [
+          "BUY_AND_HOLD_CONSISTENT"
+        ],
+        "expected_check_failed": true,
+        "detail": "OOS:BASE/BTC: equity_final 7514.7335 != start x (1+ret) 7,014.7335"
+      },
+      {
+        "mutation": "criterion_result_flipped",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "oos_net_positive: publicado 'FAIL', recalculado 'PASS'"
+      },
+      {
+        "mutation": "decision_window_moved",
+        "expected_check": "DECISION_IS_OOS",
+        "detected": [
+          "DECISION_IS_OOS"
+        ],
+        "expected_check_failed": true,
+        "detail": "la ventana de decision es 'VAL', no 'OOS'"
+      },
+      {
+        "mutation": "stress_run_dropped",
+        "expected_check": "DECISION_IS_OOS",
+        "detected": [
+          "DECISION_IS_OOS",
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "check raised Fatal: OOS_TREND.json has no run 'OOS:2X_FEES'"
+      }
+    ],
+    "all_detected": true
+  },
+  "failed": 0
+}

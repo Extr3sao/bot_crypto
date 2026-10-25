@@ -17,6 +17,7 @@ import time
 import urllib.parse
 import urllib.request
 import uuid
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any, Final
 from urllib.error import HTTPError
@@ -280,7 +281,15 @@ class BitunixFuturesClient:
         client_id: str | None = None,
         tp_price: float | None = None,
         sl_price: float | None = None,
+        payload_guard: Callable[[dict[str, Any]], None] | None = None,
     ) -> CCXTPayloadProtocol:
+        """Place a futures order.
+
+        ``payload_guard`` is the last point at which a caller can inspect the
+        exact wire payload. The live order boundary uses it to re-prove that a
+        reduction still carries ``reduceOnly`` and ``tradeSide=CLOSE``; a guard
+        that raises prevents ``_request`` from running at all.
+        """
         payload: dict[str, Any] = {  # TSK-200: cast target
             "symbol": to_api_symbol(symbol),
             "side": side.upper(),
@@ -306,6 +315,9 @@ class BitunixFuturesClient:
             payload["slStopType"] = "MARK_PRICE"
             payload["slOrderType"] = "MARKET"
 
+        if payload_guard is not None:
+            payload_guard(payload)
+
         return narrow_ccxt_payload(
             self._request(
                 "POST",
@@ -315,12 +327,20 @@ class BitunixFuturesClient:
             )
         )
 
-    def flash_close_position(self, position_id: str) -> CCXTPayloadProtocol:
+    def flash_close_position(
+        self,
+        position_id: str,
+        *,
+        payload_guard: Callable[[dict[str, Any]], None] | None = None,
+    ) -> CCXTPayloadProtocol:
+        payload = {"positionId": str(position_id)}
+        if payload_guard is not None:
+            payload_guard(payload)
         return narrow_ccxt_payload(
             self._request(
                 "POST",
                 "/api/v1/futures/trade/flash_close_position",
-                payload={"positionId": str(position_id)},
+                payload=payload,
                 auth=True,
             )
         )

@@ -1,0 +1,592 @@
+# Reissued audit backlog — Trading Agentic Portable
+#
+# The original backlog (reports/multiagent-audit/17_ATOMIC_BACKLOG.yaml) was
+# never committed and no longer exists. This file is deliberately narrower: it
+# carries only tasks whose existence is evidenced by a commit or a committed
+# file. Anything else is listed under `unrecoverable` instead of being invented.
+#
+# Written by scripts/audit/negative_controls.py runs? No — edited by hand and
+# guarded by tests/unit/test_audit_contracts_tracked.py.
+
+schema: tap.audit-backlog/v1
+generated_at_utc: "2026-10-23T18:53:56Z"
+updated_at_utc: "2026-10-25T14:30:00Z"
+repository: trading-agentic-portable
+
+recovery:
+  authority_branch: codepaper/supervisor-001
+  baseline_rev: "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29"
+  working_branch: audit/mt0004-negative-controls
+  authority_map: docs/audit/runtime_authority_map.md
+  note: >-
+    codepaper/supervisor-001 is a moving branch. Every claim in this backlog is
+    pinned to baseline_rev, not to the branch name.
+
+tasks:
+  - id: MT-0002
+    title: Reserved CLI subcommands refuse instead of reporting success
+    status: done
+    provenance: recovered
+    source:
+      - commit: 9c83e62a4b75d9e47db6fce12dd0118782cbd6d1
+      - file: tests/unit/test_app_cli_contract.py
+      - file: src/trading_bot/app.py
+    evidence:
+      - "kill-switch and status are in NOT_IMPLEMENTED_SUBCOMMANDS (app.py:66)"
+      - "main returns 2 with an empty stdout (app.py:1392-1400)"
+      - "43 tests pass in this baseline (28 kill-switch + 15 CLI contract)"
+
+  - id: MT-0003
+    title: Stop authorising orders while the kill switch is engaged
+    status: done
+    provenance: recovered
+    source:
+      - commit: 60455b460dfb805a934c4307f9778ac8b7ffb562
+      - file: src/trading_bot/autonomous/decision.py
+      - file: tests/unit/autonomous/test_decision_kill_switch.py
+    evidence:
+      - "60455b46 is an ancestor of baseline_rev (git merge-base --is-ancestor)"
+      - "rule 0 runs before every other rule in intend and decide"
+      - "tests/unit/autonomous/test_decision_kill_switch.py passes in this tree"
+    open_gaps: []
+    closed_gaps: [G-1, G-2, G-3, G-4]
+
+  - id: MT-0004
+    title: "(unrecoverable) tests negativos"
+    status: spec_reissue_required
+    provenance: lost
+    source:
+      - file: src/trading_bot/app.py
+        lines: "61-66"
+      - file: tests/unit/test_app_cli_contract.py
+        lines: "42-44"
+    surviving_evidence:
+      - "app.py:61-66 names MT-0004 as 'tests negativos' alongside MT-0003"
+      - "test_app_cli_contract.py:42-44 says MT-0003/MT-0004 will give the two subcommands real behaviour"
+    missing:
+      - objective beyond the parenthetical
+      - justifying evidence block
+      - dependencies beyond MT-0003
+      - allowed_paths
+      - protected_paths
+      - numbered acceptance criteria
+      - mandatory test list
+      - verification requirements
+    superseded_by: MT-0004-R1
+
+  - id: MT-0004-R1
+    title: Negative-control certification of the kill-switch gate
+    status: done
+    provenance: reissued
+    contract: docs/audit/MT-0004-R1.md
+    verified_commit: ef7955dc5973ab863f010e02a1297a455ef276da
+    verification: docs/audit/runs/run-20261023T190725Z-MT0004-R1/verification.json
+    run_report: docs/audit/runs/run-20261023T190725Z-MT0004-R1/RUN_REPORT.md
+    verdict: VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/**
+      - tests/unit/autonomous/test_kill_switch_negative.py
+      - tests/unit/test_audit_contracts_tracked.py
+      - scripts/audit/negative_controls.py
+    protected_paths:
+      - src/**
+      - tests/unit/autonomous/test_decision_kill_switch.py
+      - tests/unit/test_app_cli_contract.py
+      - .github/**
+      - pyproject.toml
+    acceptance_criteria: [AC-1, AC-2, AC-3, AC-4, AC-5, AC-6]
+    note: >-
+      Done only after the implementation was committed and a separate verifier
+      re-derived every criterion from that commit (13/13, VERIFIED_SCOPED). The
+      verifier is a separate script with its own mutant literals, but it was
+      written by the same author: procedural independence, not a second person.
+
+  - id: G-1
+    title: The stop survives a restart over the same run directory
+    status: done
+    provenance: gap
+    contract: docs/audit/G-1.md
+    verified_commit: "9df2aa8f"
+    verification: docs/audit/runs/run-20261024T064739Z-G-1/verification.json
+    run_report: docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md
+    verdict: VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/G-1.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/runs/**
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/app.py
+      - tests/unit/autonomous/test_kill_switch_persistence.py
+      - tests/unit/autonomous/test_hot_engage.py
+      - tests/unit/autonomous/test_decision_kill_switch.py
+      - scripts/audit/g1_mutants.py
+      - scripts/audit/g1_restart_probe.py
+    protected_paths:
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/paper/**
+      - src/trading_bot/config/**
+      - src/trading_bot/execution/**
+      - src/trading_bot/risk/**
+      - scripts/autonomous_paper.py
+      - scripts/start_paper_lab.py
+      - tests/unit/test_app_cli_contract.py
+      - tests/unit/autonomous/test_kill_switch_negative.py
+      - tests/conftest.py
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G1-01, ACC-G1-02, ACC-G1-03, ACC-G1-04, ACC-G1-05, ACC-G1-06, ACC-G1-07, ACC-G1-08, ACC-G1-09, ACC-G1-10, ACC-G1-11, ACC-G1-12, ACC-G1-13, ACC-G1-14]
+    evidence:
+      - "HotStopGate.restore() runs inside __post_init__; the runtime constructs the gate before it can dispatch"
+      - "two operating-system processes: the CLI writes, the probe boots with broker_calls=0 and restored=true"
+      - "8/8 mutants killed; the gap test's assertion lines are identical to the baseline"
+    covered_paths:
+      - scripts/autonomous_paper.py
+      - scripts/start_paper_lab.py (passes --run-id, so a supervised restart reuses the directory)
+    uncovered_paths:
+      - a new --run-id or a different --run-root is a new scope and boots operational
+      - trading-bot place-order / --auto-trade (G-3)
+    note: >-
+      Closes G-1 only for the autonomous runtime and only inside one run
+      directory. The limit is not a footnote: it is pinned by a test, so a later
+      change to the run-id policy has to confront it. The class ``KillSwitch``
+      still has no store; durability is the gate's marker. PROCEDURALLY_SEPARATED
+      verification, same author.
+
+  - id: G-2
+    title: Hot activation of the kill switch for a running process
+    status: done
+    provenance: gap
+    contract: docs/audit/G-2.md
+    verified_commit: "00671e62"
+    verification: docs/audit/runs/run-20261023T201915Z-G-2/verification.json
+    run_report: docs/audit/runs/run-20261023T201915Z-G-2/RUN_REPORT.md
+    verdict: VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/G-2.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/runs/**
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/app.py
+      - tests/unit/autonomous/test_hot_engage.py
+      - tests/unit/test_app_cli_contract.py
+      - scripts/audit/g2_mutants.py
+    protected_paths:
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/paper/**
+      - src/trading_bot/config/**
+      - src/trading_bot/execution/**
+      - tests/unit/autonomous/test_decision_kill_switch.py
+      - tests/unit/autonomous/test_kill_switch_negative.py
+      - scripts/audit/negative_controls.py
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G2-01, ACC-G2-02, ACC-G2-03, ACC-G2-04, ACC-G2-05, ACC-G2-06, ACC-G2-07, ACC-G2-08, ACC-G2-09, ACC-G2-10, ACC-G2-11, ACC-G2-12]
+    evidence:
+      - "one dispatch site in the runtime, lexically inside order_boundary (V-2)"
+      - "engage and dispatch share a lock released in finally (V-3)"
+      - "offline trace: operational -> engaged -> NO_ORDER, broker calls frozen at 1 (V-9)"
+      - "7/7 mutants killed; M1 v1 survived as an equivalent mutant and was re-specified"
+    covered_paths:
+      - scripts/autonomous_paper.py
+    uncovered_paths:
+      - trading-bot place-order / --auto-trade (G-3)
+    note: >-
+      Closes G-2 only for the autonomous runtime. The filesystem permission on
+      run_dir is the authorisation boundary, the same one STOP already uses.
+      Independently re-derived by a separate script from the same author:
+      PROCEDURALLY_SEPARATED, not a second person.
+
+  - id: G-3
+    title: The hot stop covers the LIVE execution paths
+    status: done
+    provenance: gap
+    contract: docs/audit/G-3.md
+    verified_commit: "9eeb8e87"
+    verification: docs/audit/runs/run-20261024T112751Z-G-3/verification.json
+    run_report: docs/audit/runs/run-20261024T112751Z-G-3/RUN_REPORT.md
+    verdict: G3_VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/G-3.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runs/**
+      - src/trading_bot/app.py
+      - tests/unit/test_live_hot_stop_coverage.py
+      - tests/unit/test_app_demo.py
+      - scripts/audit/g3_live_probe.py
+      - scripts/audit/g3_mutants.py
+      - scripts/audit/verify_g3.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/paper/**
+      - src/trading_bot/market_data/**
+      - src/trading_bot/risk/**
+      - src/trading_bot/config/**
+      - src/trading_bot/execution/**
+      - scripts/autonomous_paper.py
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G3-01, ACC-G3-02, ACC-G3-03, ACC-G3-04, ACC-G3-05, ACC-G3-06, ACC-G3-07, ACC-G3-08, ACC-G3-09, ACC-G3-10, ACC-G3-11, ACC-G3-12, ACC-G3-13, ACC-G3-14]
+    evidence:
+      - "7 live sink call sites, all lexically inside _live_order_boundary (V-2)"
+      - "0 broker calls with a marker written by the real kill-switch CLI; 1 without it (V-3, V-4)"
+      - "a second process over the same run_dir boots engaged and logs restored (V-5)"
+      - "KILL_SWITCH_ENV blocks entry and writes no marker (V-7)"
+      - "close-position and set-tpsl still reach the broker while stopped (V-8)"
+      - "6/6 mutants killed; hot_stop.py byte-identical to a072da90 (V-10, V-12)"
+    covered_paths:
+      - trading-bot run --mode live --auto-trade (futures and spot entry)
+      - trading-bot place-order (entry refused, reduction allowed)
+      - trading-bot close-position and set-tpsl (reduction and protection, allowed)
+    uncovered_paths:
+      - a different --run-dir, or a different checkout, is a different scope; no global latch
+      - D-6 not opened by this task
+    note: >-
+      Closes G-3 for the live entrypoints that exist today, and only those. The
+      boundary classifies order entry separately from reduction: blocking
+      close-position under a stop would trap the book, so the exemption is
+      explicit, per call site, and pinned by tests. DEF-G3-01 records that G-2
+      left tests/unit/test_app_demo.py asserting the opposite of the CLI it
+      shipped; the assertion was updated to the current contract and the red
+      baseline is kept in COMMANDS.md. PROCEDURALLY_SEPARATED verification,
+      same author.
+
+  - id: G-4
+    title: The paper entrypoint consults the runtime stop before it trades
+    status: done
+    provenance: gap
+    contract: docs/audit/G-4.md
+    verified_commit: "5478b6de"
+    verification: docs/audit/runs/run-20261025T115139Z-G-4/verification.json
+    run_report: docs/audit/runs/run-20261025T115139Z-G-4/RUN_REPORT.md
+    verdict: G4_VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/G-4.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/runs/**
+      - src/trading_bot/paper/paper_cycle.py
+      - scripts/start_paper_trading.py
+      - tests/unit/paper/test_g4_paper_hot_stop.py
+      - scripts/audit/g4_route_probe.py
+      - scripts/audit/verify_g4.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/risk/**
+      - src/trading_bot/config/**
+      - src/trading_bot/execution/**
+      - src/trading_bot/market_data/**
+      - scripts/autonomous_paper.py
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G4-01, ACC-G4-02, ACC-G4-03, ACC-G4-04, ACC-G4-05, ACC-G4-06, ACC-G4-07, ACC-G4-08, ACC-G4-09, ACC-G4-10, ACC-G4-11, ACC-G4-12, ACC-G4-13, ACC-G4-14]
+    evidence:
+      - "run --demo and run --mode paper --auto-trade: 0 paper-cycle, broker and exchange-client calls, exit 0"
+      - "paper marker: 0 execute_signal calls, 0 orders, 1 hot_stop rejection; clean control: 1 order"
+      - "marker after risk approval and marker after engine construction both block"
+      - "process switch without a marker blocks; unreadable marker and poll exception block"
+      - "a stop still lets close_position flatten the book"
+      - "hot_stop.py byte-identical to a072da90"
+    covered_paths:
+      - scripts/start_paper_trading.py -> PaperCycleEngine -> PaperBroker.execute_signal
+    uncovered_paths:
+      - paper_cycle still does not route through autonomous.decision (two engines remain)
+      - the HotStopGate.stats().boundary label is inherited from the autonomous runtime
+      - offline research lanes (ai_vision_lane, edge*_paper_lane, exp_003p_baseline) are not runtime entrypoints and carry no gate
+      - no exchange acceptance is exercised
+    note: >-
+      G-4 corrected a documentation defect as well as a code defect: run --demo
+      never reached paper_cycle (git log -S is empty). The real paper launcher
+      was the reachable route, and it now refuses entries at the same
+      HotStopGate boundary as the autonomous runtime. PROCEDURALLY_SEPARATED
+      verification, same author.
+
+  - id: G-5
+    title: Demonstrate a complete paper cycle through the real runtime
+    status: done
+    provenance: gap
+    contract: docs/audit/G-5.md
+    verified_commit: "05b361f7bd26a4fb9d470d9ba5c68d7f967846c9"
+    verification: docs/audit/runs/run-20261025T131004Z-G-5/verification.json
+    run_report: docs/audit/runs/run-20261025T131004Z-G-5/RUN_REPORT.md
+    verdict: G5_VERIFIED
+    allowed_paths:
+      - docs/audit/G-5.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/fixtures/**
+      - docs/audit/runs/**
+      - src/trading_bot/app.py
+      - src/trading_bot/paper/harness.py
+      - scripts/audit/g5_paper_e2e.py
+      - scripts/audit/verify_g5.py
+      - tests/integration/test_g5_paper_end_to_end.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/risk/manager.py
+      - src/trading_bot/paper/paper_cycle.py
+      - src/trading_bot/paper/broker.py
+      - scripts/start_paper_trading.py
+      - config/**
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G5-01, ACC-G5-02, ACC-G5-03, ACC-G5-04, ACC-G5-05, ACC-G5-06, ACC-G5-07, ACC-G5-08, ACC-G5-09, ACC-G5-10, ACC-G5-11, ACC-G5-12]
+    evidence:
+      - "real launcher with the committed ledger: exit 0, contexts=1, strategy=0, orders=0, NO_TRADE:no_strategy_passed_gates"
+      - "controlled fixture: 1 order, 1 fill, 1 durable position, 1 intent"
+      - "restart: RECOVERED 1 position/1 intent, 0 reopens, TP close +49.390016, equity 10049.390016"
+      - "kill switch: risk_accepted=1, hot_stop_blocked=1, execute_signal=0, orders=0"
+      - "flat and stale markets: 0 orders with observable reasons; provider exception: 0 orders, scanner_errors=1"
+      - "clean-export verifier: 12/12, deterministic replay, FALSE_SUCCESS=0"
+    covered_paths:
+      - scripts/start_paper_trading.py -> PaperCycleEngine -> HotStopGate -> PaperBroker
+      - PaperStateStore -> StartupReconcilerV4 -> PaperBroker.restore
+    uncovered_paths:
+      - synthetic fixture admission is reachability evidence, not strategy edge
+      - the committed ledger admits no strategy, so the operational command is NO_TRADE
+      - restart is logical (new instances, same process/disk), not an OS crash
+      - paper_cycle still does not route through autonomous.decision (two engines remain)
+      - no exchange acceptance is exercised
+    note: >-
+      G-5 measured the route rather than the documentation. The synthetic CLI
+      branch is now labelled as such and is not connected to the broker; the
+      real paper engine is exercised through the existing launcher and a
+      controlled evidence runner. `_market_conditions` now uses the session's
+      injected clock instead of the wall clock, so a deterministic replay can
+      actually reach risk and the stop. PROCEDURALLY_SEPARATED verification,
+      same author.
+
+  - id: G-6
+    title: Demonstrate crash recovery without duplicate paper execution
+    status: done
+    provenance: gap
+    contract: docs/audit/G-6.md
+    verified_commit: "66e96e1685226508e4c03a1ea2771aecf878f5b5"
+    verification: docs/audit/runs/run-20261025T141859Z-G-6/verification.json
+    run_report: docs/audit/runs/run-20261025T141859Z-G-6/RUN_REPORT.md
+    verdict: G6_VERIFIED
+    allowed_paths:
+      - docs/audit/G-6.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/fixtures/**
+      - docs/audit/runs/**
+      - src/trading_bot/paper/crash_injection.py
+      - src/trading_bot/paper/durable_broker.py
+      - src/trading_bot/paper/paper_state_store.py
+      - src/trading_bot/paper/paper_runtime_state.py
+      - src/trading_bot/paper/reconciliation_v4.py
+      - scripts/start_paper_trading.py
+      - scripts/audit/g6_crash_e2e.py
+      - scripts/audit/g6_crash_worker.py
+      - scripts/audit/verify_g6.py
+      - tests/unit/paper/test_paper_recovery.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/paper/paper_cycle.py
+      - src/trading_bot/paper/broker.py
+      - src/trading_bot/risk/manager.py
+      - config/**
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G6-01, ACC-G6-02, ACC-G6-03, ACC-G6-04, ACC-G6-05, ACC-G6-06, ACC-G6-07, ACC-G6-08, ACC-G6-09, ACC-G6-10, ACC-G6-11, ACC-G6-12]
+    evidence:
+      - "4 real forced terminations (taskkill /F /T), PIDs and markers recorded"
+      - "PREPARED intent blocked as BLOCKED_UNKNOWN: 0 orders, 0 positions, 0 resends"
+      - "FILLED order materialized once: 1 position, 0 orders, ACCOUNTED persisted"
+      - "ACCOUNTED book restored: 1 position, 0 orders; two restarts identical"
+      - "inconsistent book and truncated JSON: FATAL, exit 2; .corrupt preserved"
+      - "kill switch during recovery: risk_accepted=1, hot_stop_blocked=1, 0 broker calls"
+      - "recovered position closes once at take-profit: +49.3900165 USDT, five identities true"
+      - "clean-export verifier: 17/17, deterministic replay, FALSE_SUCCESS=0"
+    covered_paths:
+      - DurablePaperBroker -> PaperStateStore -> StartupReconcilerV4
+      - scripts/start_paper_trading.py -> DurablePaperBroker -> PaperCycleEngine
+      - real child process -> taskkill/SIGKILL -> new process over the same state file
+    uncovered_paths:
+      - synthetic fixture admission is reachability evidence, not strategy edge
+      - forced kill is real but recovery uses the same disk; no physical disk failure or cross-machine failover
+      - paper_cycle still does not route through autonomous.decision (two engines remain)
+      - no exchange acceptance is exercised
+      - the two futures independent-verifier tests and the vision-panel collection error remain preexisting
+    note: >-
+      G-6 replaces the logical in-process restart with a real forced termination
+      and a new process. It separates the intent, fill and accounting boundaries
+      in the existing atomic store: FILLED is materialized once, PREPARED is
+      blocked as an unknown outcome, and ACCOUNTED/CLOSED must agree with the
+      restored book or startup fails closed. PROCEDURALLY_SEPARATED verification,
+      same author.
+
+  - id: P0-LIVE-GATE
+    title: Enforce LiveTradingGate on every live path that opens risk
+    status: done
+    provenance: gap
+    contract: docs/audit/P0-LIVE-GATE.md
+    verified_commit: "efd97e76"
+    verification: docs/audit/runs/run-20261024T163641Z-P0-LIVE-GATE/verification.json
+    run_report: docs/audit/runs/run-20261024T163641Z-P0-LIVE-GATE/RUN_REPORT.md
+    verdict: P0_VERIFIED_SCOPED
+    blocker: DEF-G3-03
+    allowed_paths:
+      - docs/audit/P0-LIVE-GATE.md
+      - docs/audit/G-3.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/runs/**
+      - src/trading_bot/app.py
+      - src/trading_bot/execution/live_gate.py
+      - tests/unit/test_live_gate_enforcement.py
+      - tests/unit/test_live_hot_stop_coverage.py
+      - scripts/audit/g3_live_probe.py
+      - scripts/audit/p0_live_gate_probe.py
+      - scripts/audit/p0_live_gate_mutants.py
+      - scripts/audit/verify_p0_live_gate.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/paper/**
+      - src/trading_bot/risk/**
+      - src/trading_bot/config/**
+      - src/trading_bot/market_data/**
+      - scripts/autonomous_paper.py
+      - config/**
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-P0-01, ACC-P0-02, ACC-P0-03, ACC-P0-04, ACC-P0-05, ACC-P0-06, ACC-P0-07, ACC-P0-08, ACC-P0-09, ACC-P0-10, ACC-P0-11, ACC-P0-12, ACC-P0-13, ACC-P0-14, ACC-P0-15]
+    evidence:
+      - "before: 10/10 rejected gate configurations sent one order; gate constructed 0 times (96e211bd)"
+      - "after: 0 broker calls, exit 2 and the gate id in stderr for all ten checks"
+      - "run --auto-trade refuses at startup; place-order refuses before the client exists"
+      - "reduction (close-position, set-tpsl, CLOSE, spot sell) still reaches the broker"
+      - "GATE-006/008 block although the gate itself rates them high, not critical"
+      - "47 P0 tests, 21 G-3 tests, 405 CLI/demo/autonomy regressions pass"
+      - "7/7 mutants killed; verifier 15/15 on the export"
+      - "hot_stop.py byte-identical to a072da90"
+    covered_paths:
+      - trading-bot run --mode live --auto-trade (futures and spot entry)
+      - trading-bot place-order (entry)
+      - trading-bot close-position, set-tpsl and reduce-only orders (exempt)
+    uncovered_paths:
+      - real exchange acceptance of the payload (all sinks are recorders)
+      - D-6 not opened by this task
+    note: >-
+      Closes DEF-G3-03. The gate is consulted at the sink boundary and at the
+      entry of each risk-opening CLI path; all ten checks must pass, which is
+      stricter than LiveTradingGate.all_passed (critical-only) and is the point.
+      PROCEDURALLY_SEPARATED verification, same author.
+
+  - id: RFC-EXEC-SEC-002
+    title: Explicit live authorization and provable reduction exemptions
+    status: done
+    provenance: gap
+    contract: docs/audit/RFC-TAP-EXEC-SEC-002.md
+    implementation_commit: "de72ad2a"
+    verification: docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/verification.json
+    run_report: docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/RUN_REPORT.md
+    verdict: P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED
+    acceptance_criteria: [ACC-01, ACC-02, ACC-03, ACC-04, ACC-05, ACC-06, ACC-07]
+    evidence:
+      - "before: opens_risk was a caller boolean; run --auto-trade had no --confirm-live"
+      - "after: run live/shadow_live without --confirm-live exits 2 with 0 scanner/client"
+      - "after: 10/10 rejected gate checks stop the loop with 0 broker calls"
+      - "after: only reduceOnly+CLOSE on a matching one-way position, or flash-close by id, is exempt"
+      - "after: spot sell and set-tpsl are UNKNOWN and take the full gate"
+      - "after: wire payload is revalidated before _request; mutation loses the exemption"
+      - "190 tests pass in the worktree; the export suite passes under the verifier"
+      - "14/14 mutants killed; verifier 21/21 on the export"
+    covered_paths:
+      - trading-bot run --auto-trade (live and shadow_live)
+      - trading-bot place-order (futures and spot)
+      - trading-bot close-position and set-tpsl
+    uncovered_paths:
+      - real exchange acceptance of any payload (all brokers are recorders)
+      - hedge mode: refused as UNKNOWN, never exercised against a hedge-mode venue
+      - G-4 (run --demo), DEF-P0-03, GATE-009/010 configuration unchanged
+    note: >-
+      Closes DEF-EXEC-001..006 from WP-00. WP-01 and WP-02 share one code commit
+      because the typed sink context is the seam both need; splitting it would
+      have produced a commit that cannot pass its own tests. WP-03 is the
+      separate verifier on a clean export. PROCEDURALLY_SEPARATED, same author.
+
+contracts:
+  - path: docs/audit/runtime_authority_map.md
+    required: true
+    producer: MT-0004-R1
+  - path: docs/audit/MT-0004-R1.md
+    required: true
+    producer: MT-0004-R1
+  - path: docs/audit/G-1.md
+    required: true
+    producer: G-1
+  - path: docs/audit/G-2.md
+    required: true
+    producer: G-2
+  - path: docs/audit/G-3.md
+    required: true
+    producer: G-3
+  - path: docs/audit/G-4.md
+    required: true
+    producer: G-4
+  - path: docs/audit/G-5.md
+    required: true
+    producer: G-5
+  - path: docs/audit/G-6.md
+    required: true
+    producer: G-6
+  - path: docs/audit/AUDIT_BACKLOG.yaml
+    required: true
+    producer: MT-0004-R1
+  - path: docs/audit/P0-LIVE-GATE.md
+    required: true
+    producer: P0-LIVE-GATE
+  - path: docs/audit/RFC-TAP-EXEC-SEC-002.md
+    required: true
+    producer: RFC-EXEC-SEC-002
+
+unrecoverable:
+  note: >-
+    Any task id not listed under `tasks` above is unknown. The original backlog
+    claimed at least MT-0004, MT-0009, MT-0019 and MT-0040 (by recollection of
+    the blocked run). Only MT-0004 has a surviving trace in git; MT-0040
+    appears in no committed file (git log --all -S'MT-0040' is empty). None of
+    them is invented here.
+  blocked_ids: []
+
+next_ready:
+  task: null
+  reason: >-
+    G-1, G-2, G-3, G-4, G-5, G-6, P0-LIVE-GATE and RFC-EXEC-SEC-002 are closed
+    and their contracts are committed. The live gate is enforced on every live
+    risk-opening path, `run --auto-trade` needs explicit consent, the paper
+    launcher consults the same hot stop as the autonomous runtime, G-5 executed
+    a complete paper cycle through it with durable state and reconciliation, and
+    G-6 proved recovery after a real forced kill without duplicate execution.
+    `run --demo` and `run --mode paper` are labelled as the synthetic scanner
+    they are; they remain outside the paper sink. D-6 was not opened by any of
+    these tasks; no evidenced task remains to name READY. The next objective is
+    to activate eligible strategies in the PAPER runtime with real, traceable
+    market data, without changing the LIVE gate.

@@ -1,0 +1,23 @@
+{
+  "authority": "deterministic acceptance controller, not the verifier",
+  "blocking_reasons": [
+    "ADMISSION_REPLAY_MISMATCH",
+    "COST_SCOPE_UNPROVEN",
+    "INDEPENDENCE_NOT_PROVEN",
+    "TIME_PROOF_WEAK"
+  ],
+  "independence": "BLOCKED",
+  "promotion": {
+    "blocking_reasons": [
+      "PHASE2_CAPTURE_OPEN",
+      "INSUFFICIENT_ADMITTED_DAYS",
+      "DECLARED_SIZE_NOT_WALKED",
+      "ZERO_ADMITTED_DAYS_INSIDE_CAPTURE_WINDOW",
+      "BLOCKED_MISSING_INDEPENDENT_VERIFIER"
+    ],
+    "decision": "NO_PROMOTION",
+    "note": "eligibility is never a live order; phase 1 stays un-authorisable"
+  },
+  "run_id": "verifier-b/EXP-004A/WP-051-02:2026-10-21T10:26:12.509519Z",
+  "verifier_status": "FAIL"
+}

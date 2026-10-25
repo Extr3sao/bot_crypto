@@ -1,0 +1,151 @@
+{
+  "contract": {
+    "decision_clock": "once per closed bar, at data_available_at (the bar's close time)",
+    "entry_signal": "signal read off bar t fills at the open of bar t+1",
+    "exit_signal": "signal read off bar t fills at the open of bar t+1, never at bar t's open",
+    "intrabar": "not resolved here: these rules act on closes only",
+    "same_instant_reentry": "an entry filling at the same instant as the previous exit is dropped",
+    "schema_version": "EDGE16_PIT_CONTRACT_V1",
+    "terminal_mark": "an open position at the last closed bar is marked at that close, is_mark=true",
+    "undefined_indicator": "NaN; every gate that reads it is False"
+  },
+  "lanes_with_a_remaining_violation": [],
+  "new_rule": "the repair moves the fill instant and nothing else: the rules fire on the same signal bars, entries are unchanged, and the exits that a rule would have taken at the signal bar are now taken at the next executable bar or marked if the window ends first",
+  "old_rule": "every exit test read the current bar's close and filled at that same bar's open, a price that had already happened before the close existed",
+  "reading": "the repair moves the fill instant and nothing else; the exits that a rule would have taken at its signal bar are taken at the next executable bar, or marked if the window ends first, and no lane keeps a violation",
+  "schema_version": "EDGE16_PIT_RECONCILIATION_V1",
+  "totals": {
+    "lanes": 27,
+    "lanes_where_the_repair_reduced_the_trade_count": 16,
+    "post_pit_terminal_marks": 4,
+    "post_pit_violations": 0,
+    "pre_pit_exits_checked": 7081,
+    "pre_pit_exits_filled_at_their_own_signal_bar": 7081,
+    "swept_share": 1.0
+  },
+  "window_shift": {
+    "BTCUSDT": {
+      "entries_matched_total": 29,
+      "exits_moved_total": 29,
+      "families": [
+        {
+          "entries_matched_by_timestamp": 5,
+          "family": "vol_regime_breakout",
+          "of_those_exits_moved_one_bar": 5,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 5,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 5,
+          "pre_pit_trades": 5
+        },
+        {
+          "entries_matched_by_timestamp": 19,
+          "family": "trend_pullback",
+          "of_those_exits_moved_one_bar": 19,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 19,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 21,
+          "pre_pit_trades": 21
+        },
+        {
+          "entries_matched_by_timestamp": 5,
+          "family": "mean_reversion_vol_liq",
+          "of_those_exits_moved_one_bar": 5,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 5,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 5,
+          "pre_pit_trades": 5
+        }
+      ],
+      "post_pit_exploit_total": 0,
+      "pre_pit_exploit_total": 31,
+      "pre_pit_trades_total": 31,
+      "symbol": "BTCUSDT",
+      "window_bars": 2000
+    },
+    "ETHUSDT": {
+      "entries_matched_total": 32,
+      "exits_moved_total": 32,
+      "families": [
+        {
+          "entries_matched_by_timestamp": 4,
+          "family": "vol_regime_breakout",
+          "of_those_exits_moved_one_bar": 4,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 4,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 4,
+          "pre_pit_trades": 4
+        },
+        {
+          "entries_matched_by_timestamp": 24,
+          "family": "trend_pullback",
+          "of_those_exits_moved_one_bar": 24,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 25,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 28,
+          "pre_pit_trades": 28
+        },
+        {
+          "entries_matched_by_timestamp": 4,
+          "family": "mean_reversion_vol_liq",
+          "of_those_exits_moved_one_bar": 4,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 5,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 5,
+          "pre_pit_trades": 5
+        }
+      ],
+      "post_pit_exploit_total": 0,
+      "pre_pit_exploit_total": 37,
+      "pre_pit_trades_total": 37,
+      "symbol": "ETHUSDT",
+      "window_bars": 2000
+    },
+    "SOLUSDT": {
+      "entries_matched_total": 30,
+      "exits_moved_total": 30,
+      "families": [
+        {
+          "entries_matched_by_timestamp": 4,
+          "family": "vol_regime_breakout",
+          "of_those_exits_moved_one_bar": 4,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 4,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 4,
+          "pre_pit_trades": 4
+        },
+        {
+          "entries_matched_by_timestamp": 18,
+          "family": "trend_pullback",
+          "of_those_exits_moved_one_bar": 18,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 18,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 18,
+          "pre_pit_trades": 18
+        },
+        {
+          "entries_matched_by_timestamp": 8,
+          "family": "mean_reversion_vol_liq",
+          "of_those_exits_moved_one_bar": 8,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 8,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 8,
+          "pre_pit_trades": 8
+        }
+      ],
+      "post_pit_exploit_total": 0,
+      "pre_pit_exploit_total": 30,
+      "pre_pit_trades_total": 30,
+      "symbol": "SOLUSDT",
+      "window_bars": 2000
+    }
+  }
+}

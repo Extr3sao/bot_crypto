@@ -1,0 +1,129 @@
+{
+  "artifact": "RFC049_DISCOVERY2_STATISTICAL_ELIGIBILITY",
+  "generated_at_utc": "2026-10-10T16:39:43Z",
+  "method": "frozen rules applied to research-exposed inputs; counts and rates only, no sealed data, thresholds unchanged",
+  "statistical_criterion_unchanged": "20 round trips or 24 months, whichever comes first; fewer than 20 at 24 months is INSUFFICIENT_OOS_SAMPLE and is neither PASS nor REJECT",
+  "thresholds_changed": false,
+  "H-049-001": {
+    "technical_validity": {
+      "spec": "SPEC_FROZEN",
+      "pit": "PIT_CONSERVATIVE_PROXY",
+      "pit_violations": 0,
+      "contract_status": "valid"
+    },
+    "economic_validity": {
+      "verdict_at_devval_stage": "CANDIDATE_REJECTED",
+      "failed_criteria": [
+        "lcb_95_net_expectancy_positive:validation",
+        "max_drawdown_le_0.25:development",
+        "max_drawdown_le_0.25:validation",
+        "single_trade_share_le_0.4:validation",
+        "incremental_over_buy_and_hold_positive:validation",
+        "incremental_over_200d_trend_baseline_positive:validation"
+      ],
+      "note": "economic validity is measured on RESEARCH_EXPOSED partitions; it is non-confirmatory and cannot promote anything"
+    },
+    "statistical_sufficiency": {
+      "exposed_years_measured": 7.76,
+      "round_trips": {
+        "development": 14,
+        "validation": 9,
+        "all_exposed": 23
+      },
+      "round_trips_per_year": 2.96,
+      "round_trips_per_month": 0.247,
+      "expected_round_trips_in_24_month_sealed_window": 5.9,
+      "months_to_reach_20_round_trips_at_measured_rate": 81.0,
+      "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION",
+      "promotion_blocker": "the sealed OOS gate cannot be satisfied within the frozen 24-month window at the measured turnover; promotion as an independent strategy is therefore stopped regardless of the economic result"
+    },
+    "precision_requirements": [
+      {
+        "per_trip_information_ratio": 0.15,
+        "round_trips_for_one_sided_95pct_precision": 121,
+        "months_at_measured_rate": 490.0
+      },
+      {
+        "per_trip_information_ratio": 0.2,
+        "round_trips_for_one_sided_95pct_precision": 68,
+        "months_at_measured_rate": 275.4
+      },
+      {
+        "per_trip_information_ratio": 0.25,
+        "round_trips_for_one_sided_95pct_precision": 44,
+        "months_at_measured_rate": 178.2
+      },
+      {
+        "per_trip_information_ratio": 0.3,
+        "round_trips_for_one_sided_95pct_precision": 31,
+        "months_at_measured_rate": 125.5
+      },
+      {
+        "per_trip_information_ratio": 0.4,
+        "round_trips_for_one_sided_95pct_precision": 17,
+        "months_at_measured_rate": 68.8
+      }
+    ]
+  },
+  "H-049-002": {
+    "technical_validity": {
+      "spec": "SPEC_FROZEN",
+      "pit": "PIT_VERIFIED",
+      "pit_violations": 0,
+      "contract_status": "valid"
+    },
+    "economic_validity": {
+      "verdict_at_devval_stage": "CANDIDATE_REJECTED",
+      "failed_criteria": [
+        "lcb_95_net_expectancy_positive:validation",
+        "max_drawdown_le_0.25:validation",
+        "single_trade_share_le_0.4:development",
+        "incremental_over_buy_and_hold_positive:validation",
+        "incremental_over_200d_trend_baseline_positive:validation"
+      ],
+      "note": "economic validity is measured on RESEARCH_EXPOSED partitions; it is non-confirmatory and cannot promote anything"
+    },
+    "statistical_sufficiency": {
+      "exposed_years_measured": 7.76,
+      "round_trips": {
+        "development": 26,
+        "validation": 22,
+        "all_exposed": 48
+      },
+      "round_trips_per_year": 6.18,
+      "round_trips_per_month": 0.515,
+      "expected_round_trips_in_24_month_sealed_window": 12.4,
+      "months_to_reach_20_round_trips_at_measured_rate": 38.8,
+      "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION",
+      "promotion_blocker": "the sealed OOS gate cannot be satisfied within the frozen 24-month window at the measured turnover; promotion as an independent strategy is therefore stopped regardless of the economic result"
+    },
+    "precision_requirements": [
+      {
+        "per_trip_information_ratio": 0.15,
+        "round_trips_for_one_sided_95pct_precision": 121,
+        "months_at_measured_rate": 234.8
+      },
+      {
+        "per_trip_information_ratio": 0.2,
+        "round_trips_for_one_sided_95pct_precision": 68,
+        "months_at_measured_rate": 132.0
+      },
+      {
+        "per_trip_information_ratio": 0.25,
+        "round_trips_for_one_sided_95pct_precision": 44,
+        "months_at_measured_rate": 85.4
+      },
+      {
+        "per_trip_information_ratio": 0.3,
+        "round_trips_for_one_sided_95pct_precision": 31,
+        "months_at_measured_rate": 60.2
+      },
+      {
+        "per_trip_information_ratio": 0.4,
+        "round_trips_for_one_sided_95pct_precision": 17,
+        "months_at_measured_rate": 33.0
+      }
+    ]
+  },
+  "independence_note": "structural independence measured in RFC-049B is a property of the states, not of returns; return-level independence is what the DEV/VAL results of both candidates jointly show and is reported in ECONOMIC_RESULTS.json"
+}

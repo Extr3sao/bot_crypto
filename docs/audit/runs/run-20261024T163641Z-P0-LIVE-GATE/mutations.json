@@ -1,0 +1,103 @@
+{
+  "tool": "p0_live_gate_mutants",
+  "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "source": "archive",
+  "target_tests": [
+    "tests/unit/test_live_gate_enforcement.py"
+  ],
+  "variants": [
+    {
+      "variant": "baseline",
+      "killed": false,
+      "exit_code": 0,
+      "seconds": 62.9,
+      "description": "unmutated export",
+      "criterion": "baseline",
+      "failed_tests": []
+    },
+    {
+      "variant": "M1",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 6.0,
+      "description": "the entry boundary no longer consults the live gate",
+      "criterion": "ACC-P0-04",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M2",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 4.4,
+      "description": "the verdict never records a failing check",
+      "criterion": "ACC-P0-02",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M3",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 3.7,
+      "description": "only critical failures block (GATE-006/008 become advisory)",
+      "criterion": "ACC-P0-02",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M4",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 37.0,
+      "description": "run --auto-trade no longer checks the gate before the loop",
+      "criterion": "ACC-P0-03",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M5",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 4.0,
+      "description": "reduction is dragged into the entry gate",
+      "criterion": "ACC-P0-07",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M6",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 4.1,
+      "description": "a report with fewer than ten checks counts as a pass",
+      "criterion": "ACC-P0-05",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M7",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 4.0,
+      "description": "a gate exception is treated as permission",
+      "criterion": "ACC-P0-05",
+      "failed_tests": [
+        "FAILED"
+      ]
+    }
+  ],
+  "rev": "efd97e76",
+  "app_sha256": "ddcded50643b573d780c657b39a04295c1ad40bb8923d9ce70b0719c05f75c64",
+  "baseline_green": true,
+  "baseline_seconds": 62.9,
+  "killed": 7,
+  "mutants": 7,
+  "total_seconds": 135.4
+}

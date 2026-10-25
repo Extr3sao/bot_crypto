@@ -1,0 +1,74 @@
+{
+  "probe": "fenix_chart_pipeline",
+  "target_root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rea31\\fenix",
+  "commit": "bd7373d59bee48addea51989796df27f69193a34",
+  "evidence_class": "INSTRUMENTED_EXECUTION_NOT_REA",
+  "python": "3.11.15",
+  "steps": [
+    {
+      "step": "import_chart_service",
+      "ok": true,
+      "module": "src.charts.service"
+    },
+    {
+      "step": "generate_btc_15m",
+      "ok": true,
+      "backend": "RenderBackend.MPLFINANCE",
+      "error": null,
+      "image_bytes": 241752,
+      "generation_ms": 378.5,
+      "description": "mplfinance chart BTCUSDT 15m (100 candles)"
+    },
+    {
+      "step": "image_identity",
+      "png_magic": "89504e470d0a1a0a",
+      "sha256": "96c7f41c928e6b1810015ebf745783823b35fb6eacf5eb614a07ec4b7bebc61e",
+      "bytes": 181314
+    },
+    {
+      "step": "determinism_same_input",
+      "identical_png": true,
+      "note": "same candles, same symbol, same timeframe, cache bypassed"
+    },
+    {
+      "step": "cache_keying",
+      "same_symbol_hit": true,
+      "other_symbol_hit": false,
+      "other_symbol_image_reused": false
+    },
+    {
+      "step": "cache_ttl_enforced_when_asked",
+      "max_age_zero_returns_none": false,
+      "default_ttl_seconds": 120,
+      "note": "freshness is available at the cache; the visual node never calls it"
+    },
+    {
+      "step": "freshness_primitive",
+      "fresh_is_valid": true,
+      "stale_is_valid": false,
+      "stale_age_seconds": 7200.0,
+      "fresh_cache_key": "BTCUSDT_15m",
+      "note": "TTL for 15m is 600s; the snapshot can express staleness"
+    },
+    {
+      "step": "payload_shape_sent_to_model",
+      "image_is_bare_base64": true,
+      "carries_hash": false,
+      "carries_symbol_in_payload": false,
+      "carries_timestamp_in_payload": false,
+      "payload_digest_sha256": "c064e68aafd7228a8ffac85c4073114d0a0303c561c3a3c09f3beb081b7380f6"
+    }
+  ],
+  "verdict": "RENDER_AND_CACHE_REPRODUCED",
+  "what_this_proves": [
+    "the upstream renderer runs offline and emits a PNG from the supplied klines",
+    "the same input produces the same bytes within one environment",
+    "the cache is keyed by symbol+timeframe and does not cross-serve another symbol",
+    "staleness exists as a primitive (TTL) but nothing in the image payload records it"
+  ],
+  "what_this_does_not_prove": [
+    "no model was called: the provider path never ran",
+    "the environment is our venv, not theirs: byte-identity with their CI is not claimed",
+    "no exchange data, no orders, no risk code was executed"
+  ]
+}

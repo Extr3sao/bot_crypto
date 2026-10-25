@@ -1,0 +1,52 @@
+{
+  "builder": "ARP-002",
+  "code_files": [
+    "src/trading_bot/research/alpha_recovery/__init__.py",
+    "src/trading_bot/research/alpha_recovery/series.py",
+    "src/trading_bot/research/alpha_recovery/simulate.py",
+    "src/trading_bot/research/alpha_recovery/experiments.py",
+    "src/trading_bot/research/alpha_recovery/metrics.py",
+    "src/trading_bot/research/alpha_recovery/campaign.py"
+  ],
+  "code_hash": "9982d1fd1975da08a427167ca3b4329cf6afe0761ef03813ff0b7aa0debdd6ca",
+  "config_hash": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+  "cost_bps_rt": 23.559016994374947,
+  "cost_model": "COST_MODEL_V3 / BINANCE_SPOT_STANDARD_TAKER (round trip from CostEngine)",
+  "cost_stress_multiples": [
+    0.5,
+    1.0,
+    1.25,
+    1.5,
+    2.0
+  ],
+  "data_files_used": 21,
+  "data_hash_arp001_84_files": "f873fa090dd03fbedb8b10dfcebb8f51d4cc476fb3265a7f43e1a082da5dc9d0",
+  "data_hash_used": "9d51385d570b8ff4ba1af22c3d4491f78c36111ec7383173e7d0351d5ee21658",
+  "data_note": "ARP-002 experiments read the 21 five-minute base files only; the ARP-001 digest covers all 84 files (incl. higher-timeframe variants).",
+  "dev_range": "W1_2026-03..W4_2026-06",
+  "experiment_id": "EXP-ARP-001",
+  "kill_criteria": {
+    "cost_gate": "net expectancy must be > 0 at COST_MODEL_V3 base (1.0x)",
+    "dev_gross_expectancy_bps_min": 25.0,
+    "min_trades": 100,
+    "oos": "opens only after DEV PASS + VALIDATION PASS + COST PASS + ROBUSTNESS PASS",
+    "robustness": "one-point optimum across declared perturbations -> REJECT_FRAGILE",
+    "single_trade_concentration_top1_share_max": 0.5,
+    "validation": "VAL gross expectancy <= 0, or VAL gross < 0.5 * DEV gross -> material collapse"
+  },
+  "oos_range": "W7_2026-09 (LOCKED, unopened)",
+  "parameters": {
+    "cross_lookback": 60,
+    "fast": 20,
+    "mid": 40,
+    "slow": 200,
+    "variant": "source"
+  },
+  "phase": "ARP-002",
+  "pit_contract": "closed bars only; setup at bar i acted on close[i]; same closed bar for both legs of a cross-sectional pair; pivots from the prior completed UTC day; no HTF read",
+  "source_faithful": true,
+  "source_faithfulness_note": "source rules resolvable for a source-faithful arm (MA40 exit)",
+  "strategy_id": "STRAT-CAND-001",
+  "validation_range": "W5_2026-07..W6_2026-08",
+  "verifier": "UNASSIGNED"
+}

@@ -1,0 +1,63 @@
+{
+  "engine": "hostile",
+  "events": [
+    {
+      "activated_at_ms": 1792786770146,
+      "activation_error": null,
+      "actor": "control_file:C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g2_offline_run\\KILL_SWITCH",
+      "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal",
+      "broker_calls_allowed": 1,
+      "commit": "",
+      "event": "engaged",
+      "lock_timeout": false,
+      "new_state": "halted",
+      "orders_blocked": 0,
+      "previous_state": "normal",
+      "reason": "offline trace: operator stop",
+      "repeated": false,
+      "run_id": "97957391728046d0",
+      "version": "0.1.0"
+    }
+  ],
+  "gate_stats": {
+    "actor": "control_file:C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g2_offline_run\\KILL_SWITCH",
+    "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal",
+    "broker_calls_allowed": 1,
+    "engaged": true,
+    "engaged_at_ms": 1792786770146,
+    "lock_timeouts": 0,
+    "orders_blocked": 2,
+    "reason": "offline trace: operator stop"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g2_offline_run",
+  "steps": [
+    {
+      "broker_calls": 1,
+      "gate_engaged": false,
+      "mode": "TRADE_PAPER",
+      "order_created": true,
+      "phase": "operational",
+      "step": 1,
+      "switch_state": "normal"
+    },
+    {
+      "broker_calls": 1,
+      "gate_engaged": true,
+      "mode": "TRADE_PAPER",
+      "order_created": false,
+      "phase": "engaged",
+      "step": 2,
+      "switch_state": "halted"
+    },
+    {
+      "broker_calls": 1,
+      "gate_engaged": true,
+      "mode": "TRADE_PAPER",
+      "order_created": false,
+      "phase": "engaged (second cycle)",
+      "step": 3,
+      "switch_state": "halted"
+    }
+  ],
+  "verdict": "OPERATIONAL_THEN_ENGAGED_NO_NEW_ORDER"
+}

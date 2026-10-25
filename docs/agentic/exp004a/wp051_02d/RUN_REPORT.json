@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02d/EXP-004A/2026-10-21",
+  "rfc": "RFC-EXP004A-051-02D",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "role": "builder",
+  "generated_at_utc": "2026-10-21T15:40:00Z",
+  "commits": {
+    "provenance_contract_and_governed_extractor": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "successor_declaration": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "git_object_comparison": "e170ae1",
+    "closure_package": "the commit that carries this file; see git log -- docs/agentic/exp004a/wp051_02d"
+  },
+  "declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "phase": 2,
+    "schema_version": "3.0",
+    "effective_from_utc": "2026-10-21T16:00:00Z",
+    "issued_at_utc": "2026-10-21T15:20:56Z",
+    "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "supersedes": {
+      "path": "config/preregistrations/EXP-004A.datasets.json",
+      "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+      "original_modified": false
+    }
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "git_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+    "sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+    "file_would_run_equals_committed_blob": true
+  },
+  "capture_window": {
+    "start_utc": "2026-10-22T00:00:00Z",
+    "end_utc": "2027-01-20T00:00:00Z",
+    "open_at_report": false
+  },
+  "status": {
+    "WP_051_02D": "PASS",
+    "C_015_PROVENANCE": "PASS for the new declaration and for the eligibility rule; no capture exists yet",
+    "C_004": "PASS segun verificaciones vigentes (no tocado)",
+    "C_016": "UNREACHABLE_UNDER_DECLARED_COST_MODEL",
+    "C_013": "TIME_PROOF_WEAK",
+    "PAPER_VALIDATION": "NOT_PASS",
+    "CERTIFICATION": "BLOCKED",
+    "PROMOTION": "NO_PROMOTION"
+  },
+  "entry_drift": {
+    "rule": "only generator_code_commit may differ from phase 1",
+    "entries": 4,
+    "drifted_entries": 0
+  },
+  "exit_codes": {
+    "declaration_absent_or_invalid": 2,
+    "empty_window": 3,
+    "source_missing_or_corrupt": 4,
+    "capture_not_eligible": 5,
+    "eligible_slice": 0
+  },
+  "tests": [
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_exp004a_provenance.py tests/unit/research/test_exp004a_capture.py -q",
+      "result": "46 passed",
+      "exit_code": 0,
+      "duration_s": 29.15,
+      "log": "evidence/pytest_provenance_capture.log"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_prospective_admission.py -q",
+      "result": "36 passed",
+      "exit_code": 0,
+      "duration_s": 1.61,
+      "log": "evidence/pytest_admission.log"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_prereg_gate.py test_prereg_gate_two_phase.py test_prereg_gate_escape.py -q",
+      "result": "69 passed, 1 skipped (symlinks unavailable)",
+      "exit_code": 0,
+      "duration_s": 103.92,
+      "log": "evidence/pytest_prereg_gate.log"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_exp004a_verify_adversarial.py -q",
+      "result": "20 passed",
+      "exit_code": 0,
+      "duration_s": 13.13,
+      "log": "evidence/pytest_adversarial.log"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_edge03_forward.py -q",
+      "result": "33 passed",
+      "exit_code": 0,
+      "duration_s": 184.24,
+      "log": "evidence/pytest_edge03_forward.log"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m ruff check src/trading_bot/research/prospective/ scripts/exp004a_capture.py scripts/exp004a_provenance_preflight.py scripts/exp004a_provenance_verify.py tests/unit/research/test_exp004a_provenance.py tests/unit/research/test_exp004a_capture.py",
+      "result": "All checks passed",
+      "exit_code": 0,
+      "duration_s": null,
+      "log": null
+    }
+  ],
+  "cli_controls": {
+    "evidence": "evidence/CLI_CONTROLS.json",
+    "results": {
+      "ST6_TAPE_REFUSED": 2,
+      "EMPTY_WINDOW_REFUSED": 3,
+      "DECLARATION_ABSENT_BLOCKED": 2,
+      "PRE_EFFECTIVE_NOT_ELIGIBLE": 5,
+      "ELIGIBLE_SLICE_WRITTEN": 0,
+      "OVERWRITE_REFUSED": 2
+    },
+    "verbatim_bytes": true
+  },
+  "preflight": {
+    "path": "WP_051_02D_PREFLIGHT.json",
+    "status": "PASS",
+    "controls": 15,
+    "failed": 0,
+    "generated_at_utc": "2026-10-21T15:37:10Z",
+    "stdout": "evidence/preflight_stdout.log"
+  },
+  "independent_verification": {
+    "path": "WP_051_02D_PROVENANCE_VERIFICATION.json",
+    "seal": "WP_051_02D_VERIFIER_SEAL.json",
+    "builder_does_not_report": "The verifier's verdict is emitted by the verifier, not by this report. BUILDER != VERIFIER."
+  },
+  "limitations": [
+    "No prospective capture exists: the window opens 2026-10-22. The rule, the binding and the refusals are verified; no market day is.",
+    "No external timestamp attestation is available, so C-013 stays TIME_PROOF_WEAK and every provenance record says external_timestamp=UNAVAILABLE.",
+    "The full tests/unit/research suite was not executed; it exhausted 600 s in WP-051-02C. The affected suites are reported individually with their exit codes.",
+    "st6:tape still has no slice contract and is refused (exit 2); its declared row_count of 2700 remains unverifiable.",
+    "The worktree is shared with other WPs: unrelated modified paths were left untouched, and this package commits only its own files."
+  ],
+  "not_a_certification": "A technical PASS of the capture provenance does not imply that EXP-004A can be promoted, that 90 days were observed, or that any hypothesis survives costs.",
+  "economic_executions": 0
+}

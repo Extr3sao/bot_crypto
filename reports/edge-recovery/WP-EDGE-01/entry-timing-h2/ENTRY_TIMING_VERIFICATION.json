@@ -1,0 +1,248 @@
+{
+  "experiment": "h2",
+  "dir": "reports\\edge-recovery\\WP-EDGE-01\\entry-timing-h2",
+  "checks": [
+    {
+      "check": "ARTIFACTS_PRESENT",
+      "ok": true,
+      "detail": "6 artefacts match their digests"
+    },
+    {
+      "check": "WINDOW_IS_PREREGISTERED_DEV",
+      "ok": true,
+      "detail": "every one of 290 trades, 2910 refusals and 860 signals sits inside the DEV window"
+    },
+    {
+      "check": "TRADE_SIGNAL_JOIN",
+      "ok": true,
+      "detail": "290 trades join their signal across 1 arm(s)"
+    },
+    {
+      "check": "GROSS_BEFORE_COSTS_RECOMPUTED",
+      "ok": true,
+      "detail": "diagnostic: gross -151.71 vs recomputed -151.71"
+    },
+    {
+      "check": "COST_SPLIT_IDENTITY",
+      "ok": true,
+      "detail": "cost split reconciles on every arm"
+    },
+    {
+      "check": "FUNNEL_ARITHMETIC",
+      "ok": true,
+      "detail": "diagnostic: 2910 refusals over 8 reasons"
+    },
+    {
+      "check": "ARM_METRICS_RECOMPUTED",
+      "ok": true,
+      "detail": "diagnostic: 290 trades, net -496.43"
+    },
+    {
+      "check": "MARKET_CONTEXT_ATTRIBUTION",
+      "ok": true,
+      "detail": "290 trades attributed from 2596 benchmark days (BULL=290)"
+    },
+    {
+      "check": "DECISION_RULE_FROZEN",
+      "ok": true,
+      "detail": "the decision rule matches the pre-registered constants ({'min_trades_per_side': 25})"
+    },
+    {
+      "check": "VERDICT_RECOMPUTED",
+      "ok": true,
+      "detail": "ENTRY_IS_LATE recomputed: near 54 @ -1.0882, far 236 @ -1.8545, floor 25"
+    },
+    {
+      "check": "BUCKET_ARITHMETIC",
+      "ok": true,
+      "detail": "290 fills split into ['<0.25', '0.25-0.5', '0.5-1', '>=1'] and every aggregate recomputed"
+    },
+    {
+      "check": "LEVEL_JOIN_RECOMPUTED",
+      "ok": true,
+      "detail": "290 fills: distance recomputed from the level each signal names (median 0.4974 ATR)"
+    },
+    {
+      "check": "FILL_IS_AFTER_THE_SIGNAL",
+      "ok": true,
+      "detail": "all 290 fills happen after the signal that printed them"
+    }
+  ],
+  "passed": 13,
+  "total": 13,
+  "self_test": {
+    "baseline_all_green": true,
+    "baseline": {
+      "ARTIFACTS_PRESENT": true,
+      "WINDOW_IS_PREREGISTERED_DEV": true,
+      "TRADE_SIGNAL_JOIN": true,
+      "GROSS_BEFORE_COSTS_RECOMPUTED": true,
+      "COST_SPLIT_IDENTITY": true,
+      "FUNNEL_ARITHMETIC": true,
+      "ARM_METRICS_RECOMPUTED": true,
+      "MARKET_CONTEXT_ATTRIBUTION": true,
+      "DECISION_RULE_FROZEN": true,
+      "VERDICT_RECOMPUTED": true,
+      "BUCKET_ARITHMETIC": true,
+      "LEVEL_JOIN_RECOMPUTED": true,
+      "FILL_IS_AFTER_THE_SIGNAL": true
+    },
+    "mutations": [
+      {
+        "mutation": "M1_flattered_gross",
+        "expected_check": "GROSS_BEFORE_COSTS_RECOMPUTED",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY",
+          "GROSS_BEFORE_COSTS_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "diagnostic: ETH @ 1728310500000 publishes gross 25.0103, its own prices give 0.0103"
+      },
+      {
+        "mutation": "M2_tampered_fees",
+        "expected_check": "COST_SPLIT_IDENTITY",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY"
+        ],
+        "expected_check_failed": true,
+        "detail": "diagnostic: gross -3.2174 - costs 0.1889 - fees 5.9966 != net -4.4029; diagnostic: fills x qty - fees = -9.4029 != net -4.4029; diagnostic: declared fees_usdt 289.79 != the sum of the rows"
+      },
+      {
+        "mutation": "M3_window_moved_to_val",
+        "expected_check": "WINDOW_IS_PREREGISTERED_DEV",
+        "detected": [
+          "WINDOW_IS_PREREGISTERED_DEV"
+        ],
+        "expected_check_failed": true,
+        "detail": "declared window starts 1735516800000, DEV starts 1727740800000; declared window ends 1785801600000, DEV ends 1751241600000"
+      },
+      {
+        "mutation": "M4_out_of_window_trade",
+        "expected_check": "WINDOW_IS_PREREGISTERED_DEV",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "FILL_IS_AFTER_THE_SIGNAL",
+          "WINDOW_IS_PREREGISTERED_DEV"
+        ],
+        "expected_check_failed": true,
+        "detail": "trade entry_ts 1727654400000 outside DEV"
+      },
+      {
+        "mutation": "M5_refusals_trimmed",
+        "expected_check": "FUNNEL_ARITHMETIC",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "FUNNEL_ARITHMETIC"
+        ],
+        "expected_check_failed": true,
+        "detail": "diagnostic: file and JSON disagree (file-only {'candidate:volume_filter_fail': 549}, json-only {'candidate:volume_filter_fail': 550})"
+      },
+      {
+        "mutation": "M6_trade_dropped",
+        "expected_check": "TRADE_SIGNAL_JOIN",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY",
+          "LEVEL_JOIN_RECOMPUTED",
+          "TRADE_SIGNAL_JOIN"
+        ],
+        "expected_check_failed": true,
+        "detail": "diagnostic: 289 trade rows but 290 declared; the join table covers 290 trades, the run executed 289"
+      },
+      {
+        "mutation": "M7_signal_removed",
+        "expected_check": "TRADE_SIGNAL_JOIN",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "LEVEL_JOIN_RECOMPUTED",
+          "TRADE_SIGNAL_JOIN"
+        ],
+        "expected_check_failed": true,
+        "detail": "diagnostic: 1 trades name a signal that is not published"
+      },
+      {
+        "mutation": "M8_relabelled_market_context",
+        "expected_check": "MARKET_CONTEXT_ATTRIBUTION",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "MARKET_CONTEXT_ATTRIBUTION"
+        ],
+        "expected_check_failed": true,
+        "detail": "diagnostic/ETH @ 1728310500000: market_context 'BEAR' != 'BULL' readable at that instant"
+      },
+      {
+        "mutation": "M9_flipped_verdict",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "declared ENTRY_NOT_THE_PROBLEM but the rule on the published numbers gives ENTRY_IS_LATE (near 54 @ -1.0882, far 236 @ -1.8545, floor 25)"
+      },
+      {
+        "mutation": "M10_relaxed_rule",
+        "expected_check": "DECISION_RULE_FROZEN",
+        "detected": [
+          "DECISION_RULE_FROZEN"
+        ],
+        "expected_check_failed": true,
+        "detail": "rule.min_trades_per_side is 24, frozen value is 25"
+      },
+      {
+        "mutation": "M11_arm_net_tampered",
+        "expected_check": "ARM_METRICS_RECOMPUTED",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "COST_SPLIT_IDENTITY"
+        ],
+        "expected_check_failed": true,
+        "detail": "diagnostic.net_usdt: declared -246.4298 != recomputed -496.4298"
+      },
+      {
+        "mutation": "M12_artifact_touched",
+        "expected_check": "ARTIFACTS_PRESENT",
+        "detected": [
+          "ARTIFACTS_PRESENT"
+        ],
+        "expected_check_failed": true,
+        "detail": "ENTRY_TIMING_TRADES.csv: sha256 e6540f28ad69 != 65544270357d"
+      },
+      {
+        "mutation": "M13_level_tampered",
+        "expected_check": "LEVEL_JOIN_RECOMPUTED",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "LEVEL_JOIN_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "('ETH', 632): level 2509.6682 is not the signal's own hard_invalidation; ('ETH', 632): distance_atr 0.245712 != recomputed -2.066978"
+      },
+      {
+        "mutation": "M14_bucket_misassigned",
+        "expected_check": "BUCKET_ARITHMETIC",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "BUCKET_ARITHMETIC"
+        ],
+        "expected_check_failed": true,
+        "detail": "1 rows sit in a bucket their distance is not in; <0.25.trades: declared 54 != recomputed 53; <0.25.net_usdt: declared -58.7637 != recomputed -57.5847; <0.25.fees_usdt: declared 53.9952 != recomputed 52.9954; <0.25.price_costs_usdt: declared 10.2336 != recomputed 10.0441; <0.25.cost_usdt: declared 64.2289 != recomputed 63.0395; <0.25.median_distance_atr: declared 0.171247 != recomputed 0.16815; 0.25-0.5.trades: declared 96 != recomputed 97; 0.25-0.5.net_usdt: declared -134.8396 != recomputed -136.0185; 0.25-0.5.fees_usdt: declared 95.9611 != recomputed 96.9609; 0.25-0.5.cost_usdt: declared 114.1485 != recomputed 115.3378; 0.25-0.5.median_distance_atr: declared 0.372328 != recomputed 0.371209"
+      },
+      {
+        "mutation": "M15_edges_relaxed",
+        "expected_check": "DECISION_RULE_FROZEN",
+        "detected": [
+          "DECISION_RULE_FROZEN"
+        ],
+        "expected_check_failed": true,
+        "detail": "the bucket edges are [0.5, 0.5, 1.0], frozen ones are [0.25, 0.5, 1.0]"
+      }
+    ],
+    "all_detected": true
+  },
+  "failed": 0
+}

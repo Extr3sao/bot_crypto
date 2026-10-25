@@ -1,0 +1,130 @@
+{
+  "declaration_id": "EXP-004A.datasets.phase2/v1",
+  "experiment_id": "EXP-004A",
+  "phase": 2,
+  "schema_version": "3.0",
+  "supersedes": {
+    "path": "config/preregistrations/EXP-004A.datasets.json",
+    "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+    "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+    "declared_generator_code_commit": "0000000000000000000000000000000000000000",
+    "reason": "phase 1 was committed before the extractor existed, so it could not name a commit; it keeps its bytes and this document supplies the missing identifier by reference"
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "blob_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+    "contract": "trading_bot.research.prospective.store.index_series"
+  },
+  "capture_window": {
+    "start_utc": "2026-10-22T00:00:00Z",
+    "end_utc": "2027-01-20T00:00:00Z"
+  },
+  "effective_from_utc": "2026-10-21T16:00:00Z",
+  "issued_at_utc": "2026-10-21T15:20:56Z",
+  "governance_status": "AUTHORIZED_FOR_CAPTURE",
+  "note": "Successor to EXP-004A.datasets.json. The only field that differs per entry is generator_code_commit; assets, venues, windows, lag bounds, coverage requirements, declared row counts and the deferred digests are the phase-1 values, verbatim. The capture window is unchanged, so no day already consumed by WP-051-02C is reopened. effective_from_utc is the instant this declaration binds; every eligible bar must have been fetched at or after it, and the commit that carries this file must precede the window opening. st6:tape keeps no slice contract: the freeze defines no round-to-window rule, so the extractor still refuses it.",
+  "entries": [
+    {
+      "dataset_id": "EXP-004A-1H-BTC",
+      "asset": "BTC",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "period_start_utc": "2026-10-22T00:00:00Z",
+      "period_end_utc": "2027-01-20T00:00:00Z",
+      "raw_file": "data/exp004a/EXP-004A-1H-BTC.raw.jsonl",
+      "raw_sha256": null,
+      "normalized_file": "data/exp004a/EXP-004A-1H-BTC.jsonl",
+      "normalized_sha256": null,
+      "generator_command": "python scripts/exp004a_capture.py --slice 1h:BTC",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "generator_code_commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+      "row_count": 2160,
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    },
+    {
+      "dataset_id": "EXP-004A-1H-ETH",
+      "asset": "ETH",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "period_start_utc": "2026-10-22T00:00:00Z",
+      "period_end_utc": "2027-01-20T00:00:00Z",
+      "raw_file": "data/exp004a/EXP-004A-1H-ETH.raw.jsonl",
+      "raw_sha256": null,
+      "normalized_file": "data/exp004a/EXP-004A-1H-ETH.jsonl",
+      "normalized_sha256": null,
+      "generator_command": "python scripts/exp004a_capture.py --slice 1h:ETH",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "generator_code_commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+      "row_count": 2160,
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    },
+    {
+      "dataset_id": "EXP-004A-1H-SOL",
+      "asset": "SOL",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "period_start_utc": "2026-10-22T00:00:00Z",
+      "period_end_utc": "2027-01-20T00:00:00Z",
+      "raw_file": "data/exp004a/EXP-004A-1H-SOL.raw.jsonl",
+      "raw_sha256": null,
+      "normalized_file": "data/exp004a/EXP-004A-1H-SOL.jsonl",
+      "normalized_sha256": null,
+      "generator_command": "python scripts/exp004a_capture.py --slice 1h:SOL",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "generator_code_commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+      "row_count": 2160,
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    },
+    {
+      "dataset_id": "EXP-004A-ST6-TAPE",
+      "asset": "BTC,ETH,SOL,XRP",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "4h slot, 3 rounds of 15s",
+      "provider": "ST-6 forward regime collector (bookTicker + depth 100)",
+      "source_url": "https://api.binance.com/api/v3/ticker/bookTicker",
+      "period_start_utc": "2026-10-22T00:00:00Z",
+      "period_end_utc": "2027-01-20T00:00:00Z",
+      "raw_file": "data/exp004a/EXP-004A-ST6-TAPE.raw.jsonl",
+      "raw_sha256": null,
+      "normalized_file": "data/exp004a/EXP-004A-ST6-TAPE.jsonl",
+      "normalized_sha256": null,
+      "generator_command": "python scripts/exp004a_capture.py --slice st6:tape",
+      "generator_parameters": {
+        "size_usdt_walked": 200.0,
+        "declared_notional_usdt": 500.0,
+        "rounds_per_window": 3
+      },
+      "generator_code_commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+      "row_count": 2700,
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1",
+      "note": "The tape walked 200 USDT, not the declared 500. Phase 2 does not fix that by scaling; the rule reports DECLARED_SIZE_NOT_WALKED and a lower bound unless the collector is extended before the capture starts."
+    }
+  ]
+}

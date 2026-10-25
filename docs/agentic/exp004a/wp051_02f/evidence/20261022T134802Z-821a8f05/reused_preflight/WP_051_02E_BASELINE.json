@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02e/EXP-004A/2026-10-21",
+  "generated_at_utc": "2026-10-22T13:49:40Z",
+  "repo": {
+    "head": "f20dff9b71fd10a5f110ab6cae88e817c6f5d428",
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_paths": 268,
+    "note": "the dirty count is reported, not cleaned: other work packages share this checkout and this script has no business reverting their files"
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe"
+  },
+  "head": "f20dff9b71fd10a5f110ab6cae88e817c6f5d428",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "schema_version": "3.0",
+    "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "governance_status": "AUTHORIZED_FOR_CAPTURE"
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "declared_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+  },
+  "capture_window": {
+    "start_utc": "2026-10-22T00:00:00.000Z",
+    "end_utc": "2027-01-20T00:00:00.000Z",
+    "declared_days": 90.0,
+    "effective_from_utc": "2026-10-21T16:00:00.000Z",
+    "state_at_preflight": "OPEN",
+    "instant_utc": "2026-10-22T13:49:31.511Z",
+    "seconds_until_open": 0
+  },
+  "protected_paths_dirty": [],
+  "store_at_baseline": {
+    "1h:BTC": {
+      "path": "data/forward/edge03/1h/BTC.jsonl",
+      "asset": "BTC",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1775068,
+      "sha256_at_read": "ded6e1f626c6e44d5b5aafe95460d565e23169affd95281d72df4308f581aa13",
+      "bytes_at_read": 1775068,
+      "readable": true,
+      "bars": 5653,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-22T12:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-22T13:25:58.067Z",
+      "bars_opening_in_window": 13,
+      "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 1413444
+    },
+    "1h:ETH": {
+      "path": "data/forward/edge03/1h/ETH.jsonl",
+      "asset": "ETH",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1756492,
+      "sha256_at_read": "71ac34707d3f0a0d8af39de6cd254d3099936a8f505c24a38260336452cdf483",
+      "bytes_at_read": 1756492,
+      "readable": true,
+      "bars": 5653,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-22T12:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-22T13:25:58.067Z",
+      "bars_opening_in_window": 13,
+      "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 1413444
+    },
+    "1h:SOL": {
+      "path": "data/forward/edge03/1h/SOL.jsonl",
+      "asset": "SOL",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1716648,
+      "sha256_at_read": "3ba81b5fac57c5564ea9897699af7044dbb2a8bacad612847b15799450dc0fb0",
+      "bytes_at_read": 1716648,
+      "readable": true,
+      "bars": 5653,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-22T12:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-22T13:25:58.067Z",
+      "bars_opening_in_window": 13,
+      "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 1413444
+    }
+  },
+  "dataset_directory": [
+    "admission_1h+15m.jsonl",
+    "admission_1h.jsonl"
+  ],
+  "note": "the baseline records the checkout it found; nothing here is normalised, cleaned or committed on its behalf"
+}

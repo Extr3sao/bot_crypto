@@ -642,6 +642,7 @@ name = "crypto-scalping-agentic-bot"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "aiohttp" },
     { name = "apscheduler" },
     { name = "ccxt" },
     { name = "numpy" },
@@ -694,6 +695,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "aiohttp", specifier = ">=3.9.0,<4.0.0" },
     { name = "anyio", marker = "extra == 'dev'", specifier = ">=4.3.0" },
     { name = "apscheduler", specifier = ">=3.10.4" },
     { name = "ccxt", specifier = ">=4.0.0,<5.0.0" },

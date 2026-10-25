@@ -1,0 +1,112 @@
+{
+  "claims": [
+    {
+      "claim_id": "C-000",
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/RUN_REPORT.json#independence"
+      ],
+      "reason_code": "INDEPENDENCE_NOT_PROVEN",
+      "status": "BLOCKED"
+    },
+    {
+      "claim_id": "C-001",
+      "evidence_refs": [
+        "tests/unit/research/test_prereg_gate.py",
+        "tests/unit/research/test_prereg_gate_two_phase.py",
+        "tests/unit/research/test_prereg_gate_escape.py",
+        "tests/unit/research/test_prospective_admission.py",
+        "tests/unit/research/test_execution_cost_measured.py",
+        "tests/unit/research/test_exp004a_evidence_inventory.py"
+      ],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-002",
+      "evidence_refs": [],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-003",
+      "evidence_refs": [],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-004",
+      "evidence_refs": [],
+      "reason_code": "ADMISSION_REPLAY_MISMATCH",
+      "status": "FAIL"
+    },
+    {
+      "claim_id": "C-005",
+      "evidence_refs": [],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-006",
+      "evidence_refs": [],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-007",
+      "evidence_refs": [
+        "data/st6/ST6_OBSERVATIONS.jsonl"
+      ],
+      "reason_code": "COST_SCOPE_UNPROVEN",
+      "status": "BLOCKED"
+    },
+    {
+      "claim_id": "C-008",
+      "evidence_refs": [],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-009",
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/RUN_REPORT.json#authority"
+      ],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-010",
+      "evidence_refs": [],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-011",
+      "evidence_refs": [],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-012",
+      "evidence_refs": [],
+      "reason_code": null,
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-013",
+      "evidence_refs": [
+        "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md#2"
+      ],
+      "reason_code": "TIME_PROOF_WEAK",
+      "status": "BLOCKED"
+    },
+    {
+      "claim_id": "C-014",
+      "evidence_refs": [
+        "tests/unit/research/test_exp004a_verify_adversarial.py"
+      ],
+      "reason_code": null,
+      "status": "PASS"
+    }
+  ],
+  "run_id": "verifier-b/EXP-004A/WP-051-02:2026-10-21T10:26:12.509519Z"
+}

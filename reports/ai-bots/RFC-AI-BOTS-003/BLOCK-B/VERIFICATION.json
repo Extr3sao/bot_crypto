@@ -1,0 +1,62 @@
+{
+  "schema_version": "AI_BOTS_003B_VERIFICATION_V1",
+  "block": "WP-TAP-AI-BOTS-003B",
+  "engine_commit": "96957a2be068322459849855735d5ca368519040",
+  "builder_equals_verifier": false,
+  "verifier": "scripts/ai_bots_003b_verify.py (stdlib only, imports no trading_bot module)",
+  "verifier_sha256_note": "the verifier reimplements the ledger chain and every economic identity instead of importing the lane",
+  "per_bot": {
+    "BOT-VIS-01": {
+      "ledger": "runs/bot-vis-01/BOT-VIS-01_DECISIONS.jsonl",
+      "summary": "runs/bot-vis-01/SUMMARY.json",
+      "verification": "runs/bot-vis-01/INDEPENDENT_VERIFICATION.json",
+      "mutations": "runs/bot-vis-01/MUTATION_REPORT.json",
+      "checks_passed": 21,
+      "checks_failed": 0,
+      "mutations_caught": 10,
+      "mutations_total": 10,
+      "exit_code": 0
+    },
+    "BOT-CTX-01": {
+      "ledger": "runs/bot-ctx-01/BOT-CTX-01_DECISIONS.jsonl",
+      "summary": "runs/bot-ctx-01/SUMMARY.json",
+      "verification": "runs/bot-ctx-01/INDEPENDENT_VERIFICATION.json",
+      "mutations": "runs/bot-ctx-01/MUTATION_REPORT.json",
+      "checks_passed": 21,
+      "checks_failed": 0,
+      "mutations_caught": 10,
+      "mutations_total": 10,
+      "exit_code": 0
+    }
+  },
+  "independent_roots": {
+    "method": "git archive HEAD extracted twice; one root normalised to LF, the other to CRLF (2719 text files each); full paper replay plus independent verification in each",
+    "lf": {"run_exit": 0, "verify_vis_exit": 0, "verify_ctx_exit": 0},
+    "crlf": {"run_exit": 0, "verify_vis_exit": 0, "verify_ctx_exit": 0},
+    "economic_rows_identical": true,
+    "verification_byte_identical_between_roots": true,
+    "published_artifacts_verified_from_lf_archive": true,
+    "ledger_bytes_identical": false,
+    "ledger_bytes_reason": "each line stamps recorded_at_utc, the wall clock of the write; that is a fact about the run, not about the market"
+  },
+  "test_suites": {
+    "red_before_green": {"failed_before": 9, "passed_before_vacuously": 1, "passed_after": 10},
+    "relevant_units": {"command": "pytest tests/unit/vision tests/unit/paper tests/unit/reports tests/unit/intelligence -q", "passed": 293, "failed": 0, "exit": 0},
+    "rea_package": {"command": "python scripts/ai_bots_rea_verify.py", "passed": 73, "failed": 0, "exit": 0},
+    "ruff": {"exit": 0},
+    "mypy": {"exit": 0}
+  },
+  "blocked": [
+    {
+      "item": "one real multimodal call",
+      "state": "BLOCKED_MODEL_API",
+      "detail": "no VISION_API_KEY and no spending approval; scripts/ai_bots_run.py --mode live exits 2 without issuing a request"
+    },
+    {
+      "item": "full repository test suite",
+      "state": "NOT_RUN",
+      "detail": "171 files were already modified by unrelated work; they were neither touched nor staged"
+    }
+  ],
+  "false_success": 0
+}

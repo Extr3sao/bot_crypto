@@ -1,0 +1,181 @@
+{
+  "tool": "exec_sec_mutants",
+  "rfc": "RFC-TAP-EXEC-SEC-002",
+  "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "source": "worktree",
+  "target_tests": [
+    "tests/unit/test_order_authorization.py",
+    "tests/unit/test_exec_sec_process.py"
+  ],
+  "variants": [
+    {
+      "variant": "baseline",
+      "killed": false,
+      "exit_code": 0,
+      "seconds": 15.3,
+      "description": "unmutated export",
+      "acceptance": "baseline",
+      "failed_tests": []
+    },
+    {
+      "variant": "M1",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.4,
+      "description": "run --auto-trade no longer requires --confirm-live",
+      "acceptance": "T01",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M2",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.0,
+      "description": "the sink trusts the CLI and skips the confirmation check",
+      "acceptance": "T11",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M3",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 4.9,
+      "description": "a classifier exception falls through to the gate",
+      "acceptance": "REQ-02",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M4",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 2.1,
+      "description": "a rejecting gate is ignored at the sink",
+      "acceptance": "T02",
+      "failed_tests": []
+    },
+    {
+      "variant": "M5",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.0,
+      "description": "a spot sell is treated as a proven reduction",
+      "acceptance": "T06",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M6",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.1,
+      "description": "a TP/SL change is treated as a proven reduction",
+      "acceptance": "T09",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M7",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.1,
+      "description": "tradeSide=CLOSE is accepted without reduceOnly",
+      "acceptance": "T07",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M8",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.0,
+      "description": "a venue without reduceOnly is trusted anyway",
+      "acceptance": "REQ-03",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M9",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.0,
+      "description": "hedge mode ambiguity is ignored",
+      "acceptance": "T08",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M10",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.1,
+      "description": "the closing side is not compared to the position",
+      "acceptance": "T06",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M11",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 5.0,
+      "description": "a quantity above the position is accepted",
+      "acceptance": "T06",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M12",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 4.9,
+      "description": "a stale flash-close snapshot is accepted",
+      "acceptance": "T08",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M13",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 4.5,
+      "description": "the final payload may lose reduceOnly",
+      "acceptance": "T07",
+      "failed_tests": [
+        "FAILED"
+      ]
+    },
+    {
+      "variant": "M14",
+      "killed": true,
+      "exit_code": 1,
+      "seconds": 4.4,
+      "description": "the flash-close payload may gain a side and size",
+      "acceptance": "T07",
+      "failed_tests": [
+        "FAILED"
+      ]
+    }
+  ],
+  "rev": "368bfcc944912ceeff95b09db40b5ea7132afae4",
+  "app_sha256": "f732dd560abac1a24f732847c5218e670f449b438440694da194aaba6351a195",
+  "authorization_sha256": "f8863269ab76dc0c9257472a1837a2f5b7b939c1d87cf56524e7abdf80809d88",
+  "baseline_green": true,
+  "baseline_seconds": 15.3,
+  "killed": 14,
+  "mutants": 14,
+  "total_seconds": 102.7
+}

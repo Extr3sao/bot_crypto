@@ -1,0 +1,397 @@
+{
+  "schema_version": "g5-verification/v1",
+  "verdict": "G5_VERIFIED",
+  "requested_rev": "HEAD",
+  "rev": "05b361f7bd26a4fb9d470d9ba5c68d7f967846c9",
+  "export_tree": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g5-verify-itw7889f\\tree",
+  "checks": [
+    {
+      "check": "HOT_STOP_UNCHANGED",
+      "passed": true,
+      "detail": {
+        "sha256": "76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1",
+        "expected": "76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1"
+      }
+    },
+    {
+      "check": "PAPER_ONLY",
+      "passed": true,
+      "detail": {
+        "execution_class": "PAPER_ONLY_SYNTHETIC_FIXTURE",
+        "live": false,
+        "credentials_used": false,
+        "order_sent": false
+      }
+    },
+    {
+      "check": "CONTROLLED_LEDGER_LABELLED",
+      "passed": true,
+      "detail": "CONTROLLED_TEST_FIXTURE \u2014 not market evidence, not a production admission"
+    },
+    {
+      "check": "TRADE_ONE_ORDER_ONE_POSITION",
+      "passed": true,
+      "detail": {
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 1,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 1,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 1,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {},
+          "rejections": []
+        },
+        "positions": 1,
+        "calls": {
+          "execute_signal": 1,
+          "close_position": 0
+        },
+        "state": {
+          "open_positions": 1,
+          "closed_trades": 0,
+          "sent_intents": 1,
+          "equity": 10000.0
+        },
+        "identities": {
+          "cash_equals_initial_plus_realised": true,
+          "ledger_equity_equals_initial_plus_realised": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "closed_trade_pnl_rebuilds": true,
+          "closed_trade_costs_are_named": true
+        }
+      }
+    },
+    {
+      "check": "RESTART_RECOVERS_AND_RECONCILES",
+      "passed": true,
+      "detail": {
+        "before": {
+          "status": "RECOVERED",
+          "restored_open_positions": 1,
+          "restored_closed_trades": 0,
+          "restored_intents": 1,
+          "restored_equity": 10000.0,
+          "restored_risk": {
+            "consecutive_losses": 0,
+            "daily_pnl": 0.0,
+            "day_peak_equity": 10000.0,
+            "kill_switch_active": false,
+            "last_loss_ms": 0,
+            "open_positions": {},
+            "peak_equity": 10000.0,
+            "trades_today": 0,
+            "weekly_pnl": 0.0,
+            "weekly_start_ms": 1792368000000
+          },
+          "restored_run_id": "2002c3deeeda42689552055d625973ca",
+          "checked_at_ms": 1792934970897,
+          "details": [
+            "broker restored: equity=10000.00 open=1 closed=0",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids"
+          ]
+        },
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 1,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 1,
+          "defensive_blocks": {},
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "position",
+              "reason": "same_side_already_open"
+            }
+          ]
+        },
+        "closed": [
+          {
+            "symbol": "BTC/USDT",
+            "side": "buy",
+            "pnl": 49.39001649780036,
+            "exit_reason": "take_profit",
+            "position_id": "pos-g5-trade-00000001",
+            "entry_order_id": "ord-g5-trade-00000002",
+            "exit_order_id": "ordx-g5-restart-00000004",
+            "gross_pnl": 49.89001649780036,
+            "entry_commission": 0.25,
+            "exit_commission": 0.25,
+            "reference_gross_pnl": 49.99500049995005,
+            "execution_cost_usdt": 0.10498400214969195
+          }
+        ],
+        "state": {
+          "open_positions": 0,
+          "closed_trades": 1,
+          "sent_intents": 1,
+          "equity": 10049.3900164978
+        }
+      }
+    },
+    {
+      "check": "NO_TRADE_ZERO_ORDERS",
+      "passed": true,
+      "detail": {
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 1,
+          "signals_generated": 0,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {},
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "strategy",
+              "reason": "no_alpha_in_direction:ANY"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "STALE_ZERO_ORDERS",
+      "passed": true,
+      "detail": {
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 1,
+          "router_errors": 0,
+          "strategy_invocations": 0,
+          "signals_generated": 0,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {},
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "router",
+              "reason": "NO_TRADE:stale_context"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "KILL_SWITCH_ZERO_BROKER_CALLS",
+      "passed": true,
+      "detail": {
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 1,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 1,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 1,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {},
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "hot_stop",
+              "reason": "kill_switch_active:marker:G-5 operator stop"
+            }
+          ]
+        },
+        "calls": {
+          "execute_signal": 0,
+          "close_position": 0
+        }
+      }
+    },
+    {
+      "check": "PROVIDER_EXCEPTION_ZERO_ORDERS",
+      "passed": true,
+      "detail": {
+        "cycle": {
+          "contexts_built": 0,
+          "context_errors": 0,
+          "router_invocations": 0,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 0,
+          "signals_generated": 0,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {},
+          "rejections": []
+        },
+        "metrics": {
+          "total_snapshots": 0,
+          "active_snapshots": 0,
+          "inactive_snapshots": 0,
+          "scanner_errors": 1,
+          "fills_opened": 0,
+          "ending_equity": 10000.0
+        }
+      }
+    },
+    {
+      "check": "SUMMARY_MATCHES_SCENARIOS",
+      "passed": true,
+      "detail": {
+        "trade_orders": 1,
+        "restart_reconciliation": "RECOVERED",
+        "restart_orders": 0,
+        "restart_closed_trades": 1,
+        "no_trade_orders": 0,
+        "stale_orders": 0,
+        "kill_switch_orders": 0,
+        "kill_switch_broker_calls": {
+          "execute_signal": 0,
+          "close_position": 0
+        },
+        "exception_orders": 0
+      }
+    },
+    {
+      "check": "NO_ORDER_CLAIMED_WITH_ZERO_BROKER_CALL",
+      "passed": true,
+      "detail": {
+        "trade": {
+          "execute_signal": 1,
+          "close_position": 0
+        },
+        "restart": {
+          "execute_signal": 0,
+          "close_position": 0
+        },
+        "no_trade": {
+          "execute_signal": 0,
+          "close_position": 0
+        },
+        "stale": {
+          "execute_signal": 0,
+          "close_position": 0
+        },
+        "kill_switch": {
+          "execute_signal": 0,
+          "close_position": 0
+        },
+        "provider_exception": {
+          "execute_signal": 0,
+          "close_position": 0
+        }
+      }
+    },
+    {
+      "check": "DETERMINISTIC_REPLAY",
+      "passed": true,
+      "detail": {
+        "first_sha256": "df31cac52bc66f231132485e890bd40b3e566099a61cbdea815056387f47f74e",
+        "second_sha256": "7300591de63a97964a0233c6f04d0b1cd6ff5f7fb6f26ec3c27d003bff61a65c",
+        "note": "session ids and timestamps are excluded; counters and economic results must match"
+      }
+    }
+  ],
+  "checks_passed": 12,
+  "checks_total": 12,
+  "false_success": 0,
+  "runs": [
+    {
+      "run": "first",
+      "exit_code": 0,
+      "seconds": 1.88,
+      "stdout_tail": "=0\n2026-10-25 14:29:31 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1\n{\n  \"trade_orders\": 1,\n  \"restart_reconciliation\": \"RECOVERED\",\n  \"restart_orders\": 0,\n  \"restart_closed_trades\": 1,\n  \"no_trade_orders\": 0,\n  \"stale_orders\": 0,\n  \"kill_switch_orders\": 0,\n  \"kill_switch_broker_calls\": {\n    \"execute_signal\": 0,\n    \"close_position\": 0\n  },\n  \"exception_orders\": 0\n}\nevidence written to C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g5-verify-itw7889f\\run1\\evidence.json\n",
+      "stderr_tail": ""
+    },
+    {
+      "run": "second",
+      "exit_code": 0,
+      "seconds": 1.7,
+      "stdout_tail": "=0\n2026-10-25 14:29:32 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1\n{\n  \"trade_orders\": 1,\n  \"restart_reconciliation\": \"RECOVERED\",\n  \"restart_orders\": 0,\n  \"restart_closed_trades\": 1,\n  \"no_trade_orders\": 0,\n  \"stale_orders\": 0,\n  \"kill_switch_orders\": 0,\n  \"kill_switch_broker_calls\": {\n    \"execute_signal\": 0,\n    \"close_position\": 0\n  },\n  \"exception_orders\": 0\n}\nevidence written to C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g5-verify-itw7889f\\run2\\evidence.json\n",
+      "stderr_tail": ""
+    }
+  ],
+  "seconds": 12.32
+}

@@ -1,0 +1,282 @@
+{
+  "tool": "docs/audit/runs/run-20261024T064739Z-G-1/verify_g1.py",
+  "contract": "docs/audit/G-1.md",
+  "rev_requested": "9df2aa8f",
+  "rev_resolved": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+  "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "branch": "audit/mt0004-negative-controls",
+  "author": "same author as the implementation",
+  "independence": "PROCEDURALLY_SEPARATED",
+  "verdict": "VERIFIED_SCOPED",
+  "passed": 13,
+  "total": 13,
+  "checks": [
+    {
+      "check_id": "V-0",
+      "criterion": "ACC-G1-14",
+      "description": "checkout identity: absolute path, branch, HEAD, no dirty source, resolved revision",
+      "passed": true,
+      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004 @ 9df2aa8f69e4 (audit/mt0004-negative-controls); dirty source files: 0",
+      "evidence": {
+        "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+        "branch": "audit/mt0004-negative-controls",
+        "head": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+        "status_porcelain": "M docs/audit/AUDIT_BACKLOG.yaml\n M docs/audit/runs/run-20261024T064739Z-G-1/COMMANDS.md\n M docs/audit/runs/run-20261024T064739Z-G-1/COMMITS.md\n M docs/audit/runs/run-20261024T064739Z-G-1/FINAL_REPORT.md\n M docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.json\n M docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md\n M docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.json\n M docs/audit/runs/run-20261024T064739Z-G-1/mutants.json\n M docs/audit/runs/run-20261024T064739Z-G-1/verification.json",
+        "source_dirty": [],
+        "rev_requested": "9df2aa8f",
+        "rev_resolved": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+        "export": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\tree"
+      }
+    },
+    {
+      "check_id": "V-1",
+      "criterion": "ACC-G1-13",
+      "description": "every changed file is inside the frozen allowed_paths and outside every protected path",
+      "passed": true,
+      "detail": "20 files changed; 0 outside scope; 0 protected",
+      "evidence": {
+        "changed": [
+          "docs/audit/AUDIT_BACKLOG.yaml",
+          "docs/audit/G-1.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/COMMANDS.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/COMMITS.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/FINAL_REPORT.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.json",
+          "docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.json",
+          "docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.py",
+          "docs/audit/runs/run-20261024T064739Z-G-1/mutants.json",
+          "docs/audit/runs/run-20261024T064739Z-G-1/verification.json",
+          "docs/audit/runs/run-20261024T064739Z-G-1/verify_g1.py",
+          "docs/audit/runtime_authority_map.md",
+          "scripts/audit/g1_mutants.py",
+          "scripts/audit/g1_restart_probe.py",
+          "src/trading_bot/app.py",
+          "src/trading_bot/autonomous/hot_stop.py",
+          "tests/unit/autonomous/test_decision_kill_switch.py",
+          "tests/unit/autonomous/test_hot_engage.py",
+          "tests/unit/autonomous/test_kill_switch_persistence.py"
+        ],
+        "outside": [],
+        "protected": []
+      }
+    },
+    {
+      "check_id": "V-2",
+      "criterion": "ACC-G1-13 (amendment A-1)",
+      "description": "the gap test's docstring changed; not one assertion in that file did",
+      "passed": true,
+      "detail": "60 assertion lines before, 60 after",
+      "evidence": {
+        "only_docstring_changed": true
+      }
+    },
+    {
+      "check_id": "V-3",
+      "criterion": "ACC-G1-03 / REQ-G1-02",
+      "description": "HotStopGate adopts the marker in __post_init__, not in a poll the caller may skip",
+      "passed": true,
+      "detail": "restore() is called from __post_init__",
+      "evidence": {
+        "restore_call": 178,
+        "post_init": 157,
+        "restore_def": 206
+      }
+    },
+    {
+      "check_id": "V-4",
+      "criterion": "ACC-G1-03/07 / REQ-G1-07",
+      "description": "the state decision never reads the audit trail: restore/poll touch only the marker",
+      "passed": true,
+      "detail": "no audit reference in the state path",
+      "evidence": {
+        "offenders": []
+      }
+    },
+    {
+      "check_id": "V-5",
+      "criterion": "ACC-G1-03",
+      "description": "the runtime still has exactly one broker dispatch and it is inside order_boundary",
+      "passed": true,
+      "detail": "1/1 guarded; paper_cycle.py(G-4) mentions=3",
+      "evidence": {
+        "dispatch_lines": [
+          1483
+        ],
+        "guarded_lines": [
+          1483
+        ],
+        "paper_cycle_g4_lines": [
+          "    \u2192 PaperBroker.execute_signal (the only execution boundary)",
+          "  ``execute_signal`` is rebuilt with ``PositionSize`` values after",
+          "                result = self._broker.execute_signal(approved_signal)"
+        ]
+      }
+    },
+    {
+      "check_id": "V-11",
+      "criterion": "ACC-G1-14",
+      "description": "the tree that was exercised is byte-for-byte the commit under review",
+      "passed": true,
+      "detail": "export hashes match git blobs",
+      "evidence": {
+        "mismatched": [],
+        "sha256": {
+          "src/trading_bot/autonomous/hot_stop.py": "76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1",
+          "src/trading_bot/app.py": "0ca177a0036f7dff046835780f025d64f03840661d114ffad3b505049bf22544"
+        }
+      }
+    },
+    {
+      "check_id": "V-6",
+      "criterion": "ACC-G1-03",
+      "description": "a fresh interpreter adopts a marker written by another process",
+      "passed": true,
+      "detail": "engaged at construction, boundary refused, event='restored'",
+      "evidence": {
+        "engaged": true,
+        "restored": true,
+        "switch_state": "halted",
+        "allowed": false,
+        "broker_calls_allowed": 0,
+        "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\tree\\src\\trading_bot\\__init__.py",
+        "first_event": {
+          "activated_at_ms": 1792828203938,
+          "activation_error": null,
+          "actor": "boot_restore:C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\restore-child\\KILL_SWITCH",
+          "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal",
+          "broker_calls_allowed": 0,
+          "commit": "",
+          "event": "restored",
+          "lock_timeout": false,
+          "new_state": "halted",
+          "orders_blocked": 0,
+          "persisted": true,
+          "previous_state": "normal",
+          "reason": "verifier: restart",
+          "repeated": false,
+          "restored": true,
+          "run_id": "",
+          "version": "0.1.0"
+        }
+      }
+    },
+    {
+      "check_id": "V-7",
+      "criterion": "ACC-G1-05",
+      "description": "CLI writes, a separate runtime process boots engaged; a marker-free sibling really orders",
+      "passed": true,
+      "detail": "blocked broker=0, control broker=1, both imported the export",
+      "evidence": {
+        "blocked": {
+          "broker_calls": 0,
+          "control_path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\cross-blocked\\KILL_SWITCH",
+          "engaged_after_cycle": true,
+          "engaged_before_first_cycle": true,
+          "mode": "TRADE_PAPER",
+          "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\tree\\src\\trading_bot\\__init__.py",
+          "orders_created": 0,
+          "restored": true,
+          "risk_verdict": "PASS",
+          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\cross-blocked"
+        },
+        "control": {
+          "broker_calls": 1,
+          "control_path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\cross-control\\KILL_SWITCH",
+          "engaged_after_cycle": false,
+          "engaged_before_first_cycle": false,
+          "mode": "TRADE_PAPER",
+          "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\tree\\src\\trading_bot\\__init__.py",
+          "orders_created": 1,
+          "restored": false,
+          "risk_verdict": "PASS",
+          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\cross-control"
+        }
+      }
+    },
+    {
+      "check_id": "V-8",
+      "criterion": "ACC-G1-05 / REQ-G1-08",
+      "description": "--disarm still exits 2 and leaves the marker untouched",
+      "passed": true,
+      "detail": "exit=2",
+      "evidence": {
+        "stdout": "",
+        "stderr": "ERROR: kill-switch --disarm no esta soportado; el stop es monotono durante la vida del proceso. No se ha ejecutado ninguna accion.\n"
+      }
+    },
+    {
+      "check_id": "V-9",
+      "criterion": "ACC-G1-12",
+      "description": "focal, both orders of the G-2 suites, the CLI/audit contract and the autonomous regression all pass",
+      "passed": true,
+      "detail": "5 pytest runs, 485 test results, all exit 0",
+      "evidence": {
+        "focal-persistence": {
+          "cwd": "export",
+          "exit": 0,
+          "passed": 20
+        },
+        "order-hot-then-decision": {
+          "cwd": "export",
+          "exit": 0,
+          "passed": 41
+        },
+        "order-decision-then-hot": {
+          "cwd": "export",
+          "exit": 0,
+          "passed": 41
+        },
+        "g2-cli-contract": {
+          "cwd": "export",
+          "exit": 0,
+          "passed": 15
+        },
+        "regression-autonomous": {
+          "cwd": "export",
+          "exit": 0,
+          "passed": 360
+        },
+        "audit-guard": {
+          "cwd": "checkout",
+          "exit": 0,
+          "passed": 8
+        }
+      }
+    },
+    {
+      "check_id": "V-10",
+      "criterion": "ACC-G1-11",
+      "description": "every property of persistence is killed by removing it",
+      "passed": true,
+      "detail": "8/8 mutants killed; baseline exit 0",
+      "evidence": {
+        "all_mutants_killed": true,
+        "survivors": [],
+        "matrix": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\mutants.json"
+      }
+    },
+    {
+      "check_id": "V-12",
+      "criterion": "ACC-G1-14",
+      "description": "every run artefact exists, hashes cleanly, and names the commit this verifier read",
+      "passed": true,
+      "detail": "8 artefacts hashed; RUN_REPORT verified_commit=9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+      "evidence": {
+        "resolved_rev": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+        "artifacts": {
+          "COMMANDS.md": "6ddad0d9cce372fb628fd667761fca9730b714b871d28c29d45e06349f64964a",
+          "COMMITS.md": "a6a8fde1b8ec9fdf28b08a5f82456a8546d9f57fc339f5398edec6b812cb7715",
+          "cross_process_trace.json": "329521f3f762486278f3fb66cc07db827b652ba394331b5f6b52b139d6281a7a",
+          "cross_process_trace.py": "df76bd72b5dd65c662b18bac8926bc1095830f28cfbbd94143bb4c78e8ea22c0",
+          "FINAL_REPORT.md": "ad0b42b87b22dbc2ec9e2bd79546fd23b1934e0286271d93d6b1cae3d93862dc",
+          "mutants.json": "38570408866b1e7aaa3c25218398ea3abc497023e58d5a4d370a95160346b123",
+          "RUN_REPORT.json": "64759b1bb5fde6242c2baa07f66579a0e209733ac89c8e87b68bba88195930b1",
+          "RUN_REPORT.md": "da86f519f12a9de63e899a1d6394ded9cdb4af82c041500022ae5f9cccefd920"
+        },
+        "run_report_verified_commit": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32"
+      }
+    }
+  ],
+  "seconds": 263.12
+}

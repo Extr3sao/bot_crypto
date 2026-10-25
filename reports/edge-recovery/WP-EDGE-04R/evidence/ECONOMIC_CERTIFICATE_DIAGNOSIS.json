@@ -1,0 +1,18 @@
+{
+  "artefact": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+  "certificate": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+  "certificate_commit": "57772efd5b29",
+  "changed_leaf_values": 6,
+  "digest_at_head": "d1d49f09d8de20ad14437cbce1e7d362e597342ae21c452ff51b08c14a207aa5",
+  "digest_at_the_certificate_commit": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+  "economic_leaf_values_changed": [],
+  "handling": "declared, not silenced: re-issuing the certificate belongs to the work package that owns it, and editing the recorded digest to match HEAD would replace evidence with an assertion that no longer has a commit behind it",
+  "hypothetical": true,
+  "order_sent": false,
+  "recorded_digest": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+  "recorded_digest_matches_head": false,
+  "regenerating_commit": "752225531529",
+  "schema_version": "EDGE04R_ECONOMIC_CERTIFICATE_DIAGNOSIS_V1",
+  "substance_changed": false,
+  "verdict": "STALE_BY_PROVENANCE"
+}

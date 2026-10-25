@@ -1,0 +1,560 @@
+{
+  "admission": {
+    "acceptance_min_oos_trading_days": 90,
+    "capture": {
+      "closed": false,
+      "end_utc": "2027-01-20T00:00:00Z",
+      "start_utc": "2026-10-22T00:00:00Z",
+      "target_days": 90,
+      "window_has_opened": false
+    },
+    "declared_notional_usdt": 500.0,
+    "lanes": {
+      "1h": {
+        "admissible": 5,
+        "admissible_days": [
+          "2026-10-15",
+          "2026-10-16",
+          "2026-10-17",
+          "2026-10-19",
+          "2026-10-20"
+        ],
+        "admissible_days_inside_capture_window": [],
+        "admissible_days_outside_capture_window": [
+          "2026-10-15",
+          "2026-10-16",
+          "2026-10-17",
+          "2026-10-19",
+          "2026-10-20"
+        ],
+        "chain_tip_sha256": "40693a413ab83c4e110140198d6beef369ab263edeac08f223972841c2e2b43e",
+        "first_day": "2026-03-01",
+        "last_day": "2026-10-20",
+        "records": 234
+      },
+      "1h+15m": {
+        "admissible": 4,
+        "admissible_days": [
+          "2026-10-16",
+          "2026-10-17",
+          "2026-10-19",
+          "2026-10-20"
+        ],
+        "admissible_days_inside_capture_window": [],
+        "admissible_days_outside_capture_window": [
+          "2026-10-16",
+          "2026-10-17",
+          "2026-10-19",
+          "2026-10-20"
+        ],
+        "chain_tip_sha256": "1d0661bb1982885f197ef0d05c2f3e977b5807eb115b7ec1bb79b1b85791036f",
+        "first_day": "2026-10-07",
+        "last_day": "2026-10-20",
+        "records": 14
+      }
+    }
+  },
+  "allowlisted_roots": [
+    "config",
+    "data/exp004a",
+    "data/forward/edge03",
+    "data/st6",
+    "docs",
+    "scripts",
+    "src",
+    "tests"
+  ],
+  "artifact": "EXP004A_EVIDENCE_INVENTORY",
+  "builder_observations": {
+    "label": "BUILDER_OBSERVATION_UNVERIFIED_NOT_CERTIFICATION",
+    "sealed_prefixes": {
+      "1h": [
+        {
+          "byte_end": 1763443,
+          "file_size_bytes": 1765957,
+          "path": "data/forward/edge03/1h/BTC.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "9ac8e630a69ae23caf462c8b7dc582dfb3361a5cc165449b9a2d632bb0aa3ebf",
+          "prefix_sha256_recorded": "9ac8e630a69ae23caf462c8b7dc582dfb3361a5cc165449b9a2d632bb0aa3ebf",
+          "series": "1h:BTC"
+        },
+        {
+          "byte_end": 1745003,
+          "file_size_bytes": 1747487,
+          "path": "data/forward/edge03/1h/ETH.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "ff7f4bd0a24bcb854e2b9e13c786c3ace8b6b51fdbb6da16d0ae02635cfdd9c5",
+          "prefix_sha256_recorded": "ff7f4bd0a24bcb854e2b9e13c786c3ace8b6b51fdbb6da16d0ae02635cfdd9c5",
+          "series": "1h:ETH"
+        },
+        {
+          "byte_end": 1705301,
+          "file_size_bytes": 1707755,
+          "path": "data/forward/edge03/1h/SOL.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "f168849ad4b615c91290fcea1bea43c3ac9d53601d74f9fba144ffc7db87be25",
+          "prefix_sha256_recorded": "f168849ad4b615c91290fcea1bea43c3ac9d53601d74f9fba144ffc7db87be25",
+          "series": "1h:SOL"
+        }
+      ],
+      "1h+15m": [
+        {
+          "byte_end": 407937,
+          "file_size_bytes": 418625,
+          "path": "data/forward/edge03/15m/BTC.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "5b7cfb7683c30b1e3891d965a371c2cfd19b9d3ca217ef822fd914282f67eba2",
+          "prefix_sha256_recorded": "5b7cfb7683c30b1e3891d965a371c2cfd19b9d3ca217ef822fd914282f67eba2",
+          "series": "15m:BTC"
+        },
+        {
+          "byte_end": 403546,
+          "file_size_bytes": 414123,
+          "path": "data/forward/edge03/15m/ETH.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "8fa90c87bdd20cb94df4ece6290883259fb5f62c422680b1b2bc803137ea8698",
+          "prefix_sha256_recorded": "8fa90c87bdd20cb94df4ece6290883259fb5f62c422680b1b2bc803137ea8698",
+          "series": "15m:ETH"
+        },
+        {
+          "byte_end": 398370,
+          "file_size_bytes": 408815,
+          "path": "data/forward/edge03/15m/SOL.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "c2ef678da318ddb4e2034144a984fca8779971c87da08803dd12270c3dc1ba82",
+          "prefix_sha256_recorded": "c2ef678da318ddb4e2034144a984fca8779971c87da08803dd12270c3dc1ba82",
+          "series": "15m:SOL"
+        },
+        {
+          "byte_end": 1763443,
+          "file_size_bytes": 1765957,
+          "path": "data/forward/edge03/1h/BTC.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "9ac8e630a69ae23caf462c8b7dc582dfb3361a5cc165449b9a2d632bb0aa3ebf",
+          "prefix_sha256_recorded": "9ac8e630a69ae23caf462c8b7dc582dfb3361a5cc165449b9a2d632bb0aa3ebf",
+          "series": "1h:BTC"
+        },
+        {
+          "byte_end": 1745003,
+          "file_size_bytes": 1747487,
+          "path": "data/forward/edge03/1h/ETH.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "ff7f4bd0a24bcb854e2b9e13c786c3ace8b6b51fdbb6da16d0ae02635cfdd9c5",
+          "prefix_sha256_recorded": "ff7f4bd0a24bcb854e2b9e13c786c3ace8b6b51fdbb6da16d0ae02635cfdd9c5",
+          "series": "1h:ETH"
+        },
+        {
+          "byte_end": 1705301,
+          "file_size_bytes": 1707755,
+          "path": "data/forward/edge03/1h/SOL.jsonl",
+          "prefix_digest_equal": true,
+          "prefix_sha256_recomputed": "f168849ad4b615c91290fcea1bea43c3ac9d53601d74f9fba144ffc7db87be25",
+          "prefix_sha256_recorded": "f168849ad4b615c91290fcea1bea43c3ac9d53601d74f9fba144ffc7db87be25",
+          "series": "1h:SOL"
+        }
+      ]
+    }
+  },
+  "cost_tape": {
+    "mtime_utc": "2026-10-21T08:03:55Z",
+    "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+    "rows": 912,
+    "sha256": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+    "size_bytes": 2030451
+  },
+  "digest_policy": "Both digests are published because they answer different questions. If you hash a checkout on disk, compare against sha256. If you hash the git object at last_commit, compare against blob_sha256. The two differ wherever end-of-line normalisation applies and coincide for a tree pinned -text. For the live store, compare only attested byte prefixes.",
+  "disclaimer": "BUILDER_PUBLISHED_INVENTORY_NOT_VERIFICATION: these digests were computed by the EXP-004A builder. An independent verifier must recompute them from the same bytes and must not treat this document as evidence of its own correctness.",
+  "economic_executions": 0,
+  "forbidden_output_roots": [
+    "data",
+    "reports/ai-bots",
+    "evidence"
+  ],
+  "generated_at_utc": "2026-10-21T08:47:54Z",
+  "live_store": {
+    "note": "appended by the forward observer, therefore outside git and still growing; whole-file digests are transient, sealed prefix digests are stable",
+    "root": "data/forward/edge03",
+    "series": [
+      {
+        "gitignored": true,
+        "mtime_utc": "2026-10-21T08:10:59Z",
+        "path": "data/forward/edge03/1h/BTC.jsonl",
+        "size_bytes": 1765957,
+        "status": "PRESENT",
+        "whole_file_sha256_transient": "54c419c6543207fc7104ab3c9e9120495f8d364c249a7a411e0a50a907ed4d68"
+      },
+      {
+        "gitignored": true,
+        "mtime_utc": "2026-10-21T08:11:00Z",
+        "path": "data/forward/edge03/1h/ETH.jsonl",
+        "size_bytes": 1747487,
+        "status": "PRESENT",
+        "whole_file_sha256_transient": "bb4083147d91e58581a625239337c4e57046f03e3b9d99bc2a371b99df4bb9ea"
+      },
+      {
+        "gitignored": true,
+        "mtime_utc": "2026-10-21T08:11:01Z",
+        "path": "data/forward/edge03/1h/SOL.jsonl",
+        "size_bytes": 1707755,
+        "status": "PRESENT",
+        "whole_file_sha256_transient": "00afc38d5c6fa3994d3c1e03fbaac93a0aa959dde4f653963146679b4e0d6f05"
+      },
+      {
+        "gitignored": true,
+        "mtime_utc": "2026-10-21T08:40:59Z",
+        "path": "data/forward/edge03/15m/BTC.jsonl",
+        "size_bytes": 418625,
+        "status": "PRESENT",
+        "whole_file_sha256_transient": "05b14f67ae75dbc321accd205b77c037af225fdbfee2a39746149ca16deb2e77"
+      },
+      {
+        "gitignored": true,
+        "mtime_utc": "2026-10-21T08:41:00Z",
+        "path": "data/forward/edge03/15m/ETH.jsonl",
+        "size_bytes": 414123,
+        "status": "PRESENT",
+        "whole_file_sha256_transient": "a4cd5bb162b36ead17e27333fd8b6f864c56082841bef8ad553da3acf1f115cb"
+      },
+      {
+        "gitignored": true,
+        "mtime_utc": "2026-10-21T08:41:00Z",
+        "path": "data/forward/edge03/15m/SOL.jsonl",
+        "size_bytes": 408815,
+        "status": "PRESENT",
+        "whole_file_sha256_transient": "26848883ee11c99c8d97bdb42a6282e7a1beac01d3811bc52ce13c1ad05d27e2"
+      }
+    ]
+  },
+  "repository": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "head_commit": "d7181f6f05a8a1214509f12eaf89a41c5a11939d",
+    "head_tree": "4cfd9f703f4f022c00fdf8849f086c8a76a56326",
+    "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+  },
+  "role": "BUILDER_PUBLISHED_READ_ONLY_INVENTORY_NOT_VERIFICATION",
+  "schema_version": "1.0",
+  "tracked_references": {
+    "admission_ledgers": [
+      {
+        "blob_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+        "blob_size_bytes": 284812,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:47:51Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "data/exp004a/admission_1h.jsonl",
+        "sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+        "size_bytes": 284812,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+        "blob_size_bytes": 28985,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:51:55Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "data/exp004a/admission_1h+15m.jsonl",
+        "sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+        "size_bytes": 28985,
+        "tracked": true
+      }
+    ],
+    "builder_gate_evidence": [
+      {
+        "blob_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+        "blob_size_bytes": 1072,
+        "last_commit": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+        "mtime_utc": "2026-10-21T08:01:20Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "docs/agentic/exp004a/GATE_INSPECT.json",
+        "sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+        "size_bytes": 1072,
+        "tracked": true
+      },
+      {
+        "blob_sha256": null,
+        "blob_size_bytes": null,
+        "last_commit": null,
+        "mtime_utc": "2026-10-21T08:01:20Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "docs/agentic/exp004a/GATE_INSPECT.log",
+        "sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711",
+        "size_bytes": 1054,
+        "tracked": false
+      },
+      {
+        "blob_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+        "blob_size_bytes": 1498,
+        "last_commit": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+        "mtime_utc": "2026-10-21T08:01:23Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "docs/agentic/exp004a/GATE_AUTHORIZE.json",
+        "sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+        "size_bytes": 1498,
+        "tracked": true
+      },
+      {
+        "blob_sha256": null,
+        "blob_size_bytes": null,
+        "last_commit": null,
+        "mtime_utc": "2026-10-21T08:01:23Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "docs/agentic/exp004a/GATE_AUTHORIZE.log",
+        "sha256": "1090c2e1406cf83cadeeb66aa7851bde7f202571808a5b2f14d65052016781d3",
+        "size_bytes": 1543,
+        "tracked": false
+      }
+    ],
+    "builder_reports": [
+      {
+        "blob_sha256": "dce8f8347fe881e20df41e984003d54b986a90ff35723a925616eff174036bb9",
+        "blob_size_bytes": 23329,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:59:18Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "docs/agentic/exp004a/RUN_REPORT.json",
+        "sha256": "3550fc04f1a07afcced17a084cf01006b610e578d632639c69b15cc7b383b67d",
+        "size_bytes": 23988,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+        "blob_size_bytes": 6592,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:59:18Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "docs/agentic/exp004a/RUN_REPORT.md",
+        "sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+        "size_bytes": 6592,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+        "blob_size_bytes": 15622,
+        "last_commit": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+        "mtime_utc": "2026-10-21T08:06:43Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "docs/agentic/exp004a/FINAL_REPORT.md",
+        "sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+        "size_bytes": 15622,
+        "tracked": true
+      }
+    ],
+    "implementation": [
+      {
+        "blob_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+        "blob_size_bytes": 35663,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:44:08Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "src/trading_bot/research/prereg_gate.py",
+        "sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+        "size_bytes": 35663,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+        "blob_size_bytes": 2648,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:55:53Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "src/trading_bot/research/prospective/__init__.py",
+        "sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+        "size_bytes": 2648,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+        "blob_size_bytes": 13268,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:37:18Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "src/trading_bot/research/prospective/admission.py",
+        "sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+        "size_bytes": 13268,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+        "blob_size_bytes": 6504,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:29:47Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "src/trading_bot/research/prospective/independence.py",
+        "sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+        "size_bytes": 6504,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+        "blob_size_bytes": 11003,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:38:51Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "src/trading_bot/research/prospective/ledger.py",
+        "sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+        "size_bytes": 11003,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+        "blob_size_bytes": 7216,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:28:47Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "src/trading_bot/research/prospective/store.py",
+        "sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+        "size_bytes": 7216,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+        "blob_size_bytes": 1932,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:35:07Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "src/trading_bot/research/execution_cost/__init__.py",
+        "sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+        "size_bytes": 1932,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+        "blob_size_bytes": 17721,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:35:03Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "src/trading_bot/research/execution_cost/measured.py",
+        "sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+        "size_bytes": 17721,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "4c53a60b075f82ebd85697acbcc24498564bc9345af0b6860e400cbe2765fee5",
+        "blob_size_bytes": 24965,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:56:09Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "scripts/exp004a_foundation.py",
+        "sha256": "ef300441f9c3f14d3baba67667ba281d034bb8cdcaec4106348cdd1dfe2f092f",
+        "size_bytes": 25517,
+        "tracked": true
+      }
+    ],
+    "preregistration": [
+      {
+        "blob_sha256": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+        "blob_size_bytes": 6830,
+        "last_commit": "fed25aa893fa6964a22afa61a51e5e68ef930335",
+        "mtime_utc": "2026-10-21T08:01:06Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "config/preregistrations/EXP-004A.json",
+        "sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9",
+        "size_bytes": 6960,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+        "blob_size_bytes": 4669,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:43:51Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "config/preregistrations/EXP-004A.datasets.json",
+        "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+        "size_bytes": 4669,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+        "blob_size_bytes": 1767,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:43:57Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "config/preregistrations/EXP-004A.prior_runs.json",
+        "sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+        "size_bytes": 1767,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+        "blob_size_bytes": 447,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:44:03Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "config/preregistrations/EXP-004A.baseline.json",
+        "sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+        "size_bytes": 447,
+        "tracked": true
+      }
+    ],
+    "protocol": [
+      {
+        "blob_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+        "blob_size_bytes": 6540,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:59:43Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md",
+        "sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+        "size_bytes": 6540,
+        "tracked": true
+      }
+    ],
+    "tests": [
+      {
+        "blob_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+        "blob_size_bytes": 26541,
+        "last_commit": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+        "mtime_utc": "2026-10-21T06:30:56Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "tests/unit/research/test_prereg_gate.py",
+        "sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+        "size_bytes": 26541,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "8cbdaac511a4975611a16ecee8e4fd9dc87ff3e06023684f2d481dd654dfb969",
+        "blob_size_bytes": 12538,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:55:53Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "tests/unit/research/test_prereg_gate_two_phase.py",
+        "sha256": "e99dab8625a2368262c3e027e13ed13f9218155302a75e4b2d6e690b66a11567",
+        "size_bytes": 12829,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+        "blob_size_bytes": 2998,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:36:55Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "tests/unit/research/test_prereg_gate_escape.py",
+        "sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+        "size_bytes": 2998,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+        "blob_size_bytes": 15884,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:55:53Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "tests/unit/research/test_prospective_admission.py",
+        "sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+        "size_bytes": 15884,
+        "tracked": true
+      },
+      {
+        "blob_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+        "blob_size_bytes": 9615,
+        "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mtime_utc": "2026-10-21T07:55:53Z",
+        "note": "compare blob_sha256 for a checkout-independent reference; sha256 is this worktree",
+        "path": "tests/unit/research/test_execution_cost_measured.py",
+        "sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+        "size_bytes": 9615,
+        "tracked": true
+      }
+    ]
+  }
+}

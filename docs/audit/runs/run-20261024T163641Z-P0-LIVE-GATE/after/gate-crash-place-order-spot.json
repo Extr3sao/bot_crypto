@@ -1,0 +1,39 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "place-order",
+    "--symbol",
+    "BTC/USDT",
+    "--side",
+    "buy",
+    "--order-type",
+    "market",
+    "--amount",
+    "0.01",
+    "--price",
+    "100",
+    "--confirm-live",
+    "--market-kind",
+    "spot",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-crash-place-order-spot"
+  ],
+  "break_gate": null,
+  "broken_gate_ids": [],
+  "broker_calls": 0,
+  "calls": [],
+  "entrypoint": "place-order-spot",
+  "error": "",
+  "exit_code": 2,
+  "gate_crash": true,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 1,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-crash-place-order-spot",
+  "settings_error": false,
+  "stderr_tail": "ERROR: live trading gate refused entry (live_gate_error:RuntimeError); order refused.\n",
+  "stdout_tail": ""
+}

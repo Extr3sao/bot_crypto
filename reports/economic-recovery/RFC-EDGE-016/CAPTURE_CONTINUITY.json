@@ -1,0 +1,116 @@
+{
+  "as_of_utc": "2026-10-17T10:18:53Z",
+  "bars_with_a_fill": 0,
+  "bars_with_a_proposal": 0,
+  "captured_bars_per_symbol": 1,
+  "classification_rule": "a bar no collector observed is MISSING_NO_COLLECTOR; it is never counted as a quiet day, and a bar observed but with no proposal is NO_SIGNAL, which is a different state",
+  "coverage_is_current": false,
+  "coverage_ratio": 0.5,
+  "dedupe_check": {
+    "captured_keys": 3,
+    "duplicate_keys": 0
+  },
+  "evaluated_bars": 3,
+  "expected_closed_bars_per_symbol": 2,
+  "freeze_ms": 1792221328939,
+  "freeze_utc": "2026-10-17T07:15:28Z",
+  "observed_bars": 3,
+  "schema_version": "EDGE16_CAPTURE_CONTINUITY_V1",
+  "stage_ladder": [
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|BTC/USDT|1h|1792224000000",
+      "missing": false,
+      "open_ms": 1792224000000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "BTC/USDT"
+    },
+    {
+      "classified": "MISSING_NO_COLLECTOR",
+      "expected_key": "BINANCE_SPOT|BTC/USDT|1h|1792227600000",
+      "missing": true,
+      "open_ms": 1792227600000,
+      "stages": [
+        "EXPECTED"
+      ],
+      "symbol": "BTC/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|ETH/USDT|1h|1792224000000",
+      "missing": false,
+      "open_ms": 1792224000000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "ETH/USDT"
+    },
+    {
+      "classified": "MISSING_NO_COLLECTOR",
+      "expected_key": "BINANCE_SPOT|ETH/USDT|1h|1792227600000",
+      "missing": true,
+      "open_ms": 1792227600000,
+      "stages": [
+        "EXPECTED"
+      ],
+      "symbol": "ETH/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|SOL/USDT|1h|1792224000000",
+      "missing": false,
+      "open_ms": 1792224000000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "SOL/USDT"
+    },
+    {
+      "classified": "MISSING_NO_COLLECTOR",
+      "expected_key": "BINANCE_SPOT|SOL/USDT|1h|1792227600000",
+      "missing": true,
+      "open_ms": 1792227600000,
+      "stages": [
+        "EXPECTED"
+      ],
+      "symbol": "SOL/USDT"
+    }
+  ],
+  "stages_available": [
+    "EXPECTED",
+    "OBSERVED",
+    "VALIDATED",
+    "EVALUATED",
+    "NO_SIGNAL",
+    "PROPOSAL",
+    "RISK_RESULT",
+    "SIM_ORDER",
+    "FILL",
+    "RECONCILIATION"
+  ],
+  "status": "PROSPECTIVE_CAPTURE_NOT_AUTOMATED",
+  "unique_key": "VENUE|SYMBOL|TIMEFRAME|OPEN_MS",
+  "why_not_automated": {
+    "disk_guard_ok": false,
+    "disk_guard_reasons": [
+      "free space cannot pay for the window: 8.640 GB needed at 1.5x, 3.415 GB usable above the 2.000 GB reserve"
+    ],
+    "disk_guard_state": "INSUFFICIENT_FREE_SPACE",
+    "github_actions_schedules_present": false,
+    "scheduler_task_creation_requires": "administrator privileges (not authorized, not attempted)"
+  }
+}

@@ -1,0 +1,388 @@
+{
+  "run_id": "wp-edge-01-risk-ablation-h5",
+  "generated_at_utc": "2026-10-12T18:38:13.014288+00:00",
+  "git": {
+    "head_commit": "ce42ca42c297fe2b6a6594a49b385ed811442666",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "worktree_dirty": true,
+    "source_sha256": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
+    "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings"
+  },
+  "source_digest": {
+    "combined_sha256": "c40535be9c18179a9ba475e95dfede1681ef894f45e95d70bedacfc07a526f88",
+    "files": {
+      "src/trading_bot/research/edge01/__init__.py": "0bff4c03e469f6b2baceafd97f030d9408b0edcbb21dfe4dc3374b9e6239becb",
+      "src/trading_bot/research/edge01/campaign.py": "83970e6203401905a6b4473cee389970769f8a09690c12b565260b4305742605",
+      "src/trading_bot/research/edge01/candidates.py": "592d629ca91714d9730bf959fd44e0f08f1111ed7a06d7654f6407f51279eac3",
+      "src/trading_bot/research/edge01/closure.py": "1a072ef056e2defb7cd756fa7023628f01504d3fe3e5728060ffd90e1d1dbbf8",
+      "src/trading_bot/research/edge01/costs.py": "ebd6aba5da31d6b432d09b6979ea8775e9ca1a30c4e1c714c7cc182c26bf6f8d",
+      "src/trading_bot/research/edge01/data.py": "ac7b37f1768d1d2a5b37801f781a335869b38af8159a16ae173163b84ad495c2",
+      "src/trading_bot/research/edge01/features.py": "76c0dcbb9faef7f0d47f1de9fad1c2d12901c81c1c5496a582a311c5deb21fab",
+      "src/trading_bot/research/edge01/retest.py": "913c1f97c3d8709168f64d43df3ce3a75222a8d11de8f756679c68701155dd5d",
+      "src/trading_bot/research/edge01/simulator.py": "f8ea260e6b770d39a44bf41550f2039cf4fc5ad7ec938a07b6f89bca58cc98db",
+      "scripts/edge01_run.py": "dbfaf908042447cf582f04894bd2513292f3e1cc8f600b8c93046cb086df5d43",
+      "scripts/edge01_verify.py": "d777850c00c49aba7e032057ef1ba8d81e11695b8fe791d66dbd3ab66558f5c3",
+      "scripts/edge01_risk_ablation.py": "7c273a240dff66f6a4802857156a05ef8361d1f62574e72e6871134779aa7832",
+      "scripts/edge01_risk_ablation_verify.py": "a3615abdbe1f73bc8053daf8f728a26347793775d2ebc5413644758eec836bb9"
+    }
+  },
+  "mode": "deterministic backtest over the local historical corpus, DEV window only; 0 orders, 0 credentials, 0 network calls, no VAL or OOS bar read",
+  "entrypoint": "scripts/edge01_risk_ablation.py",
+  "verifier": "scripts/edge01_risk_ablation_verify.py",
+  "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+  "risk_ablation": {
+    "id": "ABL-EDGE01-H5",
+    "hypothesis": "H5",
+    "candidate": "edge_intra_01",
+    "base_budget": "config/risk.yaml verbatim (the runtime's own authority)",
+    "variant_budget": "the same budget with the peak-to-trough drawdown halt made inert (drawdown_halt_pct=100), so the halt can never fire",
+    "changed_field": "drawdown_halt_pct",
+    "inert_halt_pct": 100.0,
+    "split": "intraday",
+    "window": "DEV",
+    "scenario": "BASE",
+    "horizon_minutes": 240.0,
+    "window_start_utc": "2024-10-01T00:00:00+00:00",
+    "window_end_utc": "2025-06-30T00:00:00+00:00",
+    "window_start_ms": 1727740800000,
+    "window_end_ms": 1751241600000,
+    "window_days": 272.0,
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "timeframe": "15m",
+    "plane": {
+      "scenario_id": "BASE",
+      "cost_model_version": "COST_MODEL_V3",
+      "size_usd": 1000.0,
+      "horizon_minutes": 240.0,
+      "fee_bps": 20.0,
+      "spread_bps": 1.0,
+      "slippage_bps": 2.632456,
+      "impact_bps": 0.158114,
+      "funding_bps": 0.0,
+      "other_bps": 0.0,
+      "round_trip_bps": 23.790569
+    },
+    "risk_config_path": "config/risk.yaml",
+    "risk_config_sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "risk_config_used_verbatim_for_base": true,
+    "runtime_untouched": "this budget is a research instrument: config/risk.yaml is read, never written, and nothing here is wired into the PAPER runtime",
+    "corpus_provenance": {
+      "BTC": {
+        "symbol": "BTC",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/BTCUSDT_15m.json"
+        ],
+        "sha256": "cd1d2ea256a97f7cbbdb8160d183464b6955ff0b8f613146dd61253cd03607ce"
+      },
+      "ETH": {
+        "symbol": "ETH",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/ETHUSDT_15m.json"
+        ],
+        "sha256": "b8fd5744cc66f63566eb2a7ddff26f9882bf7a40348854d1cc42a73a5b39f2ea"
+      },
+      "SOL": {
+        "symbol": "SOL",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/SOLUSDT_15m.json"
+        ],
+        "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
+      }
+    }
+  },
+  "market_context": {
+    "benchmark": "BTC",
+    "timeframe": "1d (aggregated from 1h shards; a day exists only when its 24 contiguous hours do)",
+    "rule": "benchmark BTC daily close against its own 200-day EMA, with that EMA's 20-day change deciding trend from range: BULL when close > EMA200 and the EMA rose over the last 20 days, BEAR when close < EMA200 and it fell, SIDEWAYS otherwise, UNDEFINED while either input is still warming up. This is the project's existing convention (trading_bot/research/swing/backtest.py::build_regimes), reused rather than re-invented; it is a market label for reporting, never a signal.",
+    "labels": [
+      "BULL",
+      "BEAR",
+      "SIDEWAYS",
+      "UNDEFINED"
+    ],
+    "sources": [
+      "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+    ],
+    "source_sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+    "days": 2596,
+    "first_close_ms": 1546387200000,
+    "last_close_ms": 1772323200000,
+    "label_days": {
+      "UNDEFINED": 219,
+      "BULL": 1468,
+      "SIDEWAYS": 212,
+      "BEAR": 697
+    },
+    "artefact": "MARKET_CONTEXT.csv"
+  },
+  "verdict": {
+    "verdict": "RISK_NOT_BINDING_ON_PROFITABILITY",
+    "reason": "the halt refused 493 entries in the base arm and releasing it added 380 trades worth -396.46 USDT net: the trades it refused were not worth taking, so the budget is not what makes intraday unprofitable",
+    "rule": {
+      "min_extra_trades": 20,
+      "marginal_net_positive_usdt": 0.0,
+      "meaning": {
+        "INCONCLUSIVE": "the halt is inert in the variant but barely any more trades execute: it was not binding on realised trades, so nothing is claimed",
+        "RISK_NOT_BINDING_ON_PROFITABILITY": "the halt blocked real participation, and the trades it blocked were NET NEGATIVE: the halt was doing risk work, and intraday frequency is not viable at this entry quality whatever the budget allows",
+        "RISK_BUDGET_WAS_THE_CONSTRAINT": "the extra trades are net positive but the variant is still net negative: the budget is one real ceiling, but removing it is not enough to make the frequency pay",
+        "FREQUENCY_VIABLE": "the variant is net positive: with the halt inert the intraday frequency pays after costs on DEV, which is a hypothesis to take back through the pre-registered process, not a promotion"
+      },
+      "rule": "extra_trades = variant.trades - base.trades. Fewer than min_extra_trades -> INCONCLUSIVE; else marginal_net = variant.net - base.net: <= 0 -> RISK_NOT_BINDING_ON_PROFITABILITY; > 0 with the variant still net <= 0 -> RISK_BUDGET_WAS_THE_CONSTRAINT; > 0 and the variant net > 0 -> FREQUENCY_VIABLE."
+    },
+    "extra_trades": 380,
+    "marginal_gross_usdt": 55.5372,
+    "marginal_net_usdt": -396.464,
+    "marginal_expectancy_usdt": -1.0433,
+    "drawdown_delta_pct": 4.1073,
+    "funnel_delta": {
+      "candidate:level_already_traded": 0,
+      "candidate:reward_below_cost": 0,
+      "candidate:rr_below_minimum": 0,
+      "candidate:stop_too_wide": 0,
+      "candidate:trend_filter_fail": 0,
+      "candidate:volume_filter_fail": 0,
+      "risk:risk_drawdown_halt": -493,
+      "risk:risk_loss_cooldown": 20
+    }
+  },
+  "arms": {
+    "base": {
+      "candidate_id": "edge_intra_01",
+      "policy": {
+        "risk_per_trade_pct": 0.25,
+        "max_open_positions": 3,
+        "max_total_exposure_pct": 25.0,
+        "max_asset_exposure_pct": 10.0,
+        "min_notional_usdt": 20.0,
+        "max_notional_usdt": 500.0,
+        "drawdown_halt_pct": 5.0,
+        "max_consecutive_losses": 3,
+        "consecutive_loss_cooldown_minutes": 60.0,
+        "max_trades_per_day": 20,
+        "start_equity": 10000.0
+      },
+      "bars_evaluated": 78279,
+      "warmup_bars": 60,
+      "signal_count": 860,
+      "refusals": {
+        "candidate:volume_filter_fail": 550,
+        "candidate:trend_filter_fail": 1097,
+        "candidate:rr_below_minimum": 105,
+        "candidate:level_already_traded": 584,
+        "candidate:stop_too_wide": 55,
+        "risk:risk_loss_cooldown": 17,
+        "candidate:reward_below_cost": 9,
+        "risk:risk_drawdown_halt": 493
+      },
+      "halt_refusals": 493,
+      "halt_days": 86,
+      "trades": 290,
+      "gross_usdt": -151.7123,
+      "fees_usdt": 289.7934,
+      "price_costs_usdt": 54.9241,
+      "net_usdt": -496.4298,
+      "return_pct": -4.9643,
+      "final_equity": 9503.5702,
+      "win_rate_pct": 19.3103,
+      "profit_factor": 0.3224,
+      "expectancy_usdt": -1.7118,
+      "avg_win_usdt": 4.2187,
+      "avg_loss_usdt": -3.1311,
+      "payoff_ratio": 1.3473,
+      "max_drawdown_pct": 5.0427,
+      "sharpe_annualised": -6.2306,
+      "sharpe_convention": "per-15m equity returns, annualised with 35040 bars/year; None when fewer than 100 observations",
+      "exposure_pct_of_time": 1.5714,
+      "total_cost_bps_per_trade": 23.7736,
+      "largest_trade_share_of_net": null,
+      "by_asset": {
+        "BTC": {
+          "trades": 109,
+          "net": -157.9486,
+          "win_rate": 20.1835
+        },
+        "ETH": {
+          "trades": 83,
+          "net": -157.7756,
+          "win_rate": 15.6627
+        },
+        "SOL": {
+          "trades": 98,
+          "net": -180.7055,
+          "win_rate": 21.4286
+        }
+      },
+      "by_regime": {
+        "UP": {
+          "trades": 290,
+          "net": -496.4298,
+          "win_rate": 19.3103
+        }
+      },
+      "by_market_context": {
+        "BULL": {
+          "trades": 290,
+          "net": -496.4298,
+          "win_rate": 19.3103
+        }
+      },
+      "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+      "exit_reason_mix": {
+        "trailing_stop": 47,
+        "stop_loss": 130,
+        "target": 40,
+        "invalidation": 73
+      },
+      "avg_duration_min": 63.67,
+      "gross_per_trade_usdt": -0.5231,
+      "halt_days_pct_of_window": 31.6176
+    },
+    "variant": {
+      "candidate_id": "edge_intra_01",
+      "policy": {
+        "risk_per_trade_pct": 0.25,
+        "max_open_positions": 3,
+        "max_total_exposure_pct": 25.0,
+        "max_asset_exposure_pct": 10.0,
+        "min_notional_usdt": 20.0,
+        "max_notional_usdt": 500.0,
+        "drawdown_halt_pct": 100.0,
+        "max_consecutive_losses": 3,
+        "consecutive_loss_cooldown_minutes": 60.0,
+        "max_trades_per_day": 20,
+        "start_equity": 10000.0
+      },
+      "bars_evaluated": 78279,
+      "warmup_bars": 60,
+      "signal_count": 860,
+      "refusals": {
+        "candidate:volume_filter_fail": 550,
+        "candidate:trend_filter_fail": 1097,
+        "candidate:rr_below_minimum": 105,
+        "candidate:level_already_traded": 584,
+        "candidate:stop_too_wide": 55,
+        "risk:risk_loss_cooldown": 37,
+        "candidate:reward_below_cost": 9
+      },
+      "halt_refusals": 0,
+      "halt_days": 0,
+      "trades": 670,
+      "gross_usdt": -96.1751,
+      "fees_usdt": 669.7769,
+      "price_costs_usdt": 126.9418,
+      "net_usdt": -892.8938,
+      "return_pct": -8.9289,
+      "final_equity": 9107.1062,
+      "win_rate_pct": 21.4925,
+      "profit_factor": 0.4586,
+      "expectancy_usdt": -1.3327,
+      "avg_win_usdt": 5.2531,
+      "avg_loss_usdt": -3.1356,
+      "payoff_ratio": 1.6753,
+      "max_drawdown_pct": 9.15,
+      "sharpe_annualised": -7.061,
+      "sharpe_convention": "per-15m equity returns, annualised with 35040 bars/year; None when fewer than 100 observations",
+      "exposure_pct_of_time": 3.7926,
+      "total_cost_bps_per_trade": 23.7826,
+      "largest_trade_share_of_net": null,
+      "by_asset": {
+        "BTC": {
+          "trades": 233,
+          "net": -343.1767,
+          "win_rate": 18.8841
+        },
+        "ETH": {
+          "trades": 201,
+          "net": -209.4385,
+          "win_rate": 22.3881
+        },
+        "SOL": {
+          "trades": 236,
+          "net": -340.2786,
+          "win_rate": 23.3051
+        }
+      },
+      "by_regime": {
+        "UP": {
+          "trades": 670,
+          "net": -892.8938,
+          "win_rate": 21.4925
+        }
+      },
+      "by_market_context": {
+        "BEAR": {
+          "trades": 51,
+          "net": -72.5797,
+          "win_rate": 13.7255
+        },
+        "BULL": {
+          "trades": 567,
+          "net": -789.2642,
+          "win_rate": 21.5168
+        },
+        "SIDEWAYS": {
+          "trades": 52,
+          "net": -31.0499,
+          "win_rate": 28.8462
+        }
+      },
+      "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+      "exit_reason_mix": {
+        "trailing_stop": 98,
+        "stop_loss": 293,
+        "target": 106,
+        "invalidation": 171,
+        "end_of_data": 2
+      },
+      "avg_duration_min": 66.51,
+      "gross_per_trade_usdt": -0.1435,
+      "halt_days_pct_of_window": 0.0
+    }
+  },
+  "artifacts": {
+    "RISK_TRADES.csv": {
+      "sha256": "dcb570c857bb0e4e12baa76ccc8175991600b80a3df8c6d49c51dbafd23ad4f6",
+      "bytes": 309981
+    },
+    "RISK_REFUSALS.csv": {
+      "sha256": "27a22242520d43e8ae739f04db55311fdde0bd80190c51e0c81f8f55c15c3d3e",
+      "bytes": 362027
+    },
+    "RISK_SIGNALS.csv": {
+      "sha256": "a4ad01fdd0f4ba3f85a8294f9d6c89e3faa737a50a35d80439fbd38970e6db42",
+      "bytes": 151801
+    },
+    "MARKET_CONTEXT.csv": {
+      "sha256": "b4df16db377d90ac2af68e1283e9db716338bf822ae90f29c51191061e865013",
+      "bytes": 212532
+    },
+    "RISK_ABLATION.md": {
+      "sha256": "9a3fcc8a93a78a2acf88f612eb9cc0941dd2e80623c864c1384ef56e702cd3df",
+      "bytes": 5594
+    }
+  },
+  "artifact_note": "digests cover every risk-ablation artefact except RISK_ABLATION.json itself, which is the file carrying them"
+}

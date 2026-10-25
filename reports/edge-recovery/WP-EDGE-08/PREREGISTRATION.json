@@ -1,0 +1,350 @@
+{
+  "authority": "RFC-EDGE-008 continues the direction WP-EDGE-07's measured cost barrier pointed at: hourly books need to capture 58-86 % of the open-to-open move to pay a 23.79 bps round trip (closed by arithmetic), a daily clock needs 11-16 % (a strategy problem).",
+  "books": {
+    "edge08_active_daybreak_1h": {
+      "answers": "A-1: can a day-high break held for days reach three trades a day and pay?",
+      "horizon_minutes": 1440.0,
+      "params": {
+        "atr_period": 14,
+        "breakout_lookback": 24,
+        "cost_margin": 1.5,
+        "exit_ema": 50,
+        "min_rr": 1.25,
+        "stop_atr": 2.0,
+        "target_atr": 4.0,
+        "thrust_atr": 0.5,
+        "trail_atr": 3.0,
+        "trend_ema": 200
+      },
+      "params_hash": "d1ed6bbe8a016018e9ad109d98f278f1b891a0f0479efdda5b4c7cadf7810d2f",
+      "split": "trend",
+      "timeframe": "1h",
+      "track": "ACTIVE"
+    },
+    "edge08_active_multiday_range_1h": {
+      "answers": "A-3: does a compressed three-day range pay when it breaks?",
+      "horizon_minutes": 1440.0,
+      "params": {
+        "atr_period": 14,
+        "compression_atr": 6.0,
+        "cost_margin": 1.5,
+        "exit_ema": 50,
+        "min_rr": 1.5,
+        "range_lookback": 72,
+        "stop_atr": 2.0,
+        "target_atr": 5.0,
+        "trail_atr": 3.0,
+        "trend_ema": 200
+      },
+      "params_hash": "5c9c1f4e9e25257a8cfba5fbcf051dd0568d4f1d6c7a6e0c40e63efebcfb8536",
+      "split": "trend",
+      "timeframe": "1h",
+      "track": "ACTIVE"
+    },
+    "edge08_active_stretch_revert_1h": {
+      "answers": "A-2: is the dislocation the frequent side, and does it pay the round trip?",
+      "horizon_minutes": 1440.0,
+      "params": {
+        "atr_period": 14,
+        "cost_margin": 1.5,
+        "down_bar_atr": 1.0,
+        "mean_ema": 48,
+        "min_rr": 1.0,
+        "stop_atr": 1.5,
+        "stretch_atr": 2.5
+      },
+      "params_hash": "d625bd8129fed25e019d24d3b5917f241fd99eed6447316ad19ed1c5f0cadfb5",
+      "split": "trend",
+      "timeframe": "1h",
+      "track": "ACTIVE"
+    },
+    "edge08_quality_breakout_daily": {
+      "answers": "Q-1: does the daily breakout pay its own round trip on a cross-section?",
+      "horizon_minutes": 4320.0,
+      "params": {
+        "atr_period": 20,
+        "breakout_lookback": 20,
+        "cost_margin": 1.5,
+        "exit_ema": 100,
+        "min_rr": 1.5,
+        "stop_atr": 2.0,
+        "target_atr": 6.0,
+        "trail_atr": 4.0,
+        "trend_ema": 200
+      },
+      "params_hash": "576a457a58e9fc79ea70ab1e266ca570b22c610248300d1ca8f5668516b349d2",
+      "split": "trend",
+      "timeframe": "1d",
+      "track": "QUALITY"
+    },
+    "edge08_quality_pullback_daily": {
+      "answers": "Q-2: is the cheaper entry into an uptrend the one that survives costs?",
+      "horizon_minutes": 4320.0,
+      "params": {
+        "atr_period": 20,
+        "cost_margin": 1.5,
+        "entry_distance_atr": 0.5,
+        "exit_ema": 100,
+        "min_rr": 1.5,
+        "pullback_ema": 20,
+        "stop_atr": 2.0,
+        "target_atr": 3.0,
+        "trail_atr": 2.5,
+        "trend_fast": 50,
+        "trend_slow": 200
+      },
+      "params_hash": "2ba39edfc34f04df9d45221953397fdcb45979e95b6dd6480963d991af609f55",
+      "split": "trend",
+      "timeframe": "1d",
+      "track": "QUALITY"
+    },
+    "edge08_quality_reversion_daily": {
+      "answers": "Q-3: does a band stretch inside a range regime pay after costs?",
+      "horizon_minutes": 4320.0,
+      "params": {
+        "atr_period": 20,
+        "cost_margin": 1.5,
+        "mean_period": 20,
+        "min_rr": 1.5,
+        "regime_ema_fast": 50,
+        "regime_ema_slow": 200,
+        "regime_max_gap_pct": 1.0,
+        "stop_atr": 2.0,
+        "stretch_atr": 3.0
+      },
+      "params_hash": "988137f4e8dbaf6449f1a976c975491fb50530abd86ce6183428661e38677ef3",
+      "split": "trend",
+      "timeframe": "1d",
+      "track": "QUALITY"
+    }
+  },
+  "bootstrap": {
+    "block_trades": 20,
+    "resamples": 1000,
+    "seed": 20261014,
+    "why_blocks": "trades inside a window are not independent; the serial-dependence reading states that rather than assuming it away"
+  },
+  "consequences_fixed_in_advance": [
+    "a book that fails the gross screen (C0) is not read on the cross-section at all: its holdout rows are absent, not zero",
+    "a REJECT is reported with its numbers and the family is not tuned and re-run on the same window",
+    "an INSUFFICIENT_EVIDENCE is reported as no result, never as a pass",
+    "no parameter, stop, target, filter or cooldown is changed after seeing a reading",
+    "nothing here promotes, sizes or executes anything: promotion stays NONE and order_sent stays false for every arm"
+  ],
+  "costs": {
+    "evaluated_at": "the arm's own declared horizon_minutes",
+    "intent_usdt": 1000.0,
+    "model": "COST_MODEL_V3",
+    "note": "the plane is a venue-level model: it does not carry a per-symbol spread or book depth, so the cross-section's thinner names are covered by the ADVERSE scenario rather than by a claim the data cannot support",
+    "scenarios": [
+      "BASE",
+      "2X_FEES",
+      "ADVERSE"
+    ],
+    "venue": "BINANCE_SPOT_STANDARD_TAKER (VIP0 taker)"
+  },
+  "coverage_floor_bars_per_asset": {
+    "1d": 400,
+    "1h": 8000,
+    "4h": 1500
+  },
+  "criteria": {
+    "F1": {
+      "decisive": true,
+      "statement": "ACTIVE only: trades/day across the universe >= 3.0",
+      "tracks": [
+        "ACTIVE"
+      ]
+    },
+    "F2": {
+      "decisive": true,
+      "statement": "QUALITY only: trades/day across the universe >= 0.05 (about one trade per asset every twenty days), reported and decisive as a floor on viability",
+      "tracks": [
+        "QUALITY"
+      ]
+    },
+    "P1": {
+      "decisive": true,
+      "statement": "trades >= 30 on the decisive window",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    },
+    "P2": {
+      "decisive": true,
+      "statement": "net > 0 at BASE",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    },
+    "P3": {
+      "decisive": true,
+      "statement": "expectancy > 0 at BASE",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    },
+    "P4": {
+      "decisive": true,
+      "statement": "net > 0 at 2X_FEES",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    },
+    "P5": {
+      "decisive": true,
+      "statement": "largest single trade <= 50% of the net",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    },
+    "P6": {
+      "decisive": true,
+      "statement": "at least one positive market context",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    },
+    "R1": {
+      "decisive": true,
+      "statement": "net still > 0 with the largest winner removed",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    },
+    "R2": {
+      "decisive": true,
+      "statement": "net > 0 in at least 2 of the 3 equal time blocks",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    },
+    "S1": {
+      "decisive": true,
+      "statement": "DEV gross > 0 on the cross-section: the entry, not the exit, carries it",
+      "tracks": [
+        "QUALITY",
+        "ACTIVE"
+      ]
+    }
+  },
+  "current_arms": {
+    "edge06_trend_fixed": {
+      "already": "WP-EDGE-06's fixed 3xATR target, REJECT on WP-EDGE-07's unread window",
+      "horizon_minutes": 1440.0,
+      "source": "edge06.families",
+      "timeframe": "4h",
+      "track": "CURRENT"
+    },
+    "edge07_active_thrust": {
+      "already": "WP-EDGE-07's ACTIVE thrust book, REJECT_NO_GROSS_EDGE on the known universe",
+      "horizon_minutes": 1440.0,
+      "source": "edge07.active",
+      "timeframe": "1h",
+      "track": "CURRENT"
+    },
+    "edge_trend_01_4h": {
+      "already": "the frozen WP-EDGE-01 ruleset: 4h trend with a 3xATR trailing exit",
+      "horizon_minutes": 1440.0,
+      "source": "edge01.candidates",
+      "timeframe": "4h",
+      "track": "CURRENT"
+    }
+  },
+  "frequency_targets_per_day": {
+    "ACTIVE": 3.0,
+    "QUALITY": 0.05
+  },
+  "gross_screen": {
+    "consequence": "a book that fails C0 gets REJECT_NO_GROSS_EDGE and is NOT read on the cross-section; its holdout rows are absent, not zero",
+    "id": "C0",
+    "statement": "gross expectancy > 0 on the known universe's DEV window",
+    "tracks": [
+      "QUALITY",
+      "ACTIVE"
+    ]
+  },
+  "min_trades": 30,
+  "multiplicity": {
+    "current_comparison": 3,
+    "note": "every arm is reported; no book is re-parameterised after seeing a result, and a book that fails the gross screen is not read on the cross-section at all",
+    "proposed": 6,
+    "total": 9
+  },
+  "registered_before_reading": "this file is committed before any bar of the cross-section is aggregated or measured; the raw shards are fetched from public Binance REST, and a download is not a reading — no figure of this universe existed anywhere when this file was written",
+  "registered_utc": "2026-10-14T20:26:49Z",
+  "rfc": "RFC-EDGE-008",
+  "schema_version": "EDGE08_V1",
+  "title": "Alpha on an unread cross-section, with ACTIVE and QUALITY kept apart",
+  "tracks": {
+    "ACTIVE": "a one-hour entry clock with multi-day holds, aiming at three trades a day across the universe; net expectancy comes before frequency and nothing is forced",
+    "CURRENT": "books this project already registered and measured, carried as the baseline; they change no verdict",
+    "QUALITY": "a daily clock, holds of days to weeks, few trades with a large objective each; screened on gross expectancy and on a frequency floor, never on frequency alone"
+  },
+  "universe": {
+    "claim": "no committed artefact of this repository has been measured on these symbols: their history, and the whole of it, is the evidence this work package reads once",
+    "corpora_that_must_not_hold_these_symbols": [
+      "reports/alpha-expansion-v1/data",
+      "data/raw/alpha003/price",
+      "data/edge07/holdout-1h"
+    ],
+    "corpus_digest": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b",
+    "corpus_directory": "data/edge08/universe-1h",
+    "cross_section": [
+      "AAVE",
+      "UNI",
+      "KSM",
+      "SNX",
+      "CRV",
+      "SUSHI"
+    ],
+    "cross_section_symbols": [
+      "AAVEUSDT",
+      "UNIUSDT",
+      "KSMUSDT",
+      "SNXUSDT",
+      "CRVUSDT",
+      "SUSHIUSDT"
+    ],
+    "known_universe": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
+  },
+  "verdicts": {
+    "ADMIT_PAPER": "every decisive criterion passes on the cross-section's OOS window: admission to paper only; no live trading, no capital, no promotion beyond a paper lane, and the risk-manager's and the release gate's own conditions still apply",
+    "INSUFFICIENT_EVIDENCE": "the measurement cannot support a conclusion (unpowered sample with the rest non-negative, one trade carrying the net, or coverage below the declared floor)",
+    "REJECT": "a decisive criterion failed with power on the cross-section; the family is reported with its numbers and is not tuned and re-run on the same window",
+    "REJECT_NO_GROSS_EDGE": "the book lost money before any fee on the known universe, so the cross-section was not read with it"
+  },
+  "what_this_cannot_say": [
+    "the cross-section is six symbols: a transfer test across six names is evidence about those names, not a proof that a book generalises to every market",
+    "the cost plane is venue-level; a per-symbol spread is not modelled and the ADVERSE scenario is the only sensitivity that speaks to it",
+    "the decisive window's sample size is what the book's own frequency makes it; a book that trades twice a year cannot be powered by 1.8 years of six symbols"
+  ],
+  "windows": {
+    "DEV": {
+      "end": 1704063600000,
+      "start": 1609459200000
+    },
+    "OOS": {
+      "end": 1791964800000,
+      "start": 1735689600000
+    },
+    "VAL": {
+      "end": 1735686000000,
+      "start": 1704067200000
+    }
+  },
+  "work_package": "WP-EDGE-08"
+}

@@ -1,0 +1,67 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______________ test_main_kill_switch_not_implemented_returns_two ______________
+
+capsys = <_pytest.capture.CaptureFixture object at 0x00000248A10ED450>
+
+    def test_main_kill_switch_not_implemented_returns_two(
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        """MT-0002: un subcomando reservado aborta con exit 2 y no finge exito.
+    
+        Sustituye a ``test_main_kill_switch_stub_returns_zero``, que fijaba como
+        contrato el defecto OB-02 (exit 0 sin ejecutar nada). El subcomando sigue
+        sin implementarse: lo que cambia es que ahora lo dice y no imprime nada
+        por stdout.
+        """
+>       exit_code = main(["kill-switch"])
+                    ^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_app_demo.py:396: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\trading_bot\app.py:1460: in main
+    args = parser.parse_args(argv if argv is not None else sys.argv[1:])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:1874: in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:1907: in parse_known_args
+    namespace, args = self._parse_known_args(args, namespace)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:2131: in _parse_known_args
+    stop_index = consume_positionals(start_index)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:2087: in consume_positionals
+    take_action(action, args)
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:1983: in take_action
+    action(self, namespace, argument_values, option_string)
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:1246: in __call__
+    subnamespace, arg_strings = parser.parse_known_args(arg_strings, None)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:1907: in parse_known_args
+    namespace, args = self._parse_known_args(args, namespace)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:2156: in _parse_known_args
+    self.error(_('the following arguments are required: %s') %
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:2640: in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ArgumentParser(prog='trading-bot kill-switch', usage=None, description=None, formatter_class=<class 'argparse.HelpFormatter'>, conflict_handler='error', add_help=True)
+status = 2
+message = 'trading-bot kill-switch: error: the following arguments are required: --run-dir\n'
+
+    def exit(self, status=0, message=None):
+        if message:
+            self._print_message(message, _sys.stderr)
+>       _sys.exit(status)
+E       SystemExit: 2
+
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\argparse.py:2627: SystemExit
+---------------------------- Captured stderr call -----------------------------
+usage: trading-bot kill-switch [-h] --run-dir RUN_DIR [--engage]
+                               [--reason REASON] [--disarm]
+trading-bot kill-switch: error: the following arguments are required: --run-dir
+=========================== short test summary info ===========================
+FAILED tests/unit/test_app_demo.py::test_main_kill_switch_not_implemented_returns_two
+1 failed, 29 deselected in 3.52s

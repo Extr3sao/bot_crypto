@@ -1,0 +1,562 @@
+{
+  "as_of_utc": "2026-10-14T06:57:22Z",
+  "rows": [
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "runtime_authority_map_bytes",
+          "measurement_scope": "this work package's own runtime authority map, as written",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\runtime_authority_map.md",
+          "source_digest": "c0cc7f25eed260946f84893bae879b649b393deb01eba6d355540518cb673c5b",
+          "unit": "bytes",
+          "value": 7058
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "git_head",
+          "measurement_scope": "the commit the reading was taken at",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git\\HEAD",
+          "source_digest": "7c2818bac891262df1ebb00b2be7f917da46f671946fda4594fcfd86e152f719",
+          "unit": "commit",
+          "value": "f418619372e0eae0bbbdfaaebbd84f54804fdff1"
+        }
+      ],
+      "id": "ACC-01",
+      "note": "the authority map of this work package exists, and the commit it was taken at is recorded",
+      "requirement": "Runtime audit and a reproducible baseline",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_ticks_observed",
+          "measurement_scope": "rows of the lane's run log whose outcome is OBSERVED",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "ticks",
+          "value": 41
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_ticks_total",
+          "measurement_scope": "every row of the lane's run log",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "ticks",
+          "value": 85
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "watchdog_newest_at_utc",
+          "measurement_scope": "the newest reading on file",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\watchdog.jsonl",
+          "source_digest": "87dff3a645e6d936420ce69d9a4e72fd07de2fb947ccd8259ab148acd36ad169",
+          "unit": "instant",
+          "value": "2026-10-14T06:47:33Z"
+        }
+      ],
+      "id": "ACC-02",
+      "note": "ticks fired from the registered task with no hand running the command",
+      "requirement": "The scheduler really fires, with nobody running the command",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "watchdog_detection_latency_seconds",
+          "measurement_scope": "the induced-outage rehearsal of 2026-10-13 18:48Z: the watchdog's own two readings around the stop, quoted from that evidence file",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-05\\evidence\\OUTAGE_DETECT_1.txt",
+          "source_digest": "e7757ea1d5c3fc59aa5bec94456b28d4141b89496721bdd0a3e090df024bc5c9",
+          "unit": "seconds",
+          "value": 6.0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "watchdog_alert_kinds",
+          "measurement_scope": "alert rows grouped by kind",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\watch_alerts.jsonl",
+          "source_digest": "d2441a196dc3282ef2098d7c5ffd25b60be33d7ba72e29fd9e23643a370d4dff",
+          "unit": "map",
+          "value": {
+            "DISK_CRITICAL": 1,
+            "DISK_RECOVERED": 1,
+            "DISK_WARNING": 4,
+            "EVIDENCE_CORRUPT": 1,
+            "GROWTH_BUDGET_EXCEEDED": 1,
+            "INGEST_STALLED": 1,
+            "MARKET_QUIET": 4,
+            "RECONCILIATION_REQUIRED": 13,
+            "RESTART_PROOF_BROKEN": 1,
+            "SCHEDULER_DISABLED": 3,
+            "SCHEDULER_TASK_FAILED": 5,
+            "STORE_STALE": 3,
+            "TICK_DIED_MID_WRITE": 1,
+            "TICK_OVERDUE": 9,
+            "TICK_REFUSED_RESOURCE": 3,
+            "WATCHDOG_ALARM": 1,
+            "WATCHDOG_BLOCKED": 1,
+            "WATCHDOG_DEGRADED": 1,
+            "WATCHDOG_RECOVERED": 1
+          }
+        }
+      ],
+      "id": "ACC-03",
+      "note": "an induced stop was alerted and closed by a named recovering tick; the latency is the one that rehearsal measured",
+      "requirement": "The watchdog detects an induced stop, with a measured latency",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "defect_chain_broken",
+          "measurement_scope": "closed defect counts from the reconciliation",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "count",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "defect_double_claim",
+          "measurement_scope": "closed defect counts from the reconciliation",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "count",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "restart_proof_broken",
+          "measurement_scope": "instants where the second ingest pass appended a bar it should not have",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "instances",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "reconciliation_seals_orphaned",
+          "measurement_scope": "the reconciliation's own seal accounting",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "seals",
+          "value": 0
+        }
+      ],
+      "id": "ACC-04",
+      "note": "bars already persisted when a process stopped are attributed once and nothing is duplicated",
+      "requirement": "A stop after partial persistence duplicates no bar",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "defect_seal_missing",
+          "measurement_scope": "closed defect counts from the reconciliation",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "count",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "defect_seal_orphaned",
+          "measurement_scope": "closed defect counts from the reconciliation",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "count",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "defect_decision_divergence",
+          "measurement_scope": "closed defect counts from the reconciliation",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "count",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "reconciliation_seals",
+          "measurement_scope": "sealed slots the reconciliation accounted for",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "seals",
+          "value": 40
+        }
+      ],
+      "id": "ACC-05",
+      "note": "one logical decision per slot, strategy and asset, with every seal accounted for",
+      "requirement": "A stop during decision or seal leaves one logical decision per slot",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_ticks_already_observed",
+          "measurement_scope": "rows of the lane's run log whose outcome is ALREADY_OBSERVED",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "ticks",
+          "value": 4
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_ticks_already_running",
+          "measurement_scope": "rows of the lane's run log whose outcome is ALREADY_RUNNING",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "ticks",
+          "value": 2
+        }
+      ],
+      "id": "ACC-06",
+      "note": "a second pass over a slot that was already observed appends nothing",
+      "requirement": "A retry of the same slot is idempotent everywhere",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "restart_proof_broken",
+          "measurement_scope": "instants where the second ingest pass appended a bar it should not have",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "instances",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "reconciliation_unattributed_bars",
+          "measurement_scope": "stored bars no recorded attempt claims, named rather than deleted",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "bars",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "watchdog_newest_at_utc",
+          "measurement_scope": "the newest reading on file",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\watchdog.jsonl",
+          "source_digest": "87dff3a645e6d936420ce69d9a4e72fd07de2fb947ccd8259ab148acd36ad169",
+          "unit": "instant",
+          "value": "2026-10-14T06:47:33Z"
+        }
+      ],
+      "id": "ACC-07",
+      "note": "the lease is read as arithmetic rather than guessed from a pid, and no abandoned lease was found in the newest reading",
+      "requirement": "A restart leaves no orphan lease and no crash",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "defect_chain_broken",
+          "measurement_scope": "closed defect counts from the reconciliation",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "count",
+          "value": 0
+        }
+      ],
+      "id": "ACC-08",
+      "note": "no live provider outage has occurred in this window, so the classification is exercised in tests and not in the field; declaring it PASS would be an assertion, not a measurement",
+      "requirement": "A provider outage is classified, and no forward day is invented",
+      "verdict": "NOT_TESTED"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_ticks_disk_budget_exceeded",
+          "measurement_scope": "rows of the lane's run log whose outcome is DISK_BUDGET_EXCEEDED",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "ticks",
+          "value": 35
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_first_disk_refusal_utc",
+          "measurement_scope": "the first row of the lane's run log that refused on disk, if any",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "instant",
+          "value": "2026-10-13T20:25:56Z"
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "volume_verdict",
+          "measurement_scope": "the two floors the lane's own guard declares (2 GiB and 5 GiB)",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\pyproject.toml",
+          "source_digest": "83d072d27d0a6b2e3e420a7e2b88c0e78d25988c6a0849dac25c9d2a8e208fd1",
+          "unit": "label",
+          "value": "ABOVE_CRITICAL_BELOW_HEALTHY"
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "storage_reclaimed_bytes",
+          "measurement_scope": "bytes removed by the reclaim, measured by the OS",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\STORAGE_RECLAIM.json",
+          "source_digest": "dc525c5201fdf9e0a6eb85474bf033d3abc5308edb21d9c741807d751dda071a",
+          "unit": "bytes",
+          "value": 45461012
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "storage_verdict_after",
+          "measurement_scope": "the floor the volume stood at after the reclaim",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\STORAGE_RECLAIM.json",
+          "source_digest": "dc525c5201fdf9e0a6eb85474bf033d3abc5308edb21d9c741807d751dda071a",
+          "unit": "label",
+          "value": "HEALTHY"
+        }
+      ],
+      "id": "ACC-09",
+      "note": "the floors were crossed for real: the lane refused its own ticks before any request, deleted nothing, and resumed once space came back",
+      "requirement": "Disk pressure blocks before corruption and preserves evidence",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "forward_days_with_data",
+          "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
+          "unit": "days",
+          "value": 228
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "forward_days_densely_covered_but_backfilled",
+          "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
+          "unit": "days",
+          "value": 227
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "forward_days_prospectively_observed",
+          "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
+          "unit": "days",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "forward_days_required",
+          "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
+          "unit": "days",
+          "value": 60
+        }
+      ],
+      "id": "ACC-10",
+      "note": "backfilled days are counted and excluded; a day that is not prospectively complete is not added, so the honest count stays at zero",
+      "requirement": "Forward eligibility excludes backfill and incomplete days",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_last_parity_verdict",
+          "measurement_scope": "the newest row of the lane's run log",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "label",
+          "value": "PARITY_PASS"
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_last_ruleset_params_hash",
+          "measurement_scope": "the newest row of the lane's run log",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "digest",
+          "value": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77"
+        }
+      ],
+      "id": "ACC-11",
+      "note": "the newest tick's own parity verdict and the parameters hash it ran under; no limit, size or gate was touched by this work package",
+      "requirement": "Risk limits and gates are unchanged",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "verification_verdict",
+          "measurement_scope": "the independent verifier's own verdict on the latest state",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\VERIFICATION.json",
+          "source_digest": "ece67e5677c5f8259ce62054c3ea77178fcb6472d78803ea8f1d75c616480237",
+          "unit": "label",
+          "value": "VERIFY_PASS 13/13"
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "verification_self_test",
+          "measurement_scope": "how many sabotages the matrix caught",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\VERIFICATION.json",
+          "source_digest": "ece67e5677c5f8259ce62054c3ea77178fcb6472d78803ea8f1d75c616480237",
+          "unit": "label",
+          "value": "SELF_TEST_PASS 16/16"
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "tests_chain_passed",
+          "measurement_scope": "the forward chain's three suites: the lane's, the watchdog's, the reconciliation's",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\REGRESSION.json",
+          "source_digest": "53368382d1a9d1b352533ab1642b897c5dfc6e00549d3a983fc51d9ab94aecb7",
+          "unit": "tests",
+          "value": 102
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "tests_chain_exit_code",
+          "measurement_scope": "the test command's own exit status, not a summary of it",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\REGRESSION.json",
+          "source_digest": "53368382d1a9d1b352533ab1642b897c5dfc6e00549d3a983fc51d9ab94aecb7",
+          "unit": "exit code",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "tests_chain_failed",
+          "measurement_scope": "failures in the forward chain's suites",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\REGRESSION.json",
+          "source_digest": "53368382d1a9d1b352533ab1642b897c5dfc6e00549d3a983fc51d9ab94aecb7",
+          "unit": "tests",
+          "value": 0
+        }
+      ],
+      "id": "ACC-12",
+      "note": "the verifier's own verdict and the chain suites' own exit code, both paid for by running the commands rather than by summarising them",
+      "requirement": "Independent verification, with the command's own exit code",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "lane_rows_claiming_an_order",
+          "measurement_scope": "every lane run row, checked for a sent order or a promotion",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
+          "unit": "rows",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "watchdog_rows_claiming_an_order",
+          "measurement_scope": "every watchdog reading, checked for a sent order or a promotion",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\watchdog.jsonl",
+          "source_digest": "87dff3a645e6d936420ce69d9a4e72fd07de2fb947ccd8259ab148acd36ad169",
+          "unit": "rows",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "reconciliation_market_requests",
+          "measurement_scope": "the newest reconciliation on file",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
+          "source_digest": "1f883dd5b6735837362464a083fa9b99602a5fa19bf08a34417073f36a5331a4",
+          "unit": "requests",
+          "value": 0
+        }
+      ],
+      "id": "ACC-13",
+      "note": "no row in the lane's log, the watchdog's log or the reconciliation claims an order or a promotion",
+      "requirement": "Operation without orders",
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "forward_days_prospectively_observed",
+          "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
+          "unit": "days",
+          "value": 0
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "forward_days_required",
+          "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
+          "unit": "days",
+          "value": 60
+        }
+      ],
+      "id": "ACC-14",
+      "note": "the sixty-day gate is a later milestone, not a condition of this work package; the window measured here is hours, not days",
+      "requirement": "A long unattended window",
+      "verdict": "NOT_TESTED"
+    },
+    {
+      "evidence": [
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "git_head",
+          "measurement_scope": "the commit the reading was taken at",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git\\HEAD",
+          "source_digest": "7c2818bac891262df1ebb00b2be7f917da46f671946fda4594fcfd86e152f719",
+          "unit": "commit",
+          "value": "f418619372e0eae0bbbdfaaebbd84f54804fdff1"
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "git_commits_since_root",
+          "measurement_scope": "commits reachable from HEAD since the root commit",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git\\HEAD",
+          "source_digest": "7c2818bac891262df1ebb00b2be7f917da46f671946fda4594fcfd86e152f719",
+          "unit": "commits",
+          "value": 399
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "git_dirty_entries",
+          "measurement_scope": "lines of `git status --porcelain`: every change, whoever made it",
+          "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git\\HEAD",
+          "source_digest": "7c2818bac891262df1ebb00b2be7f917da46f671946fda4594fcfd86e152f719",
+          "unit": "paths",
+          "value": 135
+        },
+        {
+          "as_of_utc": "2026-10-14T06:57:22Z",
+          "figure": "github_push_state",
+          "measurement_scope": "the recorded result of the publication probe, not re-probed here",
+          "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\GITHUB_STATE.json",
+          "source_digest": "a857462e653f8e6353ef90565916388758f3820c0f44ab4b00c216fcd2a75b01",
+          "unit": "label",
+          "value": "AVAILABLE_NOT_EXERCISED"
+        }
+      ],
+      "id": "ACC-15",
+      "note": "the commit this reading was taken at, what is still uncommitted in the shared checkout, and the recorded result of the publication probe",
+      "requirement": "Git and traceability",
+      "verdict": "PASS"
+    }
+  ],
+  "run_id": "EDGE05R-READ-20261014T065722Z",
+  "schema_version": "EDGE05R_ACCEPTANCE_MATRIX_V1",
+  "snapshot_digest": "eb91c3e2ad58486131596e9f968d6caca05187307e04616a8a32d168a242868c"
+}

@@ -1,0 +1,221 @@
+{
+  "artifact": "ST6_FINAL_REPORT",
+  "audit": "ST6-AUDIT-002",
+  "title": "scheduler provenance and lossless slot evidence",
+  "generated_at_utc": "2026-10-09T16:38:00Z",
+  "author": "the audit's own programmes, from the artefacts they left on disk",
+  "current_head": "7cd8d72f8d4330682af560f11b30cac211ad78b3",
+  "implemented": {
+    "new_programmes": [
+      "scripts/st6_scheduler_witness.py",
+      "scripts/st6_scheduler_evidence.py",
+      "scripts/st6_slot_ledger.py"
+    ],
+    "extended_programmes": [
+      "scripts/st6_scheduler_verify.py",
+      "scripts/st6_close_verify.py",
+      "scripts/st6_close_replay.py",
+      "scripts/st6_state_snapshot.py",
+      "scripts/st6_health_check.py",
+      "scripts/st6_forward_regime.py",
+      "tests/unit/research/test_st6_scheduler.py"
+    ],
+    "reused_not_duplicated": [
+      "the existing tick and its lease",
+      "the existing close replay harness",
+      "the existing attendance vocabulary",
+      "the existing raw window evidence"
+    ],
+    "not_done": [
+      "no new RFC",
+      "no second scheduler",
+      "no change to signals, strategies, cost rules or governance",
+      "no change to machine-wide audit settings"
+    ]
+  },
+  "windows_evidence_status": {
+    "per_run_external_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+    "operational_channel": {"state": "disabled", "event_file": "absent", "retention": "circular"},
+    "maintenance_channel": {
+      "state": "enabled",
+      "file_bytes": 1052672,
+      "full": true,
+      "records_held": 2269,
+      "oldest_record_number": 440,
+      "oldest_retained_event_utc": null,
+      "note": "oldest retained event 2025-11-02T02:30:31Z; newest 2026-10-09T16:24:57Z"
+    },
+    "security_channel": "not readable from this session",
+    "event_ids_that_would_carry_a_per_run_record": [100, 102, 107, 110, 200, 201],
+    "event_ids_verified_against_this_installation": false,
+    "correlation_rule": "full task name, own instance and action, with start and finish timestamps; an event id alone does not establish that a run was scheduled",
+    "assertion": "no per-run external record of this period exists and none can be recovered; no slot is called provably unattended"
+  },
+  "slot_ledger_status": {
+    "path": "data/st6/ST6_SLOT_LEDGER.json",
+    "version": "ST6_SLOT_LEDGER_V1",
+    "entries": 84,
+    "planned": 84,
+    "unaccounted": [],
+    "states": {"COLLECTED": 7, "PENDING": 77, "LOST_NO_WINDOW": 0, "UNACCOUNTED": 0},
+    "external_coverage": {
+      "EXTERNAL_COVERAGE_COMPLETE": 0,
+      "EXTERNAL_COVERAGE_PARTIAL": 2,
+      "SCHEDULER_EVIDENCE_UNAVAILABLE": 5,
+      "EXTERNAL_COVERAGE_NOT_YET_STARTED": 77
+    },
+    "run_origins": {
+      "CORROBORATED_ENGINE_LAUNCH": 20,
+      "INDUCED_BY_THE_VERIFIER": 46,
+      "MANUAL": 35,
+      "SELF_DECLARED_UNVERIFIED": 140,
+      "UNATTRIBUTED": 129
+    },
+    "field_coverage": "slot_id, slot_start_utc, slot_end_utc, expected_trigger, scheduler_instance_id, scheduler_event_ids, external_evidence_status, external_evidence, internal_run_id, process_start_utc, result, exit_code, collection_window_id, raw_evidence_hash, failure_reason, attendance_classification and its reading, attendance_evidence, attendance_correction, evidence_refs, verifier_status, runs",
+    "durability": "atomic write, idempotent, bounded, carry-forward of a stronger earlier statement, archive at the close"
+  },
+  "retention_status": {
+    "path": "data/st6/ST6_RETENTION_AUDIT.md",
+    "status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+    "rotation_status": "EXTERNAL_RECORD_ROTATION_LOSS_RECORDED",
+    "rotated_records_no_longer_present": 439,
+    "retained": [
+      "the task registration verbatim with its sha256",
+      "the channel states with the raw wevtutil answers and their sha256",
+      "dated samples of the scheduler's own reporting 152 samples 2026-10-09T14:43:34.545Z to 2026-10-09T16:31:50.326Z",
+      "the witness log, bounded, with the slot ledger as the durable per-slot record"
+    ],
+    "remediation": {
+      "command": "wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true",
+      "authorised": false,
+      "applied": false,
+      "reason": "machine-wide audit setting, needs an administrator, cannot recover runs that have already happened"
+    }
+  },
+  "attendance_verification": {
+    "vocabulary": [
+      "ATTENDED_NOT_COLLECTED",
+      "ATTENDED_REQUEST_FAILED",
+      "UNATTENDED_NO_RUN_EVENT",
+      "ATTENDANCE_UNKNOWN",
+      "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+      "ATTENDANCE_EVIDENCE_CONFLICT"
+    ],
+    "policy_version": 2,
+    "changes_to_the_vocabulary": "none",
+    "historical_values_rewritten": "none",
+    "collected_slots": "not a loss: described by their state and their window, with no loss class asserted"
+  },
+  "negative_tests": {
+    "unit": {"tests": 44, "status": "PASS"},
+    "close_verifier_fixtures": {"tests": 33, "status": "PASS", "false_success": 0},
+    "live_tests": {
+      "real_execution": "PASS",
+      "due_idempotency": "PASS",
+      "concurrency": "PASS",
+      "error_exit_status": "PASS",
+      "period_closure_guard": "PASS"
+    },
+    "declared_cases_covered": 14,
+    "real_leases_taken": 0,
+    "artificial_failure_events_in_production_state": "attributed as induced; the campaign's lock is never taken"
+  },
+  "real_scheduler_corroboration": {
+    "scheduler_events": "not available: the operational channel has never recorded on this host",
+    "substitute": "the scheduler's own reporting sampled by an independent witness, plus the process table for a launch in flight",
+    "corroborated_launches": 20,
+    "system_changes": "none"
+  },
+  "close_replay": {
+    "status": "PASS",
+    "scenarios_passed": 10,
+    "scenarios_total": 10,
+    "declared_deviations": 0,
+    "real_state_unchanged": true,
+    "real_market_requests": 0,
+    "input_state_digest": "e0f73751cf369bbb",
+    "observed_windows_at_replay": 7,
+    "determinism": "REPRODUCED: the shipped artefact is the byte-for-byte close of a state that has not moved since",
+    "shipped_and_rerun_closure_sha256": "7f8b8d07e8cd8d30"
+  },
+  "independent_verification": {
+    "close": {"status": "PASS", "checks_passed": 20, "checks_total": 20, "false_success": 0},
+    "scheduler": {"status": "PASS", "checks_passed": 5096, "checks_total": 5096, "false_success": 0},
+    "reconciliation": {
+      "status": "PASS",
+      "disagreements": 0,
+      "states": {"COLLECTED": 7, "LOST_NO_WINDOW": 0, "PENDING": 77, "UNACCOUNTED": 0},
+      "sources": ["A external", "B internal", "C raw"]
+    },
+    "health": {"status": "HEALTHY", "exit_code": 0},
+    "lint": "ruff clean on every program and test touched"
+  },
+  "false_success": 0,
+  "defects": [
+    {
+      "id": "AUDIT-002-D1",
+      "severity": "high",
+      "what": "the verifier's live concurrency test held the campaign's lease, so a real scheduled tick arriving in those seconds was refused (16:17:09Z, 16:18:58Z, 16:20:17Z)",
+      "effect": "no measurement lost; three refusal events remain in the append-only log, attributed to a verification holder",
+      "fix": "the test takes its own lease in a private lock root and passes that root to the process under test; the induced refusal declares a manual invocation",
+      "status": "FIXED",
+      "retroactive_reclassification": "none"
+    },
+    {
+      "id": "AUDIT-002-D2",
+      "severity": "medium",
+      "what": "the provenance report under-reported unattributed run events as 0 while the ledger counted 129",
+      "effect": "a report that under-counts what it cannot attribute",
+      "fix": "every declared origin is counted from the declared vocabulary, including the empty ones",
+      "status": "FIXED"
+    },
+    {
+      "id": "AUDIT-002-D3",
+      "severity": "medium",
+      "what": "rotation loss of the external record was not a declared state",
+      "effect": "an evicted record could have been read as no record at all",
+      "fix": "EXTERNAL_RECORD_ROTATION_LOSS_RECORDED with the evicted count; an unreadable channel is told apart from one that never recorded and from an empty log",
+      "status": "FIXED"
+    },
+    {
+      "id": "AUDIT-002-D4",
+      "severity": "medium",
+      "what": "the loss vocabulary was applied to slots that produced their own window",
+      "effect": "the reconciliation labelled seven collected slots ATTENDED_NOT_COLLECTED",
+      "fix": "no loss class is derived or asserted for a slot with a window; the entry carries an explicit reading",
+      "status": "FIXED"
+    },
+    {
+      "id": "AUDIT-002-D5",
+      "severity": "low",
+      "what": "the replay's byte-for-byte determinism was required against a state the campaign keeps collecting into",
+      "effect": "a legitimate new window made the shipped replay report look non-reproducible",
+      "fix": "the replay records the identity of the state it replayed; the verifier reconciles by identity and attributes an advance instead of hiding it",
+      "status": "FIXED"
+    },
+    {
+      "id": "AUDIT-002-D6",
+      "severity": "low",
+      "what": "event dates read with wevtutil qe were local instants labelled UTC",
+      "effect": "duration and coverage readings would have been off by the host offset",
+      "fix": "the raw text is kept and the UTC instant is derived with the host's own offset",
+      "status": "FIXED"
+    }
+  ],
+  "controls_that_could_not_be_run": [
+    "per-run Windows scheduler corroboration: the operational channel is disabled on this host and cannot be enabled in this work",
+    "the Security channel's process-creation record: not readable from this session",
+    "event-id semantics verified against real events of this provider: no such event exists on this host",
+    "a real end-of-period close: the period is open until 2026-10-22T16:21:20Z; the close is proven by isolated replay"
+  ],
+  "standing_state": {
+    "ST6_AUTONOMOUS_COLLECTION_ACTIVE": true,
+    "ECO_1": "OPEN",
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false
+  },
+  "next_gate": "the close of 2026-10-22T16:21:20Z, verified against the complete 84-slot ledger and its archive",
+  "end_of_period": "2026-10-22T16:21:20Z"
+}

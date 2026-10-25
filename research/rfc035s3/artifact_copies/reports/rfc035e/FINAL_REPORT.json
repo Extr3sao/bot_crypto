@@ -1,0 +1,316 @@
+{
+  "rfc": "RFC-035E",
+  "task": "INDEPENDENT_EXTERNAL_EFFECT_REPRODUCTION",
+  "classification": "EFFECT_NOT_REPRODUCED",
+  "classification_reason": "the source's named flow transform does not reproduce, and the variant that does reproduce is not robust: its coefficient flips sign once a trailing price trend is controlled, it is insignificant in every sub-period, and the post-publication impulse response is near zero or below the project's cost floor",
+  "source_commit": "7e21f7ca6dbf8816d83f2f8ab15aeb09310b878c",
+  "generated_at_utc": "2026-10-08T00:30:00Z",
+  "data_sources": [
+    {
+      "source_id": "RF-01",
+      "provider": "Farside Investors",
+      "object": "US spot BTC ETF daily net flow table (US$m)",
+      "sessions": 703,
+      "coverage": "2024-01-11..2026-10-07"
+    },
+    {
+      "source_id": "RF-02",
+      "provider": "Binance public REST",
+      "object": "BTCUSDT 1d klines (UTC)",
+      "rows": 1042
+    }
+  ],
+  "pit_status": "UNKNOWN for exact historical publication timestamps; the conservative availability rule (flow_date + 1 day at 00:00Z) is declared, never assumed",
+  "spec": {
+    "path": "reports/rfc035e/FALCONX_REPLICATION_SPEC.json",
+    "frozen_before_results": true,
+    "spec_digest": "embedded in every artifact; re-derived by the independent verifier"
+  },
+  "source_period": "2024-01-11..2024-10-11 (197 provider sessions dated inside the window, 195 rows usable for the lag model, 194 rows entering the estimated equations)",
+  "source_replication_result": {
+    "original": {
+      "granger_F": 8.4767,
+      "granger_p": 0.00406,
+      "lag_flow_coefficient": 0.027,
+      "flow_persistence": 0.533,
+      "correlation": 0.3,
+      "impulse_response": "positive, peaking about +1.2% at days 3-4",
+      "note": "coefficient in the source is on its own normalised variables; units are not comparable with USD millions"
+    },
+    "reproduced_reference_r1_plus_daily_flow": {
+      "granger_F": 4.0133,
+      "granger_p": 0.04656,
+      "lag_flow_coefficient_per_usd_m": 2.343e-05,
+      "lag_flow_t": 2.003,
+      "lag_flow_p": 0.0466,
+      "flow_persistence": 0.5724,
+      "contemporaneous_pearson": 0.413,
+      "sessions": 195
+    },
+    "reproduced_r7_plus_daily_flow": {
+      "granger_F": 12.0473,
+      "granger_p": 0.00065,
+      "lag_flow_coefficient_per_usd_m": 6.295e-05,
+      "lag_flow_p": 0.0006,
+      "sessions": 189,
+      "caveat": "7-session overlapping returns: inference needs HAC, which the frozen spec does not include"
+    },
+    "reproduced_source_named_transform_normalized_difference": {
+      "r1_plus_nd": {
+        "coefficient": 0.004366,
+        "p": 0.2178,
+        "sessions": 183
+      },
+      "r7_plus_nd": {
+        "coefficient": 0.004185,
+        "p": 0.4438,
+        "sessions": 183
+      },
+      "verdict": "NOT reproduced"
+    },
+    "reproduced_7session_flow_aggregate": {
+      "r1_plus_sum7": {
+        "coefficient": 7.853e-07,
+        "p": 0.7443
+      },
+      "r7_plus_sum7": {
+        "coefficient": -2.509e-07,
+        "p": 0.9574
+      },
+      "verdict": "NOT reproduced"
+    },
+    "summary": "the sign, the persistence and the order of magnitude of the F statistic reproduce for the raw DAILY flow variable, but not for the transform the source names, and the significance is borderline (0.047) rather than the reported 0.004"
+  },
+  "reverse_causality_result": {
+    "source_window_r1_plus_flow": {
+      "coefficient_price_to_flow": 1420.5733,
+      "p": 0.001
+    },
+    "oos_r1_plus_flow": {
+      "coefficient_price_to_flow": 3278.2121,
+      "p": 0.0
+    },
+    "reading": "price -> flow is far stronger and far more significant than flow -> price, i.e. most of the co-movement is flows following price"
+  },
+  "updated_oos_period": "2024-10-12..2026-10-07 (506 sessions in window, 505 rows usable, 504 rows in the equations)",
+  "updated_oos_result": {
+    "r1_plus_daily_flow": {
+      "coefficient": 8.72e-06,
+      "p": 0.0175,
+      "granger_F": 5.6813,
+      "granger_p": 0.01752
+    },
+    "r7_plus_daily_flow": {
+      "coefficient": 2.387e-05,
+      "p": 0.0,
+      "granger_F": 22.1387
+    },
+    "source_named_transform_nd": {
+      "r1_plus_nd_p": 0.4165,
+      "r7_plus_nd_p": 0.2208
+    },
+    "reading": "the raw-flow variant keeps its sign and gains significance out of sample, but the source's named transform still does not, and the trend-control falsification below is what decides the verdict"
+  },
+  "economic_magnitude": {
+    "var_source_window_flow_sd_usd_m": 227.596,
+    "cumulative_bps_per_1sd_shock": {
+      "h1": 53.316,
+      "h2": 18.165,
+      "h3": 11.709
+    },
+    "cumulative_bps_per_500m_shock": {
+      "h1": 117.128,
+      "h2": 39.905,
+      "h3": 25.724
+    },
+    "impulse_response_flow_shock_bps": {
+      "daily_flow_aggregate_sum7 (shock 292.45 USD m)": [
+        113.92,
+        -6.99,
+        3.0,
+        2.04,
+        2.0,
+        1.89,
+        1.79,
+        1.7,
+        1.61,
+        1.53
+      ],
+      "normalized_difference_nd (shock 0.31 units)": [
+        33.35,
+        10.43,
+        11.35,
+        10.1,
+        9.16,
+        8.3,
+        7.51,
+        6.81,
+        6.16,
+        5.58
+      ]
+    },
+    "interpretation": "the source's delayed positive drift does not reproduce: the response is concentrated at impact (h=0, before the number is public), and the post-publication response is about -7 bps for the 7-session aggregate and about +10 bps for the normalized difference, with the latter's interval barely above zero",
+    "scaling_note": "the 1 SD and 500 USD m figures are next-session responses of the raw-daily-flow VAR, the variant that does not survive the trend control; the variants that do survive falsification are the ones whose post-publication response is at or below the cost floor"
+  },
+  "cost_floor_comparison": {
+    "project_round_trip_cost_floor_bps": 23.791,
+    "post_publication_response_bps": {
+      "sum7_h1": -6.99,
+      "nd_h1": 10.43,
+      "raw_daily_flow_var_h1": 53.316
+    },
+    "verdict": "the variants that survive falsification sit at or below the cost floor; the one variant above it is the one whose sign flips under the trend control",
+    "not_claimed": "no profitability conclusion is drawn, and no strategy exists to conclude it from"
+  },
+  "temporal_stability": {
+    "partitions": "three equal consecutive thirds of the source window, declared before estimation",
+    "r1_plus_daily_flow": {
+      "EARLY": {
+        "coefficient": 1.689e-05,
+        "p": 0.3421
+      },
+      "MIDDLE": {
+        "coefficient": 2.816e-05,
+        "p": 0.152
+      },
+      "LATE": {
+        "coefficient": -4.687e-06,
+        "p": 0.875
+      }
+    },
+    "r7_plus_daily_flow": {
+      "EARLY": {
+        "coefficient": 5.628e-05,
+        "p": 0.0768
+      },
+      "MIDDLE": {
+        "coefficient": 6.286e-05,
+        "p": 0.0277
+      },
+      "LATE": {
+        "coefficient": 6.867e-05,
+        "p": 0.1253
+      }
+    },
+    "reading": "no sub-period is significant at the 5% level for the daily-return specification; the sign is stable for the overlapping 7-session specification but that inference is not HAC-corrected"
+  },
+  "falsification_results": {
+    "previous_return_momentum": {
+      "coefficient": 2.343e-05,
+      "p": 0.0471,
+      "verdict": "NOT EVIDENCE: the control is the previous 1-session return, which is exactly the AR(1) term already in the price equation for the daily-return specifications, so the column is duplicated and the design is singular. The momentum question is answered by the AR(1) term itself, not by this redundant control.",
+      "identifiable": false
+    },
+    "realised_vol_20": {
+      "coefficient": 2.835e-05,
+      "p": 0.0228,
+      "verdict": "survives"
+    },
+    "day_of_week": {
+      "coefficient": 2.31e-05,
+      "p": 0.0505,
+      "verdict": "borderline"
+    },
+    "winsorised_1_99": {
+      "coefficient": 3.02e-05,
+      "p": 0.0301,
+      "verdict": "survives"
+    },
+    "exclude_abs_flow_gt_10bn": {
+      "coefficient": 2.343e-05,
+      "p": 0.0466,
+      "verdict": "unchanged (no such days)"
+    },
+    "exclude_first_20_sessions": {
+      "coefficient": 2.525e-05,
+      "p": 0.0451,
+      "verdict": "survives"
+    },
+    "post_hoc_trailing_5_return": {
+      "coefficient": -1.777e-05,
+      "p": 0.1331,
+      "verdict": "SIGN FLIPS and significance vanishes"
+    },
+    "post_hoc_trailing_20_return": {
+      "coefficient": 1.214e-05,
+      "p": 0.3675,
+      "verdict": "significance vanishes"
+    },
+    "degenerate_specifications": [
+      "same_day_return",
+      "all_controls",
+      "previous_return"
+    ],
+    "degenerate_reason": "discovered from the recorded design diagnostics, not hardcoded: same_day_return and all_controls fit the dependent variable exactly (R^2 = 1); previous_return duplicates the AR(1) regressor in every reported combination (condition number > 1e10). Those rows are reported for completeness and are not evidence about the flow effect. A valid same-session control would need an exogenous instrument, which the frozen spec does not declare.",
+    "reading": "the information attributed to lagged flow is not robust: it is largely a proxy for a multi-session price trend, which is exactly the alternative the falsification battery exists to expose. The one predeclared momentum control turned out to be collinear by construction, and the momentum alternative is instead carried by the AR(1) term of the baseline model.",
+    "degenerate_flags_consistent": true,
+    "surviving_controls": [
+      "realised_vol_20",
+      "day_of_week",
+      "winsorised_1_99",
+      "exclude_abs_flow_gt_10bn",
+      "exclude_first_20_sessions"
+    ]
+  },
+  "independent_verification": {
+    "artifact": "reports/rfc035e/INDEPENDENT_VERIFICATION.json",
+    "markdown": "reports/rfc035e/INDEPENDENT_VERIFICATION.md",
+    "verifier": "scripts/rfc035e_verify.py",
+    "status": "PASS",
+    "checks": "107/107",
+    "mismatches": 0,
+    "method": "re-parses the raw Farside HTML and the raw Binance klines from the recorded bytes, rebuilds the series and re-estimates the reference model with its own code, then compares against declared tolerances (coefficient/statistic relative 1e-3, p-value absolute 1e-3, persistence absolute 5e-4)",
+    "self_check": "the verifier's own JSON and markdown outputs are checked after they are written, so a first run cannot pass on evidence it has not produced yet",
+    "defects_found_and_fixed_during_this_run": [
+      "the artifact's 'sessions' field named the usable-sample count while the verifier's named the regression sample size: both counts are now declared separately (sessions, regression_n, sessions_in_window)",
+      "the per-control 'degenerate' flags contradicted the artifact's own degenerate_specifications list; degeneracy is now derived from the recorded R^2 and condition number, which also exposed the collinear previous_return control",
+      "the independent verifier required its own markdown output to pre-exist, which made a clean first run fail",
+      "the RFC-035 registry document still quoted the pre-re-freeze SOURCE_BUNDLE_HASH; the RFC-035 verifier now cross-checks hashes quoted in prose"
+    ],
+    "coverage_declarations": "the verifier also re-derives the PIT per-record contract (available_to_strategy_at, record hashes) and checks that the falsification report declares the alternatives it could not test"
+  },
+  "false_success": 0,
+  "forbidden_claims": [],
+  "opp_0001_classification": "REJECT",
+  "opp_0001_action": "REJECT (RFC-035E section 13: EFFECT_NOT_REPRODUCED -> return to external opportunity search)",
+  "opp_0001_history": [
+    "REPLICATE_P0 (RFC-035, in error: no external entry/exit existed)",
+    "RESEARCH_HYPOTHESIS_P0 (RFC-035 correction)",
+    "REJECT (RFC-035E, effect not reproduced as claimed)"
+  ],
+  "rfc035_status": "OPEN — NO_REPLICABLE_EXTERNAL_STRATEGY_YET (its PASS conditions A and B remain unsatisfied)",
+  "next_gate": "CONTINUE_EXTERNAL_SEARCH",
+  "what_would_change_the_verdict": [
+    "HAC (Newey-West) inference for the overlapping 7-session specification",
+    "a point-in-time flow series with verified publication timestamps rather than a declared convention",
+    "an instrument or a natural experiment for flow shocks, so the price-to-flow feedback can be separated",
+    "a trend-controlled VAR estimated with HAC on a larger effective sample",
+    "evidence from another venue or product where creation demand is less anticipated"
+  ],
+  "limitations": [
+    "the provider publishes final data only: intraday revisions to a session are invisible to this reproduction",
+    "the provider calendar has no weekend sessions, so a Friday-to-Monday lag is one step",
+    "the source does not publish its variable construction, so its exact coefficient is not numerically comparable",
+    "the 7-session specifications use overlapping returns: their F and p values are not HAC-corrected",
+    "the two multi-session trend controls were post-hoc, not part of the frozen battery, and are labelled as such",
+    "no forward or live evidence exists for this line, and none is generated here",
+    "the frozen momentum control (previous 1-session return) is collinear with the AR(1) term of every reported specification, so the battery tests momentum only through that AR term"
+  ],
+  "sample_semantics": "sessions = provider rows dated inside the window; usable = rows with finite price and flow and a previous row inside the sample; regression rows = usable minus the one row the lag consumes. The independent verifier re-derives all three.",
+  "rfc035_correction": {
+    "corrected_in_rfc035_artifacts": true,
+    "OPP-0001": {
+      "previous": "REPLICATE_P0",
+      "corrected": "RESEARCH_HYPOTHESIS_P0"
+    },
+    "OPP-0002": {
+      "previous": "REPLICATE_P1",
+      "corrected": "RESEARCH_HYPOTHESIS_P1",
+      "note": "the same contract breach surfaced by the corrected RFC-035 verifier: a replication rank over UNKNOWN rules"
+    },
+    "rfc035_final_status": "OPEN_NO_REPLICABLE_EXTERNAL_STRATEGY (was PASS under the wrong contract)",
+    "rfc035_verifier": "scripts/rfc035_discovery_verify.py PASS 214/214 after the correction",
+    "preserved": "rank_history, classification_correction and the frozen selection with both hashes are kept; nothing erased",
+    "rfc036": "not opened"
+  }
+}

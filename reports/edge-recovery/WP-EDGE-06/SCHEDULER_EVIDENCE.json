@@ -1,0 +1,207 @@
+{
+  "derived_refresh_receipt_against_the_live_lane": {
+    "after_outcome": "MANUAL_EXERCISE",
+    "artifacts": {
+      "attribution": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\BAR_ATTRIBUTION.json",
+      "markdown": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.md",
+      "markers": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\INCOMPLETE_STATES.jsonl",
+      "reconciliation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json"
+    },
+    "ran": true,
+    "reason": null,
+    "seconds": 0.125,
+    "status": "HISTORICAL_ONLY",
+    "unattributed_bars": null
+  },
+  "last_observing_tick": {
+    "new_bars": 3,
+    "slot_key": "2026-10-14T07:30Z",
+    "started_at_utc": "2026-10-14T07:40:56Z"
+  },
+  "manual_invocations": [
+    {
+      "alerts": [],
+      "corrupt_log_lines": 0,
+      "derived_refresh": {
+        "after_outcome": "DISK_BUDGET_EXCEEDED",
+        "ran": false,
+        "reason": "the tick's outcome is DISK_BUDGET_EXCEEDED: it changed nothing, so there is nothing for the derived reading to re-read",
+        "seconds": 0.0
+      },
+      "disk": {
+        "critical_free_bytes": 2147483648,
+        "free_bytes": 1242046464,
+        "free_gib": 1.1567,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+        "status": "CRITICAL",
+        "total_bytes": 255041990656,
+        "total_gib": 237.5264,
+        "used_percent": 99.51,
+        "warning_free_bytes": 5368709120
+      },
+      "disk_after": {
+        "critical_free_bytes": 2147483648,
+        "free_bytes": 1242046464,
+        "free_gib": 1.1567,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+        "status": "CRITICAL",
+        "total_bytes": 255041990656,
+        "total_gib": 237.5264,
+        "used_percent": 99.51,
+        "warning_free_bytes": 5368709120
+      },
+      "due_only": true,
+      "duration_seconds": 0.01,
+      "errors": [
+        {
+          "outcome": "DISK_BUDGET_EXCEEDED",
+          "reason": "1.1567 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+          "series": null,
+          "stage": "tick"
+        }
+      ],
+      "exit_code": 5,
+      "finished_at_ms": 1791965680108,
+      "finished_at_utc": "2026-10-14T08:14:40Z",
+      "health_status": "BLOCKED",
+      "host": "DESKTOP-4CHO695",
+      "hypothetical": true,
+      "market_requests": 0,
+      "mode": "SCHEDULED",
+      "new_bars": 0,
+      "order_sent": false,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "outcome_reason": "1.1567 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "pid": 35428,
+      "previous_consuming_run_id": "FWD-EDGE04-20261014T073000Z",
+      "promotion": "NONE",
+      "pruned_rows": {},
+      "published_at_utc": "2026-10-14T08:14:40Z",
+      "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "run_id": "FWD-EDGE04-20261014T080000Z",
+      "schema_version": "EDGE04_TICK_V1",
+      "slot_already_observed": false,
+      "slot_end_utc": "2026-10-14T08:15Z",
+      "slot_key": "2026-10-14T08:00Z",
+      "slot_start_utc": "2026-10-14T08:00Z",
+      "started_at_ms": 1791965680098,
+      "started_at_utc": "2026-10-14T08:14:40Z"
+    }
+  ],
+  "note": "the lane's own records, plus the two manual invocations this work package made with the same command the operating system runs; the scratch files under .ci/edge06 are the raw capture and are deliberately not versioned",
+  "refusals_read_from_the_lane": [],
+  "scheduled_slots_seen": [
+    {
+      "derived_refresh": null,
+      "exit_code": 0,
+      "market_requests": 7,
+      "new_bars": 6,
+      "outcome": "OBSERVED",
+      "outcome_reason": "6 new closed bar(s) stored",
+      "slot_key": "2026-10-14T06:00Z",
+      "started_at_utc": "2026-10-14T06:11:11Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 0,
+      "market_requests": 4,
+      "new_bars": 3,
+      "outcome": "OBSERVED",
+      "outcome_reason": "3 new closed bar(s) stored",
+      "slot_key": "2026-10-14T06:15Z",
+      "started_at_utc": "2026-10-14T06:25:57Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 0,
+      "market_requests": 4,
+      "new_bars": 3,
+      "outcome": "OBSERVED",
+      "outcome_reason": "3 new closed bar(s) stored",
+      "slot_key": "2026-10-14T06:30Z",
+      "started_at_utc": "2026-10-14T06:40:58Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 0,
+      "market_requests": 4,
+      "new_bars": 3,
+      "outcome": "OBSERVED",
+      "outcome_reason": "3 new closed bar(s) stored",
+      "slot_key": "2026-10-14T06:45Z",
+      "started_at_utc": "2026-10-14T06:55:56Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 0,
+      "market_requests": 7,
+      "new_bars": 6,
+      "outcome": "OBSERVED",
+      "outcome_reason": "6 new closed bar(s) stored",
+      "slot_key": "2026-10-14T07:00Z",
+      "started_at_utc": "2026-10-14T07:10:56Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 0,
+      "market_requests": 4,
+      "new_bars": 3,
+      "outcome": "OBSERVED",
+      "outcome_reason": "3 new closed bar(s) stored",
+      "slot_key": "2026-10-14T07:15Z",
+      "started_at_utc": "2026-10-14T07:25:58Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 0,
+      "market_requests": 4,
+      "new_bars": 3,
+      "outcome": "OBSERVED",
+      "outcome_reason": "3 new closed bar(s) stored",
+      "slot_key": "2026-10-14T07:30Z",
+      "started_at_utc": "2026-10-14T07:40:56Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 5,
+      "market_requests": 0,
+      "new_bars": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "outcome_reason": "1.4918 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "slot_key": "2026-10-14T07:45Z",
+      "started_at_utc": "2026-10-14T07:55:09Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 5,
+      "market_requests": 0,
+      "new_bars": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "outcome_reason": "1.4919 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "slot_key": "2026-10-14T07:45Z",
+      "started_at_utc": "2026-10-14T07:55:56Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 5,
+      "market_requests": 0,
+      "new_bars": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "outcome_reason": "1.2046 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "slot_key": "2026-10-14T08:00Z",
+      "started_at_utc": "2026-10-14T08:10:57Z"
+    },
+    {
+      "derived_refresh": null,
+      "exit_code": 5,
+      "market_requests": 0,
+      "new_bars": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "outcome_reason": "1.1567 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "slot_key": "2026-10-14T08:00Z",
+      "started_at_utc": "2026-10-14T08:14:40Z"
+    }
+  ],
+  "scheduler_command": "python scripts/edge04_observer.py --scheduled --due",
+  "schema_version": "EDGE06_SCHEDULER_EVIDENCE_V1"
+}

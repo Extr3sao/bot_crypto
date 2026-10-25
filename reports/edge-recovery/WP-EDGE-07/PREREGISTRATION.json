@@ -1,0 +1,87 @@
+{
+  "schema_version": "EDGE07_PREREGISTRATION_V1",
+  "run_id": "EDGE07-PREREG-20261014T085354Z",
+  "registered_at_utc": "2026-10-14T08:53:54Z",
+  "registered_before": [
+    "the holdout corpus was fetched",
+    "any figure of the new window existed"
+  ],
+  "primary_book": {
+    "id": "edge07_trend_fixed",
+    "is_the_frozen_wp_edge_06_book": "edge06_trend_fixed",
+    "params": {
+      "ema_fast": 50,
+      "ema_slow": 200,
+      "breakout_lookback": 20,
+      "atr_period": 14,
+      "stop_atr": 1.0,
+      "target_atr": 3.0,
+      "min_rr": 2.0,
+      "cost_margin": 1.5,
+      "trailing": null
+    },
+    "params_hash": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad",
+    "tuning_permitted": false
+  },
+  "comparison_book": {
+    "id": "edge_trend_01_4h",
+    "note": "the frozen trailing-exit ruleset, run on the same new window with the same costs, risk policy and simulator; declared here so the comparison arm cannot be picked after the fact"
+  },
+  "multiplicity": 2,
+  "window_new": {
+    "name": "NEW_HOLDOUT",
+    "start_utc": "2026-03-01T00:00:00Z",
+    "end_utc_exclusive": "2026-10-14T08:00:00Z",
+    "corpus": "data/edge07/holdout-1h",
+    "source": "BINANCE_PUBLIC_REST:/api/v3/klines, interval 1h, aggregated to 4h by edge01.data.resample",
+    "min_holdout_bars_per_asset": 300,
+    "read_before": false,
+    "re_read_permitted": false
+  },
+  "windows_for_continuity": {
+    "DEV": {"start_utc": "2019-01-01T00:00:00Z", "end_utc": "2023-12-31T23:59:59Z", "read_before": true},
+    "VAL": {"start_utc": "2024-01-01T00:00:00Z", "end_utc": "2024-12-31T23:59:59Z", "read_before": true},
+    "OOS_CONSULTED": {"start_utc": "2025-01-01T00:00:00Z", "end_utc": "2026-02-28T23:59:59Z", "read_before": true}
+  },
+  "costs": {
+    "model": "COST_MODEL_V3",
+    "scenarios": ["BASE", "2X_FEES", "ADVERSE"],
+    "source": "edge01.costs.cost_plane"
+  },
+  "risk_policy": "config/risk.yaml through edge01.campaign.load_risk_policy; no arm may size, relax a limit or add a cooldown",
+  "fills": "campaign simulator: signal at the close of bar i, fill at the open of i+1, gap through the stop fills at the open, stop before target inside a bar, open position settled at the window's last bar",
+  "metrics": {
+    "primary": "edge01.campaign._metrics, unchanged, so a figure here means what it meant for the frozen books",
+    "added": {
+      "expectancy_ci_90": "trade-block bootstrap, 1,000 resamples of 20-trade blocks, seed 20261014",
+      "time_blocks": "three equal consecutive thirds of the window, net per third",
+      "by_asset": "net, trades and expectancy per asset",
+      "by_market_context": "the benchmark-relative label the campaign already records",
+      "serial_dependence": "lag-1 autocorrelation of trade returns with a +/-2/sqrt(n) band, plus a runs test on the sign sequence"
+    }
+  },
+  "criteria": [
+    {"id": "P1", "statement": "trades >= 30", "decisive": true},
+    {"id": "P2", "statement": "net > 0 at BASE", "decisive": true},
+    {"id": "P3", "statement": "expectancy > 0 at BASE", "decisive": true},
+    {"id": "P4", "statement": "net > 0 at 2X_FEES", "decisive": true},
+    {"id": "P5", "statement": "largest single trade <= 50% of the net", "decisive": true},
+    {"id": "P6", "statement": "at least one positive regime (by_regime)", "decisive": true},
+    {"id": "R1", "statement": "net still > 0 with the single largest winner removed", "decisive": true},
+    {"id": "R2", "statement": "net > 0 in at least 2 of the 3 equal consecutive time blocks", "decisive": true},
+    {"id": "R3", "statement": "per-asset, per-context and bootstrap readings are reported, never decisive", "decisive": false},
+    {"id": "S1", "statement": "DEV gross > 0", "decisive": true}
+  ],
+  "verdicts": {
+    "ADMIT_PAPER": "every decisive criterion passes on NEW_HOLDOUT; admission to paper only, no live trading, no capital",
+    "REJECT": "a decisive criterion failed with power (P1 with net <= 0, or P4, R1, R2, S1, or a negative DEV gross)",
+    "INSUFFICIENT_EVIDENCE": "P1 fails while the rest is non-negative, or P5 fails, or coverage is below the declared minimum, or the window could not be built"
+  },
+  "consequences": {
+    "on_reject": "reported with its numbers; the family is not tuned and re-run on this window",
+    "on_insufficient": "reported as no result, never as a pass",
+    "promotion": "NONE",
+    "order_sent": false,
+    "hypothetical": true
+  }
+}
