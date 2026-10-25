@@ -86,7 +86,7 @@
   "tests": {
     "baseline_worktree": {"passed": 113, "seconds": 108.0, "exit_code": 0},
     "worktree_affected": {"passed": 190, "seconds": 148.7, "exit_code": 0},
-    "export_affected": {"passed": 182, "seconds": 132.86, "exit_code": 0},
+    "export_affected": {"passed": 182, "seconds": 111.43, "exit_code": 0},
     "unit_order_authorization": {"passed": 43},
     "process_exec_sec": {"passed": 20},
     "mutants": {"killed": 14, "total": 14}
@@ -98,7 +98,7 @@
       "checks_passed": 21,
       "checks_total": 21,
       "verdict": "P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED",
-      "seconds": 304.3,
+      "seconds": 238.8,
       "artifacts_sha256": "ARTIFACTS.sha256"
     },
     "before": {

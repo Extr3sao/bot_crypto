@@ -107,7 +107,7 @@ The ten gate checks, `hot_stop.py` and the gate module are unchanged.
 | New classifier + boundary + payload unit tests | `tests/unit/test_order_authorization.py` | **43 passed** |
 | Program cases T01-T11 | `tests/unit/test_exec_sec_process.py` | **20 passed** |
 | P0 gate enforcement + G-3 hot-stop coverage + CLI + demo + journal + audit guard | worktree | **190 passed** in 148.70 s |
-| Affected suite on the export | verifier V-20 | **182 passed** in 132.86 s |
+| Affected suite on the export | verifier V-20 | **182 passed** in 111.43 s |
 | Mutation matrix | verifier V-21 on `2d512920` | **14/14 killed** |
 
 The unit count includes one test added after the first mutation run: M12 (stale
