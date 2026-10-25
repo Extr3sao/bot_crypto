@@ -4,12 +4,12 @@ The "before" column is not a recollection: `verify_exec_sec.py --rev 43e1ce2c`
 was run against the clean pre-RFC commit and produced
 [`verification-before.json`](verification-before.json) (8/21, `NOT_VERIFIED`).
 The "after" column is the same verifier on the exported final commit
-`09a44c21` (code `de72ad2a`) — 21/21,
+`f4cc048d` (code `de72ad2a`) — 21/21,
 `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED`.
 
 ## 1. What actually changed
 
-| Property | Before `43e1ce2c` | After `09a44c21` (code `de72ad2a`) |
+| Property | Before `43e1ce2c` | After `f4cc048d` (code `de72ad2a`) |
 |---|---|---|
 | `run --auto-trade` consent | no `--confirm-live`; live dispatch begins with no per-invocation consent | flag required for `live` and `shadow_live`; absent → exit 2 before the scanner |
 | Reduction classification | caller boolean `opens_risk`; `trade_side=CLOSE` **or** `reduce_only` **or** `side=buy` decided it | derived from primitive + `tradeSide` + `reduceOnly` + position id/side/qty/mode/freshness + venue capability |

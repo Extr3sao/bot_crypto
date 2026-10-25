@@ -16,6 +16,7 @@
 | WP-01 + WP-02 | `de72ad2a` | Derive live order authorisation from the order, not its name |
 | WP-03 | `2d512920` | Verify the order authorisation from a clean export, not from its tests |
 | Evidence | `09a44c21` | Report the verified order authorisation and keep live trading closed |
+| Final export | `f4cc048d` | Write the hash manifest with LF so sha256sum -c can verify it |
 
 WP-01 and WP-02 share one commit. The typed sink context is the seam both need:
 a confirmation check at the sink requires the intent and the category, and a
@@ -24,11 +25,12 @@ unconsented. Splitting it would have produced a commit that cannot pass its own
 tests. This is a documented deviation from "commits separados por WP"; the
 acceptance criteria do not depend on commit granularity.
 
-The final verification ran on `09a44c21`, which contains `2d512920` plus the
-first copy of these reports. Its code is identical to `2d512920` for every file
-the verifier checks, and those hashes match `de72ad2a` (`ARTIFACTS.sha256`).
-The evidence commit after `09a44c21` only updates the reports and their hashes;
-no source file changes.
+The final verification ran on `f4cc048d`, which contains `2d512920`, the first
+copy of these reports and the LF fix for the hash manifest. Its code is
+identical to `2d512920` for every file the verifier checks, and those hashes
+match `de72ad2a` (`ARTIFACTS.sha256`, verified with `sha256sum -c` on a Windows
+checkout). The evidence commit after `f4cc048d` only updates the reports and
+their hashes; no source file changes.
 
 ## 2. WP-00 — read-only audit
 
@@ -122,7 +124,7 @@ re-runs the affected suite and the mutation matrix.
 |---|---|---|
 | `43e1ce2c` (before) | 8/21 | `NOT_VERIFIED` |
 | `2d512920` (code + verifier) | 21/21 | `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED` |
-| `09a44c21` (final export) | **21/21** | `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED` |
+| `f4cc048d` (final export) | **21/21** | `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED` |
 
 The before run is real, not reconstructed:
 [`verification-before.json`](verification-before.json). On the before tree the
@@ -145,6 +147,7 @@ written by the same author. It is not a second-person audit.
 | EXEC-F-04 | P0/G-3 tests asserted that `set-tpsl` and spot `sell` reach the broker with a rejecting gate — the exact behaviour REQ-03/REQ-04 removes. | Those rows moved to `UNKNOWN_POINTS`; the new expectation is 0 calls. Documented in BEFORE_AFTER §4. |
 | EXEC-F-05 | The G-3/P0 probes closed a LONG position with `--side buy`. The classifier correctly refused it (wrong side). | The probe now closes a long with `sell` and supplies a matching position. |
 | EXEC-F-06 | `uv run` rewrote `uv.lock` during the baseline. | Reverted; `--frozen` thereafter. |
+| EXEC-F-07 | `ARTIFACTS.sha256` was written with the platform newline; on Windows `sha256sum -c` read a trailing CR in every path and verified nothing. | The manifest is now written with LF and `sha256sum -c` reports ten OK lines. |
 
 No failing check was weakened. The two P0/G-3 expectation changes are required
 by the RFC and are tested in both directions (proven close still 1 call,

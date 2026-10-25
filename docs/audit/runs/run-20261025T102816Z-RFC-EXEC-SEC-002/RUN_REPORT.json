@@ -16,7 +16,7 @@
     "wp00": "368bfcc944912ceeff95b09db40b5ea7132afae4",
     "wp01_wp02": "de72ad2a3b10bb3ef07515e8fe7f8861fae51109",
     "wp03": "2d512920fab01b203ec9b6de03c76303fe362ca9",
-    "evidence": "09a44c218030628c7c9964f4aeccd3c8388adabc",
+    "evidence": "f4cc048d56f0f204011d98cdb24ae9337c3f9178",
     "code_export": "2d512920fab01b203ec9b6de03c76303fe362ca9",
     "note": "WP-01 and WP-02 share one commit because the typed sink context is the seam both need; splitting it would have produced a commit that cannot pass its own tests."
   },
@@ -93,7 +93,7 @@
   },
   "verification": {
     "after": {
-      "rev": "09a44c218030628c7c9964f4aeccd3c8388adabc",
+      "rev": "f4cc048d56f0f204011d98cdb24ae9337c3f9178",
       "code_export": "2d512920fab01b203ec9b6de03c76303fe362ca9",
       "checks_passed": 21,
       "checks_total": 21,
@@ -125,7 +125,8 @@
     {"id": "EXEC-F-03", "summary": "verifier did not break GATE-001..008 through settings", "resolution": "added _break_settings"},
     {"id": "EXEC-F-04", "summary": "P0/G-3 tests asserted the exemptions REQ-03/REQ-04 removes", "resolution": "moved set-tpsl and spot sell to UNKNOWN_POINTS; 0 calls"},
     {"id": "EXEC-F-05", "summary": "probes closed a long with side=buy", "resolution": "close a long with sell; position fixture added"},
-    {"id": "EXEC-F-06", "summary": "uv run rewrote uv.lock during baseline", "resolution": "reverted; --frozen thereafter"}
+    {"id": "EXEC-F-06", "summary": "uv run rewrote uv.lock during baseline", "resolution": "reverted; --frozen thereafter"},
+    {"id": "EXEC-F-07", "summary": "ARTIFACTS.sha256 used CRLF; sha256sum -c read the CR as part of every path", "resolution": "manifest written with LF; 10/10 OK under sha256sum -c"}
   ],
   "defects": {
     "closed": [

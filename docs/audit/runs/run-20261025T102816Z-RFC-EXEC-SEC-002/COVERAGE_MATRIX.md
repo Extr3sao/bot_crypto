@@ -1,6 +1,6 @@
 # Coverage matrix — RFC-TAP-EXEC-SEC-002
 
-Code commit: `de72ad2a`. Verified export: `09a44c21`. Verifier:
+Code commit: `de72ad2a`. Verified export: `f4cc048d`. Verifier:
 `scripts/audit/verify_exec_sec.py` on a `git archive` export. `calls` is the
 number of recording-broker calls.
 
