@@ -1,0 +1,58 @@
+{
+  "cells": {
+    "momentum@5m|BTC|LOW_VOLATILITY|5m": {
+      "asset": "BTC",
+      "regime": "LOW_VOLATILITY",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "6b3adab2670b4970-BTC",
+          "gross_bps": -29.410674406651353,
+          "mode": "NO_TRADE",
+          "net_bps": -52.20249647665135,
+          "timestamp_ms": 1792859100000
+        }
+      ],
+      "strategy_id": "momentum@5m",
+      "timeframe": "5m"
+    },
+    "momentum@5m|ETH|TREND_DOWN|5m": {
+      "asset": "ETH",
+      "regime": "TREND_DOWN",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "6b3adab2670b4970-ETH",
+          "gross_bps": -47.292995699455915,
+          "mode": "NO_TRADE",
+          "net_bps": -70.12688544945591,
+          "timestamp_ms": 1792859100000
+        }
+      ],
+      "strategy_id": "momentum@5m",
+      "timeframe": "5m"
+    },
+    "momentum@5m|SOL|RANGE|5m": {
+      "asset": "SOL",
+      "regime": "RANGE",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "6b3adab2670b4970-SOL",
+          "gross_bps": -56.92599620493291,
+          "mode": "NO_TRADE",
+          "net_bps": -80.71541694493291,
+          "timestamp_ms": 1792859100000
+        }
+      ],
+      "strategy_id": "momentum@5m",
+      "timeframe": "5m"
+    }
+  },
+  "seen_decisions": [
+    "6b3adab2670b4970-BTC",
+    "6b3adab2670b4970-ETH",
+    "6b3adab2670b4970-SOL"
+  ],
+  "version": "experience-learning-v1"
+}

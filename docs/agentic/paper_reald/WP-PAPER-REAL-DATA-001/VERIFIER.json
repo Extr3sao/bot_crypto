@@ -1,0 +1,241 @@
+{
+  "wp": "WP-PAPER-REAL-DATA-001",
+  "verified_at": "2026-10-24T17:10:16Z",
+  "verifier": "scripts/wp_prd001_verify.py (independent: no builder imports)",
+  "commit": "2a3ee67b0c626c812a9c011c2830fd55b3b6c138",
+  "branch": "paper/reald-data-001",
+  "checks": [
+    {
+      "check": "run_a_artifacts",
+      "passed": true
+    },
+    {
+      "check": "trace_chain",
+      "passed": true,
+      "records": 9
+    },
+    {
+      "check": "pit_ordering",
+      "passed": true,
+      "detail": "every decision used closed bars only"
+    },
+    {
+      "check": "no_trade_reasons",
+      "passed": true,
+      "decided": 9
+    },
+    {
+      "check": "independent_verifier_pass",
+      "passed": true
+    },
+    {
+      "check": "admission_matches_committed_ledger",
+      "passed": true
+    },
+    {
+      "check": "proposal_edge_matches_ledger",
+      "passed": true
+    },
+    {
+      "check": "run_report_agrees_with_traces",
+      "passed": true,
+      "reported_orders": 0,
+      "trace_orders": 0
+    },
+    {
+      "check": "order_expectation",
+      "passed": true,
+      "orders": 0,
+      "modes": {
+        "NO_TRADE": 9
+      }
+    },
+    {
+      "check": "run_b_artifacts",
+      "passed": true
+    },
+    {
+      "check": "trace_chain",
+      "passed": true,
+      "records": 9
+    },
+    {
+      "check": "pit_ordering",
+      "passed": true,
+      "detail": "every decision used closed bars only"
+    },
+    {
+      "check": "no_trade_reasons",
+      "passed": true,
+      "decided": 9
+    },
+    {
+      "check": "independent_verifier_pass",
+      "passed": true
+    },
+    {
+      "check": "admission_matches_committed_ledger",
+      "passed": true
+    },
+    {
+      "check": "proposal_edge_matches_ledger",
+      "passed": true
+    },
+    {
+      "check": "run_report_agrees_with_traces",
+      "passed": true,
+      "reported_orders": 0,
+      "trace_orders": 0
+    },
+    {
+      "check": "order_expectation",
+      "passed": true,
+      "orders": 0,
+      "modes": {
+        "NO_TRADE": 9
+      }
+    },
+    {
+      "check": "data_quality_verdict",
+      "passed": true
+    },
+    {
+      "check": "all_symbols_ok",
+      "passed": true
+    },
+    {
+      "check": "window_bar_count_matches",
+      "passed": true,
+      "symbol": "BTCUSDT",
+      "refetched": 120,
+      "recorded": 120
+    },
+    {
+      "check": "window_refetch_matches",
+      "passed": true,
+      "symbol": "BTCUSDT",
+      "refetched": "297d5b85ba581218",
+      "recorded": "297d5b85ba581218"
+    },
+    {
+      "check": "window_bar_count_matches",
+      "passed": true,
+      "symbol": "ETHUSDT",
+      "refetched": 120,
+      "recorded": 120
+    },
+    {
+      "check": "window_refetch_matches",
+      "passed": true,
+      "symbol": "ETHUSDT",
+      "refetched": "2f316a5d15427545",
+      "recorded": "2f316a5d15427545"
+    },
+    {
+      "check": "window_bar_count_matches",
+      "passed": true,
+      "symbol": "SOLUSDT",
+      "refetched": 120,
+      "recorded": 120
+    },
+    {
+      "check": "window_refetch_matches",
+      "passed": true,
+      "symbol": "SOLUSDT",
+      "refetched": "cdc4eff154a3373e",
+      "recorded": "cdc4eff154a3373e"
+    },
+    {
+      "check": "data_access_journal",
+      "passed": true,
+      "entries": 18
+    },
+    {
+      "check": "journal_unauthenticated",
+      "passed": true,
+      "offenders": 0
+    },
+    {
+      "check": "journal_public_provider",
+      "passed": true,
+      "providers": [
+        "binance-public-rest"
+      ]
+    },
+    {
+      "check": "no_empty_fetch",
+      "passed": true,
+      "empties": 0
+    },
+    {
+      "check": "controlled_exec_labelled",
+      "passed": true
+    },
+    {
+      "check": "controlled_exec_verdict",
+      "passed": true
+    },
+    {
+      "check": "controlled_exec_fees",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "check": "controlled_exec_pnl",
+      "passed": true
+    },
+    {
+      "check": "controlled_exec_equity_matches_pnl",
+      "passed": true,
+      "equity_delta": 13.348515148485603,
+      "realized": 13.348515148485106
+    },
+    {
+      "check": "controlled_exec_discloses_fixtures",
+      "passed": true
+    },
+    {
+      "check": "controlled_exec_no_live_orders",
+      "passed": true
+    },
+    {
+      "check": "committed_ledger_admits_nothing",
+      "passed": true,
+      "admitted": []
+    },
+    {
+      "check": "exp004a_corpus_still_absent",
+      "passed": true,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-prd001\\data\\raw\\alpha003"
+    },
+    {
+      "check": "config_untouched",
+      "passed": true,
+      "detail": "config/strategy_admission.json and config/realdata unchanged"
+    },
+    {
+      "check": "no_credential_env_vars",
+      "passed": true,
+      "keys": []
+    },
+    {
+      "check": "no_venue_session",
+      "passed": true,
+      "multi_exchange_calls": 0,
+      "connector_resolves": 0
+    },
+    {
+      "check": "no_live_markers",
+      "passed": true,
+      "markers": 0
+    }
+  ],
+  "totals": {
+    "checks": 43,
+    "passed": 43,
+    "failed": 0
+  },
+  "failed_checks": [],
+  "false_success": 0,
+  "verdict": "EVIDENCE_CONSISTENT"
+}

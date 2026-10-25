@@ -1,0 +1,45 @@
+{
+  "hypothesis_id": "HYP-003",
+  "candidate_id": "CAND-046-003",
+  "mechanism": "institutional_constraint",
+  "source_ids": [
+    "SRC-04",
+    "SRC-03",
+    "SRC-01"
+  ],
+  "statement": "Weekend liquidity in crypto is materially thinner because institutional desks step back; a week that closed weak is bought back over the weekend by the remaining, less constrained flow, producing a long-only liquidity-premium rebound.",
+  "falsification": "If weekend rebounds from a weak weekly close do not pay 23.7906 bps round trip net, the liquidity-premium claim is not tradable at this size.",
+  "asset": "BTCUSDT",
+  "strategy": "weekend_rebound",
+  "parameters": {
+    "entry_hour_utc": 21,
+    "exit_hour_utc": 21,
+    "week_drop_k": 1.5,
+    "sigma_lookback_days": 30
+  },
+  "evidence_level": "OFFICIAL_DATA_SOURCE (SRC-04/SRC-03 klines) + STRUCTURAL_MECHANISM (RFC-041 trigger B: institutional constraint); no publication claim registered",
+  "period": {
+    "start_ms": 1727740800000,
+    "end_ms": 1790812800000
+  },
+  "partitions": [
+    {
+      "name": "development",
+      "start_ms": 1727740800000,
+      "end_ms": 1751328000000
+    },
+    {
+      "name": "validation",
+      "start_ms": 1751328000000,
+      "end_ms": 1767225600000
+    },
+    {
+      "name": "final_oos",
+      "start_ms": 1767225600000,
+      "end_ms": 1790812800000
+    }
+  ],
+  "cost_bps": 23.7906,
+  "registered_at_utc": "2026-10-08",
+  "registered_by": "RFC-046 activation (ADR-0024); frozen before any evaluation"
+}

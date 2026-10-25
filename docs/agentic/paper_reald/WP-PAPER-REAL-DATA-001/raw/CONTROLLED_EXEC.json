@@ -1,0 +1,546 @@
+{
+  "wp": "WP-PAPER-REAL-DATA-001",
+  "run_id": "run-c-controlled-exec",
+  "label": "TEST_EXECUTION",
+  "generated_at": "2026-10-24T17:05:28Z",
+  "disclosure": {
+    "market_data": "REAL \u2014 public binance klines (unauthenticated)",
+    "admission": "FIXTURE (TEST_ONLY ledger, PAPER_CANDIDATE test_signal@<tf>)",
+    "signal_source": "FIXTURE (deterministic test_signal family)",
+    "forced_exit_price": "TEST parameter, not market data",
+    "risk_limits": "REAL \u2014 config/realdata/risk.yaml, unmodified",
+    "execution_boundary": "PaperBroker (1bp slippage, 5bp commission)",
+    "live_orders": 0,
+    "credentials_used": false
+  },
+  "fixture": {
+    "ledger_path": "docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/fixtures/TEST_ONLY_admission_ledger.json",
+    "strategy_map": {
+      "test_signal@5m": {
+        "family": "test_signal",
+        "regimes": [],
+        "direction": "BOTH",
+        "enabled": true,
+        "status": "PAPER_CANDIDATE",
+        "priority": 0.0
+      }
+    },
+    "paper_candidates": [
+      "test_signal@1h",
+      "test_signal@5m"
+    ]
+  },
+  "settings": {
+    "timeframe": "5m",
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "balance": 10000.0,
+    "size_usd": 1000.0,
+    "risk": {
+      "max_risk_per_trade_pct": 0.25,
+      "max_daily_loss_pct": 1.0,
+      "max_weekly_loss_pct": 3.0,
+      "max_daily_drawdown_pct": 2.0,
+      "max_total_drawdown_pct": 5.0,
+      "max_open_positions": 3,
+      "max_trades_per_day": 20,
+      "max_consecutive_losses": 3,
+      "consecutive_loss_cooldown_minutes": 60,
+      "max_asset_exposure_pct": 10.0,
+      "max_total_exposure_pct": 25.0,
+      "min_order_notional_usdt": 20.0,
+      "max_order_notional_usdt": 500.0,
+      "default_stop_loss_pct": 0.5,
+      "default_take_profit_pct": 0.75,
+      "blocks": {
+        "excessive_spread_bps": 50,
+        "extreme_atr_pct": 8.0,
+        "high_latency_ms": 2000,
+        "weekend_trading": false
+      },
+      "kill_switch_enabled": true,
+      "live_trading_enabled": false
+    }
+  },
+  "startup_reconciliation": "CONSISTENT",
+  "final_reconciliation": "CONSISTENT",
+  "reload_reconciliation": "RECOVERED",
+  "reload_equity": 10013.348515148486,
+  "reference_prices": [
+    {
+      "symbol": "BTC/USDT",
+      "decision_time_ms": 1792861220015,
+      "entry_reference": 80219.31
+    },
+    {
+      "symbol": "ETH/USDT",
+      "decision_time_ms": 1792861220015,
+      "entry_reference": 2318.38
+    },
+    {
+      "symbol": "SOL/USDT",
+      "decision_time_ms": 1792861220015,
+      "entry_reference": 100.51
+    }
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "report": {
+        "cycle": 1,
+        "session_id": "a237449097e44490",
+        "started_at_ms": 1792861220015,
+        "ended_at_ms": 1792861227267,
+        "assets": [
+          {
+            "asset": "BTC",
+            "symbol": "BTC/USDT",
+            "regime": "LOW_VOLATILITY",
+            "market_time_ms": 1792861220015,
+            "decision_time_ms": 1792861220015,
+            "strategies_considered": [
+              "test_signal@5m"
+            ],
+            "strategy_selected": "test_signal@5m",
+            "mode": "TRADE_PAPER",
+            "reason": "admitted_candidate_with_positive_net_edge",
+            "classification": "PAPER_ADMITTED",
+            "no_trade_kind": null,
+            "failure_kind": null,
+            "expected_gross_edge_bps": 100.0,
+            "expected_cost_bps": 22.791816017350754,
+            "expected_net_edge_bps": 77.20818398264925,
+            "verifier_verdict": "PASS",
+            "risk_verdict": "PASS",
+            "risk_state": "APPROVED",
+            "risk_evaluated": true,
+            "risk_rule": "all_limits_pass",
+            "decision_id": "a237449097e44490-BTC",
+            "trace_persisted": true,
+            "order_created": true
+          },
+          {
+            "asset": "ETH",
+            "symbol": "ETH/USDT",
+            "regime": "LOW_VOLATILITY",
+            "market_time_ms": 1792861220015,
+            "decision_time_ms": 1792861220015,
+            "strategies_considered": [
+              "test_signal@5m"
+            ],
+            "strategy_selected": "test_signal@5m",
+            "mode": "TRADE_PAPER",
+            "reason": "admitted_candidate_with_positive_net_edge",
+            "classification": "PAPER_ADMITTED",
+            "no_trade_kind": null,
+            "failure_kind": null,
+            "expected_gross_edge_bps": 100.0,
+            "expected_cost_bps": 22.83373752244529,
+            "expected_net_edge_bps": 77.16626247755471,
+            "verifier_verdict": "PASS",
+            "risk_verdict": "PASS",
+            "risk_state": "APPROVED",
+            "risk_evaluated": true,
+            "risk_rule": "all_limits_pass",
+            "decision_id": "a237449097e44490-ETH",
+            "trace_persisted": true,
+            "order_created": true
+          },
+          {
+            "asset": "SOL",
+            "symbol": "SOL/USDT",
+            "regime": "LOW_VOLATILITY",
+            "market_time_ms": 1792861220015,
+            "decision_time_ms": 1792861220015,
+            "strategies_considered": [
+              "test_signal@5m"
+            ],
+            "strategy_selected": "test_signal@5m",
+            "mode": "TRADE_PAPER",
+            "reason": "admitted_candidate_with_positive_net_edge",
+            "classification": "PAPER_ADMITTED",
+            "no_trade_kind": null,
+            "failure_kind": null,
+            "expected_gross_edge_bps": 100.0,
+            "expected_cost_bps": 23.78584187087739,
+            "expected_net_edge_bps": 76.21415812912261,
+            "verifier_verdict": "PASS",
+            "risk_verdict": "PASS",
+            "risk_state": "APPROVED",
+            "risk_evaluated": true,
+            "risk_rule": "all_limits_pass",
+            "decision_id": "a237449097e44490-SOL",
+            "trace_persisted": true,
+            "order_created": true
+          }
+        ],
+        "paper_trades": 3,
+        "shadow_trades": 0,
+        "no_trades": 0,
+        "no_trade_kinds": {},
+        "risk_states": {
+          "APPROVED": 3
+        },
+        "runtime_failures": 0,
+        "orders_created": 3,
+        "traces_persisted": 3,
+        "outcomes_resolved": 0,
+        "outcomes_pending": 3,
+        "performance_updates": 0,
+        "broker_fills_closed": 0,
+        "errors": []
+      },
+      "positions": {
+        "BTC/USDT": {
+          "symbol": "BTC/USDT",
+          "side": "buy",
+          "entry_price": 80227.331931,
+          "quantity": 0.006232290018444438,
+          "notional_usdt": 500.0,
+          "stop_loss_pct": 1.0,
+          "take_profit_pct": 0.75,
+          "opened_at": 1792861227.243821,
+          "entry_commission": 0.25,
+          "strategy_name": "test_signal"
+        },
+        "ETH/USDT": {
+          "symbol": "ETH/USDT",
+          "side": "buy",
+          "entry_price": 2318.6118380000003,
+          "quantity": 0.21564627239688922,
+          "notional_usdt": 500.0,
+          "stop_loss_pct": 1.0,
+          "take_profit_pct": 0.75,
+          "opened_at": 1792861227.253481,
+          "entry_commission": 0.25,
+          "strategy_name": "test_signal"
+        },
+        "SOL/USDT": {
+          "symbol": "SOL/USDT",
+          "side": "buy",
+          "entry_price": 100.52005100000001,
+          "quantity": 4.974131976912745,
+          "notional_usdt": 500.0,
+          "stop_loss_pct": 1.0,
+          "take_profit_pct": 0.75,
+          "opened_at": 1792861227.2574987,
+          "entry_commission": 0.25,
+          "strategy_name": "test_signal"
+        }
+      },
+      "equity": 10000.0,
+      "at_utc": "2026-10-24T17:00:27Z"
+    },
+    {
+      "cycle": 2,
+      "report": {
+        "cycle": 2,
+        "session_id": "2bd4e08104bc46fa",
+        "started_at_ms": 1792861525824,
+        "ended_at_ms": 1792861528910,
+        "assets": [
+          {
+            "asset": "BTC",
+            "symbol": "BTC/USDT",
+            "regime": "LOW_VOLATILITY",
+            "market_time_ms": 1792861525824,
+            "decision_time_ms": 1792861525824,
+            "strategies_considered": [
+              "test_signal@5m"
+            ],
+            "strategy_selected": "test_signal@5m",
+            "mode": "NO_TRADE",
+            "reason": "risk_veto:Max open positions reached (3)",
+            "classification": "RISK_VETO",
+            "no_trade_kind": "NO_TRADE_RISK",
+            "failure_kind": null,
+            "expected_gross_edge_bps": 100.0,
+            "expected_cost_bps": 22.791815688607407,
+            "expected_net_edge_bps": 77.20818431139259,
+            "verifier_verdict": "PASS",
+            "risk_verdict": "VETO",
+            "risk_state": "VETOED",
+            "risk_evaluated": true,
+            "risk_rule": "max_positions",
+            "decision_id": "2bd4e08104bc46fa-BTC",
+            "trace_persisted": true,
+            "order_created": false
+          },
+          {
+            "asset": "ETH",
+            "symbol": "ETH/USDT",
+            "regime": "LOW_VOLATILITY",
+            "market_time_ms": 1792861525824,
+            "decision_time_ms": 1792861525824,
+            "strategies_considered": [
+              "test_signal@5m"
+            ],
+            "strategy_selected": "test_signal@5m",
+            "mode": "NO_TRADE",
+            "reason": "risk_veto:Max open positions reached (3)",
+            "classification": "RISK_VETO",
+            "no_trade_kind": "NO_TRADE_RISK",
+            "failure_kind": null,
+            "expected_gross_edge_bps": 100.0,
+            "expected_cost_bps": 22.833728579567932,
+            "expected_net_edge_bps": 77.16627142043207,
+            "verifier_verdict": "PASS",
+            "risk_verdict": "VETO",
+            "risk_state": "VETOED",
+            "risk_evaluated": true,
+            "risk_rule": "max_positions",
+            "decision_id": "2bd4e08104bc46fa-ETH",
+            "trace_persisted": true,
+            "order_created": false
+          },
+          {
+            "asset": "SOL",
+            "symbol": "SOL/USDT",
+            "regime": "LOW_VOLATILITY",
+            "market_time_ms": 1792861525824,
+            "decision_time_ms": 1792861525824,
+            "strategies_considered": [
+              "test_signal@5m"
+            ],
+            "strategy_selected": "test_signal@5m",
+            "mode": "NO_TRADE",
+            "reason": "risk_veto:Max open positions reached (3)",
+            "classification": "RISK_VETO",
+            "no_trade_kind": "NO_TRADE_RISK",
+            "failure_kind": null,
+            "expected_gross_edge_bps": 100.0,
+            "expected_cost_bps": 23.786238255584827,
+            "expected_net_edge_bps": 76.21376174441517,
+            "verifier_verdict": "PASS",
+            "risk_verdict": "VETO",
+            "risk_state": "VETOED",
+            "risk_evaluated": true,
+            "risk_rule": "max_positions",
+            "decision_id": "2bd4e08104bc46fa-SOL",
+            "trace_persisted": true,
+            "order_created": false
+          }
+        ],
+        "paper_trades": 0,
+        "shadow_trades": 0,
+        "no_trades": 3,
+        "no_trade_kinds": {
+          "NO_TRADE_RISK": 3
+        },
+        "risk_states": {
+          "VETOED": 3
+        },
+        "runtime_failures": 0,
+        "orders_created": 0,
+        "traces_persisted": 3,
+        "outcomes_resolved": 0,
+        "outcomes_pending": 6,
+        "performance_updates": 0,
+        "broker_fills_closed": 0,
+        "errors": []
+      },
+      "positions": {
+        "BTC/USDT": {
+          "symbol": "BTC/USDT",
+          "side": "buy",
+          "entry_price": 80227.331931,
+          "quantity": 0.006232290018444438,
+          "notional_usdt": 500.0,
+          "stop_loss_pct": 1.0,
+          "take_profit_pct": 0.75,
+          "opened_at": 1792861227.243821,
+          "entry_commission": 0.25,
+          "strategy_name": "test_signal"
+        },
+        "ETH/USDT": {
+          "symbol": "ETH/USDT",
+          "side": "buy",
+          "entry_price": 2318.6118380000003,
+          "quantity": 0.21564627239688922,
+          "notional_usdt": 500.0,
+          "stop_loss_pct": 1.0,
+          "take_profit_pct": 0.75,
+          "opened_at": 1792861227.253481,
+          "entry_commission": 0.25,
+          "strategy_name": "test_signal"
+        },
+        "SOL/USDT": {
+          "symbol": "SOL/USDT",
+          "side": "buy",
+          "entry_price": 100.52005100000001,
+          "quantity": 4.974131976912745,
+          "notional_usdt": 500.0,
+          "stop_loss_pct": 1.0,
+          "take_profit_pct": 0.75,
+          "opened_at": 1792861227.2574987,
+          "entry_commission": 0.25,
+          "strategy_name": "test_signal"
+        }
+      },
+      "mark_prices": {
+        "BTC/USDT": 80238.13,
+        "ETH/USDT": 2317.34,
+        "SOL/USDT": 100.47
+      },
+      "unrealized_pnl": -0.4559307057220071,
+      "mark_to_market_equity": 9999.544069294278,
+      "equity": 10000.0,
+      "at_utc": "2026-10-24T17:05:28Z"
+    }
+  ],
+  "closed_trades": [
+    {
+      "symbol": "BTC/USDT",
+      "side": "buy",
+      "entry_price": 80227.331931,
+      "exit_price": 81021.50309999999,
+      "quantity": 0.006232290018444438,
+      "notional_usdt": 500.00000000000006,
+      "gross_pnl": 4.949505049495013,
+      "entry_commission": 0.25000000000000006,
+      "exit_commission": 0.25000000000000006,
+      "pnl": 4.449505049495013,
+      "exit_reason": "take_profit",
+      "opened_at": 1792861227.243821,
+      "closed_at": 1792861528.9116776,
+      "strategy_name": "test_signal"
+    },
+    {
+      "symbol": "ETH/USDT",
+      "side": "buy",
+      "entry_price": 2318.6118380000003,
+      "exit_price": 2341.5638000000004,
+      "quantity": 0.21564627239688922,
+      "notional_usdt": 500.0,
+      "gross_pnl": 4.9495050494950705,
+      "entry_commission": 0.25,
+      "exit_commission": 0.25,
+      "pnl": 4.4495050494950705,
+      "exit_reason": "take_profit",
+      "opened_at": 1792861227.253481,
+      "closed_at": 1792861528.912313,
+      "strategy_name": "test_signal"
+    },
+    {
+      "symbol": "SOL/USDT",
+      "side": "buy",
+      "entry_price": 100.52005100000001,
+      "exit_price": 101.5151,
+      "quantity": 4.974131976912745,
+      "notional_usdt": 500.0,
+      "gross_pnl": 4.949505049495023,
+      "entry_commission": 0.25,
+      "exit_commission": 0.25,
+      "pnl": 4.449505049495023,
+      "exit_reason": "take_profit",
+      "opened_at": 1792861227.2574987,
+      "closed_at": 1792861528.912313,
+      "strategy_name": "test_signal"
+    }
+  ],
+  "open_positions": {},
+  "forced_exits": [
+    {
+      "symbol": "BTC/USDT",
+      "forced_exit_price": 81029.60525030999,
+      "price_source": "TEST_NOT_MARKET",
+      "closed": [
+        {
+          "symbol": "BTC/USDT",
+          "side": "buy",
+          "entry_price": 80227.331931,
+          "exit_price": 81021.50309999999,
+          "quantity": 0.006232290018444438,
+          "notional_usdt": 500.00000000000006,
+          "gross_pnl": 4.949505049495013,
+          "entry_commission": 0.25000000000000006,
+          "exit_commission": 0.25000000000000006,
+          "pnl": 4.449505049495013,
+          "exit_reason": "take_profit",
+          "opened_at": 1792861227.243821,
+          "closed_at": 1792861528.9116776,
+          "strategy_name": "test_signal"
+        }
+      ]
+    },
+    {
+      "symbol": "ETH/USDT",
+      "forced_exit_price": 2341.7979563800004,
+      "price_source": "TEST_NOT_MARKET",
+      "closed": [
+        {
+          "symbol": "ETH/USDT",
+          "side": "buy",
+          "entry_price": 2318.6118380000003,
+          "exit_price": 2341.5638000000004,
+          "quantity": 0.21564627239688922,
+          "notional_usdt": 500.0,
+          "gross_pnl": 4.9495050494950705,
+          "entry_commission": 0.25,
+          "exit_commission": 0.25,
+          "pnl": 4.4495050494950705,
+          "exit_reason": "take_profit",
+          "opened_at": 1792861227.253481,
+          "closed_at": 1792861528.912313,
+          "strategy_name": "test_signal"
+        }
+      ]
+    },
+    {
+      "symbol": "SOL/USDT",
+      "forced_exit_price": 101.52525151,
+      "price_source": "TEST_NOT_MARKET",
+      "closed": [
+        {
+          "symbol": "SOL/USDT",
+          "side": "buy",
+          "entry_price": 100.52005100000001,
+          "exit_price": 101.5151,
+          "quantity": 4.974131976912745,
+          "notional_usdt": 500.0,
+          "gross_pnl": 4.949505049495023,
+          "entry_commission": 0.25,
+          "exit_commission": 0.25,
+          "pnl": 4.449505049495023,
+          "exit_reason": "take_profit",
+          "opened_at": 1792861227.2574987,
+          "closed_at": 1792861528.912313,
+          "strategy_name": "test_signal"
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "orders_created": true,
+    "paper_trades_reported": true,
+    "fills_recorded": true,
+    "notional_within_limits": true,
+    "commission_arithmetic": true,
+    "slippage_applied": true,
+    "equity_matches_realized_pnl": true,
+    "startup_reconciliation_consistent": true,
+    "post_trade_reconciliation_consistent": true,
+    "state_reload_reconciled": true,
+    "state_reload_keeps_equity": true,
+    "no_position_left_open": true,
+    "realized_pnl_computed": true,
+    "cycle2_marked_a_later_bar": true
+  },
+  "detail": {
+    "orders_created": 3,
+    "fills": 3,
+    "notional_cap_usdt": 1000.0,
+    "equity": 10013.348515148486,
+    "realized_pnl": 13.348515148485106,
+    "equity_delta": 13.348515148485603,
+    "fee_errors": [],
+    "slippage_errors": [],
+    "notional_errors": [],
+    "forced_exit_count": 3
+  },
+  "verdict": "TEST_EXECUTION_PASS",
+  "failed_checks": []
+}

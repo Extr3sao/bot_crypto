@@ -1,0 +1,388 @@
+{
+  "wp": "WP-PAPER-REAL-DATA-001",
+  "title": "Validación operativa del trading PAPER sobre datos de mercado reales",
+  "generated_at": "2026-10-24T17:10:15Z",
+  "repository": {
+    "branch": "paper/reald-data-001",
+    "commit": "2a3ee67b0c626c812a9c011c2830fd55b3b6c138",
+    "base": "e67194e7",
+    "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-prd001",
+    "isolated_from_main": true
+  },
+  "authority_review": {
+    "exp004a_commit": "c727b614",
+    "exp004a_present": true,
+    "exp004a_is_ancestor_of_main": false,
+    "alpha003_corpus_present": false,
+    "config_admission_dirty": false,
+    "conclusion": "EXP004A sigue BLOCKED_WITH_EVIDENCE; este WP no lo desbloquea"
+  },
+  "reachability": {
+    "entrypoint": "scripts/autonomous_paper.py",
+    "repo_modules_reached": 76,
+    "modules_naming_the_15m_corpus": 0,
+    "modules_that_would_fail_without_it": 0,
+    "paper_path_depends_on_missing_corpus": false,
+    "strategies": {
+      "1h": [
+        {
+          "strategy_id": "breakout@1h",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "ema_crossover@1h",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "mean_reversion@1h",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "momentum@1h",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "trend@1h",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "volatility@1h",
+          "status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "decision_if_selected": "SHADOW_OR_NOT_ADMITTED"
+        }
+      ],
+      "5m": [
+        {
+          "strategy_id": "breakout@5m",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "ema_crossover@5m",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "mean_reversion@5m",
+          "status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "decision_if_selected": "SHADOW_OR_NOT_ADMITTED"
+        },
+        {
+          "strategy_id": "momentum@5m",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "trend@5m",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "volatility@5m",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        }
+      ]
+    }
+  },
+  "market_data": {
+    "verdict": "DATA_QUALITY_PASS",
+    "source": {
+      "provider": "binance",
+      "route": "public klines (api.binance.com/api/v3/klines)",
+      "authenticated": false,
+      "credentials_present": false,
+      "timeframe": "1h",
+      "symbols": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ]
+    },
+    "symbols": [
+      {
+        "symbol": "BTC",
+        "closed_bars": 199,
+        "forming_bars_dropped": 1,
+        "gaps": 0,
+        "duplicates": 0,
+        "ohlcv_violations": 0,
+        "age_of_last_closed_bar_ms": 428142,
+        "stale_budget_ms": 5400000,
+        "cross_check_agrees": true,
+        "pit_window_sha256": "297d5b85ba58121804dfcb76fce27ecc7b6007792d06f6fb63d225ad4080dc04"
+      },
+      {
+        "symbol": "ETH",
+        "closed_bars": 199,
+        "forming_bars_dropped": 1,
+        "gaps": 0,
+        "duplicates": 0,
+        "ohlcv_violations": 0,
+        "age_of_last_closed_bar_ms": 432076,
+        "stale_budget_ms": 5400000,
+        "cross_check_agrees": true,
+        "pit_window_sha256": "2f316a5d15427545c1d7b8b7c70139860d6e4a2f3afc575429ab92aaed3d1e5a"
+      },
+      {
+        "symbol": "SOL",
+        "closed_bars": 199,
+        "forming_bars_dropped": 1,
+        "gaps": 0,
+        "duplicates": 0,
+        "ohlcv_violations": 0,
+        "age_of_last_closed_bar_ms": 436102,
+        "stale_budget_ms": 5400000,
+        "cross_check_agrees": true,
+        "pit_window_sha256": "cdc4eff154a3373ebde01450660073e7120e05bb8dae99be23b65ad47556ba59"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "run_id": "run-a-1h",
+      "decisions": 9,
+      "distinct_decision_seconds": 3,
+      "distinct_window_ends": [
+        "2026-10-24T15:00:00Z"
+      ],
+      "modes": {
+        "NO_TRADE": 9
+      },
+      "classifications": {
+        "NO_GROSS_EDGE": 9
+      },
+      "orders_created": 0,
+      "verifier_verdicts": {
+        "PASS": 9
+      },
+      "risk_verdicts": {
+        "PASS": 9
+      },
+      "selected_strategies": [
+        "breakout@1h",
+        "ema_crossover@1h"
+      ],
+      "gross_edge_bps_range": {
+        "min": -0.96,
+        "max": -0.22,
+        "n": 9
+      },
+      "cost_bps_range": {
+        "min": 22.79182161,
+        "max": 23.78981998,
+        "n": 9
+      },
+      "trace_chain_ok": true
+    },
+    {
+      "run_id": "run-b-5m",
+      "decisions": 9,
+      "distinct_decision_seconds": 3,
+      "distinct_window_ends": [
+        "2026-10-24T16:10:00Z",
+        "2026-10-24T16:15:00Z",
+        "2026-10-24T16:20:00Z"
+      ],
+      "modes": {
+        "NO_TRADE": 9
+      },
+      "classifications": {
+        "NO_GROSS_EDGE": 9
+      },
+      "orders_created": 0,
+      "verifier_verdicts": {
+        "PASS": 9
+      },
+      "risk_verdicts": {
+        "PASS": 9
+      },
+      "selected_strategies": [
+        "ema_crossover@5m",
+        "momentum@5m",
+        "trend@5m"
+      ],
+      "gross_edge_bps_range": {
+        "min": -4.56,
+        "max": -1.65,
+        "n": 9
+      },
+      "cost_bps_range": {
+        "min": 22.79182207,
+        "max": 23.79413206,
+        "n": 9
+      },
+      "trace_chain_ok": true
+    },
+    {
+      "run_id": "run-c-controlled-exec",
+      "decisions": 6,
+      "distinct_decision_seconds": 2,
+      "distinct_window_ends": [
+        "2026-10-24T16:55:00Z",
+        "2026-10-24T17:00:00Z"
+      ],
+      "modes": {
+        "NO_TRADE": 3,
+        "TRADE_PAPER": 3
+      },
+      "classifications": {
+        "PAPER_ADMITTED": 3,
+        "RISK_VETO": 3
+      },
+      "orders_created": 3,
+      "verifier_verdicts": {
+        "PASS": 6
+      },
+      "risk_verdicts": {
+        "PASS": 3,
+        "VETO": 3
+      },
+      "selected_strategies": [
+        "test_signal@5m"
+      ],
+      "gross_edge_bps_range": {
+        "min": 100.0,
+        "max": 100.0,
+        "n": 6
+      },
+      "cost_bps_range": {
+        "min": 22.79181569,
+        "max": 23.78623826,
+        "n": 6
+      },
+      "trace_chain_ok": true
+    }
+  ],
+  "controlled_execution": {
+    "label": "TEST_EXECUTION",
+    "verdict": "TEST_EXECUTION_PASS",
+    "failed_checks": [],
+    "disclosure": {
+      "market_data": "REAL — public binance klines (unauthenticated)",
+      "admission": "FIXTURE (TEST_ONLY ledger, PAPER_CANDIDATE test_signal@<tf>)",
+      "signal_source": "FIXTURE (deterministic test_signal family)",
+      "forced_exit_price": "TEST parameter, not market data",
+      "risk_limits": "REAL — config/realdata/risk.yaml, unmodified",
+      "execution_boundary": "PaperBroker (1bp slippage, 5bp commission)",
+      "live_orders": 0,
+      "credentials_used": false
+    },
+    "detail": {
+      "orders_created": 3,
+      "fills": 3,
+      "notional_cap_usdt": 1000.0,
+      "equity": 10013.348515148486,
+      "realized_pnl": 13.348515148485106,
+      "equity_delta": 13.348515148485603,
+      "fee_errors": [],
+      "slippage_errors": [],
+      "notional_errors": [],
+      "forced_exit_count": 3
+    },
+    "checks": {
+      "orders_created": true,
+      "paper_trades_reported": true,
+      "fills_recorded": true,
+      "notional_within_limits": true,
+      "commission_arithmetic": true,
+      "slippage_applied": true,
+      "equity_matches_realized_pnl": true,
+      "startup_reconciliation_consistent": true,
+      "post_trade_reconciliation_consistent": true,
+      "state_reload_reconciled": true,
+      "state_reload_keeps_equity": true,
+      "no_position_left_open": true,
+      "realized_pnl_computed": true,
+      "cycle2_marked_a_later_bar": true
+    }
+  },
+  "tests": [
+    {
+      "suite": "autonomous",
+      "summary": "267 passed in 22.78s",
+      "passed": 267,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    {
+      "suite": "config",
+      "summary": "50 passed in 8.87s",
+      "passed": 50,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    {
+      "suite": "market_data",
+      "summary": "103 passed in 17.83s",
+      "passed": 103,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    {
+      "suite": "paper",
+      "summary": "57 passed in 1.98s",
+      "passed": 57,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    {
+      "suite": "research",
+      "summary": "88 failed, 1727 passed, 30 skipped, 14 errors in 442.84s (0:07:22)",
+      "passed": 1727,
+      "failed": 88,
+      "errors": 14,
+      "skipped": 30,
+      "exit_code": 1
+    },
+    {
+      "suite": "risk",
+      "summary": "2 failed, 117 passed in 16.74s",
+      "passed": 117,
+      "failed": 2,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 1
+    },
+    {
+      "suite": "scanner",
+      "summary": "123 passed in 7.20s",
+      "passed": 123,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0
+    }
+  ],
+  "verdicts": {
+    "runtime_pass": true,
+    "decision_pass": true,
+    "execution_pass": "TEST_ONLY: the order path was exercised under a labelled fixture; no real strategy is admitted for PAPER, so no market-data campaign could place an order",
+    "trading_performance": "NOT_ASSESSED: no admitted strategy, no positions held between campaigns, no realized PnL from market signals"
+  }
+}

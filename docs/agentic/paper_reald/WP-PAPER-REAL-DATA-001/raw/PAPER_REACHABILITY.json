@@ -1,0 +1,219 @@
+{
+  "wp": "WP-PAPER-REAL-DATA-001",
+  "generated_at": "2026-10-24T16:15:45Z",
+  "entrypoint": "scripts/autonomous_paper.py",
+  "method": {
+    "imports": "AST closure from the entrypoint, relative imports resolved",
+    "corpus_markers": [
+      "alpha003",
+      "CORPUS_15M",
+      "load_15m",
+      "_15m.json"
+    ],
+    "file_read_markers": [
+      "read_text",
+      "open(",
+      "json.load",
+      "Path("
+    ],
+    "runtime_reachability": "a strategy is reachable iff the admission ledger holds an entry for the run's timeframe (StrategyRegistry.for_timeframe / entries_for_timeframe)"
+  },
+  "totals": {
+    "repo_modules_reached": 76,
+    "external_top_level_packages": 32,
+    "modules_naming_the_15m_corpus": 0,
+    "modules_that_would_fail_without_it": 0
+  },
+  "external_packages": [
+    "__future__",
+    "abc",
+    "argparse",
+    "asyncio",
+    "ccxt",
+    "collections",
+    "contextlib",
+    "dataclasses",
+    "datetime",
+    "dotenv",
+    "email",
+    "enum",
+    "hashlib",
+    "itertools",
+    "json",
+    "math",
+    "os",
+    "pathlib",
+    "pydantic",
+    "pydantic_settings",
+    "secrets",
+    "signal",
+    "statistics",
+    "structlog",
+    "subprocess",
+    "sys",
+    "tenacity",
+    "time",
+    "typing",
+    "urllib",
+    "uuid",
+    "yaml"
+  ],
+  "corpus_consumers": [],
+  "paper_path_depends_on_missing_corpus": false,
+  "strategies": {
+    "ledger": "config/strategy_admission.json",
+    "paper_candidates_all_timeframes": [],
+    "by_timeframe": {
+      "1h": [
+        {
+          "strategy_id": "breakout@1h",
+          "family": "breakout",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -0.22,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "ema_crossover@1h",
+          "family": "ema_crossover",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -0.96,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "mean_reversion@1h",
+          "family": "mean_reversion",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -2.23,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "momentum@1h",
+          "family": "momentum",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -2.33,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "trend@1h",
+          "family": "trend",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.25,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "volatility@1h",
+          "family": "volatility",
+          "status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": 6.28,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "SHADOW_OR_NOT_ADMITTED"
+        }
+      ],
+      "5m": [
+        {
+          "strategy_id": "breakout@5m",
+          "family": "breakout",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -0.11,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "ema_crossover@5m",
+          "family": "ema_crossover",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.56,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "mean_reversion@5m",
+          "family": "mean_reversion",
+          "status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": 1.49,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "SHADOW_OR_NOT_ADMITTED"
+        },
+        {
+          "strategy_id": "momentum@5m",
+          "family": "momentum",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.88,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "trend@5m",
+          "family": "trend",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.65,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        },
+        {
+          "strategy_id": "volatility@5m",
+          "family": "volatility",
+          "status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.73,
+          "reachable_in_runtime": true,
+          "can_authorise_order": false,
+          "decision_if_selected": "NO_GROSS_EDGE"
+        }
+      ]
+    }
+  },
+  "runtime_data_sources": [
+    {
+      "provider": "ccxt",
+      "route": "venue session via resolve_scanner_source",
+      "needs_credentials": false,
+      "yields_real_market_data": true,
+      "usable_in_paper": false,
+      "why": "Settings guard: paper requires universe.exchanges[].sandbox=true (testnet feed)"
+    },
+    {
+      "provider": "fake",
+      "route": "build_demo_fetcher",
+      "needs_credentials": false,
+      "yields_real_market_data": false,
+      "usable_in_paper": true,
+      "why": "deterministic provider for control runs only"
+    },
+    {
+      "provider": "public-rest (injected)",
+      "route": "scanner_factory injection (scripts/wp_prd001_campaign.py)",
+      "needs_credentials": false,
+      "yields_real_market_data": true,
+      "usable_in_paper": true,
+      "why": "read-only public klines/ticker/bookTicker; opens no venue session"
+    }
+  ]
+}

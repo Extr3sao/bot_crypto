@@ -24,14 +24,14 @@ MAP = {
         "regimes": ["TREND_UP", "TREND_DOWN"],
         "direction": "BOTH",
         "enabled": True,
-        "status": "CONFIRMED",
+        "status": "PAPER_ACTIVE",  # §17 lifecycle: only an admitted strategy routes
     },
     "mom_v1": {
         "family": "momentum",
         "regimes": ["TREND_UP"],
         "direction": "LONG",
         "enabled": True,
-        "status": "CONFIRMED",
+        "status": "PAPER_ACTIVE",  # §17 lifecycle: only an admitted strategy routes
         "priority": 0.5,
     },
     "mr_v1": {
@@ -39,13 +39,13 @@ MAP = {
         "regimes": ["RANGE"],
         "direction": "BOTH",
         "enabled": True,
-        "status": "CONFIRMED",
+        "status": "PAPER_ACTIVE",  # §17 lifecycle: only an admitted strategy routes
     },
     "off_v1": {
         "family": "breakout",
         "regimes": ["TREND_UP"],
         "enabled": False,
-        "status": "CONFIRMED",
+        "status": "PAPER_ACTIVE",  # §17 lifecycle: only an admitted strategy routes
     },
     "pending_v1": {
         "family": "trend",
@@ -95,7 +95,7 @@ def test_no_trade_when_all_disabled():
         _ctx(),
         None,
         {
-            "a": {"enabled": False, "status": "CONFIRMED"},
+            "a": {"enabled": False, "status": "PAPER_ACTIVE"},
         },
     )
     assert d.is_no_trade
