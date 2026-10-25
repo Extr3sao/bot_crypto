@@ -200,6 +200,46 @@ trading-bot close-position / set-tpsl
 | `run --demo` → `paper_cycle` | no (G-4) | unchanged |
 
 `HotStopGate` still owns the stop and is still byte-identical to `a072da90`.
+
+## 10. Addendum — order-derived authorisation (2026-10-25, RFC-TAP-EXEC-SEC-002)
+
+The P0 row that exempted `close-position`, `set-tpsl`, futures `CLOSE` and spot
+`sell` was a caller-supplied boolean. RFC-TAP-EXEC-SEC-002
+(`docs/audit/RFC-TAP-EXEC-SEC-002.md`) replaced it with a category derived at
+the sink from the order, the position and the venue's real payload:
+
+```text
+CLI/runtime
+  → hot stop (marker / process switch)
+  → confirmation (`--confirm-live`) for run --auto-trade and place-order
+  → _live_order_boundary(intent, position, capabilities, settings, confirm_live)
+      → classify_order(...)                       # deterministic, no name
+      ├─ PROVEN_REDUCTION  → reduction payload guard → broker
+      └─ OPEN_OR_INCREASE / UNKNOWN → stop check → ten gate checks
+                                       → HotStopGate.order_boundary() [lock]
+                                       → broker
+```
+
+| Entrypoint | Category today | Gate |
+|---|---|---|
+| `run --auto-trade` futures OPEN / spot buy | `OPEN_OR_INCREASE` | yes, plus `--confirm-live` |
+| `place-order` futures OPEN / spot buy | `OPEN_OR_INCREASE` | yes, plus `--confirm-live` |
+| `place-order` futures CLOSE + `--reduce-only`, matching one-way position | `PROVEN_REDUCTION` | no |
+| `close-position` with an observable position | `PROVEN_REDUCTION` (venue closes by id) | no |
+| `run` stale-position flatten | `PROVEN_REDUCTION` (same primitive) | no |
+| `set-tpsl` | `UNKNOWN` | yes |
+| `place-order` spot `sell` | `UNKNOWN` | yes |
+| futures `CLOSE` without `reduceOnly`, hedge/ambiguous mode, excess qty, no position, stale snapshot, unreadable position | `UNKNOWN` | yes |
+| `run --demo` → `paper_cycle` | not classified | no (G-4, unchanged) |
+
+The proof is revalidated on the **wire payload** inside the adapter, immediately
+before `_request`: `reduceOnly` must be `true`, `tradeSide` must be `CLOSE`, the
+side must close the position, `0 < qty <= position.qty`, and a flash-close
+payload may contain nothing but `positionId`. A `PROVEN_REDUCTION` is recorded
+in `live_order_authorizations.jsonl` with the rule and a non-sensitive settings
+fingerprint.
+
+`HotStopGate` still owns the stop and is still byte-identical to `a072da90`.
 The gate does not replace it: P0's refusal for a stopped process names the stop,
 not the gate, and an already-stopped `run` keeps G-3's start-and-report
 behaviour. The gate's verdict is the stricter `failed_gates == 0`, not

@@ -10,7 +10,7 @@
 
 schema: tap.audit-backlog/v1
 generated_at_utc: "2026-10-23T18:53:56Z"
-updated_at_utc: "2026-10-24T17:10:00Z"
+updated_at_utc: "2026-10-25T11:00:00Z"
 repository: trading-agentic-portable
 
 recovery:
@@ -326,6 +326,39 @@ tasks:
       stricter than LiveTradingGate.all_passed (critical-only) and is the point.
       PROCEDURALLY_SEPARATED verification, same author.
 
+  - id: RFC-EXEC-SEC-002
+    title: Explicit live authorization and provable reduction exemptions
+    status: done
+    provenance: gap
+    contract: docs/audit/RFC-TAP-EXEC-SEC-002.md
+    implementation_commit: "de72ad2a"
+    verification: docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/verification.json
+    run_report: docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/RUN_REPORT.md
+    verdict: P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED
+    acceptance_criteria: [ACC-01, ACC-02, ACC-03, ACC-04, ACC-05, ACC-06, ACC-07]
+    evidence:
+      - "before: opens_risk was a caller boolean; run --auto-trade had no --confirm-live"
+      - "after: run live/shadow_live without --confirm-live exits 2 with 0 scanner/client"
+      - "after: 10/10 rejected gate checks stop the loop with 0 broker calls"
+      - "after: only reduceOnly+CLOSE on a matching one-way position, or flash-close by id, is exempt"
+      - "after: spot sell and set-tpsl are UNKNOWN and take the full gate"
+      - "after: wire payload is revalidated before _request; mutation loses the exemption"
+      - "190 tests pass in the worktree; the export suite passes under the verifier"
+      - "14/14 mutants killed; verifier 21/21 on the export"
+    covered_paths:
+      - trading-bot run --auto-trade (live and shadow_live)
+      - trading-bot place-order (futures and spot)
+      - trading-bot close-position and set-tpsl
+    uncovered_paths:
+      - real exchange acceptance of any payload (all brokers are recorders)
+      - hedge mode: refused as UNKNOWN, never exercised against a hedge-mode venue
+      - G-4 (run --demo), DEF-P0-03, GATE-009/010 configuration unchanged
+    note: >-
+      Closes DEF-EXEC-001..006 from WP-00. WP-01 and WP-02 share one code commit
+      because the typed sink context is the seam both need; splitting it would
+      have produced a commit that cannot pass its own tests. WP-03 is the
+      separate verifier on a clean export. PROCEDURALLY_SEPARATED, same author.
+
 contracts:
   - path: docs/audit/runtime_authority_map.md
     required: true
@@ -345,6 +378,9 @@ contracts:
   - path: docs/audit/P0-LIVE-GATE.md
     required: true
     producer: P0-LIVE-GATE
+  - path: docs/audit/RFC-TAP-EXEC-SEC-002.md
+    required: true
+    producer: RFC-EXEC-SEC-002
 
 unrecoverable:
   note: >-
@@ -358,12 +394,13 @@ unrecoverable:
 next_ready:
   task: null
   reason: >-
-    G-1, G-2, G-3 and P0-LIVE-GATE are closed and their contracts are
-    committed. P0 closed DEF-G3-03: every live entrypoint that can open risk now
-    consults LiveTradingGate, and every one of its ten checks must pass. G-4
-    (paper_cycle.py has its own broker call) still has no contract, so naming it
-    READY would fabricate its specification. `run --demo` reaches PaperBroker
-    through a decision path that never constructs DecisionEngine, so neither the
-    hot stop nor the live gate applies to it. G-4 remains the larger risk,
-    because it needs two decision paths reconciled rather than a gate added to
-    one. D-6 was not opened by any of these tasks.
+    G-1, G-2, G-3, P0-LIVE-GATE and RFC-EXEC-SEC-002 are closed and their
+    contracts are committed. The live gate is enforced on every live
+    risk-opening path, `run --auto-trade` needs explicit consent, and the only
+    exemptions are venue-enforced reductions revalidated on the wire payload.
+    G-4 (paper_cycle.py has its own broker call) still has no contract, so
+    naming it READY would fabricate its specification. `run --demo` reaches
+    PaperBroker through a decision path that never constructs DecisionEngine,
+    so neither the hot stop nor the live gate applies to it. G-4 remains the
+    larger risk, because it needs two decision paths reconciled rather than a
+    gate added to one. D-6 was not opened by any of these tasks.
