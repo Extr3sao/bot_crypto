@@ -348,7 +348,7 @@ async def main() -> int:
         )
         return 1
 
-    from trading_bot.paper.broker import PaperBroker
+    from trading_bot.paper.durable_broker import DurablePaperBroker
     from trading_bot.paper.paper_runtime_state import save_session_state
     from trading_bot.paper.paper_state_store import PaperStateStore
     from trading_bot.paper.reconciliation_v4 import StartupReconcilerV4
@@ -362,7 +362,7 @@ async def main() -> int:
     run_dir.mkdir(parents=True, exist_ok=True)
 
     scanner_factory, data_source = build_scanner_factory(settings, args.provider)
-    broker = PaperBroker(equity=args.balance)
+    broker = DurablePaperBroker(equity=args.balance)
     cycle_engine = build_cycle_engine(
         settings,
         broker,
@@ -372,6 +372,12 @@ async def main() -> int:
         run_dir=run_dir,
     )
     store = PaperStateStore(state_path)
+    broker.attach_durability(
+        store=store,
+        risk=cycle_engine.risk_manager,
+        idempotency=cycle_engine.idempotency,
+        run_id="paper-cli",
+    )
     reconciler = StartupReconcilerV4(
         store=store,
         broker=broker,
@@ -389,6 +395,15 @@ async def main() -> int:
             file=sys.stderr,
         )
         return 1
+
+    # The reconciler adopted the durable order ledger; bind the runtime id so
+    # every boundary write from here on names the restored book.
+    broker.attach_durability(
+        store=store,
+        risk=cycle_engine.risk_manager,
+        idempotency=cycle_engine.idempotency,
+        run_id=report.restored_run_id or "paper-cli",
+    )
 
     async def _run_with_persistence() -> dict[str, Any]:
         orchestrator = PaperOrchestrator(

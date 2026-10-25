@@ -26,12 +26,24 @@ def extract_state(
     broker: PaperBroker,
     risk: RiskManager | None,
     idempotency: Any | None,
+    orders: list[dict[str, Any]] | None = None,
+    sent_intents: list[str] | None = None,
 ) -> SessionPaperState:
-    """Build the durable state document from live runtime objects."""
+    """Build the durable state document from live runtime objects.
+
+    ``orders``/``sent_intents`` let the durable broker persist a boundary
+    (intent prepared, fill recorded) before the in-memory guard has been
+    updated.  When omitted, the broker's own order ledger is used and the
+    idempotency guard remains authoritative for the intent list.
+    """
     risk_state: dict[str, Any] = risk.extract_state() if risk is not None else {}
-    sent_intents: list[str] = []
-    if idempotency is not None:
-        sent_intents = list(getattr(idempotency, "sent_cloids", []) or [])
+    if sent_intents is None:
+        sent_intents = []
+        if idempotency is not None:
+            sent_intents = list(getattr(idempotency, "sent_cloids", []) or [])
+    if orders is None:
+        snapshot = getattr(broker, "orders_snapshot", None)
+        orders = list(snapshot()) if callable(snapshot) else []
     return SessionPaperState(
         schema_version=1,
         run_id=run_id,
@@ -40,7 +52,8 @@ def extract_state(
         risk_state=risk_state,
         open_positions=[p.to_row() for p in broker.positions.values()],
         closed_trades=list(broker.closed_trades_rows()),
-        sent_intents=sent_intents,
+        sent_intents=list(sent_intents),
+        orders=[dict(row) for row in orders],
     )
 
 
@@ -51,6 +64,15 @@ def save_session_state(
     broker: PaperBroker,
     risk: RiskManager | None,
     idempotency: Any | None,
+    orders: list[dict[str, Any]] | None = None,
 ) -> None:
     """Persist the post-session book atomically (called once per session)."""
-    store.save(extract_state(run_id=run_id, broker=broker, risk=risk, idempotency=idempotency))
+    store.save(
+        extract_state(
+            run_id=run_id,
+            broker=broker,
+            risk=risk,
+            idempotency=idempotency,
+            orders=orders,
+        )
+    )

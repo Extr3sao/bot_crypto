@@ -15,6 +15,11 @@ WHAT is persisted, WHERE, WHEN and WITH WHICH IDENTIFIER:
 - ``sent_intents``   — the exact ``cloid`` ledger backing exactly-once
                        execution across restarts (stable intent ids from
                        ``paper_cycle.intent_cloid``).
+- ``orders``         — G-6 order ledger: PREPARED / FILLED / ACCOUNTED /
+                       NO_FILL / FAILED / CLOSED / BLOCKED_UNKNOWN rows.
+                       A FILLED row carries the position it created, so a
+                       restart can materialize the fill even when the
+                       accounting snapshot predates it.
 - ``updated_at_ms``  — wall-clock stamp of the last durable write.
 - ``run_id``         — the session run that last wrote this state.
 
@@ -67,6 +72,12 @@ class SessionPaperState:
     open_positions: list[dict[str, Any]]
     closed_trades: list[dict[str, Any]]
     sent_intents: list[str] = field(default_factory=list)
+    #: G-6 durable order ledger.  Each row records one intent at the boundary
+    #: it reached (PREPARED / FILLED / ACCOUNTED / NO_FILL / FAILED /
+    #: BLOCKED_UNKNOWN).  A FILLED row carries the exact position row, so a
+    #: restart can materialize a fill that was committed before the accounting
+    #: snapshot.  Old schema-1 documents simply load with no orders.
+    orders: list[dict[str, Any]] = field(default_factory=list)
 
 
 def empty_state(*, run_id: str = "") -> SessionPaperState:
@@ -80,6 +91,7 @@ def empty_state(*, run_id: str = "") -> SessionPaperState:
         open_positions=[],
         closed_trades=[],
         sent_intents=[],
+        orders=[],
     )
 
 
@@ -119,6 +131,7 @@ class PaperStateStore:
                 open_positions=[dict(p) for p in doc.get("open_positions", [])],
                 closed_trades=[dict(t) for t in doc.get("closed_trades", [])],
                 sent_intents=[str(c) for c in doc.get("sent_intents", [])],
+                orders=[dict(o) for o in doc.get("orders", [])],
             )
         except Exception as exc:
             backup = self._path.with_suffix(self._path.suffix + ".corrupt")

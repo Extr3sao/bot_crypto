@@ -35,6 +35,7 @@ import pytest
 from trading_bot.execution.idempotency import IdempotencyGuard
 from trading_bot.market_data.types import OHLCV
 from trading_bot.paper.broker import PaperBroker
+from trading_bot.paper.durable_broker import DurablePaperBroker
 from trading_bot.paper.harness import PaperSessionRunner
 from trading_bot.paper.paper_cycle import PaperCycleEngine
 from trading_bot.paper.paper_state_store import PaperStateStore
@@ -661,6 +662,147 @@ def test_zero_price_never_closes_position() -> None:
     assert len(closed) == 1
     assert closed[0].exit_price == pytest.approx(80_000.0 * 0.9999)
     assert closed[0].exit_reason == "stop_loss"
+
+
+def _signal(cloid: str = "PAPER-g6-test") -> Any:
+    from trading_bot.strategies.types import Signal
+
+    return Signal(
+        symbol="BTC/USDT",
+        side="buy",
+        strategy_name="ema_crossover",
+        timeframe="5m",
+        confidence=0.9,
+        price=100.0,
+        stop_loss_pct=1.0,
+        take_profit_pct=2.0,
+        metadata={"notional_usdt": 500.0, "cloid": cloid},
+    )
+
+
+class _InjectedCrash(RuntimeError):
+    pass
+
+
+def _crash_at(point: str):
+    def crash(name: str, **details: Any) -> None:
+        del details
+        if name == point:
+            raise _InjectedCrash(name)
+
+    return crash
+
+
+def test_durable_broker_persists_filled_order_before_accounting(tmp_path) -> None:
+    """G-6 boundary 2: FILLED row on disk, accounting still pre-fill."""
+    store = PaperStateStore(tmp_path / "state.json")
+    broker = DurablePaperBroker(equity=10_000.0)
+    guard = IdempotencyGuard()
+    broker.attach_durability(
+        store=store,
+        risk=None,
+        idempotency=guard,
+        run_id="run-filled",
+        crash=_crash_at("after_order_record_before_accounting"),
+    )
+
+    with pytest.raises(_InjectedCrash):
+        broker.execute_signal(_signal())
+
+    state = store.load_or_recover()
+    assert state.open_positions == []
+    assert state.broker_state["fills_opened"] == 0
+    assert state.sent_intents == ["PAPER-g6-test"]
+    assert len(state.orders) == 1
+    assert state.orders[0]["status"] == "FILLED"
+    assert state.orders[0]["position"]["symbol"] == "BTC/USDT"
+
+    # A new process restores the pre-fill book and materializes the fill once.
+    broker2 = PaperBroker(equity=10_000.0)
+    guard2 = IdempotencyGuard()
+    report = _reconcile(store, broker2, None, guard2)
+    assert report.status == ReconciliationStatusV4.RECOVERED
+    assert report.materialized_orders == 1
+    assert report.blocked_intents == []
+    assert report.recovery_persisted is True
+    assert len(broker2.positions) == 1
+    assert broker2.extract_state()["fills_opened"] == 1
+
+    # A second restart is idempotent: ACCOUNTED + position, no new materialization.
+    broker3 = PaperBroker(equity=10_000.0)
+    report2 = _reconcile(store, broker3, None, IdempotencyGuard())
+    assert report2.status == ReconciliationStatusV4.RECOVERED
+    assert report2.materialized_orders == 0
+    assert len(broker3.positions) == 1
+    assert store.load_or_recover().orders[0]["status"] == "ACCOUNTED"
+
+
+def test_durable_broker_blocks_prepared_intent_without_resending(tmp_path) -> None:
+    """G-6 boundary 1: outcome unknown -> cloid blocked, never resent."""
+    from trading_bot.paper.paper_cycle import intent_cloid
+
+    cloid = intent_cloid("BTC/USDT", "ema_crossover", "LONG", TS0 + 59 * 60_000)
+    store = PaperStateStore(tmp_path / "state.json")
+    broker = DurablePaperBroker(equity=10_000.0)
+    guard = IdempotencyGuard()
+    broker.attach_durability(
+        store=store,
+        risk=None,
+        idempotency=guard,
+        run_id="run-prepared",
+        crash=_crash_at("after_intent_persist_before_order"),
+    )
+
+    with pytest.raises(_InjectedCrash):
+        broker.execute_signal(_signal(cloid))
+
+    state = store.load_or_recover()
+    assert state.open_positions == []
+    assert state.orders[0]["status"] == "PREPARED"
+    assert state.sent_intents == [cloid]
+
+    broker2 = PaperBroker(equity=10_000.0)
+    risk2 = RiskManager(risk=_risk_settings(), equity=10_000.0)
+    guard2 = IdempotencyGuard()
+    report = _reconcile(store, broker2, risk2, guard2)
+    assert report.status == ReconciliationStatusV4.RECOVERED
+    assert report.blocked_intents == [cloid]
+    assert report.materialized_orders == 0
+    assert broker2.positions == {}
+    assert store.load_or_recover().orders[0]["status"] == "BLOCKED_UNKNOWN"
+
+    engine = _build_engine(broker2, risk=risk2, guard=guard2)
+    bars = _bars("BTC/USDT")
+    counts = engine.run_cycle_sync({"BTC/USDT": bars}, {"BTC/USDT": TS0 + 59 * 60_000})
+    assert counts.orders_created == 0
+    assert counts.duplicate_intents == 1
+    assert broker2.positions == {}
+
+
+def test_accounted_order_closed_by_persisted_trade_is_not_fatal(tmp_path) -> None:
+    """A confirmed position may legitimately disappear into a closed trade."""
+    store = PaperStateStore(tmp_path / "state.json")
+    broker = DurablePaperBroker(equity=10_000.0)
+    guard = IdempotencyGuard()
+    broker.attach_durability(store=store, risk=None, idempotency=guard, run_id="run-closed")
+    broker.execute_signal(_signal())
+    guard.register("PAPER-g6-test")
+    assert len(broker.positions) == 1
+    broker.check_positions({"BTC/USDT": 120.0})  # > take profit
+    assert len(broker.closed_trades) == 1
+    _extract(store, "run-closed", broker, None, guard)
+
+    state = store.load_or_recover()
+    assert state.orders[0]["status"] == "ACCOUNTED"
+    assert state.open_positions == []
+    assert len(state.closed_trades) == 1
+
+    broker2 = PaperBroker(equity=10_000.0)
+    report = _reconcile(store, broker2, None, IdempotencyGuard())
+    assert report.status == ReconciliationStatusV4.RECOVERED
+    assert report.materialized_orders == 0
+    assert store.load_or_recover().orders[0]["status"] == "CLOSED"
+    assert len(broker2.closed_trades) == 1
 
 
 def test_reconcile_session_with_zero_price_snapshot_keeps_position() -> None:
