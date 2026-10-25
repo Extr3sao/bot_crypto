@@ -1,12 +1,13 @@
 {
-  "count": 266,
+  "count": 267,
   "files": {
     "BASELINE.md": "359053f92d637a3fecf999b51dd099b66ce729efce15bad7d2dc7c0fa56d9d97",
     "FINAL_REPORT.md": "fa1419c822e15ae9d8e507a57422398918e5c98db987127f8fcf64b3b55cc7a8",
     "GATE_MATRIX.md": "54508cbbe357caec230eb85160a156cffd8d2e6fabb8a59e4dee393ebf740389",
+    "POST_DELIVERY_VERIFY.json": "8270e68f42748ec01fc081cd5e859c9578d2bd871d9ea4faa3c625d3c52f1be1",
     "REVIEW.json": "6c7ad6cb568c82d60eac8dc45db1b420b5307ef01df5c4d34d15eb1415cb2139",
     "RUN_REPORT.json": "895906acd75b08cc88c1f28cadb58f420ebdadd53b075fbbbd43a7f0d82ec7b3",
-    "RUN_REPORT.md": "b3168211d27ac3dd5b26c103a0f889477c9fa098faac97e2dd7f71287745aabe",
+    "RUN_REPORT.md": "a61672b2d49a4268650bc0e4e85460887eb2c6cb16134fec325fcf8c261be312",
     "evidence/CAMPAIGN_AUDIT.json": "4037319a7af1a8c7f5319525c2b8c7cb33a61cc7601b1fd2266207ca82117a75",
     "evidence/EVIDENCE_MANIFEST.json": "61fa77b648231736e23319713d01d6fe3cf98b3c69934d9e7f60e65f3f9f689b",
     "evidence/GATE_REPORT.json": "9f4fdc7a91b835d9be17c355abbdff381d7c8f1a61f8c64ee4cc8555f3eb870f",
@@ -269,7 +270,7 @@
     "tools/review_gate.py": "5aa1fc34885cea7068fe600d09e6623b9f05ff2880f0d5218fd5fe2fd7234772"
   },
   "gate_run_commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
-  "note": "hashes of every delivered file; EVIDENCE_MANIFEST.json separately covers the gate's own artefacts",
+  "note": "hashes of every delivered file; evidence/EVIDENCE_MANIFEST.json separately covers the gate's own artefacts",
   "schema": "TAP_INTEGRATION_GATE_DELIVERY_MANIFEST_V1",
   "task": "TAP-INTEGRATION-GATE-001"
 }

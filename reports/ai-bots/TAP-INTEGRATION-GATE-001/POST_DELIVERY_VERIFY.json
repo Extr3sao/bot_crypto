@@ -1,0 +1,36 @@
+{
+  "delivery_commit": "680c34df49b9dde2af4cf29e85ad5e016495a626",
+  "gate_run_commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+  "generated_at_utc": "2026-10-25T13:40:06Z",
+  "note": "recorded at the delivery commit, which adds only evidence to the commit the campaigns ran on; the gate accepts that diff and refuses any other (see the N1 control and control N4)",
+  "preflight": {
+    "certifies": false,
+    "checks": 16,
+    "command": "python scripts/tap_integration_gate.py preflight",
+    "duration_ms": 1505,
+    "exit": 0,
+    "failing": [],
+    "verdict": "PASS"
+  },
+  "schema": "TAP_INTEGRATION_GATE_POST_DELIVERY_VERIFY_V1",
+  "verify": {
+    "command": "python scripts/tap_integration_gate.py verify --evidence reports/ai-bots/TAP-INTEGRATION-GATE-001/evidence",
+    "duration_ms": 608,
+    "exit": 0,
+    "payload": {
+      "binding": "9a420ff18179..680c34df49b9 touched only evidence (266 files)",
+      "commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+      "head": "680c34df49b9dde2af4cf29e85ad5e016495a626",
+      "manifest_files": 258,
+      "problems": [],
+      "recomputed": {
+        "J1_SUPERVISOR_CONTRACT": "PASS",
+        "J2_LOCK_CONTRACT": "PASS",
+        "J3_AUDIT_CLAIMS": "PASS",
+        "J4_CANDIDATE_BINDING": "PASS",
+        "J5_CAMPAIGN_SHAPE": "PASS"
+      },
+      "verdict": "PASS"
+    }
+  }
+}

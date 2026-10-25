@@ -41,8 +41,9 @@ was not touched.
 | `python scripts/tap_integration_gate.py run --out <evidence>` | **0** | **1290.8 s of steps** |
 | `python reports/…/tools/review_gate.py --evidence <evidence> --out REVIEW.json` | **0** | 8.16 s |
 | `python scripts/tap_integration_gate.py verify --evidence <evidence>` | 0 | 0.46 s |
-| `python scripts/tap_integration_gate.py preflight` (clean tree) | 0 | see `POST_DELIVERY_VERIFY.json` |
+| `python scripts/tap_integration_gate.py preflight` (clean tree, at the delivery commit) | 0 | 1.51 s (16 checks, `certifies: false`) |
 | `python scripts/tap_integration_gate.py preflight` (dirty tree, uncommitted evidence) | **1** | 1.27 s — refused the dirty tree, as designed |
+| `python scripts/tap_integration_gate.py verify --evidence …` (at the delivery commit) | 0 | 0.61 s |
 | `pytest tests/unit/ops/test_tap_integration_gate.py -q` | 0 | 1.2 s (12 passed) |
 | `ruff check` / `ruff format --check` on the new files | 0 | – |
 | `mypy` on the three new modules | 0 | – |
@@ -75,6 +76,9 @@ delivery neither inherited nor fixed that, and does not claim CI is green becaus
 * Reviewer: 9 of 9 checks, 8 of 8 controls rejected what they must reject, `false_success 0`.
 * Commit stability: one commit observed for the whole run (`9a420ff1`), tree clean at both
   ends.
+* Post-delivery `verify` at `680c34df`, the commit that adds only the evidence: `PASS`, binding
+  reported as `9a420ff18179..680c34df49b9 touched only evidence (266 files)`, 258 manifest
+  files, all five judgements re-derived `PASS` (`POST_DELIVERY_VERIFY.json`).
 
 Full matrix: [GATE_MATRIX.md](GATE_MATRIX.md). Raw: `evidence/GATE_REPORT.json`,
 `evidence/CAMPAIGN_AUDIT.json`, `REVIEW.json`.
