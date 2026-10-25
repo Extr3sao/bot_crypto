@@ -458,8 +458,17 @@ class PaperSessionRunner:
         A field the scanner did not measure stays ``None`` so the evaluator blocks
         instead of passing.
         """
-        now_ms = int(datetime.datetime.now(datetime.UTC).timestamp() * 1000)
-        at = datetime.datetime.now(datetime.UTC)
+        # G-5: the session's clock is the only clock the decision path may
+        # consult. Using the wall clock here made the defensive blocks
+        # (weekend / latency) disagree with the injected ``now_fn`` the rest of
+        # the runner uses, so a deterministic replay could be blocked by the
+        # real calendar and a test could not exercise a weekday trade. The
+        # default ``now_fn`` is still the wall clock, so production is unchanged.
+        at = self._now_fn()
+        if at.tzinfo is None:
+            at = at.replace(tzinfo=datetime.UTC)
+        at = at.astimezone(datetime.UTC)
+        now_ms = int(at.timestamp() * 1000)
         conditions: dict[str, MarketConditions] = {}
         for snap in snapshots:
             symbol = str(getattr(snap, "symbol", "") or "")

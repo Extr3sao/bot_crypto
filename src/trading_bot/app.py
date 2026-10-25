@@ -456,6 +456,10 @@ def _print_demo_results(
     print()
     print("=" * 78)
     print(f"Market scanner iteration -- DEMO mode (mode={mode}, synthetic data)")
+    # G-5: a synthetic scan is not a paper cycle. Saying so on stdout is what
+    # keeps ``run --mode paper`` from being read as operational success: it
+    # constructs no broker, writes no state and places no order.
+    print("Synthetic scan only: paper_cycle=NOT_RUN, broker=NOT_CONSTRUCTED, state=NOT_WRITTEN")
     print("=" * 78)
     if not snapshots:
         print()
@@ -1710,6 +1714,14 @@ def _cmd_run(args: argparse.Namespace) -> int:
         print(f"[run] dashboard web disponible en http://{args.web_host}:{args.web_port}")
 
     loop_label = "live real" if args.mode in {"live", "shadow_live"} else "--demo"
+    if args.mode not in {"live", "shadow_live"} and args.auto_trade:
+        # G-5: the paper branch is a synthetic scanner, not the paper cycle.
+        # Saying the flag is ignored prevents a caller from reading exit 0 as
+        # "auto-trade ran in paper mode".
+        print(
+            "[run] AVISO: --auto-trade no se aplica al scan sintetico "
+            "(paper_cycle=NOT_RUN, broker=NOT_CONSTRUCTED)."
+        )
 
     def execute_iteration(iteration: int) -> int:
         if args.mode in {"live", "shadow_live"}:
