@@ -1,0 +1,136 @@
+$ C:\Users\GVLLFR0035\Downloads\ff-wt-gate001\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-gate001\scripts\paper_supervisor_verify.py --campaign C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\campaigns\supervisor --out C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\SUPERVISOR_VERIFICATION.json
+exit=0
+
+--- stdout ---
+{
+  "verdict": "PASS",
+  "checks": {
+    "stream_chain_intact": true,
+    "seq_continuous": true,
+    "resume_flags_are_false_then_true": true,
+    "starts_carry_their_own_identity": true,
+    "one_run_id_and_pin": true,
+    "runtime_bytes_stable": true,
+    "cycle_numbers_unique": true,
+    "cycle_numbers_increasing": true,
+    "cycle_gaps_are_interrupted": true,
+    "cycle_ledgers_intact": true,
+    "no_live_orders": true,
+    "every_resume_backed_by_a_reclaim": true,
+    "reclaim_fences_advance": true,
+    "one_supervisor_acquired": true,
+    "loser_refused_without_spawning": true,
+    "only_one_supervisor_spawned": true,
+    "no_supervisor_decision_acted_on_failed": true,
+    "every_resume_decision_saw_only_abandoned_locks": true,
+    "resume_decisions_match_resumed_starts": true,
+    "every_resume_child_is_recorded": true,
+    "attempts_continue_the_stream": true,
+    "no_clean_exit_without_evidence": true,
+    "zero_exit_is_terminal": true,
+    "killed_children_did_not_exit_zero": true,
+    "restarts_within_budget": true,
+    "rows_never_shrank": true,
+    "supervisor_finished_completed": true,
+    "supervisor_result_counts_its_restarts": true,
+    "no_lock_remaining_now": true,
+    "final_state_not_failed": true,
+    "protected_paths_untouched": true,
+    "corrupt_evidence_was_refused": true,
+    "budget_was_exhausted_not_exceeded": true
+  }
+}
+{
+  "adversarial": [
+    {
+      "mutation": "duplicated_cycle_with_a_valid_chain",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "cycle_numbers_unique"
+    },
+    {
+      "mutation": "resume_start_removed",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "resume_decisions_match_resumed_starts"
+    },
+    {
+      "mutation": "reclaim_row_removed",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "every_resume_backed_by_a_reclaim"
+    },
+    {
+      "mutation": "reclaim_fence_does_not_advance",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "reclaim_fences_advance"
+    },
+    {
+      "mutation": "two_supervisors_both_acquired",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "one_supervisor_acquired"
+    },
+    {
+      "mutation": "killed_child_presented_as_clean",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "killed_children_did_not_exit_zero"
+    },
+    {
+      "mutation": "residual_lock_presented_as_recovered",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "no_lock_remaining_now"
+    },
+    {
+      "mutation": "live_order_written_into_the_stream",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "no_live_orders"
+    },
+    {
+      "mutation": "corrupt_evidence_reported_as_recovered",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "corrupt_evidence_was_refused"
+    },
+    {
+      "mutation": "budget_overspent",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "budget_was_exhausted_not_exceeded"
+    },
+    {
+      "mutation": "resume_without_a_decision",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "resume_decisions_match_resumed_starts"
+    },
+    {
+      "mutation": "clean_exit_without_evidence_reported_as_success",
+      "detected": true,
+      "invalid": false,
+      "applicable": true,
+      "target_check": "no_clean_exit_without_evidence"
+    }
+  ],
+  "false_success": 0,
+  "applicable_mutations": 12,
+  "not_applicable_mutations": []
+}
+
+--- stderr ---
+
