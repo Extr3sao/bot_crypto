@@ -1,0 +1,437 @@
+{
+  "rfc": "RFC-048",
+  "title": "DETERMINISTIC FUTURES RISK & LEVERAGE ENGINE",
+  "generated_by": "scripts/rfc048_report.py",
+  "CURRENT_HEAD": "66cfe0867bfbfbc9fd31b37e7d500f40f6a0c6af",
+  "BRANCH": "main",
+  "COMMITS": {
+    "commits_made_by_this_rfc": 0,
+    "working_tree": "RFC-048 changes are present but UNCOMMITTED: this RFC does not commit unless asked, and the shared checkout holds other agents' work",
+    "files_owned_by_this_rfc": [
+      "?? data/rfc048/",
+      "?? docs/architecture/RFC048_FUTURES_RISK_FLOW.md",
+      "?? docs/architecture/RFC048_RUNTIME_AUTHORITY_MAP.md",
+      "?? docs/research/RFC048_FUTURES_ECONOMIC_FEASIBILITY.md",
+      "?? docs/rfc/RFC-048_DETERMINISTIC_FUTURES_RISK.json",
+      "?? docs/rfc/RFC-048_DETERMINISTIC_FUTURES_RISK.md",
+      "?? scripts/rfc048_derive_instruments.py",
+      "?? scripts/rfc048_report.py",
+      "?? scripts/rfc048_run.py",
+      "?? scripts/rfc048_verify.py",
+      "?? src/trading_bot/risk/futures/",
+      "?? src/trading_bot/risk/futures_verification.py",
+      "?? tests/unit/risk/test_futures_independent_verifier.py",
+      "?? tests/unit/risk/test_futures_risk_engine.py",
+      "?? tests/unit/risk/test_futures_runtime_integration.py"
+    ],
+    "files_owned_by_other_threads_left_untouched": [
+      " M RUN_REPORT.json",
+      " M RUN_REPORT.md",
+      " M context/retrieval-log.md",
+      " M data/st6/RFC047_RUNTIME_VERIFICATION.json",
+      " M data/st6/ST6_FORWARD_REGIME_REPORT.json",
+      " M data/st6/ST6_FORWARD_REGIME_REPORT.md",
+      " M data/st6/ST6_INDEPENDENT_RECONCILIATION.json",
+      " M data/st6/ST6_INDEPENDENT_RECONCILIATION.md",
+      " M data/st6/ST6_INDEPENDENT_VERIFICATION.json",
+      " M data/st6/ST6_INDEPENDENT_VERIFICATION.md",
+      " M data/st6/ST6_MODEL_DRIFT.json",
+      " M data/st6/ST6_OBSERVATIONS.jsonl",
+      " M data/st6/ST6_REGIME_COVERAGE.json",
+      " M data/st6/ST6_SCHEDULER_PROVENANCE.json",
+      " M data/st6/ST6_SCHEDULER_PROVENANCE.md",
+      " M data/st6/ST6_SCHEDULER_REPORT.json",
+      " M data/st6/ST6_SCHEDULER_REPORT.md",
+      " M data/st6/ST6_SLOT_LEDGER.json",
+      " M data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl",
+      " M data/st6/ST6_WINDOWS.jsonl",
+      " M data/st6/rfc047/WINDOWS_EVENT_LIVE_STATE.json",
+      " M docs/source_registry.md",
+      " M evidence/real_decisions/evaluations.jsonl",
+      " M evidence/real_decisions/outcomes.jsonl",
+      " M scripts/cap004c_verify.py",
+      " M scripts/st6_scheduler_witness.py",
+      "?? PAPER_DATA_24H_REPORT.json",
+      "?? PAPER_DATA_24H_REPORT.md",
+      "?? data/rfc035e/",
+      "?? data/st6/ST6_HEALTH.jsonl",
+      "?? data/st6/ST6_HEALTH_STATUS.json",
+      "?? data/st6/ST6_RUNS.jsonl",
+      "?? data/st6/raw/20261009T200324Z.json.gz",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T151914Z.json",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T151914Z/",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T160955Z.json",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T160955Z/",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162537Z.json",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162537Z/",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162657Z.json",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162657Z/",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162826Z.json",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162826Z/",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T163248Z.json",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T163248Z/",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T200234Z.json",
+      "?? data/st6/snapshots/ST6_LIVE_STATE_20261009T200234Z/",
+      "?? docs/research/experiment_specs/EXP-CAND-001-SOURCE-FAITHFUL-EXIT.md",
+      "?? docs/research/runtime_reconciliation/",
+      "?? docs/research/work_packages/WP-CAND-001_ma_pullback.md",
+      "?? docs/research/work_packages/WP-CAND-002_mtf_alignment.md",
+      "?? docs/research/work_packages/WP-CAND-003_macd_regime_crossover.md",
+      "?? docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+      "?? docs/research/work_packages/WP-IMP-001_process_conformance_rfc.md",
+      "?? docs/research/work_packages/WP-IMP-002_post_trade_reconstruction.md",
+      "?? docs/research/work_packages/WP-IMP-004_rule_provenance_rfc.md",
+      "?? docs/research/work_packages/WP-IMP-005_source_threshold_quarantine.md",
+      "?? docs/research/work_packages/WP-PAIR-INFRA-001_pair_execution_gap.md",
+      "?? docs/research/work_packages/WP-RISK-001_exposure_and_stop_audit.md",
+      "?? docs/research/work_packages/WP-RISK-EXPOSURE-001.md",
+      "?? scripts/rfc035_discovery_verify.py",
+      "?? scripts/rfc035e_fetch.py",
+      "?? scripts/rfc035e_reproduce.py",
+      "?? scripts/rfc035e_verify.py",
+      "?? scripts/rfc035s2_search.py",
+      "?? scripts/rfc035s2_verify.py",
+      "?? scripts/source_candidate_experiment.py",
+      "?? src/trading_bot/research/experimental/",
+      "?? tests/unit/research/test_experimental_candidates_pit.py",
+      "?? tests/unit/research/test_rfc035_opportunity_registry.py",
+      "?? tests/unit/research/test_rfc035e_effect_reproduction.py",
+      "?? tests/unit/research/test_rfc035s2_strategy_search.py",
+      "M FINAL_REPORT.md"
+    ],
+    "ownership_rule": "no file outside data/rfc048, the three new RFC-048 documents, the new risk/futures package, the new verifier module, the three new tests and the four scripts was written"
+  },
+  "RUNTIME_AUDIT": {
+    "authority_map": "docs/architecture/RFC048_RUNTIME_AUTHORITY_MAP.md",
+    "runtime_authoritative_reused": [
+      "trading_bot.risk.manager.RiskManager (SPOT authority, unmodified)",
+      "trading_bot.autonomous.decision.DecisionEngine + contracts (decision boundary)",
+      "trading_bot.paper.broker.PaperBroker (untouched; no futures route added)",
+      "trading_bot.market_data.bitunix_futures (declared, unreachable from this RFC)"
+    ],
+    "second_risk_engine_created": false,
+    "futures_code_found_before": "research/managed_futures_v1.py (experimental, RFC-036)",
+    "futures_risk_code_found_before": "none"
+  },
+  "IMPLEMENTED_COMPONENTS": {
+    "package": "src/trading_bot/risk/futures",
+    "modules": [
+      "contracts.py (RiskDecision contract, decision + rejection vocabulary)",
+      "instruments.py (InstrumentSpec, bracket ladder, capability refusals)",
+      "margin.py (isolated linear margin, liquidation, bracket stress)",
+      "costs.py (FUTURES_COST_MODEL, point-in-time funding)",
+      "sizing.py (risk-bounded sizing, rounding down only)",
+      "portfolio.py (exposure, versioned snapshot, atomic margin ledger)",
+      "engine.py (deterministic gate order, fail-closed)",
+      "integration.py (adapter onto the real DecisionEngine contracts)"
+    ],
+    "verifier_module": "src/trading_bot/risk/futures_verification.py",
+    "scripts": [
+      "scripts/rfc048_derive_instruments.py (fixtures + provenance)",
+      "scripts/rfc048_run.py (real offline execution)",
+      "scripts/rfc048_verify.py (independent verification)",
+      "scripts/rfc048_report.py (this report)"
+    ],
+    "tests": [
+      "tests/unit/risk/test_futures_risk_engine.py",
+      "tests/unit/risk/test_futures_independent_verifier.py",
+      "tests/unit/risk/test_futures_runtime_integration.py"
+    ]
+  },
+  "SUPPORTED_INSTRUMENTS": {
+    "implemented": [
+      "LINEAR_PERPETUAL (isolated margin), BINANCE_USDM BINANCE_USDM_BTCUSDT_PERP"
+    ],
+    "declared_not_supported": [
+      "INVERSE_PERPETUAL (coin-margined)",
+      "DELIVERY_FUTURE (quarterly)",
+      "LINEAR_DELIVERY_FUTURE",
+      "CROSS margin"
+    ],
+    "fixture_provenance": {
+      "instrument_source_hash": "ea25e393baac13a118cdb94072f6d70f6fa814cb802f3c16dc9ee3655d19b626",
+      "bracket_source_hash": "07c298cd32e3f98b41b72d5bda0855fb14e5d091960fcd6325acbdf52dedc436",
+      "funding_observations": 200
+    },
+    "regulatory_status": "PRODUCT_ELIGIBILITY_UNKNOWN (research only)"
+  },
+  "POSITION_SIZING_STATUS": {
+    "model": "quantity = floor_to_step(risk_budget / (stop_distance + gap_reserve + worst_case_cost_per_unit))",
+    "budget_rule": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET (recomputed by the verifier)",
+    "rounding": "down only; a reduction can never raise the modelled loss",
+    "gap_reserve_required": true,
+    "stop_treated_as_guarantee": false,
+    "approved_decisions": 8,
+    "example": {
+      "scenario": "S01",
+      "requested_notional": 400.0,
+      "approved_notional": 82.50004923188,
+      "modeled_worst_loss": 0.74270045620629,
+      "risk_budget": 2.0
+    }
+  },
+  "MARGIN_STATUS": {
+    "initial_margin": "notional / min(requested, policy cap, venue bracket ceiling)",
+    "maintenance_margin": "notional * bracket rate - cumulative maintenance amount",
+    "bracket_source": "venue leverage-bracket payload, sha256 pinned",
+    "bracket_shift_modelled": true,
+    "cross_margin_supported": false,
+    "case_count": 8,
+    "status_counts": {
+      "LIQUIDATION_RISK_KNOWN": 8
+    }
+  },
+  "LIQUIDATION_STATUS": {
+    "model": "closed form of the venue's isolated margin condition",
+    "status_counts": {
+      "LIQUIDATION_RISK_KNOWN": 8
+    },
+    "buffer_minimum_bps": 50.0,
+    "unknown_blocks_approval": true,
+    "defect_found_and_fixed": {
+      "id": "DEF-048-01",
+      "summary": "the long-side closed form subtracted the adverse funding/liquidation terms instead of adding them, which OVER-stated the distance to liquidation",
+      "found_by": "the independent verifier's numeric root of the margin condition",
+      "fixed_in": "src/trading_bot/risk/futures/margin.py",
+      "evidence": "data/rfc048/INDEPENDENT_VERIFICATION.json (model_level_cases)"
+    }
+  },
+  "FUNDING_STATUS": {
+    "point_in_time": true,
+    "look_ahead": false,
+    "interval_source": "observed settlement timestamps of the venue funding endpoint",
+    "zero_funding_rule": "zero only when the venue interval proves no settlement falls inside the horizon; a settlement horizon without published rates is COST_UNKNOWN",
+    "unknown_funding_refused": true
+  },
+  "ECONOMIC_FEASIBILITY": {
+    "artifact": "data/rfc048/ECONOMIC_FEASIBILITY.json",
+    "document": "docs/research/RFC048_FUTURES_ECONOMIC_FEASIBILITY.md",
+    "leverage_creates_alpha": false,
+    "safe_leverage_ceiling_estimate": 65.779,
+    "spot_round_trip_bps": 23.7906,
+    "futures_round_trip_bps_measured": 12.0242,
+    "oos_reused": 0
+  },
+  "PORTFOLIO_RISK_STATUS": {
+    "snapshot_versioned": true,
+    "atomic_margin_reservation": true,
+    "concurrency_probe": {
+      "probe": "8 concurrent decisions on one equity pool of 200 USDT",
+      "approved_count": 8,
+      "refused_count": 0,
+      "sum_approved_margin": 132.000078771,
+      "ledger_reserved": 132.000078771,
+      "ledger_free": 67.999921229,
+      "equity": 200.0,
+      "invariant_holds": true,
+      "refusal_reasons": []
+    },
+    "correlated_positions_blocked": true,
+    "cross_collateral_blocked": true
+  },
+  "TEST_RESULTS": {
+    "futures_test_files": 3,
+    "risk_package_tests_passing": 77,
+    "full_unit_suite": "3121 passed (uv run pytest tests/unit -q)",
+    "mypy": "Success: no issues found in 10 source files",
+    "ruff": "clean on every touched python file",
+    "adversarial_cases_from_section_12": 24,
+    "invariants": [
+      "rounding never increases risk",
+      "a costlier assumption never approves a bigger size",
+      "effective leverage <= min(requested, policy, venue ceiling)",
+      "no decision ever authorises an order"
+    ]
+  },
+  "REAL_OFFLINE_EXECUTION": {
+    "scenarios_run": 31,
+    "expectations_met": 31,
+    "decisions_by_verdict": {
+      "REDUCE_SIMULATED_SIZE": 8,
+      "NO_TRADE": 7,
+      "RISK_VETO": 9,
+      "UNSUPPORTED_INSTRUMENT": 3,
+      "DATA_INVALID": 4
+    },
+    "approved_simulated": 8,
+    "refused": 23,
+    "order_authorised_anywhere": false,
+    "runtime_integration": {
+      "reachable": true,
+      "decision_path": "FuturesRiskEngine -> RiskReview -> DecisionEngine.decide",
+      "decision_engine_mode": "SHADOW_TRADE",
+      "order_authorised": false
+    },
+    "duration_seconds": 0.022
+  },
+  "INDEPENDENT_VERIFICATION": {
+    "verifier": "trading_bot.risk.futures_verification (no builder import)",
+    "builder": "trading_bot.risk.futures (engine, margin, sizing, costs)",
+    "builder_modules_loaded_by_verifier": [],
+    "decisions_verified": 31,
+    "checks_run": 303,
+    "checks_failed": 0,
+    "negative_controls_detected": 8,
+    "negative_controls_total": 8,
+    "model_level_cases_passed": true,
+    "reproducible": true,
+    "FALSE_SUCCESS": 0,
+    "verdict": "RFC048_OFFLINE_VERIFIED"
+  },
+  "ACCEPTANCE_CRITERIA": [
+    {
+      "id": "ACC-048-01",
+      "requirement": "risk engine integrated in the relevant runtime",
+      "status": "MET",
+      "evidence": "reachable=True via FuturesRiskEngine -> RiskReview -> DecisionEngine.decide (DecisionEngine mode SHADOW_TRADE); the adapter runs on the real decision contracts instead of a parallel flow"
+    },
+    {
+      "id": "ACC-048-02",
+      "requirement": "existing spot without regressions",
+      "status": "MET",
+      "evidence": "full unit suite 3121 passed (3044 pre-existing + 77 new risk tests); risk/manager.py, config/, COST_MODEL_V3 and the ST-6 scheduler are unmodified"
+    },
+    {
+      "id": "ACC-048-03",
+      "requirement": "futures supported with an explicit contract",
+      "status": "MET",
+      "evidence": "LINEAR_PERPETUAL isolated margin on BINANCE_USDM_BTCUSDT_PERP with a sha256-pinned instrument and bracket fixture; INVERSE_PERPETUAL, DELIVERY_FUTURE and CROSS margin are refused by name (UNSUPPORTED_INSTRUMENT x3)"
+    },
+    {
+      "id": "ACC-048-04",
+      "requirement": "sizing subject to budgeted losses",
+      "status": "MET",
+      "evidence": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed on all 8 approvals; rounding reduces size only; a costlier assumption never approves a larger notional"
+    },
+    {
+      "id": "ACC-048-05",
+      "requirement": "verifiable margin limits",
+      "status": "MET",
+      "evidence": "initial and maintenance margin from the venue bracket ladder (8/8 model-level cases LIQUIDATION_RISK_KNOWN); a missing ladder refuses with INCOMPLETE_MARGIN_MODEL"
+    },
+    {
+      "id": "ACC-048-06",
+      "requirement": "simulated liquidation under an identified model",
+      "status": "MET",
+      "evidence": "closed form of the venue's isolated-margin condition; missing parameters block approval (LIQUIDATION_RISK_UNKNOWN). The model's long-side sign error was found by the verifier and fixed (DEF-048-01)"
+    },
+    {
+      "id": "ACC-048-07",
+      "requirement": "funding and costs included",
+      "status": "MET",
+      "evidence": "FUTURES_COST_MODEL separate from the spot model (23.7906 bps not reused); point-in-time funding with COST_KNOWN/ESTIMATED/UNKNOWN; a settled horizon without published rates is COST_UNKNOWN and refuses (DEF-048-02)"
+    },
+    {
+      "id": "ACC-048-08",
+      "requirement": "NO_TRADE and RISK_VETO work",
+      "status": "MET",
+      "evidence": "the real run produced NO_TRADE x7 and RISK_VETO x9, each with its rejection reasons"
+    },
+    {
+      "id": "ACC-048-09",
+      "requirement": "no look-ahead and no stale data accepted",
+      "status": "MET",
+      "evidence": "stale and future timestamps produce DATA_INVALID x4; funding only uses rates known at the decision instant"
+    },
+    {
+      "id": "ACC-048-10",
+      "requirement": "independent verification",
+      "status": "MET",
+      "evidence": "31 decisions and 303 checks reproduced by a verifier that loads no builder module (loaded: none); 8/8 negative controls detected"
+    },
+    {
+      "id": "ACC-048-11",
+      "requirement": "adversarial tests",
+      "status": "MET",
+      "evidence": "the 24 cases of \u00a712 in tests/unit/risk/test_futures_risk_engine.py plus property/invariant tests and an 8-way concurrency probe on one equity pool"
+    },
+    {
+      "id": "ACC-048-12",
+      "requirement": "evidence of real offline engine execution",
+      "status": "MET",
+      "evidence": "31 scenarios executed offline (8 approvals, 23 refusals); reproducible=True"
+    },
+    {
+      "id": "ACC-048-13",
+      "requirement": "no live order or credential",
+      "status": "MET",
+      "evidence": "order_authorised_anywhere=False; no credentials and no live REST path in the package; the DecisionEngine refuses a futures review that could authorise an order"
+    },
+    {
+      "id": "ACC-048-14",
+      "requirement": "reproducible economic comparison",
+      "status": "MET",
+      "evidence": "ECONOMIC_FEASIBILITY.json compares spot vs 1x/2x/3x/5x under frozen assumptions (same notional and same capital); leverage_creates_alpha=false; regenerated deterministically by scripts/rfc048_run.py"
+    },
+    {
+      "id": "ACC-048-15",
+      "requirement": "FALSE_SUCCESS = 0",
+      "status": "MET",
+      "evidence": "FALSE_SUCCESS=0 on every verified decision; 8/8 injected faults were detected"
+    }
+  ],
+  "FALSE_SUCCESS": 0,
+  "DEFECTS": [
+    {
+      "id": "DEF-048-01",
+      "severity": "high",
+      "status": "FIXED",
+      "summary": "long-side liquidation algebra sign error (over-stated the buffer)",
+      "detected_by": "independent verifier numeric root"
+    },
+    {
+      "id": "DEF-048-02",
+      "severity": "medium",
+      "status": "FIXED",
+      "summary": "an empty funding history with a settled horizon was treated as a zero funding cost instead of COST_UNKNOWN",
+      "detected_by": "adversarial case 23"
+    },
+    {
+      "id": "DEF-048-03",
+      "severity": "low",
+      "status": "FIXED",
+      "summary": "the margin model's unknown-assessment helper was called with a misnamed argument on two unreachable paths (latent TypeError)",
+      "detected_by": "mypy strict"
+    }
+  ],
+  "BLOCKERS": [
+    {
+      "id": "BLK-048-01",
+      "summary": "no strategy with a measured edge exists (RFC-046 campaign failed), so the futures plane has no candidate to size",
+      "impact": "economic conclusions stay synthetic; no profitability claim"
+    },
+    {
+      "id": "BLK-048-02",
+      "summary": "product eligibility for the operator's jurisdiction is UNKNOWN",
+      "impact": "promotion to production is refused by construction (S28)"
+    },
+    {
+      "id": "BLK-048-03",
+      "summary": "partial liquidation rules were not available in a verifiable form; the engine refuses instead of assuming them",
+      "impact": "a stress path that reaches liquidation voids the trade"
+    },
+    {
+      "id": "BLK-048-04",
+      "summary": "cross margin is declared but not validated; only isolated margin is modelled",
+      "impact": "cross-margin scenarios are refused (UNSUPPORTED_INSTRUMENT)"
+    }
+  ],
+  "NEXT_GATE": {
+    "state": "RFC048_OFFLINE_VERIFIED",
+    "means": "the supported contracts and risk calculations passed offline verification; it means neither profitability nor production readiness",
+    "requires_before_any_live_use": [
+      "an independently verified, admitted strategy with a measured edge",
+      "a jurisdictional eligibility check for the venue/account (regulatory gate)",
+      "a binding (non-advisory) futures risk review enabled by an ADR",
+      "partial-liquidation and cross-margin rules, or an explicit decision to exclude them",
+      "paper-trading evidence for the futures plane itself"
+    ],
+    "governance_preserved": {
+      "DISCOVERY_CAMPAIGN_FAILED": true,
+      "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+      "LIVE_TRADING": "DISABLED",
+      "TRADES_AUTHORIZED": 0,
+      "PROFITABILITY_VERIFIED": false
+    }
+  }
+}

@@ -48,7 +48,10 @@ from trading_bot.risk.futures.integration import (  # noqa: E402
 )
 from trading_bot.risk.futures.margin import StressScenario  # noqa: E402
 
-DATA = ROOT / "data" / "rfc048"
+#: Fixture directory. ``RFC048_DATA_DIR`` lets a *new generation* of the derived
+#: artifacts be produced from a different provenance (WP-TDM-07) without touching
+#: the historical bundle in ``data/rfc048``.
+DATA = Path(__import__("os").environ.get("RFC048_DATA_DIR", ROOT / "data" / "rfc048"))
 EQUITY = 200.0
 #: Frozen spot round trip (COST_MODEL_V3). Used ONLY for the spot column of the
 #: economic comparison; never reused as a futures cost.
@@ -1097,7 +1100,7 @@ def main() -> int:
         "engine": {
             "module": "trading_bot.risk.futures",
             "policy_version": FuturesRiskPolicy().to_dict(),
-            "instrument_fixture": str(DATA / "INSTRUMENTS.json"),
+            "instrument_fixture": display_path(DATA / "INSTRUMENTS.json"),
             "instrument_source_hash": reg.get("BINANCE_USDM_BTCUSDT_PERP").source_hash,
             "bracket_source_hash": load_json("PROVENANCE.json")["sources"]["leverage_brackets"][
                 "sha256"
@@ -1147,9 +1150,34 @@ def main() -> int:
     return 0 if expectations_met == len(catalogue) and not any_order_authorised else 1
 
 
+def display_path(path: Path) -> str:
+    """A stable label: repository-relative when possible, absolute otherwise.
+
+    The report used to embed an absolute path, so the same run started from two
+    directories produced two different bytes for the same evidence and the staged
+    build path leaked into the artefact (DEF-TDM-07-3).  Outside the repository the
+    label is relative to the data directory itself, which keeps a staged rebuild
+    byte-identical to the published bundle.
+    """
+    resolved = path.resolve()
+    for anchor, prefix in ((ROOT, ""), (DATA, "")):
+        try:
+            return prefix + resolved.relative_to(anchor.resolve()).as_posix()
+        except ValueError:
+            continue
+    return path.name
+
+
 def write(path: Path, payload: Any) -> None:
+    """Write UTF-8 JSON with LF endings on every platform.
+
+    ``Path.write_text`` translates ``\n`` to the platform separator, so the same
+    deterministic run produced CRLF bytes on Windows and LF elsewhere — and any
+    digest taken over those bytes was platform-specific (DEF-TDM-07-2).
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(payload, indent=2) + "\n")
 
 
 if __name__ == "__main__":

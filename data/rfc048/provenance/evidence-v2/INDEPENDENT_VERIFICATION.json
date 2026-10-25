@@ -1,0 +1,4044 @@
+{
+  "schema_version": 1,
+  "rfc": "RFC-048",
+  "generated_by": "scripts/rfc048_verify.py",
+  "generated_at_utc": "2026-10-24T12:21:45Z",
+  "verifier_version": "RFC048-INDEPENDENT-VERIFIER-v1",
+  "builder": "trading_bot.risk.futures (engine, margin, sizing, costs)",
+  "verifier": "trading_bot.risk.futures_verification (no builder import)",
+  "evidence": {
+    "directory": "data/rfc048/provenance/evidence-v2",
+    "provenance_generation": "v2",
+    "provenance": "data/rfc048/provenance/evidence-v2/PROVENANCE.json",
+    "bundle_hash": "47c9884699c1e3018e2eef83373c9393d92d88e79bef431ebdd78d28d9b69485"
+  },
+  "independence": {
+    "probe": "fresh interpreter imports the verifier and lists trading_bot.risk.futures*",
+    "builder_modules_loaded": [],
+    "independent": true,
+    "returncode": 0
+  },
+  "false_success": 0,
+  "reproducible": true,
+  "report_consistency": {
+    "scenarios_match": true,
+    "approved_match": true,
+    "refused_match": true,
+    "no_order_authorised": true,
+    "passed": true
+  },
+  "decisions": {
+    "verified": 31,
+    "passed": 31,
+    "checks_run": 303,
+    "checks_failed": []
+  },
+  "negative_controls": [
+    {
+      "control": "false_margin",
+      "detected": true,
+      "detected_by": [
+        "margin_and_leverage",
+        "liquidation_consistency"
+      ],
+      "expectation": "margin_and_leverage must fail"
+    },
+    {
+      "control": "omitted_cost",
+      "detected": true,
+      "detected_by": [
+        "cost_completeness"
+      ],
+      "expectation": "cost_completeness must fail"
+    },
+    {
+      "control": "wrong_liquidation",
+      "detected": true,
+      "detected_by": [
+        "liquidation_consistency"
+      ],
+      "expectation": "liquidation_consistency must fail"
+    },
+    {
+      "control": "wrong_notional",
+      "detected": true,
+      "detected_by": [
+        "cost_completeness",
+        "notional_consistency",
+        "margin_and_leverage",
+        "liquidation_consistency"
+      ],
+      "expectation": "notional_consistency must fail"
+    },
+    {
+      "control": "excess_leverage",
+      "detected": true,
+      "detected_by": [
+        "margin_and_leverage"
+      ],
+      "expectation": "margin_and_leverage must fail"
+    },
+    {
+      "control": "aggregate_risk_omitted",
+      "detected": true,
+      "detected_by": [
+        "aggregate_margin_pool"
+      ],
+      "expectation": "aggregate_margin_pool must fail"
+    },
+    {
+      "control": "temporally_invalid",
+      "detected": true,
+      "detected_by": [
+        "temporal_validity"
+      ],
+      "expectation": "temporal_validity must fail"
+    },
+    {
+      "control": "order_authorisation",
+      "detected": true,
+      "detected_by": [
+        "no_order_authorisation"
+      ],
+      "expectation": "no_order_authorisation must fail"
+    }
+  ],
+  "model_level_cases": {
+    "case_count": 8,
+    "passed": true,
+    "results": [
+      {
+        "case": "gradual_adverse_move",
+        "path": "Movimiento contrario gradual",
+        "maintenance_margin_recomputed": 1.6,
+        "maintenance_margin_reported": 1.6,
+        "maintenance_match": true,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.4919687776,
+        "liquidation_match": true,
+        "status": "LIQUIDATION_RISK_KNOWN",
+        "passed": true
+      },
+      {
+        "case": "hard_gap",
+        "path": "Gap brusco",
+        "maintenance_margin_recomputed": 1.6,
+        "maintenance_margin_reported": 1.6,
+        "maintenance_match": true,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.4919687776,
+        "liquidation_match": true,
+        "status": "LIQUIDATION_RISK_KNOWN",
+        "passed": true
+      },
+      {
+        "case": "spread_widening",
+        "path": "Spread widening",
+        "maintenance_margin_recomputed": 1.6,
+        "maintenance_margin_reported": 1.6,
+        "maintenance_match": true,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.4919687776,
+        "liquidation_match": true,
+        "status": "LIQUIDATION_RISK_KNOWN",
+        "passed": true
+      },
+      {
+        "case": "adverse_funding",
+        "path": "Funding adverso",
+        "maintenance_margin_recomputed": 1.6,
+        "maintenance_margin_reported": 1.6,
+        "maintenance_match": true,
+        "liquidation_root": 67424.73903087381,
+        "liquidation_reported": 67424.73903087381,
+        "liquidation_match": true,
+        "status": "LIQUIDATION_RISK_KNOWN",
+        "passed": true
+      },
+      {
+        "case": "bracket_change",
+        "path": "Cambio de maintenance bracket",
+        "maintenance_margin_recomputed": 1180.0,
+        "maintenance_margin_reported": 1180.0,
+        "maintenance_match": true,
+        "liquidation_root": null,
+        "liquidation_reported": 163315.58550633612,
+        "liquidation_match": true,
+        "status": "LIQUIDATION_RISK_KNOWN",
+        "passed": true
+      },
+      {
+        "case": "liquidation_before_stop",
+        "path": "Liquidaci\u00f3n antes del stop",
+        "maintenance_margin_recomputed": 1.6,
+        "maintenance_margin_reported": 1.6,
+        "maintenance_match": true,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.4919687776,
+        "liquidation_match": true,
+        "status": "LIQUIDATION_RISK_KNOWN",
+        "passed": true
+      },
+      {
+        "case": "stop_not_executed",
+        "path": "Stop no ejecutado",
+        "maintenance_margin_recomputed": 1.6,
+        "maintenance_margin_reported": 1.6,
+        "maintenance_match": true,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.4919687776,
+        "liquidation_match": true,
+        "status": "LIQUIDATION_RISK_KNOWN",
+        "passed": true
+      },
+      {
+        "case": "stale_data_blocked",
+        "path": "Datos stale (bloqueado por la puerta de datos, no por el margen)",
+        "maintenance_margin_recomputed": 1.6,
+        "maintenance_margin_reported": 1.6,
+        "maintenance_match": true,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.4919687776,
+        "liquidation_match": true,
+        "status": "LIQUIDATION_RISK_KNOWN",
+        "passed": true
+      }
+    ]
+  },
+  "decision_results": [
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S01",
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 82.50004923188,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 82.50004923188,
+            "quantity_x_entry": 82.5000492319,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "risk_budget_sizing_independent",
+          "passed": true,
+          "detail": "size is the largest legal step inside the budget, or a smaller requested size",
+          "numbers": {
+            "grid_max_quantity": 0.002,
+            "quantity": 0.001,
+            "risk_budget_usdt": 2.0,
+            "modeled_worst_loss_usdt": 0.74270045620629
+          }
+        },
+        {
+          "name": "budget_not_exceeded",
+          "passed": true,
+          "detail": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed from raw inputs",
+          "numbers": {
+            "recomputed_worst_loss": 0.7427004562,
+            "reported_worst_loss": 0.74270045620629,
+            "risk_budget_usdt": 2.0
+          }
+        },
+        {
+          "name": "margin_and_leverage",
+          "passed": true,
+          "detail": "initial margin, maintenance margin and the leverage cap recomputed",
+          "numbers": {
+            "reported_margin": 16.500009846376,
+            "recomputed_margin": 16.5000098464,
+            "reported_maintenance": 0.33000019692752,
+            "recomputed_maintenance": 0.3300001969,
+            "reported_leverage": 5.0,
+            "min_allowed_leverage": 5.0,
+            "venue_ceiling": 150.0
+          }
+        },
+        {
+          "name": "liquidation_consistency",
+          "passed": true,
+          "detail": "closed-form liquidation price matches an independent root of the venue margin condition",
+          "numbers": {
+            "root": 67300.49196877761,
+            "reported": 67300.49196877761,
+            "buffer_bps": 1842.3694779116458
+          }
+        },
+        {
+          "name": "liquidation_path_simulation",
+          "passed": true,
+          "detail": "position survived every sampled real bar",
+          "numbers": {
+            "bars_evaluated": 999,
+            "breached": false,
+            "breach": null,
+            "previous_extreme": 82500.0,
+            "sample_worst_price": 80344.8,
+            "sample_window": {
+              "first_open_time_ms": 1791282900000,
+              "last_close_time_ms": 1791582599999
+            }
+          }
+        },
+        {
+          "name": "liquidation_after_stop",
+          "passed": true,
+          "detail": "the stop sits before liquidation for this approved position",
+          "numbers": {
+            "stop_price": 82087.5489857206,
+            "liquidation_price": 67300.49196877761
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 16.500009846376,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "REDUCE_SIMULATED_SIZE",
+            "rejection_reasons": []
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832,
+        "grid_max_quantity": 0.002,
+        "quantity": 0.001,
+        "adverse_terms_usdt": 1.0312506153985,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.49196877761
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S02",
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 82.50004923188,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 82.50004923188,
+            "quantity_x_entry": 82.5000492319,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "risk_budget_sizing_independent",
+          "passed": true,
+          "detail": "size is the largest legal step inside the budget, or a smaller requested size",
+          "numbers": {
+            "grid_max_quantity": 0.002,
+            "quantity": 0.001,
+            "risk_budget_usdt": 2.0,
+            "modeled_worst_loss_usdt": 0.74270045620629
+          }
+        },
+        {
+          "name": "budget_not_exceeded",
+          "passed": true,
+          "detail": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed from raw inputs",
+          "numbers": {
+            "recomputed_worst_loss": 0.7427004562,
+            "reported_worst_loss": 0.74270045620629,
+            "risk_budget_usdt": 2.0
+          }
+        },
+        {
+          "name": "margin_and_leverage",
+          "passed": true,
+          "detail": "initial margin, maintenance margin and the leverage cap recomputed",
+          "numbers": {
+            "reported_margin": 16.500009846376,
+            "recomputed_margin": 16.5000098464,
+            "reported_maintenance": 0.33000019692752,
+            "recomputed_maintenance": 0.3300001969,
+            "reported_leverage": 5.0,
+            "min_allowed_leverage": 5.0,
+            "venue_ceiling": 150.0
+          }
+        },
+        {
+          "name": "liquidation_consistency",
+          "passed": true,
+          "detail": "closed-form liquidation price matches an independent root of the venue margin condition",
+          "numbers": {
+            "root": 97578.49448491781,
+            "reported": 97578.49448491781,
+            "buffer_bps": 1827.6892430278874
+          }
+        },
+        {
+          "name": "liquidation_path_simulation",
+          "passed": true,
+          "detail": "position survived every sampled real bar",
+          "numbers": {
+            "bars_evaluated": 999,
+            "breached": false,
+            "breach": null,
+            "previous_extreme": 82522.5,
+            "sample_worst_price": 86664.9,
+            "sample_window": {
+              "first_open_time_ms": 1791282900000,
+              "last_close_time_ms": 1791582599999
+            }
+          }
+        },
+        {
+          "name": "liquidation_after_stop",
+          "passed": true,
+          "detail": "the stop sits before liquidation for this approved position",
+          "numbers": {
+            "stop_price": 82912.5494780394,
+            "liquidation_price": 97578.49448491781
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 16.500009846376,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "REDUCE_SIMULATED_SIZE",
+            "rejection_reasons": []
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832,
+        "grid_max_quantity": 0.002,
+        "quantity": 0.001,
+        "adverse_terms_usdt": 1.0312506153985,
+        "liquidation_root": 97578.49448491781,
+        "liquidation_reported": 97578.49448491781
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S03",
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 82.50004923188,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 82.50004923188,
+            "quantity_x_entry": 82.5000492319,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "risk_budget_sizing_independent",
+          "passed": true,
+          "detail": "size is the largest legal step inside the budget, or a smaller requested size",
+          "numbers": {
+            "grid_max_quantity": 0.001,
+            "quantity": 0.001,
+            "risk_budget_usdt": 1.0,
+            "modeled_worst_loss_usdt": 0.7427004562062753
+          }
+        },
+        {
+          "name": "budget_not_exceeded",
+          "passed": true,
+          "detail": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed from raw inputs",
+          "numbers": {
+            "recomputed_worst_loss": 0.7427004562,
+            "reported_worst_loss": 0.7427004562062753,
+            "risk_budget_usdt": 1.0
+          }
+        },
+        {
+          "name": "margin_and_leverage",
+          "passed": true,
+          "detail": "initial margin, maintenance margin and the leverage cap recomputed",
+          "numbers": {
+            "reported_margin": 82.50004923188,
+            "recomputed_margin": 82.5000492319,
+            "reported_maintenance": 0.33000019692752,
+            "recomputed_maintenance": 0.3300001969,
+            "reported_leverage": 1.0,
+            "min_allowed_leverage": 1.0,
+            "venue_ceiling": 150.0
+          }
+        },
+        {
+          "name": "liquidation_consistency",
+          "passed": true,
+          "detail": "closed-form liquidation price matches an independent root of the venue margin condition",
+          "numbers": {
+            "root": 1035.3921841350457,
+            "reported": 1035.3921841350402,
+            "buffer_bps": 9874.497991967872
+          }
+        },
+        {
+          "name": "liquidation_path_simulation",
+          "passed": true,
+          "detail": "position survived every sampled real bar",
+          "numbers": {
+            "bars_evaluated": 999,
+            "breached": false,
+            "breach": null,
+            "previous_extreme": 82500.0,
+            "sample_worst_price": 80344.8,
+            "sample_window": {
+              "first_open_time_ms": 1791282900000,
+              "last_close_time_ms": 1791582599999
+            }
+          }
+        },
+        {
+          "name": "liquidation_after_stop",
+          "passed": true,
+          "detail": "the stop sits before liquidation for this approved position",
+          "numbers": {
+            "stop_price": 82087.5489857206,
+            "liquidation_price": 1035.3921841350402
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 82.50004923188,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "REDUCE_SIMULATED_SIZE",
+            "rejection_reasons": []
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832,
+        "grid_max_quantity": 0.001,
+        "quantity": 0.001,
+        "adverse_terms_usdt": 1.0312506153985,
+        "liquidation_root": 1035.3921841350457,
+        "liquidation_reported": 1035.3921841350402
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S04",
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 82.50004923188,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 82.50004923188,
+            "quantity_x_entry": 82.5000492319,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "risk_budget_sizing_independent",
+          "passed": true,
+          "detail": "size is the largest legal step inside the budget, or a smaller requested size",
+          "numbers": {
+            "grid_max_quantity": 0.001,
+            "quantity": 0.001,
+            "risk_budget_usdt": 1.0,
+            "modeled_worst_loss_usdt": 0.7427004562062753
+          }
+        },
+        {
+          "name": "budget_not_exceeded",
+          "passed": true,
+          "detail": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed from raw inputs",
+          "numbers": {
+            "recomputed_worst_loss": 0.7427004562,
+            "reported_worst_loss": 0.7427004562062753,
+            "risk_budget_usdt": 1.0
+          }
+        },
+        {
+          "name": "margin_and_leverage",
+          "passed": true,
+          "detail": "initial margin, maintenance margin and the leverage cap recomputed",
+          "numbers": {
+            "reported_margin": 41.25002461594,
+            "recomputed_margin": 41.2500246159,
+            "reported_maintenance": 0.33000019692752,
+            "recomputed_maintenance": 0.3300001969,
+            "reported_leverage": 2.0,
+            "min_allowed_leverage": 2.0,
+            "venue_ceiling": 150.0
+          }
+        },
+        {
+          "name": "liquidation_consistency",
+          "passed": true,
+          "detail": "closed-form liquidation price matches an independent root of the venue margin condition",
+          "numbers": {
+            "root": 42451.07954953665,
+            "reported": 42451.07954953665,
+            "buffer_bps": 4854.417670682731
+          }
+        },
+        {
+          "name": "liquidation_path_simulation",
+          "passed": true,
+          "detail": "position survived every sampled real bar",
+          "numbers": {
+            "bars_evaluated": 999,
+            "breached": false,
+            "breach": null,
+            "previous_extreme": 82500.0,
+            "sample_worst_price": 80344.8,
+            "sample_window": {
+              "first_open_time_ms": 1791282900000,
+              "last_close_time_ms": 1791582599999
+            }
+          }
+        },
+        {
+          "name": "liquidation_after_stop",
+          "passed": true,
+          "detail": "the stop sits before liquidation for this approved position",
+          "numbers": {
+            "stop_price": 82087.5489857206,
+            "liquidation_price": 42451.07954953665
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 41.25002461594,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "REDUCE_SIMULATED_SIZE",
+            "rejection_reasons": []
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832,
+        "grid_max_quantity": 0.001,
+        "quantity": 0.001,
+        "adverse_terms_usdt": 1.0312506153985,
+        "liquidation_root": 42451.07954953665,
+        "liquidation_reported": 42451.07954953665
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S05",
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 82.50004923188,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 82.50004923188,
+            "quantity_x_entry": 82.5000492319,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "risk_budget_sizing_independent",
+          "passed": true,
+          "detail": "size is the largest legal step inside the budget, or a smaller requested size",
+          "numbers": {
+            "grid_max_quantity": 0.001,
+            "quantity": 0.001,
+            "risk_budget_usdt": 1.0,
+            "modeled_worst_loss_usdt": 0.7427004562062753
+          }
+        },
+        {
+          "name": "budget_not_exceeded",
+          "passed": true,
+          "detail": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed from raw inputs",
+          "numbers": {
+            "recomputed_worst_loss": 0.7427004562,
+            "reported_worst_loss": 0.7427004562062753,
+            "risk_budget_usdt": 1.0
+          }
+        },
+        {
+          "name": "margin_and_leverage",
+          "passed": true,
+          "detail": "initial margin, maintenance margin and the leverage cap recomputed",
+          "numbers": {
+            "reported_margin": 27.500016410626667,
+            "recomputed_margin": 27.5000164106,
+            "reported_maintenance": 0.33000019692752,
+            "recomputed_maintenance": 0.3300001969,
+            "reported_leverage": 3.0,
+            "min_allowed_leverage": 3.0,
+            "venue_ceiling": 150.0
+          }
+        },
+        {
+          "name": "liquidation_consistency",
+          "passed": true,
+          "detail": "closed-form liquidation price matches an independent root of the venue margin condition",
+          "numbers": {
+            "root": 56256.308671337174,
+            "reported": 56256.30867133718,
+            "buffer_bps": 3181.0575635876835
+          }
+        },
+        {
+          "name": "liquidation_path_simulation",
+          "passed": true,
+          "detail": "position survived every sampled real bar",
+          "numbers": {
+            "bars_evaluated": 999,
+            "breached": false,
+            "breach": null,
+            "previous_extreme": 82500.0,
+            "sample_worst_price": 80344.8,
+            "sample_window": {
+              "first_open_time_ms": 1791282900000,
+              "last_close_time_ms": 1791582599999
+            }
+          }
+        },
+        {
+          "name": "liquidation_after_stop",
+          "passed": true,
+          "detail": "the stop sits before liquidation for this approved position",
+          "numbers": {
+            "stop_price": 82087.5489857206,
+            "liquidation_price": 56256.30867133718
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 27.500016410626667,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "REDUCE_SIMULATED_SIZE",
+            "rejection_reasons": []
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832,
+        "grid_max_quantity": 0.001,
+        "quantity": 0.001,
+        "adverse_terms_usdt": 1.0312506153985,
+        "liquidation_root": 56256.308671337174,
+        "liquidation_reported": 56256.30867133718
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S06",
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 82.50004923188,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 82.50004923188,
+            "quantity_x_entry": 82.5000492319,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "risk_budget_sizing_independent",
+          "passed": true,
+          "detail": "size is the largest legal step inside the budget, or a smaller requested size",
+          "numbers": {
+            "grid_max_quantity": 0.004,
+            "quantity": 0.001,
+            "risk_budget_usdt": 2.0,
+            "modeled_worst_loss_usdt": 0.4952003085106514
+          }
+        },
+        {
+          "name": "budget_not_exceeded",
+          "passed": true,
+          "detail": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed from raw inputs",
+          "numbers": {
+            "recomputed_worst_loss": 0.4952003085,
+            "reported_worst_loss": 0.4952003085106514,
+            "risk_budget_usdt": 2.0
+          }
+        },
+        {
+          "name": "margin_and_leverage",
+          "passed": true,
+          "detail": "initial margin, maintenance margin and the leverage cap recomputed",
+          "numbers": {
+            "reported_margin": 16.500009846376,
+            "recomputed_margin": 16.5000098464,
+            "reported_maintenance": 0.33000019692752,
+            "recomputed_maintenance": 0.3300001969,
+            "reported_leverage": 5.0,
+            "min_allowed_leverage": 5.0,
+            "venue_ceiling": 150.0
+          }
+        },
+        {
+          "name": "liquidation_consistency",
+          "passed": true,
+          "detail": "closed-form liquidation price matches an independent root of the venue margin condition",
+          "numbers": {
+            "root": 67300.49196877761,
+            "reported": 67300.49196877761,
+            "buffer_bps": 1842.3694779116458
+          }
+        },
+        {
+          "name": "liquidation_path_simulation",
+          "passed": true,
+          "detail": "position survived every sampled real bar",
+          "numbers": {
+            "bars_evaluated": 999,
+            "breached": false,
+            "breach": null,
+            "previous_extreme": 82500.0,
+            "sample_worst_price": 80344.8,
+            "sample_window": {
+              "first_open_time_ms": 1791282900000,
+              "last_close_time_ms": 1791582599999
+            }
+          }
+        },
+        {
+          "name": "liquidation_after_stop",
+          "passed": true,
+          "detail": "the stop sits before liquidation for this approved position",
+          "numbers": {
+            "stop_price": 82335.04913341624,
+            "liquidation_price": 67300.49196877761
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 16.500009846376,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "REDUCE_SIMULATED_SIZE",
+            "rejection_reasons": []
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832,
+        "grid_max_quantity": 0.004,
+        "quantity": 0.001,
+        "adverse_terms_usdt": 1.0312506153985,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.49196877761
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S07",
+      "decision": "NO_TRADE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "BELOW_MIN_NOTIONAL"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S08",
+      "decision": "NO_TRADE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 165.00009846376,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.1652001116,
+            "reported_total_usdt": 0.19840014439525663,
+            "reported_worst_usdt": 0.3304002231662646,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 0.0,
+            "decision_margin": 0.0,
+            "pool_used": 0.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "NO_TRADE",
+            "rejection_reasons": [
+              "EXPOSURE_LIMIT"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.16520011158311776,
+        "cost_reported_usdt": 0.19840014439525663
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S09",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "STOP_TOO_CLOSE"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S10",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "STOP_MISSING"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S11",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 0.0,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "RISK_VETO",
+            "rejection_reasons": [
+              "LIQUIDATION_BEFORE_STOP"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S12",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 0.0,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "RISK_VETO",
+            "rejection_reasons": [
+              "GAP_BEYOND_STOP",
+              "PARTIAL_LIQUIDATION_UNSUPPORTED"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S13",
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 82.50004923188,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.1087486278957261,
+            "reported_worst_usdt": 0.2394501558918243,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 9,
+            "horizon_minutes": 4320.0,
+            "reported_charge": 0.074250044308692,
+            "recomputed_charge": 0.074250044308692,
+            "reported_expected": 0.009548555698097792,
+            "recomputed_expected": 0.009548555698097792
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 82.50004923188,
+            "quantity_x_entry": 82.5000492319,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "risk_budget_sizing_independent",
+          "passed": true,
+          "detail": "size is the largest legal step inside the budget, or a smaller requested size",
+          "numbers": {
+            "grid_max_quantity": 0.002,
+            "quantity": 0.001,
+            "risk_budget_usdt": 2.0,
+            "modeled_worst_loss_usdt": 0.816950500514982
+          }
+        },
+        {
+          "name": "budget_not_exceeded",
+          "passed": true,
+          "detail": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed from raw inputs",
+          "numbers": {
+            "recomputed_worst_loss": 0.8169505005,
+            "reported_worst_loss": 0.816950500514982,
+            "risk_budget_usdt": 2.0
+          }
+        },
+        {
+          "name": "margin_and_leverage",
+          "passed": true,
+          "detail": "initial margin, maintenance margin and the leverage cap recomputed",
+          "numbers": {
+            "reported_margin": 16.500009846376,
+            "recomputed_margin": 16.5000098464,
+            "reported_maintenance": 0.33000019692752,
+            "recomputed_maintenance": 0.3300001969,
+            "reported_leverage": 5.0,
+            "min_allowed_leverage": 5.0,
+            "venue_ceiling": 150.0
+          }
+        },
+        {
+          "name": "liquidation_consistency",
+          "passed": true,
+          "detail": "closed-form liquidation price matches an independent root of the venue margin condition",
+          "numbers": {
+            "root": 67375.04020603534,
+            "reported": 67375.04020603534,
+            "buffer_bps": 1833.3333333333323
+          }
+        },
+        {
+          "name": "liquidation_path_simulation",
+          "passed": true,
+          "detail": "position survived every sampled real bar",
+          "numbers": {
+            "bars_evaluated": 999,
+            "breached": false,
+            "breach": null,
+            "previous_extreme": 82500.0,
+            "sample_worst_price": 80344.8,
+            "sample_window": {
+              "first_open_time_ms": 1791282900000,
+              "last_close_time_ms": 1791582599999
+            }
+          }
+        },
+        {
+          "name": "liquidation_after_stop",
+          "passed": true,
+          "detail": "the stop sits before liquidation for this approved position",
+          "numbers": {
+            "stop_price": 82087.5489857206,
+            "liquidation_price": 67375.04020603534
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 16.500009846376,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "REDUCE_SIMULATED_SIZE",
+            "rejection_reasons": []
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.1087486278957261,
+        "grid_max_quantity": 0.002,
+        "quantity": 0.001,
+        "adverse_terms_usdt": 1.105500659707192,
+        "liquidation_root": 67375.04020603534,
+        "liquidation_reported": 67375.04020603534
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S14",
+      "decision": "NO_TRADE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 400.0,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.40048488,
+            "reported_total_usdt": 0.48096976,
+            "reported_worst_usdt": 0.8009697600000001,
+            "components": [
+              "spread",
+              "market_impact",
+              "liquidation_fee"
+            ],
+            "unknown": [
+              "funding"
+            ],
+            "refusal_named_unknown_cost": true
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 0,
+            "settlements_in_horizon": 3,
+            "horizon_minutes": 1440.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": null,
+            "reported_expected": 0.0,
+            "recomputed_expected": null
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 0.0,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "NO_TRADE",
+            "rejection_reasons": [
+              "FUNDING_UNKNOWN",
+              "COST_UNKNOWN"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.40048488,
+        "cost_reported_usdt": 0.48096976
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S15",
+      "decision": "NO_TRADE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 165.00009846376,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.1652001116,
+            "reported_total_usdt": 0.19840014439525663,
+            "reported_worst_usdt": 0.3304002231662646,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 0.0,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "NO_TRADE",
+            "rejection_reasons": [
+              "FEES_EXCEED_HORIZON_EDGE"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.16520011158311776,
+        "cost_reported_usdt": 0.19840014439525663
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S16",
+      "decision": "NO_TRADE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "BELOW_MIN_NOTIONAL"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S17",
+      "decision": "UNSUPPORTED_INSTRUMENT",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract is refused for a capability reason this engine names",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": false
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "INSTRUMENT_NOT_SUPPORTED"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S18",
+      "decision": "DATA_INVALID",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "temporally invalid data was refused instead of used",
+          "numbers": {
+            "data_age_ms": 720000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "STALE_DATA"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S19",
+      "decision": "DATA_INVALID",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "temporally invalid data was refused instead of used",
+          "numbers": {
+            "data_age_ms": -4000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "FUTURE_TIMESTAMP"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S20",
+      "decision": "DATA_INVALID",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "MISSING_MARK_PRICE"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S21",
+      "decision": "NO_TRADE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 400.0,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.40048488,
+            "reported_total_usdt": 0.48096976,
+            "reported_worst_usdt": 0.8009697600000001,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding"
+            ],
+            "unknown": [
+              "liquidation_fee"
+            ],
+            "refusal_named_unknown_cost": true
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 0.0,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "NO_TRADE",
+            "rejection_reasons": [
+              "COST_UNKNOWN"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.40048488,
+        "cost_reported_usdt": 0.48096976
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S22",
+      "decision": "NO_TRADE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 330.00019692752,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.3304002232,
+            "reported_total_usdt": 0.39680028879051327,
+            "reported_worst_usdt": 0.6608004463325292,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 5000.0,
+            "free_margin": 4400.0,
+            "decision_margin": 0.0,
+            "pool_used": 4400.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "NO_TRADE",
+            "rejection_reasons": [
+              "CORRELATED_POSITIONS"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.3304002231662355,
+        "cost_reported_usdt": 0.39680028879051327
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S23",
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 82.50004923188,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 82.50004923188,
+            "quantity_x_entry": 82.5000492319,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "risk_budget_sizing_independent",
+          "passed": true,
+          "detail": "size is the largest legal step inside the budget, or a smaller requested size",
+          "numbers": {
+            "grid_max_quantity": 0.002,
+            "quantity": 0.001,
+            "risk_budget_usdt": 2.0,
+            "modeled_worst_loss_usdt": 0.74270045620629
+          }
+        },
+        {
+          "name": "budget_not_exceeded",
+          "passed": true,
+          "detail": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET recomputed from raw inputs",
+          "numbers": {
+            "recomputed_worst_loss": 0.7427004562,
+            "reported_worst_loss": 0.74270045620629,
+            "risk_budget_usdt": 2.0
+          }
+        },
+        {
+          "name": "margin_and_leverage",
+          "passed": true,
+          "detail": "initial margin, maintenance margin and the leverage cap recomputed",
+          "numbers": {
+            "reported_margin": 16.500009846376,
+            "recomputed_margin": 16.5000098464,
+            "reported_maintenance": 0.33000019692752,
+            "recomputed_maintenance": 0.3300001969,
+            "reported_leverage": 5.0,
+            "min_allowed_leverage": 5.0,
+            "venue_ceiling": 150.0
+          }
+        },
+        {
+          "name": "liquidation_consistency",
+          "passed": true,
+          "detail": "closed-form liquidation price matches an independent root of the venue margin condition",
+          "numbers": {
+            "root": 67300.49196877761,
+            "reported": 67300.49196877761,
+            "buffer_bps": 1842.3694779116458
+          }
+        },
+        {
+          "name": "liquidation_path_simulation",
+          "passed": true,
+          "detail": "position survived every sampled real bar",
+          "numbers": {
+            "bars_evaluated": 999,
+            "breached": false,
+            "breach": null,
+            "previous_extreme": 82500.0,
+            "sample_worst_price": 80344.8,
+            "sample_window": {
+              "first_open_time_ms": 1791282900000,
+              "last_close_time_ms": 1791582599999
+            }
+          }
+        },
+        {
+          "name": "liquidation_after_stop",
+          "passed": true,
+          "detail": "the stop sits before liquidation for this approved position",
+          "numbers": {
+            "stop_price": 82087.5489857206,
+            "liquidation_price": 67300.49196877761
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 16.500009846376,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "REDUCE_SIMULATED_SIZE",
+            "rejection_reasons": []
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832,
+        "grid_max_quantity": 0.002,
+        "quantity": 0.001,
+        "adverse_terms_usdt": 1.0312506153985,
+        "liquidation_root": 67300.49196877761,
+        "liquidation_reported": 67300.49196877761
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S24",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 0.0,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "RISK_VETO",
+            "rejection_reasons": [
+              "GAP_BEYOND_STOP",
+              "PARTIAL_LIQUIDATION_UNSUPPORTED"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S25",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 0.0,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "RISK_VETO",
+            "rejection_reasons": [
+              "LOSS_ABOVE_MARGIN"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S26",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "LIVE_ROUTE_ATTEMPTED"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S27",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 82.50004923188,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 0.0826000558,
+            "reported_total_usdt": 0.09920007219762832,
+            "reported_worst_usdt": 0.1652001115831323,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 200.0,
+            "free_margin": 200.0,
+            "decision_margin": 0.0,
+            "pool_used": 200.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "RISK_VETO",
+            "rejection_reasons": [
+              "GAP_BEYOND_STOP",
+              "PARTIAL_LIQUIDATION_UNSUPPORTED"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 0.08260005579155888,
+        "cost_reported_usdt": 0.09920007219762832
+      }
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S28",
+      "decision": "DATA_INVALID",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "VENUE_OR_PRODUCT_NOT_ELIGIBLE"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S29",
+      "decision": "UNSUPPORTED_INSTRUMENT",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract is refused for a capability reason this engine names",
+          "numbers": {
+            "contract_type": "DELIVERY_FUTURE",
+            "bracket_count": 0,
+            "quantity_step": 0.001,
+            "position_modes": [],
+            "modelable_by_this_engine": false
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "CONTRACT_TYPE_NOT_IMPLEMENTED"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S30",
+      "decision": "UNSUPPORTED_INSTRUMENT",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract is refused for a capability reason this engine names",
+          "numbers": {
+            "contract_type": "INVERSE_PERPETUAL",
+            "bracket_count": 0,
+            "quantity_step": null,
+            "position_modes": [],
+            "modelable_by_this_engine": false
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "refusal_is_total",
+          "passed": true,
+          "detail": "a pre-pricing refusal produces no size and names its reason",
+          "numbers": {
+            "rejection_reasons": [
+              "CONTRACT_TYPE_NOT_IMPLEMENTED"
+            ]
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "not applicable: refused before pricing ran",
+          "numbers": {
+            "priced": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "not applicable: refused before funding was read",
+          "numbers": {
+            "priced": false
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {}
+    },
+    {
+      "decision_id": "RFC048-DEC-001",
+      "scenario": "S31",
+      "decision": "RISK_VETO",
+      "checks": [
+        {
+          "name": "instrument_capability",
+          "passed": true,
+          "detail": "the contract carries everything the linear isolated model needs",
+          "numbers": {
+            "contract_type": "LINEAR_PERPETUAL",
+            "bracket_count": 12,
+            "quantity_step": 0.001,
+            "position_modes": [
+              "ONE_WAY",
+              "ISOLATED"
+            ],
+            "modelable_by_this_engine": true
+          }
+        },
+        {
+          "name": "bracket_provenance",
+          "passed": true,
+          "detail": "ladder matches the venue payload hash recorded in the fixture",
+          "numbers": {
+            "bracket_source_hash": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+            "provenance_version": "v2"
+          }
+        },
+        {
+          "name": "temporal_validity",
+          "passed": true,
+          "detail": "market data precedes the decision and is inside the freshness window",
+          "numbers": {
+            "data_age_ms": 1000,
+            "max_data_age_ms": 300000
+          }
+        },
+        {
+          "name": "no_order_authorisation",
+          "passed": true,
+          "detail": "the futures engine never authorises an order",
+          "numbers": {
+            "order_authorised": false
+          }
+        },
+        {
+          "name": "cost_completeness",
+          "passed": true,
+          "detail": "no unknown component on an approval, the charge covers the measured fee/spread floor, and the priced notional is the approved one",
+          "numbers": {
+            "cost_notional": 44385.02648675144,
+            "approved_notional": 0.0,
+            "notional_consistent": true,
+            "floor_usdt": 44.4388300159,
+            "reported_total_usdt": 53.36963884231621,
+            "reported_worst_usdt": 88.87766003171737,
+            "components": [
+              "spread",
+              "market_impact",
+              "funding",
+              "liquidation_fee"
+            ],
+            "unknown": [],
+            "refusal_named_unknown_cost": false
+          }
+        },
+        {
+          "name": "funding_point_in_time",
+          "passed": true,
+          "detail": "the funding charge equals the point-in-time recomputation over the venue's own settlements",
+          "numbers": {
+            "visible_observations": 200,
+            "settlements_in_horizon": 0,
+            "horizon_minutes": 60.0,
+            "reported_charge": 0.0,
+            "recomputed_charge": 0.0,
+            "reported_expected": 0.0,
+            "recomputed_expected": 0.0
+          }
+        },
+        {
+          "name": "notional_consistency",
+          "passed": true,
+          "detail": "approved notional equals quantity x entry on the venue quantity grid",
+          "numbers": {
+            "approved_notional": 0.0,
+            "quantity_x_entry": 0.0,
+            "quantity_step": 0.001,
+            "on_grid": true
+          }
+        },
+        {
+          "name": "aggregate_margin_pool",
+          "passed": true,
+          "detail": "the position's margin fits inside one consistent, non-double-spent pool",
+          "numbers": {
+            "ledger_present": false,
+            "reserved": 0.0,
+            "equity": 400000.0,
+            "free_margin": 400000.0,
+            "decision_margin": 0.0,
+            "pool_used": 400000.0
+          }
+        },
+        {
+          "name": "decision_semantics",
+          "passed": true,
+          "detail": "approvals are complete and refusals name a reason with zero size",
+          "numbers": {
+            "decision": "RISK_VETO",
+            "rejection_reasons": [
+              "LIQUIDATION_BUFFER_TOO_SMALL"
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "recomputed": {
+        "cost_floor_usdt": 44.438830015858684,
+        "cost_reported_usdt": 53.36963884231621
+      }
+    }
+  ],
+  "verdict": "RFC048_OFFLINE_VERIFIED"
+}

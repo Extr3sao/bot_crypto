@@ -13,7 +13,9 @@ accident.
 
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import subprocess
 import sys
 import time
@@ -25,11 +27,29 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from trading_bot.risk.futures_verification import (  # noqa: E402
     VERIFIER_VERSION,
+    authoritative_evidence_dir,
     load_fixtures,
     run_verification,
+    select_provenance,
 )
 
-DATA = ROOT / "data" / "rfc048"
+#: ``RFC048_DATA_DIR`` re-points the verifier at another generation, so a bundle
+#: produced separately can be verified without overwriting the one on disk.
+DATA = Path(os.environ.get("RFC048_DATA_DIR", ROOT / "data" / "rfc048"))
+
+
+def resolve_evidence_dir(data_dir: Path) -> Path:
+    """Verify the current generation, not the historical one.
+
+    ``data/rfc048`` keeps the v1 bundle (digests over CRLF bytes) as the historical
+    record; the regenerated v2 bundle lives beside it in ``provenance/evidence-v2``.
+    Verifying the stale directory by default would re-assert a verdict about bytes
+    the repository does not contain, so the default resolves to the authoritative
+    bundle and an explicit ``RFC048_DATA_DIR`` is the only way to audit another one.
+    """
+    if os.environ.get("RFC048_DATA_DIR"):
+        return data_dir
+    return authoritative_evidence_dir(data_dir)
 
 
 def independence_probe() -> dict[str, Any]:
@@ -127,13 +147,33 @@ def verify_model_cases(fixtures: Any, payload: dict[str, Any]) -> dict[str, Any]
     }
 
 
+def _sha256_tree(root: Path) -> str:
+    """One digest over every file in the bundle, so "the evidence changed" is a fact.
+
+    Names are hashed with their bytes (sorted, POSIX separators), which catches a
+    renamed, added or removed artefact as well as an edited one.  Separate from
+    ``bundle_hash`` inputs so a run can be reproduced byte for byte.
+    """
+    digest = hashlib.sha256()
+    for path in sorted(p for p in root.rglob("*") if p.is_file()):
+        digest.update(path.relative_to(root).as_posix().encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
 def main() -> int:
     started = time.time()
-    fixtures = load_fixtures(DATA)
-    payload = json.loads((DATA / "RUNTIME_EXECUTION_REPORT.json").read_text(encoding="utf-8"))
-    scenarios = json.loads((DATA / "RISK_SCENARIOS.json").read_text(encoding="utf-8"))
+    evidence = resolve_evidence_dir(DATA)
+    fixtures = load_fixtures(evidence)
+    provenance_path, _, generation = select_provenance(evidence)
+    payload = json.loads(
+        (evidence / "RUNTIME_EXECUTION_REPORT.json").read_text(encoding="utf-8")
+    )
+    scenarios = json.loads((evidence / "RISK_SCENARIOS.json").read_text(encoding="utf-8"))
     margin_payload = json.loads(
-        (DATA / "MARGIN_LIQUIDATION_CASES.json").read_text(encoding="utf-8")
+        (evidence / "MARGIN_LIQUIDATION_CASES.json").read_text(encoding="utf-8")
     )
 
     verification = run_verification({"decisions": scenarios["cases"]}, fixtures)
@@ -185,6 +225,12 @@ def main() -> int:
         "verifier_version": VERIFIER_VERSION,
         "builder": "trading_bot.risk.futures (engine, margin, sizing, costs)",
         "verifier": "trading_bot.risk.futures_verification (no builder import)",
+        "evidence": {
+            "directory": evidence.relative_to(ROOT).as_posix(),
+            "provenance_generation": generation,
+            "provenance": provenance_path.relative_to(ROOT).as_posix(),
+            "bundle_hash": _sha256_tree(evidence),
+        },
         "independence": independence,
         "false_success": false_success,
         "reproducible": reproducible,
@@ -200,7 +246,7 @@ def main() -> int:
         "decision_results": verification["results"],
         "verdict": verdict,
     }
-    (DATA / "INDEPENDENT_VERIFICATION.json").write_text(
+    (evidence / "INDEPENDENT_VERIFICATION.json").write_text(
         json.dumps(artifact, indent=2) + "\n", encoding="utf-8"
     )
 
@@ -216,6 +262,7 @@ def main() -> int:
     print(f"false_success: {false_success}")
     print(f"independent process: {independence['independent']}  reproducible: {reproducible}")
     print(f"model-level cases passed: {model_cases['passed']}")
+    print(f"evidence: {evidence.relative_to(ROOT).as_posix()}  provenance: {generation}")
     print(f"verdict: {verdict}  ({round(time.time() - started, 3)}s)")
     return 0 if verdict == "RFC048_OFFLINE_VERIFIED" else 1
 
