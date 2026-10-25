@@ -3,7 +3,7 @@
   "verdict": "G7_BLOCKED_NO_ELIGIBLE_STRATEGY",
   "status": "BLOCKED",
   "requested_rev": "HEAD",
-  "rev": "41d34c817117609ade9987db3c37b9a5128d1935",
+  "rev": "c85e2af2bd963ec1f65fa93ea210c78fced1dc43",
   "builder_run": "docs\\audit\\runs\\run-20261025T173625Z-G-7",
   "checks": [
     {
@@ -153,16 +153,16 @@
       "passed": true,
       "detail": {
         "status": "EXECUTED",
-        "received_at_ms": 1792949987443,
-        "decision_time_ms": 1792949987443
+        "received_at_ms": 1792951009858,
+        "decision_time_ms": 1792951009858
       }
     },
     {
       "check": "replay:DETERMINISTIC",
       "passed": true,
       "detail": {
-        "first": "faea87ae941ee808b617b4c8474f086fe46a59adc45f1950b407e21ff77e67ff",
-        "second": "b38a2c06477536fd87364e9c8ea7804268bfa406e377a2ba237e234a5a0e0c0e",
+        "first": "25fd1147c54fcfbf4813c401a2a22dd0869921529930154d02a9d003d16e7cb3",
+        "second": "f7d07854ead32f290cd4bce2bf0e8c664abd3a7aa10cbffb17173a8d9429d30c",
         "note": "timestamps, run ids and hashes are excluded from the projection"
       }
     },
@@ -200,8 +200,8 @@
       "detail": {
         "command": "python -m pytest -q tests/unit/market_data/test_public_rest.py tests/unit/market_data/test_real_data_validation.py tests/unit/paper/test_real_eligibility.py tests/integration/test_g7_real_paper_replay.py tests/integration/test_g5_paper_end_to_end.py tests/unit/test_live_gate_enforcement.py",
         "returncode": 0,
-        "seconds": 52.1,
-        "tail": "........................................................................ [ 96%]\n...                                                                      [100%]\n75 passed in 51.07s\n"
+        "seconds": 94.68,
+        "tail": "........................................................................ [ 96%]\n...                                                                      [100%]\n75 passed in 93.02s (0:01:33)\n"
       }
     },
     {
@@ -229,24 +229,24 @@
     {
       "run": "replay1",
       "exit_code": 0,
-      "seconds": 2.28,
-      "stdout_tail": "pshots=0\n2026-10-25 18:39:40 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1\n{\n  \"verdict\": \"G7_BLOCKED_NO_ELIGIBLE_STRATEGY\",\n  \"eligible_strategies\": [],\n  \"eligible_count\": 0,\n  \"strategy_evaluations\": 54,\n  \"replay_sessions\": 3,\n  \"replay_orders\": 0,\n  \"forward_orders\": 0,\n  \"broker_execute_calls\": 0,\n  \"decision_outcomes\": {\n    \"NO_TRADE\": 4\n  },\n  \"forward_status\": \"NOT_RUN\",\n  \"forward_received_at\": null,\n  \"invalid_scenarios\": 6,\n  \"invalid_blocked\": 6,\n  \"provider_failure_scanner_errors\": 3,\n  \"provider_failure_orders\": 0,\n  \"forward_executed\": false,\n  \"duplicate_orders\": 0,\n  \"false_success\": 0,\n  \"live_no_go\": true,\n  \"production_ready\": false\n}\nevidence written to C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g7-verify-ym6m971r\\replay1\\RUN_REPORT.json\n",
+      "seconds": 3.63,
+      "stdout_tail": "pshots=0\n2026-10-25 18:56:41 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1\n{\n  \"verdict\": \"G7_BLOCKED_NO_ELIGIBLE_STRATEGY\",\n  \"eligible_strategies\": [],\n  \"eligible_count\": 0,\n  \"strategy_evaluations\": 54,\n  \"replay_sessions\": 3,\n  \"replay_orders\": 0,\n  \"forward_orders\": 0,\n  \"broker_execute_calls\": 0,\n  \"decision_outcomes\": {\n    \"NO_TRADE\": 4\n  },\n  \"forward_status\": \"NOT_RUN\",\n  \"forward_received_at\": null,\n  \"invalid_scenarios\": 6,\n  \"invalid_blocked\": 6,\n  \"provider_failure_scanner_errors\": 3,\n  \"provider_failure_orders\": 0,\n  \"forward_executed\": false,\n  \"duplicate_orders\": 0,\n  \"false_success\": 0,\n  \"live_no_go\": true,\n  \"production_ready\": false\n}\nevidence written to C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g7-verify-_0zsth90\\replay1\\RUN_REPORT.json\n",
       "stderr_tail": ""
     },
     {
       "run": "replay2",
       "exit_code": 0,
-      "seconds": 1.72,
-      "stdout_tail": "pshots=0\n2026-10-25 18:39:42 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1\n{\n  \"verdict\": \"G7_BLOCKED_NO_ELIGIBLE_STRATEGY\",\n  \"eligible_strategies\": [],\n  \"eligible_count\": 0,\n  \"strategy_evaluations\": 54,\n  \"replay_sessions\": 3,\n  \"replay_orders\": 0,\n  \"forward_orders\": 0,\n  \"broker_execute_calls\": 0,\n  \"decision_outcomes\": {\n    \"NO_TRADE\": 4\n  },\n  \"forward_status\": \"NOT_RUN\",\n  \"forward_received_at\": null,\n  \"invalid_scenarios\": 6,\n  \"invalid_blocked\": 6,\n  \"provider_failure_scanner_errors\": 3,\n  \"provider_failure_orders\": 0,\n  \"forward_executed\": false,\n  \"duplicate_orders\": 0,\n  \"false_success\": 0,\n  \"live_no_go\": true,\n  \"production_ready\": false\n}\nevidence written to C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g7-verify-ym6m971r\\replay2\\RUN_REPORT.json\n",
+      "seconds": 2.83,
+      "stdout_tail": "pshots=0\n2026-10-25 18:56:44 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1\n{\n  \"verdict\": \"G7_BLOCKED_NO_ELIGIBLE_STRATEGY\",\n  \"eligible_strategies\": [],\n  \"eligible_count\": 0,\n  \"strategy_evaluations\": 54,\n  \"replay_sessions\": 3,\n  \"replay_orders\": 0,\n  \"forward_orders\": 0,\n  \"broker_execute_calls\": 0,\n  \"decision_outcomes\": {\n    \"NO_TRADE\": 4\n  },\n  \"forward_status\": \"NOT_RUN\",\n  \"forward_received_at\": null,\n  \"invalid_scenarios\": 6,\n  \"invalid_blocked\": 6,\n  \"provider_failure_scanner_errors\": 3,\n  \"provider_failure_orders\": 0,\n  \"forward_executed\": false,\n  \"duplicate_orders\": 0,\n  \"false_success\": 0,\n  \"live_no_go\": true,\n  \"production_ready\": false\n}\nevidence written to C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g7-verify-_0zsth90\\replay2\\RUN_REPORT.json\n",
       "stderr_tail": ""
     },
     {
       "run": "forward",
       "exit_code": 0,
-      "seconds": 4.9,
-      "stdout_tail": "info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1\n{\n  \"verdict\": \"G7_BLOCKED_NO_ELIGIBLE_STRATEGY\",\n  \"eligible_strategies\": [],\n  \"eligible_count\": 0,\n  \"strategy_evaluations\": 72,\n  \"replay_sessions\": 3,\n  \"replay_orders\": 0,\n  \"forward_orders\": 0,\n  \"broker_execute_calls\": 0,\n  \"decision_outcomes\": {\n    \"NO_TRADE\": 5\n  },\n  \"forward_status\": \"EXECUTED\",\n  \"forward_received_at\": \"2026-10-25T17:39:47.443000+00:00\",\n  \"invalid_scenarios\": 6,\n  \"invalid_blocked\": 6,\n  \"provider_failure_scanner_errors\": 3,\n  \"provider_failure_orders\": 0,\n  \"forward_executed\": true,\n  \"duplicate_orders\": 0,\n  \"false_success\": 0,\n  \"live_no_go\": true,\n  \"production_ready\": false\n}\nevidence written to C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g7-verify-ym6m971r\\forward\\RUN_REPORT.json\n",
+      "seconds": 5.92,
+      "stdout_tail": "info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1\n{\n  \"verdict\": \"G7_BLOCKED_NO_ELIGIBLE_STRATEGY\",\n  \"eligible_strategies\": [],\n  \"eligible_count\": 0,\n  \"strategy_evaluations\": 72,\n  \"replay_sessions\": 3,\n  \"replay_orders\": 0,\n  \"forward_orders\": 0,\n  \"broker_execute_calls\": 0,\n  \"decision_outcomes\": {\n    \"NO_TRADE\": 5\n  },\n  \"forward_status\": \"EXECUTED\",\n  \"forward_received_at\": \"2026-10-25T17:56:49.858000+00:00\",\n  \"invalid_scenarios\": 6,\n  \"invalid_blocked\": 6,\n  \"provider_failure_scanner_errors\": 3,\n  \"provider_failure_orders\": 0,\n  \"forward_executed\": true,\n  \"duplicate_orders\": 0,\n  \"false_success\": 0,\n  \"live_no_go\": true,\n  \"production_ready\": false\n}\nevidence written to C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g7-verify-_0zsth90\\forward\\RUN_REPORT.json\n",
       "stderr_tail": ""
     }
   ],
-  "seconds": 70.62
+  "seconds": 128.3
 }
