@@ -1,0 +1,30 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "target_commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+  "baseline_commit_expected": "504256ec8934b97a6d405c202604ecac81a02346",
+  "run_id": "tdm13-a96e9c80",
+  "verifier_id": "tdm13-independent-verifier/1 (separate code path, no builder imports)",
+  "input_state": "AVAILABLE",
+  "git_integrity": "PASS",
+  "claims_consistency": "PASS",
+  "replay": "PASS",
+  "negative_controls": "PASS",
+  "result": "VERIFIED_REPRODUCIBLE",
+  "result_reasons": [],
+  "failures": [],
+  "independence": {
+    "code_path": "INDEPENDENT_DERIVATION",
+    "identity": "NOT_DEMONSTRATED: the same operator wrote TDM-12 and this verifier; the documentation is explicit rather than claiming a second identity"
+  },
+  "evidence_refs": [
+    "evidence/tdm/wp-tdm-13/GIT_AND_CLAIMS_AUDIT.json",
+    "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json",
+    "evidence/tdm/wp-tdm-13/DATASET_RESTORE.md",
+    "evidence/tdm/wp-tdm-13/REPLAY_REPORT.json",
+    "evidence/tdm/wp-tdm-13/NEGATIVE_CONTROLS.json",
+    "evidence/tdm/wp-tdm-13/RUN_REPORT.md",
+    "evidence/tdm/wp-tdm-13/RUN_REPORT.json"
+  ],
+  "paper_orders": 0,
+  "live_orders": 0
+}
