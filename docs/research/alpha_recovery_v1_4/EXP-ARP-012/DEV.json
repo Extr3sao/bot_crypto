@@ -1,0 +1,151 @@
+{
+  "by_key": {
+    "BTC": {
+      "avg_duration_min": 4045.71,
+      "avg_loss_usd": -22.9882,
+      "avg_mae_pct": 4.1941,
+      "avg_mfe_pct": 3.8825,
+      "avg_win_usd": 21.2555,
+      "concentration": {
+        "positive_trades": 9,
+        "top10pct_share": 0.4056,
+        "top1_share": 0.2035,
+        "top5_share": 0.8345,
+        "total_positive_net": 191.3
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "stop": 9,
+        "target": 2,
+        "window_expiry": 10
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": -56.973,
+      "expectancy_net_bps": -80.532,
+      "fees_usd": 24.74,
+      "gross_usd": -59.82,
+      "max_drawdown_bps": 2267.782,
+      "median_duration_min": 5760.0,
+      "net_usd": -84.56,
+      "payoff": 0.9246,
+      "profit_factor": 0.6935,
+      "sharpe_per_trade": null,
+      "trades": 21,
+      "win_rate": 0.4286
+    },
+    "ETH": {
+      "avg_duration_min": 4731.43,
+      "avg_loss_usd": -31.107,
+      "avg_mae_pct": 5.4491,
+      "avg_mfe_pct": 7.1366,
+      "avg_win_usd": 33.6395,
+      "concentration": {
+        "positive_trades": 11,
+        "top10pct_share": 0.2935,
+        "top1_share": 0.1508,
+        "top5_share": 0.6953,
+        "total_positive_net": 370.03
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "stop": 6,
+        "target": 2,
+        "window_expiry": 13
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": 79.716,
+      "expectancy_net_bps": 56.157,
+      "fees_usd": 24.74,
+      "gross_usd": 83.7,
+      "max_drawdown_bps": 3447.09,
+      "median_duration_min": 5760.0,
+      "net_usd": 58.96,
+      "payoff": 1.0814,
+      "profit_factor": 1.1896,
+      "sharpe_per_trade": null,
+      "trades": 21,
+      "win_rate": 0.5238
+    },
+    "SOL": {
+      "avg_duration_min": 4824.0,
+      "avg_loss_usd": -27.7391,
+      "avg_mae_pct": 5.759,
+      "avg_mfe_pct": 7.6511,
+      "avg_win_usd": 38.1424,
+      "concentration": {
+        "positive_trades": 9,
+        "top10pct_share": 0.4938,
+        "top1_share": 0.2779,
+        "top5_share": 0.8897,
+        "total_positive_net": 343.28
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "stop": 5,
+        "target": 3,
+        "window_expiry": 12
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": 61.711,
+      "expectancy_net_bps": 38.152,
+      "fees_usd": 23.56,
+      "gross_usd": 61.71,
+      "max_drawdown_bps": 4136.772,
+      "median_duration_min": 5760.0,
+      "net_usd": 38.15,
+      "payoff": 1.375,
+      "profit_factor": 1.125,
+      "sharpe_per_trade": null,
+      "trades": 20,
+      "win_rate": 0.45
+    }
+  },
+  "combined": {
+    "avg_duration_min": 4529.03,
+    "avg_loss_usd": -27.0321,
+    "avg_mae_pct": 5.124,
+    "avg_mfe_pct": 6.2004,
+    "avg_win_usd": 31.1937,
+    "concentration": {
+      "positive_trades": 29,
+      "top10pct_share": 0.4239,
+      "top1_share": 0.1055,
+      "top5_share": 0.3657,
+      "total_positive_net": 904.62
+    },
+    "cost_bps_rt": 23.559,
+    "exit_mix": {
+      "stop": 20,
+      "target": 7,
+      "window_expiry": 35
+    },
+    "expectancy_cost_bps": 23.56,
+    "expectancy_gross_bps": 27.61,
+    "expectancy_net_bps": 4.051,
+    "fees_usd": 73.04,
+    "gross_usd": 85.59,
+    "max_drawdown_bps": 4136.772,
+    "median_duration_min": 5760.0,
+    "net_usd": 12.56,
+    "payoff": 1.154,
+    "profit_factor": 1.0141,
+    "sharpe_per_trade": 0.0058,
+    "trades": 62,
+    "win_rate": 0.4677
+  },
+  "duplicate_check": {
+    "applicable": false
+  },
+  "verdict": {
+    "checks": {
+      "gross_expectancy_gt_0": true,
+      "not_single_trade_concentrated": true,
+      "sample_sufficient": true
+    },
+    "result": "PASS",
+    "thresholds": {
+      "min_trades": 10,
+      "top1_share_max": 0.5
+    }
+  }
+}

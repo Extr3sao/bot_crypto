@@ -1,0 +1,1537 @@
+{
+  "artifact": "ST6_CLOSE_REPLAY_V1",
+  "boundary_deviations": [
+    {
+      "declared_contract": "the plan is 84 windows counted from the slot that contains the period start; the partial slot the period closes inside (2026-10-22 16:00-16:21:20Z) is *not* a planned window: 'nothing may be expected, missed or penalised there'",
+      "effect_on_collected_evidence": "none: no window, no observation and no hash changes",
+      "id": "BOUNDARY-SLOT-DUE-RULE",
+      "minimal_correction": "in the due path, collect only when the current slot's key is in the declared plan, i.e. `this_slot in {slot['key'] for slot in declared_slots_upto(period, parse(period['ends_at_utc']))}`, and otherwise record the existing SKIPPED_NO_WINDOW_DUE token with no market request",
+      "shipped_behaviour": "the due rule is 'this slot has no window yet', which is not bounded by the declared plan; a scheduled tick between 16:00Z and the close would attempt to collect a window in the undeclared boundary slot (and would sample it, since the attempt is only refused here by the replay's market guard)",
+      "why_it_is_declared_and_not_silently_fixed": "changing the collection rule mid-period would alter the campaign; the mission requires the inconsistency to be declared with a minimal correction, not patched to taste"
+    },
+    {
+      "declared_contract": "the period file declares: 'after ends_at_utc collection stops unless a human passes --authorize-extension, and that flag never turns an incomplete period into a PASS'",
+      "effect_on_collected_evidence": "none: no window, no observation and no hash changes",
+      "id": "EXTENSION-FLAG-INERT",
+      "measured_here": {
+        "after_the_end": {
+          "argv": [
+            "--due",
+            "--scheduled",
+            "--authorize-extension"
+          ],
+          "event": "PERIOD_ENDED_CONSOLIDATED",
+          "exit_code": 3,
+          "market_attempts": 0,
+          "windows_added": 0
+        },
+        "during_open_period": {
+          "argv": [
+            "--collect",
+            "--authorize-extension"
+          ],
+          "event": "REPORT_ONLY",
+          "exit_code": 0,
+          "market_attempts": 0,
+          "windows_added": 0
+        }
+      },
+      "minimal_correction": "either honour the flag in a guarded branch (`if ended and not args.authorize_extension:` consolidate; else collect), keeping the 'never turns an incomplete period into a PASS' rule, or amend the declared text to state that the period never extends",
+      "shipped_behaviour": "the ended branch returns before the collection branch, so the flag cannot extend anything; and the collection branch is itself guarded by `not args.authorize_extension`, so passing the flag during the open period suppresses collection and turns the tick into a report-only run",
+      "why_it_is_declared_and_not_silently_fixed": "the flag is a governance escape hatch: giving it effect is a policy decision about the closed period, not a repair, and the mission requires the inconsistency to be declared"
+    }
+  ],
+  "clock_injection": {
+    "instants_used": [
+      "2026-10-08T22:00:00Z",
+      "2026-10-22T16:21:20Z",
+      "2026-10-22T18:00:00Z"
+    ],
+    "mechanism": "FrozenClock, a datetime subclass placed in the tick's namespace",
+    "system_clock_changed": false
+  },
+  "close_mechanics_verdict": "PASS",
+  "current_head": "fa6056af68d858d410df145ee4429b34eb155a8e",
+  "does_not_prove": [
+    "that the real period will close on its own date: it proves how the close behaves",
+    "that the market data of a slot the guard refused is anything: nothing was sampled",
+    "that the delegated verifiers pass: they are intercepted inside the replay"
+  ],
+  "false_success": 0,
+  "generated_at_utc": "2026-10-09T20:02:39Z",
+  "isolation": {
+    "live_activity_attributed": [],
+    "network_attempts": [
+      {
+        "args": [
+          "3",
+          "5.0"
+        ],
+        "what": "economic001_readonly_probe.collect"
+      },
+      {
+        "args": [
+          "3",
+          "5.0"
+        ],
+        "what": "economic001_readonly_probe.collect"
+      }
+    ],
+    "real_files_that_moved": [],
+    "real_market_requests": 0,
+    "real_scheduler_calls": 0,
+    "real_state_unchanged": true,
+    "real_state_unchanged_by_the_replay": true,
+    "redirected_constants": [
+      "DATA",
+      "PERIOD_PATH",
+      "OBSERVATIONS",
+      "WINDOWS",
+      "RAW_DIR",
+      "COVERAGE_PATH",
+      "DRIFT_PATH",
+      "REPORT_JSON",
+      "REPORT_MD",
+      "RUN_LOG",
+      "MISSED_LOG",
+      "WITNESS_LOG",
+      "SCHEDULER_EVIDENCE",
+      "CLOSURE",
+      "SCHEDULER_REPORT_JSON",
+      "SCHEDULER_REPORT_MD",
+      "HEALTH_STATUS",
+      "SCHEDULER_VERIFICATION",
+      "INDEPENDENT_VERIFICATION",
+      "LOCK_ROOT",
+      "COST_MODEL",
+      "PRICE_DIR"
+    ],
+    "sandbox_outside_repository": true,
+    "sandbox_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-close-replay-nxxoa1ig",
+    "scheduler_queries": [
+      {
+        "source": "snapshot",
+        "what": "scheduler_state"
+      },
+      {
+        "source": "snapshot",
+        "what": "disk_status"
+      },
+      {
+        "source": "snapshot",
+        "what": "scheduler_state"
+      },
+      {
+        "source": "snapshot",
+        "what": "disk_status"
+      },
+      {
+        "source": "snapshot",
+        "what": "scheduler_state"
+      },
+      {
+        "source": "snapshot",
+        "what": "disk_status"
+      },
+      {
+        "source": "snapshot",
+        "what": "scheduler_state"
+      },
+      {
+        "source": "snapshot",
+        "what": "disk_status"
+      },
+      {
+        "source": "snapshot",
+        "what": "scheduler_state"
+      },
+      {
+        "source": "snapshot",
+        "what": "disk_status"
+      },
+      {
+        "source": "snapshot",
+        "what": "scheduler_state"
+      },
+      {
+        "source": "snapshot",
+        "what": "disk_status"
+      },
+      {
+        "source": "snapshot",
+        "what": "scheduler_state"
+      },
+      {
+        "source": "snapshot",
+        "what": "disk_status"
+      }
+    ],
+    "subprocess_attempts": [],
+    "terminal_transitions": [
+      {
+        "real_task_touched": false,
+        "what": "disable the period's own task"
+      },
+      {
+        "real_task_touched": false,
+        "what": "disable the period's own task"
+      },
+      {
+        "real_task_touched": false,
+        "what": "disable the period's own task"
+      },
+      {
+        "real_task_touched": false,
+        "what": "disable the period's own task"
+      },
+      {
+        "real_task_touched": false,
+        "what": "disable the period's own task"
+      },
+      {
+        "real_task_touched": false,
+        "what": "disable the period's own task"
+      }
+    ],
+    "unexplained_changes": [],
+    "verifier_delegations": [
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_slot_ledger.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_windows_events.py",
+          "--ingest"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_scheduler_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_scheduler_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_scheduler_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_scheduler_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_scheduler_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_slot_ledger.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_windows_events.py",
+          "--ingest"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_scheduler_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      }
+    ]
+  },
+  "method": "the real tick is imported and its every path is redirected into a private copy of the live state; the clock is a frozen datetime placed in the tick's own namespace; the probe, the kline reader and urllib are blocked; the task registration and the terminal transition are intercepted; the real state is fingerprinted before and after",
+  "period": {
+    "close_instant": "2026-10-22T16:21:20Z",
+    "declared_days": 14,
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "planned_windows": 84,
+    "slots_per_day": 6,
+    "started_at_utc": "2026-10-08T16:21:20Z"
+  },
+  "sandbox_code_identity": "REPLAY_SANDBOX_NOT_A_COMMIT",
+  "scenarios": [
+    {
+      "checks": {
+        "no consolidation exists while the period is open": true,
+        "no market request reached the guard": true,
+        "no window was added": true,
+        "the period is still open at this instant": true,
+        "the skipped tick made no market request": true,
+        "the slot was already observed, so the tick skipped": true,
+        "the tick returned the declared success status": true
+      },
+      "reading": "an open period still collects nothing it already has, makes no request and writes no consolidation",
+      "result": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": false,
+          "closure_written": false,
+          "missed": 0,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 0,
+        "instant": "2026-10-08T22:00:00Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-08T22:00:00Z",
+          "actual_start_utc": "2026-10-08T22:00:00Z",
+          "artifact": "ST6_RUN_EVENT",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": null,
+          "exit_code": 0,
+          "health_exit_code": null,
+          "health_status": "HEALTHY",
+          "invocation": "SCHEDULED",
+          "ledger_exit_code": null,
+          "ledger_status": "NOT_EXECUTED_IN_REPLAY",
+          "market_requests": 0,
+          "missed_windows_recorded": [],
+          "observed_by_window": "20261008T200323Z",
+          "raw_evidence_hash": null,
+          "result": "SKIPPED_NO_WINDOW_DUE",
+          "run_id": "20261008T220000Z-0f8c34c1",
+          "scheduled_slot_utc": "20:00-24:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-08#5",
+          "verifier_status": null,
+          "windows_event_capture_exit_code": null,
+          "windows_event_capture_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": false,
+          "closure_sha256": null,
+          "missed": 0,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "tick: SKIPPED_NO_WINDOW_DUE slot 20:00-24:00 UTC (us, weekday); market requests 0; completed windows 7; missed 0; health HEALTHY; ST6_AUTONOMOUS_COLLECTION_ACTIVE",
+          "the run log was pruned by 1 oldest event(s)"
+        ]
+      },
+      "scenario": "1. a tick before the close, in an already observed slot",
+      "verdict": "PASS"
+    },
+    {
+      "boundary_run": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": false,
+          "closure_written": false,
+          "missed": 0,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": "the replay forbids market access (economic001_readonly_probe.collect)",
+        "exception_kind": "MARKET_ACCESS_FORBIDDEN",
+        "exit_code": null,
+        "instant": "2026-10-22T16:10:00Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-09T19:58:27Z",
+          "actual_start_utc": "2026-10-09T19:58:21Z",
+          "artifact": "ST6_RUN_EVENT",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "rounds=0, spacing=5.0, depth-limit=100: a window must declare a positive cadence",
+          "exit_code": 1,
+          "invocation": "MANUAL",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "REFUSED_INVALID_ARGUMENTS",
+          "run_id": "20261009T195821Z-c2805627",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-09#4",
+          "verifier_status": null
+        },
+        "network_attempts": 1,
+        "state_after": {
+          "closure_present": false,
+          "closure_sha256": null,
+          "missed": 0,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": []
+      },
+      "checks": {
+        "every eligible slot ends at or before the declared end": true,
+        "neither attempt wrote a window or a raw snapshot": true,
+        "the boundary slot is not an eligible window, yet the shipped due rule attempts it too": true,
+        "the first eligible slot is the one the period opened inside": true,
+        "the last eligible slot is still treated as due by the shipped tick (collection attempted, market access refused, nothing fabricated)": true,
+        "the last eligible slot is the last full slot before the end": true,
+        "the plan is the declared 84 windows": true,
+        "the slot the period closes inside is not an eligible window": true
+      },
+      "declared_deviation": {
+        "declared_contract": "the plan is 84 windows counted from the slot that contains the period start; the partial slot the period closes inside (2026-10-22 16:00-16:21:20Z) is *not* a planned window: 'nothing may be expected, missed or penalised there'",
+        "effect_on_collected_evidence": "none: no window, no observation and no hash changes",
+        "id": "BOUNDARY-SLOT-DUE-RULE",
+        "minimal_correction": "in the due path, collect only when the current slot's key is in the declared plan, i.e. `this_slot in {slot['key'] for slot in declared_slots_upto(period, parse(period['ends_at_utc']))}`, and otherwise record the existing SKIPPED_NO_WINDOW_DUE token with no market request",
+        "shipped_behaviour": "the due rule is 'this slot has no window yet', which is not bounded by the declared plan; a scheduled tick between 16:00Z and the close would attempt to collect a window in the undeclared boundary slot (and would sample it, since the attempt is only refused here by the replay's market guard)",
+        "why_it_is_declared_and_not_silently_fixed": "changing the collection rule mid-period would alter the campaign; the mission requires the inconsistency to be declared with a minimal correction, not patched to taste"
+      },
+      "eligible_run": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": false,
+          "closure_written": false,
+          "missed": 0,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": "the replay forbids market access (economic001_readonly_probe.collect)",
+        "exception_kind": "MARKET_ACCESS_FORBIDDEN",
+        "exit_code": null,
+        "instant": "2026-10-22T15:59:00Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-09T19:58:27Z",
+          "actual_start_utc": "2026-10-09T19:58:21Z",
+          "artifact": "ST6_RUN_EVENT",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "rounds=0, spacing=5.0, depth-limit=100: a window must declare a positive cadence",
+          "exit_code": 1,
+          "invocation": "MANUAL",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "REFUSED_INVALID_ARGUMENTS",
+          "run_id": "20261009T195821Z-c2805627",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-09#4",
+          "verifier_status": null
+        },
+        "network_attempts": 1,
+        "state_after": {
+          "closure_present": false,
+          "closure_sha256": null,
+          "missed": 0,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": []
+      },
+      "reading": "the plan arithmetic is the declared 84 windows and the boundary slot is not one of them; the shipped due rule is not bounded by the plan, and that is declared here",
+      "scenario": "2. the last eligible slot, and the boundary slot the period closes inside",
+      "verdict": "PASS"
+    },
+    {
+      "checks": {
+        "exactly one consolidation": true,
+        "no market request was made": true,
+        "no program other than those delegations was spawned": true,
+        "no window and no raw snapshot were added": true,
+        "the close returned the declared terminal status": true,
+        "the consolidation is the declared artefact of this period": true,
+        "the consolidation was written": true,
+        "the delegated verifiers were invoked through their own programs": true,
+        "the outcome is one of the four declared classifications": true,
+        "the period was never extended": true,
+        "the post-close contract is written into the consolidation": true,
+        "the run event says the period ended": true,
+        "the terminal state is declared": true,
+        "the transition of the schedule itself is recorded": true
+      },
+      "closure_outcome": "INSUFFICIENT_REGIME_COVERAGE",
+      "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+      "input_state": {
+        "declared_windows": 84,
+        "digest": "e7b3145545de0ae04c20698d4b668d4a6ef97e0f8b1639d662b690797a7faf30",
+        "files": {
+          "ST6_MISSED_WINDOWS.jsonl": "ABSENT",
+          "ST6_MODEL_DRIFT.json": "28ae0cf679f5663004284f35ca8d8f9132ea7ac62a7c9d78fbff183f924af602",
+          "ST6_OBSERVATIONS.jsonl": "48be3191b73fd9f1e34f102118dadfb21929a4c6e5aa26bed6a43926df772494",
+          "ST6_PERIOD.json": "5dd14bc8eac887786129d06e5aafed3de25b203764cb06033e39df0188cc5cae",
+          "ST6_REGIME_COVERAGE.json": "225304491a5c7d8d9a24ed299d68086c91c73645c8f9cba1d27ecfc05507c42f",
+          "ST6_RUNS.jsonl": "28b34d90f46e13ba5c9bf20860d04ac598a70063ef0d48f29d1480bdfae07c22",
+          "ST6_WINDOWS.jsonl": "88e982be84122e05bcd42eb2b5ba28e62f447bc5fbe96721da318a62efc736e0"
+        },
+        "observed_windows": 7,
+        "taken_from": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-close-replay-nxxoa1ig\\close-sequence\\data\\st6",
+        "window_ids": [
+          "2026-10-08#4",
+          "2026-10-08#5",
+          "2026-10-09#0",
+          "2026-10-09#1",
+          "2026-10-09#2",
+          "2026-10-09#3",
+          "2026-10-09#4"
+        ]
+      },
+      "reading": "the consolidation is written once, the missed windows are named, the terminal state is declared and the tick that produced it sampled nothing",
+      "result": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": true,
+          "closure_written": true,
+          "missed": 77,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 3,
+        "instant": "2026-10-22T16:21:20Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-22T16:21:20Z",
+          "actual_start_utc": "2026-10-22T16:21:20Z",
+          "artifact": "ST6_RUN_EVENT",
+          "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "the verifier reported FAIL",
+          "exit_code": 3,
+          "health_status": "NOT_EXECUTED_IN_REPLAY",
+          "invocation": "SCHEDULED",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "PERIOD_ENDED_CONSOLIDATED",
+          "run_id": "20261022T162120Z-5d24f10e",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-22#4",
+          "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": true,
+          "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+          "missed": 77,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
+        ]
+      },
+      "sandbox": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-close-replay-nxxoa1ig\\close-sequence",
+      "scenario": "3. the exact close instant",
+      "verdict": "PASS"
+    },
+    {
+      "checks": {
+        "a tick after the close returns the terminal status": true,
+        "it appends no run event": true,
+        "it rewrites no artefact": true,
+        "it takes no sample": true,
+        "no market request in any repetition": true,
+        "repeated execution is equally inert": true,
+        "the consolidation stayed byte-identical across every repetition": true
+      },
+      "reading": "the terminal transition is idempotent: later ticks sample nothing, rewrite nothing and append no run event",
+      "repeats": [
+        {
+          "argv": [
+            "--due",
+            "--scheduled"
+          ],
+          "delta": {
+            "closure_changed": false,
+            "closure_written": false,
+            "missed": 0,
+            "raw_files": 0,
+            "runs": 0,
+            "windows": 0
+          },
+          "exception": null,
+          "exception_kind": null,
+          "exit_code": 3,
+          "instant": "2026-10-22T19:00:00Z",
+          "last_run": {
+            "actual_end_utc": "2026-10-22T16:21:20Z",
+            "actual_start_utc": "2026-10-22T16:21:20Z",
+            "artifact": "ST6_RUN_EVENT",
+            "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+            "collection_attempted": false,
+            "data_freshness": null,
+            "day_type": "weekday",
+            "errors": "the verifier reported FAIL",
+            "exit_code": 3,
+            "health_status": "NOT_EXECUTED_IN_REPLAY",
+            "invocation": "SCHEDULED",
+            "market_requests": 0,
+            "raw_evidence_hash": null,
+            "result": "PERIOD_ENDED_CONSOLIDATED",
+            "run_id": "20261022T162120Z-5d24f10e",
+            "scheduled_slot_utc": "16:00-20:00 UTC",
+            "session": "us",
+            "slot_key": "2026-10-22#4",
+            "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+          },
+          "network_attempts": 0,
+          "state_after": {
+            "closure_present": true,
+            "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+            "missed": 77,
+            "runs": 400,
+            "windows": 7
+          },
+          "stdout_tail": [
+            "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
+          ]
+        },
+        {
+          "argv": [
+            "--due",
+            "--scheduled"
+          ],
+          "delta": {
+            "closure_changed": false,
+            "closure_written": false,
+            "missed": 0,
+            "raw_files": 0,
+            "runs": 0,
+            "windows": 0
+          },
+          "exception": null,
+          "exception_kind": null,
+          "exit_code": 3,
+          "instant": "2026-10-30T00:00:00Z",
+          "last_run": {
+            "actual_end_utc": "2026-10-22T16:21:20Z",
+            "actual_start_utc": "2026-10-22T16:21:20Z",
+            "artifact": "ST6_RUN_EVENT",
+            "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+            "collection_attempted": false,
+            "data_freshness": null,
+            "day_type": "weekday",
+            "errors": "the verifier reported FAIL",
+            "exit_code": 3,
+            "health_status": "NOT_EXECUTED_IN_REPLAY",
+            "invocation": "SCHEDULED",
+            "market_requests": 0,
+            "raw_evidence_hash": null,
+            "result": "PERIOD_ENDED_CONSOLIDATED",
+            "run_id": "20261022T162120Z-5d24f10e",
+            "scheduled_slot_utc": "16:00-20:00 UTC",
+            "session": "us",
+            "slot_key": "2026-10-22#4",
+            "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+          },
+          "network_attempts": 0,
+          "state_after": {
+            "closure_present": true,
+            "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+            "missed": 77,
+            "runs": 400,
+            "windows": 7
+          },
+          "stdout_tail": [
+            "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
+          ]
+        },
+        {
+          "argv": [
+            "--due",
+            "--scheduled"
+          ],
+          "delta": {
+            "closure_changed": false,
+            "closure_written": false,
+            "missed": 0,
+            "raw_files": 0,
+            "runs": 0,
+            "windows": 0
+          },
+          "exception": null,
+          "exception_kind": null,
+          "exit_code": 3,
+          "instant": "2026-11-05T12:00:00Z",
+          "last_run": {
+            "actual_end_utc": "2026-10-22T16:21:20Z",
+            "actual_start_utc": "2026-10-22T16:21:20Z",
+            "artifact": "ST6_RUN_EVENT",
+            "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+            "collection_attempted": false,
+            "data_freshness": null,
+            "day_type": "weekday",
+            "errors": "the verifier reported FAIL",
+            "exit_code": 3,
+            "health_status": "NOT_EXECUTED_IN_REPLAY",
+            "invocation": "SCHEDULED",
+            "market_requests": 0,
+            "raw_evidence_hash": null,
+            "result": "PERIOD_ENDED_CONSOLIDATED",
+            "run_id": "20261022T162120Z-5d24f10e",
+            "scheduled_slot_utc": "16:00-20:00 UTC",
+            "session": "us",
+            "slot_key": "2026-10-22#4",
+            "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+          },
+          "network_attempts": 0,
+          "state_after": {
+            "closure_present": true,
+            "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+            "missed": 77,
+            "runs": 400,
+            "windows": 7
+          },
+          "stdout_tail": [
+            "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
+          ]
+        }
+      ],
+      "result": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": false,
+          "closure_written": false,
+          "missed": 0,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 3,
+        "instant": "2026-10-22T18:00:00Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-22T16:21:20Z",
+          "actual_start_utc": "2026-10-22T16:21:20Z",
+          "artifact": "ST6_RUN_EVENT",
+          "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "the verifier reported FAIL",
+          "exit_code": 3,
+          "health_status": "NOT_EXECUTED_IN_REPLAY",
+          "invocation": "SCHEDULED",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "PERIOD_ENDED_CONSOLIDATED",
+          "run_id": "20261022T162120Z-5d24f10e",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-22#4",
+          "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": true,
+          "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+          "missed": 77,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
+        ]
+      },
+      "scenario": "4. and 5. a tick after the close, and repeated execution after the close",
+      "verdict": "PASS"
+    },
+    {
+      "checks": {
+        "every declared slot that ended without a window is recorded as missed": true,
+        "every missed window states a reason": true,
+        "no missed window duplicates another": true,
+        "nothing was reconstructed": true,
+        "the boundary slot the period closes inside is neither observed nor missed": true,
+        "the coverage denominator is still the declared 84": true,
+        "the number of missed windows is the plan minus what was observed": true,
+        "the observed windows are inside the declared plan": true,
+        "the observed windows still reproduce their raw evidence": true,
+        "the plan counted from the start's own slot is 84 windows": true
+      },
+      "declared_windows": 84,
+      "missed_windows": 77,
+      "observed_windows": 7,
+      "reading": "a slot that passed without a measurement is written down as a loss with its reason, never invented, and the denominator stays the declared plan",
+      "scenario": "6. unattended windows",
+      "verdict": "PASS"
+    },
+    {
+      "checks": {
+        "the first writer holds the lease": true,
+        "the lease is released afterwards": true,
+        "the refusal collects nothing": true,
+        "the refusal is recorded in the run log": true,
+        "the refusal makes no market request": true,
+        "the refusal reaches no market either": true,
+        "the second writer refuses with the declared status": true
+      },
+      "reading": "a second writer is refused by the shared lease, records the refusal and touches nothing",
+      "result": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": false,
+          "closure_written": false,
+          "missed": 0,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 2,
+        "instant": "2026-10-08T22:00:00Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-08T22:00:00Z",
+          "actual_start_utc": "2026-10-08T22:00:00Z",
+          "artifact": "ST6_RUN_EVENT",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "errors": "another run holds the lease",
+          "exit_code": 2,
+          "holder": {
+            "acquired_at": 1791496800,
+            "campaign_id": "ST6_FORWARD_REGIME",
+            "host": "DESKTOP-4CHO695",
+            "lease_version": "CAMPAIGN_LEASE_V1",
+            "pid": 3968,
+            "renewed_at": 1791496800,
+            "stale_after_seconds": 300
+          },
+          "invocation": "SCHEDULED",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "ALREADY_RUNNING",
+          "run_id": "20261008T220000Z-23e4e645",
+          "scheduled_slot_utc": "20:00-24:00 UTC",
+          "slot_key": "2026-10-08#5",
+          "verifier_status": null
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": false,
+          "closure_sha256": null,
+          "missed": 0,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "ALREADY_RUNNING: {'acquired_at': 1791496800, 'campaign_id': 'ST6_FORWARD_REGIME', 'host': 'DESKTOP-4CHO695', 'lease_version': 'CAMPAIGN_LEASE_V1', 'pid': 3968, 'renewed_at': 1791496800, 'stale_after_seconds': 300}"
+        ]
+      },
+      "scenario": "7. concurrent execution",
+      "verdict": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "a window index row whose recorded hash no longer matches its bytes",
+          "checks": {
+            "a tampered window hash is classified as a data quality failure": true,
+            "the close still happened": true,
+            "the report of the same run names it too": true,
+            "the tampered artefact is named in the terminal consolidation": true
+          },
+          "closure_outcome": "DATA_QUALITY_FAILED",
+          "result": {
+            "argv": [
+              "--due",
+              "--scheduled"
+            ],
+            "delta": {
+              "closure_changed": true,
+              "closure_written": true,
+              "missed": 77,
+              "raw_files": 0,
+              "runs": 0,
+              "windows": 0
+            },
+            "exception": null,
+            "exception_kind": null,
+            "exit_code": 3,
+            "instant": "2026-10-22T16:21:20Z",
+            "last_run": {
+              "actual_end_utc": "2026-10-22T16:21:20Z",
+              "actual_start_utc": "2026-10-22T16:21:20Z",
+              "artifact": "ST6_RUN_EVENT",
+              "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+              "collection_attempted": false,
+              "data_freshness": null,
+              "day_type": "weekday",
+              "errors": "the verifier reported FAIL",
+              "exit_code": 3,
+              "health_status": "NOT_EXECUTED_IN_REPLAY",
+              "invocation": "SCHEDULED",
+              "market_requests": 0,
+              "raw_evidence_hash": null,
+              "result": "PERIOD_ENDED_CONSOLIDATED",
+              "run_id": "20261022T162120Z-b25b8ddd",
+              "scheduled_slot_utc": "16:00-20:00 UTC",
+              "session": "us",
+              "slot_key": "2026-10-22#4",
+              "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+            },
+            "network_attempts": 0,
+            "state_after": {
+              "closure_present": true,
+              "closure_sha256": "f0456bca6f897b0309fda30aac8f67ef1d4a189e12c353d6db6072922acba866",
+              "missed": 77,
+              "runs": 400,
+              "windows": 7
+            },
+            "stdout_tail": [
+              "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
+            ]
+          },
+          "verdict": "PASS"
+        },
+        {
+          "case": "raw bytes that are not the evidence they claim to be",
+          "checks": {
+            "corrupt raw bytes never close as supported": true,
+            "no window is invented from the corrupt bytes": true,
+            "the corrupt artefact is named when the close classified it": true,
+            "the corruption is either classified or the close refuses loudly": true
+          },
+          "closure_outcome": null,
+          "exception_kind": "BadGzipFile",
+          "note": "when the raw bytes are not gzip at all the close raises instead of classifying; the independent verifier's negative test requires the corruption to be detected, which it is, either as DATA_QUALITY_FAILED or as a refused run",
+          "result": {
+            "argv": [
+              "--due",
+              "--scheduled"
+            ],
+            "delta": {
+              "closure_changed": false,
+              "closure_written": false,
+              "missed": 77,
+              "raw_files": 0,
+              "runs": 0,
+              "windows": 0
+            },
+            "exception": "BadGzipFile: Not a gzipped file (b'th')",
+            "exception_kind": "BadGzipFile",
+            "exit_code": null,
+            "instant": "2026-10-22T16:21:20Z",
+            "last_run": {
+              "actual_end_utc": "2026-10-09T19:58:27Z",
+              "actual_start_utc": "2026-10-09T19:58:21Z",
+              "artifact": "ST6_RUN_EVENT",
+              "collection_attempted": false,
+              "data_freshness": null,
+              "day_type": "weekday",
+              "errors": "rounds=0, spacing=5.0, depth-limit=100: a window must declare a positive cadence",
+              "exit_code": 1,
+              "invocation": "MANUAL",
+              "market_requests": 0,
+              "raw_evidence_hash": null,
+              "result": "REFUSED_INVALID_ARGUMENTS",
+              "run_id": "20261009T195821Z-c2805627",
+              "scheduled_slot_utc": "16:00-20:00 UTC",
+              "session": "us",
+              "slot_key": "2026-10-09#4",
+              "verifier_status": null
+            },
+            "network_attempts": 0,
+            "state_after": {
+              "closure_present": false,
+              "closure_sha256": null,
+              "missed": 77,
+              "runs": 400,
+              "windows": 7
+            },
+            "stdout_tail": []
+          },
+          "verdict": "PASS"
+        },
+        {
+          "case": "a duplicated window index row",
+          "checks": {
+            "no window is added by the close itself": true,
+            "the tick consolidates what the index says instead of silently deduplicating": true
+          },
+          "note": "duplicate detection is the independent verifier's check, not the tick's: the verifier's negative test proves it fires on a duplicated index row",
+          "result": {
+            "argv": [
+              "--due",
+              "--scheduled"
+            ],
+            "delta": {
+              "closure_changed": true,
+              "closure_written": true,
+              "missed": 77,
+              "raw_files": 0,
+              "runs": -1,
+              "windows": 0
+            },
+            "exception": null,
+            "exception_kind": null,
+            "exit_code": 3,
+            "instant": "2026-10-22T16:21:20Z",
+            "last_run": {
+              "actual_end_utc": "2026-10-22T16:21:20Z",
+              "actual_start_utc": "2026-10-22T16:21:20Z",
+              "artifact": "ST6_RUN_EVENT",
+              "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+              "collection_attempted": false,
+              "data_freshness": null,
+              "day_type": "weekday",
+              "errors": "the verifier reported FAIL",
+              "exit_code": 3,
+              "health_status": "NOT_EXECUTED_IN_REPLAY",
+              "invocation": "SCHEDULED",
+              "market_requests": 0,
+              "raw_evidence_hash": null,
+              "result": "PERIOD_ENDED_CONSOLIDATED",
+              "run_id": "20261022T162120Z-0b8e38f0",
+              "scheduled_slot_utc": "16:00-20:00 UTC",
+              "session": "us",
+              "slot_key": "2026-10-22#4",
+              "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+            },
+            "network_attempts": 0,
+            "state_after": {
+              "closure_present": true,
+              "closure_sha256": "08719c0257258fc7a5bc887de5c69082541b735eeec2a092435423e7ea12f24d",
+              "missed": 77,
+              "runs": 400,
+              "windows": 8
+            },
+            "stdout_tail": [
+              "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
+            ]
+          },
+          "tick_detects_duplicates": false,
+          "tick_detects_duplicates_in_the_close": false,
+          "verdict": "PASS"
+        }
+      ],
+      "checks": {
+        "a duplicated window index row: no window is added by the close itself": true,
+        "a duplicated window index row: the tick consolidates what the index says instead of silently deduplicating": true,
+        "a window index row whose recorded hash no longer matches its bytes: a tampered window hash is classified as a data quality failure": true,
+        "a window index row whose recorded hash no longer matches its bytes: the close still happened": true,
+        "a window index row whose recorded hash no longer matches its bytes: the report of the same run names it too": true,
+        "a window index row whose recorded hash no longer matches its bytes: the tampered artefact is named in the terminal consolidation": true,
+        "none of the corrupted states reached the market": true,
+        "raw bytes that are not the evidence they claim to be: corrupt raw bytes never close as supported": true,
+        "raw bytes that are not the evidence they claim to be: no window is invented from the corrupt bytes": true,
+        "raw bytes that are not the evidence they claim to be: the corrupt artefact is named when the close classified it": true,
+        "raw bytes that are not the evidence they claim to be: the corruption is either classified or the close refuses loudly": true
+      },
+      "reading": "corruption is refused rather than blessed; a duplicate is left to the verifier, which is proven to fail on it in the negative tests",
+      "scenario": "8. corrupt data and duplication",
+      "verdict": "PASS"
+    },
+    {
+      "checks": {
+        "no market request was made to refill the missing evidence": true,
+        "no window is invented for the missing snapshot": true,
+        "the absent artefact is named": true,
+        "the consolidation is still written with its drift and coverage": true,
+        "the missing evidence is classified as a data quality failure": true
+      },
+      "closure_outcome": "DATA_QUALITY_FAILED",
+      "evidence_failures": [
+        "data\\st6\\raw\\20261008T162202Z.json.gz missing"
+      ],
+      "reading": "an absent raw snapshot fails the data quality rule and is named; nothing is reconstructed and no request is made to replace it",
+      "result": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": true,
+          "closure_written": true,
+          "missed": 77,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 3,
+        "instant": "2026-10-22T16:21:20Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-22T16:21:20Z",
+          "actual_start_utc": "2026-10-22T16:21:20Z",
+          "artifact": "ST6_RUN_EVENT",
+          "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "the verifier reported FAIL",
+          "exit_code": 3,
+          "health_status": "NOT_EXECUTED_IN_REPLAY",
+          "invocation": "SCHEDULED",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "PERIOD_ENDED_CONSOLIDATED",
+          "run_id": "20261022T162120Z-e6fd65c6",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-22#4",
+          "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": true,
+          "closure_sha256": "d75a9645bcfd84c90e15ff3c46def2ac6861b3922109b20a354a163b39f0dfcf",
+          "missed": 77,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
+        ]
+      },
+      "scenario": "9. missing evidence",
+      "verdict": "PASS"
+    },
+    {
+      "after_restart_run": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": false,
+          "closure_written": false,
+          "missed": 0,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 3,
+        "instant": "2026-10-23T06:00:00Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-22T16:21:20Z",
+          "actual_start_utc": "2026-10-22T16:21:20Z",
+          "artifact": "ST6_RUN_EVENT",
+          "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "the verifier reported FAIL",
+          "exit_code": 3,
+          "health_status": "NOT_EXECUTED_IN_REPLAY",
+          "invocation": "SCHEDULED",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "PERIOD_ENDED_CONSOLIDATED",
+          "run_id": "20261022T162120Z-81dbb480",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-22#4",
+          "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": true,
+          "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+          "missed": 77,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
+        ]
+      },
+      "checks": {
+        "a fresh process after the close is inert": true,
+        "a fresh process closes the state the same way": true,
+        "no market request at any point": true,
+        "the consolidation is byte-identical across a simulated restart": true,
+        "the second process rewrote nothing it did not need to": true
+      },
+      "closure_sha256_first": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+      "closure_sha256_second": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+      "first_run": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": true,
+          "closure_written": true,
+          "missed": 77,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 3,
+        "instant": "2026-10-22T16:21:20Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-22T16:21:20Z",
+          "actual_start_utc": "2026-10-22T16:21:20Z",
+          "artifact": "ST6_RUN_EVENT",
+          "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "the verifier reported FAIL",
+          "exit_code": 3,
+          "health_status": "NOT_EXECUTED_IN_REPLAY",
+          "invocation": "SCHEDULED",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "PERIOD_ENDED_CONSOLIDATED",
+          "run_id": "20261022T162120Z-81dbb480",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-22#4",
+          "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": true,
+          "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+          "missed": 77,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
+        ]
+      },
+      "reading": "the close depends only on the state on disk and the injected clock: a fresh process reproduces it byte for byte, and a later process reads the terminal state and stops",
+      "scenario": "10. recovery after a host restart",
+      "second_run": {
+        "argv": [
+          "--due",
+          "--scheduled"
+        ],
+        "delta": {
+          "closure_changed": false,
+          "closure_written": false,
+          "missed": 0,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 3,
+        "instant": "2026-10-22T16:21:20Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-22T16:21:20Z",
+          "actual_start_utc": "2026-10-22T16:21:20Z",
+          "artifact": "ST6_RUN_EVENT",
+          "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "the verifier reported FAIL",
+          "exit_code": 3,
+          "health_status": "NOT_EXECUTED_IN_REPLAY",
+          "invocation": "SCHEDULED",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "PERIOD_ENDED_CONSOLIDATED",
+          "run_id": "20261022T162120Z-81dbb480",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-22#4",
+          "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": true,
+          "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+          "missed": 77,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
+        ]
+      },
+      "verdict": "PASS"
+    },
+    {
+      "after_the_end": {
+        "argv": [
+          "--due",
+          "--scheduled",
+          "--authorize-extension"
+        ],
+        "delta": {
+          "closure_changed": true,
+          "closure_written": true,
+          "missed": 77,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 3,
+        "instant": "2026-10-22T16:21:20Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-22T16:21:20Z",
+          "actual_start_utc": "2026-10-22T16:21:20Z",
+          "artifact": "ST6_RUN_EVENT",
+          "closure": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": "the verifier reported FAIL",
+          "exit_code": 3,
+          "health_status": "NOT_EXECUTED_IN_REPLAY",
+          "invocation": "SCHEDULED",
+          "market_requests": 0,
+          "raw_evidence_hash": null,
+          "result": "PERIOD_ENDED_CONSOLIDATED",
+          "run_id": "20261022T162120Z-04987e0d",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-22#4",
+          "verifier_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": true,
+          "closure_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+          "missed": 77,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
+        ]
+      },
+      "checks": {
+        "after the declared end the flag does not extend the period": true,
+        "after the declared end the flagged tick still closes and records the terminal status": true,
+        "during the open period the flag does not enable a sample either": true,
+        "during the open period the flagged tick records itself as report-only": true,
+        "the consolidation of the flagged close refuses extension": true
+      },
+      "declared_deviation": {
+        "declared_contract": "the period file declares: 'after ends_at_utc collection stops unless a human passes --authorize-extension, and that flag never turns an incomplete period into a PASS'",
+        "effect_on_collected_evidence": "none: no window, no observation and no hash changes",
+        "id": "EXTENSION-FLAG-INERT",
+        "measured_here": {
+          "after_the_end": {
+            "argv": [
+              "--due",
+              "--scheduled",
+              "--authorize-extension"
+            ],
+            "event": "PERIOD_ENDED_CONSOLIDATED",
+            "exit_code": 3,
+            "market_attempts": 0,
+            "windows_added": 0
+          },
+          "during_open_period": {
+            "argv": [
+              "--collect",
+              "--authorize-extension"
+            ],
+            "event": "REPORT_ONLY",
+            "exit_code": 0,
+            "market_attempts": 0,
+            "windows_added": 0
+          }
+        },
+        "minimal_correction": "either honour the flag in a guarded branch (`if ended and not args.authorize_extension:` consolidate; else collect), keeping the 'never turns an incomplete period into a PASS' rule, or amend the declared text to state that the period never extends",
+        "shipped_behaviour": "the ended branch returns before the collection branch, so the flag cannot extend anything; and the collection branch is itself guarded by `not args.authorize_extension`, so passing the flag during the open period suppresses collection and turns the tick into a report-only run",
+        "why_it_is_declared_and_not_silently_fixed": "the flag is a governance escape hatch: giving it effect is a policy decision about the closed period, not a repair, and the mission requires the inconsistency to be declared"
+      },
+      "during_open_period": {
+        "argv": [
+          "--collect",
+          "--authorize-extension"
+        ],
+        "delta": {
+          "closure_changed": false,
+          "closure_written": false,
+          "missed": 0,
+          "raw_files": 0,
+          "runs": 0,
+          "windows": 0
+        },
+        "exception": null,
+        "exception_kind": null,
+        "exit_code": 0,
+        "instant": "2026-10-09T02:00:00Z",
+        "last_run": {
+          "actual_end_utc": "2026-10-09T02:00:00Z",
+          "actual_start_utc": "2026-10-09T02:00:00Z",
+          "artifact": "ST6_RUN_EVENT",
+          "collection_attempted": false,
+          "data_freshness": null,
+          "day_type": "weekday",
+          "errors": null,
+          "exit_code": 0,
+          "health_exit_code": null,
+          "health_status": "HEALTHY",
+          "invocation": "MANUAL",
+          "ledger_exit_code": null,
+          "ledger_status": "NOT_EXECUTED_IN_REPLAY",
+          "market_requests": 0,
+          "missed_windows_recorded": [],
+          "raw_evidence_hash": null,
+          "result": "REPORT_ONLY",
+          "run_id": "20261009T020000Z-34b07524",
+          "scheduled_slot_utc": "00:00-04:00 UTC",
+          "session": "asia",
+          "slot_key": "2026-10-09#0",
+          "verifier_status": null,
+          "windows_event_capture_exit_code": null,
+          "windows_event_capture_status": "NOT_EXECUTED_IN_REPLAY"
+        },
+        "network_attempts": 0,
+        "state_after": {
+          "closure_present": false,
+          "closure_sha256": null,
+          "missed": 0,
+          "runs": 400,
+          "windows": 7
+        },
+        "stdout_tail": [
+          "INSUFFICIENT_REGIME_COVERAGE over 7 window(s) / 2 day(s) - coverage REGIME_COVERAGE_INSUFFICIENT, ST-6 DRIFT_WIDER_THAN_MODELLED, breaches 1",
+          "written -> data\\st6\\ST6_FORWARD_REGIME_REPORT.md, data\\st6\\ST6_FORWARD_REGIME_REPORT.json, data\\st6\\ST6_REGIME_COVERAGE.json, data\\st6\\ST6_MODEL_DRIFT.json",
+          "the run log was pruned by 1 oldest event(s)"
+        ]
+      },
+      "reading": "the flag is inert in both directions: it cannot extend the period, and during the period it suppresses collection",
+      "scenario": "11. the declared extension policy against the shipped flag",
+      "verdict": "PASS"
+    }
+  ],
+  "summary": {
+    "declared_deviations": 0,
+    "failed": 0,
+    "passed": 10,
+    "scenarios": 10
+  },
+  "tick": "scripts/st6_forward_regime.py",
+  "tick_sha256": "50fad5e709dbe0b3c99a0687fdec4d2cf7382d4372e59425c1f1e74a8b8404df"
+}

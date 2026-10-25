@@ -1,0 +1,247 @@
+{
+  "schema_version": "paper-data-24h-report-v1",
+  "phase": "PAPER-DATA-ACCUMULATION-V1",
+  "generated_at_iso": "2026-09-30T05:05:00Z",
+  "mode": "PAPER / OFFLINE (read-only public market data; no keys, no account, no orders, no capital)",
+  "run_id": "paper-lab-continuous-02",
+  "head_start": "929677c8034b72424c33930b59482b44350d7aa7",
+  "head_end": "929677c8034b72424c33930b59482b44350d7aa7",
+  "head_unchanged": true,
+  "branch": "main",
+  "tree_clean_at_verification": true,
+  "collector_manifest_commit": "929677c8034b72424c33930b59482b44350d7aa7",
+
+  "verdict": {
+    "final_status": "PAPER_24H_DATA_FAILED",
+    "m03_research_ready": false,
+    "m07_research_ready": false,
+    "false_success": 0,
+    "why": "The collector reached its own 800 MB disk budget after 4.16 h and stopped cleanly. The 24 h clean continuous window was not achieved; usable coverage against the 24 h objective is ~17.3%."
+  },
+
+  "window": {
+    "target_hours": 24.0,
+    "launcher_started_local": "2026-09-30T00:59:13",
+    "system_wall_seconds": 21321.0,
+    "system_wall_hours": 5.92,
+    "collector_started_utc": "2026-09-29T22:59:18.288000+00:00",
+    "collector_ended_utc": "2026-09-30T03:08:51.773000+00:00",
+    "collector_wall_seconds": 14973.485,
+    "collector_wall_hours": 4.160,
+    "usable_hours": 4.160,
+    "coverage_pct_of_24h_target": 17.33,
+    "coverage_pct_of_system_wall": 70.25
+  },
+
+  "host": {
+    "hibernation_enabled": false,
+    "sleep_states_available": ["S0 (Modern Standby / low-power idle, network connected)"],
+    "sleep_states_unavailable": ["S1", "S2", "S3"],
+    "sleep_evidence_in_window": "none observed: collector clock_violations=0, max_clock_skew_ms=0, PAPER cycle cadence ~60 s with no gap",
+    "residual_risk": "only S0 Modern Standby is available on this host; it can throttle background work and must be kept from engaging (AC standby timeout = Never) for the full campaign",
+    "internet_active": true
+  },
+
+  "collector": {
+    "status": "CONTROLLED_STOP",
+    "stop_reason": "disk budget",
+    "stopped_on_disk_budget": true,
+    "stopped_on_min_free": false,
+    "exit_code": 0,
+    "continuity": "INCOMPLETE_DATA",
+    "failure_kind": null,
+    "control_stop_not_crash": true,
+    "max_total_bytes": 800000000,
+    "launcher_default_max_total_bytes": 1100000000,
+    "bytes_written": 799632725,
+    "uncompressed_bytes_written": 14225492225,
+    "compression_ratio": 17.79,
+    "disk_bytes_per_hour": 192354405.06,
+    "projected_gb_per_day": 4.617,
+    "events": 11575244,
+    "agg_trade_events": 163660,
+    "agg_trade_perp_events": 0,
+    "depth_diff_events": 587028,
+    "book_ticker_events": 10820746,
+    "book_checkpoint_events": 1984,
+    "oi_samples": 488,
+    "funding_samples": 488,
+    "mark_price_samples": 488,
+    "reconnects": 9,
+    "resnapshots": 23,
+    "gaps_total": 67,
+    "gaps_recovered_complete": 0,
+    "gaps_recovered_partial": 0,
+    "gaps_unrecoverable": 67,
+    "sequence_gaps": 13,
+    "data_lost_gaps": 13,
+    "data_lost_gap_seconds": 0.0,
+    "remaining_missing_events_note": "F3 (known, open, by design): this counter mixes depth update-id units into an event total; it is not an event-loss count"
+  },
+
+  "book_health": {
+    "books": 4,
+    "final_state": "STALE (books go STALE once the websocket stops feeding them at shutdown; not a quality verdict for the live window)",
+    "healthy_fraction_during_window": "not reported by this run's manifest (window ended on the disk guard, not a planned close)",
+    "crossed_book_events": 0,
+    "invalidations": 1,
+    "snapshot_mismatches": 9,
+    "sequence_gap_streams": ["perp|BTCUSDT depth_diff seq=6", "perp|ETHUSDT depth_diff seq=7"],
+    "spot_books": "spot BTCUSDT and spot ETHUSDT depth_diff had 0 sequence gaps"
+  },
+
+  "paper": {
+    "state": "RUNNING (at verification)",
+    "uptime_seconds": 21321.0,
+    "cycles": 337,
+    "asset_evaluations_per_cycle": 2,
+    "strategies_evaluated_per_cycle": 12,
+    "decisions_per_cycle": 2,
+    "no_trade_per_cycle": 2,
+    "no_trade_kind": "NO_TRADE_STRATEGIC",
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "risk_vetoes": 0,
+    "runtime_failures": 0,
+    "open_positions": 0,
+    "closed_positions": 0,
+    "storage_failures": 0,
+    "paper_candidates": 0
+  },
+
+  "strategies": {
+    "total": 24,
+    "paper_active": 0,
+    "paper_candidate": 0,
+    "cost_killed": 7,
+    "no_gross_edge": 17,
+    "states_unchanged": true
+  },
+
+  "supervisor": {
+    "restarts": 0,
+    "crash_loops": 0,
+    "unexpected_restarts": 0,
+    "note": "the collector exited 0 (a controlled stop), so the supervisor correctly did not restart it"
+  },
+
+  "isolation": {
+    "paper_continued_after_collector_stopped": true,
+    "evidence": "collector ceased at 03:08:51Z; PAPER kept cycling with 0 failures through 06:52 local (uptime 21171 s > collector lifetime 14973 s)",
+    "m03_m07_preserved": true
+  },
+
+  "storage": {
+    "free_bytes": 11023527936,
+    "free_gb": 11.024,
+    "level": "NORMAL",
+    "thresholds_gb": {"warning": 1.5, "critical": 0.8, "stop": 0.3},
+    "raw_generated_bytes": 799632725,
+    "raw_generated_gb": 0.800,
+    "compacted_gb": 0.0,
+    "deleted_gb": 0.0,
+    "space_reclaimed_bytes": 0,
+    "retention_passes": "continuous (300 s loop)",
+    "deletion_enabled": false,
+    "delete_threshold_bytes": 3000000000,
+    "retention_note": "raw was never deleted: free disk stayed above the 3 GB delete threshold, so retention compacted but deleted nothing",
+    "estimated_days_at_observed_rate": 21.4,
+    "raw_data_preserved": true
+  },
+
+  "resources": {
+    "cpu_utilisation": 0.351,
+    "memory_mb_max": 303.09,
+    "memory_mb_final": 300.92,
+    "samples": 250,
+    "network_bytes_per_hour": 708910328.27,
+    "trends": {"memory_leak_observed": false, "disk_runaway_observed": false, "cpu_runaway_observed": false}
+  },
+
+  "preregistered_readiness_criteria": {
+    "note": "Pre-registered BEFORE any analysis of results, per §22/§23. Thresholds are not to be changed mid-campaign.",
+    "m03_order_book_microstructure": [
+      "wall window >= 24 h with usable coverage >= 95% of wall",
+      "HEALTHY book fraction >= 90% of capture time; INVALID fraction <= 0.1%",
+      "sequence gaps that lose data == 0; crossed_book_events == 0; total unrecovered gap downtime <= 0.5% of window",
+      ">= 24 h of depth_diff AND book_ticker for BTC and ETH",
+      "offline replay PASS: 100% fingerprints verify, deterministic, book_match",
+      ">= 3 non-overlapping time segments available for DEV/VAL/OOS"
+    ],
+    "m07_open_interest_price": [
+      "open_interest sampled at >= 1 per 60 s with <= 1% missing for >= 24 h (>= 1440 samples/asset)",
+      "price/OI join coverage >= 95% at 5/15/30 m",
+      "offline replay PASS",
+      ">= 3 non-overlapping time segments for DEV/VAL/OOS"
+    ]
+  },
+
+  "preregistered_gate_results": {
+    "m03": {"coverage_pct": 17.33, "usable_hours": 4.16, "sample": "4.16 h depth/book_ticker for BTC+ETH", "readiness": "NOT_READY", "reason": "window < 24 h; coverage far below 95%; only one time segment"},
+    "m07": {"coverage_pct": 17.33, "usable_hours": 4.16, "sample": "488 OI samples over 4.16 h (~1/min, cadence would meet the bar over 24 h)", "readiness": "NOT_READY", "reason": "window < 24 h; history insufficient for DEV/VAL/OOS"}
+  },
+
+  "quality_gate": {
+    "offline_replay": "PASS - ok=true, book_match=true, 411/411 fingerprints match, deterministic=true, internet_access=false, errors=[] (reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json)",
+    "fingerprints": 411,
+    "decisiontrace_validation": "not applicable to a 4.16 h failed window (no trade decisions to trace; PAPER produced NO_TRADE throughout)",
+    "outcome_validation": "collector manifest outcome = CONTROLLED_STOP / exit 0, consistent with the runtime"
+  },
+
+  "false_success_checks": {
+    "host_slept": false,
+    "large_gaps_hidden": false,
+    "collector_stopped_silently": false,
+    "storage_deleted_required_data": false,
+    "dashboard_stale_but_healthy": false,
+    "runtime_changed_during_campaign": false,
+    "profitability_claimed_from_24h": false
+  },
+
+  "recovery": {
+    "decision": "fresh clean 24 h window (user-approved)",
+    "window_1_stopped": true,
+    "window_1_lab_verdict": "FAILED - PAPER did not honor the graceful STOP within 120 s and was force-terminated (exit 1); collector/retention/strategy_lab exited 0",
+    "window_1_paper_forced_stop": true,
+    "window_2_run_id": "paper-lab-continuous-03",
+    "window_2_started_local": "2026-09-30T19:52",
+    "window_2_collector_max_total_bytes": 7000000000,
+    "window_2_duration_hours": 0.0,
+    "window_2_initial_state": "HEALTHY, 4/4 children RUNNING, 0 restarts, collector events flowing, 0 gaps",
+    "host_sleep_prevented": "powercfg -change -standby-timeout-ac 0 (AC standby = Never; verified 0x0)",
+    "retention_unchanged": true
+  },
+
+  "window_2_status": {
+    "run_id": "paper-lab-continuous-03",
+    "started_utc_approx": "2026-09-30T17:53:01Z",
+    "expected_eligible_utc": "2026-10-01T17:53:01Z",
+    "elapsed_minutes_at_last_check": 13.0,
+    "state_at_last_check": "HEALTHY",
+    "children_at_last_check": {"paper": "RUNNING", "collector": "RUNNING", "retention": "RUNNING", "strategy_lab": "RUNNING"},
+    "child_restarts": 0,
+    "events_at_last_check": 598616,
+    "gaps_at_last_check": 0,
+    "reconnects_at_last_check": 0,
+    "segments_at_last_check": 458,
+    "disk_free_gb_at_last_check": 26.35,
+    "collector_budget_bytes": 7000000000,
+    "advancing_proof": "events +118667 and last_receive +91829 ms over 94.9 s wall; cycle 11->12",
+    "monitor": "reports/paper-lab/run03_monitor.py -> reports/paper-lab/paper-lab-continuous-03/MONITOR.jsonl (every 300 s, read-only)",
+    "eligibility": "INCOMPLETE - wall-clock < 24 h; certification gates 3-9 not yet run"
+  },
+
+  "evidence_files": [
+    "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json",
+    "reports/microstructure-forward-continuous/state/paper-lab-continuous-02.json",
+    "reports/microstructure-forward-continuous/reports/RETENTION_REPORT.json",
+    "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+    "reports/paper-lab/paper-lab-continuous-02/SYSTEM_HEARTBEAT.json",
+    "reports/paper-lab/paper-lab-continuous-02/LAB_PLAN.json",
+    "reports/paper-lab/paper-lab-continuous-02/logs/collector.log",
+    "reports/paper-lab/paper-lab-continuous-02/logs/paper.log",
+    "RUN_REPORT.md",
+    "RUN_REPORT.json",
+    "FINAL_REPORT.md"
+  ]
+}

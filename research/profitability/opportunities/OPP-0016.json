@@ -1,0 +1,89 @@
+{
+  "opportunity_id": "OPP-0016",
+  "title": "Q24 Crypto Guide Strategy (Quantiacs) — SMA15/34 + RSI14 long-only crypto daily",
+  "source_ids": [
+    "S2-08",
+    "S2-07",
+    "S2-09",
+    "S2-41"
+  ],
+  "economic_hypothesis": "the contest ranks on in-sample Sharpe above 1.0 and runs qualifying strategies in daily live paper trading; no per-strategy number is public",
+  "market": "crypto daily spot, long only (contest rule)",
+  "assets": "top-10 crypto by market capitalisation, recomputed monthly from coinmarketcap data, stablecoins excluded; the platform exposes it as the is_liquid field and hand-picking is forbidden",
+  "timeframe": "daily",
+  "entry_rules": "weight 1 where SMA(close,15) > SMA(close,34) AND is_liquid AND (RSI(close,14) < 34 OR RSI(close,14) > 68)",
+  "exit_rules": "no stop is defined anywhere in the example; no profit target is defined; positions are re-evaluated every day; an asset that no longer satisfies the signal gets weight 0; the signal flipping to zero, i.e. either SMA condition or RSI condition failing",
+  "risk_rules": "weight 1 on every qualifying liquid asset, normalised by the platform's cleaner (qnout.clean, competition_type='crypto_daily_long') into a long-only allocation; daily bars, no session constraint",
+  "parameters": "SMA 15/34, RSI 14 with thresholds 34 and 68, daily rebalance",
+  "claimed_period": "in-sample from 2016-01-01 (earlier data may be used for testing/training)",
+  "claimed_metrics": "the page shows the statistics call but not its output; the contest requires an in-sample Sharpe above 1.0 for validity",
+  "transaction_cost_model": "the page states no cost assumption; the statistics function decides what is charged",
+  "required_data": "Quantiacs cryptodaily dataset (qnt.data.cryptodaily_load_data, min_date 2015-01-01) plus the is_liquid field",
+  "external_code": "the published example, cloneable in the platform (the code is in the page)",
+  "external_results": "the example's source code read verbatim, with the contest's own backtester as the evaluation harness",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the contest's own gate is in-sample Sharpe, which selects for overfitting and says nothing about costs",
+    "the page's benchmark download raised an HTTP 404 while being read, so even the benchmark call is currently broken",
+    "long-only by rule, so the strategy has no way to express a negative view",
+    "nothing about the example's realised live paper performance is public",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (the page states no cost assumption; the statistics function decides what is charged)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "exit_stop",
+    "exit_target",
+    "execution_assumption",
+    "transaction_costs",
+    "original_metrics",
+    "source_version"
+  ],
+  "replication_difficulty": "PLAUSIBLE_BUT_UNVERIFIED: a daily-rebalanced top-10 book with a slow SMA filter can keep turnover low enough to clear the 23.791 bps round trip, but the example states no cost model and no turnover, so nothing about net edge can be asserted from the source",
+  "evidence_quality": "E2 — the example's source code read verbatim, with the contest's own backtester as the evaluation harness",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "MEDIUM",
+  "lookahead_risk": "LOW",
+  "implementation_risk": "MEDIUM",
+  "status": "ROUND_3_SUPERSEDED_INSUFFICIENT_EVIDENCE",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 7,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 3,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 3,
+    "INDEPENDENT_VALIDATION": 3,
+    "IMPLEMENTATION_FIDELITY": 2
+  },
+  "evidence_score_total": 29,
+  "rank": "REPLICATE_P1",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "15/21",
+  "gaps_to_p0": [
+    "no stop and no target: the exit is only the signal flipping",
+    "no cost model is published, so the 23.791 bps floor cannot be applied from the source",
+    "the data source is platform-bound (contest rule: only Quantiacs data may be used)",
+    "original metrics are not quoted in the page"
+  ],
+  "rejection_reason_codes": [],
+  "rank_history": [
+    {
+      "rank": "REPLICATE_P1",
+      "rfc": "RFC-035S2"
+    }
+  ],
+  "current_rank": "INSUFFICIENT_EVIDENCE",
+  "rank_semantics": "`rank` is frozen as assigned by the round that classified this candidate; `current_rank` is the rank in force after RFC-035S3",
+  "round_3_reclassification": {
+    "previous_rank": "REPLICATE_P1",
+    "corrected_rank": "INSUFFICIENT_EVIDENCE",
+    "reason": "no existing result attributable to the code (only the contest threshold), un coste no declarado y tres campos ejecutables sin fijar: la evidencia económica se reclasifica por debajo de E2",
+    "executable_rule_completeness": "7/10",
+    "evidence_completeness": "6/7",
+    "snapshot_from": "S3-03"
+  }
+}

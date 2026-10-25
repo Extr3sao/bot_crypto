@@ -1,0 +1,195 @@
+{
+  "cost_bps": 23.790569,
+  "data": {
+    "available": true,
+    "capture_log": "data/raw/alpha002/CAPTURE_LOG.jsonl",
+    "captured_at_utc": "2026-10-07T05:27:19.698000+00:00",
+    "derivative_series_span_days": 29.0,
+    "funding_history_days": 2583.666667,
+    "manifest": "data/raw/alpha002/MANIFEST.json",
+    "retention_policy": "Binance retains /futures/data/* for 30 days at every granularity; fundingRate is full history. A day without a capture run is a day of information destroyed.",
+    "rows": 274835,
+    "scheduler": {
+      "cadence": "every 15 minutes",
+      "task": "TradingAgentic-ALPHA002-Capture",
+      "why": "the venue retains these series for 30 days only, so a missed day is a day of information destroyed and no later run can recover it"
+    },
+    "series": 84,
+    "series_with_gaps": 0
+  },
+  "discovery_status": "not started: the derivatives series only began existing on 2026-10-07, and the preregistered split is defined below before any result is observed",
+  "frozen_split": {
+    "blocked_until": "at least 30 days of continuous capture have accrued, so that the discovery and validation slices are both covered by real observations rather than by a retention edge",
+    "discovery_fraction": 0.6,
+    "holdout_fraction": 0.2,
+    "rule": "a calendar split of the captured span, identical for every series, with the final fifth reserved and never read by discovery",
+    "validation_fraction": 0.2
+  },
+  "generated_at_utc": "2026-10-07T05:31:19.438463+00:00",
+  "hypothesis_ids": [
+    "A2-H01",
+    "A2-H02",
+    "A2-H03"
+  ],
+  "preregistration_hash": "8b09f608256a31722b366f10e52513e9a347405d078138a9c350df1ad2439f6b",
+  "registry": {
+    "campaign": "ALPHA-002",
+    "cost_model": {
+      "cost_bps": 23.790569,
+      "inherited_from": "trading_bot.research.alpha001.COST_BPS_V3",
+      "name": "COST_MODEL_V3",
+      "retuned": false
+    },
+    "entry_timeframes": [
+      "5m",
+      "15m"
+    ],
+    "features": [
+      {
+        "definition": "bar return divided by ATR over the same bar",
+        "name": "ret_z"
+      },
+      {
+        "definition": "ATR divided by price, the local volatility level",
+        "name": "atr_pct"
+      },
+      {
+        "definition": "per-bar proportional change in open interest",
+        "name": "oi_chg"
+      },
+      {
+        "definition": "per-bar change in oi_chg, i.e. the second difference",
+        "name": "oi_accel"
+      },
+      {
+        "definition": "(takerBuyVolume - takerSellVolume) / (takerBuyVolume + takerSellVolume)",
+        "name": "taker_imbalance"
+      },
+      {
+        "definition": "most recent settled funding rate, as a decimal",
+        "name": "funding"
+      },
+      {
+        "definition": "trailing percentile of the global long/short account ratio",
+        "name": "ls_global_pctile"
+      },
+      {
+        "definition": "trailing percentile of the top-trader position long/short ratio",
+        "name": "ls_top_position_pctile"
+      },
+      {
+        "definition": "change in short-horizon price momentum, the deterioration term",
+        "name": "momentum_delta"
+      },
+      {
+        "definition": "1h volatility regime: +1 expanding, -1 contracting",
+        "name": "vol_regime"
+      }
+    ],
+    "forward_bars": 1,
+    "hypotheses": [
+      {
+        "direction_rule": "LONG when ret_z > breakout_ret_z and oi_chg > oi_expanding and taker_imbalance > taker_imbalance_confirm and |funding| <= funding_extreme_abs",
+        "expected_regime": "volatility expanding (vol_regime = +1)",
+        "family_id": "G1_POSITIONING_CONFIRMATION",
+        "hypothesis_id": "A2-H01",
+        "invalidation": "no forward continuation on average, or the effect is carried by one trade, or the sign does not survive the four sub-windows",
+        "mechanism": "a breakout accompanied by rising open interest is new positioning rather than short covering, and aggressive buyers confirm it, so the move continues",
+        "name": "BREAKOUT_CONFIRMATION",
+        "regime_timeframe": "1h",
+        "timeframes": [
+          "5m",
+          "15m"
+        ],
+        "traded": true
+      },
+      {
+        "direction_rule": "SHORT when max(ls_global_pctile, ls_top_position_pctile) >= crowding_pctile and funding > funding_elevated and momentum_delta < momentum_deteriorating",
+        "expected_regime": "any; crowding is the conditioning variable",
+        "family_id": "G2_CROWDED_REVERSAL",
+        "hypothesis_id": "A2-H02",
+        "invalidation": "positioning normalises without a reversal, or the reversal is symmetric (the mirror long arm is not tested, so a symmetric result is not an edge)",
+        "mechanism": "when published positioning is crowded long and the carry is stretched, the marginal buyer is already in and the move mean-reverts when momentum fades",
+        "name": "CROWDED_POSITION_REVERSAL",
+        "regime_timeframe": "1h",
+        "timeframes": [
+          "5m",
+          "15m"
+        ],
+        "traded": true
+      },
+      {
+        "direction_rule": "LONG if ret_z > breakout_ret_z, SHORT if ret_z < -breakout_ret_z, in both cases only when oi_chg > oi_expanding and taker_imbalance aligns with the sign of ret_z by more than taker_imbalance_confirm",
+        "expected_regime": "any; open-interest expansion is the conditioning variable",
+        "family_id": "G3_FLOW_CONTINUATION",
+        "hypothesis_id": "A2-H03",
+        "invalidation": "the expansion subset does not out-return the collapse subset, or the effect is driven by a single directional episode",
+        "mechanism": "a strong move with expanding open interest and aligned aggressor flow is new risk being taken, while the same move with collapsing open interest is positions being closed and carries no continuation",
+        "name": "FLOW_CONTINUATION_VS_EXHAUSTION",
+        "regime_timeframe": "1h",
+        "timeframes": [
+          "5m",
+          "15m"
+        ],
+        "traded": true
+      }
+    ],
+    "non_traded_arms": [
+      {
+        "arm_id": "A2-NT-01",
+        "hypothesis_id": "A2-H01",
+        "name": "SHORT_COVERING_CONTRAST",
+        "role": "the declared comparator for H1: it is reported as a differential and may never be promoted into a traded hypothesis",
+        "rule": "ret_z > breakout_ret_z and oi_chg < oi_expanding"
+      },
+      {
+        "arm_id": "A2-NT-02",
+        "hypothesis_id": "A2-H03",
+        "name": "EXHAUSTION_CONTRAST",
+        "role": "the declared comparator for H3: declared NO_TRADE, reported as a differential and never promoted",
+        "rule": "|ret_z| > breakout_ret_z and oi_chg < oi_expanding"
+      }
+    ],
+    "parent": {
+      "binding_constraint": "EFFECT_SIZE_NOT_COST",
+      "campaign": "ALPHA-001",
+      "not_reopened": "no OHLCV hypothesis, threshold or horizon from ALPHA-001 is re-tested",
+      "verdict": "ALPHA_ECONOMICALLY_TOO_SMALL"
+    },
+    "prohibitions": [
+      "no parameter search",
+      "no threshold tuning after results are seen",
+      "no adding or removing a hypothesis after results are seen",
+      "no re-use of the ALPHA-001 holdout for an ALPHA-001 question",
+      "no change to COST_MODEL_V3"
+    ],
+    "question": "Does adding information about market participants produce an out-of-sample effect large enough to clear the economic hurdle?",
+    "regime_timeframe": "1h",
+    "statistical_gate": {
+      "admission_rule": "gross mean per trade must clear cost + 25% execution uncertainty + the RFC-023 winner's-curse buffer + z_{0.975} * sigma / sqrt(n_effective), with every term frozen before any result is observed",
+      "concentration_gate": "top-1 trade share > 0.25 or net excluding the best trade < 0 is FRAGILE",
+      "inherited_from": "ALPHA-001",
+      "multiplicity": "Benjamini-Hochberg at q = 0.10 and Holm at alpha = 0.10",
+      "selection_null": "best-of-3 permutation null, 1000 draws",
+      "stability_gate": "gross mean must keep its sign across four sub-windows",
+      "underpowered_is_not_negative": true
+    },
+    "thresholds": {
+      "breakout_ret_z": 1.0,
+      "crowding_pctile": 0.9,
+      "funding_elevated": 0.0001,
+      "funding_extreme_abs": 0.0003,
+      "momentum_deteriorating": 0.0,
+      "oi_expanding": 0.0,
+      "taker_imbalance_confirm": 0.05
+    },
+    "title": "Derivatives Positioning & Order-Flow Alpha",
+    "universe": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "XRPUSDT"
+    ]
+  },
+  "status": "FROZEN_AWAITING_DATA"
+}

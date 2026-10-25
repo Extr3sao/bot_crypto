@@ -1,0 +1,32 @@
+{
+  "campaign": "ARP-005",
+  "start_sha": "eae4c27e8254303c30ddf42abebb4ddaecf10716",
+  "branch": "main",
+  "lineage": {
+    "arp004_final_head": "eae4c27e8254303c30ddf42abebb4ddaecf10716",
+    "commit_c4f82a0": "present",
+    "commit_eae4c27": "present",
+    "git_diff_cached": "empty",
+    "preexisting_unrelated_dirty_preserved": true,
+    "experimental_subpackage_untracked": true
+  },
+  "independent_reverification": {
+    "exp_arp_007": {"decision": "REJECT_COSTS", "dev_trades": 153, "gross_bps": 0.776, "net_bps": -22.783,
+                    "method": "re-ran scripts/alpha_recovery_v1_3.py; DECISION.json byte-identical"},
+    "exp_arp_010": {"decision": "INSUFFICIENT_EVIDENCE", "dev_trades": 6, "gross_bps": -75.059,
+                    "method": "re-ran scripts/alpha_recovery_v1_3.py; DECISION.json byte-identical"},
+    "oos_opened": false,
+    "pytest": "1503 passed / 0 failed / 0 skipped",
+    "ruff": "clean",
+    "mypy": "Success: no issues found in 413 source files"
+  },
+  "frozen_inputs": {
+    "config_hash": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+    "cost_bps_rt": 23.559016994374947,
+    "cost_model_version": "COST_MODEL_V3",
+    "baseline_dataset_fingerprint": "9d51385d570b8ff4ba1af22c3d4491f78c36111ec7383173e7d0351d5ee21658",
+    "baseline_dev_days_per_symbol": 122,
+    "baseline_validation_days_per_symbol": 62,
+    "baseline_oos_days_per_symbol": 24
+  }
+}

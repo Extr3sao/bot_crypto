@@ -1,0 +1,83 @@
+{
+  "opportunity_id": "OPP-0014",
+  "title": "Trend-following and Mean-reversion in Bitcoin (Quantpedia, 2022) — the earlier study",
+  "source_ids": [
+    "S2-11"
+  ],
+  "economic_hypothesis": "the 2024 revisit states the original strategies are 'slightly less effective' on the longer sample",
+  "market": "read at listing level",
+  "assets": "read at listing level",
+  "timeframe": "read at listing level",
+  "entry_rules": "read at listing level",
+  "exit_rules": "UNKNOWN; UNKNOWN; UNKNOWN; UNKNOWN",
+  "risk_rules": "UNKNOWN; UNKNOWN",
+  "parameters": "UNKNOWN",
+  "claimed_period": "only the search summary was seen",
+  "claimed_metrics": "UNKNOWN",
+  "transaction_cost_model": "UNKNOWN",
+  "required_data": "read at listing level",
+  "external_code": "UNKNOWN",
+  "external_results": "search-result summary only; superseded by S2-10 for this round's purposes",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "only a search snippet was available for this round, so it is registered for completeness and not used as evidence",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (UNKNOWN)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "market",
+    "assets",
+    "timeframe",
+    "data_source",
+    "data_fields",
+    "entry_long",
+    "entry_short",
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "parameters",
+    "sizing_rule",
+    "execution_assumption",
+    "session_rules",
+    "warmup",
+    "transaction_costs",
+    "original_period",
+    "original_metrics",
+    "implementation_source",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_ASSESSED: nothing was read beyond the summary",
+  "evidence_quality": "E1 — search-result summary only; superseded by S2-10 for this round's purposes",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "MEDIUM",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "MEDIUM",
+  "status": "ROUND_2_INSUFFICIENT_EVIDENCE",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 0,
+    "CODE_AVAILABILITY": 1,
+    "DATA_REPRODUCIBILITY": 2,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 1,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 1,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 6,
+  "rank": "INSUFFICIENT_EVIDENCE",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "0/21",
+  "gaps_to_p0": [
+    "read the underlying study before it can be treated as a candidate",
+    "no code"
+  ],
+  "rejection_reason_codes": [
+    "SOURCE_READ_LEVEL_INSUFFICIENT",
+    "NO_CODE"
+  ]
+}

@@ -1,0 +1,432 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "phase": "WP-13B replay",
+  "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm13-clean",
+  "target_commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+  "started_at": "2026-10-25T13:42:59Z",
+  "environment": {
+    "python": "3.11.15",
+    "python_executable": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.venv/Scripts/python.exe",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "phases": [
+    {
+      "phase": "review",
+      "status": "PASS",
+      "attempts": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "timed_out": false,
+          "duration_seconds": 262.5,
+          "log": ".tdm13\\logs\\review.attempt1.log",
+          "command": "python.exe scripts/tdm12_review.py"
+        }
+      ]
+    },
+    {
+      "phase": "inventory",
+      "status": "PASS",
+      "attempts": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "timed_out": false,
+          "duration_seconds": 453.9,
+          "log": ".tdm13\\logs\\inventory.attempt1.log",
+          "command": "python.exe scripts/tdm12_inventory.py"
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "artifact": "review.json",
+      "field": "trades",
+      "source": "ledger.derived_trades",
+      "committed": 115,
+      "replayed": 115,
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "gross_mean",
+      "source": "ledger.gross_mean",
+      "committed": -12.577,
+      "replayed": -12.577,
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "net_mean",
+      "source": "ledger.net_mean",
+      "committed": -36.3676,
+      "replayed": -36.3676,
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "day_clustered_ci95_gross",
+      "source": "dependence.day_clustered_ci95_gross",
+      "committed": {
+        "lo": -23.2174,
+        "hi": -3.101,
+        "se": 5.2335,
+        "day_clusters": 26
+      },
+      "replayed": {
+        "lo": -23.2174,
+        "hi": -3.101,
+        "se": 5.2335,
+        "day_clusters": 26
+      },
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "net_upper_bound_by_method",
+      "source": "dependence.net_upper_bound_by_method",
+      "committed": {
+        "1d": -26.8916,
+        "2d": -26.695,
+        "5d": -29.4407,
+        "10d": -31.5307
+      },
+      "replayed": {
+        "1d": -26.8916,
+        "2d": -26.695,
+        "5d": -29.4407,
+        "10d": -31.5307
+      },
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "per_asset",
+      "source": "dependence.per_asset",
+      "committed": {
+        "BTC": {
+          "trades": 36,
+          "gross_mean": -8.1873,
+          "share": 0.313
+        },
+        "ETH": {
+          "trades": 35,
+          "gross_mean": -19.2816,
+          "share": 0.304
+        },
+        "SOL": {
+          "trades": 44,
+          "gross_mean": -10.8353,
+          "share": 0.383
+        }
+      },
+      "replayed": {
+        "BTC": {
+          "trades": 36,
+          "gross_mean": -8.1873,
+          "share": 0.313
+        },
+        "ETH": {
+          "trades": 35,
+          "gross_mean": -19.2816,
+          "share": 0.304
+        },
+        "SOL": {
+          "trades": 44,
+          "gross_mean": -10.8353,
+          "share": 0.383
+        }
+      },
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "lookahead_advantage_bps",
+      "source": "controls.lookahead_advantage_bps",
+      "committed": 29.6308,
+      "replayed": 29.6308,
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "independence_status",
+      "source": "independence.status",
+      "committed": "INDEPENDENCE_NOT_DEMONSTRATED",
+      "replayed": "INDEPENDENCE_NOT_DEMONSTRATED",
+      "match": true
+    },
+    {
+      "artifact": "CANDIDATE_REGISTRY.json",
+      "field": "<whole document, ephemeral keys removed>",
+      "ephemeral_keys_removed": [
+        "generated_at_ms",
+        "generated_at_utc",
+        "elapsed_s",
+        "run_id",
+        "preflight",
+        "verified_at",
+        "cell metrics ready in"
+      ],
+      "difference_count": 24,
+      "differences": [
+        {
+          "path": "rows[0].parameter_hash",
+          "committed": "9825f38950c5b975",
+          "replayed": "359ba1b773defee8"
+        },
+        {
+          "path": "rows[1].parameter_hash",
+          "committed": "9825f38950c5b975",
+          "replayed": "359ba1b773defee8"
+        },
+        {
+          "path": "rows[2].parameter_hash",
+          "committed": "9825f38950c5b975",
+          "replayed": "359ba1b773defee8"
+        },
+        {
+          "path": "rows[3].parameter_hash",
+          "committed": "9825f38950c5b975",
+          "replayed": "359ba1b773defee8"
+        },
+        {
+          "path": "rows[4].parameter_hash",
+          "committed": "78d0625e5604f84f",
+          "replayed": "1e7e392fd1d6efe0"
+        },
+        {
+          "path": "rows[5].parameter_hash",
+          "committed": "78d0625e5604f84f",
+          "replayed": "1e7e392fd1d6efe0"
+        },
+        {
+          "path": "rows[6].parameter_hash",
+          "committed": "78d0625e5604f84f",
+          "replayed": "1e7e392fd1d6efe0"
+        },
+        {
+          "path": "rows[7].parameter_hash",
+          "committed": "78d0625e5604f84f",
+          "replayed": "1e7e392fd1d6efe0"
+        },
+        {
+          "path": "rows[8].parameter_hash",
+          "committed": "07d019114e776a5d",
+          "replayed": "6fe364297f1af6b1"
+        },
+        {
+          "path": "rows[9].parameter_hash",
+          "committed": "07d019114e776a5d",
+          "replayed": "6fe364297f1af6b1"
+        },
+        {
+          "path": "rows[10].parameter_hash",
+          "committed": "07d019114e776a5d",
+          "replayed": "6fe364297f1af6b1"
+        },
+        {
+          "path": "rows[11].parameter_hash",
+          "committed": "07d019114e776a5d",
+          "replayed": "6fe364297f1af6b1"
+        },
+        {
+          "path": "rows[12].parameter_hash",
+          "committed": "633a8a7f61cc2161",
+          "replayed": "4a613a8e5d8efc6d"
+        },
+        {
+          "path": "rows[13].parameter_hash",
+          "committed": "633a8a7f61cc2161",
+          "replayed": "4a613a8e5d8efc6d"
+        },
+        {
+          "path": "rows[14].parameter_hash",
+          "committed": "633a8a7f61cc2161",
+          "replayed": "4a613a8e5d8efc6d"
+        },
+        {
+          "path": "rows[15].parameter_hash",
+          "committed": "633a8a7f61cc2161",
+          "replayed": "4a613a8e5d8efc6d"
+        },
+        {
+          "path": "rows[16].parameter_hash",
+          "committed": "1d88358cc4da07d2",
+          "replayed": "5e1895d693b0af52"
+        },
+        {
+          "path": "rows[17].parameter_hash",
+          "committed": "1d88358cc4da07d2",
+          "replayed": "5e1895d693b0af52"
+        },
+        {
+          "path": "rows[18].parameter_hash",
+          "committed": "1d88358cc4da07d2",
+          "replayed": "5e1895d693b0af52"
+        },
+        {
+          "path": "rows[19].parameter_hash",
+          "committed": "1d88358cc4da07d2",
+          "replayed": "5e1895d693b0af52"
+        }
+      ],
+      "match": false
+    },
+    {
+      "artifact": "DATA_WINDOW_REGISTRY.json",
+      "field": "<whole document, ephemeral keys removed>",
+      "ephemeral_keys_removed": [
+        "generated_at_ms",
+        "generated_at_utc",
+        "elapsed_s",
+        "run_id",
+        "preflight",
+        "verified_at",
+        "cell metrics ready in"
+      ],
+      "difference_count": 0,
+      "differences": [],
+      "match": true
+    }
+  ],
+  "differences": [
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[0].parameter_hash",
+      "committed": "9825f38950c5b975",
+      "replayed": "359ba1b773defee8"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[1].parameter_hash",
+      "committed": "9825f38950c5b975",
+      "replayed": "359ba1b773defee8"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[2].parameter_hash",
+      "committed": "9825f38950c5b975",
+      "replayed": "359ba1b773defee8"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[3].parameter_hash",
+      "committed": "9825f38950c5b975",
+      "replayed": "359ba1b773defee8"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[4].parameter_hash",
+      "committed": "78d0625e5604f84f",
+      "replayed": "1e7e392fd1d6efe0"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[5].parameter_hash",
+      "committed": "78d0625e5604f84f",
+      "replayed": "1e7e392fd1d6efe0"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[6].parameter_hash",
+      "committed": "78d0625e5604f84f",
+      "replayed": "1e7e392fd1d6efe0"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[7].parameter_hash",
+      "committed": "78d0625e5604f84f",
+      "replayed": "1e7e392fd1d6efe0"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[8].parameter_hash",
+      "committed": "07d019114e776a5d",
+      "replayed": "6fe364297f1af6b1"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[9].parameter_hash",
+      "committed": "07d019114e776a5d",
+      "replayed": "6fe364297f1af6b1"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[10].parameter_hash",
+      "committed": "07d019114e776a5d",
+      "replayed": "6fe364297f1af6b1"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[11].parameter_hash",
+      "committed": "07d019114e776a5d",
+      "replayed": "6fe364297f1af6b1"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[12].parameter_hash",
+      "committed": "633a8a7f61cc2161",
+      "replayed": "4a613a8e5d8efc6d"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[13].parameter_hash",
+      "committed": "633a8a7f61cc2161",
+      "replayed": "4a613a8e5d8efc6d"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[14].parameter_hash",
+      "committed": "633a8a7f61cc2161",
+      "replayed": "4a613a8e5d8efc6d"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[15].parameter_hash",
+      "committed": "633a8a7f61cc2161",
+      "replayed": "4a613a8e5d8efc6d"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[16].parameter_hash",
+      "committed": "1d88358cc4da07d2",
+      "replayed": "5e1895d693b0af52"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[17].parameter_hash",
+      "committed": "1d88358cc4da07d2",
+      "replayed": "5e1895d693b0af52"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[18].parameter_hash",
+      "committed": "1d88358cc4da07d2",
+      "replayed": "5e1895d693b0af52"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[19].parameter_hash",
+      "committed": "1d88358cc4da07d2",
+      "replayed": "5e1895d693b0af52"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[20].parameter_hash",
+      "committed": "b1717c10016ee003",
+      "replayed": "c41acd1a0bbd2a30"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[21].parameter_hash",
+      "committed": "b1717c10016ee003",
+      "replayed": "c41acd1a0bbd2a30"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[22].parameter_hash",
+      "committed": "b1717c10016ee003",
+      "replayed": "c41acd1a0bbd2a30"
+    },
+    {
+      "path": "CANDIDATE_REGISTRY.json:rows[23].parameter_hash",
+      "committed": "b1717c10016ee003",
+      "replayed": "c41acd1a0bbd2a30"
+    }
+  ],
+  "status": "FAIL",
+  "clone_state": {
+    "head": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+    "head_matches_target": true,
+    "tracked_dirty": [],
+    "tracked_dirty_count": 0
+  },
+  "inputs": {
+    "files": 26,
+    "matching": 26,
+    "failures": []
+  },
+  "incomplete_reason": [
+    "CANDIDATE_REGISTRY.json:<whole document, ephemeral keys removed>"
+  ],
+  "finished_at": "2026-10-25T13:54:56Z",
+  "duration_seconds": 716.4
+}

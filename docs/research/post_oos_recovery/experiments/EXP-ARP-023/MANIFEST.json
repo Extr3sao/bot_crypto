@@ -1,0 +1,131 @@
+{
+  "experiment_id": "EXP-ARP-023",
+  "strategy_id": "H-MKTNEUTRAL-RELVAL-001",
+  "arm": "PROJECT_DERIVED_VARIANT",
+  "source_faithful": false,
+  "source_attribution": "NONE — new project hypothesis",
+  "mechanism_family": "market-neutral relative value (dollar-neutral + beta-neutral cross-sectional long/short)",
+  "lineage": "NEW. Not EXP-ARP-008 (single-asset time-series rule). Not EXP-ARP-016/017/021 (long-only cross-sectional ranking, beta-exposed). The materially different object is a two-sided, dollar- and beta-neutralised book, whose return is a relative-value spread rather than crypto beta.",
+  "mechanism_statement": "Rank the PIT eligible universe by a frozen cross-sectional reversal score, go long the cheapest top_k and short the richest bottom_k with equal notional per leg (sum of weights = 0) and a beta-neutrality overlay; the traded object is the neutral relative-value spread, not a directional exposure.",
+  "assets": ["DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)"],
+  "timeframe": "1d",
+  "neutrality": {
+    "target": "dollar-neutral AND beta-neutral",
+    "dollar_neutral": "long leg notional == short leg notional; sum of weights = 0",
+    "gross_exposure_multiple": 2.0,
+    "beta_reference": "BTCUSDT",
+    "beta_estimator": "through-origin OLS slope of held-name daily returns on BTCUSDT daily returns",
+    "beta_window_days": 60,
+    "beta_tolerance": 0.1,
+    "fail_closed_if": "|beta_book| > beta_tolerance -> no rebalance taken; book flat for that period",
+    "residual_beta_reported_per_rebalance": true
+  },
+  "rules": {
+    "signal": "score_i = -log(close_i,t / close_i,t-30); rank eligible names by score descending",
+    "entry": "long top_k by score; short bottom_k by score; equal notional per leg",
+    "exit": "a name leaves when it drops out of its tail at a rebalance or after max_hold_days; act next open",
+    "rebalance": "every 7 days at UTC close; act next open",
+    "stop": "none (tail rotation plus the beta-neutrality fail-closed rule are the exits)",
+    "position": "two-sided neutral book; gross 2.0 x 500 USD = 1000 USD; no compounding; no net directional position"
+  },
+  "parameters": {
+    "formation_days": 30,
+    "top_k": 10,
+    "min_members": 20,
+    "rebalance_days": 7,
+    "beta_window_days": 60,
+    "beta_tolerance": 0.1,
+    "max_hold_days": 21
+  },
+  "robustness_grid": {
+    "formation_days": [7, 30, 60],
+    "top_k": [5, 10, 15],
+    "cost_multiples": [1.0, 1.25, 1.5, 2.0],
+    "note": "pre-registered so the frozen choice cannot be read as cherry-picked; the frozen configuration is formation_days=30, top_k=10"
+  },
+  "cost_model": {
+    "version": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "source": "live CostEngine (never hardcoded)",
+    "legs_per_rotation": 2,
+    "stress_multiples": [0.5, 1.0, 1.25, 1.5, 2.0]
+  },
+  "short_leg": {
+    "status": "EXTERNAL_DATA_REQUIRED",
+    "data_status": "DATA_BLOCKED_INTERNAL — no funding-rate / borrow-rate / basis series exists in the 1d USDT corpus",
+    "assumed_borrow_bps_per_day": null,
+    "zero_borrow_forbidden": true,
+    "gross_screen_label": "SHORT_LEG_UNCOSTED",
+    "gross_screen_promotable": false
+  },
+  "data": {
+    "corpus": "reports/alpha-diversified-v1/data (130 native 1d USDT markets)",
+    "universe_version": "ARP-006-UNIVERSE-v1",
+    "survivorship_limitation": "SURVIVORSHIP_DATA_LIMITATION"
+  },
+  "splits": {
+    "DEV": ["2019-01-01", "2024-01-01"],
+    "VALIDATION": ["2024-01-01", "2025-07-01"],
+    "OOS_LOCK": ["2026-03-01", "2027-03-01"],
+    "oos_opened": false,
+    "oos_status": "FORWARD_PAPER_ONLY_NOT_AVAILABLE",
+    "holdout_id": "HOLDOUT-ARP-019-FORWARD"
+  },
+  "spec_contract": {
+    "experiment_id": "EXP-ARP-023",
+    "strategy_id": "H-MKTNEUTRAL-RELVAL-001",
+    "timeframe": "1d",
+    "assets": ["DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)"],
+    "lookback_days": 30,
+    "max_hold_days": 21,
+    "entry_rule": "long top_k / short bottom_k of the frozen reversal score, equal notional per leg (sum of weights = 0), act next open",
+    "exit_rule": "exit a name when it leaves its tail or after max_hold_days, act next open; beta-neutrality fail-closed may take the book flat",
+    "dataset_fingerprint": "abc847bd4e367e2c885d5b320fedbbba7e9a435ae24ca52ef4243018313f2014"
+  },
+  "implementation_config": {
+    "experiment_id": "EXP-ARP-023",
+    "strategy_id": "H-MKTNEUTRAL-RELVAL-001",
+    "timeframe": "1d",
+    "assets": ["DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)"],
+    "lookback_days": 30,
+    "max_hold_days": 21,
+    "entry_rule": "long top_k / short bottom_k of the frozen reversal score, equal notional per leg (sum of weights = 0), act next open",
+    "exit_rule": "exit a name when it leaves its tail or after max_hold_days, act next open; beta-neutrality fail-closed may take the book flat",
+    "dataset_fingerprint": "abc847bd4e367e2c885d5b320fedbbba7e9a435ae24ca52ef4243018313f2014",
+    "disposition": "NOT_IMPLEMENTED — pre-registration only; blocked pending short-leg borrow/funding data; no DEV execution in this phase"
+  },
+  "baselines": [
+    "NO_TRADE",
+    "always-long same-basket (beta reference)",
+    "naive dollar-neutral BTC/ETH 1:1 pair, no ranking",
+    "random-rank long/short (fixed seeds)",
+    "long-only top_k of the same score (isolates the short-leg contribution)"
+  ],
+  "power_requirement": {
+    "min_independent_rebalances_dev": 40,
+    "min_independent_rebalances_validation": 15,
+    "note": "effective sample is the binding constraint (ARP-012 §30); block-bootstrap CI on episodes is mandatory"
+  },
+  "kill_criteria": [
+    "DEV gross spread <= 0 -> REJECT_NO_EDGE",
+    "DEV net <= 0 after two-leg cost AND borrow -> REJECT_COSTS",
+    "portfolio |beta_book| not distinguishable from 0 -> REJECT_BETA",
+    "DEV independent rebalances < 40 or VALIDATION < 15 -> REJECT_INSUFFICIENT_SAMPLE",
+    "single name/trade > 50% of positive DEV net or one period > 60% -> REJECT_FRAGILE",
+    "any look-ahead in score, beta window or fills -> REJECT_PIT",
+    "VALIDATION net <= 0 -> REJECT_VALIDATION",
+    "precondition: any promotable result without an observed borrow/funding series -> REJECT_SHORT_LEG_UNCOSTED"
+  ],
+  "gates": {
+    "promotion": "positive net DEV AND positive net VALIDATION AND two-leg cost PASS AND borrow observed AND robustness PASS AND PIT PASS AND contract PASS AND sample sufficient AND |beta_book| consistent with 0 AND concentration acceptable AND builder != verifier"
+  },
+  "multiple_testing": {
+    "program_hypotheses_tested": 9,
+    "this_phase_hypotheses": 1,
+    "graveyard": ["EXP-ARP-006", "EXP-ARP-008", "EXP-ARP-016", "EXP-ARP-017", "EXP-ARP-018", "EXP-ARP-021", "EXP-ARP-022"]
+  },
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "short_leg_data_blocked": true,
+  "frozen_before_results": true,
+  "oos_locked": true
+}
