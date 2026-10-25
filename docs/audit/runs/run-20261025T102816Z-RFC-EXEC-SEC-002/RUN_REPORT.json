@@ -8,6 +8,13 @@
   "verdict": "P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED",
   "live_go": false,
   "production_ready": false,
+  "false_success": 0,
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows 10",
+    "pytest": "9.1.1",
+    "install": "uv run --frozen"
+  },
   "real_trading": false,
   "exchange_contact": false,
   "push": false,
@@ -89,6 +96,8 @@
     "export_affected": {"passed": 182, "seconds": 111.43, "exit_code": 0},
     "unit_order_authorization": {"passed": 43},
     "process_exec_sec": {"passed": 20},
+    "skips": 0,
+    "failures": 0,
     "mutants": {"killed": 14, "total": 14}
   },
   "verification": {

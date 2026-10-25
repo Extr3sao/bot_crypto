@@ -101,6 +101,10 @@ The ten gate checks, `hot_stop.py` and the gate module are unchanged.
 
 ## 5. Tests
 
+Environment: Python 3.11.15 on Windows 10, pytest 9.1.1, installed with
+`uv run --frozen`. No test was skipped anywhere in this run; every number below
+is a pass count with zero failures.
+
 | Suite | Where | Result |
 |---|---|---|
 | Baseline before any edit | worktree `43e1ce2c` | **113 passed** in 108.00 s |
