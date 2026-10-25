@@ -1,0 +1,96 @@
+{
+  "verification": {
+    "checks": [
+      {
+        "check": "ARTIFACTS_PRESENT",
+        "detail": "missing or unparsable: coverage.json; missing or unparsable: slots.jsonl; no daily evidence file was published",
+        "passed": false
+      },
+      {
+        "check": "SLOT_DISCIPLINE",
+        "detail": "0 slot(s), no duplicates, all on the grid",
+        "passed": true
+      },
+      {
+        "check": "OUTCOMES_AND_EXIT_CODES",
+        "detail": "2 run row(s) agree with the vocabulary",
+        "passed": true
+      },
+      {
+        "check": "NO_ORDER_PATH_OR_PROMOTION",
+        "detail": "no order path and no promotion in any artefact",
+        "passed": true
+      },
+      {
+        "check": "EXPECTATION_ARITHMETIC",
+        "detail": "no run row carries per-series expectations",
+        "passed": false
+      },
+      {
+        "check": "MARKET_REQUESTS_ARE_SPENT",
+        "detail": "2 run row(s) spent their requests coherently",
+        "passed": true
+      },
+      {
+        "check": "RULESET_PINNED_AND_UNCHANGED",
+        "detail": "no run row carries a ruleset pin",
+        "passed": false
+      },
+      {
+        "check": "COVERAGE_RULE_APPLIED",
+        "detail": "no coverage artefact",
+        "passed": false
+      },
+      {
+        "check": "BACKFILL_IS_NOT_AN_OBSERVATION",
+        "detail": "no coverage artefact",
+        "passed": false
+      },
+      {
+        "check": "DAILY_EVIDENCE_CONSISTENT",
+        "detail": "no daily evidence file",
+        "passed": false
+      },
+      {
+        "check": "HEALTH_FOLLOWS_THE_LOG",
+        "detail": "DEGRADED with 2 consecutive non-observation(s)",
+        "passed": true
+      },
+      {
+        "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
+        "detail": "lane 14149 bytes of 268435456 declared",
+        "passed": true
+      },
+      {
+        "check": "PUBLICATION_SWAPPED_ATOMICALLY",
+        "detail": "no publication directory was captured",
+        "passed": false
+      },
+      {
+        "check": "FREEZE_AND_FLOOR_DECLARED",
+        "detail": "no coverage artefact",
+        "passed": false
+      },
+      {
+        "check": "SCHEDULER_REGISTRATION_READ",
+        "detail": "skipped: no captured task registration to read (SKIPPED_NO_REGISTRATION)",
+        "passed": true
+      }
+    ],
+    "checks_passed": 7,
+    "checks_total": 15,
+    "failures": [
+      "ARTIFACTS_PRESENT: missing or unparsable: coverage.json; missing or unparsable: slots.jsonl; no daily evidence file was published",
+      "EXPECTATION_ARITHMETIC: no run row carries per-series expectations",
+      "RULESET_PINNED_AND_UNCHANGED: no run row carries a ruleset pin",
+      "COVERAGE_RULE_APPLIED: no coverage artefact",
+      "BACKFILL_IS_NOT_AN_OBSERVATION: no coverage artefact",
+      "DAILY_EVIDENCE_CONSISTENT: no daily evidence file",
+      "PUBLICATION_SWAPPED_ATOMICALLY: no publication directory was captured",
+      "FREEZE_AND_FLOOR_DECLARED: no coverage artefact"
+    ],
+    "reading": "this process imports nothing from trading_bot and drives none of the observer's code: it recomputes every claim from the files the observer left behind",
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data\\forward\\edge04r01",
+    "verdict": "VERIFY_FAIL"
+  }
+}

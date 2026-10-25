@@ -1,0 +1,250 @@
+{
+  "contract_version": "FORWARD-DATA-CONTRACT-V1",
+  "schema_version": "forward-event-v1",
+  "collector_version": "FORWARD-WS-COLLECTOR-V1",
+  "provider": "binance",
+  "markets": [
+    "spot",
+    "perp"
+  ],
+  "field_order": [
+    "schema_version",
+    "contract_version",
+    "collector_version",
+    "source",
+    "market",
+    "symbol",
+    "stream",
+    "event_type",
+    "transport",
+    "run_id",
+    "write_seq",
+    "connection_id",
+    "exchange_event_id",
+    "exchange_event_time",
+    "receive_time",
+    "process_time",
+    "network_delay_ms",
+    "processing_delay_ms",
+    "clock_skew_ms",
+    "sequence",
+    "price",
+    "quantity",
+    "aggressor_side",
+    "trade_count",
+    "bid",
+    "ask",
+    "bid_qty",
+    "ask_qty",
+    "bids",
+    "asks",
+    "funding_rate",
+    "next_funding_time",
+    "mark_price",
+    "index_price",
+    "open_interest",
+    "open_interest_time",
+    "detail",
+    "raw_reference",
+    "raw"
+  ],
+  "sequence_fields": [
+    "first",
+    "last",
+    "prev"
+  ],
+  "clocks": {
+    "exchange_event_time": "venue clock, milliseconds, may be absent by design",
+    "receive_time": "when the frame finished being read off the socket",
+    "process_time": "when the record was assembled for persistence",
+    "network_delay_ms": "receive_time - exchange_event_time (derived)",
+    "processing_delay_ms": "process_time - receive_time (derived)",
+    "note": "derived values are recorded alongside the three clocks, never instead of them"
+  },
+  "temporal_invariants": [
+    "process_time >= receive_time (enforced, raises ClockViolation)",
+    "exchange_event_time <= receive_time + collector tolerance, default 500 ms",
+    "a violation of the second invariant quarantines the event into the violation stream"
+  ],
+  "number_representation": "every price, quantity, depth level, funding rate and open interest is stored as the exact decimal STRING the venue sent; nothing is coerced to float on the way to disk, and a zero quantity stays exactly zero (it means: delete this level)",
+  "event_types": {
+    "agg_trade": {
+      "transport": "ws",
+      "lossless": true,
+      "periodic": false,
+      "venue_endpoint": "spot wss /ws/<symbol>@aggTrade ; USDⓈ-M wss /ws/<symbol>@aggTrade",
+      "venue_fields": {
+        "a": "exchange_event_id + sequence.first/last",
+        "p": "price (verbatim decimal string)",
+        "q": "quantity (verbatim decimal string)",
+        "T": "exchange_event_time (trade time)",
+        "E": "detail.event_time_ms (event time)",
+        "m": "aggressor_side ('sell' when the buyer is the maker)",
+        "f": "detail.first_trade_id",
+        "l": "trade_count = l - f + 1"
+      },
+      "loss_detection": "aggregate trade id is strictly +1 per symbol"
+    },
+    "book_ticker": {
+      "transport": "ws",
+      "lossless": true,
+      "periodic": false,
+      "venue_endpoint": "wss /ws/<symbol>@bookTicker",
+      "venue_fields": {
+        "u": "exchange_event_id + sequence.last",
+        "b": "bid",
+        "B": "bid_qty",
+        "a": "ask",
+        "A": "ask_qty",
+        "E/T": "exchange_event_time (USDⓈ-M only; spot publishes none)"
+      },
+      "loss_detection": "update id is monotonic but not contiguous; liveness only"
+    },
+    "depth_diff": {
+      "transport": "ws",
+      "lossless": true,
+      "periodic": false,
+      "venue_endpoint": "wss /ws/<symbol>@depth@100ms",
+      "venue_fields": {
+        "U": "sequence.first",
+        "u": "sequence.last",
+        "pu": "sequence.prev (USDⓈ-M only)",
+        "b": "bids (verbatim [price, qty] strings)",
+        "a": "asks (verbatim [price, qty] strings)",
+        "E": "exchange_event_time"
+      },
+      "loss_detection": "update-id chain: spot U == previous u + 1 ; USDⓈ-M pu == previous u"
+    },
+    "depth_snapshot": {
+      "transport": "rest_backfill",
+      "lossless": false,
+      "periodic": false,
+      "venue_endpoint": "REST GET /api/v3/depth ; GET /fapi/v1/depth",
+      "venue_fields": {
+        "lastUpdateId": "exchange_event_id + sequence.last",
+        "bids": "bids",
+        "asks": "asks"
+      },
+      "loss_detection": "not applicable; this is the alignment anchor"
+    },
+    "mark_price": {
+      "transport": "rest_poll",
+      "lossless": false,
+      "periodic": true,
+      "venue_endpoint": "REST GET /fapi/v1/premiumIndex",
+      "venue_fields": {
+        "markPrice": "mark_price",
+        "indexPrice": "index_price",
+        "time": "exchange_event_time"
+      },
+      "loss_detection": "periodic poll; basis is derived from these raw inputs plus spot bookTicker"
+    },
+    "funding": {
+      "transport": "rest_poll",
+      "lossless": false,
+      "periodic": true,
+      "venue_endpoint": "REST GET /fapi/v1/premiumIndex",
+      "venue_fields": {
+        "lastFundingRate": "funding_rate",
+        "nextFundingTime": "next_funding_time"
+      },
+      "loss_detection": "periodic by nature of the venue; interval recorded in the manifest"
+    },
+    "open_interest": {
+      "transport": "rest_poll",
+      "lossless": false,
+      "periodic": true,
+      "venue_endpoint": "REST GET /fapi/v1/openInterest",
+      "venue_fields": {
+        "openInterest": "open_interest",
+        "time": "open_interest_time"
+      },
+      "loss_detection": "periodic poll; the venue DOES supply an independent timestamp"
+    },
+    "book_checkpoint": {
+      "transport": "ws",
+      "lossless": false,
+      "periodic": false,
+      "venue_endpoint": "derived from the reconstructed book",
+      "venue_fields": {},
+      "loss_detection": "emitted every checkpoint interval with its health; only HEALTHY checkpoints may feed a feature"
+    },
+    "heartbeat": {
+      "transport": "ws",
+      "lossless": false,
+      "periodic": false,
+      "venue_endpoint": "collector telemetry",
+      "venue_fields": {},
+      "loss_detection": "not applicable"
+    },
+    "gap": {
+      "transport": "ws",
+      "lossless": false,
+      "periodic": false,
+      "venue_endpoint": "collector telemetry",
+      "venue_fields": {},
+      "loss_detection": "this IS the loss record"
+    },
+    "violation": {
+      "transport": "ws",
+      "lossless": false,
+      "periodic": false,
+      "venue_endpoint": "collector telemetry",
+      "venue_fields": {},
+      "loss_detection": "each violation is a discarded or quarantined datum"
+    },
+    "lifecycle": {
+      "transport": "ws",
+      "lossless": false,
+      "periodic": false,
+      "venue_endpoint": "collector telemetry",
+      "venue_fields": {},
+      "loss_detection": "connect/disconnect/restart/state evidence"
+    }
+  },
+  "book_health_states": [
+    "HEALTHY",
+    "RECOVERING",
+    "STALE",
+    "INVALID"
+  ],
+  "diff_verdicts": [
+    "APPLIED",
+    "BUFFERED",
+    "DUPLICATE",
+    "OUT_OF_ORDER",
+    "GAP",
+    "MALFORMED"
+  ],
+  "sequence_policies": {
+    "spot_update_id": "after a snapshot with lastUpdateId L, drop u <= L, the bridging update must satisfy U <= L + 1 <= u, then every update must satisfy U == previous u + 1",
+    "futures_prev_id": "after a snapshot with lastUpdateId L, drop u < L, the bridging update must satisfy U <= L + 1 <= u, then every update must satisfy pu == previous u"
+  },
+  "gap_record_fields": [
+    "market",
+    "symbol",
+    "event_type",
+    "start_ms",
+    "end_ms",
+    "duration_ms",
+    "reason",
+    "recovered",
+    "data_lost",
+    "estimated_lost_events",
+    "detail"
+  ],
+  "fingerprint_fields": [
+    "path",
+    "row_count",
+    "first_event_time",
+    "last_event_time",
+    "first_receive_time",
+    "last_receive_time",
+    "sha256",
+    "bytes",
+    "schema_version",
+    "sealed",
+    "partial_tail"
+  ],
+  "storage_layout": "<root>/segments/<source>/<market>/<symbol>/<event_type>/<UTC date>/<rotation bucket HHMMSS>.jsonl.gz"
+}

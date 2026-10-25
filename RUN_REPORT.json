@@ -1,0 +1,262 @@
+{
+  "schema_version": "run-report-v1",
+  "phase": "PAPER-LAB-OPS-HARDENING-V1 / RECOVERY + RE-CERTIFICATION",
+  "run_id": "recovery-paper-lab-ops-2026-09-29",
+  "commit": "1376fa4456e59826608a13de4fad4b2a8faacf2b",
+  "branch": "main",
+  "baseline_head": "222078baedd07401b8b590d87bc06ae3307e862e",
+  "environment": {
+    "os": "Windows",
+    "shell": "bash (Git Bash)",
+    "interpreter": ".venv/Scripts/python.exe (CPython 3.11)",
+    "cpu_cores": 8,
+    "network": "public read-only Binance endpoints only; no keys, no account, no orders",
+    "disk_free_gb_at_start": 11.82,
+    "disk_free_gb_at_end": 11.3
+  },
+  "changed_files": {
+    "commits": ["f406a45", "81dec23", "06100e7", "77e9d65", "1376fa4"],
+    "code": [
+      "src/trading_bot/autonomous/observability.py",
+      "src/trading_bot/research/forward/collector.py",
+      "scripts/forward_collector.py",
+      "scripts/paper_lab_status.py",
+      "scripts/paper_lab_dashboard.py",
+      "scripts/paper_lab_verification.py"
+    ],
+    "tests": [
+      "tests/unit/autonomous/test_lab_ops_hardening.py",
+      "tests/unit/forward/test_forward_exit_contract.py",
+      "tests/unit/forward/test_forward_collector_replay.py"
+    ],
+    "artifacts": [
+      "docs/FORWARD_DATA_QUALITY_REPORT.json",
+      "docs/FORWARD_DATA_RESOURCE_REPORT.json",
+      "docs/FORWARD_DATA_DAILY_REPORT.json",
+      "docs/FORWARD_DATA_EVIDENCE.json",
+      "docs/FORWARD_DATA_REPLAY_VALIDATION.json",
+      "docs/PAPER_LAB_INDEPENDENT_VERIFICATION.json"
+    ]
+  },
+  "requirements_addressed": [
+    "recovery gate: classify every interrupted work item against the repository and the real runtime",
+    "exit contract: a runtime outcome maps to a process exit status, and a failure is never exit 0",
+    "collector: a terminal persistence failure is recorded and propagated, not swallowed",
+    "supervisor: detects child failure, preserves the cause, and does not launder a failure into a clean stop",
+    "disk: explicit configurable levels with measured rate and survival time",
+    "data preservation: M-03/M-07 must survive compaction before raw is deletable",
+    "PAPER entrypoint hardening: keeps deciding when the storage plane fails",
+    "launcher: start / stop / restart / status with health derived from runtime state",
+    "failure injection at unit and real-runtime level",
+    "independent verification from a fresh worktree",
+    "FALSE_SUCCESS = 0"
+  ],
+  "tests_executed": [
+    {
+      "command": "python -m ruff check .",
+      "result": "All checks passed!"
+    },
+    {
+      "command": "python -m mypy .",
+      "result": "Success: no issues found in 350 source files"
+    },
+    {
+      "command": "python -m pytest -q  (at 222078b, before the recovery fixes)",
+      "result": "1194 passed, 78 warnings in 328.74s"
+    },
+    {
+      "command": "python -m pytest -q  (at f406a45, after the honesty fixes)",
+      "result": "1201 passed, 1 failed - the failure is the frozen-writer certificate guard, which is the guard working as designed"
+    },
+    {
+      "command": "python -m pytest tests/unit/autonomous/test_lab_ops_hardening.py tests/unit/forward/test_forward_exit_contract.py -q",
+      "result": "42 passed in 14.01s"
+    },
+    {
+      "command": "python -m pytest tests/unit/autonomous/test_lab_ops_hardening.py tests/unit/autonomous/test_lab_operations.py -q",
+      "result": "34 passed in 13.44s"
+    },
+    {
+      "command": "python -m pytest tests/unit/forward/test_forward_collector_replay.py::test_the_capture_code_still_matches_the_certified_commit -q",
+      "result": "1 passed in 2.22s (after the re-certification)"
+    },
+    {
+      "command": "python -m pytest -q  (final tree at 1376fa4)",
+      "result": "1202 passed, 78 warnings in 220.08s - zero failures, zero errors"
+    },
+    {
+      "command": "scripts/paper_lab_verification.py from a clean worktree at 1376fa4, with PHASE_TESTS",
+      "result": "18/18 PASS verdict=PASS"
+    }
+  ],
+  "runtime_commands": [
+    {
+      "purpose": "writer failure injection (real CLI, real writer)",
+      "command": "scripts/forward_collector.py --mode run --out reports/failure-injection/writer-dead --run-id failinject-writer --duration 25 ... (segments poisoned with a regular file)",
+      "exit_code": 2
+    },
+    {
+      "purpose": "supervisor failure propagation + PAPER isolation",
+      "command": "scripts/start_paper_lab.py --run-id paper-lab-failinject-01 --forward-root <poisoned> --duration-hours 0.08",
+      "exit_code": 0
+    },
+    {
+      "purpose": "healthy integrated run and the STOP-file path",
+      "command": "scripts/start_paper_lab.py --run-id paper-lab-ops-hardened-01  (run by the interrupted session at 222078b)",
+      "exit_code": 0
+    },
+    {
+      "purpose": "re-certification capture at the fixed HEAD",
+      "command": "scripts/start_paper_lab.py --run-id paper-lab-cert-01 --forward-root reports/microstructure-forward-cert01 --duration-hours 0.2 --rotation-seconds 300",
+      "exit_code": 0
+    },
+    {
+      "purpose": "offline replay of the certification capture",
+      "command": "scripts/forward_collector.py --mode replay --out reports/microstructure-forward-cert01 --run-id paper-lab-cert-01",
+      "exit_code": 0
+    },
+    {
+      "purpose": "read-side report for the certification capture",
+      "command": "scripts/forward_collector.py --mode report --out reports/microstructure-forward-cert01 --run-id paper-lab-cert-01 --docs-dir docs",
+      "exit_code": 0
+    },
+    {
+      "purpose": "HEAD-stamped smoke at the final commit",
+      "command": "scripts/forward_collector.py --mode run --smoke --data-root reports/microstructure-forward-lab-smoke-cert4 --run-id smoke-cert4",
+      "exit_code": 0
+    }
+  ],
+  "runtime_result": {
+    "paper_lab_cert_01": {
+      "head": "f406a45",
+      "lab_duration_seconds": 768.5,
+      "collector_duration_seconds": 719.05,
+      "stop_reason": "duration reached",
+      "final_state": "DEGRADED (children STOPPED after the stop, by design)",
+      "stop_report_verdict": "CLEAN",
+      "exit_codes": {"paper": 0, "collector": 0, "retention": 0, "strategy_lab": 0},
+      "restarts": 0,
+      "supervisor_events": 0
+    },
+    "paper_survival_during_storage_failure": {
+      "run": "paper-lab-failinject-01",
+      "paper": "RUNNING for the whole run, final STOPPED exit 0, restarts 0",
+      "collector": "FAILED, exit 2, 4 restarts, 'crash loop: 4 restarts inside 900s (budget 3)'",
+      "stop_report_verdict": "FAILED with failed_children [collector] and exit_codes {paper: 0, collector: 2, ...}"
+    },
+    "writer_certification": {
+      "run_id": "paper-lab-cert-01",
+      "commit": "f406a459b89f41e7771e5edb0a33f6725f708831",
+      "duration_seconds": 719.05,
+      "meets_10_minute_floor": true,
+      "manifest_status": "CONTROLLED_STOP",
+      "manifest_exit_code": 0,
+      "segments": 89,
+      "sealed": 89,
+      "partial_tails": 0,
+      "rows": 546043,
+      "bytes_written": 39289853,
+      "write_failures": 0,
+      "replay_ok": true,
+      "replay_internet_access": false,
+      "replay_fingerprints": "89/89",
+      "replay_deterministic": true,
+      "replay_aggregation_digest": "2f4e90d4f3d31e1187b8f1695e6cdabe26e65803f3ef31659f0c68818564d24a",
+      "replay_book_match": true,
+      "replay_event_count_match": true,
+      "replay_repaired_trade_rows": 0,
+      "replay_errors": []
+    }
+  },
+  "data_provenance": {
+    "provider": "binance public REST + WebSocket",
+    "symbols": ["BTCUSDT", "ETHUSDT"],
+    "markets": ["spot", "perp"],
+    "credentials_used": "none",
+    "live_trading_path": "not present, asserted offline by the NO_LIVE_PATH check",
+    "manifest_commit": "f406a459b89f41e7771e5edb0a33f6725f708831"
+  },
+  "data_freshness": {
+    "certification_capture_window_utc": "2026-09-29T22:13:30Z to 2026-09-29T22:25:30Z (approx, from the run's own start/end stamps)",
+    "sample_length_minutes": 12.0,
+    "m03_m07_blocking_reason": "sample is 12.0 min; 24 h of clean capture is the minimum to begin",
+    "sequence_gaps_in_certified_capture": 0,
+    "books_ending_healthy": ["spot/BTCUSDT", "spot/ETHUSDT", "perp/BTCUSDT", "perp/ETHUSDT"]
+  },
+  "disk_state": {
+    "free_bytes_at_end": 11300000000,
+    "level": "NORMAL",
+    "published_in": "SYSTEM_HEARTBEAT.json disk block and the status command",
+    "certified_capture_below_media_target": true
+  },
+  "failure_injection_results": [
+    {"case": "writer exception", "unit": "test_a_write_failure_is_recorded_as_terminal_and_stops_the_run", "real_runtime": "EXIT_CODE=2, manifest FAILED/STORAGE_WRITE_FAILURE", "outcome": "PASS"},
+    {"case": "collector exception (cannot finalise)", "unit": "test_the_cli_exits_non_zero_when_no_manifest_can_be_written", "outcome": "PASS"},
+    {"case": "supervisor child failure", "unit": "test_a_non_zero_collector_exit_is_a_crash_and_paper_survives", "real_runtime": "paper-lab-failinject-01", "outcome": "PASS"},
+    {"case": "disk WARNING", "unit": "test_disk_telemetry_reports_rate_and_survival_time + the DISK_LEVELS_AND_RATE verifier check", "outcome": "PASS"},
+    {"case": "disk CRITICAL", "unit": "test_the_disk_level_ladder_is_complete_and_monotone", "outcome": "PASS"},
+    {"case": "unwritable data directory", "real_runtime": "poisoned segments path, EXIT_CODE=2", "outcome": "PASS"},
+    {"case": "interrupted durable write", "unit": "test_a_storage_failure_is_recorded_and_never_raised", "outcome": "PASS"},
+    {"case": "stale PID", "unit": "test_a_reused_pid_is_not_reported_as_the_run_still_being_alive", "outcome": "PASS"},
+    {"case": "restart after abnormal termination", "real_runtime": "RESTART_SCHEDULED at 5s, 15s, 60s then CRASH_LOOP", "outcome": "PASS"},
+    {"case": "missing or corrupt manifest", "unit": "test_a_missing_or_corrupt_manifest_is_absent_not_an_empty_capture", "outcome": "PASS"},
+    {"case": "report write failure", "unit": "test_a_heartbeat_that_cannot_be_written_does_not_stop_the_loop", "outcome": "PASS"},
+    {"case": "graceful user stop", "unit": "test_the_stop_reason_is_read_from_the_evidence + real runs", "outcome": "PASS"},
+    {"case": "stale heartbeat / dashboard honesty", "real_runtime": "dashboard showed FAILED - STALE HEARTBEAT, not HEALTHY", "outcome": "PASS"}
+  ],
+  "exit_codes": {
+    "clean_capture": 0,
+    "controlled_stop": 0,
+    "failed_capture": 2,
+    "cli_refuses_non_loopback_dashboard_bind": 1
+  },
+  "defects": [
+    {"id": "F1", "severity": "P1-adjacent", "status": "FIXED", "summary": "a FAILED capture published continuity=CONTINUOUS_DATA, which reporting turns into permits_continuity_claim"},
+    {"id": "F2", "severity": "P3", "status": "FIXED", "summary": "the status screen rendered '~None h at the observed rate' and 'state_age=Nones'"},
+    {"id": "F3", "severity": "P3", "status": "DOCUMENTED", "summary": "remaining_missing_events mixes depth update-id units into an events total"},
+    {"id": "F4", "severity": "P2", "status": "PRE_EXISTING_DOCUMENTED", "summary": "the perp aggTrade stream never delivers; reported honestly as NO_DATA"},
+    {"id": "F5", "severity": "P3", "status": "DOCUMENTED_ENVIRONMENT", "summary": "two concurrent pytest processes delete each other's numbered temp directory"},
+    {"id": "F6", "severity": "P2", "status": "FIXED", "summary": "COLLECTOR_READY read yes while the collector was in a crash loop, because readiness only read a state file a first-write failure never creates"},
+    {"id": "F7", "severity": "P2", "status": "FIXED", "summary": "paper_lab_status.py --json died with UnicodeEncodeError on a cp1252 console"},
+    {"id": "F8", "severity": "P1 governance", "status": "RESOLVED_BY_NEW_CAPTURE", "summary": "the frozen-writer certificate guard fired when the capture code changed, as designed"},
+    {"id": "F9", "severity": "P3 performance", "status": "DOCUMENTED", "summary": "the read-side report makes 4-5 full passes over the same segments; reporting a 12 min capture cost more than 12 min of CPU"},
+    {"id": "F10", "severity": "P3", "status": "FIXED", "summary": "five independent-verifier checks could not pass: two had invented an impossible expectation, one called a driver API that does not exist, two assumed repo-relative capture roots, and crashed lambdas hid which check had failed"}
+  ],
+  "warnings": [
+    "the read-side report is expensive: >500 s of CPU to summarise a 782 s capture and >12 min of CPU for the 12 min certification capture",
+    "the perp aggTrade stream has never delivered data in any capture on this host",
+    "remaining_missing_events is not a row count; read provider_stream_status for depth-stream health"
+  ],
+  "evidence": [
+    "reports/recovery/INTERRUPTED_SESSION_RECOVERY.json",
+    "reports/microstructure-forward-cert01/manifest/paper-lab-cert-01.json",
+    "reports/cert01_replay.log",
+    "reports/paper-lab/paper-lab-cert-01/LAB_RUN_REPORT.json",
+    "reports/paper-lab/paper-lab-failinject-01/LAB_RUN_REPORT.json",
+    "reports/failure-injection/writer-dead/manifest/failinject-writer.json",
+    "reports/microstructure-forward-ops01/manifest/paper-lab-ops-hardened-01.json",
+    "docs/PAPER_LAB_INDEPENDENT_VERIFICATION.json",
+    "docs/FORWARD_DATA_QUALITY_REPORT.json",
+    "scripts/paper_lab_verification.py"
+  ],
+  "verifier_result": {
+    "checks_total": 18,
+    "checks_passed": 18,
+    "checks_failed": 0,
+    "verdict": "PASS",
+    "verified_head": "1376fa4456e59826608a13de4fad4b2a8faacf2b",
+    "worktree": "C:/Users/GVLLFR0035/Downloads/bot-freebuff-verify-lab (clean detached checkout)",
+    "builder_verifier_separated": true,
+    "independence_note": "the verifier ran from a separate git worktree with PYTHONPATH pointing at that worktree's src, and re-ran the phase test modules itself. It shares an author with the implementation, so this is separated-context verification rather than third-party verification."
+  },
+  "false_success_count": 0,
+  "pass_is_valid": {
+    "authoritative_runtime_executed": true,
+    "required_tests_skipped": false,
+    "errors_hidden": false,
+    "runtime_code_tested": true,
+    "evidence_present": true,
+    "data_stale_where_freshness_matters": false,
+    "gate_bypassed": false
+  }
+}

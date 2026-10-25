@@ -1,0 +1,122 @@
+{
+  "caveat": "write counters are per process and cumulative; a large writer is not necessarily the one that lowered free space, so drops and writes are reported side by side. Deferred allocation (paging, compression, delayed writes) can move the volume after the write.",
+  "dropped_bytes": 11915264,
+  "free_first": 19971256320,
+  "free_last": 20205711360,
+  "generated_at_utc": "2026-10-23T19:01:23Z",
+  "interval_seconds": 5.0,
+  "intervals": [
+    {
+      "at_utc": "2026-10-23T19:00:18Z",
+      "drop_bytes": -9965568,
+      "written_bytes": 950394
+    },
+    {
+      "at_utc": "2026-10-23T19:00:25Z",
+      "drop_bytes": 1888256,
+      "written_bytes": 6030974
+    },
+    {
+      "at_utc": "2026-10-23T19:00:32Z",
+      "drop_bytes": -214511616,
+      "written_bytes": 749907
+    },
+    {
+      "at_utc": "2026-10-23T19:00:40Z",
+      "drop_bytes": -21733376,
+      "written_bytes": 9755641
+    },
+    {
+      "at_utc": "2026-10-23T19:00:47Z",
+      "drop_bytes": 9252864,
+      "written_bytes": 1051032
+    },
+    {
+      "at_utc": "2026-10-23T19:00:54Z",
+      "drop_bytes": 712704,
+      "written_bytes": 7056501
+    },
+    {
+      "at_utc": "2026-10-23T19:01:02Z",
+      "drop_bytes": 61440,
+      "written_bytes": 2934283
+    },
+    {
+      "at_utc": "2026-10-23T19:01:09Z",
+      "drop_bytes": -159744,
+      "written_bytes": 15600385
+    }
+  ],
+  "samples": 9,
+  "schema_version": "EXP004A_WP051_02K_CONTINUATION_V1",
+  "seconds": 60,
+  "share_explained_percent": 370.36,
+  "tree_growth_bytes": {
+    "C:\\Users\\GVLLFR0035\\.cache": 0,
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Microsoft": 420463,
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp": -207417084,
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright": 0,
+    "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data": 0
+  },
+  "trees_watched": [
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp",
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright",
+    "C:\\Users\\GVLLFR0035\\.cache",
+    "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data",
+    "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data",
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Microsoft"
+  ],
+  "writers": [
+    {
+      "intervals": 3,
+      "name": "bun.exe",
+      "written_bytes": 20170312
+    },
+    {
+      "intervals": 3,
+      "name": "SearchIndexer.exe",
+      "written_bytes": 11008488
+    },
+    {
+      "intervals": 8,
+      "name": "msedge.exe",
+      "written_bytes": 5989233
+    },
+    {
+      "intervals": 20,
+      "name": "chrome.exe",
+      "written_bytes": 3243774
+    },
+    {
+      "intervals": 8,
+      "name": "System",
+      "written_bytes": 1720320
+    },
+    {
+      "intervals": 5,
+      "name": "ChatGPT.exe",
+      "written_bytes": 1207808
+    },
+    {
+      "intervals": 7,
+      "name": "Discord.exe",
+      "written_bytes": 404050
+    },
+    {
+      "intervals": 7,
+      "name": "claude.exe",
+      "written_bytes": 309177
+    },
+    {
+      "intervals": 1,
+      "name": "msedgewebview2.exe",
+      "written_bytes": 54192
+    },
+    {
+      "intervals": 1,
+      "name": "tailscaled.exe",
+      "written_bytes": 11684
+    }
+  ],
+  "written_bytes": 44129117
+}

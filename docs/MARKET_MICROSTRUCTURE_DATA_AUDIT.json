@@ -1,0 +1,123 @@
+{
+  "generated_by": "scripts/microstructure_admission.py",
+  "sources": [
+    {
+      "source_id": "DS-01",
+      "field": "klines OHLCV + taker flow",
+      "provider": "Binance Spot",
+      "endpoint": "/api/v3/klines + data.binance.vision",
+      "product": "spot",
+      "history": "full (2017+)",
+      "resolution": "1m..1M",
+      "rate_limit": "weight-based, 6000/min",
+      "credentials": false,
+      "public": true,
+      "pit_safe": true,
+      "status": "DATA_SUFFICIENT"
+    },
+    {
+      "source_id": "DS-02",
+      "field": "aggTrades (tick aggressor flow)",
+      "provider": "Binance Spot",
+      "endpoint": "data.binance.vision aggTrades + /api/v3/aggTrades",
+      "product": "spot",
+      "history": "full (monthly/daily zips)",
+      "resolution": "tick",
+      "rate_limit": "bulk download",
+      "credentials": false,
+      "public": true,
+      "pit_safe": true,
+      "status": "DATA_SUFFICIENT"
+    },
+    {
+      "source_id": "DS-03",
+      "field": "bookTicker (best bid/ask)",
+      "provider": "Binance Spot",
+      "endpoint": "/api/v3/ticker/bookTicker (live only)",
+      "product": "spot",
+      "history": "none",
+      "resolution": "live",
+      "rate_limit": "n/a",
+      "credentials": false,
+      "public": true,
+      "pit_safe": true,
+      "status": "LIVE_ONLY"
+    },
+    {
+      "source_id": "DS-04",
+      "field": "order book depth",
+      "provider": "Binance Spot",
+      "endpoint": "/api/v3/depth + WS @depth (live only)",
+      "product": "spot",
+      "history": "none",
+      "resolution": "live",
+      "rate_limit": "n/a",
+      "credentials": false,
+      "public": true,
+      "pit_safe": true,
+      "status": "LIVE_ONLY"
+    },
+    {
+      "source_id": "DS-05",
+      "field": "funding rate",
+      "provider": "Binance USD-M",
+      "endpoint": "/fapi/v1/fundingRate",
+      "product": "perpetual",
+      "history": "full",
+      "resolution": "1h/4h/8h",
+      "rate_limit": "weight-based",
+      "credentials": false,
+      "public": true,
+      "pit_safe": true,
+      "status": "DATA_SUFFICIENT"
+    },
+    {
+      "source_id": "DS-06",
+      "field": "premium index / mark",
+      "provider": "Binance USD-M",
+      "endpoint": "/fapi/v1/premiumIndexKlines",
+      "product": "perpetual",
+      "history": "full",
+      "resolution": "1m..1d",
+      "rate_limit": "weight-based",
+      "credentials": false,
+      "public": true,
+      "pit_safe": true,
+      "status": "DATA_SUFFICIENT"
+    },
+    {
+      "source_id": "DS-07",
+      "field": "open interest",
+      "provider": "Binance USD-M",
+      "endpoint": "/futures/data/openInterestHist",
+      "product": "perpetual",
+      "history": "latest 30 days only",
+      "resolution": "5m..1d",
+      "rate_limit": "1000/5min",
+      "credentials": false,
+      "public": true,
+      "pit_safe": true,
+      "status": "LIMITED_HISTORY"
+    },
+    {
+      "source_id": "DS-08",
+      "field": "basis / long-short ratio",
+      "provider": "Binance USD-M",
+      "endpoint": "/futures/data/basis",
+      "product": "perpetual",
+      "history": "latest 30 days only (pagination unstable)",
+      "resolution": "5m..1d",
+      "rate_limit": "1000/5min",
+      "credentials": false,
+      "public": true,
+      "pit_safe": true,
+      "status": "LIMITED_HISTORY"
+    }
+  ],
+  "summary": {
+    "DATA_SUFFICIENT": 4,
+    "LIMITED_HISTORY": 2,
+    "LIVE_ONLY": 2,
+    "NOT_USABLE": 0
+  }
+}

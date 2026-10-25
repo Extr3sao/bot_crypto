@@ -1,0 +1,83 @@
+{
+  "opportunity_id": "OPP-0025",
+  "title": "Deep Momentum Networks (Lim/Zohren/Roberts and successors)",
+  "source_ids": [
+    "S2-22",
+    "S2-23"
+  ],
+  "economic_hypothesis": "the literature reports DMNs improving on standard time-series momentum; no number was captured here",
+  "market": "futures and ETF universes in the reference work",
+  "assets": "multi-asset",
+  "timeframe": "daily",
+  "entry_rules": "the trading rule is the neural network output",
+  "exit_rules": "UNKNOWN; UNKNOWN; UNKNOWN; UNKNOWN",
+  "risk_rules": "volatility scaling: positions are scaled to a target volatility, which is the framework's stated core; none",
+  "parameters": "the model is trained, so there is no frozen parameter file",
+  "claimed_period": "UNKNOWN",
+  "claimed_metrics": "at this read level",
+  "transaction_cost_model": "at this read level",
+  "required_data": "UNKNOWN",
+  "external_code": "no implementation was located in this round",
+  "external_results": "listing-level reads of a thesis and a peer-reviewed follow-up",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "a trained network is a pipeline, not a rule set: two runs are not the same strategy",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (at this read level)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "market",
+    "assets",
+    "data_source",
+    "data_fields",
+    "entry_long",
+    "entry_short",
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "parameters",
+    "execution_assumption",
+    "warmup",
+    "transaction_costs",
+    "original_period",
+    "original_metrics",
+    "implementation_source",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_ASSESSED: the cost treatment was not read",
+  "evidence_quality": "E1 — listing-level reads of a thesis and a peer-reviewed follow-up",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "HIGH",
+  "lookahead_risk": "HIGH",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_2_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 1,
+    "CODE_AVAILABILITY": 1,
+    "DATA_REPRODUCIBILITY": 2,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 1,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 1,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 7,
+  "rank": "REJECT",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "3/21",
+  "gaps_to_p0": [
+    "locate a repository and a frozen training protocol",
+    "the reference universe is futures/ETFs, not spot crypto"
+  ],
+  "rejection_reason_codes": [
+    "NO_FIXED_PARAMETERS_RETRAINING_REQUIRED",
+    "NO_CODE",
+    "INSTRUMENT_OR_UNIVERSE_MISMATCH",
+    "SOURCE_READ_LEVEL_INSUFFICIENT"
+  ]
+}

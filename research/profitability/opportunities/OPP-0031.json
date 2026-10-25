@@ -1,0 +1,56 @@
+{
+  "opportunity_id": "OPP-0031",
+  "title": "Short-horizon reversal after a de-trended-volume split (Bianchi, Babiak & Dickerson 2022)",
+  "source_ids": [
+    "S3-09"
+  ],
+  "economic_hypothesis": "a single-exchange, one-day-holding reversal with published net-of-fees results by exchange",
+  "market": "crypto pairs against USD/USDT across five exchanges",
+  "assets": "the paper's coin sample per exchange",
+  "timeframe": "daily, one-day holding",
+  "entry_rules": "split coins daily by de-trended trading volume; within the low-volume group buy what fell yesterday and sell what rose",
+  "exit_rules": "close after one day and rebalance daily",
+  "risk_rules": "market-making-style book inside the low-volume group",
+  "parameters": "de-trended volume split, one-day hold, daily rebalance",
+  "claimed_period": "2017-03 to 2022-03",
+  "claimed_metrics": "net of fees: Binance -0.213%/day equal-weighted and -0.341%/day value-weighted, both significant; GateIO +0.811%/day",
+  "transaction_cost_model": "the paper reports net-of-fees returns by exchange",
+  "required_data": "daily OHLCV and volume per exchange",
+  "external_code": "the replicator's code is public; the paper ships none",
+  "external_results": "Bianchi, Babiak & Dickerson (2022) Table 7, via Karaptic Note 05",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the venue where the effect survives net of fees is not ours and the recipe is not executable as published",
+    "reviewed in RFC-035S3; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "the recipe is not retail-executable as published",
+    "the venue where the effect survives net of fees is not Binance"
+  ],
+  "replication_difficulty": "the venue where the effect survives net of fees is not ours and the recipe is not executable as published",
+  "evidence_quality": "E2",
+  "selection_bias_risk": "MEDIUM",
+  "overfitting_risk": "MEDIUM",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_3_INSUFFICIENT_EVIDENCE",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 2,
+    "CODE_AVAILABILITY": 0,
+    "DATA_REPRODUCIBILITY": 4,
+    "TRANSACTION_COST_REALISM": 4,
+    "OOS_EVIDENCE": 4,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 4,
+    "INDEPENDENT_VALIDATION": 3,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 21,
+  "rank": "INSUFFICIENT_EVIDENCE",
+  "rfc": "RFC-035S3",
+  "candidate_ref": "reports/rfc035/search_round_3/FINAL_REPORT.json",
+  "round_3_reason": "the venue where the effect survives net of fees is not ours and the recipe is not executable as published",
+  "candidate_id": "K-05"
+}
