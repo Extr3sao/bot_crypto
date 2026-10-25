@@ -1,0 +1,33 @@
+{
+  "branch": "admission/integration-002",
+  "commit": "55f991b710abd972ece30f002b47350bed31512e",
+  "config": {
+    "decision_every_bars": 1,
+    "duration_s": 300,
+    "equity": 10000.0,
+    "latency_ms": 30000,
+    "max_cycles": 2,
+    "max_skew_ms": 5000,
+    "mode": "PAPER",
+    "poll_interval_s": 5.0,
+    "settle_ms": 2500,
+    "signal_source": "legacy_parity",
+    "stale_after_ms": 150000,
+    "strategy_id": "ema_crossover",
+    "symbols": [
+      "BTCUSDT"
+    ],
+    "timeframe": "1m",
+    "warmup_minutes": 25,
+    "window_bars": 20
+  },
+  "dirty_paths": [],
+  "live_enabled": false,
+  "live_orders": 0,
+  "mode": "PAPER",
+  "out_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-paper-run-001\\session",
+  "resume": false,
+  "root": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002",
+  "schema_version": "DEF_RUN_019_LIVE_META_V1",
+  "started_at_utc": "2026-10-25T14:01:57Z"
+}

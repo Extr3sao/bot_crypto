@@ -149,3 +149,13 @@ reports/ai-bots/*
 # ============================================================
 !reports/ai-bots/TAP-INTEGRATION-GATE-001/
 !reports/ai-bots/TAP-INTEGRATION-GATE-001/**
+# TAP-INTEGRATION-ADMISSION-002 — the admission audit's report, its independent verifier and
+# the PAPER session it judged are the evidence for its verdicts; versioning them is the point.
+!reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/
+!reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/**
+# ...except interpreter byproducts: the blanket negation above out-ranks the
+# repo-wide `__pycache__/` rule at line 4 (last match wins), so it is re-closed
+# here. The evidence is the verifier's source and the files it judged, not what
+# CPython cached while running it.
+reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/**/__pycache__/
+reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/**/*.pyc
