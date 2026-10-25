@@ -36,6 +36,17 @@ def sha256_file(path: Path) -> str | None:
     return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
 
 
+def force_rmtree(path: Path) -> None:
+    """Delete a tree even when Git left read-only objects behind (Windows)."""
+    import stat
+
+    def on_error(func: Any, target: str, _exc: Any) -> None:
+        Path(target).chmod(stat.S_IWRITE | stat.S_IREAD)
+        func(target)
+
+    shutil.rmtree(path, onerror=on_error)
+
+
 def run(argv: list[str], *, cwd: Path, timeout: float = 300.0) -> dict[str, Any]:
     started = time.time()
     proc = subprocess.run(
@@ -74,13 +85,15 @@ def control(
     }
 
 
-def reset(clone: Path) -> None:
-    subprocess.run(["git", "checkout", "--", "."], cwd=clone, check=False, capture_output=True)
+def reset(clone: Path, commit: str) -> None:
+    subprocess.run(
+        ["git", "reset", "-q", "--hard", commit], cwd=clone, check=False, capture_output=True
+    )
     subprocess.run(["git", "clean", "-qfd", "src"], cwd=clone, check=False, capture_output=True)
-    for scratch in (".tdm12", ".replay-out", ".compat-out", "neg-out"):
+    for scratch in (".tdm12", ".replay-out", ".compat-out", "neg-out", ".replay-lock"):
         target = clone / scratch
         if target.is_dir():
-            shutil.rmtree(target)
+            force_rmtree(target)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -99,7 +112,7 @@ def main(argv: list[str] | None = None) -> int:
     target = args.target_commit or run_a["clone_state"]["target_commit"]
 
     if sandbox.exists():
-        shutil.rmtree(sandbox)
+        force_rmtree(sandbox)
     subprocess.run(
         ["git", "clone", "--quiet", "--no-hardlinks", str(HERE), str(sandbox)],
         check=True,
@@ -111,7 +124,7 @@ def main(argv: list[str] | None = None) -> int:
     controls: list[dict[str, Any]] = []
 
     # 1. a real edit to a fingerprinted module, unstaged
-    reset(sandbox)
+    reset(sandbox, target)
     with (sandbox / FAMILY).open("a", encoding="utf-8") as handle:
         handle.write("\n# negative control: unstaged tamper\n")
     controls.append(
@@ -136,7 +149,7 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     # 2. the same edit, staged
-    reset(sandbox)
+    reset(sandbox, target)
     with (sandbox / FAMILY).open("a", encoding="utf-8") as handle:
         handle.write("\n# negative control: staged tamper\n")
     subprocess.run(["git", "add", FAMILY], cwd=sandbox, check=False, capture_output=True)
@@ -162,7 +175,7 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     # 3. a module that is not committed at all
-    reset(sandbox)
+    reset(sandbox, target)
     (sandbox / "src/trading_bot/research/families/ghost_family.py").write_text(
         "GHOST = True\n", encoding="utf-8"
     )
@@ -187,7 +200,7 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     # 4. a commit that does not exist
-    reset(sandbox)
+    reset(sandbox, target)
     controls.append(
         control(
             "unreadable_blob",
@@ -211,15 +224,32 @@ def main(argv: list[str] | None = None) -> int:
         )
     )
 
-    # 5. a sealed input with one byte changed
-    reset(sandbox)
+    # 5. a sealed input with one byte changed, committed so the checkout is clean:
+    #    the point is that the *seal* is broken, not that the worktree is dirty.
+    reset(sandbox, target)
     manifest = json.loads(
         (sandbox / "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json").read_text(encoding="utf-8")
     )
-    victim = sandbox / manifest["datasets"][0]["path"]
+    victim_rel = manifest["datasets"][0]["path"]
+    victim = sandbox / victim_rel
     payload = bytearray(victim.read_bytes())
     payload[0] = payload[0] ^ 0xFF
     victim.write_bytes(bytes(payload))
+    subprocess.run(
+        [
+            "git",
+            "-c",
+            "user.email=tdm14a@example.invalid",
+            "-c",
+            "user.name=TDM-14A control",
+            "commit",
+            "-qam",
+            "negative control: corrupted sealed input",
+        ],
+        cwd=sandbox,
+        check=False,
+        capture_output=True,
+    )
     controls.append(
         control(
             "dataset_byte_tamper",
@@ -349,21 +379,36 @@ def main(argv: list[str] | None = None) -> int:
         }
     )
 
-    # 8. a tampered evidence digest must fail the post-commit rule
-    evidence_copy = sandbox / "evidence-copy"
-    evidence_copy.mkdir(parents=True, exist_ok=True)
-    reference = EVIDENCE / "BASELINE_REPORT.json"
-    copied = evidence_copy / "BASELINE_REPORT.json"
-    shutil.copyfile(reference, copied)
-    rel = reference.relative_to(HERE).as_posix()
-    blob = subprocess.run(
-        ["git", "cat-file", "blob", f"HEAD:{rel}"], cwd=HERE, capture_output=True, check=False
+    # 8. a tampered evidence digest must fail the post-commit rule, and the rule must
+    #    still accept the same file when the checkout only differs by line endings.
+    reset(sandbox, target)
+    rel = "evidence/tdm/wp-tdm-14a/BASELINE_REPORT.json"
+    copied = sandbox / rel
+    recorded = subprocess.run(
+        ["git", "cat-file", "blob", f"HEAD:{rel}"], cwd=sandbox, capture_output=True, check=False
     ).stdout
-    clean_match = sha256_file(copied) == hashlib.sha256(blob).hexdigest()
+    oid_head = subprocess.run(
+        ["git", "rev-parse", f"HEAD:{rel}"],
+        cwd=sandbox,
+        capture_output=True,
+        text=True,
+        check=False,
+    ).stdout.strip()
+
+    def identity(path: Path, relpath: str) -> str:
+        return subprocess.run(
+            ["git", "hash-object", f"--path={relpath}", "--", str(path)],
+            cwd=sandbox,
+            capture_output=True,
+            text=True,
+            check=False,
+        ).stdout.strip()
+
+    clean_match = identity(copied, rel) == oid_head
     payload = bytearray(copied.read_bytes())
     payload[-2] = payload[-2] ^ 0x01
     copied.write_bytes(bytes(payload))
-    tampered_match = sha256_file(copied) == hashlib.sha256(blob).hexdigest()
+    tampered_match = identity(copied, rel) == oid_head
     controls.append(
         {
             "control": "evidence_digest_tamper",
@@ -373,15 +418,21 @@ def main(argv: list[str] | None = None) -> int:
             "expected_nonzero_exit": True,
             "observed_exit_code": 0 if tampered_match else 1,
             "status": "PROVEN" if clean_match and not tampered_match else "NOT_PROVEN",
-            "command": f"sha256({rel}) vs git cat-file blob HEAD:{rel}",
+            "command": f"git hash-object --path={rel} vs rev-parse HEAD:{rel}",
             "duration_seconds": 0.0,
             "stdout_tail": [f"clean_match={clean_match}", f"tampered_match={tampered_match}"],
             "stderr_tail": [],
+            "detail": {
+                "blob_sha256": hashlib.sha256(recorded).hexdigest(),
+                "head_blob_oid": oid_head,
+                "identity_rule": "git hash-object applies the checkout filters, so a CRLF "
+                "worktree of an LF blob still matches; one changed byte does not",
+            },
         }
     )
 
     # 9. the v1/v2 scheme guard
-    reset(sandbox)
+    reset(sandbox, target)
     controls.append(
         control(
             "v1_v2_rejection",

@@ -1,0 +1,229 @@
+{
+  "artifact": "tdm14a-negative-controls-v1",
+  "generated_at_utc": "2026-10-25T19:01:57Z",
+  "sandbox": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg",
+  "target_commit": "7a4593cb81ea659ce860215a4dbe17abbdad6a7e",
+  "controls": [
+    {
+      "control": "source_tamper",
+      "purpose": "an unstaged edit to a fingerprinted module must fail the preflight",
+      "expected_fragment": "deviates from",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --out-dir neg-out --run-id neg-source-tamper",
+      "exit_code": 1,
+      "duration_seconds": 1.9,
+      "stdout_tail": [],
+      "stderr_tail": [
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\scripts\\tdm12_inventory.py\", line 142, in family_classes",
+        "    fingerprint: SourceFingerprint = compute_source_fingerprint(",
+        "                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\src\\trading_bot\\research\\source_fingerprint.py\", line 251, in compute_source_fingerprint",
+        "    raise WorkingTreeDirtyError(f\"{posix} deviates from {commit}: \" + \"; \".join(changes))",
+        "trading_bot.research.source_fingerprint.WorkingTreeDirtyError: src/trading_bot/research/families/breakout_family.py deviates from 7a4593cb81ea659ce860215a4dbe17abbdad6a7e: working-tree content hashes to b91f522b9cbc9718a29a1cf6e0085cefbc7454ec but 7a4593cb81ea659ce860215a4dbe17abbdad6a7e:src/trading_bot/research/families/breakout_family.py is 03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1"
+      ]
+    },
+    {
+      "control": "source_staged_tamper",
+      "purpose": "a staged edit must fail the preflight even though the file is tracked",
+      "expected_fragment": "deviates from",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --out-dir neg-out --run-id neg-source-staged",
+      "exit_code": 1,
+      "duration_seconds": 1.7,
+      "stdout_tail": [],
+      "stderr_tail": [
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\scripts\\tdm12_inventory.py\", line 142, in family_classes",
+        "    fingerprint: SourceFingerprint = compute_source_fingerprint(",
+        "                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\src\\trading_bot\\research\\source_fingerprint.py\", line 251, in compute_source_fingerprint",
+        "    raise WorkingTreeDirtyError(f\"{posix} deviates from {commit}: \" + \"; \".join(changes))",
+        "trading_bot.research.source_fingerprint.WorkingTreeDirtyError: src/trading_bot/research/families/breakout_family.py deviates from 7a4593cb81ea659ce860215a4dbe17abbdad6a7e: index differs from 7a4593cb81ea659ce860215a4dbe17abbdad6a7e (staged change); working-tree content hashes to 2608984ce4016ca580eb8403935a99c2d59bcb6b but 7a4593cb81ea659ce860215a4dbe17abbdad6a7e:src/trading_bot/research/families/breakout_family.py is 03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1"
+      ]
+    },
+    {
+      "control": "untracked_module",
+      "purpose": "an untracked module has no blob and must not receive a fingerprint",
+      "expected_fragment": "not committed",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "python.exe -c import sys;sys.path.insert(0,'src');from pathlib import Path;from trading_bot.research.source_fingerprint import compute_source_fingerprint;compute_source_fingerprint(Path('.'), 'src/trading_bot/research/families/ghost_family.py')",
+      "exit_code": 1,
+      "duration_seconds": 1.2,
+      "stdout_tail": [],
+      "stderr_tail": [
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\src\\trading_bot\\research\\source_fingerprint.py\", line 246, in compute_source_fingerprint",
+        "    blob = git_blob_bytes(root, commit, posix)",
+        "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\src\\trading_bot\\research\\source_fingerprint.py\", line 105, in git_blob_bytes",
+        "    raise SourceNotCommittedError(f\"{relpath} is not committed at {commit}: {message}\")",
+        "trading_bot.research.source_fingerprint.SourceNotCommittedError: src/trading_bot/research/families/ghost_family.py is not committed at HEAD: fatal: path 'src/trading_bot/research/families/ghost_family.py' exists on disk, but not in 'HEAD'"
+      ]
+    },
+    {
+      "control": "unreadable_blob",
+      "purpose": "an unresolvable commit must fail closed instead of hashing nothing",
+      "expected_fragment": "not committed",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --source-commit deadbeefdeadbeefdeadbeefdeadbeefdeadbeef --out-dir neg-out --run-id neg-unreadable-blob",
+      "exit_code": 1,
+      "duration_seconds": 1.3,
+      "stdout_tail": [],
+      "stderr_tail": [
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\src\\trading_bot\\research\\source_fingerprint.py\", line 246, in compute_source_fingerprint",
+        "    blob = git_blob_bytes(root, commit, posix)",
+        "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\src\\trading_bot\\research\\source_fingerprint.py\", line 105, in git_blob_bytes",
+        "    raise SourceNotCommittedError(f\"{relpath} is not committed at {commit}: {message}\")",
+        "trading_bot.research.source_fingerprint.SourceNotCommittedError: src/trading_bot/research/families/ema_crossover_family.py is not committed at deadbeefdeadbeefdeadbeefdeadbeefdeadbeef: fatal: path 'src/trading_bot/research/families/ema_crossover_family.py' exists on disk, but not in 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'"
+      ]
+    },
+    {
+      "control": "dataset_byte_tamper",
+      "purpose": "a restored input that does not match the sealed digest must stop the replay",
+      "expected_fragment": "do not match the sealed bundle",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "python.exe scripts/tdm14a_replay.py --clone C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg --label TAMPER --run-id neg-dataset-tamper --out C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\neg-report.json --review-timeout 10 --inventory-timeout 10",
+      "exit_code": 1,
+      "duration_seconds": 0.4,
+      "stdout_tail": [
+        "restored inputs do not match the sealed bundle"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "control": "economic_value_tamper",
+      "purpose": "one altered net_mean in the registry must break the contract comparison",
+      "expected_fragment": "metrics_by_cell_equal_across_runs=False",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "tdm14a_verify.check_contracts(<registry with TDM12-breakout@15m.hold.net_mean+1>)",
+      "duration_seconds": 0.0,
+      "stdout_tail": [
+        "verdict=FAIL",
+        "metrics_by_cell_equal_across_runs=False"
+      ],
+      "stderr_tail": [],
+      "detail": {
+        "cell": "TDM12-breakout@15m",
+        "original_net_mean": -21.851,
+        "doctored_net_mean": -20.851
+      }
+    },
+    {
+      "control": "timeout_and_process_tree",
+      "purpose": "a timeout must report TIMEOUT, kill the child tree and never become PASS",
+      "expected_fragment": "TIMEOUT",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "python.exe C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\neg_child.py",
+      "duration_seconds": 3.5,
+      "stdout_tail": [],
+      "stderr_tail": [],
+      "detail": {
+        "status": "TIMEOUT",
+        "killed_tree": {
+          "pid": 2092,
+          "method": "taskkill /F /T",
+          "returncode": 1,
+          "taskkill_exit": 0,
+          "taskkill_output": "CORRECTO: el proceso con PID 2092 (proceso secundario de PID 44028)\nha sido terminado."
+        },
+        "heartbeat_bytes_before": 68,
+        "heartbeat_bytes_after_2s": 68,
+        "child_stopped_writing": true,
+        "timeout_seconds": 3.0
+      }
+    },
+    {
+      "control": "evidence_digest_tamper",
+      "purpose": "a one-byte change to a published artefact must break the closure comparison",
+      "expected_fragment": "mismatch",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "git hash-object --path=evidence/tdm/wp-tdm-14a/BASELINE_REPORT.json vs rev-parse HEAD:evidence/tdm/wp-tdm-14a/BASELINE_REPORT.json",
+      "duration_seconds": 0.0,
+      "stdout_tail": [
+        "clean_match=True",
+        "tampered_match=False"
+      ],
+      "stderr_tail": [],
+      "detail": {
+        "blob_sha256": "b117a6530b4ab8060a23b539694f703b125c4e25008d4ac8b7496880f9679d7d",
+        "head_blob_oid": "d344746dfc0f1ac63ebb18ef021180fff79dbfe4",
+        "identity_rule": "git hash-object applies the checkout filters, so a CRLF worktree of an LF blob still matches; one changed byte does not"
+      }
+    },
+    {
+      "control": "v1_v2_rejection",
+      "purpose": "a v1 checkout digest must never be compared with a v2 blob digest",
+      "expected_fragment": "IncompatibleFingerprintScheme",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "python.exe -c import json,sys;sys.path.insert(0,'src');from trading_bot.research.source_fingerprint import read_fingerprint,assert_comparable;v1=read_fingerprint({'parameter_hash':'9825f38950c5b975'});v2=read_fingerprint({'fingerprint_scheme':'v2','source_fingerprint':'ab'*32,'source_relpath':'x','source_commit':'0'*40,'source_blob_oid':'0'*40,'working_tree_clean_verified':True});assert_comparable(v1,v2)",
+      "exit_code": 1,
+      "duration_seconds": 1.2,
+      "stdout_tail": [],
+      "stderr_tail": [
+        "Traceback (most recent call last):",
+        "  File \"<string>\", line 1, in <module>",
+        "  File \"C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-neg\\src\\trading_bot\\research\\source_fingerprint.py\", line 329, in assert_comparable",
+        "    raise IncompatibleFingerprintScheme(",
+        "trading_bot.research.source_fingerprint.IncompatibleFingerprintScheme: <left> is v1 but x is v2: a checkout byte digest and a blob digest are different identities, not two values of one"
+      ]
+    },
+    {
+      "control": "stale_output_injection",
+      "purpose": "a forged review.json and cell metrics planted before the run must be deleted and never counted as results",
+      "expected_fragment": "forged run removed",
+      "fragment_present": true,
+      "expected_nonzero_exit": true,
+      "observed_exit_code": 1,
+      "status": "PROVEN",
+      "command": "scripts/tdm14a_replay.py --inject-stale-state (CRLF run)",
+      "duration_seconds": 386.1,
+      "stdout_tail": [
+        "injected=['cell_metrics.json', 'review.json']",
+        "removed=['.tdm12']",
+        "forged values absent from the regenerated review=True"
+      ],
+      "stderr_tail": [],
+      "detail": {
+        "injected_digests": {
+          "review.json": "ed237167ce70aaff94bf82d99bdf9c99da6aa4151f3554415529370d99301e70",
+          "cell_metrics.json": "5f7f0eabcd021bb872fb68abd26c42120af7e26a382a775e78f27a8c4a01f7e9"
+        },
+        "isolation_removed": [
+          ".tdm12"
+        ],
+        "regenerated_review_net_mean": -36.3676,
+        "regenerated_review_run_id": null
+      }
+    }
+  ],
+  "proven": 10,
+  "total": 10,
+  "status": "PASS",
+  "rule": "PROVEN requires a non-zero exit AND the expected reason in the output; a non-zero exit for the wrong reason is NOT_PROVEN"
+}

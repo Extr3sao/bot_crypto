@@ -1,0 +1,463 @@
+{
+  "artifact": "tdm14a-replay-report-v1",
+  "rfc_id": "RFC-TDM-014A",
+  "wp": "WP-14C",
+  "generated_at_utc": "2026-10-25T19:08:49Z",
+  "target_commit": "7a4593cb81ea659ce860215a4dbe17abbdad6a7e",
+  "runs": [
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf",
+      "core_autocrlf": "false",
+      "status": "PASS",
+      "started_utc": "2026-10-25T18:18:21Z",
+      "finished_utc": "2026-10-25T18:25:21Z",
+      "duration_seconds": 419.7,
+      "phases": [
+        {
+          "phase": "review",
+          "status": "PASS",
+          "command": "python.exe scripts/tdm12_review.py",
+          "exit_code": 0,
+          "timed_out": false,
+          "timeout_seconds": 1800.0,
+          "duration_seconds": 106.5,
+          "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\lf\\review.log",
+          "log_sha256": "5f70d0b172426c6300bf14d08b7d59ef8894d165eced675dca66507ddba9e989",
+          "log_tail": [
+            "R-02 provenance missing=[] mismatched=[]",
+            "R-03 ledger derived=115 problems=0",
+            "R-04 clustered gross CI hi=-3.101",
+            "R-05 lookahead mean=17.0538",
+            "R-05 claim 3/6 reproduced=None",
+            "wrote review.json in 106.1s"
+          ]
+        },
+        {
+          "phase": "inventory",
+          "status": "PASS",
+          "command": "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --source-commit 7a4593cb81ea659ce860215a4dbe17abbdad6a7e --out-dir C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-out\\lf --run-id tdm14a-lf-20261025T181821Z",
+          "exit_code": 0,
+          "timed_out": false,
+          "timeout_seconds": 2400.0,
+          "duration_seconds": 312.8,
+          "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\lf\\inventory.log",
+          "log_sha256": "076b33b2056eebd467a059efe3137728bbeb3548a653af2dc7f55ebb013b1b72",
+          "log_tail": [
+            " \"dev_net_positive\": [],",
+            " \"best_hold_gross\": {",
+            "  \"candidate_id\": \"TDM12-volatility@5m\",",
+            "  \"gross\": 7.0531",
+            " }",
+            "}"
+          ]
+        }
+      ],
+      "isolation": {
+        "removed": [],
+        "leftovers": [],
+        "clean_before_run": true
+      },
+      "injected_stale_state": null,
+      "inputs": {
+        "files": 26,
+        "matching": 26,
+        "total_bytes": 10310475,
+        "failures": [],
+        "status": "AVAILABLE",
+        "manifest_sha256": "dca0ae6d8f642328155c6a85159a9619717154e33a66565249bf12004f233844"
+      },
+      "outputs": {
+        "expected": 5,
+        "present": 5,
+        "proven_generated": 5,
+        "status": "PASS",
+        "rows": [
+          {
+            "name": "review",
+            "path": ".tdm12/review.json",
+            "exists": true,
+            "bytes": 6591,
+            "sha256": "b068c812a85cab925e383dc2dd5712665778549ab8bf1f81e531e6e2f89699c2",
+            "mtime_epoch": 1792952408.161337,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": false
+          },
+          {
+            "name": "cell_metrics",
+            "path": ".tdm12/cell_metrics.json",
+            "exists": true,
+            "bytes": 7139849,
+            "sha256": "f91591280d300d176aca303b25bb28dbc63cbb3e50ae1c6a109e478f2d415e4f",
+            "mtime_epoch": 1792952720.9798813,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": false
+          },
+          {
+            "name": "registry_json",
+            "path": ".replay-out/lf/CANDIDATE_REGISTRY.json",
+            "exists": true,
+            "bytes": 85099,
+            "sha256": "86a020ac3dffa721a588b510cd122d08c501da4d4aee44ac6ca3e7e1d3e0e520",
+            "mtime_epoch": 1792952721.1112688,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": true
+          },
+          {
+            "name": "registry_csv",
+            "path": ".replay-out/lf/CANDIDATE_REGISTRY.csv",
+            "exists": true,
+            "bytes": 24367,
+            "sha256": "a4d616764d62a4943098808b2d79ba669959cf13600a44d6c9795f2931e9abde",
+            "mtime_epoch": 1792952721.1112688,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": false
+          },
+          {
+            "name": "window_registry",
+            "path": ".replay-out/lf/DATA_WINDOW_REGISTRY.json",
+            "exists": true,
+            "bytes": 1823,
+            "sha256": "4c88d75e97695a8dad491882bab737a3e6f5e8b5ee2b1c2a02e29d0a1cd54acb",
+            "mtime_epoch": 1792952721.1112688,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": false
+          }
+        ]
+      }
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf",
+      "core_autocrlf": "true",
+      "status": "PASS",
+      "started_utc": "2026-10-25T18:28:23Z",
+      "finished_utc": "2026-10-25T18:34:49Z",
+      "duration_seconds": 386.1,
+      "phases": [
+        {
+          "phase": "review",
+          "status": "PASS",
+          "command": "python.exe scripts/tdm12_review.py",
+          "exit_code": 0,
+          "timed_out": false,
+          "timeout_seconds": 1800.0,
+          "duration_seconds": 124.0,
+          "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-logs\\crlf\\review.log",
+          "log_sha256": "b27b76f245c8acc7e30f21710633aab0f475c82baa30ed4ea46666ca96da1f36",
+          "log_tail": [
+            "R-02 provenance missing=[] mismatched=[]",
+            "R-03 ledger derived=115 problems=0",
+            "R-04 clustered gross CI hi=-3.101",
+            "R-05 lookahead mean=17.0538",
+            "R-05 claim 3/6 reproduced=None",
+            "wrote review.json in 123.7s"
+          ]
+        },
+        {
+          "phase": "inventory",
+          "status": "PASS",
+          "command": "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --source-commit 7a4593cb81ea659ce860215a4dbe17abbdad6a7e --out-dir C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-out\\crlf --run-id tdm14a-crlf-20261025T182823Z",
+          "exit_code": 0,
+          "timed_out": false,
+          "timeout_seconds": 2400.0,
+          "duration_seconds": 261.5,
+          "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-logs\\crlf\\inventory.log",
+          "log_sha256": "965cf567c277240b1ab7ed48dbd5a5c359141a3a2a26da40ef2ea34360a2b11a",
+          "log_tail": [
+            " \"dev_net_positive\": [],",
+            " \"best_hold_gross\": {",
+            "  \"candidate_id\": \"TDM12-volatility@5m\",",
+            "  \"gross\": 7.0531",
+            " }",
+            "}"
+          ]
+        }
+      ],
+      "isolation": {
+        "removed": [
+          ".tdm12"
+        ],
+        "leftovers": [],
+        "clean_before_run": true
+      },
+      "injected_stale_state": {
+        "review.json": "ed237167ce70aaff94bf82d99bdf9c99da6aa4151f3554415529370d99301e70",
+        "cell_metrics.json": "5f7f0eabcd021bb872fb68abd26c42120af7e26a382a775e78f27a8c4a01f7e9"
+      },
+      "inputs": {
+        "files": 26,
+        "matching": 26,
+        "total_bytes": 10310475,
+        "failures": [],
+        "status": "AVAILABLE",
+        "manifest_sha256": "dca0ae6d8f642328155c6a85159a9619717154e33a66565249bf12004f233844"
+      },
+      "outputs": {
+        "expected": 5,
+        "present": 5,
+        "proven_generated": 5,
+        "status": "PASS",
+        "rows": [
+          {
+            "name": "review",
+            "path": ".tdm12/review.json",
+            "exists": true,
+            "bytes": 6593,
+            "sha256": "0624d9c0198a4d6c35810e0c421165a99cacb423ead33c396a7f17847eb30682",
+            "mtime_epoch": 1792953027.5902424,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": false
+          },
+          {
+            "name": "cell_metrics",
+            "path": ".tdm12/cell_metrics.json",
+            "exists": true,
+            "bytes": 7139849,
+            "sha256": "f91591280d300d176aca303b25bb28dbc63cbb3e50ae1c6a109e478f2d415e4f",
+            "mtime_epoch": 1792953288.9195092,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": false
+          },
+          {
+            "name": "registry_json",
+            "path": ".replay-out/crlf/CANDIDATE_REGISTRY.json",
+            "exists": true,
+            "bytes": 85101,
+            "sha256": "bfe57e23388ee54579b6239d451ea8dc6cf65c16f553f16dc56568dbbd320751",
+            "mtime_epoch": 1792953289.0872877,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": true
+          },
+          {
+            "name": "registry_csv",
+            "path": ".replay-out/crlf/CANDIDATE_REGISTRY.csv",
+            "exists": true,
+            "bytes": 24367,
+            "sha256": "a4d616764d62a4943098808b2d79ba669959cf13600a44d6c9795f2931e9abde",
+            "mtime_epoch": 1792953289.082536,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": false
+          },
+          {
+            "name": "window_registry",
+            "path": ".replay-out/crlf/DATA_WINDOW_REGISTRY.json",
+            "exists": true,
+            "bytes": 1823,
+            "sha256": "7c4a1893ceb8570f0e0e5239a019fa8a0a8d5532486ef3098032dc522abda224",
+            "mtime_epoch": 1792953289.082536,
+            "generated_after_run_start": true,
+            "absent_before_run": true,
+            "run_id_embedded": false
+          }
+        ]
+      }
+    }
+  ],
+  "contracts": [
+    {
+      "contract": "trades",
+      "source": "ledger.derived_trades",
+      "published": 115,
+      "run_a": 115,
+      "run_b": 115,
+      "a_equals_b": true,
+      "a_equals_published": true
+    },
+    {
+      "contract": "gross_mean",
+      "source": "ledger.gross_mean",
+      "published": -12.577,
+      "run_a": -12.577,
+      "run_b": -12.577,
+      "a_equals_b": true,
+      "a_equals_published": true
+    },
+    {
+      "contract": "net_mean",
+      "source": "ledger.net_mean",
+      "published": -36.3676,
+      "run_a": -36.3676,
+      "run_b": -36.3676,
+      "a_equals_b": true,
+      "a_equals_published": true
+    },
+    {
+      "contract": "day_clustered_ci95_gross",
+      "source": "dependence.day_clustered_ci95_gross",
+      "published": {
+        "lo": -23.2174,
+        "hi": -3.101,
+        "se": 5.2335,
+        "day_clusters": 26
+      },
+      "run_a": {
+        "lo": -23.2174,
+        "hi": -3.101,
+        "se": 5.2335,
+        "day_clusters": 26
+      },
+      "run_b": {
+        "lo": -23.2174,
+        "hi": -3.101,
+        "se": 5.2335,
+        "day_clusters": 26
+      },
+      "a_equals_b": true,
+      "a_equals_published": true
+    },
+    {
+      "contract": "net_upper_bound_by_method",
+      "source": "dependence.net_upper_bound_by_method",
+      "published": {
+        "1d": -26.8916,
+        "2d": -26.695,
+        "5d": -29.4407,
+        "10d": -31.5307
+      },
+      "run_a": {
+        "1d": -26.8916,
+        "2d": -26.695,
+        "5d": -29.4407,
+        "10d": -31.5307
+      },
+      "run_b": {
+        "1d": -26.8916,
+        "2d": -26.695,
+        "5d": -29.4407,
+        "10d": -31.5307
+      },
+      "a_equals_b": true,
+      "a_equals_published": true
+    },
+    {
+      "contract": "per_asset",
+      "source": "dependence.per_asset",
+      "published": {
+        "BTC": {
+          "trades": 36,
+          "gross_mean": -8.1873,
+          "share": 0.313
+        },
+        "ETH": {
+          "trades": 35,
+          "gross_mean": -19.2816,
+          "share": 0.304
+        },
+        "SOL": {
+          "trades": 44,
+          "gross_mean": -10.8353,
+          "share": 0.383
+        }
+      },
+      "run_a": {
+        "BTC": {
+          "trades": 36,
+          "gross_mean": -8.1873,
+          "share": 0.313
+        },
+        "ETH": {
+          "trades": 35,
+          "gross_mean": -19.2816,
+          "share": 0.304
+        },
+        "SOL": {
+          "trades": 44,
+          "gross_mean": -10.8353,
+          "share": 0.383
+        }
+      },
+      "run_b": {
+        "BTC": {
+          "trades": 36,
+          "gross_mean": -8.1873,
+          "share": 0.313
+        },
+        "ETH": {
+          "trades": 35,
+          "gross_mean": -19.2816,
+          "share": 0.304
+        },
+        "SOL": {
+          "trades": 44,
+          "gross_mean": -10.8353,
+          "share": 0.383
+        }
+      },
+      "a_equals_b": true,
+      "a_equals_published": true
+    },
+    {
+      "contract": "lookahead_advantage_bps",
+      "source": "controls.lookahead_advantage_bps",
+      "published": 29.6308,
+      "run_a": 29.6308,
+      "run_b": 29.6308,
+      "a_equals_b": true,
+      "a_equals_published": true
+    },
+    {
+      "contract": "independence_status",
+      "source": "independence.status",
+      "published": "INDEPENDENCE_NOT_DEMONSTRATED",
+      "run_a": "INDEPENDENCE_NOT_DEMONSTRATED",
+      "run_b": "INDEPENDENCE_NOT_DEMONSTRATED",
+      "a_equals_b": true,
+      "a_equals_published": true
+    },
+    {
+      "contract": "CANDIDATE_REGISTRY.json",
+      "source": "<whole document>",
+      "differences_a_vs_b": [],
+      "a_equals_b": true,
+      "published_differences_explained": {
+        "total": 184,
+        "explained": 184,
+        "explained_paths": [
+          "artifact",
+          "fingerprint_algorithm",
+          "fingerprint_scheme",
+          "source_blob_oid",
+          "source_commit",
+          "source_fingerprint",
+          "source_relpath",
+          "working_tree_clean_verified"
+        ],
+        "unexplained": []
+      }
+    },
+    {
+      "contract": "DATA_WINDOW_REGISTRY.json",
+      "source": "<whole document>",
+      "differences_a_vs_b": [],
+      "a_equals_b": true,
+      "a_equals_published": true
+    }
+  ],
+  "contracts_passing": 10,
+  "contracts_compared": 10,
+  "metrics_by_cell_equal_across_runs": true,
+  "metrics_by_cell_equal_to_published": true,
+  "eol": {
+    "status": "PASS",
+    "modules_compared": 7,
+    "physical_bytes_differ": 7,
+    "same_blob": 7,
+    "v2_equal": 7,
+    "registry_fingerprints_equal_across_runs": true,
+    "published_matches_independent_digest": true
+  },
+  "reuse_of_intermediate_results": "none: neither phase was invoked with --reuse and both .tdm12/review.json and .tdm12/cell_metrics.json were absent before their run",
+  "status": "PASS"
+}

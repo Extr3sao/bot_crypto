@@ -1,0 +1,517 @@
+{
+  "artifact": "tdm14a-eol-comparison-v1",
+  "generated_at_utc": "2026-10-25T19:07:44Z",
+  "target_commit": "04b02c2d1d449fd84931cf75b58f91caa5ab10c6",
+  "run_a": {
+    "run_id": "tdm14a-lf-20261025T181821Z",
+    "label": "LF",
+    "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf",
+    "core_autocrlf": "false"
+  },
+  "run_b": {
+    "run_id": "tdm14a-crlf-20261025T182823Z",
+    "label": "CRLF",
+    "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf",
+    "core_autocrlf": "true"
+  },
+  "modules": [
+    {
+      "relpath": "src/trading_bot/research/families/ema_crossover_family.py",
+      "bytes_lf": 4608,
+      "bytes_crlf": 4740,
+      "crlf_lf": 0,
+      "crlf_crlf": 132,
+      "physical_bytes_differ": true,
+      "sha256_working_tree_lf": "78d0625e5604f84f",
+      "sha256_working_tree_crlf": "1e7e392fd1d6efe0",
+      "blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "blob_oids_equal": true,
+      "v2_digest_lf": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "v2_digest_crlf": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "v2_equal": true
+    },
+    {
+      "relpath": "src/trading_bot/research/families/momentum_family.py",
+      "bytes_lf": 4352,
+      "bytes_crlf": 4486,
+      "crlf_lf": 0,
+      "crlf_crlf": 134,
+      "physical_bytes_differ": true,
+      "sha256_working_tree_lf": "633a8a7f61cc2161",
+      "sha256_working_tree_crlf": "4a613a8e5d8efc6d",
+      "blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "blob_oids_equal": true,
+      "v2_digest_lf": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "v2_digest_crlf": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "v2_equal": true
+    },
+    {
+      "relpath": "src/trading_bot/research/families/breakout_family.py",
+      "bytes_lf": 4640,
+      "bytes_crlf": 4776,
+      "crlf_lf": 0,
+      "crlf_crlf": 136,
+      "physical_bytes_differ": true,
+      "sha256_working_tree_lf": "9825f38950c5b975",
+      "sha256_working_tree_crlf": "359ba1b773defee8",
+      "blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "blob_oids_equal": true,
+      "v2_digest_lf": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "v2_digest_crlf": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "v2_equal": true
+    },
+    {
+      "relpath": "src/trading_bot/research/families/trend_family.py",
+      "bytes_lf": 5182,
+      "bytes_crlf": 5324,
+      "crlf_lf": 0,
+      "crlf_crlf": 142,
+      "physical_bytes_differ": true,
+      "sha256_working_tree_lf": "1d88358cc4da07d2",
+      "sha256_working_tree_crlf": "5e1895d693b0af52",
+      "blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "blob_oids_equal": true,
+      "v2_digest_lf": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "v2_digest_crlf": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "v2_equal": true
+    },
+    {
+      "relpath": "src/trading_bot/research/families/mean_reversion_family.py",
+      "bytes_lf": 4501,
+      "bytes_crlf": 4636,
+      "crlf_lf": 0,
+      "crlf_crlf": 135,
+      "physical_bytes_differ": true,
+      "sha256_working_tree_lf": "07d019114e776a5d",
+      "sha256_working_tree_crlf": "6fe364297f1af6b1",
+      "blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "blob_oids_equal": true,
+      "v2_digest_lf": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "v2_digest_crlf": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "v2_equal": true
+    },
+    {
+      "relpath": "src/trading_bot/research/families/volatility_family.py",
+      "bytes_lf": 5771,
+      "bytes_crlf": 5942,
+      "crlf_lf": 0,
+      "crlf_crlf": 171,
+      "physical_bytes_differ": true,
+      "sha256_working_tree_lf": "b1717c10016ee003",
+      "sha256_working_tree_crlf": "c41acd1a0bbd2a30",
+      "blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "blob_oids_equal": true,
+      "v2_digest_lf": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "v2_digest_crlf": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "v2_equal": true
+    },
+    {
+      "relpath": "src/trading_bot/research/source_fingerprint.py",
+      "bytes_lf": 14339,
+      "bytes_crlf": 14672,
+      "crlf_lf": 0,
+      "crlf_crlf": 333,
+      "physical_bytes_differ": true,
+      "sha256_working_tree_lf": "8258bb4739098162",
+      "sha256_working_tree_crlf": "217d834843bbd628",
+      "blob_oid": "62195f414f0c5983da0f8e39d8c6520fe7b31416",
+      "blob_oids_equal": true,
+      "v2_digest_lf": "8258bb47390981620c6abbcec36ffd1906ee5b45199e8ff117563263b41c0614",
+      "v2_digest_crlf": "8258bb47390981620c6abbcec36ffd1906ee5b45199e8ff117563263b41c0614",
+      "v2_equal": true
+    }
+  ],
+  "registry_fingerprints": [
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-breakout@15m",
+      "source_fingerprint": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "parameter_hash": "9825f38950c5b975",
+      "source_blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "source_relpath": "src/trading_bot/research/families/breakout_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-breakout@1h",
+      "source_fingerprint": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "parameter_hash": "9825f38950c5b975",
+      "source_blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "source_relpath": "src/trading_bot/research/families/breakout_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-breakout@30m",
+      "source_fingerprint": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "parameter_hash": "9825f38950c5b975",
+      "source_blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "source_relpath": "src/trading_bot/research/families/breakout_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-breakout@5m",
+      "source_fingerprint": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "parameter_hash": "9825f38950c5b975",
+      "source_blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "source_relpath": "src/trading_bot/research/families/breakout_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-ema_crossover@15m",
+      "source_fingerprint": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "parameter_hash": "78d0625e5604f84f",
+      "source_blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "source_relpath": "src/trading_bot/research/families/ema_crossover_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-ema_crossover@1h",
+      "source_fingerprint": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "parameter_hash": "78d0625e5604f84f",
+      "source_blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "source_relpath": "src/trading_bot/research/families/ema_crossover_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-ema_crossover@30m",
+      "source_fingerprint": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "parameter_hash": "78d0625e5604f84f",
+      "source_blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "source_relpath": "src/trading_bot/research/families/ema_crossover_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-ema_crossover@5m",
+      "source_fingerprint": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "parameter_hash": "78d0625e5604f84f",
+      "source_blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "source_relpath": "src/trading_bot/research/families/ema_crossover_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-mean_reversion@15m",
+      "source_fingerprint": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "parameter_hash": "07d019114e776a5d",
+      "source_blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "source_relpath": "src/trading_bot/research/families/mean_reversion_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-mean_reversion@1h",
+      "source_fingerprint": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "parameter_hash": "07d019114e776a5d",
+      "source_blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "source_relpath": "src/trading_bot/research/families/mean_reversion_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-mean_reversion@30m",
+      "source_fingerprint": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "parameter_hash": "07d019114e776a5d",
+      "source_blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "source_relpath": "src/trading_bot/research/families/mean_reversion_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-mean_reversion@5m",
+      "source_fingerprint": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "parameter_hash": "07d019114e776a5d",
+      "source_blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "source_relpath": "src/trading_bot/research/families/mean_reversion_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-momentum@15m",
+      "source_fingerprint": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "parameter_hash": "633a8a7f61cc2161",
+      "source_blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "source_relpath": "src/trading_bot/research/families/momentum_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-momentum@1h",
+      "source_fingerprint": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "parameter_hash": "633a8a7f61cc2161",
+      "source_blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "source_relpath": "src/trading_bot/research/families/momentum_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-momentum@30m",
+      "source_fingerprint": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "parameter_hash": "633a8a7f61cc2161",
+      "source_blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "source_relpath": "src/trading_bot/research/families/momentum_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-momentum@5m",
+      "source_fingerprint": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "parameter_hash": "633a8a7f61cc2161",
+      "source_blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "source_relpath": "src/trading_bot/research/families/momentum_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-trend@15m",
+      "source_fingerprint": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "parameter_hash": "1d88358cc4da07d2",
+      "source_blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "source_relpath": "src/trading_bot/research/families/trend_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-trend@1h",
+      "source_fingerprint": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "parameter_hash": "1d88358cc4da07d2",
+      "source_blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "source_relpath": "src/trading_bot/research/families/trend_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-trend@30m",
+      "source_fingerprint": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "parameter_hash": "1d88358cc4da07d2",
+      "source_blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "source_relpath": "src/trading_bot/research/families/trend_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-trend@5m",
+      "source_fingerprint": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "parameter_hash": "1d88358cc4da07d2",
+      "source_blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "source_relpath": "src/trading_bot/research/families/trend_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-volatility@15m",
+      "source_fingerprint": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "parameter_hash": "b1717c10016ee003",
+      "source_blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "source_relpath": "src/trading_bot/research/families/volatility_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-volatility@1h",
+      "source_fingerprint": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "parameter_hash": "b1717c10016ee003",
+      "source_blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "source_relpath": "src/trading_bot/research/families/volatility_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-volatility@30m",
+      "source_fingerprint": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "parameter_hash": "b1717c10016ee003",
+      "source_blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "source_relpath": "src/trading_bot/research/families/volatility_family.py"
+    },
+    {
+      "label": "LF",
+      "candidate_id": "TDM12-volatility@5m",
+      "source_fingerprint": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "parameter_hash": "b1717c10016ee003",
+      "source_blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "source_relpath": "src/trading_bot/research/families/volatility_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-breakout@15m",
+      "source_fingerprint": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "parameter_hash": "9825f38950c5b975",
+      "source_blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "source_relpath": "src/trading_bot/research/families/breakout_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-breakout@1h",
+      "source_fingerprint": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "parameter_hash": "9825f38950c5b975",
+      "source_blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "source_relpath": "src/trading_bot/research/families/breakout_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-breakout@30m",
+      "source_fingerprint": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "parameter_hash": "9825f38950c5b975",
+      "source_blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "source_relpath": "src/trading_bot/research/families/breakout_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-breakout@5m",
+      "source_fingerprint": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "parameter_hash": "9825f38950c5b975",
+      "source_blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "source_relpath": "src/trading_bot/research/families/breakout_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-ema_crossover@15m",
+      "source_fingerprint": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "parameter_hash": "78d0625e5604f84f",
+      "source_blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "source_relpath": "src/trading_bot/research/families/ema_crossover_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-ema_crossover@1h",
+      "source_fingerprint": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "parameter_hash": "78d0625e5604f84f",
+      "source_blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "source_relpath": "src/trading_bot/research/families/ema_crossover_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-ema_crossover@30m",
+      "source_fingerprint": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "parameter_hash": "78d0625e5604f84f",
+      "source_blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "source_relpath": "src/trading_bot/research/families/ema_crossover_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-ema_crossover@5m",
+      "source_fingerprint": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "parameter_hash": "78d0625e5604f84f",
+      "source_blob_oid": "37430f74b70814345e074841f82b625b2c8e315a",
+      "source_relpath": "src/trading_bot/research/families/ema_crossover_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-mean_reversion@15m",
+      "source_fingerprint": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "parameter_hash": "07d019114e776a5d",
+      "source_blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "source_relpath": "src/trading_bot/research/families/mean_reversion_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-mean_reversion@1h",
+      "source_fingerprint": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "parameter_hash": "07d019114e776a5d",
+      "source_blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "source_relpath": "src/trading_bot/research/families/mean_reversion_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-mean_reversion@30m",
+      "source_fingerprint": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "parameter_hash": "07d019114e776a5d",
+      "source_blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "source_relpath": "src/trading_bot/research/families/mean_reversion_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-mean_reversion@5m",
+      "source_fingerprint": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "parameter_hash": "07d019114e776a5d",
+      "source_blob_oid": "db50b55b3215efd4b4208244e1eb1ea34468c4bc",
+      "source_relpath": "src/trading_bot/research/families/mean_reversion_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-momentum@15m",
+      "source_fingerprint": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "parameter_hash": "633a8a7f61cc2161",
+      "source_blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "source_relpath": "src/trading_bot/research/families/momentum_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-momentum@1h",
+      "source_fingerprint": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "parameter_hash": "633a8a7f61cc2161",
+      "source_blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "source_relpath": "src/trading_bot/research/families/momentum_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-momentum@30m",
+      "source_fingerprint": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "parameter_hash": "633a8a7f61cc2161",
+      "source_blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "source_relpath": "src/trading_bot/research/families/momentum_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-momentum@5m",
+      "source_fingerprint": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "parameter_hash": "633a8a7f61cc2161",
+      "source_blob_oid": "dc2fb2b6e4c2e45a5206eecbf23b6f9f29721290",
+      "source_relpath": "src/trading_bot/research/families/momentum_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-trend@15m",
+      "source_fingerprint": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "parameter_hash": "1d88358cc4da07d2",
+      "source_blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "source_relpath": "src/trading_bot/research/families/trend_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-trend@1h",
+      "source_fingerprint": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "parameter_hash": "1d88358cc4da07d2",
+      "source_blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "source_relpath": "src/trading_bot/research/families/trend_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-trend@30m",
+      "source_fingerprint": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "parameter_hash": "1d88358cc4da07d2",
+      "source_blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "source_relpath": "src/trading_bot/research/families/trend_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-trend@5m",
+      "source_fingerprint": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "parameter_hash": "1d88358cc4da07d2",
+      "source_blob_oid": "f1d669f7159a601990771a43203f4ccbeaffd3ee",
+      "source_relpath": "src/trading_bot/research/families/trend_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-volatility@15m",
+      "source_fingerprint": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "parameter_hash": "b1717c10016ee003",
+      "source_blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "source_relpath": "src/trading_bot/research/families/volatility_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-volatility@1h",
+      "source_fingerprint": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "parameter_hash": "b1717c10016ee003",
+      "source_blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "source_relpath": "src/trading_bot/research/families/volatility_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-volatility@30m",
+      "source_fingerprint": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "parameter_hash": "b1717c10016ee003",
+      "source_blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "source_relpath": "src/trading_bot/research/families/volatility_family.py"
+    },
+    {
+      "label": "CRLF",
+      "candidate_id": "TDM12-volatility@5m",
+      "source_fingerprint": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "parameter_hash": "b1717c10016ee003",
+      "source_blob_oid": "32bb1de3cfa133a27d7c666d49ccba4bf33c9066",
+      "source_relpath": "src/trading_bot/research/families/volatility_family.py"
+    }
+  ],
+  "registry_fingerprints_equal_across_runs": true,
+  "registry_rows_compared": 24,
+  "published_matches_independent_digest": true,
+  "published_digest_mismatches": [],
+  "source_tamper_control": "PROVEN",
+  "verifier_recomputed_independently": true,
+  "status": "PASS"
+}

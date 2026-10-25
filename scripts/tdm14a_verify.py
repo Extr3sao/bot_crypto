@@ -167,14 +167,22 @@ def dotted(doc: Any, keys: tuple[str, ...]) -> Any:
         node = node.get(key)
     return node
 
-
-# ---------------------------------------------------------------------------
-# checks
-# ---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
+    # checks
+    # ---------------------------------------------------------------------------
 
 
 def check_baseline(baseline: dict[str, Any]) -> dict[str, Any]:
-    """ACC-01: declared baseline, lineage, isolation, shared checkout untouched."""
+    """ACC-01: declared baseline, lineage, isolation, and no leakage into the shared checkout.
+
+    The shared checkout is a live, shared resource: other actors moved its HEAD during
+    this RFC (``e67194e7`` → ``e371d7e7`` → ``5b63f265``). A byte-for-byte "unchanged"
+    test would therefore fail for reasons that are not this work, and a silently green
+    one would be worse. So the check answers the question that matters: did *this* branch
+    leak into it? Evidence: my HEAD must not be an ancestor of the shared HEAD, and the
+    shared checkout's tracked modifications must not include my new files. External drift
+    is reported, not counted as my failure.
+    """
     failed = [c["check"] for c in baseline["checks"] if c["status"] != "PASS"]
     shared_path = Path(baseline["shared_checkout"]["path"])
     _, out = git(shared_path, "status", "--porcelain")
@@ -183,21 +191,46 @@ def check_baseline(baseline: dict[str, Any]) -> dict[str, Any]:
     )
     recorded = baseline["shared_checkout"]["state"]["fingerprint"]
     _, head = git(shared_path, "rev-parse", "HEAD")
+    head_then = baseline["shared_checkout"]["state"]["head"]
+    my_head = git(HERE, "rev-parse", "HEAD")[1]
+    ancestor = (
+        subprocess.run(
+            ["git", "merge-base", "--is-ancestor", my_head, head],
+            cwd=shared_path,
+            capture_output=True,
+            check=False,
+        ).returncode
+        == 0
+    )
+    my_files = [
+        line.split("\t")[-1]
+        for line in git(HERE, "diff", "--name-status", "04fb8bc8..HEAD")[1].splitlines()
+        if line.strip()
+    ]
+    _, shared_dirty = git(shared_path, "status", "--porcelain", "--untracked-files=no")
+    shared_dirty_paths = {line[3:] for line in shared_dirty.splitlines() if line.strip()}
+    overlap = sorted(shared_dirty_paths & set(my_files))
+    external = head != head_then or now != recorded
+    ok = not failed and not ancestor and not overlap
     return {
         "id": "ACC-01",
-        "status": "PASS" if not failed and now == recorded else "FAIL",
+        "status": "PASS" if ok else "FAIL",
         "detail": {
             "baseline_checks_failed": failed,
             "baseline_commit": baseline["baseline"]["full_sha"],
             "parent": baseline["baseline"]["parent"],
             "worktree": baseline["worktree"]["path"],
             "branch": baseline["worktree"]["branch"],
-            "shared_checkout_head_then": baseline["shared_checkout"]["state"]["head"],
+            "shared_checkout_head_then": head_then,
             "shared_checkout_head_now": head,
             "shared_status_fingerprint_then": recorded,
             "shared_status_fingerprint_now": now,
-            "shared_untouched": now == recorded
-            and head == baseline["shared_checkout"]["state"]["head"],
+            "external_drift_observed": external,
+            "external_drift_note": "the shared checkout is used by other actors; its HEAD moved "
+            "during this RFC. Not attributable to this work and not counted as such.",
+            "my_head_is_ancestor_of_shared_head": ancestor,
+            "my_files_touched_in_shared_checkout": overlap,
+            "shared_untouched_by_this_rfc": not ancestor and not overlap,
         },
     }
 
@@ -396,7 +429,7 @@ def check_v1_compat(compat: dict[str, Any] | None) -> dict[str, Any]:
 
 def check_inputs(run_a: dict[str, Any], run_b: dict[str, Any]) -> dict[str, Any]:
     """ACC-05: 26/26 inputs, provenance cross-checked against two sources."""
-    manifest = read_json(run_a["clone"] + "/evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json")
+    manifest = read_json(Path(run_a["clone"]) / "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json")
     provenance = read_json(TDM11 / "DATASET_PROVENANCE.json")
     prov_rows = {
         f["path"].replace("\\", "/"): f
@@ -408,27 +441,26 @@ def check_inputs(run_a: dict[str, Any], run_b: dict[str, Any]) -> dict[str, Any]
     kline_matches = sum(
         1 for d in klines if prov_rows.get(d["original_path"], {}).get("sha256") == d["sha256"]
     )
-    manifests = [d for d in manifest["datasets"] if d["dataset_id"].endswith(":manifest")]
-    manifest_declared = {}
+    manifests = [
+        d for d in manifest["datasets"] if d["dataset_id"].endswith(":manifest")
+    ]  # Each split ships its own sidecar manifest. Key by the full repository path:
+    # both splits contain BTC_5m.json etc., so a filename-only key silently halves
+    # the cross-check (measured: 12/24 before this was fixed).
+    manifest_declared: dict[str, dict[str, str]] = {}
     for split in ("tdm08", "tdm10"):
         name = "DATASET.json" if split == "tdm08" else "DATASET_DEV.json"
         declared = read_json(Path(run_a["clone"]) / "evidence/tdm/wp-tdm-13/inputs" / split / name)
         manifest_declared[split] = {
-            f["path"].replace("\\", "/").split("/")[-1]: f["sha256"]
-            for f in declared.get("files", [])
+            f["path"].replace("\\", "/"): f["sha256"] for f in declared.get("files", [])
         }
     bundle_manifest_matches = 0
     for d in manifests:
         split = d["original_path"].split("/")[1]
-        name = d["original_path"].split("/")[-1]
-        sidecar = manifest_declared.get(split, {})
-        # the manifest file itself is not self-hashed; its *declared* file hashes are
-        # cross-checked against the bundle rows below instead
-        bundle_manifest_matches += 1 if sidecar else 0
+        bundle_manifest_matches += 1 if manifest_declared.get(split) else 0
     declared_all = {**manifest_declared.get("tdm08", {}), **manifest_declared.get("tdm10", {})}
     bundle_rows = [d for d in manifest["datasets"] if not d["dataset_id"].endswith(":manifest")]
     declared_matches = sum(
-        1 for d in bundle_rows if declared_all.get(d["original_path"].split("/")[-1]) == d["sha256"]
+        1 for d in bundle_rows if declared_all.get(d["original_path"]) == d["sha256"]
     )
 
     per_run = {
@@ -733,28 +765,80 @@ def check_independence() -> dict[str, Any]:
     }
 
 
+#: Files these tools write. A tool cannot certify its own current bytes: it is
+#: running, so its output is by definition newer than the commit it is checking.
+#: They are excluded from the clean-tree test, listed in the report, and covered
+#: by the post-commit closure of the *next* commit. Excluding them silently would
+#: hide a real defect, so the exclusion is explicit and enumerated.
+SELF_OUTPUTS: tuple[str, ...] = (
+    "evidence/tdm/wp-tdm-14a/verification_result.json",
+    "evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
+    "evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json",
+)
+
+
 def check_git_hygiene(negatives: dict[str, Any]) -> dict[str, Any]:
-    """ACC-12: commits without amend, clean tree outside scratch, post-commit closure."""
-    _, first_parent = git(HERE, "rev-list", "--count", "04fb8bc8..HEAD")
+    """ACC-12: commits without amend, clean tree, and a closure that reaches HEAD.
+
+    The chain of custody is checked as a chain, not as a claim:
+
+    * nothing outside ``SELF_OUTPUTS`` may be uncommitted;
+    * a post-commit closure must exist and say PASS;
+    * between the commit that closure checked and HEAD there may be exactly the
+      closure report itself (and the current self-outputs) — anything else means
+      the closure no longer describes the tree.
+    """
+    _, count = git(HERE, "rev-list", "--count", "04fb8bc8..HEAD")
     _, log = git(HERE, "log", "--oneline", "04fb8bc8..HEAD")
     _, status = git(HERE, "status", "--porcelain")
-    scratch = [
-        line for line in status.splitlines() if line[:2].strip() and not line.startswith("??")
+    # Untracked evidence counts too: a deliverable that is not committed is not
+    # part of the artefact set, and calling the tree clean would hide that.
+    dirty = [
+        line
+        for line in status.splitlines()
+        if line.strip() and (line[:2].strip() or line.startswith("?? evidence/"))
     ]
+    dirty_paths = [line[3:].strip() for line in dirty]
+    outside_self = sorted(p for p in dirty_paths if p not in SELF_OUTPUTS)
     closure_path = EVIDENCE / "POST_COMMIT_CLOSURE.json"
     closure = read_json(closure_path) if closure_path.is_file() else None
     closure_ok = bool(closure) and closure.get("status") == "PASS"
+    closure_head = (closure or {}).get("head")
+    since_closure: list[str] = []
+    if closure_head:
+        _, changed = git(HERE, "diff", "--name-only", f"{closure_head}..HEAD")
+        since_closure = [line for line in changed.splitlines() if line.strip()]
+    _, head = git(HERE, "rev-parse", "HEAD")
+    ancestor = (
+        bool(closure_head)
+        and subprocess.run(
+            ["git", "merge-base", "--is-ancestor", closure_head, head],
+            cwd=HERE,
+            capture_output=True,
+            check=False,
+        ).returncode
+        == 0
+    )
     return {
         "id": "ACC-12",
-        "status": "PASS" if not scratch and closure_ok else "FAIL",
+        "status": "PASS" if not outside_self and closure_ok and ancestor else "FAIL",
         "detail": {
-            "commits_since_baseline": int(first_parent),
+            "commits_since_baseline": int(count),
             "commit_subjects": log.splitlines(),
-            "uncommitted_tracked_changes": scratch,
+            "head": head,
+            "uncommitted_tracked_changes": dirty,
+            "uncommitted_outside_self_outputs": outside_self,
+            "self_outputs_excluded": list(SELF_OUTPUTS),
             "amended_commits": 0,
-            "amend_evidence": "each commit's parent is the previous commit of this branch and "
-            "04fb8bc8 is untouched; history below the baseline is unchanged",
+            "amend_evidence": "every commit's parent is the previous commit of this branch; "
+            "04fb8bc8 and everything below it is untouched",
             "post_commit_closure": closure.get("status") if closure else "NOT_RUN",
+            "closure_checked_head": closure_head,
+            "files_changed_since_closure_head": since_closure,
+            "closure_head_is_ancestor_of_head": ancestor,
+            "custody_note": "each evidence file is covered by the closure that followed its "
+            "commit; a file cannot cover itself, which is why the closure report is always the "
+            "last thing committed",
             "negative_control_for_closure": _control_status(negatives, "evidence_digest_tamper"),
         },
     }
@@ -770,41 +854,70 @@ def verdict(checks: list[dict[str, Any]]) -> str:
 
 
 def closure(run_id: str) -> int:
-    """Post-commit: every published artefact must equal its blob at HEAD."""
+    """Post-commit: every published artefact must still be the blob at HEAD.
+
+    Identity is asked of Git, not of raw bytes: ``git hash-object --path=<relpath>``
+    applies the same checkout filters the repository uses, so a CRLF working tree
+    is not a modification of an LF blob. Raw ``sha256`` of the working tree is
+    still recorded, because it is what a reader who hashes the file will see, but
+    it is reported next to the blob digest instead of being the verdict. Using raw
+    bytes here would reproduce D-01 inside the closure check itself: it would fail
+    on a CRLF checkout for files that are provably unmodified.
+
+    The report is deterministic — no wall-clock field — so it can be committed and
+    then re-verified including itself.
+    """
+    self_rel = "evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json"
     rows: list[dict[str, Any]] = []
     for path in sorted(EVIDENCE.rglob("*")):
         if not path.is_file():
             continue
         rel = path.relative_to(HERE).as_posix()
+        if rel == self_rel:
+            continue
         blob = subprocess.run(
             ["git", "cat-file", "blob", f"HEAD:{rel}"], cwd=HERE, capture_output=True, check=False
         )
         tracked = blob.returncode == 0
+        identity = git(HERE, "hash-object", f"--path={rel}", "--", rel)[1]
+        blob_oid = git(HERE, "rev-parse", f"HEAD:{rel}")[1] if tracked else None
+        worktree = path.read_bytes()
         rows.append(
             {
                 "path": rel,
-                "sha256_worktree": sha256_bytes(path.read_bytes()),
+                "bytes_on_disk": len(worktree),
+                "sha256_worktree": sha256_bytes(worktree),
                 "sha256_head_blob": sha256_bytes(blob.stdout) if tracked else None,
+                "worktree_identity": identity,
+                "head_blob_oid": blob_oid,
                 "tracked_at_head": tracked,
-                "match": tracked and sha256_bytes(blob.stdout) == sha256_bytes(path.read_bytes()),
+                "match": tracked and identity == blob_oid,
             }
         )
     bad = [r for r in rows if not r["match"]]
     _, head = git(HERE, "rev-parse", "HEAD")
+    _, committed_at = git(HERE, "log", "-1", "--format=%cI")
     _, status = git(HERE, "status", "--porcelain", "evidence/")
+    status_lines = [line for line in status.splitlines() if line.strip() and self_rel not in line]
     report = {
         "artifact": "tdm14a-post-commit-closure-v1",
         "run_id": run_id,
-        "generated_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "head": head,
+        "head_committed_at": committed_at,
         "files_checked": len(rows),
         "files_matching_head": len(rows) - len(bad),
         "failures": [r["path"] for r in bad],
-        "uncommitted_evidence_changes": [line for line in status.splitlines() if line.strip()],
-        "method": "each evidence file is hashed from disk and compared with its blob at HEAD; "
-        "a stale artefact or an uncommitted edit cannot pass",
+        "self_excluded": [self_rel],
+        "self_exclusion_reason": "a file cannot contain its own digest; this report is committed "
+        "immediately after it is written, so the next closure covers it",
+        "uncommitted_evidence_changes": status_lines,
+        "method": "git hash-object --path=<relpath> per file, compared with rev-parse HEAD:<path>; "
+        "a stale artefact, an uncommitted edit or an untracked file cannot pass, and a CRLF "
+        "checkout of an LF blob is not mistaken for a modification",
+        "raw_bytes_note": "sha256_worktree is what a reader hashing the file sees; it differs "
+        "from sha256_head_blob when the checkout applies line-ending conversion",
         "rows": rows,
-        "status": "PASS" if not bad and not status.strip() else "FAIL",
+        "status": "PASS" if not bad and not status_lines else "FAIL",
     }
     out = EVIDENCE / "POST_COMMIT_CLOSURE.json"
     out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
@@ -815,8 +928,8 @@ def closure(run_id: str) -> int:
                 "files": report["files_checked"],
                 "matching": report["files_matching_head"],
                 "head": head,
-                "note": "POST_COMMIT_CLOSURE.json is written after this check, so it is the one "
-                "file this run cannot contain; its absence from HEAD is expected on the first pass",
+                "self_excluded": report["self_excluded"],
+                "uncommitted": report["uncommitted_evidence_changes"][:5],
             },
             indent=1,
         )

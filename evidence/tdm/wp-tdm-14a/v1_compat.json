@@ -1,0 +1,28 @@
+{
+  "artifact": "tdm14a-v1-compat-v1",
+  "generated_at_utc": "2026-10-25T18:59:39Z",
+  "scheme": "v1",
+  "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf",
+  "command": "scripts/tdm12_inventory.py --fingerprint-scheme v1 --out-dir C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.compat-out --reuse",
+  "exit_code": 0,
+  "duration_seconds": 1.4,
+  "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\compat\\v1.log",
+  "metric_reuse": "cell metrics reused from the cold run of this same clone; the fingerprint fields are recomputed from scratch in v1 mode",
+  "status": "PASS",
+  "differences": [],
+  "registry_rows": 30,
+  "published_rows": 30,
+  "csv_identical": true,
+  "window_registry_equal": true,
+  "historical_files_unmodified": {
+    "CANDIDATE_REGISTRY.json": true,
+    "CANDIDATE_REGISTRY.csv": true,
+    "DATA_WINDOW_REGISTRY.json": true,
+    "RUN_REPORT.json": true
+  },
+  "v1_v2_comparison_rejected": true,
+  "guard_command_exit": 1,
+  "guard_stderr": [
+    "trading_bot.research.source_fingerprint.IncompatibleFingerprintScheme: <left> is v1 but src/x.py is v2: a checkout byte digest and a blob digest are different identities, not two values of one"
+  ]
+}

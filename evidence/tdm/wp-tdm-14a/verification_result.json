@@ -1,0 +1,544 @@
+{
+  "artifact": "tdm14a-verification-result-v1",
+  "rfc_id": "RFC-TDM-014A",
+  "run_id": "tdm14a-verify-20261025T190740Z",
+  "generated_at_utc": "2026-10-25T19:07:44Z",
+  "verifier": "scripts/tdm14a_verify.py",
+  "builder_executions": {
+    "run_a": {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF"
+    },
+    "run_b": {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF"
+    }
+  },
+  "target_commit": "04b02c2d1d449fd84931cf75b58f91caa5ab10c6",
+  "checks": [
+    {
+      "id": "ACC-01",
+      "status": "PASS",
+      "detail": {
+        "baseline_checks_failed": [],
+        "baseline_commit": "04fb8bc8a0900c278cd72c5e3478a45b66fcbc03",
+        "parent": "d7819188cf9c8cb6257bc99e82a828bbe6d6c746",
+        "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a",
+        "branch": "fix/tdm14a",
+        "shared_checkout_head_then": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+        "shared_checkout_head_now": "5b63f265b761b1ce288cfdcb728d7baf4ab55294",
+        "shared_status_fingerprint_then": "5aa0b463825cb7c903738f84aab2bc6d6dff01ddcc71abd12e8e98492c961004",
+        "shared_status_fingerprint_now": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "external_drift_observed": true,
+        "external_drift_note": "the shared checkout is used by other actors; its HEAD moved during this RFC. Not attributable to this work and not counted as such.",
+        "my_head_is_ancestor_of_shared_head": false,
+        "my_files_touched_in_shared_checkout": [],
+        "shared_untouched_by_this_rfc": true
+      }
+    },
+    {
+      "id": "ACC-02",
+      "status": "PASS",
+      "detail": {
+        "module": "src/trading_bot/research/families/breakout_family.py",
+        "lf_bytes": 4640,
+        "crlf_bytes": 4776,
+        "v1_lf": "9825f38950c5b975",
+        "v1_crlf": "359ba1b773defee8",
+        "blob_oid": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+        "same_blob": true
+      }
+    },
+    {
+      "id": "ACC-03",
+      "status": "PASS",
+      "detail": {
+        "modules_compared": 7,
+        "physical_bytes_differ": 7,
+        "same_blob": 7,
+        "v2_equal": 7,
+        "registry_fingerprints_equal": true,
+        "registry_rows": 24,
+        "published_matches_independent_digest": true,
+        "source_tamper_control": "PROVEN",
+        "artefact": "EOL_COMPARISON.json"
+      }
+    },
+    {
+      "id": "ACC-04",
+      "status": "PASS",
+      "detail": {
+        "scheme": "v1",
+        "differences": [],
+        "difference_count": 0,
+        "historical_files_unmodified": {
+          "CANDIDATE_REGISTRY.json": true,
+          "CANDIDATE_REGISTRY.csv": true,
+          "DATA_WINDOW_REGISTRY.json": true,
+          "RUN_REPORT.json": true
+        },
+        "v1_v2_comparison_rejected": true
+      }
+    },
+    {
+      "id": "ACC-05",
+      "status": "PASS",
+      "detail": {
+        "per_run": {
+          "LF": {
+            "files": 26,
+            "matching": 26,
+            "total_bytes": 10310475,
+            "status": "AVAILABLE",
+            "manifest_sha256": "dca0ae6d8f642328155c6a85159a9619717154e33a66565249bf12004f233844"
+          },
+          "CRLF": {
+            "files": 26,
+            "matching": 26,
+            "total_bytes": 10310475,
+            "status": "AVAILABLE",
+            "manifest_sha256": "dca0ae6d8f642328155c6a85159a9619717154e33a66565249bf12004f233844"
+          }
+        },
+        "klines_cross_checked": 24,
+        "klines_matching_tdm11_provenance": 24,
+        "manifests_cross_checked": 2,
+        "manifests_matching_sidecar_declaration": 2,
+        "bundle_rows_matching_sidecar_sha256": 24,
+        "bundle_rows": 24,
+        "total_bytes": 10310475
+      }
+    },
+    {
+      "id": "ACC-06",
+      "status": "PASS",
+      "detail": {
+        "runs": [
+          {
+            "label": "LF",
+            "run_id": "tdm14a-lf-20261025T181821Z",
+            "status": "PASS",
+            "phases": {
+              "review": "PASS",
+              "inventory": "PASS"
+            },
+            "commands": [
+              "python.exe scripts/tdm12_review.py",
+              "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --source-commit 7a4593cb81ea659ce860215a4dbe17abbdad6a7e --out-dir C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-out\\lf --run-id tdm14a-lf-20261025T181821Z"
+            ],
+            "reuse_flag_used": false,
+            "isolation_removed": [],
+            "isolation_clean": true,
+            "outputs_expected": 5,
+            "outputs_present": 5,
+            "outputs_proven": 5,
+            "absent_before_run": true,
+            "all_generated_after_start": true,
+            "run_id_embedded": 1,
+            "cell_metrics_sha256": "f91591280d300d176aca303b25bb28dbc63cbb3e50ae1c6a109e478f2d415e4f",
+            "review_sha256": "b068c812a85cab925e383dc2dd5712665778549ab8bf1f81e531e6e2f89699c2",
+            "duration_seconds": 419.7
+          },
+          {
+            "label": "CRLF",
+            "run_id": "tdm14a-crlf-20261025T182823Z",
+            "status": "PASS",
+            "phases": {
+              "review": "PASS",
+              "inventory": "PASS"
+            },
+            "commands": [
+              "python.exe scripts/tdm12_review.py",
+              "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --source-commit 7a4593cb81ea659ce860215a4dbe17abbdad6a7e --out-dir C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-out\\crlf --run-id tdm14a-crlf-20261025T182823Z"
+            ],
+            "reuse_flag_used": false,
+            "isolation_removed": [
+              ".tdm12"
+            ],
+            "isolation_clean": true,
+            "outputs_expected": 5,
+            "outputs_present": 5,
+            "outputs_proven": 5,
+            "absent_before_run": true,
+            "all_generated_after_start": true,
+            "run_id_embedded": 1,
+            "cell_metrics_sha256": "f91591280d300d176aca303b25bb28dbc63cbb3e50ae1c6a109e478f2d415e4f",
+            "review_sha256": "0624d9c0198a4d6c35810e0c421165a99cacb423ead33c396a7f17847eb30682",
+            "duration_seconds": 386.1
+          }
+        ],
+        "stale_output_injection_control": "PROVEN"
+      }
+    },
+    {
+      "id": "ACC-07",
+      "status": "PASS",
+      "detail": {
+        "contracts_compared": 10,
+        "contracts_passing": 10,
+        "metrics_by_cell_equal_across_runs": true,
+        "metrics_by_cell_equal_to_published": true,
+        "comparisons": [
+          {
+            "contract": "trades",
+            "source": "ledger.derived_trades",
+            "published": 115,
+            "run_a": 115,
+            "run_b": 115,
+            "a_equals_b": true,
+            "a_equals_published": true
+          },
+          {
+            "contract": "gross_mean",
+            "source": "ledger.gross_mean",
+            "published": -12.577,
+            "run_a": -12.577,
+            "run_b": -12.577,
+            "a_equals_b": true,
+            "a_equals_published": true
+          },
+          {
+            "contract": "net_mean",
+            "source": "ledger.net_mean",
+            "published": -36.3676,
+            "run_a": -36.3676,
+            "run_b": -36.3676,
+            "a_equals_b": true,
+            "a_equals_published": true
+          },
+          {
+            "contract": "day_clustered_ci95_gross",
+            "source": "dependence.day_clustered_ci95_gross",
+            "published": {
+              "lo": -23.2174,
+              "hi": -3.101,
+              "se": 5.2335,
+              "day_clusters": 26
+            },
+            "run_a": {
+              "lo": -23.2174,
+              "hi": -3.101,
+              "se": 5.2335,
+              "day_clusters": 26
+            },
+            "run_b": {
+              "lo": -23.2174,
+              "hi": -3.101,
+              "se": 5.2335,
+              "day_clusters": 26
+            },
+            "a_equals_b": true,
+            "a_equals_published": true
+          },
+          {
+            "contract": "net_upper_bound_by_method",
+            "source": "dependence.net_upper_bound_by_method",
+            "published": {
+              "1d": -26.8916,
+              "2d": -26.695,
+              "5d": -29.4407,
+              "10d": -31.5307
+            },
+            "run_a": {
+              "1d": -26.8916,
+              "2d": -26.695,
+              "5d": -29.4407,
+              "10d": -31.5307
+            },
+            "run_b": {
+              "1d": -26.8916,
+              "2d": -26.695,
+              "5d": -29.4407,
+              "10d": -31.5307
+            },
+            "a_equals_b": true,
+            "a_equals_published": true
+          },
+          {
+            "contract": "per_asset",
+            "source": "dependence.per_asset",
+            "published": {
+              "BTC": {
+                "trades": 36,
+                "gross_mean": -8.1873,
+                "share": 0.313
+              },
+              "ETH": {
+                "trades": 35,
+                "gross_mean": -19.2816,
+                "share": 0.304
+              },
+              "SOL": {
+                "trades": 44,
+                "gross_mean": -10.8353,
+                "share": 0.383
+              }
+            },
+            "run_a": {
+              "BTC": {
+                "trades": 36,
+                "gross_mean": -8.1873,
+                "share": 0.313
+              },
+              "ETH": {
+                "trades": 35,
+                "gross_mean": -19.2816,
+                "share": 0.304
+              },
+              "SOL": {
+                "trades": 44,
+                "gross_mean": -10.8353,
+                "share": 0.383
+              }
+            },
+            "run_b": {
+              "BTC": {
+                "trades": 36,
+                "gross_mean": -8.1873,
+                "share": 0.313
+              },
+              "ETH": {
+                "trades": 35,
+                "gross_mean": -19.2816,
+                "share": 0.304
+              },
+              "SOL": {
+                "trades": 44,
+                "gross_mean": -10.8353,
+                "share": 0.383
+              }
+            },
+            "a_equals_b": true,
+            "a_equals_published": true
+          },
+          {
+            "contract": "lookahead_advantage_bps",
+            "source": "controls.lookahead_advantage_bps",
+            "published": 29.6308,
+            "run_a": 29.6308,
+            "run_b": 29.6308,
+            "a_equals_b": true,
+            "a_equals_published": true
+          },
+          {
+            "contract": "independence_status",
+            "source": "independence.status",
+            "published": "INDEPENDENCE_NOT_DEMONSTRATED",
+            "run_a": "INDEPENDENCE_NOT_DEMONSTRATED",
+            "run_b": "INDEPENDENCE_NOT_DEMONSTRATED",
+            "a_equals_b": true,
+            "a_equals_published": true
+          },
+          {
+            "contract": "CANDIDATE_REGISTRY.json",
+            "source": "<whole document>",
+            "differences_a_vs_b": [],
+            "a_equals_b": true,
+            "published_differences_explained": {
+              "total": 184,
+              "explained": 184,
+              "explained_paths": [
+                "artifact",
+                "fingerprint_algorithm",
+                "fingerprint_scheme",
+                "source_blob_oid",
+                "source_commit",
+                "source_fingerprint",
+                "source_relpath",
+                "working_tree_clean_verified"
+              ],
+              "unexplained": []
+            }
+          },
+          {
+            "contract": "DATA_WINDOW_REGISTRY.json",
+            "source": "<whole document>",
+            "differences_a_vs_b": [],
+            "a_equals_b": true,
+            "a_equals_published": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ACC-08",
+      "status": "PASS",
+      "detail": {
+        "suites": "tests/unit/research (whole directory) plus a targeted run of the new and directly affected suites",
+        "tests_passed": 32,
+        "tests_failed": 0,
+        "tests_exit_code": 0,
+        "negative_controls": 10,
+        "negative_controls_proven": 10,
+        "negative_controls_not_proven": []
+      }
+    },
+    {
+      "id": "ACC-09",
+      "status": "PASS",
+      "detail": {
+        "runs": [
+          {
+            "label": "LF",
+            "run_id": "tdm14a-lf-20261025T181821Z",
+            "phases": [
+              {
+                "phase": "review",
+                "status": "PASS",
+                "exit_code": 0,
+                "timed_out": false,
+                "duration_seconds": 106.5,
+                "timeout_seconds": 1800.0,
+                "command": "python.exe scripts/tdm12_review.py",
+                "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\lf\\review.log",
+                "log_sha256": "5f70d0b172426c6300bf14d08b7d59ef8894d165eced675dca66507ddba9e989",
+                "log_exists": true
+              },
+              {
+                "phase": "inventory",
+                "status": "PASS",
+                "exit_code": 0,
+                "timed_out": false,
+                "duration_seconds": 312.8,
+                "timeout_seconds": 2400.0,
+                "command": "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --source-commit 7a4593cb81ea659ce860215a4dbe17abbdad6a7e --out-dir C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-out\\lf --run-id tdm14a-lf-20261025T181821Z",
+                "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\lf\\inventory.log",
+                "log_sha256": "076b33b2056eebd467a059efe3137728bbeb3548a653af2dc7f55ebb013b1b72",
+                "log_exists": true
+              }
+            ],
+            "outputs_have_digests": true,
+            "inputs_have_digests": true
+          },
+          {
+            "label": "CRLF",
+            "run_id": "tdm14a-crlf-20261025T182823Z",
+            "phases": [
+              {
+                "phase": "review",
+                "status": "PASS",
+                "exit_code": 0,
+                "timed_out": false,
+                "duration_seconds": 124.0,
+                "timeout_seconds": 1800.0,
+                "command": "python.exe scripts/tdm12_review.py",
+                "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-logs\\crlf\\review.log",
+                "log_sha256": "b27b76f245c8acc7e30f21710633aab0f475c82baa30ed4ea46666ca96da1f36",
+                "log_exists": true
+              },
+              {
+                "phase": "inventory",
+                "status": "PASS",
+                "exit_code": 0,
+                "timed_out": false,
+                "duration_seconds": 261.5,
+                "timeout_seconds": 2400.0,
+                "command": "python.exe scripts/tdm12_inventory.py --fingerprint-scheme v2 --source-commit 7a4593cb81ea659ce860215a4dbe17abbdad6a7e --out-dir C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-out\\crlf --run-id tdm14a-crlf-20261025T182823Z",
+                "log": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-logs\\crlf\\inventory.log",
+                "log_sha256": "965cf567c277240b1ab7ed48dbd5a5c359141a3a2a26da40ef2ea34360a2b11a",
+                "log_exists": true
+              }
+            ],
+            "outputs_have_digests": true,
+            "inputs_have_digests": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ACC-10",
+      "status": "PASS",
+      "detail": {
+        "files_changed_since_baseline": 11,
+        "trading_paths_touched": [],
+        "processes_executed": [
+          "tdm12_inventory.py",
+          "tdm12_review.py"
+        ],
+        "order_or_broker_mentions_in_logs": [],
+        "paper_orders": 0,
+        "live_orders": 0,
+        "method": "only the two research scripts ran; their complete logs were searched for order/broker/credential mentions and the diff contains no trading path"
+      }
+    },
+    {
+      "id": "ACC-11",
+      "status": "PASS",
+      "detail": {
+        "verifier": "scripts/tdm14a_verify.py",
+        "builder": "scripts/tdm12_inventory.py + src/trading_bot/research/source_fingerprint.py",
+        "separate_code_path": true,
+        "shared_implementation": false,
+        "digest_reimplemented_in_verifier": true,
+        "identity": "INDEPENDENCE_NOT_DEMONSTRATED",
+        "reason": "one operator wrote both sides; a separate code path is not a separate author"
+      }
+    },
+    {
+      "id": "ACC-12",
+      "status": "FAIL",
+      "detail": {
+        "commits_since_baseline": 2,
+        "commit_subjects": [
+          "7a4593cb Keep the sealed TDM-13 inputs byte-identical in a CRLF checkout",
+          "04b02c2d Fingerprint the committed blob so a checkout cannot rename the code"
+        ],
+        "head": "7a4593cb81ea659ce860215a4dbe17abbdad6a7e",
+        "uncommitted_tracked_changes": [
+          "M scripts/tdm14a_negative_controls.py",
+          " M scripts/tdm14a_verify.py",
+          "?? .runid-crlf",
+          "?? .runid-lf",
+          "?? evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
+          "?? evidence/tdm/wp-tdm-14a/FINGERPRINT_SCHEME_V2.md",
+          "?? evidence/tdm/wp-tdm-14a/LOG_MANIFEST.json",
+          "?? evidence/tdm/wp-tdm-14a/NEGATIVE_CONTROLS.json",
+          "?? evidence/tdm/wp-tdm-14a/TEST_RESULTS.json",
+          "?? evidence/tdm/wp-tdm-14a/run_crlf.json",
+          "?? evidence/tdm/wp-tdm-14a/run_lf.json",
+          "?? evidence/tdm/wp-tdm-14a/v1_compat.json",
+          "?? evidence/tdm/wp-tdm-14a/verification_result.json",
+          "?? scripts/tdm14a_report.py"
+        ],
+        "uncommitted_outside_self_outputs": [
+          ".runid-crlf",
+          ".runid-lf",
+          "cripts/tdm14a_negative_controls.py",
+          "evidence/tdm/wp-tdm-14a/FINGERPRINT_SCHEME_V2.md",
+          "evidence/tdm/wp-tdm-14a/LOG_MANIFEST.json",
+          "evidence/tdm/wp-tdm-14a/NEGATIVE_CONTROLS.json",
+          "evidence/tdm/wp-tdm-14a/TEST_RESULTS.json",
+          "evidence/tdm/wp-tdm-14a/run_crlf.json",
+          "evidence/tdm/wp-tdm-14a/run_lf.json",
+          "evidence/tdm/wp-tdm-14a/v1_compat.json",
+          "scripts/tdm14a_report.py",
+          "scripts/tdm14a_verify.py"
+        ],
+        "self_outputs_excluded": [
+          "evidence/tdm/wp-tdm-14a/verification_result.json",
+          "evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
+          "evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json"
+        ],
+        "amended_commits": 0,
+        "amend_evidence": "every commit's parent is the previous commit of this branch; 04fb8bc8 and everything below it is untouched",
+        "post_commit_closure": "NOT_RUN",
+        "closure_checked_head": null,
+        "files_changed_since_closure_head": [],
+        "closure_head_is_ancestor_of_head": false,
+        "custody_note": "each evidence file is covered by the closure that followed its commit; a file cannot cover itself, which is why the closure report is always the last thing committed",
+        "negative_control_for_closure": "PROVEN"
+      }
+    }
+  ],
+  "verdict": "FAILED",
+  "decision_economics": "NO_ELIGIBLE_CANDIDATE / REJECTED_ALPHA (inherited, not re-evaluated)",
+  "paper_orders": 0,
+  "live_orders": 0,
+  "false_success": 0,
+  "false_success_basis": [
+    "every negative control must exit non-zero for its status to be PROVEN",
+    "an output that existed before the run is not counted as generated",
+    "a timeout is INCOMPLETE, never PASS",
+    "a v1 digest is refused as comparable to a v2 digest"
+  ]
+}
