@@ -1,0 +1,23 @@
+{
+  "command": [
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_verify.py",
+    "--explorer",
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.ci\\recovery005_mutant_20261023T181809\\COST_BARRIER_EXPLORER_MUTANT.json",
+    "--out",
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.ci\\recovery005_mutant_20261023T181809\\verifier_out.json",
+    "--json"
+  ],
+  "commit": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "mutant_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.ci\\recovery005_mutant_20261023T181809\\COST_BARRIER_EXPLORER_MUTANT.json",
+  "mutant_sha256": "0c3ba3c034eaf989f75c0b5b9e9976cbe7dbde3b226811e46026cff7b20e5131",
+  "mutated_key": "payload_sha256",
+  "mutated_value": "0000000000000000000000000000000000000000000000000000000000000000",
+  "original_intact_after_experiment": true,
+  "original_payload_sha256": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb",
+  "original_sha256": "02388981122d84a9121542f61782284b517970e550cd91a37d426eadd4925286",
+  "run_at_utc": "2026-10-23T18:18:09Z",
+  "verifier_exit_code": 1,
+  "verifier_stderr_tail": "Traceback (most recent call last):\n  File \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_verify.py\", line 521, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_verify.py\", line 438, in main\n    truth = recompute()\n            ^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_verify.py\", line 78, in recompute\n    cm = cost_model()\n         ^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_verify.py\", line 66, in cost_model\n    from trading_bot.research.microstructure import cost_model_v3\n  File \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\__init__.py\", line 22, in <module>\n    from .admission import AdmissionController, AdmissionResult, AdmissionState\n  File \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\admission.py\", line 20, in <module>\n    import structlog\nModuleNotFoundError: No module named 'structlog'\n",
+  "verifier_stdout_tail": ""
+}

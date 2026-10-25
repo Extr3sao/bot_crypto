@@ -1,0 +1,32 @@
+{
+  "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv_recovery005\\Scripts\\python.exe",
+  "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "original_sha256_before": "02388981122d84a9121542f61782284b517970e550cd91a37d426eadd4925286",
+  "original_sha256_after": "02388981122d84a9121542f61782284b517970e550cd91a37d426eadd4925286",
+  "original_unchanged": true,
+  "original_only_byte_modified": false,
+  "mutant_sha256": "7651c8b2420de30cc18249a24fabec422e081c26cbf051815ead2033b1df9733",
+  "mutant_valid_json": true,
+  "mutant_payload_is_zeroes": true,
+  "positive_exit_code": 0,
+  "positive_status": "PASS",
+  "positive_false_success": 0,
+  "positive_controls_missed": 0,
+  "adversarial_exit_code": 1,
+  "adversarial_status": null,
+  "adversarial_false_success": null,
+  "adversarial_controls_missed": null,
+  "adversarial_mismatch": null,
+  "positive_stdout": "{\n  \"status\": \"PASS\",\n  \"checks_failed\": 0,\n  \"controls_total\": 13,\n  \"controls_missed\": 0,\n  \"false_success\": 0,\n  \"mismatches\": []\n}",
+  "adversarial_stdout": "{\n  \"status\": \"FAIL\",\n  \"checks_failed\": 1,\n  \"controls_total\": 13,\n  \"controls_missed\": 0,\n  \"false_success\": 1,\n  \"mismatches\": [\n    \"payload_sha256 0000000000000000000000000000000000000000000000000000000000000000 != recomputed 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb\"\n  ]\n}",
+  "positive_stderr": "",
+  "adversarial_stderr": "",
+  "mutant_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.ci\\recovery005_mutant_20261023T181752\\COST_BARRIER_EXPLORER_MUTANT.json",
+  "verification_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\recovery\\COST_BARRIER_VERIFICATION.json",
+  "mutation": {
+    "field": "payload_sha256",
+    "from": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb",
+    "to": "0000000000000000000000000000000000000000000000000000000000000000",
+    "only_field_changed": true
+  }
+}
