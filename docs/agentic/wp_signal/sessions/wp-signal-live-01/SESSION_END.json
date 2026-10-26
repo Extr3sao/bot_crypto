@@ -1,0 +1,88 @@
+{
+  "report": "WP-SIGNAL SESSION END",
+  "schema_version": "wp-signal-session-end-v1",
+  "generated_at_utc": "2026-10-26T11:05:08+00:00",
+  "run_id": "wp-signal-live-01",
+  "stop": {
+    "method": "scripts/start_paper_lab.py --stop reports/paper-lab/wp-signal-live-01",
+    "exit_code": 0,
+    "stop_reason": "STOP file",
+    "ended_at_ms": 1793012064833,
+    "descriptor_state": "STOPPED",
+    "children": {
+      "paper": "STOPPED",
+      "collector": "STOPPED",
+      "retention": "STOPPED",
+      "strategy_lab": "STOPPED",
+      "analyst": "STOPPED"
+    },
+    "supervisor_state": "DEGRADED",
+    "supervisor_exit": null
+  },
+  "final_totals": {
+    "asset_cycle_evaluations": 153,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "no_trades": 153,
+    "runtime_failures": 0,
+    "orders_created": 0,
+    "traces_persisted": 153,
+    "outcomes_resolved": 63,
+    "outcomes_pending": 15,
+    "performance_updates": 63,
+    "no_trade_NO_TRADE_STRATEGIC": 153,
+    "no_trade_NO_TRADE_RISK": 0,
+    "no_trade_NO_TRADE_DATA": 0,
+    "no_trade_NO_TRADE_CONFLICT": 0,
+    "risk_APPROVED": 78,
+    "risk_VETOED": 0,
+    "risk_NOT_APPLICABLE": 75,
+    "risk_NOT_EVALUATED": 0
+  },
+  "final_stream": {
+    "signals": 153,
+    "analysis_rows": 5,
+    "orders_created": 0,
+    "paper_trades": 0,
+    "runtime_failures": 0
+  },
+  "dashboard_after_stop": {
+    "signals_state": "DOWN",
+    "signals_state_reason": "the lab is not running; the stream is the last one written",
+    "status_system_state": "DEGRADED",
+    "status_running": false,
+    "status_errors": [
+      "supervisor heartbeat is 463s old: the lab may have died"
+    ],
+    "honest_down_report": true
+  },
+  "verification_after_stop": {
+    "ok": true,
+    "checks_total": 29,
+    "checks_failed": 0,
+    "counts": {
+      "provider": null,
+      "traces": 153,
+      "signal_rows": 153,
+      "trace_linked": 153,
+      "analysis_rows": 5,
+      "analysis_by_status": {
+        "NOT_CONFIGURED": 5
+      }
+    },
+    "exit_code": 0
+  },
+  "known_limitation": {
+    "observation": "the final PAPER_RUN.json written by this session declares no `provider`, so the verifier reported provider=null",
+    "cause": "the session ran the entrypoint as it stood at 3be8e5bd; the head already rewrites the final descriptor with the provider",
+    "verification": "scripts/autonomous_paper.py at the head writes \"provider\": args.provider in the STOPPED rewrite"
+  },
+  "evidence_sha256": {
+    "api_signals_after_stop.json": "e22932a4290d2cce62bde58d71b5888f81cefd15f5ac570a252aea080249b81e",
+    "api_status_after_stop.json": "4a1a5fe9c1e39a1ee6bce977be5901f1daa08e5651b92870866db466b84b8cd2",
+    "LAB_RUN_REPORT.json": "0d5403f8ae55c0affd009484d6415932f021ee93e528d209ecee2354c84096c4",
+    "PAPER_RUN.json": "31e2e2393dc5f3fd7316be2b25022a913bc878c2e17e98d2dd0ac0d45f4e4daa",
+    "SIGNAL_VERIFY_AFTER_STOP.json": "b8e94a27a5e804ee47214ee54ed00f01dc6a461cdcfdfd542cc995308b005193",
+    "SYSTEM_HEARTBEAT.json": "dd7745c47fd00f2f46c0e147079e209f3fa9fdfd62cf156e70982bb177faf028"
+  }
+}
