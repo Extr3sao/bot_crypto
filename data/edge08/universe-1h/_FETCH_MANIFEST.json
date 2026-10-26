@@ -1,0 +1,338 @@
+{
+  "schema_version": "EDGE08_UNIVERSE_FETCH_V1",
+  "fetched_at_utc": "2026-10-14T20:29:04Z",
+  "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
+  "interval": "1h",
+  "requested_range": {
+    "start_utc": "2021-01-01T00:00:00Z",
+    "end_utc_exclusive": "2026-10-14T19:00:00Z"
+  },
+  "requested_range_ms": [
+    1609459200000,
+    1792004400000
+  ],
+  "normalization": "list of [ts,open,high,low,close,volume]; ts = bar OPEN time (ms, UTC); ts as float, prices unrounded as the venue published them; no interpolation, no synthesis, gaps left absent",
+  "unread_cross_section": {
+    "claim": "no corpus of this repository holds a bar of these symbols, and no committed strategy artefact has ever been measured on one",
+    "corpora_scanned": [
+      "reports/alpha-expansion-v1/data",
+      "data/raw/alpha003/price",
+      "data/edge07/holdout-1h"
+    ],
+    "existing_shards_found": {
+      "AAVEUSDT": [],
+      "UNIUSDT": [],
+      "KSMUSDT": [],
+      "SNXUSDT": [],
+      "CRVUSDT": [],
+      "SUSHIUSDT": []
+    },
+    "claim_holds": true
+  },
+  "symbols": {
+    "AAVEUSDT": {
+      "asset": "AAVE",
+      "bars": 50693,
+      "rows_returned": 50693,
+      "duplicates_removed": 0,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "last_utc": "2026-10-14T18:00:00Z",
+      "gaps": 7,
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "expected_hours": 50707,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_floor_met": true,
+      "shard": "data/edge08/universe-1h/AAVEUSDT_2021_2026_1h.json",
+      "sha256": "e3d555cd638aa8bce8c51dd2dd3859ac263aca7eeca00c4a230acb88f83ae8c5",
+      "bytes": 2644159
+    },
+    "UNIUSDT": {
+      "asset": "UNI",
+      "bars": 50693,
+      "rows_returned": 50693,
+      "duplicates_removed": 0,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "last_utc": "2026-10-14T18:00:00Z",
+      "gaps": 7,
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "expected_hours": 50707,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_floor_met": true,
+      "shard": "data/edge08/universe-1h/UNIUSDT_2021_2026_1h.json",
+      "sha256": "7d68f4d3f8291557d033a6ff49a279c7ceae1574dbf4310e40424dca28d55c82",
+      "bytes": 2601571
+    },
+    "KSMUSDT": {
+      "asset": "KSM",
+      "bars": 50693,
+      "rows_returned": 50693,
+      "duplicates_removed": 0,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "last_utc": "2026-10-14T18:00:00Z",
+      "gaps": 7,
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "expected_hours": 50707,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_floor_met": true,
+      "shard": "data/edge08/universe-1h/KSMUSDT_2021_2026_1h.json",
+      "sha256": "93cf90eb3db64261ffd42379ff41ccb9755c4957a4155b66ef15ed9dc7a3a0a7",
+      "bytes": 2549344
+    },
+    "SNXUSDT": {
+      "asset": "SNX",
+      "bars": 50693,
+      "rows_returned": 50693,
+      "duplicates_removed": 0,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "last_utc": "2026-10-14T18:00:00Z",
+      "gaps": 7,
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "expected_hours": 50707,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_floor_met": true,
+      "shard": "data/edge08/universe-1h/SNXUSDT_2021_2026_1h.json",
+      "sha256": "0de3844f4eb3cd553b56aee0d7026c50899948f069e872641df67e332f93bd42",
+      "bytes": 2571519
+    },
+    "CRVUSDT": {
+      "asset": "CRV",
+      "bars": 50693,
+      "rows_returned": 50693,
+      "duplicates_removed": 0,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "last_utc": "2026-10-14T18:00:00Z",
+      "gaps": 7,
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "expected_hours": 50707,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_floor_met": true,
+      "shard": "data/edge08/universe-1h/CRVUSDT_2021_2026_1h.json",
+      "sha256": "37a5307f9421f2ad01c2ab626589c66ad2675fe5a24136be400b625c683922bb",
+      "bytes": 2699802
+    },
+    "SUSHIUSDT": {
+      "asset": "SUSHI",
+      "bars": 50693,
+      "rows_returned": 50693,
+      "duplicates_removed": 0,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "last_utc": "2026-10-14T18:00:00Z",
+      "gaps": 7,
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "expected_hours": 50707,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_floor_met": true,
+      "shard": "data/edge08/universe-1h/SUSHIUSDT_2021_2026_1h.json",
+      "sha256": "b2c3ab061509065d67e59acfdb8e01239d1625ca3e6406e541e41eff1b4cc4c2",
+      "bytes": 2620712
+    }
+  },
+  "failures": [],
+  "totals": {
+    "symbols": 6,
+    "bars": 304158,
+    "bytes": 15687107,
+    "gaps": 42,
+    "failures": 0,
+    "symbols_below_coverage_floor": []
+  },
+  "corpus_digest": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b"
+}

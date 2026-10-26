@@ -1,0 +1,16 @@
+{
+  "dir": "reports\\edge-recovery\\WP-EDGE-01",
+  "mode": "all",
+  "report": {
+    "report": "FINAL_REPORT.md",
+    "figures_checked": 76,
+    "figures_missing": 0,
+    "missing": []
+  },
+  "run_report": {
+    "record": "closure/RUN_REPORT.json",
+    "claims_checked": 185,
+    "problems": []
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,21 @@
+{
+  "action": "Disable-ScheduledTask TradingAgentic-EDGE04-Forward",
+  "at_utc": "2026-10-13T18:48:10Z",
+  "note": "a bounded, reversible outage: the task is re-enabled as soon as the watchdog has been observed to detect it; bars that close while it is off are collected by the next tick, which is the lane's own declared recovery path",
+  "ps_output": "disabled",
+  "rehearsal": "WP-EDGE-05 controlled scheduler outage",
+  "state_after": {
+    "LastRunTime": "2026-10-13T18:40:54.0000000Z",
+    "LastTaskResult": 0,
+    "Missed": 0,
+    "NextRunTime": "2026-10-13T18:55:53.0000000Z",
+    "State": "Disabled"
+  },
+  "state_before": {
+    "LastRunTime": "2026-10-13T18:40:54.0000000Z",
+    "LastTaskResult": 0,
+    "Missed": 0,
+    "NextRunTime": "2026-10-13T18:55:53.0000000Z",
+    "State": "Ready"
+  }
+}

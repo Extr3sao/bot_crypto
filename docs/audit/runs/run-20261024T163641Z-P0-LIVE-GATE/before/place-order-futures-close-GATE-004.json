@@ -1,0 +1,58 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "place-order",
+    "--symbol",
+    "BTCUSDT",
+    "--side",
+    "buy",
+    "--order-type",
+    "market",
+    "--amount",
+    "0.01",
+    "--confirm-live",
+    "--market-kind",
+    "futures",
+    "--trade-side",
+    "CLOSE",
+    "--reduce-only",
+    "--position-id",
+    "p0-pos-1",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-before-place-order-futures-close"
+  ],
+  "break_gate": "GATE-004",
+  "broken_gate_ids": [
+    "GATE-004"
+  ],
+  "broker_calls": 1,
+  "calls": [
+    {
+      "order_type": "market",
+      "position_id": "p0-pos-1",
+      "price": null,
+      "qty": 0.01,
+      "reduce_only": true,
+      "side": "buy",
+      "sink": "futures.place_order",
+      "sl_price": null,
+      "symbol": "BTCUSDT",
+      "tp_price": null,
+      "trade_side": "CLOSE"
+    }
+  ],
+  "entrypoint": "place-order-futures-close",
+  "error": "",
+  "exit_code": 0,
+  "gate_crash": false,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 0,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-before-place-order-futures-close",
+  "settings_error": false,
+  "stderr_tail": "",
+  "stdout_tail": "{\"success\": true, \"marketKind\": \"futures\", \"symbol\": \"BTCUSDT\", \"side\": \"buy\", \"tradeSide\": \"CLOSE\", \"orderType\": \"market\", \"amount\": 0.01, \"price\": null, \"orderId\": \"p0-order-1\", \"clientId\": null}\n"
+}

@@ -1,0 +1,167 @@
+{
+  "tool": "reports/multiagent-audit/tools/verify_g2.py",
+  "contract": "docs/audit/G-2.md",
+  "rev_requested": "00671e62",
+  "author": "same author as the implementation",
+  "independence": "PROCEDURALLY_SEPARATED",
+  "rev_resolved": "00671e6250a5589ff60c44d3ce9387eebf217948",
+  "checks": [
+    {
+      "check_id": "V-1",
+      "criterion": "ACC-G2-12",
+      "description": "every changed file is inside the frozen allowed_paths",
+      "passed": true,
+      "detail": "5 files changed",
+      "evidence": {
+        "outside": [],
+        "protected": [],
+        "changed": [
+          "docs/audit/runs/run-20261023T201915Z-G-2/COMMITS.md",
+          "docs/audit/runs/run-20261023T201915Z-G-2/RUN_REPORT.md",
+          "docs/audit/runs/run-20261023T201915Z-G-2/mutants.json",
+          "docs/audit/runs/run-20261023T201915Z-G-2/offline_trace.json",
+          "docs/audit/runs/run-20261023T201915Z-G-2/offline_trace.py"
+        ]
+      }
+    },
+    {
+      "check_id": "V-2",
+      "criterion": "ACC-G2-02",
+      "description": "every broker dispatch in the runtime is lexically inside order_boundary",
+      "passed": true,
+      "detail": "1/1 dispatches guarded",
+      "evidence": {
+        "dispatch_line": [
+          1483
+        ]
+      }
+    },
+    {
+      "check_id": "V-3",
+      "criterion": "ACC-G2-04",
+      "description": "engage and dispatch take the same lock, released in finally",
+      "passed": true,
+      "detail": "linearization is structural",
+      "evidence": {
+        "boundary_acquires": true,
+        "boundary_releases_in_finally": true,
+        "engage_acquires": true,
+        "engage_releases_in_finally": true,
+        "shared_lock_attribute": true
+      }
+    },
+    {
+      "check_id": "V-4",
+      "criterion": "ACC-G2-01/03/07",
+      "description": "control file engages; second engage is a repeat; deleting it does not rearm",
+      "passed": true,
+      "detail": "own scenario, exported tree",
+      "evidence": {
+        "engaged": true,
+        "dispatch_allowed": false,
+        "state": "halted",
+        "repeated": true,
+        "after_second": false,
+        "after_delete": true,
+        "engaged_after": true
+      }
+    },
+    {
+      "check_id": "V-5",
+      "criterion": "ACC-G2-03",
+      "description": "a repeated engage is reported as repeated, not as a new transition",
+      "passed": true,
+      "detail": "",
+      "evidence": {
+        "repeated": true
+      }
+    },
+    {
+      "check_id": "V-6",
+      "criterion": "ACC-G2-05",
+      "description": "an unreadable control path engages and refuses the dispatch",
+      "passed": true,
+      "detail": "own scenario, exported tree",
+      "evidence": {
+        "engaged": true,
+        "dispatch_allowed": false
+      }
+    },
+    {
+      "check_id": "V-7",
+      "criterion": "ACC-G2-10",
+      "description": "with no control file the gate is open (so V-4/V-6 are not vacuous)",
+      "passed": true,
+      "detail": "",
+      "evidence": {
+        "polled": false,
+        "dispatch_allowed": true,
+        "state": "normal"
+      }
+    },
+    {
+      "check_id": "V-8",
+      "criterion": "ACC-G2-01/07",
+      "description": "CLI writes the request, refuses to disarm, and does not claim enforcement",
+      "passed": true,
+      "detail": "engage exit 0, disarm exit 2",
+      "evidence": {
+        "status": "REQUESTED",
+        "control_file": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g2-cli-_v7yvozz\\KILL_SWITCH",
+        "reason": "verifier",
+        "enforced": false,
+        "note": "El proceso vivo confirma en kill_switch_events.jsonl (event=engaged). Exit 0 solo prueba que la peticion quedo en disco."
+      }
+    },
+    {
+      "check_id": "V-9",
+      "criterion": "ACC-G2-11",
+      "description": "operational -> engaged -> NO_ORDER reproduced offline on one runtime",
+      "passed": true,
+      "detail": "OPERATIONAL_THEN_ENGAGED_NO_NEW_ORDER",
+      "evidence": {
+        "steps": [
+          {
+            "broker_calls": 1,
+            "gate_engaged": false,
+            "mode": "TRADE_PAPER",
+            "order_created": true,
+            "phase": "operational",
+            "step": 1,
+            "switch_state": "normal"
+          },
+          {
+            "broker_calls": 1,
+            "gate_engaged": true,
+            "mode": "TRADE_PAPER",
+            "order_created": false,
+            "phase": "engaged",
+            "step": 2,
+            "switch_state": "halted"
+          },
+          {
+            "broker_calls": 1,
+            "gate_engaged": true,
+            "mode": "TRADE_PAPER",
+            "order_created": false,
+            "phase": "engaged (second cycle)",
+            "step": 3,
+            "switch_state": "halted"
+          }
+        ]
+      }
+    },
+    {
+      "check_id": "V-10",
+      "criterion": "ACC-G2-10",
+      "description": "the focal suites pass in the exported tree",
+      "passed": true,
+      "detail": "27 passed in 25.38s",
+      "evidence": {}
+    }
+  ],
+  "passed": 10,
+  "total": 10,
+  "total_seconds": 42.01,
+  "verdict": "VERIFIED_SCOPED"
+}

@@ -1,0 +1,34 @@
+{
+  "clean": true,
+  "forbidden_imports": [],
+  "forbidden_literals": [],
+  "hook_detects_deliberate_cheat": true,
+  "hook_run_clean": true,
+  "hook_run_output": "INDEPENDENT_RUN_OK 14400\n",
+  "imports": [
+    "__future__",
+    "argparse",
+    "collections",
+    "exp_003o_contract",
+    "gzip",
+    "hashlib",
+    "json",
+    "math",
+    "numpy",
+    "numpy.typing",
+    "pathlib",
+    "sys",
+    "typing"
+  ],
+  "literals_present": [
+    "evaluations"
+  ],
+  "module": "scripts/exp_003o_rebuilder.py",
+  "note": "the verifier is a program written after the builders; BUILDER != VERIFIER holds as two programs, not as two people",
+  "own_output_literals": [
+    "evaluations"
+  ],
+  "shared_modules": [
+    "exp_003o_contract"
+  ]
+}

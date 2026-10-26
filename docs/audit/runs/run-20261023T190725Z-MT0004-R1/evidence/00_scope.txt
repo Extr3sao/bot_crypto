@@ -1,0 +1,22 @@
+# Scope facts captured 2026-10-23T19:10:50Z
+branch=audit/mt0004-negative-controls
+head=ef7955dc5973ab863f010e02a1297a455ef276da
+parent=0e2ba09d47625fd899bee4e4fd3a82a0232c2d29
+baseline=60455b46 ancestor=yes
+main=47ca8dac51d22e74ac998d473c1e0129bbf2b26f behind=300
+sup_tip_now=3b758e22f0c9835646c9eba9db6634757970b126
+
+## git show --name-status
+commit ef7955dc5973ab863f010e02a1297a455ef276da
+parent 0e2ba09d47625fd899bee4e4fd3a82a0232c2d29
+subject Certify the kill-switch gate against its own absence
+
+A	docs/audit/AUDIT_BACKLOG.yaml
+A	docs/audit/MT-0004-R1.md
+A	docs/audit/runtime_authority_map.md
+A	scripts/audit/negative_controls.py
+A	tests/unit/autonomous/test_kill_switch_negative.py
+A	tests/unit/test_audit_contracts_tracked.py
+
+## diff vs protected paths
+(empty above = none)

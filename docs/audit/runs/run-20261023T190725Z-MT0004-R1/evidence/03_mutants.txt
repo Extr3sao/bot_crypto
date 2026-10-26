@@ -1,0 +1,12 @@
+# Mutation matrix from scripts/audit/negative_controls.py --rev ef7955dc
+resolved_rev=ef7955dc5973ab863f010e02a1297a455ef276da
+all_mutants_killed=True
+
+variant   killed  exit      sec  description
+baseline  False   0       19.75  unmutated tree (control)
+M1        True    1       18.65  rule 0 removed from decide
+M2        True    1       19.21  rule 0 removed from intend
+M3        True    1       19.95  unreadable state fails OPEN instead of closed
+M4        True    1       19.04  gate never blocks (plumbing kept, condition disabled)
+M5        True    1       19.23  derived is_active flag no longer consulted
+M6        True    1       20.67  unknown TRADING_BOT_KILL_SWITCH value boots NORMAL (fail open)

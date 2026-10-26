@@ -1,0 +1,238 @@
+{
+  "rev_before": "96e211bd",
+  "rev_after": "efd97e76",
+  "gates": [
+    {
+      "gate": "GATE-001",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-002",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-003",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-004",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-005",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-006",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-007",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-008",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-009",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    },
+    {
+      "gate": "GATE-010",
+      "before": {
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      "after": {
+        "calls": 0,
+        "validations": 1,
+        "exit": 2,
+        "named": true,
+        "false_success": false
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case": "run-futures-GATE-003",
+      "calls": 0,
+      "validations": 1,
+      "exit": 2
+    },
+    {
+      "case": "run-spot-GATE-003",
+      "calls": 0,
+      "validations": 1,
+      "exit": 2
+    },
+    {
+      "case": "place-order-spot-GATE-003",
+      "calls": 0,
+      "validations": 1,
+      "exit": 2
+    },
+    {
+      "case": "close-position-GATE-004",
+      "calls": 1,
+      "validations": 0,
+      "exit": 0
+    },
+    {
+      "case": "set-tpsl-GATE-004",
+      "calls": 1,
+      "validations": 0,
+      "exit": 0
+    },
+    {
+      "case": "place-order-futures-close-GATE-004",
+      "calls": 1,
+      "validations": 0,
+      "exit": 0
+    },
+    {
+      "case": "place-order-spot-sell-GATE-004",
+      "calls": 1,
+      "validations": 0,
+      "exit": 0
+    },
+    {
+      "case": "settings-error-place-order-futures",
+      "calls": 0,
+      "validations": 0,
+      "exit": 2
+    },
+    {
+      "case": "settings-error-run-futures",
+      "calls": 0,
+      "validations": 0,
+      "exit": 2
+    },
+    {
+      "case": "gate-crash-place-order-spot",
+      "calls": 0,
+      "validations": 1,
+      "exit": 2
+    },
+    {
+      "case": "gate-crash-run-spot",
+      "calls": 0,
+      "validations": 1,
+      "exit": 2
+    },
+    {
+      "case": "positive-place-order-futures",
+      "calls": 1,
+      "validations": 2,
+      "exit": 0
+    },
+    {
+      "case": "positive-run-futures",
+      "calls": 1,
+      "validations": 2,
+      "exit": 0
+    }
+  ],
+  "all_gates_blocked_after": true,
+  "all_gates_sent_before": true
+}

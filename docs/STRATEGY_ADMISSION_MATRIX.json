@@ -1,0 +1,615 @@
+{
+  "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md (pre-registered, c1ffbaa)",
+  "admissions": {
+    "ema_crossover": {
+      "family": "ema_crossover",
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "totals_base": {
+        "trades": 1561,
+        "gross": -485.74,
+        "fees": 780.4,
+        "net": -1266.16,
+        "wins": 426,
+        "losses": 1135,
+        "win_rate": 27.29,
+        "avg_win": 2.9926,
+        "avg_loss": -2.2388,
+        "payoff": 1.3367,
+        "expectancy": -0.8111,
+        "profit_factor": 0.5017,
+        "exit_mix": {
+          "stop": 531,
+          "tp": 394,
+          "flip": 636
+        }
+      },
+      "totals_2x": {
+        "trades": 1496,
+        "gross": -480.04,
+        "fees": 1495.83,
+        "net": -1975.87,
+        "wins": 389,
+        "losses": 1107,
+        "win_rate": 26.0,
+        "avg_win": 2.6423,
+        "avg_loss": -2.7134,
+        "payoff": 0.9738,
+        "expectancy": -1.3208,
+        "profit_factor": 0.3422,
+        "exit_mix": {
+          "stop": 508,
+          "tp": 379,
+          "flip": 609
+        }
+      },
+      "oos": {
+        "trades": 174,
+        "gross": -57.39,
+        "fees": 86.99,
+        "net": -144.38,
+        "wins": 43,
+        "losses": 131,
+        "win_rate": 24.71,
+        "avg_win": 3.0051,
+        "avg_loss": -2.0886,
+        "payoff": 1.4389,
+        "expectancy": -0.8298,
+        "profit_factor": 0.4723,
+        "exit_mix": {
+          "stop": 58,
+          "tp": 40,
+          "flip": 76
+        }
+      },
+      "dev": {
+        "trades": 969,
+        "gross": -258.75,
+        "fees": 484.43,
+        "net": -743.2,
+        "wins": 285,
+        "losses": 684,
+        "win_rate": 29.41,
+        "avg_win": 3.0476,
+        "avg_loss": -2.3564,
+        "payoff": 1.2933,
+        "expectancy": -0.767,
+        "profit_factor": 0.5389,
+        "exit_mix": {
+          "stop": 320,
+          "tp": 269,
+          "flip": 380
+        }
+      }
+    },
+    "momentum": {
+      "family": "momentum",
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "totals_base": {
+        "trades": 2436,
+        "gross": -461.3,
+        "fees": 1217.99,
+        "net": -1679.33,
+        "wins": 963,
+        "losses": 1473,
+        "win_rate": 39.53,
+        "avg_win": 3.1844,
+        "avg_loss": -3.2219,
+        "payoff": 0.9883,
+        "expectancy": -0.6894,
+        "profit_factor": 0.6462,
+        "exit_mix": {
+          "stop": 836,
+          "tp": 958,
+          "flip": 642
+        }
+      },
+      "totals_2x": {
+        "trades": 2427,
+        "gross": -450.42,
+        "fees": 2427.09,
+        "net": -2877.51,
+        "wins": 956,
+        "losses": 1471,
+        "win_rate": 39.39,
+        "avg_win": 2.7004,
+        "avg_loss": -3.7112,
+        "payoff": 0.7277,
+        "expectancy": -1.1856,
+        "profit_factor": 0.4729,
+        "exit_mix": {
+          "stop": 832,
+          "tp": 956,
+          "flip": 639
+        }
+      },
+      "oos": {
+        "trades": 289,
+        "gross": -60.9,
+        "fees": 144.5,
+        "net": -205.41,
+        "wins": 110,
+        "losses": 179,
+        "win_rate": 38.06,
+        "avg_win": 3.2001,
+        "avg_loss": -3.1141,
+        "payoff": 1.0276,
+        "expectancy": -0.7108,
+        "profit_factor": 0.6315,
+        "exit_mix": {
+          "stop": 103,
+          "tp": 110,
+          "flip": 76
+        }
+      },
+      "dev": {
+        "trades": 1521,
+        "gross": -261.71,
+        "fees": 760.38,
+        "net": -1022.13,
+        "wins": 615,
+        "losses": 906,
+        "win_rate": 40.43,
+        "avg_win": 3.1857,
+        "avg_loss": -3.2906,
+        "payoff": 0.9681,
+        "expectancy": -0.672,
+        "profit_factor": 0.6572,
+        "exit_mix": {
+          "stop": 505,
+          "tp": 612,
+          "flip": 404
+        }
+      }
+    },
+    "breakout": {
+      "family": "breakout",
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "totals_base": {
+        "trades": 2276,
+        "gross": -289.44,
+        "fees": 1137.96,
+        "net": -1427.46,
+        "wins": 882,
+        "losses": 1394,
+        "win_rate": 38.75,
+        "avg_win": 3.158,
+        "avg_loss": -3.0221,
+        "payoff": 1.045,
+        "expectancy": -0.6272,
+        "profit_factor": 0.6612,
+        "exit_mix": {
+          "stop": 1006,
+          "tp": 868,
+          "flip": 402
+        }
+      },
+      "totals_2x": {
+        "trades": 2255,
+        "gross": -277.24,
+        "fees": 2255.04,
+        "net": -2532.27,
+        "wins": 871,
+        "losses": 1384,
+        "win_rate": 38.63,
+        "avg_win": 2.685,
+        "avg_loss": -3.5194,
+        "payoff": 0.7629,
+        "expectancy": -1.123,
+        "profit_factor": 0.4801,
+        "exit_mix": {
+          "stop": 993,
+          "tp": 865,
+          "flip": 397
+        }
+      },
+      "oos": {
+        "trades": 233,
+        "gross": -22.26,
+        "fees": 116.54,
+        "net": -138.81,
+        "wins": 87,
+        "losses": 146,
+        "win_rate": 37.34,
+        "avg_win": 3.2001,
+        "avg_loss": -2.8576,
+        "payoff": 1.1198,
+        "expectancy": -0.5957,
+        "profit_factor": 0.6673,
+        "exit_mix": {
+          "stop": 104,
+          "tp": 87,
+          "flip": 42
+        }
+      },
+      "dev": {
+        "trades": 1519,
+        "gross": -49.56,
+        "fees": 759.36,
+        "net": -808.97,
+        "wins": 639,
+        "losses": 880,
+        "win_rate": 42.07,
+        "avg_win": 3.1678,
+        "avg_loss": -3.2195,
+        "payoff": 0.9839,
+        "expectancy": -0.5326,
+        "profit_factor": 0.7145,
+        "exit_mix": {
+          "stop": 668,
+          "tp": 631,
+          "flip": 220
+        }
+      }
+    },
+    "trend": {
+      "family": "trend",
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "totals_base": {
+        "trades": 1288,
+        "gross": -232.76,
+        "fees": 644.04,
+        "net": -876.83,
+        "wins": 714,
+        "losses": 574,
+        "win_rate": 55.43,
+        "avg_win": 3.1997,
+        "avg_loss": -5.5078,
+        "payoff": 0.581,
+        "expectancy": -0.6808,
+        "profit_factor": 0.7226,
+        "exit_mix": {
+          "stop": 574,
+          "tp": 714,
+          "flip": 0
+        }
+      },
+      "totals_2x": {
+        "trades": 1288,
+        "gross": -232.76,
+        "fees": 1288.17,
+        "net": -1520.93,
+        "wins": 714,
+        "losses": 574,
+        "win_rate": 55.43,
+        "avg_win": 2.6995,
+        "avg_loss": -6.0077,
+        "payoff": 0.4493,
+        "expectancy": -1.1808,
+        "profit_factor": 0.5589,
+        "exit_mix": {
+          "stop": 574,
+          "tp": 714,
+          "flip": 0
+        }
+      },
+      "oos": {
+        "trades": 137,
+        "gross": 51.21,
+        "fees": 68.56,
+        "net": -17.35,
+        "wins": 85,
+        "losses": 52,
+        "win_rate": 62.04,
+        "avg_win": 3.1989,
+        "avg_loss": -5.5627,
+        "payoff": 0.5751,
+        "expectancy": -0.1267,
+        "profit_factor": 0.94,
+        "exit_mix": {
+          "stop": 52,
+          "tp": 85,
+          "flip": 0
+        }
+      },
+      "dev": {
+        "trades": 886,
+        "gross": -186.16,
+        "fees": 442.98,
+        "net": -629.17,
+        "wins": 489,
+        "losses": 397,
+        "win_rate": 55.19,
+        "avg_win": 3.2,
+        "avg_loss": -5.5264,
+        "payoff": 0.579,
+        "expectancy": -0.7101,
+        "profit_factor": 0.7132,
+        "exit_mix": {
+          "stop": 397,
+          "tp": 489,
+          "flip": 0
+        }
+      }
+    },
+    "mean_reversion": {
+      "family": "mean_reversion",
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "totals_base": {
+        "trades": 2861,
+        "gross": -83.91,
+        "fees": 1430.38,
+        "net": -1514.34,
+        "wins": 1330,
+        "losses": 1531,
+        "win_rate": 46.49,
+        "avg_win": 2.3609,
+        "avg_loss": -3.0401,
+        "payoff": 0.7766,
+        "expectancy": -0.5293,
+        "profit_factor": 0.6746,
+        "exit_mix": {
+          "stop": 1298,
+          "tp": 822,
+          "flip": 741
+        }
+      },
+      "totals_2x": {
+        "trades": 2530,
+        "gross": -51.42,
+        "fees": 2529.77,
+        "net": -2581.19,
+        "wins": 1070,
+        "losses": 1460,
+        "win_rate": 42.29,
+        "avg_win": 2.1265,
+        "avg_loss": -3.3264,
+        "payoff": 0.6393,
+        "expectancy": -1.0202,
+        "profit_factor": 0.4685,
+        "exit_mix": {
+          "stop": 1145,
+          "tp": 752,
+          "flip": 633
+        }
+      },
+      "oos": {
+        "trades": 351,
+        "gross": 5.64,
+        "fees": 175.51,
+        "net": -169.88,
+        "wins": 169,
+        "losses": 182,
+        "win_rate": 48.15,
+        "avg_win": 2.3056,
+        "avg_loss": -3.0743,
+        "payoff": 0.75,
+        "expectancy": -0.484,
+        "profit_factor": 0.6964,
+        "exit_mix": {
+          "stop": 156,
+          "tp": 96,
+          "flip": 99
+        }
+      },
+      "dev": {
+        "trades": 1714,
+        "gross": -34.99,
+        "fees": 856.82,
+        "net": -891.84,
+        "wins": 797,
+        "losses": 917,
+        "win_rate": 46.5,
+        "avg_win": 2.4403,
+        "avg_loss": -3.0935,
+        "payoff": 0.7888,
+        "expectancy": -0.5203,
+        "profit_factor": 0.6856,
+        "exit_mix": {
+          "stop": 791,
+          "tp": 523,
+          "flip": 400
+        }
+      }
+    },
+    "volatility": {
+      "family": "volatility",
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "totals_base": {
+        "trades": 519,
+        "gross": -169.26,
+        "fees": 259.52,
+        "net": -428.79,
+        "wins": 219,
+        "losses": 300,
+        "win_rate": 42.2,
+        "avg_win": 3.1605,
+        "avg_loss": -3.7365,
+        "payoff": 0.8459,
+        "expectancy": -0.8262,
+        "profit_factor": 0.6175,
+        "exit_mix": {
+          "stop": 246,
+          "tp": 216,
+          "flip": 57
+        }
+      },
+      "totals_2x": {
+        "trades": 519,
+        "gross": -169.26,
+        "fees": 519.07,
+        "net": -688.33,
+        "wins": 216,
+        "losses": 303,
+        "win_rate": 41.62,
+        "avg_win": 2.7008,
+        "avg_loss": -4.1971,
+        "payoff": 0.6435,
+        "expectancy": -1.3263,
+        "profit_factor": 0.4587,
+        "exit_mix": {
+          "stop": 246,
+          "tp": 216,
+          "flip": 57
+        }
+      },
+      "oos": {
+        "trades": 62,
+        "gross": -21.1,
+        "fees": 31.01,
+        "net": -52.11,
+        "wins": 24,
+        "losses": 38,
+        "win_rate": 38.71,
+        "avg_win": 3.2002,
+        "avg_loss": -3.3925,
+        "payoff": 0.9433,
+        "expectancy": -0.8405,
+        "profit_factor": 0.5958,
+        "exit_mix": {
+          "stop": 30,
+          "tp": 24,
+          "flip": 8
+        }
+      },
+      "dev": {
+        "trades": 315,
+        "gross": -80.86,
+        "fees": 157.49,
+        "net": -238.36,
+        "wins": 139,
+        "losses": 176,
+        "win_rate": 44.13,
+        "avg_win": 3.1376,
+        "avg_loss": -3.8323,
+        "payoff": 0.8187,
+        "expectancy": -0.7567,
+        "profit_factor": 0.6466,
+        "exit_mix": {
+          "stop": 144,
+          "tp": 136,
+          "flip": 35
+        }
+      }
+    }
+  },
+  "paper_candidates": [],
+  "rejected": [
+    "ema_crossover",
+    "momentum",
+    "breakout",
+    "trend",
+    "mean_reversion",
+    "volatility"
+  ],
+  "research_required": []
+}

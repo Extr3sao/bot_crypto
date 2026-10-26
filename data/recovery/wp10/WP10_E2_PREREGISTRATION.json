@@ -1,0 +1,385 @@
+{
+  "artifact": "WP10_E2_PREREGISTRATION",
+  "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
+  "phase": "PHASE 4 \u2014 E-2 FORWARD DRIFT ENTRY SCREEN (PRE-REGISTRATION)",
+  "version": "E2-PREREG-V1",
+  "generated_at_utc": "2026-10-11T22:43:38Z",
+  "mode": "OFFLINE READ-ONLY \u2014 no market data read, no process, no order",
+  "gate": {
+    "state": "CLOSED",
+    "why": "RFC-050 is not registered, the draft states AUTHORIZED = false and CAMPAIGN_STARTED = false, and no governance instrument authorises a new campaign",
+    "allowed_with_gate_closed": [
+      "write the pre-registration",
+      "synthetic contract tests of the decision rule",
+      "viability analysis on already-read periods",
+      "prepare the runtime contract the screen would need"
+    ],
+    "forbidden_with_gate_closed": [
+      "run the screen on any window",
+      "open RFC-049's sealed OOS window or reuse its partitions as validation",
+      "authorise paper promotion",
+      "change any frozen threshold, criterion or cost"
+    ]
+  },
+  "governance": {
+    "rfc_registry": {
+      "path": "docs/roadmap/RFC_REGISTRY.json",
+      "next_free_number_above_046": "048",
+      "registered_numbers": [
+        "000",
+        "010",
+        "020",
+        "021",
+        "023",
+        "024",
+        "025",
+        "026",
+        "027",
+        "028",
+        "029",
+        "030",
+        "031",
+        "032",
+        "033",
+        "034",
+        "035",
+        "036",
+        "037",
+        "038",
+        "039",
+        "040",
+        "041",
+        "042",
+        "043",
+        "044",
+        "045",
+        "046",
+        "047"
+      ],
+      "rfc_050_registered": false,
+      "current_rfc": {
+        "number": "046",
+        "status": "APPROVED / ACTIVE",
+        "approval": "ADR-0024 (2026-10-08)",
+        "offline_only": true
+      }
+    },
+    "rfc_050_draft": {
+      "path": "data/recovery/wp9/RFC_050_COST_AND_ENTRY_DRAFT.md",
+      "exists": true,
+      "declares_draft": true,
+      "declares_unauthorized": true,
+      "declares_campaign_not_started": true
+    },
+    "campaign_authorization": {
+      "path": "data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json",
+      "next_campaign": "AUTHORIZED",
+      "authorization_scope": "OFFLINE_DEV_VAL_ONLY",
+      "covers_e2": false,
+      "note": "the only campaign authorization on record is RFC-049's, scoped to offline development and validation of its own two hypotheses; it does not authorise a new campaign, and E-2 is a new campaign",
+      "resolved_by_the_state_view": {
+        "SEALED_OOS": {
+          "effective": "CANCELLED_NOT_OPENED",
+          "decided_by": "tasks/decisions.md#ADR-0026"
+        },
+        "NEXT_CAMPAIGN": {
+          "effective": "NOT_AUTHORIZED",
+          "decided_by": "data/st6/ST6_HEALTH_STATUS.json"
+        },
+        "PAPER_PROMOTION": {
+          "effective": "NOT_AUTHORIZED",
+          "decided_by": "data/rfc049/discovery2/CAMPAIGN_CLOSURE.json"
+        },
+        "LIVE_TRADING": {
+          "effective": "DISABLED",
+          "decided_by": "data/st6/ST6_HEALTH_STATUS.json"
+        }
+      },
+      "state_view": "data/recovery/CAMPAIGN_STATE_VIEW.json"
+    },
+    "gate": {
+      "state": "CLOSED",
+      "why": "RFC-050 is not registered, the draft states AUTHORIZED = false and CAMPAIGN_STARTED = false, and no governance instrument authorises a new campaign",
+      "allowed_with_gate_closed": [
+        "write the pre-registration",
+        "synthetic contract tests of the decision rule",
+        "viability analysis on already-read periods",
+        "prepare the runtime contract the screen would need"
+      ],
+      "forbidden_with_gate_closed": [
+        "run the screen on any window",
+        "open RFC-049's sealed OOS window or reuse its partitions as validation",
+        "authorise paper promotion",
+        "change any frozen threshold, criterion or cost"
+      ]
+    },
+    "burned_windows": {
+      "research_period_W1_W7": "W1-W7 2026-03-01..2026-09-24",
+      "excluded_paper_day": "2026-09-25",
+      "sealed_book_windows_measured_by_E1": [
+        {
+          "run_id": "paper-lab-continuous-02",
+          "started_at": "2026-09-29T22:59:18.288000+00:00",
+          "ended_at": "2026-09-30T03:08:51.773000+00:00",
+          "status": "CONTROLLED_STOP"
+        }
+      ],
+      "rfc049_sealed_oos_from": "2026-10-11T00:00:00Z",
+      "note": "W1-W7 carried the 24 registered cells and the 5m family diagnostics; RFC-049 spent its development and validation partitions on 2019-2023 and 2024-2026; its sealed OOS window opens at the timestamp above and has never been read. None of them may carry E-2's validation"
+    },
+    "reserved_for_e2": {
+      "from": "2026-10-12T00:00:00Z",
+      "rule": "a forward window chosen by calendar, strictly after every period already spent or licensed; if the window does not exist yet, the campaign waits rather than substituting another period"
+    }
+  },
+  "hypothesis": {
+    "statement": "at a 30-minute horizon, requiring a positive direction-adjusted forward-drift estimate at the moment of entry raises the net expectancy of the registered families that already show positive gross edge at that horizon, by enough to clear the frozen round-trip cost plane",
+    "falsified_when": "the screen reduces the trade count without raising net expectancy, or raises it by less than the plane, or the improvement does not hold in the validation partition \u2014 each of which is a published NOT_PROMOTE, not a failed run",
+    "why_one_candidate": "the brief forbids creating a family to increase candidate count; E-2 is one screen over already-named families, and the pre-registration names them below"
+  },
+  "universe": {
+    "families_eligible": [
+      "volatility@30m",
+      "mean_reversion@30m",
+      "trend@30m"
+    ],
+    "why": "the only 30m cells with a positive zero-cost gross edge in the rebuilt baseline; the list is taken from the phase-1 rebuild, not from a search",
+    "assets": [
+      "BTCUSDT",
+      "ETHUSDT"
+    ],
+    "timeframe": "30m",
+    "runtime_contract": "Strategy.evaluate(candles, indicators, config) -> Signal | None (src/trading_bot/strategies/protocols.py): the screen is an indicator computed from candles up to and including the decision bar plus a filter on the returned signal. No new runtime layer, no exchange access, no order path"
+  },
+  "windows": {
+    "reserved_from": "2026-10-12T00:00:00Z",
+    "partition_rule": "decision instants are split by calendar index \u2014 the first 60 % are development, the remainder validation \u2014 fixed now, before any observation exists, so no boundary can be moved after seeing a result",
+    "burned": {
+      "research_period_W1_W7": "W1-W7 2026-03-01..2026-09-24",
+      "excluded_paper_day": "2026-09-25",
+      "sealed_book_windows_measured_by_E1": [
+        {
+          "run_id": "paper-lab-continuous-02",
+          "started_at": "2026-09-29T22:59:18.288000+00:00",
+          "ended_at": "2026-09-30T03:08:51.773000+00:00",
+          "status": "CONTROLLED_STOP"
+        }
+      ],
+      "rfc049_sealed_oos_from": "2026-10-11T00:00:00Z",
+      "note": "W1-W7 carried the 24 registered cells and the 5m family diagnostics; RFC-049 spent its development and validation partitions on 2019-2023 and 2024-2026; its sealed OOS window opens at the timestamp above and has never been read. None of them may carry E-2's validation"
+    },
+    "pit_rule": "every input of a decision at instant T is available at or before T; the screen uses no candle whose close is after T, and the verification re-derives this with a point-in-time check rather than trusting the implementation"
+  },
+  "cost_model": {
+    "judged_against": {
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "round_trip_bps": 23.353553391,
+      "stress_1p5x_bps": 35.030330086,
+      "knowledge_mix": {
+        "exchange_fee_entry": "KNOWN",
+        "exchange_fee_exit": "KNOWN",
+        "spread": "ESTIMATED",
+        "slippage": "ESTIMATED",
+        "market_impact": "ESTIMATED"
+      },
+      "frozen": true
+    },
+    "measured_layer": null
+  },
+  "metrics": [
+    "net expectancy bps per round trip, net of the frozen plane",
+    "lower 95 % confidence bound of that expectancy",
+    "sign of the net expectancy in the development partition and in the validation partition",
+    "trade count achieved against the pre-registered requirement",
+    "hit rate, payoff and exit mix, for the record",
+    "exposure and trades per day, compared with the 3-operations-per-day objective",
+    "cost under the 1.5x stress envelope, reported beside the headline"
+  ],
+  "decision_rule": {
+    "function": "decide(net_bps, dev_size, target_bps) in scripts/wp10_e2_preregistration.py",
+    "promote_requires": [
+      "mean net expectancy > 0",
+      "lower 95 % confidence bound > 0",
+      "net expectancy positive in both development and validation",
+      "trade count >= required_trades(sd of the development partition, 23.3536 bps, 80 % power)"
+    ],
+    "minimum_detectable_effect_bps": 23.353553391,
+    "why_that_effect": "an edge smaller than one round trip at the frozen plane cannot be net positive, so a sample that cannot resolve the plane cannot separate success from noise",
+    "kill_criteria": [
+      "the screen cannot be expressed without reading an input from the future",
+      "the trade count after screening falls below the requirement within the reserved window, and the window may not be extended to reach it",
+      "the measured cost layer shows the plane is not the binding constraint, in which case the next experiment is the one E-1 names, not this one",
+      "any promotion would require changing a frozen threshold"
+    ]
+  },
+  "contract_tests": {
+    "executed": true,
+    "results": [
+      {
+        "test": "a strong, well-sampled positive edge is promoted",
+        "passed": true,
+        "expectation": "PROMOTE",
+        "verdict": {
+          "verdict": "PROMOTE",
+          "reason": "every pre-registered condition holds",
+          "n": 300,
+          "mean_net_bps": 30.0,
+          "sd_bps": 20.033417,
+          "standard_error_bps": 1.15663,
+          "lcb_95_bps": 27.733047,
+          "dev_mean_net_bps": 30.0,
+          "val_mean_net_bps": 30.0,
+          "dev_sd_bps": 20.067002,
+          "trades_required": 6,
+          "minimum_detectable_effect_bps": 23.353553391
+        }
+      },
+      {
+        "test": "a positive but noisy small sample is not promoted",
+        "passed": true,
+        "expectation": "NOT_PROMOTE, confidence bound fails",
+        "verdict": {
+          "verdict": "NOT_PROMOTE",
+          "reason": "lower 95% confidence bound is not above zero; sample below the pre-registered requirement (50 < 1348)",
+          "n": 50,
+          "mean_net_bps": 30.0,
+          "sd_bps": 303.045763,
+          "standard_error_bps": 42.857143,
+          "lcb_95_bps": -53.998457,
+          "dev_mean_net_bps": 42.0,
+          "val_mean_net_bps": 18.0,
+          "dev_sd_bps": 305.941171,
+          "trades_required": 1348,
+          "minimum_detectable_effect_bps": 23.353553391
+        }
+      },
+      {
+        "test": "a series whose sign flips between partitions is not promoted even with a positive pooled bound",
+        "passed": true,
+        "expectation": "NOT_PROMOTE by the sign rule while the pooled bound is positive",
+        "verdict": {
+          "verdict": "NOT_PROMOTE",
+          "reason": "the sign does not hold across development and validation",
+          "n": 300,
+          "mean_net_bps": 10.0,
+          "sd_bps": 36.115756,
+          "standard_error_bps": 2.085144,
+          "lcb_95_bps": 5.913193,
+          "dev_mean_net_bps": 30.0,
+          "val_mean_net_bps": -10.0,
+          "dev_sd_bps": 30.100503,
+          "trades_required": 14,
+          "minimum_detectable_effect_bps": 23.353553391
+        }
+      },
+      {
+        "test": "a net-negative series is not promoted",
+        "passed": true,
+        "expectation": "NOT_PROMOTE",
+        "verdict": {
+          "verdict": "NOT_PROMOTE",
+          "reason": "net expectancy is not positive; lower 95% confidence bound is not above zero; the sign does not hold across development and validation",
+          "n": 400,
+          "mean_net_bps": -5.0,
+          "sd_bps": 20.025047,
+          "standard_error_bps": 1.001252,
+          "lcb_95_bps": -6.962419,
+          "dev_mean_net_bps": -5.0,
+          "val_mean_net_bps": -5.0,
+          "dev_sd_bps": 20.050188,
+          "trades_required": 6,
+          "minimum_detectable_effect_bps": 23.353553391
+        }
+      },
+      {
+        "test": "a sample below the pre-registered requirement is not promoted",
+        "passed": true,
+        "expectation": "NOT_PROMOTE, sample requirement",
+        "verdict": {
+          "verdict": "NOT_PROMOTE",
+          "reason": "lower 95% confidence bound is not above zero; sample below the pre-registered requirement (20 < 160)",
+          "n": 20,
+          "mean_net_bps": 40.0,
+          "sd_bps": 102.597835,
+          "standard_error_bps": 22.941573,
+          "lcb_95_bps": -4.964658,
+          "dev_mean_net_bps": 40.0,
+          "val_mean_net_bps": 40.0,
+          "dev_sd_bps": 105.409255,
+          "trades_required": 160,
+          "minimum_detectable_effect_bps": 23.353553391
+        }
+      },
+      {
+        "test": "the verdict depends on the numbers, not on the order they arrive in",
+        "passed": true,
+        "expectation": "the same verdict and the same mean",
+        "verdict": {
+          "verdict": "PROMOTE",
+          "reason": "every pre-registered condition holds",
+          "n": 300,
+          "mean_net_bps": 30.0,
+          "sd_bps": 20.033417,
+          "standard_error_bps": 1.15663,
+          "lcb_95_bps": 27.733047,
+          "dev_mean_net_bps": 30.0,
+          "val_mean_net_bps": 30.0,
+          "dev_sd_bps": 20.067002,
+          "trades_required": 6,
+          "minimum_detectable_effect_bps": 23.353553391
+        }
+      },
+      {
+        "test": "sorting the series does not change the verdict",
+        "passed": true,
+        "expectation": "same verdict (the rule reads values, not position)",
+        "verdict": {
+          "sorted_verdict": "PROMOTE"
+        }
+      },
+      {
+        "test": "negative control: 200 random series never promote with a bound at or below zero",
+        "passed": true,
+        "expectation": "0 violations",
+        "verdict": {
+          "violations": 0
+        }
+      },
+      {
+        "test": "a zero-dispersion series neither crashes nor divides by zero",
+        "passed": true,
+        "expectation": "a verdict with sd 0",
+        "verdict": {
+          "verdict": "PROMOTE",
+          "reason": "every pre-registered condition holds",
+          "n": 50,
+          "mean_net_bps": 1.0,
+          "sd_bps": 0.0,
+          "standard_error_bps": 0.0,
+          "lcb_95_bps": 1.0,
+          "dev_mean_net_bps": 1.0,
+          "val_mean_net_bps": 1.0,
+          "dev_sd_bps": 0.0,
+          "trades_required": 0,
+          "minimum_detectable_effect_bps": 23.353553391
+        }
+      }
+    ],
+    "passed": 9,
+    "total": 9,
+    "note": "synthetic series only: these test the decision rule, not the market. A rule that cannot be shown to reject what it should reject is not pre-registered, it is a hope"
+  },
+  "not_done": [
+    "no window was read: the market data for E-2 does not exist yet and none was fabricated",
+    "no candidate was run, no threshold was fitted, no result is reported",
+    "the RFC-049 sealed window was not opened"
+  ],
+  "verdict": {
+    "e2": "SPEC_ONLY",
+    "gate": "CLOSED",
+    "self_tests_passed": true,
+    "authorized": false,
+    "campaign_started": false
+  },
+  "payload_sha256": "175a53fba1d50bb07b9a753a3fb8de8ea68da2476960d59e53be9570b542c13b"
+}

@@ -1,0 +1,138 @@
+{
+  "artifact": "ST6_OBSERVATION_PERIOD",
+  "coverage_rule": {
+    "maximum_rejected_fraction": 0.2,
+    "maximum_windows_per_day": 6,
+    "minimum_asset_presence_fraction": 0.9,
+    "minimum_days_covered": 10,
+    "minimum_distinct_slots": 6,
+    "minimum_distinct_volatility_bands": 2,
+    "minimum_weekday_windows": 20,
+    "minimum_weekend_windows": 4,
+    "minimum_windows_per_three_sessions": 8,
+    "minimum_windows_total": 42,
+    "period_days": 14
+  },
+  "credentials_used": 0,
+  "declared_at_utc": "2026-10-08T16:21:20Z",
+  "does_not_license": [
+    "a hypothesis, a strategy, a campaign or a backtest",
+    "any paper or live trading, or any deployment of capital",
+    "any claim of edge, profit or production capability"
+  ],
+  "ends_at_utc": "2026-10-22T16:21:20Z",
+  "extension_policy": "the period is not prolonged automatically; after ends_at_utc collection stops unless a human passes --authorize-extension, and that flag never turns an incomplete period into a PASS",
+  "head_at_declaration": "6b4edd4508437e87503acfcbacdb1ab0ead71bde",
+  "max_observations_per_day": 6,
+  "one_window_per_slot": true,
+  "orders_sent": 0,
+  "period_days": 14,
+  "phase": "ST-6 forward cost regime validation",
+  "repairs": [
+    {
+      "at_utc": "2026-10-08T16:34:23Z",
+      "derivation": "build_observations / window_metrics, run against the raw bytes on disk",
+      "evidence_unchanged": true,
+      "raw_hashes_rechecked": 1,
+      "what": "book ages, the window reference instant, the slot and the per-window aggregates were re-derived from each raw snapshot's own local_finished_utc; the age had been measured against the instant the process started and came out below zero",
+      "why": "a negative observation age is impossible and is a defect, not evidence",
+      "windows": [
+        {
+          "raw_sha256": "e720f19ded6541b2b292940297d0b317328b0ad1ce1c2589de2ecda5e84da4e7",
+          "window_id": "20261008T162202Z"
+        }
+      ]
+    },
+    {
+      "at_utc": "2026-10-08T16:35:56Z",
+      "derivation": "build_observations / window_metrics, run against the raw bytes on disk",
+      "evidence_unchanged": true,
+      "raw_hashes_rechecked": 1,
+      "what": "book ages, the window reference instant, the slot and the per-window aggregates were re-derived from each raw snapshot's own local_finished_utc; the age had been measured against the instant the process started and came out below zero",
+      "why": "a negative observation age is impossible and is a defect, not evidence",
+      "windows": [
+        {
+          "raw_sha256": "e720f19ded6541b2b292940297d0b317328b0ad1ce1c2589de2ecda5e84da4e7",
+          "window_id": "20261008T162202Z"
+        }
+      ]
+    }
+  ],
+  "slot_hours": 4,
+  "slots": [
+    "00:00-04:00 UTC",
+    "04:00-08:00 UTC",
+    "08:00-12:00 UTC",
+    "12:00-16:00 UTC",
+    "16:00-20:00 UTC",
+    "20:00-24:00 UTC"
+  ],
+  "slots_per_day": 6,
+  "started_at_utc": "2026-10-08T16:21:20Z",
+  "thresholds": {
+    "boundary_multiple": 1.5,
+    "declared": "read from the frozen model at run time; this phase never writes them",
+    "impact_bps": 0.25,
+    "knowledge_class": "ASSUMED/ESTIMATED modelling constants, not observations",
+    "model": "COST_MODEL_V3",
+    "model_sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+    "source": "docs\\COST_MODEL_V3.json",
+    "spread_bps": 1.0
+  },
+  "volatility_reference": {
+    "declared_before_observation": true,
+    "interval": "1h",
+    "rule": "volatility regime = band of the live rolling 24-bar standard deviation of hourly log returns (in bps) against the tertiles of the same statistic computed over the frozen 1-hour archive: <= p33 LOW, <= p67 NORMAL, above p67 HIGH",
+    "series": {
+      "BTCUSDT": {
+        "archive": "data\\raw\\alpha003\\price\\BTCUSDT_1h.json",
+        "archive_sha256": "93af6a10d27a2ad58e4b1c2beb571d8fd6d5b0d7e07a8ff6e3848d58d33b3467",
+        "available": true,
+        "bars": 17676,
+        "first_bar_utc": "2024-10-01T00:00:00.000000Z",
+        "last_bar_utc": "2026-10-07T11:00:00.000000Z",
+        "median_bps": 37.716277,
+        "p33_bps": 30.411759,
+        "p67_bps": 45.774307,
+        "rolling_windows": 17652
+      },
+      "ETHUSDT": {
+        "archive": "data\\raw\\alpha003\\price\\ETHUSDT_1h.json",
+        "archive_sha256": "99a23e658448c12a20012532f3b49b464314c6b06d1715af1861889ab890488d",
+        "available": true,
+        "bars": 17676,
+        "first_bar_utc": "2024-10-01T00:00:00.000000Z",
+        "last_bar_utc": "2026-10-07T11:00:00.000000Z",
+        "median_bps": 56.275307,
+        "p33_bps": 46.272271,
+        "p67_bps": 68.667942,
+        "rolling_windows": 17652
+      },
+      "SOLUSDT": {
+        "archive": "data\\raw\\alpha003\\price\\SOLUSDT_1h.json",
+        "archive_sha256": "47e39783ea9df716e061952d1a1c2dabf013017855bfcdf0fc3b80b88fdc6522",
+        "available": true,
+        "bars": 17676,
+        "first_bar_utc": "2024-10-01T00:00:00.000000Z",
+        "last_bar_utc": "2026-10-07T11:00:00.000000Z",
+        "median_bps": 65.919983,
+        "p33_bps": 55.625375,
+        "p67_bps": 78.870082,
+        "rolling_windows": 17652
+      },
+      "XRPUSDT": {
+        "archive": "data\\raw\\alpha003\\price\\XRPUSDT_1h.json",
+        "archive_sha256": "c54c27608fe4e83d6a184423d2a2f8f736e9210c416d2f4335ff0c05ae7c2ea6",
+        "available": true,
+        "bars": 17676,
+        "first_bar_utc": "2024-10-01T00:00:00.000000Z",
+        "last_bar_utc": "2026-10-07T11:00:00.000000Z",
+        "median_bps": 58.93071,
+        "p33_bps": 46.833147,
+        "p67_bps": 75.40027,
+        "rolling_windows": 17652
+      }
+    },
+    "window_bars": 24
+  }
+}

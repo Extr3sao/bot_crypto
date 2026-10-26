@@ -1,0 +1,245 @@
+{
+  "clock": "host wall clock, nanosecond resolution, read in the freeze process before this file was written; the file is committed before any capture runs",
+  "frozen_at_epoch_ms": 1792221328939,
+  "frozen_at_unix_ns": 1792221328939466200,
+  "frozen_at_utc": "2026-10-17T07:15:28Z",
+  "kind": "PROSPECTIVE_HOLDOUT",
+  "previously_captured": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\OOS_SLICE_1H.jsonl",
+    "sha256": "d92ac8cd8e86641c5b39e15ef7ffbf793b8f5381e37d31f35d65b19ebc1d6132",
+    "status": "DESCRIPTIVE_FOR_THESE_HYPOTHESES",
+    "why": "captured by WP-EDGE-14R at 2026-10-16T20:01:44Z, before this protocol existed, so no bar in it can be prospective with respect to it"
+  },
+  "prospective_boundary_ms": 1792162800000,
+  "protocol": {
+    "acceptance_thresholds": {
+      "max_data_points_used_for_selection": 1,
+      "max_drawdown_bps_max": 2000.0,
+      "min_closed_trades_per_strategy": 200,
+      "must_stay_positive_at_cost_multiplier": 2.0,
+      "net_expectancy_bps_per_trade_min": 0.0,
+      "profit_factor_min": 1.2
+    },
+    "comparator_CURRENT": "the runtime as it stands: no strategy admitted, no trades, flat equity \u2014 a candidate must beat zero, not merely exist",
+    "costs": {
+      "anchor_stake_usdt": 200.0,
+      "examples": [
+        {
+          "fee_bps_per_side": 10.0,
+          "funding_bps_per_day": 0.0,
+          "half_spread_bps": 0.5,
+          "impact_bps_per_side": 0.0354,
+          "knowledge": {
+            "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+            "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+            "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+            "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+            "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+          },
+          "per_side_bps": 11.6768,
+          "round_trip_bps": 23.3536,
+          "slippage_bps_per_side": 1.1414,
+          "stake_usdt": 200.0,
+          "symbol": "BTC/USDT",
+          "tier": "TIER1",
+          "venue": "BINANCE_SPOT"
+        },
+        {
+          "fee_bps_per_side": 10.0,
+          "funding_bps_per_day": 0.0,
+          "half_spread_bps": 0.5,
+          "impact_bps_per_side": 0.0354,
+          "knowledge": {
+            "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+            "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+            "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+            "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+            "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+          },
+          "per_side_bps": 11.6768,
+          "round_trip_bps": 23.3536,
+          "slippage_bps_per_side": 1.1414,
+          "stake_usdt": 200.0,
+          "symbol": "ETH/USDT",
+          "tier": "TIER1",
+          "venue": "BINANCE_SPOT"
+        },
+        {
+          "fee_bps_per_side": 10.0,
+          "funding_bps_per_day": 0.0,
+          "half_spread_bps": 1.0,
+          "impact_bps_per_side": 0.05,
+          "knowledge": {
+            "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+            "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+            "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+            "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+            "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+          },
+          "per_side_bps": 12.65,
+          "round_trip_bps": 25.3,
+          "slippage_bps_per_side": 1.6,
+          "stake_usdt": 200.0,
+          "symbol": "SOL/USDT",
+          "tier": "MAJOR",
+          "venue": "BINANCE_SPOT"
+        },
+        {
+          "fee_bps_per_side": 10.0,
+          "funding_bps_per_day": 0.0,
+          "half_spread_bps": 2.0,
+          "impact_bps_per_side": 0.08,
+          "knowledge": {
+            "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+            "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+            "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+            "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+            "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+          },
+          "per_side_bps": 14.48,
+          "round_trip_bps": 28.96,
+          "slippage_bps_per_side": 2.4,
+          "stake_usdt": 200.0,
+          "symbol": "UNI/USDT",
+          "tier": "ALT",
+          "venue": "BINANCE_SPOT"
+        }
+      ],
+      "fee_bps_per_side": 10.0,
+      "half_spread_bps_by_tier": {
+        "ALT": 2.0,
+        "MAJOR": 1.0,
+        "TIER1": 0.5
+      },
+      "impact_bps_per_side_by_tier": {
+        "ALT": 0.08,
+        "MAJOR": 0.05,
+        "TIER1": 0.0354
+      },
+      "not_used": "zero spread and zero slippage: those were declared parity inputs for comparing two engines, and they are not a price at which a strategy may be certified",
+      "scaling": {
+        "impact": "stake/anchor",
+        "slippage": "sqrt(stake/anchor)"
+      },
+      "schema_version": "EDGE15_COST_MODEL_V1",
+      "sensitivity_multipliers": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "slippage_bps_per_side_by_tier": {
+        "ALT": 2.4,
+        "MAJOR": 1.6,
+        "TIER1": 1.1414
+      },
+      "venue": "BINANCE_SPOT"
+    },
+    "expected_outcome_if_the_evidence_says_so": "NO_ECONOMIC_EDGE_FOUND, with the research lane kept and the next hypothesis named",
+    "families": [
+      {
+        "differs_from": [
+          "breakout@5m",
+          "ema_crossover@5m"
+        ],
+        "hypothesis": "H: a close above the 168h high is informative only when realised volatility is in its upper-middle range \u2014 dead markets produce false breakouts and panic regimes produce reversals \u2014 so the Donchian entry is gated on the ATR percentile and on price being above the long trend.",
+        "name": "vol_regime_breakout",
+        "parameters": {
+          "atr_hours": 24,
+          "atr_percentile_max": 0.95,
+          "atr_percentile_min": 0.5,
+          "channel_hours": 168,
+          "percentile_window_hours": 720,
+          "regime_ema_hours": 200,
+          "trail_atr_multiple": 3.0
+        },
+        "required_evidence": "",
+        "status": "TESTED",
+        "untestable_reason": ""
+      },
+      {
+        "differs_from": [
+          "ema_crossover@5m"
+        ],
+        "hypothesis": "H: in an established uptrend, a first close back below a fast mean is a continuation entry rather than a reversal, provided the trend filter and the recovery above the fast mean are both required before entry.",
+        "name": "trend_pullback",
+        "parameters": {
+          "atr_hours": 24,
+          "fast_ema_hours": 20,
+          "slow_ema_hours": 50,
+          "stop_atr_multiple": 3.0,
+          "trend_ema_hours": 200,
+          "trend_slope_hours": 24
+        },
+        "required_evidence": "",
+        "status": "TESTED",
+        "untestable_reason": ""
+      },
+      {
+        "differs_from": [
+          "lead_lag"
+        ],
+        "hypothesis": "H: the relative ordering of 72h returns across a fixed liquid universe carries information that a single-asset trend rule cannot see, so holding the top-k names while the absolute trend filter is up beats holding any one of them.",
+        "name": "cross_sectional_rotation",
+        "parameters": {
+          "lookback_hours": 72,
+          "rebalance_hours": 24,
+          "regime_ema_hours": 200,
+          "top_k": 2,
+          "universe": [
+            "AAVEUSDT",
+            "CRVUSDT",
+            "KSMUSDT",
+            "SNXUSDT",
+            "SUSHIUSDT",
+            "UNIUSDT"
+          ]
+        },
+        "required_evidence": "",
+        "status": "TESTED",
+        "untestable_reason": ""
+      },
+      {
+        "differs_from": [
+          "breakout@5m",
+          "ema_crossover@5m",
+          "lead_lag"
+        ],
+        "hypothesis": "H: a two-sigma stretch below a 48h mean reverts only when volatility is low and the bar is liquid; without those two conditions the same stretch is the start of a trend and the strategy is on the wrong side of it.",
+        "name": "mean_reversion_vol_liq",
+        "parameters": {
+          "atr_hours": 24,
+          "atr_percentile_max": 0.5,
+          "atr_stop_multiple": 4.0,
+          "max_hold_hours": 48,
+          "mean_hours": 48,
+          "percentile_window_hours": 720,
+          "volume_median_hours": 168,
+          "volume_multiple_min": 1.2,
+          "z_entry": -2.0,
+          "z_exit": 0.0
+        },
+        "required_evidence": "",
+        "status": "TESTED",
+        "untestable_reason": ""
+      },
+      {
+        "differs_from": [],
+        "hypothesis": "H: a passive order inside the spread can be filled favourably often enough to beat the taker round trip. It is listed because the brief asks for it and it is NOT tested, because measuring it needs a fill model this repository does not have.",
+        "name": "maker_only_spread_capture",
+        "parameters": {
+          "inventory_hours": 4,
+          "quote_offset_bps": 1.0
+        },
+        "required_evidence": "a recorded order-book or trade-print source at sub-second resolution plus a queue model validated against real fills; then, and only then, a maker backtest",
+        "status": "DEFER_NO_FILL_MODEL",
+        "untestable_reason": "no verifiable queue-position or fill-probability model exists in the tree, and without one a maker backtest reports fills it could not have obtained"
+      }
+    ],
+    "schema_version": "EDGE15_ALPHA_PROTOCOL_V1",
+    "selection_rule": "parameters are fixed here and are not searched on the evaluation segment; a family is ADOPTed only if it clears every threshold on data it did not select on, and this project has no such data until the prospective slice accrues",
+    "work_package": "WP-EDGE-015/P1-P3"
+  },
+  "protocol_sha256": "3a88f70da2f10d0eb3896383721f69245dfec5ef460377d1cc765bd196698f67",
+  "schema_version": "EDGE15_OOS_PREREGISTRATION_V2",
+  "work_package": "WP-EDGE-015/P0.1"
+}

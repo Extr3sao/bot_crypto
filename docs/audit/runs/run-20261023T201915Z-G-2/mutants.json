@@ -1,0 +1,121 @@
+{
+  "tool": "scripts/audit/g2_mutants.py",
+  "criterion": "G-2 ACC-G2-09",
+  "source": "rev",
+  "rev": "HEAD",
+  "target_tests": [
+    "tests/unit/autonomous/test_hot_engage.py"
+  ],
+  "python": "3.11.15",
+  "resolved_source": "HEAD",
+  "resolved_rev": "1f33421c4165158ee0af689301512436961a1b18",
+  "baseline": {
+    "variant": "baseline",
+    "description": "unmutated tree (control)",
+    "criterion": "ACC-G2-10",
+    "exit_code": 0,
+    "killed": false,
+    "duration_s": 2.7,
+    "failing_tests": []
+  },
+  "variants": [
+    {
+      "variant": "baseline",
+      "description": "unmutated tree (control)",
+      "criterion": "ACC-G2-10",
+      "exit_code": 0,
+      "killed": false,
+      "duration_s": 2.7,
+      "failing_tests": []
+    },
+    {
+      "variant": "M1",
+      "description": "engage forgets to close the gate (flag never set)",
+      "criterion": "ACC-G2-02",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 2.71,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_control_file_engages",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_engage_is_idempotent_and_audited",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_deleting_the_control_file_does_not_rearm",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_unreadable_control_path_engages",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_the_boundary_refuses_and_counts"
+      ]
+    },
+    {
+      "variant": "M2",
+      "description": "the lock is not held across the broker call (linearization lost)",
+      "criterion": "ACC-G2-04",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 2.52,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_engage_waits_for_the_in_flight_dispatch",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_engage_engages_when_the_lock_is_wedged"
+      ]
+    },
+    {
+      "variant": "M3",
+      "description": "an unreadable control file fails open",
+      "criterion": "ACC-G2-05",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 3.1,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_unreadable_control_path_engages"
+      ]
+    },
+    {
+      "variant": "M4",
+      "description": "engage closes the gate but leaves the authority NORMAL",
+      "criterion": "ACC-G2-01",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 2.84,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_control_file_engages",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_the_ack_names_state_actor_and_reason",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_deleting_the_control_file_does_not_rearm",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_unreadable_control_path_engages",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_a_broken_switch_still_leaves_the_gate_closed"
+      ]
+    },
+    {
+      "variant": "M5",
+      "description": "a deleted control file is reported as disengaged",
+      "criterion": "ACC-G2-07",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 2.64,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_deleting_the_control_file_does_not_rearm"
+      ]
+    },
+    {
+      "variant": "M6",
+      "description": "a repeated engage is reported as a new transition",
+      "criterion": "ACC-G2-03",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 2.77,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_engage_is_idempotent_and_audited"
+      ]
+    },
+    {
+      "variant": "M7",
+      "description": "the runtime calls the broker without the boundary",
+      "criterion": "ACC-G2-02",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 2.6,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_the_boundary_blocks_even_when_the_engine_always_orders",
+        "FAILED tests/unit/autonomous/test_hot_engage.py::test_a_running_runtime_engages_between_cycles_without_restart"
+      ]
+    }
+  ],
+  "total_seconds": 34.17,
+  "all_mutants_killed": true
+}

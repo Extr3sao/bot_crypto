@@ -1,0 +1,208 @@
+{
+  "artifact": "WP9_RUN_REPORT",
+  "work_package": "WP-9 (CI RUNTIME CERTIFICATION & PAPER READINESS RECOVERY)",
+  "generated_at_utc": "2026-10-11T21:11:16Z",
+  "steps": [
+    {
+      "id": "WP9-B1",
+      "what": "disk budget audit: why the 24 h window stopped, and what 24/48/72 h cost",
+      "command": "uv run python scripts/wp9_disk_budget_audit.py",
+      "artifact": "WP9_DISK_BUDGET_AUDIT.json",
+      "verdict_path": "verdict",
+      "present": true,
+      "file": "data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.json",
+      "verdict": "DISK_BUDGET_MEASURED",
+      "counts": {
+        "checks_total": 6,
+        "checks_failed": 0
+      }
+    },
+    {
+      "id": "WP9-B2",
+      "what": "disk budget preflight: the launcher refuses a window its valve cannot pay for",
+      "command": "uv run python scripts/start_paper_lab.py --duration-hours 24 --dry-run",
+      "artifact": "evidence/preflight_refusal.out",
+      "verdict_path": "disk.budget.state",
+      "present": true,
+      "file": "data/recovery/wp9/evidence/preflight_refusal.out",
+      "verdict": null,
+      "counts": {}
+    },
+    {
+      "id": "WP9-C1",
+      "what": "runtime rehearsal: the real entrypoint, four legs, a controlled stop and a resume",
+      "command": "uv run python scripts/wp9_runtime_rehearsal.py --run-id wp9-runtime-legs --interval 20 --cycles 3 --bar-close-cycles 1 --stop-after-seconds 45",
+      "artifact": "WP9_RUNTIME_24H_REPORT.json",
+      "verdict_path": "verdict",
+      "present": true,
+      "file": "data/recovery/wp9/WP9_RUNTIME_24H_REPORT.json",
+      "verdict": "WINDOW_INCOMPLETE",
+      "counts": {
+        "checks_total": 13,
+        "checks_failed": 0,
+        "checks_not_exercised": 4
+      }
+    },
+    {
+      "id": "WP9-D1",
+      "what": "M-03 / M-07 readiness against the machine-readable pre-registration",
+      "command": "uv run python scripts/wp9_m03_m07_readiness.py",
+      "artifact": "WP9_M03_M07_READINESS.json",
+      "verdict_path": null,
+      "present": true,
+      "file": "data/recovery/wp9/WP9_M03_M07_READINESS.json",
+      "verdict": null,
+      "counts": {}
+    },
+    {
+      "id": "WP9-E1",
+      "what": "ACTIVE economic blockers, classification and the cost/entry RFC draft",
+      "command": "uv run python scripts/wp9_economic_blockers.py",
+      "artifact": "WP9_ACTIVE_ECONOMIC_BLOCKERS.json",
+      "verdict_path": null,
+      "present": true,
+      "file": "data/recovery/wp9/WP9_ACTIVE_ECONOMIC_BLOCKERS.json",
+      "verdict": null,
+      "counts": {
+        "strategies_total": 24
+      }
+    },
+    {
+      "id": "WP9-A1",
+      "what": "CI runtime certification: the workflows audited, the sequence executed locally",
+      "command": "uv run python scripts/wp9_ci_audit.py",
+      "artifact": "WP9_CI_EXECUTION_REPORT.json",
+      "verdict_path": "verdict",
+      "present": true,
+      "file": "data/recovery/wp9/WP9_CI_EXECUTION_REPORT.json",
+      "verdict": "BLOCKED",
+      "counts": {
+        "sequence_total": 12,
+        "sequence_failed": 0
+      }
+    },
+    {
+      "id": "WP9-F1",
+      "what": "independent verification of every headline claim, with negative controls",
+      "command": "uv run python scripts/wp9_verify.py",
+      "artifact": "INDEPENDENT_VERIFICATION.json",
+      "verdict_path": "verdict",
+      "present": true,
+      "file": "data/recovery/wp9/INDEPENDENT_VERIFICATION.json",
+      "verdict": "PASS",
+      "counts": {
+        "checks_total": 41,
+        "checks_failed": 0,
+        "controls_total": 12,
+        "controls_missed": 0,
+        "false_success": 0
+      }
+    }
+  ],
+  "state": {
+    "disk": {
+      "planning_rate_mb_per_hour": 192.252,
+      "requirements_gb": [
+        {
+          "hours": 24.0,
+          "mean": 4.618,
+          "stress": 6.927,
+          "fits": true,
+          "fits_stress": true
+        },
+        {
+          "hours": 48.0,
+          "mean": 9.236,
+          "stress": 13.854,
+          "fits": true,
+          "fits_stress": true
+        },
+        {
+          "hours": 72.0,
+          "mean": 13.854,
+          "stress": 20.781,
+          "fits": true,
+          "fits_stress": false
+        }
+      ],
+      "findings": [
+        "WP9-DISK-01",
+        "WP9-DISK-02",
+        "WP9-DISK-03"
+      ]
+    },
+    "readiness": {
+      "M-03": {
+        "verdict": "NOT_READY",
+        "criteria_not_met": 2,
+        "cost_to_close_hours": 72.0
+      },
+      "M-07": {
+        "verdict": "NOT_READY",
+        "criteria_not_met": 4,
+        "cost_to_close_hours": 168.0
+      }
+    },
+    "economics": {
+      "profitable_strategies": 0,
+      "strategies_with_demonstrable_net_advantage": 0,
+      "binding_blocker": "EXECUTION_COSTS (primary for 7, flagged for 24) on top of NO_ECONOMIC_ADVANTAGE (primary for 17)",
+      "next_experiment": "E-1 \u2014 measure the cost plane; then E-2 \u2014 the 30m entry screen",
+      "ledger_entries": 24
+    },
+    "runtime": {
+      "verdict": "WINDOW_INCOMPLETE",
+      "hours_executed": 0.06209,
+      "hours_target": 24.0,
+      "window_complete": false,
+      "checks_not_exercised": 4,
+      "legs": [
+        {
+          "name": "1-interval-cadence",
+          "exit_code": 0,
+          "seconds": 51.953,
+          "traces_added": 6
+        },
+        {
+          "name": "2-bar-close-cadence",
+          "exit_code": 0,
+          "seconds": 69.157,
+          "traces_added": 2
+        },
+        {
+          "name": "3-controlled-stop",
+          "exit_code": 0,
+          "seconds": 49.375,
+          "traces_added": 4
+        },
+        {
+          "name": "4-resume-after-stop",
+          "exit_code": 0,
+          "seconds": 53.031,
+          "traces_added": 6
+        }
+      ]
+    },
+    "ci": {
+      "verdict": "BLOCKED",
+      "ci_certified": false,
+      "runner": "LOCAL",
+      "sequence": "12 steps, 0 failed",
+      "blocked_by": 3
+    },
+    "governance": {
+      "LIVE_TRADING": "DISABLED",
+      "TRADES_AUTHORIZED": 0,
+      "PROFITABILITY_VERIFIED": false,
+      "FALSE_SUCCESS": 0,
+      "admitted_strategies": 0
+    }
+  },
+  "not_proven": [
+    "that either workflow has ever run on a GitHub runner (no credential, no registration, and the commit that carries them is not published)",
+    "that the runtime is stable over 24 h (a fraction of a day was executed and the report says WINDOW_INCOMPLETE)",
+    "that any strategy is profitable (0 admitted, 0 net-positive, best gross 8.912 bps against a 23.354 bps plane)",
+    "that M-03 or M-07 can be researched yet (both NOT_READY with their shortfall stated)"
+  ],
+  "verdict": "PARTIAL \u2014 every capability claim is verified and every missing one is named; CI_CERTIFIED and a 24 h stability verdict are both withheld by their own criteria"
+}

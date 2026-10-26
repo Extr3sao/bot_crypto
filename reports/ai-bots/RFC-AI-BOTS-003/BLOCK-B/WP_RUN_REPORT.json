@@ -1,0 +1,188 @@
+{
+  "schema_version": "AI_BOTS_003B_RUN_REPORT_V1",
+  "wp": "WP-TAP-AI-BOTS-003B",
+  "rfc": "RFC-TAP-AI-BOTS-003",
+  "block": "B — paper execution engine",
+  "baseline_commit": "2921f6d83016592b88ec1b93f709fed5a11374d1",
+  "engine_commit": "96957a2be068322459849855735d5ca368519040",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "status": "PASS_WITH_DECLARED_LIMITS",
+  "false_success": 0,
+  "builder_equals_verifier": false,
+  "test_target_equals_runtime_target": true,
+  "real_model_called": false,
+  "trades_executed": 0,
+  "risk_limits_modified": false,
+  "paid_services_used": false,
+  "raw_run_record": "RUN_REPORT.json (written by scripts/ai_bots_run.py; this file is the WP verdict)",
+  "defects": [
+    {
+      "id": "B-01",
+      "title": "no quote exists after the answer",
+      "red": "tests/unit/vision/test_causal_execution.py::test_a_sub_bar_latency_still_reaches_a_fill (fills == 0 before)",
+      "green": "quote_at/schedule reserve the first bar open at or after received_at_ms",
+      "state": "FIXED"
+    },
+    {
+      "id": "B-02",
+      "title": "executable price synthesized from OHLC",
+      "red": "tests/unit/vision/test_causal_execution.py::test_a_price_inside_a_bar_is_refused_as_insufficient_resolution",
+      "green": "execution.quote_at raises InsufficientResolution for any instant strictly inside a bar",
+      "state": "FIXED"
+    },
+    {
+      "id": "B-03",
+      "title": "entry bar never checked against its stop",
+      "red": "tests/unit/vision/test_causal_execution.py::test_the_bar_a_position_is_opened_on_is_checked_for_stops (0 stop_loss before)",
+      "green": "entries run first, then the bar range is examined; exit stamped at the bar close",
+      "state": "FIXED"
+    },
+    {
+      "id": "B-04",
+      "title": "a gap through the stop fills at the stop level",
+      "red": "tests/unit/vision/test_causal_execution.py::test_a_gap_through_the_stop_fills_at_the_gap_not_at_the_stop",
+      "green": "PaperBroker.check_positions_ohlc(gap_policy=\"open_on_gap\") fills at the open; legacy default unchanged",
+      "state": "FIXED"
+    },
+    {
+      "id": "B-05",
+      "title": "no net reconciliation between cash, costs, curve and risk equity",
+      "red": "tests/unit/vision/test_causal_execution.py::test_the_run_reconciles_cash_pnl_costs_and_the_risk_engine",
+      "green": "summary.reconciliation with five identities, plus an independent re-derivation in the verifier",
+      "state": "FIXED"
+    }
+  ],
+  "superseded_expectations": [
+    {
+      "test": "tests/unit/vision/test_causal_clock.py::test_a_latency_below_the_timeframe_waits_for_the_next_quote",
+      "was": "fills == 0 with 60 s of latency",
+      "now": "fills at the first quote after the answer; no fill may predate it",
+      "why": "the zero was the symptom of B-01, not a property to preserve"
+    },
+    {
+      "test": "tests/unit/vision/test_guards_and_controls.py::test_a_hole_in_the_data_never_becomes_a_price_before_the_answer",
+      "was": "STALE_EXECUTION drop when the next bar was missing",
+      "now": "the fill waits for the first quote after the answer and declares its lag; a hole wider than the opinion window still expires",
+      "why": "an index rule cannot tell a data hole from real latency, and it rejected every real answer"
+    }
+  ],
+  "paper_runs": [
+    {
+      "bot_id": "BOT-VIS-01",
+      "prompt_version": "ai-vision-prompt/2",
+      "image_mode": "png_attached",
+      "declared_latency_ms": 900,
+      "model_status": "MOCK_TEST",
+      "calls": 40,
+      "fills": 14,
+      "closed_trades": 14,
+      "exit_reasons": {"stop_loss": 8, "take_profit": 6},
+      "net_realised_usdt": -15.680073,
+      "gross_realised_usdt": -1.680073,
+      "costs_usdt": 22.37513,
+      "final_equity_usdt": 9984.319927,
+      "drawdown_pct": 0.22319,
+      "risk_equity_usdt": 9984.319927,
+      "stop_reason": "MAX_CALLS_REACHED",
+      "quote_lag_ms": 3599100,
+      "waiting_events": 20,
+      "expired_opinions": 0,
+      "reconciliation_identities": "all true",
+      "ledger_sha256_16": "09bc53e810e2891b",
+      "rows": 96
+    },
+    {
+      "bot_id": "BOT-CTX-01",
+      "prompt_version": "aibot-ctx-prompt/1",
+      "image_mode": "text_only",
+      "declared_latency_ms": 900,
+      "model_status": "MOCK_TEST",
+      "calls": 40,
+      "fills": 14,
+      "closed_trades": 14,
+      "exit_reasons": {"stop_loss": 8, "take_profit": 6},
+      "net_realised_usdt": -15.680073,
+      "gross_realised_usdt": -1.680073,
+      "costs_usdt": 22.37513,
+      "final_equity_usdt": 9984.319927,
+      "drawdown_pct": 0.22319,
+      "risk_equity_usdt": 9984.319927,
+      "stop_reason": "MAX_CALLS_REACHED",
+      "quote_lag_ms": 3599100,
+      "waiting_events": 20,
+      "expired_opinions": 0,
+      "reconciliation_identities": "all true",
+      "ledger_sha256_16": "6b3bdc40b4773e7d",
+      "rows": 96,
+      "identical_to_vis_note": "the mock script ignores the prompt, so identical trades are expected and are not evidence of parity between the agents"
+    }
+  ],
+  "checks": [
+    {
+      "name": "red_before_green",
+      "command": "pytest tests/unit/vision/test_causal_execution.py",
+      "result": "9 failed / 1 passed before; 10 passed after",
+      "exit": 0
+    },
+    {
+      "name": "suite_vision_paper_reports_intelligence",
+      "command": "pytest tests/unit/vision tests/unit/paper tests/unit/reports tests/unit/intelligence -q",
+      "result": "293 passed",
+      "exit": 0
+    },
+    {
+      "name": "ruff",
+      "command": "ruff check src/trading_bot/vision src/trading_bot/paper/broker.py scripts/ai_bots_run.py scripts/ai_bots_003b_verify.py tests/unit/vision tests/unit/reports",
+      "result": "All checks passed",
+      "exit": 0
+    },
+    {
+      "name": "mypy",
+      "command": "mypy src/trading_bot/vision src/trading_bot/paper/broker.py scripts/ai_bots_run.py scripts/ai_bots_003b_verify.py",
+      "result": "no issues",
+      "exit": 0
+    },
+    {
+      "name": "independent_verification",
+      "command": "scripts/ai_bots_003b_verify.py --ledger ... --summary ...",
+      "result": "21 PASS / 0 FAIL per bot",
+      "exit": 0
+    },
+    {
+      "name": "mutations",
+      "command": "scripts/ai_bots_003b_verify.py --mutations",
+      "result": "10 / 10 caught per bot",
+      "exit": 0
+    },
+    {
+      "name": "rea_package_not_degraded",
+      "command": "scripts/ai_bots_rea_verify.py",
+      "result": "73 PASS / 0 FAIL",
+      "exit": 0
+    },
+    {
+      "name": "live_mode_without_key",
+      "command": "scripts/ai_bots_run.py --mode live",
+      "result": "BLOCKED — MISSING_CREDENTIAL, no call made",
+      "exit": 2
+    },
+    {
+      "name": "independent_roots_lf_and_crlf",
+      "command": "git archive HEAD -> two roots, replay + verify in each",
+      "result": "economic rows identical; per-root verification byte-identical",
+      "exit": 0
+    }
+  ],
+  "known_non_determinism": [
+    "each ledger line records recorded_at_utc, so two runs of the same data differ in that field and therefore in the chain hash",
+    "summary.run_id is a fresh uuid per run",
+    "everything else in the ledger and the summary is identical across roots and runs"
+  ],
+  "limitations": [
+    "the provider is a deterministic mock; model_status is MOCK_TEST and no multimodal call was made",
+    "both bots produce the same trades because the script ignores the prompt: this run proves execution plumbing, not agent skill",
+    "historical replay is not prospective evidence and cannot be labelled as such",
+    "the full repository test suite was not executed; 171 unrelated files were already modified by other work and were not touched",
+    "the cost of a 900 ms round trip is one full bar of delay on a 1h grid: that is the resolution limit, not a bug"
+  ]
+}

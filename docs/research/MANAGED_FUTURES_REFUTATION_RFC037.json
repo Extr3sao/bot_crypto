@@ -1,0 +1,51 @@
+{
+  "rfc": "RFC-037",
+  "title": "MANAGED FUTURES TREND ADVERSARIAL REFUTATION",
+  "candidate": "MF-TREND-001",
+  "survived_refutation": "NO",
+  "gates": {
+    "G_REFUTE_0_RECONCILIATION": "PASS",
+    "G_REFUTE_1_MODERN_DATA": "FAIL",
+    "G_REFUTE_2_MODERN_EDGE": "BLOCKED",
+    "G_REFUTE_3_ADVERSARIAL": "FAIL",
+    "G_REFUTE_4_CAPITAL": "HIGH_CAPITAL_ONLY"
+  },
+  "reconciliation": {
+    "first_divergence": "hg @ 1995-12-15",
+    "classification": "ROLL_SELECTION",
+    "root_cause": "verifier roll-staleness bookkeeping initialised empty instead of 0",
+    "max_abs_diff_after_fix": 2.2e-08,
+    "tolerance": "fixed 1e-5, not widened post hoc"
+  },
+  "modern_data": {
+    "status": "MODERN_VALIDATION_PAID_DATA_BLOCKED",
+    "modern_relevance": "UNRESOLVED",
+    "paper": "BLOCKED",
+    "paid_data_purchased": false
+  },
+  "adversarial_nulls": {
+    "discovery_perm_p": 0.24,
+    "validation_perm_p": 0.113,
+    "discovery_sign_p": 0.0,
+    "validation_sign_p": 0.001,
+    "interpretation": "trend direction real (sign null rejected); market-label permutation not rejected at 5%"
+  },
+  "capital": {
+    "minimum_viable_capital": null,
+    "minimum_preferred_capital": null,
+    "classification": "HIGH_CAPITAL_ONLY",
+    "preregistered_rule": "active_markets>=20 and |tracking_error|<=15%"
+  },
+  "false_success": 0,
+  "independent_verification": "PASS",
+  "project_kpi": {
+    "HISTORICAL_EXECUTABLE_VALIDATED_EDGE_COUNT": 1,
+    "MODERN_VALIDATED_EDGE_COUNT": 0,
+    "HISTORICAL_ROBUST_EDGE_COUNT": 1,
+    "PAPER_CANDIDATE_COUNT": 0,
+    "FORWARD_PROFITABLE_COUNT": 0,
+    "LIVE_PROFITABLE_COUNT": 0
+  },
+  "p2_data_reuse": "HIGH",
+  "next": "P2 FUTURES_CURVE_CARRY or a human data-acquisition decision for modern individual-contract futures"
+}

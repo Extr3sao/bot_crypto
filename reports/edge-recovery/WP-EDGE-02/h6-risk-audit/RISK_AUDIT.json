@@ -1,0 +1,1490 @@
+{
+  "run_id": "wp-edge-02b-h6-risk-audit",
+  "generated_at_utc": "2026-10-12T20:15:52.888301+00:00",
+  "git": {
+    "head_commit": "87f23577e0937c95a190187f23728a7b56349065",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "worktree_dirty": true,
+    "source_sha256": "88aa073a861a455a44801e3321f827db349390b119c0e8222588af4a0e038613",
+    "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings"
+  },
+  "source_digest": {
+    "combined_sha256": "37d07bb1d32e6decb559b2b8aaefcfb0fdf442568a156013b14536b6a28844de",
+    "files": {
+      "src/trading_bot/research/edge01/__init__.py": "0bff4c03e469f6b2baceafd97f030d9408b0edcbb21dfe4dc3374b9e6239becb",
+      "src/trading_bot/research/edge01/campaign.py": "83970e6203401905a6b4473cee389970769f8a09690c12b565260b4305742605",
+      "src/trading_bot/research/edge01/candidates.py": "592d629ca91714d9730bf959fd44e0f08f1111ed7a06d7654f6407f51279eac3",
+      "src/trading_bot/research/edge01/closure.py": "1a072ef056e2defb7cd756fa7023628f01504d3fe3e5728060ffd90e1d1dbbf8",
+      "src/trading_bot/research/edge01/costs.py": "ebd6aba5da31d6b432d09b6979ea8775e9ca1a30c4e1c714c7cc182c26bf6f8d",
+      "src/trading_bot/research/edge01/data.py": "ac7b37f1768d1d2a5b37801f781a335869b38af8159a16ae173163b84ad495c2",
+      "src/trading_bot/research/edge01/features.py": "76c0dcbb9faef7f0d47f1de9fad1c2d12901c81c1c5496a582a311c5deb21fab",
+      "src/trading_bot/research/edge01/retest.py": "913c1f97c3d8709168f64d43df3ce3a75222a8d11de8f756679c68701155dd5d",
+      "src/trading_bot/research/edge01/risk_audit.py": "343f3a9b59abb9fbfc51dac27d4cfd286d2efb5de116211f4e72964772a7c3dc",
+      "src/trading_bot/research/edge01/robustness.py": "56e9566b4e778324f568a1545e93506b5320575ddc40b073baa48a9d0e100f81",
+      "src/trading_bot/research/edge01/simulator.py": "f8ea260e6b770d39a44bf41550f2039cf4fc5ad7ec938a07b6f89bca58cc98db",
+      "scripts/edge01_run.py": "dbfaf908042447cf582f04894bd2513292f3e1cc8f600b8c93046cb086df5d43",
+      "scripts/edge01_verify.py": "d777850c00c49aba7e032057ef1ba8d81e11695b8fe791d66dbd3ab66558f5c3",
+      "scripts/edge01_closure_experiments.py": "be214855ec0c2bdc2970fbd6629ef5e353e2232a0b6c205a4e07d40d5c045142",
+      "scripts/edge01_closure_verify.py": "3fe84cba3b35358d6636acc655dc4f9ecb44451ed31e3a3b2fcf30240b093162",
+      "scripts/edge01_robustness_experiments.py": "f10cd129a6b2f4a36711054e1f7014003f4d46c86f0925d5ab092ee19a01fd6e",
+      "scripts/edge01_wp02_verify.py": "6319a21ee976b1d22a100e0704ca6e8b30ae7b2df79213e91a857a1409d58267"
+    }
+  },
+  "mode": "deterministic re-run of the frozen H6 arms with an observing wrapper on the entry path; 0 orders, 0 credentials, 0 network calls",
+  "entrypoint": "scripts/edge01_robustness_experiments.py --experiment risk",
+  "verifier": "scripts/edge01_wp02_verify.py --experiment risk",
+  "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+  "experiment": {
+    "id": "AUD-EDGE01-H6-RISK",
+    "answer_to": "H6",
+    "audits": "ABL-EDGE01-H6",
+    "split": "intraday",
+    "timeframe": "15m",
+    "horizon_minutes": 240.0,
+    "windows": [
+      "DEV",
+      "VAL",
+      "OOS"
+    ],
+    "scenario_plan": {
+      "DEV": [
+        "BASE",
+        "2X_FEES"
+      ],
+      "VAL": [
+        "BASE"
+      ],
+      "OOS": [
+        "BASE",
+        "2X_FEES"
+      ]
+    },
+    "arms": [
+      "frozen_market",
+      "plan_market",
+      "plan_limit"
+    ],
+    "primary": {
+      "window": "DEV",
+      "scenario": "BASE",
+      "arm": "plan_limit"
+    },
+    "reproduces": "reports/edge-recovery/WP-EDGE-01/retest-h6/RETEST.json — the three arms are re-run and their order counts, fills, refusals and net are compared with the published figures",
+    "question": "183 of the 686 planned limit orders reached the level and the risk budget refused them (148 drawdown halt, 35 loss cooldown). Was the budget right at each of those instants, does the book keep its own invariants while refusing, and does the research budget's behaviour match the runtime Risk Engine's?",
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "frozen_params": {
+      "resistance_lookback": 20,
+      "atr_period": 14,
+      "breakout_buffer_atr": 0.1,
+      "volume_lookback": 20,
+      "volume_mult": 1.2,
+      "stop_atr_below_level": 0.5,
+      "max_stop_atr": 2.5,
+      "min_rr": 1.5,
+      "cost_margin": 1.5,
+      "trailing_atr": 2.0,
+      "level_reset_atr": 1.0
+    },
+    "risk_config_path": "config/risk.yaml",
+    "risk_config_sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "risk_policy": {
+      "risk_per_trade_pct": 0.25,
+      "max_open_positions": 3,
+      "max_total_exposure_pct": 25.0,
+      "max_asset_exposure_pct": 10.0,
+      "min_notional_usdt": 20.0,
+      "max_notional_usdt": 500.0,
+      "drawdown_halt_pct": 5.0,
+      "max_consecutive_losses": 3,
+      "consecutive_loss_cooldown_minutes": 60.0,
+      "max_trades_per_day": 20,
+      "start_equity": 10000.0
+    },
+    "decision_rule": {
+      "refusal_rules": {
+        "risk_drawdown_halt": "drawdown_at_the_instant = (peak_equity - equity) / peak_equity * 100 must be >= config max_total_drawdown_pct (5.0)",
+        "risk_loss_cooldown": "the instant must fall strictly inside the cooldown window opened by the losing streak (ts < cooldown_until_ts)",
+        "risk_max_open_positions": "open positions at the instant must be >= the limit (3)",
+        "risk_max_trades_per_day": "trades booked that day must be >= the limit (20)",
+        "risk_exposure_cap": "open notional + this order's notional must exceed the total exposure cap and the remainder must be below the minimum notional (20 USDT)",
+        "risk_notional_below_minimum": "the sized notional must be below 20 USDT",
+        "position_already_open": "the asset must already hold a position",
+        "stop_above_fill": "the stop must be at or above the fill price",
+        "fill_price_invalid": "the fill price must be non-positive"
+      },
+      "invariants": {
+        "accounting_final_equity": "final_equity == start_equity + sum(trade net), to 1e-6",
+        "cash_never_negative": "the replayed cash balance must stay >= 0 at every bar",
+        "sizing_at_or_below_configured_risk": "every filled entry risks at most equity * max_risk_per_trade_pct / 100 at its initial stop, and exactly that unless a notional cap bound it",
+        "notional_within_caps": "every filled entry's notional must respect the per-order maximum and the per-asset exposure cap, and must not push total open notional past its cap",
+        "notional_at_or_above_minimum": "every filled entry's notional must be >= 20 USDT",
+        "open_positions_within_limit": "never more than 3 positions open at once",
+        "trades_per_day_within_limit": "never more than 20 entries booked in one day",
+        "one_outcome_per_order": "every planned order must end with exactly one outcome from the declared vocabulary and no order may be left resting",
+        "refusals_are_attributed": "every order refused by the budget must carry the reason the budget gave, and no refusal may be recorded without an order or intent behind it",
+        "no_duplicate_refusals": "no (asset, instant, reason) may be refused twice"
+      },
+      "verdicts": {
+        "AUDIT_PASS": "every refusal was correct at its instant and every invariant holds",
+        "AUDIT_FINDINGS": "at least one refusal is incorrect or one invariant fails"
+      },
+      "modelling_gap_note": "the research budget re-implements the runtime's limits; it does NOT model the runtime's daily loss limit, weekly loss limit, daily drawdown, weekend block, spread/ATR blocks or the kill switch. A live run of the same book therefore blocks AT LEAST as often, never less.",
+      "not_claimed": "an audit of the risk budget is not a profitability claim and not an admission: nothing is wired into the PAPER runtime and no limit is changed by this report"
+    },
+    "corpus_provenance": {
+      "BTC": {
+        "symbol": "BTC",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/BTCUSDT_15m.json"
+        ],
+        "sha256": "cd1d2ea256a97f7cbbdb8160d183464b6955ff0b8f613146dd61253cd03607ce"
+      },
+      "ETH": {
+        "symbol": "ETH",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/ETHUSDT_15m.json"
+        ],
+        "sha256": "b8fd5744cc66f63566eb2a7ddff26f9882bf7a40348854d1cc42a73a5b39f2ea"
+      },
+      "SOL": {
+        "symbol": "SOL",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/SOLUSDT_15m.json"
+        ],
+        "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
+      }
+    }
+  },
+  "census": {
+    "DEV:BASE:frozen_market": {
+      "window": "DEV",
+      "scenario": "BASE",
+      "arm": "frozen_market",
+      "signals_printed": 860,
+      "signals_planning_a_limit": 0,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 2910,
+        "by_source": {
+          "candidate": 2400,
+          "risk": 510
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 17,
+          "risk_drawdown_halt": 493
+        }
+      },
+      "trades": 290,
+      "net_usdt": -496.4298
+    },
+    "DEV:BASE:plan_market": {
+      "window": "DEV",
+      "scenario": "BASE",
+      "arm": "plan_market",
+      "signals_printed": 860,
+      "signals_planning_a_limit": 860,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 2910,
+        "by_source": {
+          "candidate": 2400,
+          "risk": 510
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 17,
+          "risk_drawdown_halt": 493
+        }
+      },
+      "trades": 290,
+      "net_usdt": -496.4298
+    },
+    "DEV:BASE:plan_limit": {
+      "window": "DEV",
+      "scenario": "BASE",
+      "arm": "plan_limit",
+      "signals_printed": 860,
+      "signals_planning_a_limit": 860,
+      "orders": {
+        "orders_placed": 686,
+        "orders_by_outcome": {
+          "filled": 372,
+          "expired": 128,
+          "refused_by_risk_budget": 183,
+          "cancelled_window_end": 3
+        }
+      },
+      "orders_placed": 686,
+      "orders_filled": 372,
+      "fill_rate": 0.542274,
+      "orders_by_outcome": {
+        "filled": 372,
+        "expired": 128,
+        "refused_by_risk_budget": 183,
+        "cancelled_window_end": 3
+      },
+      "refusals": {
+        "total": 2721,
+        "by_source": {
+          "candidate": 2400,
+          "research": 138,
+          "risk": 183
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 35,
+          "risk_drawdown_halt": 148
+        }
+      },
+      "trades": 372,
+      "net_usdt": -495.8756
+    },
+    "DEV:2X_FEES:frozen_market": {
+      "window": "DEV",
+      "scenario": "2X_FEES",
+      "arm": "frozen_market",
+      "signals_printed": 802,
+      "signals_planning_a_limit": 0,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 3019,
+        "by_source": {
+          "candidate": 2458,
+          "risk": 561
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 15,
+          "risk_drawdown_halt": 546
+        }
+      },
+      "trades": 197,
+      "net_usdt": -501.72
+    },
+    "DEV:2X_FEES:plan_market": {
+      "window": "DEV",
+      "scenario": "2X_FEES",
+      "arm": "plan_market",
+      "signals_printed": 802,
+      "signals_planning_a_limit": 802,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 3019,
+        "by_source": {
+          "candidate": 2458,
+          "risk": 561
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 15,
+          "risk_drawdown_halt": 546
+        }
+      },
+      "trades": 197,
+      "net_usdt": -501.72
+    },
+    "DEV:2X_FEES:plan_limit": {
+      "window": "DEV",
+      "scenario": "2X_FEES",
+      "arm": "plan_limit",
+      "signals_printed": 802,
+      "signals_planning_a_limit": 802,
+      "orders": {
+        "orders_placed": 654,
+        "orders_by_outcome": {
+          "filled": 193,
+          "expired": 121,
+          "refused_by_risk_budget": 338,
+          "cancelled_window_end": 2
+        }
+      },
+      "orders_placed": 654,
+      "orders_filled": 193,
+      "fill_rate": 0.295107,
+      "orders_by_outcome": {
+        "filled": 193,
+        "expired": 121,
+        "refused_by_risk_budget": 338,
+        "cancelled_window_end": 2
+      },
+      "refusals": {
+        "total": 2928,
+        "by_source": {
+          "candidate": 2458,
+          "research": 132,
+          "risk": 338
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 22,
+          "risk_drawdown_halt": 316
+        }
+      },
+      "trades": 193,
+      "net_usdt": -495.5453
+    },
+    "VAL:BASE:frozen_market": {
+      "window": "VAL",
+      "scenario": "BASE",
+      "arm": "frozen_market",
+      "signals_printed": 444,
+      "signals_planning_a_limit": 0,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 1772,
+        "by_source": {
+          "candidate": 1760,
+          "risk": 12
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 12
+        }
+      },
+      "trades": 344,
+      "net_usdt": -479.1833
+    },
+    "VAL:BASE:plan_market": {
+      "window": "VAL",
+      "scenario": "BASE",
+      "arm": "plan_market",
+      "signals_printed": 444,
+      "signals_planning_a_limit": 444,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 1772,
+        "by_source": {
+          "candidate": 1760,
+          "risk": 12
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 12
+        }
+      },
+      "trades": 344,
+      "net_usdt": -479.1833
+    },
+    "VAL:BASE:plan_limit": {
+      "window": "VAL",
+      "scenario": "BASE",
+      "arm": "plan_limit",
+      "signals_printed": 444,
+      "signals_planning_a_limit": 444,
+      "orders": {
+        "orders_placed": 350,
+        "orders_by_outcome": {
+          "expired": 66,
+          "filled": 269,
+          "refused_by_risk_budget": 15
+        }
+      },
+      "orders_placed": 350,
+      "orders_filled": 269,
+      "fill_rate": 0.768571,
+      "orders_by_outcome": {
+        "expired": 66,
+        "filled": 269,
+        "refused_by_risk_budget": 15
+      },
+      "refusals": {
+        "total": 1844,
+        "by_source": {
+          "candidate": 1760,
+          "research": 69,
+          "risk": 15
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 15
+        }
+      },
+      "trades": 269,
+      "net_usdt": -357.4449
+    },
+    "OOS:BASE:frozen_market": {
+      "window": "OOS",
+      "scenario": "BASE",
+      "arm": "frozen_market",
+      "signals_printed": 85,
+      "signals_planning_a_limit": 0,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 2718,
+        "by_source": {
+          "candidate": 2710,
+          "risk": 8
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 8
+        }
+      },
+      "trades": 63,
+      "net_usdt": -94.8077
+    },
+    "OOS:BASE:plan_market": {
+      "window": "OOS",
+      "scenario": "BASE",
+      "arm": "plan_market",
+      "signals_printed": 85,
+      "signals_planning_a_limit": 85,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 2718,
+        "by_source": {
+          "candidate": 2710,
+          "risk": 8
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 8
+        }
+      },
+      "trades": 63,
+      "net_usdt": -94.8077
+    },
+    "OOS:BASE:plan_limit": {
+      "window": "OOS",
+      "scenario": "BASE",
+      "arm": "plan_limit",
+      "signals_printed": 85,
+      "signals_planning_a_limit": 85,
+      "orders": {
+        "orders_placed": 66,
+        "orders_by_outcome": {
+          "filled": 54,
+          "refused_by_risk_budget": 4,
+          "expired": 8
+        }
+      },
+      "orders_placed": 66,
+      "orders_filled": 54,
+      "fill_rate": 0.818182,
+      "orders_by_outcome": {
+        "filled": 54,
+        "refused_by_risk_budget": 4,
+        "expired": 8
+      },
+      "refusals": {
+        "total": 2729,
+        "by_source": {
+          "candidate": 2710,
+          "research": 15,
+          "risk": 4
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 4
+        }
+      },
+      "trades": 54,
+      "net_usdt": -55.7084
+    },
+    "OOS:2X_FEES:frozen_market": {
+      "window": "OOS",
+      "scenario": "2X_FEES",
+      "arm": "frozen_market",
+      "signals_printed": 69,
+      "signals_planning_a_limit": 0,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 2731,
+        "by_source": {
+          "candidate": 2726,
+          "risk": 5
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 5
+        }
+      },
+      "trades": 52,
+      "net_usdt": -133.2011
+    },
+    "OOS:2X_FEES:plan_market": {
+      "window": "OOS",
+      "scenario": "2X_FEES",
+      "arm": "plan_market",
+      "signals_printed": 69,
+      "signals_planning_a_limit": 69,
+      "orders": {
+        "orders_placed": 0,
+        "orders_by_outcome": {}
+      },
+      "orders_placed": 0,
+      "orders_filled": 0,
+      "fill_rate": null,
+      "orders_by_outcome": {},
+      "refusals": {
+        "total": 2731,
+        "by_source": {
+          "candidate": 2726,
+          "risk": 5
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 5
+        }
+      },
+      "trades": 52,
+      "net_usdt": -133.2011
+    },
+    "OOS:2X_FEES:plan_limit": {
+      "window": "OOS",
+      "scenario": "2X_FEES",
+      "arm": "plan_limit",
+      "signals_printed": 69,
+      "signals_planning_a_limit": 69,
+      "orders": {
+        "orders_placed": 54,
+        "orders_by_outcome": {
+          "filled": 45,
+          "expired": 7,
+          "refused_by_risk_budget": 2
+        }
+      },
+      "orders_placed": 54,
+      "orders_filled": 45,
+      "fill_rate": 0.833333,
+      "orders_by_outcome": {
+        "filled": 45,
+        "expired": 7,
+        "refused_by_risk_budget": 2
+      },
+      "refusals": {
+        "total": 2739,
+        "by_source": {
+          "candidate": 2726,
+          "research": 11,
+          "risk": 2
+        },
+        "risk_by_reason": {
+          "risk_loss_cooldown": 2
+        }
+      },
+      "trades": 45,
+      "net_usdt": -87.9506
+    }
+  },
+  "reproduction": {
+    "checked": true,
+    "source": "reports/edge-recovery/WP-EDGE-01/retest-h6/RETEST.json",
+    "comparisons": [
+      {
+        "run": "DEV:BASE",
+        "arm": "frozen_market",
+        "field": "trades",
+        "published": 290,
+        "recomputed": 290,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "frozen_market",
+        "field": "net_usdt",
+        "published": -496.4298,
+        "recomputed": -496.4298,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "frozen_market",
+        "field": "expectancy_usdt",
+        "published": -1.7118,
+        "recomputed": -1.7118,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "frozen_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "frozen_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "frozen_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_market",
+        "field": "trades",
+        "published": 290,
+        "recomputed": 290,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_market",
+        "field": "net_usdt",
+        "published": -496.4298,
+        "recomputed": -496.4298,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_market",
+        "field": "expectancy_usdt",
+        "published": -1.7118,
+        "recomputed": -1.7118,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_limit",
+        "field": "trades",
+        "published": 372,
+        "recomputed": 372,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_limit",
+        "field": "net_usdt",
+        "published": -495.8756,
+        "recomputed": -495.8756,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_limit",
+        "field": "expectancy_usdt",
+        "published": -1.333,
+        "recomputed": -1.333,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_limit",
+        "field": "orders_placed",
+        "published": 686,
+        "recomputed": 686,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_limit",
+        "field": "orders_filled",
+        "published": 372,
+        "recomputed": 372,
+        "equal": true
+      },
+      {
+        "run": "DEV:BASE",
+        "arm": "plan_limit",
+        "field": "fill_rate",
+        "published": 0.542274,
+        "recomputed": 0.542274,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "frozen_market",
+        "field": "trades",
+        "published": 197,
+        "recomputed": 197,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "frozen_market",
+        "field": "net_usdt",
+        "published": -501.72,
+        "recomputed": -501.72,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "frozen_market",
+        "field": "expectancy_usdt",
+        "published": -2.5468,
+        "recomputed": -2.5468,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "frozen_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "frozen_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "frozen_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_market",
+        "field": "trades",
+        "published": 197,
+        "recomputed": 197,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_market",
+        "field": "net_usdt",
+        "published": -501.72,
+        "recomputed": -501.72,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_market",
+        "field": "expectancy_usdt",
+        "published": -2.5468,
+        "recomputed": -2.5468,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_limit",
+        "field": "trades",
+        "published": 193,
+        "recomputed": 193,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_limit",
+        "field": "net_usdt",
+        "published": -495.5453,
+        "recomputed": -495.5453,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_limit",
+        "field": "expectancy_usdt",
+        "published": -2.5676,
+        "recomputed": -2.5676,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_limit",
+        "field": "orders_placed",
+        "published": 654,
+        "recomputed": 654,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_limit",
+        "field": "orders_filled",
+        "published": 193,
+        "recomputed": 193,
+        "equal": true
+      },
+      {
+        "run": "DEV:2X_FEES",
+        "arm": "plan_limit",
+        "field": "fill_rate",
+        "published": 0.295107,
+        "recomputed": 0.295107,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "frozen_market",
+        "field": "trades",
+        "published": 344,
+        "recomputed": 344,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "frozen_market",
+        "field": "net_usdt",
+        "published": -479.1833,
+        "recomputed": -479.1833,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "frozen_market",
+        "field": "expectancy_usdt",
+        "published": -1.393,
+        "recomputed": -1.393,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "frozen_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "frozen_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "frozen_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_market",
+        "field": "trades",
+        "published": 344,
+        "recomputed": 344,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_market",
+        "field": "net_usdt",
+        "published": -479.1833,
+        "recomputed": -479.1833,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_market",
+        "field": "expectancy_usdt",
+        "published": -1.393,
+        "recomputed": -1.393,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_limit",
+        "field": "trades",
+        "published": 269,
+        "recomputed": 269,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_limit",
+        "field": "net_usdt",
+        "published": -357.4449,
+        "recomputed": -357.4449,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_limit",
+        "field": "expectancy_usdt",
+        "published": -1.3288,
+        "recomputed": -1.3288,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_limit",
+        "field": "orders_placed",
+        "published": 350,
+        "recomputed": 350,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_limit",
+        "field": "orders_filled",
+        "published": 269,
+        "recomputed": 269,
+        "equal": true
+      },
+      {
+        "run": "VAL:BASE",
+        "arm": "plan_limit",
+        "field": "fill_rate",
+        "published": 0.768571,
+        "recomputed": 0.768571,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "frozen_market",
+        "field": "trades",
+        "published": 63,
+        "recomputed": 63,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "frozen_market",
+        "field": "net_usdt",
+        "published": -94.8077,
+        "recomputed": -94.8077,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "frozen_market",
+        "field": "expectancy_usdt",
+        "published": -1.5049,
+        "recomputed": -1.5049,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "frozen_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "frozen_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "frozen_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_market",
+        "field": "trades",
+        "published": 63,
+        "recomputed": 63,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_market",
+        "field": "net_usdt",
+        "published": -94.8077,
+        "recomputed": -94.8077,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_market",
+        "field": "expectancy_usdt",
+        "published": -1.5049,
+        "recomputed": -1.5049,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_limit",
+        "field": "trades",
+        "published": 54,
+        "recomputed": 54,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_limit",
+        "field": "net_usdt",
+        "published": -55.7084,
+        "recomputed": -55.7084,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_limit",
+        "field": "expectancy_usdt",
+        "published": -1.0316,
+        "recomputed": -1.0316,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_limit",
+        "field": "orders_placed",
+        "published": 66,
+        "recomputed": 66,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_limit",
+        "field": "orders_filled",
+        "published": 54,
+        "recomputed": 54,
+        "equal": true
+      },
+      {
+        "run": "OOS:BASE",
+        "arm": "plan_limit",
+        "field": "fill_rate",
+        "published": 0.818182,
+        "recomputed": 0.818182,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "frozen_market",
+        "field": "trades",
+        "published": 52,
+        "recomputed": 52,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "frozen_market",
+        "field": "net_usdt",
+        "published": -133.2011,
+        "recomputed": -133.2011,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "frozen_market",
+        "field": "expectancy_usdt",
+        "published": -2.5616,
+        "recomputed": -2.5616,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "frozen_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "frozen_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "frozen_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_market",
+        "field": "trades",
+        "published": 52,
+        "recomputed": 52,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_market",
+        "field": "net_usdt",
+        "published": -133.2011,
+        "recomputed": -133.2011,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_market",
+        "field": "expectancy_usdt",
+        "published": -2.5616,
+        "recomputed": -2.5616,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_market",
+        "field": "orders_placed",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_market",
+        "field": "orders_filled",
+        "published": 0,
+        "recomputed": 0,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_market",
+        "field": "fill_rate",
+        "published": null,
+        "recomputed": null,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_limit",
+        "field": "trades",
+        "published": 45,
+        "recomputed": 45,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_limit",
+        "field": "net_usdt",
+        "published": -87.9506,
+        "recomputed": -87.9506,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_limit",
+        "field": "expectancy_usdt",
+        "published": -1.9545,
+        "recomputed": -1.9545,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_limit",
+        "field": "orders_placed",
+        "published": 54,
+        "recomputed": 54,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_limit",
+        "field": "orders_filled",
+        "published": 45,
+        "recomputed": 45,
+        "equal": true
+      },
+      {
+        "run": "OOS:2X_FEES",
+        "arm": "plan_limit",
+        "field": "fill_rate",
+        "published": 0.833333,
+        "recomputed": 0.833333,
+        "equal": true
+      }
+    ],
+    "all_equal": true,
+    "note": "the reconstructed orders, fills, refusals and net match the published H6 artefact exactly, so the audit is auditing the published experiment"
+  },
+  "summary": {
+    "orders_placed": 686,
+    "orders_filled": 372,
+    "orders_refused": 183,
+    "orders_by_outcome": {
+      "filled": 372,
+      "expired": 128,
+      "refused_by_risk_budget": 183,
+      "cancelled_window_end": 3
+    },
+    "refusal_reasons": {
+      "risk_loss_cooldown": 35,
+      "risk_drawdown_halt": 148
+    },
+    "refusals_checked": 2734,
+    "refusals_correct": 2734,
+    "refusals_incorrect": 0,
+    "primary_window": "DEV:BASE",
+    "primary_arm": "plan_limit",
+    "primary_refusals": 183,
+    "primary_refusals_correct": 183,
+    "orders_refused_matches_captured_refusals": true,
+    "runtime_agreements": 2734,
+    "runtime_disagreements": 0,
+    "invariants_checked": 150,
+    "invariants_failed": 0
+  },
+  "market_context": {
+    "meta": {
+      "benchmark": "BTC",
+      "timeframe": "1d (aggregated from 1h shards; a day exists only when its 24 contiguous hours do)",
+      "rule": "benchmark BTC daily close against its own 200-day EMA, with that EMA's 20-day change deciding trend from range: BULL when close > EMA200 and the EMA rose over the last 20 days, BEAR when close < EMA200 and it fell, SIDEWAYS otherwise, UNDEFINED while either input is still warming up. This is the project's existing convention (trading_bot/research/swing/backtest.py::build_regimes), reused rather than re-invented; it is a market label for reporting, never a signal.",
+      "labels": [
+        "BULL",
+        "BEAR",
+        "SIDEWAYS",
+        "UNDEFINED"
+      ],
+      "sources": [
+        "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+        "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+        "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+        "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+        "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+        "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+        "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+        "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+      ],
+      "source_sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+      "days": 2596,
+      "first_close_ms": 1546387200000,
+      "last_close_ms": 1772323200000,
+      "label_days": {
+        "UNDEFINED": 219,
+        "BULL": 1468,
+        "SIDEWAYS": 212,
+        "BEAR": 697
+      },
+      "artefact": "MARKET_CONTEXT.csv"
+    }
+  },
+  "limitations": [
+    "the observing wrapper records the state the frozen simulator's own entry path computed; it changes no value and is restored in a finally block, but it is the same process as the run it observes",
+    "the independent reconstruction of the same state from the published trade ledger and the local corpus is done by scripts/edge01_wp02_verify.py, in a separate process that imports nothing from the package",
+    "the research budget models a subset of the runtime Risk Engine's rules, so this audit's verdict is about the subset, never a statement that live trading would behave identically",
+    "long side only (spot); no historical order book; nothing is wired into PAPER"
+  ],
+  "verdict": {
+    "verdict": "AUDIT_PASS",
+    "headline": "every audited refusal was justified by the state the budget saw and every declared invariant holds",
+    "findings": [],
+    "primary": {
+      "run": "DEV:BASE",
+      "arm": "plan_limit",
+      "orders_placed": 686,
+      "orders_filled": 372,
+      "refusals": 183,
+      "refusals_correct": 183,
+      "by_reason": {
+        "risk_loss_cooldown": 35,
+        "risk_drawdown_halt": 148
+      }
+    },
+    "modelling_gap": "the research budget re-implements the runtime's limits; it does NOT model the runtime's daily loss limit, weekly loss limit, daily drawdown, weekend block, spread/ATR blocks or the kill switch. A live run of the same book therefore blocks AT LEAST as often, never less.",
+    "decision_rule": {
+      "refusal_rules": {
+        "risk_drawdown_halt": "drawdown_at_the_instant = (peak_equity - equity) / peak_equity * 100 must be >= config max_total_drawdown_pct (5.0)",
+        "risk_loss_cooldown": "the instant must fall strictly inside the cooldown window opened by the losing streak (ts < cooldown_until_ts)",
+        "risk_max_open_positions": "open positions at the instant must be >= the limit (3)",
+        "risk_max_trades_per_day": "trades booked that day must be >= the limit (20)",
+        "risk_exposure_cap": "open notional + this order's notional must exceed the total exposure cap and the remainder must be below the minimum notional (20 USDT)",
+        "risk_notional_below_minimum": "the sized notional must be below 20 USDT",
+        "position_already_open": "the asset must already hold a position",
+        "stop_above_fill": "the stop must be at or above the fill price",
+        "fill_price_invalid": "the fill price must be non-positive"
+      },
+      "invariants": {
+        "accounting_final_equity": "final_equity == start_equity + sum(trade net), to 1e-6",
+        "cash_never_negative": "the replayed cash balance must stay >= 0 at every bar",
+        "sizing_at_or_below_configured_risk": "every filled entry risks at most equity * max_risk_per_trade_pct / 100 at its initial stop, and exactly that unless a notional cap bound it",
+        "notional_within_caps": "every filled entry's notional must respect the per-order maximum and the per-asset exposure cap, and must not push total open notional past its cap",
+        "notional_at_or_above_minimum": "every filled entry's notional must be >= 20 USDT",
+        "open_positions_within_limit": "never more than 3 positions open at once",
+        "trades_per_day_within_limit": "never more than 20 entries booked in one day",
+        "one_outcome_per_order": "every planned order must end with exactly one outcome from the declared vocabulary and no order may be left resting",
+        "refusals_are_attributed": "every order refused by the budget must carry the reason the budget gave, and no refusal may be recorded without an order or intent behind it",
+        "no_duplicate_refusals": "no (asset, instant, reason) may be refused twice"
+      },
+      "verdicts": {
+        "AUDIT_PASS": "every refusal was correct at its instant and every invariant holds",
+        "AUDIT_FINDINGS": "at least one refusal is incorrect or one invariant fails"
+      },
+      "modelling_gap_note": "the research budget re-implements the runtime's limits; it does NOT model the runtime's daily loss limit, weekly loss limit, daily drawdown, weekend block, spread/ATR blocks or the kill switch. A live run of the same book therefore blocks AT LEAST as often, never less.",
+      "not_claimed": "an audit of the risk budget is not a profitability claim and not an admission: nothing is wired into the PAPER runtime and no limit is changed by this report"
+    }
+  },
+  "artifacts": [
+    "RISK_AUDIT.json",
+    "RISK_AUDIT.md",
+    "RISK_AUDIT_EQUITY.csv",
+    "RISK_AUDIT_INVARIANTS.csv",
+    "RISK_AUDIT_ORDERS.csv",
+    "RISK_AUDIT_PRIMARY_REFUSALS.csv",
+    "RISK_AUDIT_REFUSALS.csv"
+  ],
+  "artifact_note": "the refusal, order, invariant and equity ledgers are published as CSV next to this file"
+}

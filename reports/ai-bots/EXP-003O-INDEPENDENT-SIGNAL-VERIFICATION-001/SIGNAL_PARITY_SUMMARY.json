@@ -1,0 +1,304 @@
+{
+  "cells_evaluable": 24,
+  "cells_total": 24,
+  "contract_violations": 0,
+  "design_sha256": "b28a7b4c53168fd5d22c0a52d333703f8ce097c0ca632bdf0269ff1cb3cc5b70",
+  "differences_by_class": {},
+  "evaluations_compared": 275724,
+  "evaluations_independent": 275724,
+  "evaluations_original": 275724,
+  "examples": {},
+  "inputs": {
+    "independent": {
+      "bytes": 16740927,
+      "path": "independent_evaluations.jsonl.gz",
+      "sha256": "e2110fa777a3407483ffc15404fda18bf31e07144a7f81aa29e1efb62c592c9c"
+    },
+    "original": {
+      "bytes": 16722389,
+      "path": "original_evaluations.jsonl.gz",
+      "sha256": "024bd453635115c175725d6438160b4327a911ea38ae3a8e3aab5f7895a51498"
+    }
+  },
+  "label": "",
+  "matched": 275724,
+  "mismatches_unexplained": 0,
+  "per_cell": {
+    "breakout@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "A",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 164,
+      "signals_original": 164,
+      "verdict": "PASS"
+    },
+    "breakout@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "A",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 22,
+      "signals_original": 22,
+      "verdict": "PASS"
+    },
+    "breakout@5m": {
+      "evaluable": true,
+      "evaluations_independent": 39744,
+      "evaluations_original": 39744,
+      "lane": "A",
+      "matched": 39744,
+      "mismatches": 0,
+      "signals_independent": 2131,
+      "signals_original": 2131,
+      "verdict": "PASS"
+    },
+    "ema_crossover@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "A",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 2667,
+      "signals_original": 2667,
+      "verdict": "PASS"
+    },
+    "ema_crossover@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "A",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 499,
+      "signals_original": 499,
+      "verdict": "PASS"
+    },
+    "ema_crossover@5m": {
+      "evaluable": true,
+      "evaluations_independent": 39744,
+      "evaluations_original": 39744,
+      "lane": "A",
+      "matched": 39744,
+      "mismatches": 0,
+      "signals_independent": 34424,
+      "signals_original": 34424,
+      "verdict": "PASS"
+    },
+    "mean_reversion@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "A",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 106,
+      "signals_original": 106,
+      "verdict": "PASS"
+    },
+    "mean_reversion@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "A",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 18,
+      "signals_original": 18,
+      "verdict": "PASS"
+    },
+    "mean_reversion@5m": {
+      "evaluable": true,
+      "evaluations_independent": 39744,
+      "evaluations_original": 39744,
+      "lane": "A",
+      "matched": 39744,
+      "mismatches": 0,
+      "signals_independent": 1408,
+      "signals_original": 1408,
+      "verdict": "PASS"
+    },
+    "mean_reversion_vol_liq@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "B",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 14,
+      "signals_original": 14,
+      "verdict": "PASS"
+    },
+    "mean_reversion_vol_liq@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "B",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 0,
+      "signals_original": 0,
+      "verdict": "PASS"
+    },
+    "momentum@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "A",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 1797,
+      "signals_original": 1797,
+      "verdict": "PASS"
+    },
+    "momentum@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "A",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 432,
+      "signals_original": 432,
+      "verdict": "PASS"
+    },
+    "momentum@5m": {
+      "evaluable": true,
+      "evaluations_independent": 39744,
+      "evaluations_original": 39744,
+      "lane": "A",
+      "matched": 39744,
+      "mismatches": 0,
+      "signals_independent": 6704,
+      "signals_original": 6704,
+      "verdict": "PASS"
+    },
+    "trend@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "A",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 970,
+      "signals_original": 970,
+      "verdict": "PASS"
+    },
+    "trend@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "A",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 297,
+      "signals_original": 297,
+      "verdict": "PASS"
+    },
+    "trend@5m": {
+      "evaluable": true,
+      "evaluations_independent": 39744,
+      "evaluations_original": 39744,
+      "lane": "A",
+      "matched": 39744,
+      "mismatches": 0,
+      "signals_independent": 942,
+      "signals_original": 942,
+      "verdict": "PASS"
+    },
+    "trend_pullback@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "B",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 61,
+      "signals_original": 61,
+      "verdict": "PASS"
+    },
+    "trend_pullback@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "B",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 4,
+      "signals_original": 4,
+      "verdict": "PASS"
+    },
+    "vol_regime_breakout@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "B",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 0,
+      "signals_original": 0,
+      "verdict": "PASS"
+    },
+    "vol_regime_breakout@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "B",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 0,
+      "signals_original": 0,
+      "verdict": "PASS"
+    },
+    "volatility@1h": {
+      "evaluable": true,
+      "evaluations_independent": 3312,
+      "evaluations_original": 3312,
+      "lane": "A",
+      "matched": 3312,
+      "mismatches": 0,
+      "signals_independent": 29,
+      "signals_original": 29,
+      "verdict": "PASS"
+    },
+    "volatility@4h": {
+      "evaluable": true,
+      "evaluations_independent": 828,
+      "evaluations_original": 828,
+      "lane": "A",
+      "matched": 828,
+      "mismatches": 0,
+      "signals_independent": 4,
+      "signals_original": 4,
+      "verdict": "PASS"
+    },
+    "volatility@5m": {
+      "evaluable": true,
+      "evaluations_independent": 39744,
+      "evaluations_original": 39744,
+      "lane": "A",
+      "matched": 39744,
+      "mismatches": 0,
+      "signals_independent": 155,
+      "signals_original": 155,
+      "verdict": "PASS"
+    }
+  },
+  "reconciliation": {
+    "keys_union": 275724,
+    "matched_plus_differences": 275724,
+    "sum_cell_keys_independent": 275724,
+    "sum_cell_keys_original": 275724
+  },
+  "run_id": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
+  "schema_version": "AI_BOTS_003O_PARITY_V1",
+  "signals_independent": 52848,
+  "signals_original": 52848,
+  "verdict": "PASS",
+  "violations": []
+}

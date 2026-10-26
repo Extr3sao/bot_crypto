@@ -1,0 +1,14 @@
+{
+  "scenario": "paper_cycle",
+  "marker": false,
+  "process_stop": false,
+  "attach_gate": false,
+  "gate_supported": true,
+  "gate_engaged": false,
+  "gate_stats": null,
+  "broker_execute_calls": 1,
+  "broker_close_calls": 0,
+  "orders_created": 1,
+  "hot_stop_blocked": 0,
+  "rejections": []
+}

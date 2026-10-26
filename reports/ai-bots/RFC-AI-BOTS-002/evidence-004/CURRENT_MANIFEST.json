@@ -1,0 +1,100 @@
+{
+  "schema": "evidence004/current-manifest/1",
+  "generated_by": "scripts/evidence004_generate.py",
+  "canonical": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/canonical/CANONICAL_RUN.json",
+  "derived_dir": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9",
+  "documents": [
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/CLAIMS.md",
+      "role": "DERIVED",
+      "sha256": "fe05553b9686335018543000965720640d53954800ef28e51807524613552b1d",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/INFORME_EJECUTIVO_NUMEROS.md",
+      "role": "DERIVED",
+      "sha256": "621fbbd56f18641f46e6f2f7381ec5955088d2b2e8c3368553f81ae22dbdad8f",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/RUN_REPORT.json",
+      "role": "DERIVED",
+      "sha256": "0475cafb22bcbc48ab296cb376684cbc497019b0e9fcde0fcd79d5593db67668",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/RUN_REPORT.md",
+      "role": "DERIVED",
+      "sha256": "52b7c618022161c6c34160bb4b56ed24664d9515a569690a1102505b58a0a6b6",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    }
+  ],
+  "canonical_sha256": "c7feb234c7bf186b617dccaf7526dd00d68934433373a2cf261f369dd1c8edb5",
+  "ledger_sha256": "0ba3a1bece61e61bcdc12bcd02adda5e53153aae65cb5dc46879773a223f343b",
+  "stable_copies": [
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/RUN_REPORT.json",
+      "sha256": "0475cafb22bcbc48ab296cb376684cbc497019b0e9fcde0fcd79d5593db67668",
+      "role": "CURRENT",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/RUN_REPORT.md",
+      "sha256": "52b7c618022161c6c34160bb4b56ed24664d9515a569690a1102505b58a0a6b6",
+      "role": "CURRENT",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    }
+  ],
+  "editorial": [
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/FINAL_REPORT.md",
+      "role": "CURRENT_EDITORIAL",
+      "sha256_at_generation": "8b07c890dbd87ae9d2fbe3cf0b33513466514723c348fef971e5b21ca568cb99",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/INFORME_EJECUTIVO.md",
+      "role": "CURRENT_EDITORIAL",
+      "sha256_at_generation": "091e58be588a5e4e76a5cd12673f062a30aed5be05a828fa4f1af90cc5d97f3d",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/REA_FINDINGS_V2.json",
+      "role": "CURRENT_EDITORIAL",
+      "sha256_at_generation": "e67f7aefe524ab36a0d1ab2c9cc0eab11e28f2375c7dc41b60b16b48584c6fa7",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/REA_TARGET_MATRIX.csv",
+      "role": "CURRENT_EDITORIAL",
+      "sha256_at_generation": "e97e990e90ea63efa26040f67f8644856483007c904a463d7ddcaa325118ffc3",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/PATTERN_ADOPTION_MATRIX.md",
+      "role": "CURRENT_EDITORIAL",
+      "sha256_at_generation": "b68ac820808890851671eb861060b962adbaeb18353456246efd57abf4955c08",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/RECONSTRUCTION_COMPARISON.md",
+      "role": "CURRENT_EDITORIAL",
+      "sha256_at_generation": "0146b95c6260ee07198ac6b5e79721b4e3f4bee7ab0e353cb251093c4f586c69",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/INDEPENDENT_VERIFICATION_REA.json",
+      "role": "CURRENT_EDITORIAL",
+      "sha256_at_generation": "496b7bb7e6f4eb854c21564dc1c08fdfbf3824a191fb7bc25dae1b8d6b41c915",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/FINAL_REPORT.md",
+      "role": "CURRENT_EDITORIAL",
+      "sha256_at_generation": "a91395d4344f0a0ffb2daadde92b3b715456a578ade6cc1f18621bca71911ed2",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    }
+  ],
+  "superseded_manifest": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/SUPERSESSION_MANIFEST.json",
+  "superseded_projections": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/SUPERSEDED_PROJECTIONS.json"
+}

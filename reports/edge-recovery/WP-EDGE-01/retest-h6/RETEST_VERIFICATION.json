@@ -1,0 +1,301 @@
+{
+  "experiment": "h6",
+  "dir": "reports\\edge-recovery\\WP-EDGE-01\\retest-h6",
+  "checks": [
+    {
+      "check": "ARTIFACTS_PRESENT",
+      "ok": true,
+      "detail": "6 artefactos, digests y tamanos verificados"
+    },
+    {
+      "check": "PARAMS_UNCHANGED",
+      "ok": true,
+      "detail": "5 runs x 3 arms keep the frozen ruleset; expiry 8 bars declared with the plan"
+    },
+    {
+      "check": "EQUITY_CONSERVATION",
+      "ok": true,
+      "detail": "15 libros: capital inicial + suma de operaciones = capital final, al centavo"
+    },
+    {
+      "check": "COST_SPLIT_IDENTITY",
+      "ok": true,
+      "detail": "2825 operaciones cuadran gross - costes - fees = net"
+    },
+    {
+      "check": "ARM_METRICS_RECOMPUTED",
+      "ok": true,
+      "detail": "DEV:BASE/frozen_market: 290 ops; DEV:BASE/plan_market: 290 ops; DEV:BASE/plan_limit: 372 ops; DEV:2X_FEES/frozen_market: 197 ops; DEV:2X_FEES/plan_market: 197 ops; DEV:2X_FEES/plan_limit: 193 ops; VAL:BASE/frozen_market: 344 ops; VAL:BASE/plan_market: 344 ops; VAL:BASE/plan_limit: 269 ops; OOS:BASE/frozen_market: 63 ops; OOS:BASE/plan_market: 63 ops; OOS:BASE/plan_limit: 54 ops; OOS:2X_FEES/frozen_market: 52 ops; OOS:2X_FEES/plan_market: 52 ops; OOS:2X_FEES/plan_limit: 45 ops"
+    },
+    {
+      "check": "MARKET_CONTEXT_ATTRIBUTION",
+      "ok": true,
+      "detail": "2825 operaciones atribuidas desde 2596 dias de benchmark (BEAR=483, BULL=2308, SIDEWAYS=34)"
+    },
+    {
+      "check": "WINDOW_IS_DECLARED",
+      "ok": true,
+      "detail": "DEV:BASE: 952 operaciones dentro de DEV; DEV:2X_FEES: 587 operaciones dentro de DEV; VAL:BASE: 957 operaciones dentro de VAL; OOS:BASE: 180 operaciones dentro de OOS; OOS:2X_FEES: 149 operaciones dentro de OOS"
+    },
+    {
+      "check": "ORDERS_LIFECYCLE",
+      "ok": true,
+      "detail": "1810 ordenes terminadas (cancelled_window_end=5, expired=330, filled=933, refused_by_risk_budget=542)"
+    },
+    {
+      "check": "FILLED_ORDERS_MATCH_TRADES",
+      "ok": true,
+      "detail": "DEV:BASE/plan_limit: 372 ordenes <-> 372 operaciones; DEV:2X_FEES/plan_limit: 193 ordenes <-> 193 operaciones; VAL:BASE/plan_limit: 269 ordenes <-> 269 operaciones; OOS:BASE/plan_limit: 54 ordenes <-> 54 operaciones; OOS:2X_FEES/plan_limit: 45 ordenes <-> 45 operaciones"
+    },
+    {
+      "check": "LIMIT_IS_NEVER_BETTER",
+      "ok": true,
+      "detail": "933 rellenos limite: puntuados en el nivel exacto, ninguno mejor, con sus costes"
+    },
+    {
+      "check": "NO_PLAN_ON_THE_MARKET_ARMS",
+      "ok": true,
+      "detail": "DEV:BASE/frozen_market: 0 ordenes, 0/860 senales con plan; DEV:BASE/plan_market: 0 ordenes, 860/860 senales con plan; DEV:BASE/plan_limit: 686 ordenes, 860/860 senales con plan; DEV:2X_FEES/frozen_market: 0 ordenes, 0/802 senales con plan; DEV:2X_FEES/plan_market: 0 ordenes, 802/802 senales con plan; DEV:2X_FEES/plan_limit: 654 ordenes, 802/802 senales con plan; VAL:BASE/frozen_market: 0 ordenes, 0/444 senales con plan; VAL:BASE/plan_market: 0 ordenes, 444/444 senales con plan; VAL:BASE/plan_limit: 350 ordenes, 444/444 senales con plan; OOS:BASE/frozen_market: 0 ordenes, 0/85 senales con plan; OOS:BASE/plan_market: 0 ordenes, 85/85 senales con plan; OOS:BASE/plan_limit: 66 ordenes, 85/85 senales con plan; OOS:2X_FEES/frozen_market: 0 ordenes, 0/69 senales con plan; OOS:2X_FEES/plan_market: 0 ordenes, 69/69 senales con plan; OOS:2X_FEES/plan_limit: 54 ordenes, 69/69 senales con plan"
+    },
+    {
+      "check": "UNREACHABLE_OUTCOME_ABSENT",
+      "ok": true,
+      "detail": "declarado e inalcanzable: cancelled_close_below_level"
+    },
+    {
+      "check": "FILL_RATE_RECOMPUTED",
+      "ok": true,
+      "detail": "DEV:BASE/frozen_market: 0 ordenes; DEV:BASE/plan_market: 0 ordenes; DEV:BASE/plan_limit: 686 ordenes; DEV:2X_FEES/frozen_market: 0 ordenes; DEV:2X_FEES/plan_market: 0 ordenes; DEV:2X_FEES/plan_limit: 654 ordenes; VAL:BASE/frozen_market: 0 ordenes; VAL:BASE/plan_market: 0 ordenes; VAL:BASE/plan_limit: 350 ordenes; OOS:BASE/frozen_market: 0 ordenes; OOS:BASE/plan_market: 0 ordenes; OOS:BASE/plan_limit: 66 ordenes; OOS:2X_FEES/frozen_market: 0 ordenes; OOS:2X_FEES/plan_market: 0 ordenes; OOS:2X_FEES/plan_limit: 54 ordenes"
+    },
+    {
+      "check": "VERDICT_RECOMPUTED",
+      "ok": true,
+      "detail": "RETEST_IMPROVES_NET / VIABLE: net -495.8756 vs -496.4298 (+0.5542) | expectativa +0.378800 | 372/686 rellenos (54.23%)"
+    },
+    {
+      "check": "CONFIRMATION_RECOMPUTED",
+      "ok": true,
+      "detail": "decision en DEV; confirmacion en OOS, VAL"
+    }
+  ],
+  "passed": 15,
+  "total": 15,
+  "self_test": {
+    "baseline_all_green": true,
+    "baseline": {
+      "ARTIFACTS_PRESENT": true,
+      "PARAMS_UNCHANGED": true,
+      "EQUITY_CONSERVATION": true,
+      "COST_SPLIT_IDENTITY": true,
+      "ARM_METRICS_RECOMPUTED": true,
+      "MARKET_CONTEXT_ATTRIBUTION": true,
+      "WINDOW_IS_DECLARED": true,
+      "ORDERS_LIFECYCLE": true,
+      "FILLED_ORDERS_MATCH_TRADES": true,
+      "LIMIT_IS_NEVER_BETTER": true,
+      "NO_PLAN_ON_THE_MARKET_ARMS": true,
+      "UNREACHABLE_OUTCOME_ABSENT": true,
+      "FILL_RATE_RECOMPUTED": true,
+      "VERDICT_RECOMPUTED": true,
+      "CONFIRMATION_RECOMPUTED": true
+    },
+    "mutations": [
+      {
+        "mutation": "gross_plus_25",
+        "expected_check": "COST_SPLIT_IDENTITY",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/ETH: gross 25.0103 - costs 0.1895 - fees 0.9998 != net -1.1790"
+      },
+      {
+        "mutation": "drop_a_trade",
+        "expected_check": "EQUITY_CONSERVATION",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "EQUITY_CONSERVATION"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/frozen_market: 289 trade rows but 290 declared; DEV:BASE/frozen_market: start 10,000.00 + net -495.25 = 9,504.75 != final equity 9,503.57; DEV:BASE/frozen_market: the rows sum to -495.2508 but the payload says -496.4298"
+      },
+      {
+        "mutation": "metrics_tampered",
+        "expected_check": "ARM_METRICS_RECOMPUTED",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "EQUITY_CONSERVATION",
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/plan_limit: net_usdt declared -445.8756 vs recomputed -495.875623"
+      },
+      {
+        "mutation": "window_moved",
+        "expected_check": "WINDOW_IS_DECLARED",
+        "detected": [
+          "WINDOW_IS_DECLARED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE: declares 1735516800000..1785801600000 but DEV is 1727740800000..1751241600000"
+      },
+      {
+        "mutation": "out_of_window_trade",
+        "expected_check": "WINDOW_IS_DECLARED",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "WINDOW_IS_DECLARED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/ETH: entry_ts=1727654400000 outside DEV"
+      },
+      {
+        "mutation": "market_context_flipped",
+        "expected_check": "MARKET_CONTEXT_ATTRIBUTION",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "MARKET_CONTEXT_ATTRIBUTION"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/ETH @ 1728310500000: market_context 'BEAR' != 'BULL' readable at that instant"
+      },
+      {
+        "mutation": "artifact_touched",
+        "expected_check": "ARTIFACTS_PRESENT",
+        "detected": [
+          "ARTIFACTS_PRESENT"
+        ],
+        "expected_check_failed": true,
+        "detail": "RETEST.md: sha256 does not match the inventory; RETEST.md: 6145 bytes, inventory says 6108"
+      },
+      {
+        "mutation": "verdict_flipped",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "el payload dice 'RETEST_UNPOWERED', la regla da 'RETEST_IMPROVES_NET'"
+      },
+      {
+        "mutation": "rule_relaxed",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "decision_rule.min_fill_rate = 0.0, se esperaba 0.4; experiment.decision_rule.min_fill_rate = 0.0"
+      },
+      {
+        "mutation": "params_retuned",
+        "expected_check": "PARAMS_UNCHANGED",
+        "detected": [
+          "PARAMS_UNCHANGED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/plan_limit: params differ from the frozen ruleset"
+      },
+      {
+        "mutation": "order_outcome_flipped",
+        "expected_check": "FILLED_ORDERS_MATCH_TRADES",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "FILLED_ORDERS_MATCH_TRADES",
+          "FILL_RATE_RECOMPUTED",
+          "LIMIT_IS_NEVER_BETTER",
+          "ORDERS_LIFECYCLE"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/plan_limit: 371 rellenos pero 372 operaciones"
+      },
+      {
+        "mutation": "fill_before_placement",
+        "expected_check": "ORDERS_LIFECYCLE",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "ORDERS_LIFECYCLE"
+        ],
+        "expected_check_failed": true,
+        "detail": "ETH: a fill on bar 633 placed on bar 633"
+      },
+      {
+        "mutation": "expiry_changed",
+        "expected_check": "ORDERS_LIFECYCLE",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "ORDERS_LIFECYCLE"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/ETH: expiry 4 != the declared 8"
+      },
+      {
+        "mutation": "level_moved_on_a_trade",
+        "expected_check": "LIMIT_IS_NEVER_BETTER",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "EQUITY_CONSERVATION",
+          "FILLED_ORDERS_MATCH_TRADES",
+          "LIMIT_IS_NEVER_BETTER"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/ETH: la operacion se puntuo en 2485.068482, no en el nivel 2484.82"
+      },
+      {
+        "mutation": "frozen_signal_gets_a_limit",
+        "expected_check": "NO_PLAN_ON_THE_MARKET_ARMS",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "NO_PLAN_ON_THE_MARKET_ARMS"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE: 1 senales congeladas planifican un limite"
+      },
+      {
+        "mutation": "unreachable_outcome_printed",
+        "expected_check": "UNREACHABLE_OUTCOME_ABSENT",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "FILLED_ORDERS_MATCH_TRADES",
+          "FILL_RATE_RECOMPUTED",
+          "LIMIT_IS_NEVER_BETTER",
+          "UNREACHABLE_OUTCOME_ABSENT"
+        ],
+        "expected_check_failed": true,
+        "detail": "cancelled_close_below_level aparece 1 veces aunque se declaro inalcanzable"
+      },
+      {
+        "mutation": "fill_rate_tampered",
+        "expected_check": "FILL_RATE_RECOMPUTED",
+        "detected": [
+          "FILL_RATE_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "DEV:BASE/plan_limit: fill rate 0.642274 vs 0.542274"
+      },
+      {
+        "mutation": "confirmation_tampered",
+        "expected_check": "CONFIRMATION_RECOMPUTED",
+        "detected": [
+          "CONFIRMATION_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "confirmation.OOS.net_delta_usdt declarado 49.0993 vs 39.0993"
+      },
+      {
+        "mutation": "primary_window_moved",
+        "expected_check": "CONFIRMATION_RECOMPUTED",
+        "detected": [
+          "CONFIRMATION_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "la ventana primaria es 'VAL', no 'DEV'"
+      }
+    ],
+    "all_detected": true
+  },
+  "failed": 0
+}

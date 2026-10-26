@@ -1,0 +1,834 @@
+{
+  "as_of_utc": "2026-10-14T20:34:47Z",
+  "claim": "these six symbols have never been the input of a committed measurement in this repository, so their history is an unread cross-section",
+  "corpus_digest": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b",
+  "corpus_directory": "data/edge08/universe-1h",
+  "coverage": {
+    "1d": {
+      "per_asset_bars_in_window": {
+        "DEV": {
+          "AAVE": 1088,
+          "CRV": 1088,
+          "KSM": 1088,
+          "SNX": 1088,
+          "SUSHI": 1088,
+          "UNI": 1088
+        },
+        "OOS": {
+          "AAVE": 651,
+          "CRV": 651,
+          "KSM": 651,
+          "SNX": 651,
+          "SUSHI": 651,
+          "UNI": 651
+        },
+        "VAL": {
+          "AAVE": 366,
+          "CRV": 366,
+          "KSM": 366,
+          "SNX": 366,
+          "SUSHI": 366,
+          "UNI": 366
+        }
+      },
+      "per_asset_total": {
+        "AAVE": 2105,
+        "CRV": 2105,
+        "KSM": 2105,
+        "SNX": 2105,
+        "SUSHI": 2105,
+        "UNI": 2105
+      },
+      "screen_failure": null
+    },
+    "1h": {
+      "per_asset_bars_in_window": {
+        "DEV": {
+          "AAVE": 26266,
+          "CRV": 26266,
+          "KSM": 26266,
+          "SNX": 26266,
+          "SUSHI": 26266,
+          "UNI": 26266
+        },
+        "OOS": {
+          "AAVE": 15633,
+          "CRV": 15633,
+          "KSM": 15633,
+          "SNX": 15633,
+          "SUSHI": 15633,
+          "UNI": 15633
+        },
+        "VAL": {
+          "AAVE": 8784,
+          "CRV": 8784,
+          "KSM": 8784,
+          "SNX": 8784,
+          "SUSHI": 8784,
+          "UNI": 8784
+        }
+      },
+      "per_asset_total": {
+        "AAVE": 50693,
+        "CRV": 50693,
+        "KSM": 50693,
+        "SNX": 50693,
+        "SUSHI": 50693,
+        "UNI": 50693
+      },
+      "screen_failure": null
+    },
+    "4h": {
+      "per_asset_bars_in_window": {
+        "DEV": {
+          "AAVE": 6561,
+          "CRV": 6561,
+          "KSM": 6561,
+          "SNX": 6561,
+          "SUSHI": 6561,
+          "UNI": 6561
+        },
+        "OOS": {
+          "AAVE": 3909,
+          "CRV": 3909,
+          "KSM": 3909,
+          "SNX": 3909,
+          "SUSHI": 3909,
+          "UNI": 3909
+        },
+        "VAL": {
+          "AAVE": 2196,
+          "CRV": 2196,
+          "KSM": 2196,
+          "SNX": 2196,
+          "SUSHI": 2196,
+          "UNI": 2196
+        }
+      },
+      "per_asset_total": {
+        "AAVE": 12667,
+        "CRV": 12667,
+        "KSM": 12667,
+        "SNX": 12667,
+        "SUSHI": 12667,
+        "UNI": 12667
+      },
+      "screen_failure": null
+    }
+  },
+  "coverage_floor_bars_per_asset": {
+    "1d": 400,
+    "1h": 8000,
+    "4h": 1500
+  },
+  "disjointness": {
+    "allowed_kinds": [
+      "catalogue",
+      "fetch_or_list_script",
+      "test",
+      "documentation",
+      "this_work_package"
+    ],
+    "claim_holds": true,
+    "method": "git grep over TRACKED files (an untracked scratch file cannot argue a symbol is clean, and a committed shard cannot hide), classified by path; plus a glob for a shard of the symbol in every corpus this repository already holds",
+    "references": {
+      "AAVEUSDT": [
+        {
+          "kind": "catalogue",
+          "path": "data/rfc048/raw/binance_usdm_exchange_info.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.md"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "scripts/edge08_fetch_universe.py"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "src/trading_bot/research/edge08/registration.py"
+        }
+      ],
+      "CRVUSDT": [
+        {
+          "kind": "catalogue",
+          "path": "data/rfc048/raw/binance_usdm_exchange_info.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.md"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "scripts/edge08_fetch_universe.py"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "src/trading_bot/research/edge08/registration.py"
+        }
+      ],
+      "KSMUSDT": [
+        {
+          "kind": "catalogue",
+          "path": "data/rfc048/raw/binance_usdm_exchange_info.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.md"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/RFC-EDGE-008.md"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "scripts/edge08_fetch_universe.py"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "src/trading_bot/research/edge08/registration.py"
+        }
+      ],
+      "SNXUSDT": [
+        {
+          "kind": "catalogue",
+          "path": "data/rfc048/raw/binance_usdm_exchange_info.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.md"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "scripts/edge08_fetch_universe.py"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "src/trading_bot/research/edge08/registration.py"
+        }
+      ],
+      "SUSHIUSDT": [
+        {
+          "kind": "catalogue",
+          "path": "data/rfc048/raw/binance_usdm_exchange_info.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.md"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "scripts/edge08_fetch_universe.py"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "src/trading_bot/research/edge08/registration.py"
+        }
+      ],
+      "UNIUSDT": [
+        {
+          "kind": "catalogue",
+          "path": "data/rfc048/raw/binance_usdm_exchange_info.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.json"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "reports/edge-recovery/WP-EDGE-08/PREREGISTRATION.md"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "scripts/edge08_fetch_universe.py"
+        },
+        {
+          "kind": "this_work_package",
+          "path": "src/trading_bot/research/edge08/registration.py"
+        }
+      ]
+    },
+    "shards_outside_the_cross_section": {
+      "AAVEUSDT": [],
+      "CRVUSDT": [],
+      "KSMUSDT": [],
+      "SNXUSDT": [],
+      "SUSHIUSDT": [],
+      "UNIUSDT": []
+    },
+    "symbols": [
+      "AAVEUSDT",
+      "UNIUSDT",
+      "KSMUSDT",
+      "SNXUSDT",
+      "CRVUSDT",
+      "SUSHIUSDT"
+    ],
+    "violations": []
+  },
+  "fetched_at_utc": "2026-10-14T20:29:04Z",
+  "gaps": {
+    "AAVEUSDT": {
+      "first_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7
+    },
+    "CRVUSDT": {
+      "first_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7
+    },
+    "KSMUSDT": {
+      "first_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7
+    },
+    "SNXUSDT": {
+      "first_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7
+    },
+    "SUSHIUSDT": {
+      "first_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7
+    },
+    "UNIUSDT": {
+      "first_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7
+    }
+  },
+  "limitations": [
+    "the corpus is one venue's public REST feed, 1h bars, capped at the last closed hour before the fetch; gaps are left absent and counted, never filled",
+    "the cross-section has no BTC in it by construction: a benchmark series is built from the frozen BTC corpus, and the label it produces is read out of the run, never into a signal",
+    "no order book is modelled per symbol: the cost plane is venue-level and the ADVERSE scenario is the sensitivity that speaks to thinner names"
+  ],
+  "per_symbol": {
+    "AAVEUSDT": {
+      "asset": "AAVE",
+      "bars": 50693,
+      "bytes": 2644159,
+      "coverage_floor_met": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "duplicates_removed": 0,
+      "expected_hours": 50707,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7,
+      "last_utc": "2026-10-14T18:00:00Z",
+      "rows_returned": 50693,
+      "sha256": "e3d555cd638aa8bce8c51dd2dd3859ac263aca7eeca00c4a230acb88f83ae8c5",
+      "shard": "data/edge08/universe-1h/AAVEUSDT_2021_2026_1h.json"
+    },
+    "CRVUSDT": {
+      "asset": "CRV",
+      "bars": 50693,
+      "bytes": 2699802,
+      "coverage_floor_met": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "duplicates_removed": 0,
+      "expected_hours": 50707,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7,
+      "last_utc": "2026-10-14T18:00:00Z",
+      "rows_returned": 50693,
+      "sha256": "37a5307f9421f2ad01c2ab626589c66ad2675fe5a24136be400b625c683922bb",
+      "shard": "data/edge08/universe-1h/CRVUSDT_2021_2026_1h.json"
+    },
+    "KSMUSDT": {
+      "asset": "KSM",
+      "bars": 50693,
+      "bytes": 2549344,
+      "coverage_floor_met": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "duplicates_removed": 0,
+      "expected_hours": 50707,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7,
+      "last_utc": "2026-10-14T18:00:00Z",
+      "rows_returned": 50693,
+      "sha256": "93cf90eb3db64261ffd42379ff41ccb9755c4957a4155b66ef15ed9dc7a3a0a7",
+      "shard": "data/edge08/universe-1h/KSMUSDT_2021_2026_1h.json"
+    },
+    "SNXUSDT": {
+      "asset": "SNX",
+      "bars": 50693,
+      "bytes": 2571519,
+      "coverage_floor_met": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "duplicates_removed": 0,
+      "expected_hours": 50707,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7,
+      "last_utc": "2026-10-14T18:00:00Z",
+      "rows_returned": 50693,
+      "sha256": "0de3844f4eb3cd553b56aee0d7026c50899948f069e872641df67e332f93bd42",
+      "shard": "data/edge08/universe-1h/SNXUSDT_2021_2026_1h.json"
+    },
+    "SUSHIUSDT": {
+      "asset": "SUSHI",
+      "bars": 50693,
+      "bytes": 2620712,
+      "coverage_floor_met": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "duplicates_removed": 0,
+      "expected_hours": 50707,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7,
+      "last_utc": "2026-10-14T18:00:00Z",
+      "rows_returned": 50693,
+      "sha256": "b2c3ab061509065d67e59acfdb8e01239d1625ca3e6406e541e41eff1b4cc4c2",
+      "shard": "data/edge08/universe-1h/SUSHIUSDT_2021_2026_1h.json"
+    },
+    "UNIUSDT": {
+      "asset": "UNI",
+      "bars": 50693,
+      "bytes": 2601571,
+      "coverage_floor_met": true,
+      "coverage_floor_pct": 99.0,
+      "coverage_pct": 99.9724,
+      "covers_requested_end": true,
+      "duplicates_removed": 0,
+      "expected_hours": 50707,
+      "first_utc": "2021-01-01T00:00:00Z",
+      "gap_examples": [
+        {
+          "after_utc": "2021-02-11T03:00:00Z",
+          "before_utc": "2021-02-11T05:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-03-06T01:00:00Z",
+          "before_utc": "2021-03-06T03:00:00Z",
+          "missing_hours": 1,
+          "step_hours": 2.0
+        },
+        {
+          "after_utc": "2021-04-20T01:00:00Z",
+          "before_utc": "2021-04-20T04:00:00Z",
+          "missing_hours": 2,
+          "step_hours": 3.0
+        },
+        {
+          "after_utc": "2021-04-25T04:00:00Z",
+          "before_utc": "2021-04-25T08:00:00Z",
+          "missing_hours": 3,
+          "step_hours": 4.0
+        },
+        {
+          "after_utc": "2021-08-13T01:00:00Z",
+          "before_utc": "2021-08-13T06:00:00Z",
+          "missing_hours": 4,
+          "step_hours": 5.0
+        }
+      ],
+      "gaps": 7,
+      "last_utc": "2026-10-14T18:00:00Z",
+      "rows_returned": 50693,
+      "sha256": "7d68f4d3f8291557d033a6ff49a279c7ceae1574dbf4310e40424dca28d55c82",
+      "shard": "data/edge08/universe-1h/UNIUSDT_2021_2026_1h.json"
+    }
+  },
+  "requested_range": {
+    "end_utc_exclusive": "2026-10-14T19:00:00Z",
+    "start_utc": "2021-01-01T00:00:00Z"
+  },
+  "schema_version": "EDGE08_V1",
+  "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
+  "totals": {
+    "bars": 304158,
+    "bytes": 15687107,
+    "failures": 0,
+    "gaps": 42,
+    "symbols": 6,
+    "symbols_below_coverage_floor": []
+  },
+  "verdict": "HOLDOUT_CLAIM_HOLDS",
+  "windows": {
+    "DEV": {
+      "end_utc": "2023-12-31T23:00:00Z",
+      "start_utc": "2021-01-01T00:00:00Z"
+    },
+    "OOS": {
+      "end_utc": "2026-10-14T08:00:00Z",
+      "start_utc": "2025-01-01T00:00:00Z"
+    },
+    "VAL": {
+      "end_utc": "2024-12-31T23:00:00Z",
+      "start_utc": "2024-01-01T00:00:00Z"
+    }
+  },
+  "work_package": "WP-EDGE-08"
+}

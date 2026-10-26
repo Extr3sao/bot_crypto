@@ -1,0 +1,209 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09A",
+  "artifact": "BASELINE",
+  "as_of_utc": "2026-10-15T05:16:16Z",
+  "head": "ef5c8f2baa4a1da22d494f30c68711c661ff4e6b",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "rfc_present": true,
+  "authoritative_inputs": [
+    {
+      "path": "config/risk.yaml",
+      "exists": true,
+      "bytes": 1870,
+      "sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+      "last_commit": "10cdee2 chore: initial Phase 0 scaffolding for crypto-scalping-agentic-bot",
+      "worktree_modified": false
+    },
+    {
+      "path": "config/runtime.yaml",
+      "exists": true,
+      "bytes": 1907,
+      "sha256": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+      "last_commit": "10cdee2 chore: initial Phase 0 scaffolding for crypto-scalping-agentic-bot",
+      "worktree_modified": false
+    },
+    {
+      "path": "docs/COST_MODEL_V3.json",
+      "exists": true,
+      "bytes": 28651,
+      "sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+      "last_commit": "3fd712e feat(research): parametrisable COST_MODEL_V3 + venue economics + execution model",
+      "worktree_modified": false
+    },
+    {
+      "path": "docs/EXECUTION_COST_MODEL_V4.json",
+      "exists": true,
+      "bytes": 9207,
+      "sha256": "7e772c34cbf0c894fc1ff00d643e82680847ebedaf986ba6dbb5b756121641a4",
+      "last_commit": "3120f3f research(microstructure): measure the untested flow/OI hypotheses on real data \u00e2\u20ac\u201d no edge found",
+      "worktree_modified": false
+    },
+    {
+      "path": "docs/FORWARD_DATA_CONTRACT.json",
+      "exists": true,
+      "bytes": 7740,
+      "sha256": "eab7f4b158a9f8e4befa4f782327e8fb0e41d0b8525d53452e928b0be6bfff88",
+      "last_commit": "d3b7c04 feat(research): certify the forward hour with a network-free replay and an id-space trade chain",
+      "worktree_modified": false
+    },
+    {
+      "path": "docs/source_registry.md",
+      "exists": true,
+      "bytes": 26899,
+      "sha256": "c5a8bf6b48da6f733db31269e38fe11b00faca24028a99decfbd9529d64cfd71",
+      "last_commit": "df95974 docs(research): RFC-030 pair execution, short-cost and accounting contracts",
+      "worktree_modified": true
+    }
+  ],
+  "runtime_mode": "paper",
+  "live_trading_enabled": {
+    "runtime.yaml": "false",
+    "risk.yaml": "false"
+  },
+  "risk_limits_read_not_written": true,
+  "data_estate": [
+    {
+      "path": "data",
+      "kind": "market and run data",
+      "present": true,
+      "files": 894,
+      "bytes": 231622706,
+      "mib": 220.9
+    },
+    {
+      "path": "reports/microstructure-forward",
+      "kind": "forward microstructure capture",
+      "present": true,
+      "files": 107,
+      "bytes": 377691470,
+      "mib": 360.2
+    },
+    {
+      "path": "reports/microstructure-forward-continuous",
+      "kind": "forward microstructure capture",
+      "present": true,
+      "files": 1132,
+      "bytes": 1741975946,
+      "mib": 1661.3
+    },
+    {
+      "path": "reports/microstructure-forward-lab",
+      "kind": "forward microstructure capture",
+      "present": true,
+      "files": 421,
+      "bytes": 556464980,
+      "mib": 530.7
+    },
+    {
+      "path": "reports/microstructure-v1",
+      "kind": "microstructure phase artifacts",
+      "present": true,
+      "files": 67,
+      "bytes": 96907173,
+      "mib": 92.4
+    },
+    {
+      "path": "reports/microstructure-v2",
+      "kind": "microstructure phase artifacts",
+      "present": true,
+      "files": 7,
+      "bytes": 5808677,
+      "mib": 5.5
+    },
+    {
+      "path": "reports/edge-recovery",
+      "kind": "edge-recovery work packages",
+      "present": true,
+      "files": 320,
+      "bytes": 73479332,
+      "mib": 70.1
+    },
+    {
+      "path": "reports/execution-economics",
+      "kind": "execution cost phase",
+      "present": true,
+      "files": 36,
+      "bytes": 81950,
+      "mib": 0.1
+    },
+    {
+      "path": "reports/carry",
+      "kind": "carry/basis research",
+      "present": true,
+      "files": 40,
+      "bytes": 15307771,
+      "mib": 14.6
+    },
+    {
+      "path": "reports/economic001",
+      "kind": "economic checkpoint",
+      "present": false
+    }
+  ],
+  "captures_enumerated": 19,
+  "panel": {
+    "runs": [
+      "paper-lab-continuous-02",
+      "paper-strategy-lifecycle-shadow-02"
+    ],
+    "grid_seconds": 1,
+    "declared_run_selection": [
+      "paper-lab-continuous-02",
+      "paper-strategy-lifecycle-shadow-02"
+    ],
+    "selection_rule": "the longest single continuous captures this repository holds; every other capture stays available and is enumerated in the estate audit",
+    "built_at_utc": "2026-10-15T05:16:04Z",
+    "digests": {
+      "panel_seconds": {
+        "path": "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv",
+        "sha256": "0f87b7baeb92f93d8563043af68d5ea1f60ad51466a8a5ea6ff00bf501a1bff1",
+        "bytes": 16729291
+      },
+      "oi_samples": {
+        "path": "reports/edge-recovery/WP-EDGE-09/panel/OI_SAMPLES.csv",
+        "sha256": "c7941d7ecd75c7a859935df1bcc6d6690d110707664551112c6c6242daf99941",
+        "bytes": 125749
+      },
+      "depth_snapshots": {
+        "path": "reports/edge-recovery/WP-EDGE-09/panel/DEPTH_SNAPSHOTS.csv",
+        "sha256": "3cab2af1f378db613adc79baf93e20a4d732046269bdeee082faacc6b2693fff",
+        "bytes": 625342
+      }
+    }
+  },
+  "environment": {
+    "python": "3.11.15",
+    "implementation": "CPython",
+    "system": "Windows",
+    "release": "10"
+  },
+  "tests": {
+    "suite": "tests/unit/research/test_edge09_microstructure.py",
+    "evidence": "RUN_REPORT.json -> tests (run with --tests during 09F)"
+  },
+  "unmeasured_fields": [
+    "duplicates (the collector appends events; no trade-id de-duplication pass exists)",
+    "stale_rate (no staleness threshold is registered for the forward capture)",
+    "provider_failure_rate (reconnect counters exist in the capture, not a failure rate)",
+    "turnover, exposure, max_drawdown, profit_factor, expectancy (no PnL backtest was run)",
+    "pnl_usd (the cost gate stopped every arm before a simulator was invoked)"
+  ],
+  "derived_from": {
+    "config/risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "config/runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+    "docs/COST_MODEL_V3.json": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+    "docs/EXECUTION_COST_MODEL_V4.json": "7e772c34cbf0c894fc1ff00d643e82680847ebedaf986ba6dbb5b756121641a4",
+    "docs/FORWARD_DATA_CONTRACT.json": "eab7f4b158a9f8e4befa4f782327e8fb0e41d0b8525d53452e928b0be6bfff88",
+    "docs/source_registry.md": "c5a8bf6b48da6f733db31269e38fe11b00faca24028a99decfbd9529d64cfd71",
+    "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv": "0f87b7baeb92f93d8563043af68d5ea1f60ad51466a8a5ea6ff00bf501a1bff1",
+    "reports/edge-recovery/WP-EDGE-09/gates/COST_LIQUIDITY_CAPACITY.json": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+    "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json": "bde376e5139b651bab24c60e39287dba8c79d29d83d94be82b4210802cab9345",
+    "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENT_REGISTRY.json": "52aebe35ad050939ef010d74aaac06325d5bea2e6c4a702faf65946412e9f2a2",
+    "reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.json": "7e2acbddef8f45d5ba30c7e8fd3057046134645b010cb72e865db6dd5c83309a",
+    "reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.md": "b74f4a2b977d46d586a5a4313b029ae5587576704295cb989abd52ea04ae15ff"
+  },
+  "derived_no_new_measurement": true,
+  "promotion": "NONE",
+  "order_sent": false
+}

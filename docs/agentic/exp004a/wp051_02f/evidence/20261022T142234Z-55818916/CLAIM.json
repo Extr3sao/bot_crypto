@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0",
+  "runner": "runner/EXP-004A/WP-051-02F",
+  "rfc": "RFC-EXP004A-051-02F",
+  "mode": "once",
+  "run_id": "20261022T142234Z-55818916",
+  "run_dir": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916",
+  "state": "BLOCKED_INTEGRITY",
+  "started_at_utc": "2026-10-22T14:22:34.367Z",
+  "finished_at_utc": "2026-10-22T14:24:23.992Z",
+  "head": "f20dff9b71fd10a5f110ab6cae88e817c6f5d428",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "worktree_sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "git_blob_sha": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b",
+    "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "effective_from_utc": "2026-10-21T16:00:00.000Z",
+    "hash_note": "worktree_sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and a CRLF checkout of an LF blob makes them differ without any drift in the committed content."
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "worktree_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+    "git_blob_sha": "052832c2252a719c63d0859628ada648c799c6ce",
+    "frozen_commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "frozen_blob_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+  },
+  "capture_window": {
+    "start_utc": "2026-10-22T00:00:00.000Z",
+    "end_utc": "2027-01-20T00:00:00.000Z",
+    "state_at_run": "OPEN"
+  },
+  "capture_decision_at_utc": null,
+  "steps": [
+    {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/edge04_observer.py",
+      "exit_code": 0,
+      "duration_s": 97.943,
+      "stdout": "run          FWD-EDGE04-20261022T141500Z\nslot         2026-10-22T14:15Z  mode=MANUAL\noutcome      OBSERVED \u2014 3 new closed bar(s) stored\nduration     93.994 s\nnew bars     3 (expected 3, missing 0)\nmarket reqs  4\ndisk         WARNING / 2.4656 GiB free\npublication  skipped \u2014 the publication cadence has not elapsed\nhealth       DEGRADED\nalerts       0\nexit         0",
+      "stderr": "",
+      "log": "observation.log",
+      "step": "observation"
+    },
+    {
+      "step": "window",
+      "state": "OPEN",
+      "instant_utc": "2026-10-22T14:24:13.301Z",
+      "seconds_until_open": 0
+    },
+    {
+      "step": "freshness",
+      "per_series": [
+        {
+          "ok": true,
+          "reason": "the store's last bar opens 2026-10-22T13:00:00.000Z; the clock expects 2026-10-22T13:00:00.000Z",
+          "expected_last_closed_open_utc": "2026-10-22T13:00:00.000Z",
+          "behind_ms": 0
+        },
+        {
+          "ok": true,
+          "reason": "the store's last bar opens 2026-10-22T13:00:00.000Z; the clock expects 2026-10-22T13:00:00.000Z",
+          "expected_last_closed_open_utc": "2026-10-22T13:00:00.000Z",
+          "behind_ms": 0
+        },
+        {
+          "ok": true,
+          "reason": "the store's last bar opens 2026-10-22T13:00:00.000Z; the clock expects 2026-10-22T13:00:00.000Z",
+          "expected_last_closed_open_utc": "2026-10-22T13:00:00.000Z",
+          "behind_ms": 0
+        }
+      ]
+    },
+    {
+      "step": "eligibility",
+      "series_with_closed_in_window_bars": [
+        "1h:BTC",
+        "1h:ETH",
+        "1h:SOL"
+      ],
+      "per_series_closed_bars": {
+        "1h:BTC": 14,
+        "1h:ETH": 14,
+        "1h:SOL": 14
+      }
+    },
+    {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/exp004a_wp051_02e_preflight.py --out-dir C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\wp051_02f\\evidence\\20261022T142234Z-55818916\\reused_preflight",
+      "exit_code": 2,
+      "duration_s": 10.689,
+      "stdout": "[preflight] PASS  DECLARATION_AUTHORIZES           EXP-004A.datasets.phase2/v1 binds; generator fc036d967923...\n[preflight] PASS  PHASE_ONE_BYTES_INTACT           phase 1 sha256 8946f871a97b7575... blob 43c9deea29a8... dirty=False\n[preflight] PASS  GENERATOR_IDENTITY               scripts/exp004a_capture.py at fc036d967923 sha256 af1ab7cc23980dad... would-run 052832c2252a... == committed 052832c2252a...\n[preflight] PASS  SEALED_02D_PACKAGE_INTACT        19 sealed artefacts, 0 drifted\n[preflight] PASS  STORE_READABLE                   3 series readable, 42 bar(s) open inside the window\n[preflight] PASS  STORE_HAS_NO_FUTURE_INGEST       no stored bar claims an ingest later than this instant\n[preflight] PASS  FORWARD_OBSERVER_FRESH           every series was written within its own lag bound\n[preflight] FAIL  NO_DATASET_PUBLISHED             3 dataset(s) and 3 manifest(s) in data/exp004a; the capture state and the disk disagree\n[preflight] PASS  ST6_TAPE_REFUSED                 st6:tape exit 2: {\"ok\": false, \"error\": \"EXP-004A-ST6-TAPE declares timeframe '4h slot, 3 rounds of 15s', which is not a bar series; a slice rule for it is not defined by the de\n[preflight] PASS  WINDOW_CANNOT_BE_EXTENDED        period beyond the window exit 2\n[preflight] BLOCKED - 10 controls - 1 failed",
+      "stderr": "",
+      "log": "preflight.log",
+      "preflight_status": "BLOCKED",
+      "controls": 10,
+      "failed_controls": [
+        "NO_DATASET_PUBLISHED"
+      ],
+      "out_dir": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/reused_preflight"
+    }
+  ],
+  "store": [
+    {
+      "spec": "1h:BTC",
+      "asset": "BTC",
+      "interval": "1h",
+      "path": "data/forward/edge03/1h/BTC.jsonl",
+      "readable": true,
+      "rows": 5654,
+      "last_open_utc": "2026-10-22T13:00:00.000Z",
+      "last_fetched_utc": "2026-10-22T14:00:43.904Z",
+      "bars_in_window": 14,
+      "closed_bars_in_window": 14,
+      "last_closed_open_utc": "2026-10-22T13:00:00.000Z",
+      "error": null
+    },
+    {
+      "spec": "1h:ETH",
+      "asset": "ETH",
+      "interval": "1h",
+      "path": "data/forward/edge03/1h/ETH.jsonl",
+      "readable": true,
+      "rows": 5654,
+      "last_open_utc": "2026-10-22T13:00:00.000Z",
+      "last_fetched_utc": "2026-10-22T14:00:43.904Z",
+      "bars_in_window": 14,
+      "closed_bars_in_window": 14,
+      "last_closed_open_utc": "2026-10-22T13:00:00.000Z",
+      "error": null
+    },
+    {
+      "spec": "1h:SOL",
+      "asset": "SOL",
+      "interval": "1h",
+      "path": "data/forward/edge03/1h/SOL.jsonl",
+      "readable": true,
+      "rows": 5654,
+      "last_open_utc": "2026-10-22T13:00:00.000Z",
+      "last_fetched_utc": "2026-10-22T14:00:43.904Z",
+      "bars_in_window": 14,
+      "closed_bars_in_window": 14,
+      "last_closed_open_utc": "2026-10-22T13:00:00.000Z",
+      "error": null
+    }
+  ],
+  "captures": [],
+  "temporal_guards": [],
+  "datasets": [
+    {
+      "dataset_id": "EXP-004A-1H-BTC",
+      "slice": "1h:BTC",
+      "dataset_path": "data/exp004a/EXP-004A-1H-BTC.jsonl",
+      "exists": true,
+      "bytes": 4403,
+      "sha256": "da7310abcacc410ee20b2dbfdd814d78ff5d5689267554eace6632bf274950cd",
+      "published_rows": 14,
+      "declared_row_count": 2160,
+      "declared_coverage_required": 0.9,
+      "fraction_of_declared": 0.006481,
+      "coverage_status": "BELOW_DECLARED",
+      "manifest_exists": true,
+      "manifest_sha256": "5893438cb1a1feab65cdc088d3ddae4cd092ba84596fd2cf77c4d9571636dafc"
+    },
+    {
+      "dataset_id": "EXP-004A-1H-ETH",
+      "slice": "1h:ETH",
+      "dataset_path": "data/exp004a/EXP-004A-1H-ETH.jsonl",
+      "exists": true,
+      "bytes": 4348,
+      "sha256": "28275763fe0bc3d6c514681f8c0c94fc2e1266acbd737724884b06c11b500729",
+      "published_rows": 14,
+      "declared_row_count": 2160,
+      "declared_coverage_required": 0.9,
+      "fraction_of_declared": 0.006481,
+      "coverage_status": "BELOW_DECLARED",
+      "manifest_exists": true,
+      "manifest_sha256": "3f4ced7035bf1ceb7322c14b16378083d134727bd832b4a60f3a3c0383dd1d78"
+    },
+    {
+      "dataset_id": "EXP-004A-1H-SOL",
+      "slice": "1h:SOL",
+      "dataset_path": "data/exp004a/EXP-004A-1H-SOL.jsonl",
+      "exists": true,
+      "bytes": 4296,
+      "sha256": "b617d5492bb89ced9f0c3157a0a6ef50ccf6e1dcbb2167f2d7a5e8d16caa049e",
+      "published_rows": 14,
+      "declared_row_count": 2160,
+      "declared_coverage_required": 0.9,
+      "fraction_of_declared": 0.006481,
+      "coverage_status": "BELOW_DECLARED",
+      "manifest_exists": true,
+      "manifest_sha256": "a72d0940099435004c9c95b27fdb9d9eaa740d18768c1ffa7162da05194f44f4"
+    }
+  ],
+  "deferred_slices": [
+    "EXP-004A-ST6-TAPE: timeframe '4h slot, 3 rounds of 15s' is not a bar series"
+  ],
+  "notes": [
+    "the provenance controls did not pass: status 'BLOCKED', failed controls ['NO_DATASET_PUBLISHED']; the freeze or the contract does not bind, and nothing is captured",
+    "these datasets hold fewer bars than the declaration promises over its whole period: [('EXP-004A-1H-BTC', 14, 2160), ('EXP-004A-1H-ETH', 14, 2160), ('EXP-004A-1H-SOL', 14, 2160)]. The frozen extractor writes a dataset once and does not enforce the declared coverage, so the file cannot be extended by running it again. The published rows are the store's own rows and are admissible; the *dataset the declaration describes* is not complete, and this attempt does not claim it is."
+  ],
+  "gates": {
+    "C_004": "PASS",
+    "C_013": "TIME_PROOF_WEAK",
+    "C_015": "PASS (provenance of the declaration chain); unchanged by this runner",
+    "C_016": "UNREACHABLE_UNDER_DECLARED_COST_MODEL",
+    "PAPER_VALIDATION": "NOT_PASS",
+    "CERTIFICATION": "BLOCKED",
+    "PROMOTION": "NO_PROMOTION"
+  },
+  "economic_executions": 0,
+  "not_a_certification": "this runner moves bytes and names reasons. It does not admit a day, does not recompute cost, does not validate a strategy and does not promote anything."
+}

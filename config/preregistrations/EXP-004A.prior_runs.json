@@ -1,0 +1,45 @@
+{
+  "experiment_id": "EXP-004A",
+  "inventory_completed": true,
+  "inventory_method": "walked reports/ai-bots/, reports/, data/ and the git log on 2026-10-21; every run directory was matched on a separator boundary, not a bare prefix",
+  "inventory_utc": "2026-10-21T09:00:00Z",
+  "executions": {
+    "EXP-004A": 0
+  },
+  "runs": [],
+  "identifier_check": {
+    "discover_existing_runs": [],
+    "neighbours_not_confused": [
+      "EXP-004AB would not match EXP-004A",
+      "EXP-004 is the parent identifier and is also unspent"
+    ]
+  },
+  "consumed_windows": [
+    {
+      "window": "2026-08-06/2026-08-20",
+      "consumed_by": ["EXP-003K control", "EXP-003K real"],
+      "note": "EXP-003N labels this CLOSED because N produced no row at or after 2026-08-06; the window itself had already been read by K before N ran"
+    },
+    {
+      "window": "2026-08-20/2026-10-18",
+      "consumed_by": ["EXP-003J", "EXP-003K real"],
+      "note": "J's 505 closes are K's real arm: one measurement, not two"
+    },
+    {
+      "window": "2026-03-01/2026-10-14",
+      "consumed_by": ["WP-EDGE-06 trend", "WP-EDGE-07 (preregistered before fetch)"],
+      "note": "EDGE-06 read the window first; EDGE-07's preregistration makes its own run honest but does not restore the window"
+    }
+  ],
+  "duplicate_measurements": [
+    {
+      "experiments": ["EXP-003J", "EXP-003K"],
+      "verdict": "ONE_OBSERVATION",
+      "evidence": "identical net_usdt -225.401044 at OOS over the identical 175 trades"
+    }
+  ],
+  "independent_observation_days": {
+    "method": "counted as distinct (calendar day, bytes digest) pairs across experiments; see src/trading_bot/research/prospective/independence.py",
+    "note": "two experiments reading the same day add zero observations"
+  }
+}

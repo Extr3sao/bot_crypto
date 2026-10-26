@@ -1,0 +1,26 @@
+2026-10-25 14:28:43 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=5ca4358ada1c475e8e73b5e44b91726d
+2026-10-25 14:28:43 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=5ca4358ada1c475e8e73b5e44b91726d symbol=BTC/USDT
+2026-10-25 14:28:43 [info     ] scanner.pair.processed         active=True rank_score=0.6566666666666667 rejection_reason=None scan_iteration_id=5ca4358ada1c475e8e73b5e44b91726d symbol=ETH/USDT
+2026-10-25 14:28:43 [info     ] scanner.pair.processed         active=True rank_score=0.524 rejection_reason=None scan_iteration_id=5ca4358ada1c475e8e73b5e44b91726d symbol=SOL/USDT
+2026-10-25 14:28:43 [info     ] scanner.pair.processed         active=False rejection_reason=volume_below_threshold scan_iteration_id=5ca4358ada1c475e8e73b5e44b91726d symbol=AVAX/USDT
+2026-10-25 14:28:43 [info     ] scanner.pair.processed         active=False rejection_reason=spread_above_threshold scan_iteration_id=5ca4358ada1c475e8e73b5e44b91726d symbol=MATIC/USDT
+2026-10-25 14:28:43 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2 early_exit=None pairs_active=3 pairs_inactive=2 pairs_processed=5 scan_iteration_id=5ca4358ada1c475e8e73b5e44b91726d scanner_errors=0
+
+==============================================================================
+Market scanner iteration -- DEMO mode (mode=paper, synthetic data)
+==============================================================================
+
+  SYMBOL               LAST     VOL_24H_USDT   SPR_BPS    ATR%   SCORE  STATUS
+  ----------------------------------------------------------------------------
+  BTC/USDT           100.00       50,000,000      5.00    1.00   0.767  ACTIVE
+  ETH/USDT           100.00       30,000,000      8.00    1.00   0.657  ACTIVE
+  SOL/USDT            50.00        8,000,000     12.00    2.00   0.524  ACTIVE
+  AVAX/USDT            0.00                0      0.00     n/a   0.000  INACTIVE (volume_below_threshold)
+  MATIC/USDT           0.00                0      0.00     n/a   0.000  INACTIVE (spread_above_threshold)
+
+Counters (pine contract: spec section 10):
+  pairs_processed:  5
+  pairs_active:     3
+  pairs_inactive:   2
+  scanner_errors:   0
+

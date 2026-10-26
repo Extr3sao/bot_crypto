@@ -1,0 +1,68 @@
+{
+  "rev": "96e211bd",
+  "entrypoint": "place-order-futures",
+  "rows": [
+    {
+      "gate": "GATE-001",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-002",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-003",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-004",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-005",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-006",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-007",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-008",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-009",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    },
+    {
+      "gate": "GATE-010",
+      "broker_calls": 1,
+      "gate_validations": 0,
+      "exit_code": 0
+    }
+  ],
+  "all_sent_with_a_rejecting_gate": true,
+  "gate_never_consulted": true
+}

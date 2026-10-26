@@ -1,0 +1,2402 @@
+{
+  "run_id": "paper-lab-continuous-02",
+  "measured_at_utc": "2026-10-11T23:01:44Z",
+  "coverage": {
+    "streams": {
+      "spot/BTCUSDT/depth_snapshot": {
+        "source": "re-read here",
+        "files": 5,
+        "files_carrying_this_run": 1,
+        "rows": 1,
+        "first_receive_time": 1790722759510,
+        "first_receive_utc": "2026-09-29T22:59:19Z",
+        "last_receive_time": 1790722759510,
+        "last_receive_utc": "2026-09-29T22:59:19Z",
+        "span_hours": 0.0,
+        "rows_with_exchange_event_time": 0
+      },
+      "spot/BTCUSDT/book_checkpoint": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 496,
+        "first_receive_time": 1790722788406,
+        "first_receive_utc": "2026-09-29T22:59:48Z",
+        "last_receive_time": 1790737718409,
+        "last_receive_utc": "2026-09-30T03:08:38Z",
+        "span_hours": 4.147223,
+        "rows_with_exchange_event_time": 496
+      },
+      "spot/BTCUSDT/agg_trade": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 91391,
+        "first_receive_time": 1790722759399,
+        "first_receive_utc": "2026-09-29T22:59:19Z",
+        "last_receive_time": 1790737715819,
+        "last_receive_utc": "2026-09-30T03:08:35Z",
+        "span_hours": 4.154561,
+        "rows_with_exchange_event_time": 91391
+      },
+      "spot/BTCUSDT/book_ticker": {
+        "source": "certified replay verification",
+        "certified_path": "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+        "files": 43,
+        "rows": 1241954,
+        "note": "row counts for the highest-volume streams come from the campaign's own replay verification, which counted them independently and matched them against the manifest; this script does not re-count ten million rows to re-derive a certified number"
+      },
+      "spot/BTCUSDT/depth_diff": {
+        "source": "certified replay verification",
+        "certified_path": "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+        "files": 43,
+        "rows": 149528,
+        "note": "row counts for the highest-volume streams come from the campaign's own replay verification, which counted them independently and matched them against the manifest; this script does not re-count ten million rows to re-derive a certified number"
+      },
+      "spot/ETHUSDT/depth_snapshot": {
+        "source": "re-read here",
+        "files": 5,
+        "files_carrying_this_run": 1,
+        "rows": 1,
+        "first_receive_time": 1790722759533,
+        "first_receive_utc": "2026-09-29T22:59:19Z",
+        "last_receive_time": 1790722759533,
+        "last_receive_utc": "2026-09-29T22:59:19Z",
+        "span_hours": 0.0,
+        "rows_with_exchange_event_time": 0
+      },
+      "spot/ETHUSDT/book_checkpoint": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 496,
+        "first_receive_time": 1790722788406,
+        "first_receive_utc": "2026-09-29T22:59:48Z",
+        "last_receive_time": 1790737718409,
+        "last_receive_utc": "2026-09-30T03:08:38Z",
+        "span_hours": 4.147223,
+        "rows_with_exchange_event_time": 496
+      },
+      "spot/ETHUSDT/agg_trade": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 72269,
+        "first_receive_time": 1790722760046,
+        "first_receive_utc": "2026-09-29T22:59:20Z",
+        "last_receive_time": 1790737717517,
+        "last_receive_utc": "2026-09-30T03:08:37Z",
+        "span_hours": 4.154853,
+        "rows_with_exchange_event_time": 72269
+      },
+      "spot/ETHUSDT/book_ticker": {
+        "source": "certified replay verification",
+        "certified_path": "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+        "files": 43,
+        "rows": 692423,
+        "note": "row counts for the highest-volume streams come from the campaign's own replay verification, which counted them independently and matched them against the manifest; this script does not re-count ten million rows to re-derive a certified number"
+      },
+      "spot/ETHUSDT/depth_diff": {
+        "source": "certified replay verification",
+        "certified_path": "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+        "files": 43,
+        "rows": 148397,
+        "note": "row counts for the highest-volume streams come from the campaign's own replay verification, which counted them independently and matched them against the manifest; this script does not re-count ten million rows to re-derive a certified number"
+      },
+      "perp/BTCUSDT/depth_snapshot": {
+        "source": "re-read here",
+        "files": 24,
+        "files_carrying_this_run": 8,
+        "rows": 10,
+        "first_receive_time": 1790722759464,
+        "first_receive_utc": "2026-09-29T22:59:19Z",
+        "last_receive_time": 1790736336495,
+        "last_receive_utc": "2026-09-30T02:45:36Z",
+        "span_hours": 3.771397,
+        "rows_with_exchange_event_time": 10
+      },
+      "perp/BTCUSDT/book_checkpoint": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 496,
+        "first_receive_time": 1790722788406,
+        "first_receive_utc": "2026-09-29T22:59:48Z",
+        "last_receive_time": 1790737718409,
+        "last_receive_utc": "2026-09-30T03:08:38Z",
+        "span_hours": 4.147223,
+        "rows_with_exchange_event_time": 496
+      },
+      "perp/BTCUSDT/funding": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 244,
+        "first_receive_time": 1790722758986,
+        "first_receive_utc": "2026-09-29T22:59:18Z",
+        "last_receive_time": 1790737668827,
+        "last_receive_utc": "2026-09-30T03:07:48Z",
+        "span_hours": 4.141623,
+        "rows_with_exchange_event_time": 244
+      },
+      "perp/BTCUSDT/mark_price": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 244,
+        "first_receive_time": 1790722758986,
+        "first_receive_utc": "2026-09-29T22:59:18Z",
+        "last_receive_time": 1790737668827,
+        "last_receive_utc": "2026-09-30T03:07:48Z",
+        "span_hours": 4.141623,
+        "rows_with_exchange_event_time": 244
+      },
+      "perp/BTCUSDT/open_interest": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 244,
+        "first_receive_time": 1790722758748,
+        "first_receive_utc": "2026-09-29T22:59:18Z",
+        "last_receive_time": 1790737668595,
+        "last_receive_utc": "2026-09-30T03:07:48Z",
+        "span_hours": 4.141624,
+        "rows_with_exchange_event_time": 244
+      },
+      "perp/BTCUSDT/book_ticker": {
+        "source": "certified replay verification",
+        "certified_path": "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+        "files": 43,
+        "rows": 5070497,
+        "note": "row counts for the highest-volume streams come from the campaign's own replay verification, which counted them independently and matched them against the manifest; this script does not re-count ten million rows to re-derive a certified number"
+      },
+      "perp/BTCUSDT/depth_diff": {
+        "source": "certified replay verification",
+        "certified_path": "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+        "files": 43,
+        "rows": 144802,
+        "note": "row counts for the highest-volume streams come from the campaign's own replay verification, which counted them independently and matched them against the manifest; this script does not re-count ten million rows to re-derive a certified number"
+      },
+      "perp/ETHUSDT/depth_snapshot": {
+        "source": "re-read here",
+        "files": 24,
+        "files_carrying_this_run": 8,
+        "rows": 11,
+        "first_receive_time": 1790722759484,
+        "first_receive_utc": "2026-09-29T22:59:19Z",
+        "last_receive_time": 1790736336511,
+        "last_receive_utc": "2026-09-30T02:45:36Z",
+        "span_hours": 3.771396,
+        "rows_with_exchange_event_time": 11
+      },
+      "perp/ETHUSDT/book_checkpoint": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 496,
+        "first_receive_time": 1790722788406,
+        "first_receive_utc": "2026-09-29T22:59:48Z",
+        "last_receive_time": 1790737718409,
+        "last_receive_utc": "2026-09-30T03:08:38Z",
+        "span_hours": 4.147223,
+        "rows_with_exchange_event_time": 496
+      },
+      "perp/ETHUSDT/funding": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 244,
+        "first_receive_time": 1790722759557,
+        "first_receive_utc": "2026-09-29T22:59:19Z",
+        "last_receive_time": 1790737669299,
+        "last_receive_utc": "2026-09-30T03:07:49Z",
+        "span_hours": 4.141595,
+        "rows_with_exchange_event_time": 244
+      },
+      "perp/ETHUSDT/mark_price": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 244,
+        "first_receive_time": 1790722759557,
+        "first_receive_utc": "2026-09-29T22:59:19Z",
+        "last_receive_time": 1790737669299,
+        "last_receive_utc": "2026-09-30T03:07:49Z",
+        "span_hours": 4.141595,
+        "rows_with_exchange_event_time": 244
+      },
+      "perp/ETHUSDT/open_interest": {
+        "source": "re-read here",
+        "files": 43,
+        "files_carrying_this_run": 18,
+        "rows": 244,
+        "first_receive_time": 1790722759238,
+        "first_receive_utc": "2026-09-29T22:59:19Z",
+        "last_receive_time": 1790737669060,
+        "last_receive_utc": "2026-09-30T03:07:49Z",
+        "span_hours": 4.141617,
+        "rows_with_exchange_event_time": 244
+      },
+      "perp/ETHUSDT/book_ticker": {
+        "source": "certified replay verification",
+        "certified_path": "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+        "files": 43,
+        "rows": 3815872,
+        "note": "row counts for the highest-volume streams come from the campaign's own replay verification, which counted them independently and matched them against the manifest; this script does not re-count ten million rows to re-derive a certified number"
+      },
+      "perp/ETHUSDT/depth_diff": {
+        "source": "certified replay verification",
+        "certified_path": "reports/microstructure-forward-continuous/reports/REPLAY_VERIFICATION.json",
+        "files": 43,
+        "rows": 144301,
+        "note": "row counts for the highest-volume streams come from the campaign's own replay verification, which counted them independently and matched them against the manifest; this script does not re-count ten million rows to re-derive a certified number"
+      }
+    },
+    "truncated_files": [
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 3
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/agg_trade/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 612
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 3
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/agg_trade/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 346
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 3
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/funding/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 2
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/mark_price/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 2
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/open_interest/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 2
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 3
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/funding/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 2
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/mark_price/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 2
+      },
+      {
+        "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/open_interest/2026-09-30/234500.jsonl.gz",
+        "error": "EOFError",
+        "rows_read_before_truncation": 2
+      }
+    ],
+    "provenance_note": "every stream row carries the source of its count: 're-read here' or 'certified replay verification'"
+  },
+  "truncation_scan": [
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 1298,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 3,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 6930,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/agg_trade/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 612,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 1298,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 3,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2734,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/agg_trade/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 346,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 1272,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 3,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 22750,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/funding/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/mark_price/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/open_interest/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 1267,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 3,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 16071,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/funding/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/mark_price/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2,
+      "run_id": "paper-lab-continuous-02"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/open_interest/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2,
+      "run_id": "paper-lab-continuous-02"
+    }
+  ],
+  "books": [
+    {
+      "market": "spot",
+      "symbol": "BTCUSDT",
+      "snapshot_rows": 1,
+      "diff_rows": 149528,
+      "rows_rejected": 0,
+      "checkpoint_rows": 496,
+      "checkpoints_reproduced": 496,
+      "checkpoint_mismatches": 0,
+      "truncated_segments": [
+        {
+          "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+          "error": "EOFError",
+          "rows_read_before_truncation": 1298
+        },
+        {
+          "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "error": "EOFError",
+          "rows_read_before_truncation": 3
+        }
+      ],
+      "stream_order_inversions": {},
+      "stream_order_verified": true,
+      "measurement_qualifier": "the rows that could be read were measured; a truncated tail is reported here rather than silently ending the sample",
+      "syncer_counters": {
+        "applied": 149525,
+        "buffered": 3,
+        "duplicates": 0,
+        "out_of_order": 0,
+        "gaps": 0,
+        "malformed": 0,
+        "resnapshots": 1,
+        "crossed_book_events": 0,
+        "invalidations": 0,
+        "snapshot_mismatches": 1
+      },
+      "checkpoint_health_mix": {
+        "HEALTHY": 494,
+        "STALE": 2
+      },
+      "book_levels_median": 6576,
+      "top_of_book_spread_bps": {
+        "n": 496,
+        "median": 0.001198,
+        "mean": 0.001197,
+        "p05": 0.001194,
+        "p25": 0.001195,
+        "p75": 0.001199,
+        "p95": 0.0012,
+        "p99": 0.0012,
+        "min": 0.001193,
+        "max": 0.0012,
+        "stdev": 2e-06
+      },
+      "sizes": {
+        "50": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001197,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.0012,
+            "min": 0.001193,
+            "max": 0.0012,
+            "stdev": 2e-06
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001197,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.0012,
+            "min": 0.001193,
+            "max": 0.0012,
+            "stdev": 2e-06
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": -0.0,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": -0.0,
+            "max": 0.0,
+            "stdev": 0.0
+          }
+        },
+        "200": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001197,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.0012,
+            "min": 0.001193,
+            "max": 0.0012,
+            "stdev": 2e-06
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001197,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.0012,
+            "min": 0.001193,
+            "max": 0.0012,
+            "stdev": 2e-06
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": -0.0,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": -0.0,
+            "max": 0.0,
+            "stdev": 0.0
+          }
+        },
+        "1000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001312,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.001208,
+            "min": 0.001193,
+            "max": 0.037518,
+            "stdev": 0.001829
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001197,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.0012,
+            "min": 0.001193,
+            "max": 0.0012,
+            "stdev": 2e-06
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.000115,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 8e-06,
+            "min": 0.0,
+            "max": 0.036322,
+            "stdev": 0.001829
+          }
+        },
+        "5000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.004791,
+            "p05": 0.001194,
+            "p25": 0.001196,
+            "p75": 0.001199,
+            "p95": 0.002158,
+            "p99": 0.103905,
+            "min": 0.001193,
+            "max": 0.228127,
+            "stdev": 0.020372
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001197,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.0012,
+            "min": 0.001193,
+            "max": 0.0012,
+            "stdev": 2e-06
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.003593,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.000963,
+            "p99": 0.102708,
+            "min": 0.0,
+            "max": 0.226932,
+            "stdev": 0.020372
+          }
+        },
+        "20000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.042872,
+            "p05": 0.001194,
+            "p25": 0.001197,
+            "p75": 0.0012,
+            "p95": 0.357218,
+            "p99": 0.594846,
+            "min": 0.001193,
+            "max": 0.679873,
+            "stdev": 0.120407
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001197,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.0012,
+            "min": 0.001193,
+            "max": 0.0012,
+            "stdev": 2e-06
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.041674,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.356018,
+            "p99": 0.593649,
+            "min": 0.0,
+            "max": 0.678675,
+            "stdev": 0.120407
+          }
+        },
+        "100000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.038679,
+            "mean": 0.242823,
+            "p05": 0.001196,
+            "p25": 0.001199,
+            "p75": 0.42575,
+            "p95": 0.930928,
+            "p99": 1.222658,
+            "min": 0.001193,
+            "max": 1.406256,
+            "stdev": 0.32593
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.001198,
+            "mean": 0.001197,
+            "p05": 0.001194,
+            "p25": 0.001195,
+            "p75": 0.001199,
+            "p95": 0.0012,
+            "p99": 0.0012,
+            "min": 0.001193,
+            "max": 0.0012,
+            "stdev": 2e-06
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.037486,
+            "mean": 0.241626,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.424553,
+            "p95": 0.929729,
+            "p99": 1.221459,
+            "min": -0.0,
+            "max": 1.405058,
+            "stdev": 0.32593
+          }
+        }
+      },
+      "first_checkpoint_utc": "2026-09-29T22:59:48Z",
+      "last_checkpoint_utc": "2026-09-30T03:08:38Z"
+    },
+    {
+      "market": "spot",
+      "symbol": "ETHUSDT",
+      "snapshot_rows": 1,
+      "diff_rows": 148397,
+      "rows_rejected": 0,
+      "checkpoint_rows": 496,
+      "checkpoints_reproduced": 496,
+      "checkpoint_mismatches": 0,
+      "truncated_segments": [
+        {
+          "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+          "error": "EOFError",
+          "rows_read_before_truncation": 1298
+        },
+        {
+          "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "error": "EOFError",
+          "rows_read_before_truncation": 3
+        }
+      ],
+      "stream_order_inversions": {},
+      "stream_order_verified": true,
+      "measurement_qualifier": "the rows that could be read were measured; a truncated tail is reported here rather than silently ending the sample",
+      "syncer_counters": {
+        "applied": 148394,
+        "buffered": 3,
+        "duplicates": 0,
+        "out_of_order": 0,
+        "gaps": 0,
+        "malformed": 0,
+        "resnapshots": 1,
+        "crossed_book_events": 0,
+        "invalidations": 0,
+        "snapshot_mismatches": 1
+      },
+      "checkpoint_health_mix": {
+        "HEALTHY": 489,
+        "STALE": 7
+      },
+      "book_levels_median": 7535,
+      "top_of_book_spread_bps": {
+        "n": 496,
+        "median": 0.037406,
+        "mean": 0.037389,
+        "p05": 0.037237,
+        "p25": 0.037347,
+        "p75": 0.037433,
+        "p95": 0.037472,
+        "p99": 0.037489,
+        "min": 0.037195,
+        "max": 0.037501,
+        "stdev": 6.8e-05
+      },
+      "sizes": {
+        "50": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037406,
+            "mean": 0.037489,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037437,
+            "p95": 0.037472,
+            "p99": 0.037496,
+            "min": 0.037195,
+            "max": 0.070853,
+            "stdev": 0.001563
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037406,
+            "mean": 0.037389,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037433,
+            "p95": 0.037472,
+            "p99": 0.037489,
+            "min": 0.037195,
+            "max": 0.037501,
+            "stdev": 6.8e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.0001,
+            "p05": -0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": -0.0,
+            "max": 0.033426,
+            "stdev": 0.001559
+          }
+        },
+        "200": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037407,
+            "mean": 0.039649,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037437,
+            "p95": 0.037474,
+            "p99": 0.077022,
+            "min": 0.037195,
+            "max": 0.367989,
+            "stdev": 0.022517
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037406,
+            "mean": 0.037389,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037433,
+            "p95": 0.037472,
+            "p99": 0.037489,
+            "min": 0.037195,
+            "max": 0.037501,
+            "stdev": 6.8e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.00226,
+            "p05": -0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0396,
+            "min": -0.0,
+            "max": 0.330561,
+            "stdev": 0.022513
+          }
+        },
+        "1000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037408,
+            "mean": 0.044919,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037439,
+            "p95": 0.037483,
+            "p99": 0.388901,
+            "min": 0.037195,
+            "max": 0.737891,
+            "stdev": 0.055269
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037406,
+            "mean": 0.037389,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037433,
+            "p95": 0.037472,
+            "p99": 0.037489,
+            "min": 0.037195,
+            "max": 0.037501,
+            "stdev": 6.8e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.00753,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.351559,
+            "min": 0.0,
+            "max": 0.700463,
+            "stdev": 0.055264
+          }
+        },
+        "5000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037411,
+            "mean": 0.072588,
+            "p05": 0.037245,
+            "p25": 0.037351,
+            "p75": 0.037454,
+            "p95": 0.344453,
+            "p99": 0.700842,
+            "min": 0.037195,
+            "max": 1.377934,
+            "stdev": 0.136921
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037406,
+            "mean": 0.037389,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037433,
+            "p95": 0.037472,
+            "p99": 0.037489,
+            "min": 0.037195,
+            "max": 0.037501,
+            "stdev": 6.8e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.035199,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.307226,
+            "p99": 0.66337,
+            "min": 0.0,
+            "max": 1.340533,
+            "stdev": 0.136916
+          }
+        },
+        "20000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037431,
+            "mean": 0.163204,
+            "p05": 0.037273,
+            "p25": 0.037379,
+            "p75": 0.146112,
+            "p95": 0.731127,
+            "p99": 1.112026,
+            "min": 0.037195,
+            "max": 1.889046,
+            "stdev": 0.257914
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037406,
+            "mean": 0.037389,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037433,
+            "p95": 0.037472,
+            "p99": 0.037489,
+            "min": 0.037195,
+            "max": 0.037501,
+            "stdev": 6.8e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.125815,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.108701,
+            "p95": 0.693659,
+            "p99": 1.074604,
+            "min": 0.0,
+            "max": 1.851645,
+            "stdev": 0.257909
+          }
+        },
+        "100000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.685416,
+            "mean": 0.773878,
+            "p05": 0.177075,
+            "p25": 0.425363,
+            "p75": 1.10789,
+            "p95": 1.60359,
+            "p99": 1.846495,
+            "min": 0.037287,
+            "max": 2.492082,
+            "stdev": 0.452557
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037406,
+            "mean": 0.037389,
+            "p05": 0.037237,
+            "p25": 0.037347,
+            "p75": 0.037433,
+            "p95": 0.037472,
+            "p99": 0.037489,
+            "min": 0.037195,
+            "max": 0.037501,
+            "stdev": 6.8e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.647992,
+            "mean": 0.73649,
+            "p05": 0.139724,
+            "p25": 0.387903,
+            "p75": 1.070447,
+            "p95": 1.566266,
+            "p99": 1.809044,
+            "min": 0.0,
+            "max": 2.454681,
+            "stdev": 0.452553
+          }
+        }
+      },
+      "first_checkpoint_utc": "2026-09-29T22:59:48Z",
+      "last_checkpoint_utc": "2026-09-30T03:08:38Z"
+    },
+    {
+      "market": "perp",
+      "symbol": "BTCUSDT",
+      "snapshot_rows": 10,
+      "diff_rows": 144802,
+      "rows_rejected": 0,
+      "checkpoint_rows": 496,
+      "checkpoints_reproduced": 496,
+      "checkpoint_mismatches": 0,
+      "truncated_segments": [
+        {
+          "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+          "error": "EOFError",
+          "rows_read_before_truncation": 1272
+        },
+        {
+          "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "error": "EOFError",
+          "rows_read_before_truncation": 3
+        }
+      ],
+      "stream_order_inversions": {},
+      "stream_order_verified": true,
+      "measurement_qualifier": "the rows that could be read were measured; a truncated tail is reported here rather than silently ending the sample",
+      "syncer_counters": {
+        "applied": 144783,
+        "buffered": 5,
+        "duplicates": 8,
+        "out_of_order": 0,
+        "gaps": 6,
+        "malformed": 0,
+        "resnapshots": 10,
+        "crossed_book_events": 0,
+        "invalidations": 0,
+        "snapshot_mismatches": 3
+      },
+      "checkpoint_health_mix": {
+        "HEALTHY": 488,
+        "STALE": 8
+      },
+      "book_levels_median": 14574,
+      "top_of_book_spread_bps": {
+        "n": 496,
+        "median": 0.011986,
+        "mean": 0.011978,
+        "p05": 0.01194,
+        "p25": 0.01196,
+        "p75": 0.011993,
+        "p95": 0.012002,
+        "p99": 0.012007,
+        "min": 0.011931,
+        "max": 0.01201,
+        "stdev": 2e-05
+      },
+      "sizes": {
+        "50": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011978,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012007,
+            "min": 0.011931,
+            "max": 0.01201,
+            "stdev": 2e-05
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011978,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012007,
+            "min": 0.011931,
+            "max": 0.01201,
+            "stdev": 2e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.0,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": -0.0,
+            "max": 0.0,
+            "stdev": 0.0
+          }
+        },
+        "200": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011978,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012007,
+            "min": 0.011931,
+            "max": 0.01201,
+            "stdev": 2e-05
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011978,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012007,
+            "min": 0.011931,
+            "max": 0.01201,
+            "stdev": 2e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.0,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": -0.0,
+            "max": 0.0,
+            "stdev": 0.0
+          }
+        },
+        "1000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011996,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012008,
+            "min": 0.011931,
+            "max": 0.020976,
+            "stdev": 0.000404
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011978,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012007,
+            "min": 0.011931,
+            "max": 0.01201,
+            "stdev": 2e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 1.8e-05,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": 0.0,
+            "max": 0.008988,
+            "stdev": 0.000403
+          }
+        },
+        "5000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.012852,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012003,
+            "p99": 0.037992,
+            "min": 0.011931,
+            "max": 0.259042,
+            "stdev": 0.011659
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011978,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012007,
+            "min": 0.011931,
+            "max": 0.01201,
+            "stdev": 2e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.000874,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.025995,
+            "min": 0.0,
+            "max": 0.24705,
+            "stdev": 0.011658
+          }
+        },
+        "20000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.011987,
+            "mean": 0.022673,
+            "p05": 0.01194,
+            "p25": 0.011962,
+            "p75": 0.011995,
+            "p95": 0.040704,
+            "p99": 0.320831,
+            "min": 0.011931,
+            "max": 0.516034,
+            "stdev": 0.055553
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011978,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012007,
+            "min": 0.011931,
+            "max": 0.01201,
+            "stdev": 2e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.010695,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.028737,
+            "p99": 0.308847,
+            "min": 0.0,
+            "max": 0.504037,
+            "stdev": 0.055551
+          }
+        },
+        "100000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.011991,
+            "mean": 0.088914,
+            "p05": 0.011945,
+            "p25": 0.011977,
+            "p75": 0.030584,
+            "p95": 0.478495,
+            "p99": 0.725789,
+            "min": 0.011931,
+            "max": 1.099795,
+            "stdev": 0.170674
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.011986,
+            "mean": 0.011978,
+            "p05": 0.01194,
+            "p25": 0.01196,
+            "p75": 0.011993,
+            "p95": 0.012002,
+            "p99": 0.012007,
+            "min": 0.011931,
+            "max": 0.01201,
+            "stdev": 2e-05
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.076936,
+            "p05": -0.0,
+            "p25": 0.0,
+            "p75": 0.018611,
+            "p95": 0.466509,
+            "p99": 0.713804,
+            "min": -0.0,
+            "max": 1.087797,
+            "stdev": 0.170672
+          }
+        }
+      },
+      "first_checkpoint_utc": "2026-09-29T22:59:48Z",
+      "last_checkpoint_utc": "2026-09-30T03:08:38Z"
+    },
+    {
+      "market": "perp",
+      "symbol": "ETHUSDT",
+      "snapshot_rows": 11,
+      "diff_rows": 144301,
+      "rows_rejected": 0,
+      "checkpoint_rows": 496,
+      "checkpoints_reproduced": 496,
+      "checkpoint_mismatches": 0,
+      "truncated_segments": [
+        {
+          "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+          "error": "EOFError",
+          "rows_read_before_truncation": 1267
+        },
+        {
+          "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "error": "EOFError",
+          "rows_read_before_truncation": 3
+        }
+      ],
+      "stream_order_inversions": {},
+      "stream_order_verified": true,
+      "measurement_qualifier": "the rows that could be read were measured; a truncated tail is reported here rather than silently ending the sample",
+      "syncer_counters": {
+        "applied": 144254,
+        "buffered": 30,
+        "duplicates": 10,
+        "out_of_order": 0,
+        "gaps": 7,
+        "malformed": 0,
+        "resnapshots": 11,
+        "crossed_book_events": 0,
+        "invalidations": 1,
+        "snapshot_mismatches": 4
+      },
+      "checkpoint_health_mix": {
+        "HEALTHY": 489,
+        "STALE": 7
+      },
+      "book_levels_median": 12439,
+      "top_of_book_spread_bps": {
+        "n": 496,
+        "median": 0.037427,
+        "mean": 0.037558,
+        "p05": 0.037253,
+        "p25": 0.037365,
+        "p75": 0.037453,
+        "p95": 0.037493,
+        "p99": 0.037511,
+        "min": 0.037211,
+        "max": 0.075008,
+        "stdev": 0.002377
+      },
+      "sizes": {
+        "50": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.037558,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037511,
+            "min": 0.037211,
+            "max": 0.075008,
+            "stdev": 0.002377
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.037558,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037511,
+            "min": 0.037211,
+            "max": 0.075008,
+            "stdev": 0.002377
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": -0.0,
+            "p05": -0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": -0.0,
+            "max": 0.0,
+            "stdev": 0.0
+          }
+        },
+        "200": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.037614,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037511,
+            "min": 0.037211,
+            "max": 0.102666,
+            "stdev": 0.003376
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.037558,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037511,
+            "min": 0.037211,
+            "max": 0.075008,
+            "stdev": 0.002377
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 5.6e-05,
+            "p05": -0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": -0.0,
+            "max": 0.027889,
+            "stdev": 0.001251
+          }
+        },
+        "1000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.038002,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037517,
+            "min": 0.037211,
+            "max": 0.171619,
+            "stdev": 0.007804
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.037558,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037511,
+            "min": 0.037211,
+            "max": 0.075008,
+            "stdev": 0.002377
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.000444,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "min": 0.0,
+            "max": 0.134204,
+            "stdev": 0.00675
+          }
+        },
+        "5000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.041839,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037459,
+            "p95": 0.037503,
+            "p99": 0.219334,
+            "min": 0.037211,
+            "max": 0.395395,
+            "stdev": 0.030065
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.037558,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037511,
+            "min": 0.037211,
+            "max": 0.075008,
+            "stdev": 0.002377
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.004281,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.0,
+            "p99": 0.181878,
+            "min": 0.0,
+            "max": 0.358141,
+            "stdev": 0.029582
+          }
+        },
+        "20000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037432,
+            "mean": 0.064589,
+            "p05": 0.037261,
+            "p25": 0.037376,
+            "p75": 0.037475,
+            "p95": 0.278908,
+            "p99": 0.552982,
+            "min": 0.037211,
+            "max": 0.640033,
+            "stdev": 0.098745
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.037558,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037511,
+            "min": 0.037211,
+            "max": 0.075008,
+            "stdev": 0.002377
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.027031,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p75": 0.0,
+            "p95": 0.241476,
+            "p99": 0.515538,
+            "min": 0.0,
+            "max": 0.602575,
+            "stdev": 0.098516
+          }
+        },
+        "100000": {
+          "checkpoints_priced": 496,
+          "checkpoints_unfillable_within_recorded_book": 0,
+          "round_trip_microstructure_bps": {
+            "n": 496,
+            "median": 0.037486,
+            "mean": 0.21835,
+            "p05": 0.037336,
+            "p25": 0.037424,
+            "p75": 0.373879,
+            "p95": 0.831377,
+            "p99": 1.038428,
+            "min": 0.037211,
+            "max": 1.242005,
+            "stdev": 0.280137
+          },
+          "spread_legs_bps": {
+            "n": 496,
+            "median": 0.037427,
+            "mean": 0.037558,
+            "p05": 0.037253,
+            "p25": 0.037365,
+            "p75": 0.037453,
+            "p95": 0.037493,
+            "p99": 0.037511,
+            "min": 0.037211,
+            "max": 0.075008,
+            "stdev": 0.002377
+          },
+          "walk_beyond_best_legs_bps": {
+            "n": 496,
+            "median": 0.0,
+            "mean": 0.180792,
+            "p05": -0.0,
+            "p25": 0.0,
+            "p75": 0.336508,
+            "p95": 0.793924,
+            "p99": 1.000991,
+            "min": -0.0,
+            "max": 1.204583,
+            "stdev": 0.280034
+          }
+        }
+      },
+      "first_checkpoint_utc": "2026-09-29T22:59:48Z",
+      "last_checkpoint_utc": "2026-09-30T03:08:38Z"
+    }
+  ],
+  "realised_trades": [
+    {
+      "market": "spot",
+      "symbol": "BTCUSDT",
+      "quote_clock": "receive_time (exchange event time absent on this stream)",
+      "quotes_available": 1241954,
+      "prints_joined": 91389,
+      "look_ahead_violations": 0,
+      "aggressor_side_mix": {
+        "sell": 47857,
+        "buy": 43532
+      },
+      "effective_half_spread_bps": {
+        "n": 91389,
+        "median": 0.032853,
+        "mean": 0.358143,
+        "p05": 0.000597,
+        "p25": 0.000599,
+        "p75": 0.452584,
+        "p95": 1.445401,
+        "p99": 3.762906,
+        "min": 0.000596,
+        "max": 11.10942,
+        "stdev": 0.784175
+      },
+      "effective_round_trip_bps": {
+        "estimate": 0.065705,
+        "method": "2 x median effective half spread actually paid by aggressors"
+      },
+      "print_notional_usdt": {
+        "n": 91389,
+        "median": 63.653124,
+        "mean": 1356.728761,
+        "p05": 5.839543,
+        "p25": 10.023844,
+        "p75": 458.898055,
+        "p95": 4050.997215,
+        "p99": 25429.897273,
+        "min": 0.833287,
+        "max": 870465.062292,
+        "stdev": 10269.879308
+      },
+      "print_notional_over_1000_usdt_pct": 18.5777
+    },
+    {
+      "market": "spot",
+      "symbol": "ETHUSDT",
+      "quote_clock": "receive_time (exchange event time absent on this stream)",
+      "quotes_available": 692423,
+      "prints_joined": 72269,
+      "look_ahead_violations": 0,
+      "aggressor_side_mix": {
+        "sell": 38110,
+        "buy": 34159
+      },
+      "effective_half_spread_bps": {
+        "n": 72269,
+        "median": 0.243592,
+        "mean": 0.643442,
+        "p05": 0.01867,
+        "p25": 0.018729,
+        "p75": 0.729243,
+        "p95": 2.29316,
+        "p99": 7.834807,
+        "min": 0.0,
+        "max": 13.107875,
+        "stdev": 1.271897
+      },
+      "effective_round_trip_bps": {
+        "estimate": 0.487184,
+        "method": "2 x median effective half spread actually paid by aggressors"
+      },
+      "print_notional_usdt": {
+        "n": 72269,
+        "median": 35.482538,
+        "mean": 955.434527,
+        "p05": 5.34528,
+        "p25": 14.71052,
+        "p75": 299.737812,
+        "p95": 3696.642072,
+        "p99": 17679.511912,
+        "min": 0.266862,
+        "max": 258853.37079,
+        "stdev": 5265.635391
+      },
+      "print_notional_over_1000_usdt_pct": 13.6864
+    }
+  ],
+  "conditions": {
+    "network_delay_ms": {
+      "perp/BTCUSDT/book_ticker": {
+        "n": 466290,
+        "median": 187.0,
+        "mean": 1027.485891,
+        "p05": 94.0,
+        "p25": 104.0,
+        "p75": 544.0,
+        "p95": 5151.0,
+        "p99": 15160.0,
+        "min": 85.0,
+        "max": 23106.0,
+        "stdev": 2666.490067
+      },
+      "perp/ETHUSDT/book_ticker": {
+        "n": 359106,
+        "median": 162.0,
+        "mean": 974.077983,
+        "p05": 94.0,
+        "p25": 103.0,
+        "p75": 433.0,
+        "p95": 5915.0,
+        "p99": 15489.0,
+        "min": 85.0,
+        "max": 23105.0,
+        "stdev": 2720.823077
+      },
+      "spot/BTCUSDT/agg_trade": {
+        "n": 9392,
+        "median": 113.0,
+        "mean": 256.908113,
+        "p05": 95.0,
+        "p25": 103.0,
+        "p75": 155.0,
+        "p95": 381.0,
+        "p99": 698.0,
+        "min": 87.0,
+        "max": 22419.0,
+        "stdev": 1313.521733
+      },
+      "spot/ETHUSDT/agg_trade": {
+        "n": 7128,
+        "median": 116.0,
+        "mean": 386.24537,
+        "p05": 97.0,
+        "p25": 105.0,
+        "p75": 164.0,
+        "p95": 502.65,
+        "p99": 16961.0,
+        "min": 88.0,
+        "max": 22543.0,
+        "stdev": 2020.017653
+      }
+    },
+    "network_delay_sampling": "first 3 files of each stream, ~2700 s of the window",
+    "network_delay_published_by_the_manifest": {
+      "perp/BTCUSDT/agg_trade": null,
+      "perp/BTCUSDT/book_checkpoint": 176.0,
+      "perp/BTCUSDT/book_ticker": 214.0,
+      "perp/BTCUSDT/depth_diff": 103.0,
+      "perp/BTCUSDT/depth_snapshot": 119.5,
+      "perp/BTCUSDT/funding": 627.0,
+      "perp/BTCUSDT/mark_price": 627.0,
+      "perp/BTCUSDT/open_interest": 5362.0,
+      "perp/ETHUSDT/agg_trade": null,
+      "perp/ETHUSDT/book_checkpoint": 168.0,
+      "perp/ETHUSDT/book_ticker": 185.0,
+      "perp/ETHUSDT/depth_diff": 98.0,
+      "perp/ETHUSDT/depth_snapshot": 119.0,
+      "perp/ETHUSDT/funding": 691.0,
+      "perp/ETHUSDT/mark_price": 691.0,
+      "perp/ETHUSDT/open_interest": 5107.0,
+      "spot/BTCUSDT/agg_trade": 114.0,
+      "spot/BTCUSDT/book_checkpoint": 160.0,
+      "spot/BTCUSDT/book_ticker": null,
+      "spot/BTCUSDT/depth_diff": 98.0,
+      "spot/BTCUSDT/depth_snapshot": null,
+      "spot/ETHUSDT/agg_trade": 119.0,
+      "spot/ETHUSDT/book_checkpoint": 168.0,
+      "spot/ETHUSDT/book_ticker": null,
+      "spot/ETHUSDT/depth_diff": 103.0,
+      "spot/ETHUSDT/depth_snapshot": null,
+      "spot/GLOBAL/gap": null,
+      "spot/GLOBAL/heartbeat": null,
+      "spot/GLOBAL/lifecycle": null
+    },
+    "funding_rate_bps_per_interval": {
+      "n": 488,
+      "median": 0.5985,
+      "mean": 0.583974,
+      "p05": 0.27847,
+      "p25": 0.50095,
+      "p75": 0.6771,
+      "p95": 0.850365,
+      "p99": 0.8643,
+      "min": 0.217,
+      "max": 0.8662,
+      "stdev": 0.156224
+    },
+    "funding_samples": 488,
+    "mark_price_rows": 488,
+    "open_interest_rows": 488
+  },
+  "market_moves": {
+    "spot/BTCUSDT": {
+      "samples": 496,
+      "horizons": {
+        "5": {
+          "overlapping_windows": {
+            "n": 485,
+            "median": 5.059707,
+            "mean": 6.142057,
+            "p05": 0.57734,
+            "p25": 2.756799,
+            "p75": 8.875562,
+            "p95": 15.531176,
+            "p99": 18.980569,
+            "min": 0.0,
+            "max": 22.018479,
+            "stdev": 4.531041
+          },
+          "independent_windows": {
+            "n": 49,
+            "values_bps": [
+              14.212152,
+              5.210773,
+              8.585002,
+              3.329917,
+              10.260325,
+              3.228156,
+              5.780869,
+              0.64269,
+              6.688089,
+              5.631126,
+              7.419919,
+              2.229661,
+              2.229164,
+              6.097196,
+              7.772088,
+              10.868077,
+              4.285804,
+              12.457769,
+              6.390437,
+              15.649622,
+              1.251489,
+              10.203607,
+              2.539419,
+              7.949994,
+              4.074296,
+              5.274767,
+              3.594536,
+              3.250629,
+              17.399878,
+              22.018479,
+              1.684179,
+              0.479904,
+              11.037262,
+              0.239676,
+              1.198408,
+              3.541721,
+              9.159687,
+              6.080919,
+              0.966592,
+              13.764521,
+              10.752876,
+              7.42764,
+              10.550293,
+              14.874822,
+              5.50536,
+              5.995203,
+              4.073097,
+              5.036203,
+              3.598244
+            ]
+          },
+          "note": "overlapping windows are correlated and are not an effective sample size; the independent count is the honest one"
+        },
+        "30": {
+          "overlapping_windows": {
+            "n": 435,
+            "median": 9.575741,
+            "mean": 10.683814,
+            "p05": 1.096532,
+            "p25": 4.662316,
+            "p75": 15.048632,
+            "p95": 25.885067,
+            "p99": 32.237824,
+            "min": 0.072871,
+            "max": 34.684844,
+            "stdev": 7.538604
+          },
+          "independent_windows": {
+            "n": 8,
+            "values_bps": [
+              17.639908,
+              11.387428,
+              10.23742,
+              15.315034,
+              10.300778,
+              11.936801,
+              6.895225,
+              1.198954
+            ]
+          },
+          "note": "overlapping windows are correlated and are not an effective sample size; the independent count is the honest one"
+        }
+      }
+    },
+    "spot/ETHUSDT": {
+      "samples": 496,
+      "horizons": {
+        "5": {
+          "overlapping_windows": {
+            "n": 485,
+            "median": 6.365503,
+            "mean": 7.389409,
+            "p05": 0.799441,
+            "p25": 3.169188,
+            "p75": 10.965261,
+            "p95": 18.137943,
+            "p99": 21.554751,
+            "min": 0.0,
+            "max": 26.708454,
+            "stdev": 5.356182
+          },
+          "independent_windows": {
+            "n": 49,
+            "values_bps": [
+              15.176176,
+              1.973264,
+              9.756552,
+              11.272342,
+              13.78044,
+              1.156171,
+              7.348128,
+              2.388964,
+              7.575687,
+              5.788777,
+              5.486825,
+              1.120375,
+              2.240499,
+              8.777254,
+              11.588677,
+              7.260683,
+              3.370805,
+              16.185322,
+              10.024669,
+              18.31033,
+              2.133884,
+              7.825913,
+              6.782773,
+              5.991758,
+              0.898225,
+              7.709076,
+              7.217017,
+              0.449051,
+              18.224786,
+              26.708454,
+              0.262182,
+              1.011298,
+              11.724757,
+              1.79594,
+              5.910575,
+              8.272212,
+              3.29119,
+              6.131563,
+              3.217305,
+              12.312022,
+              6.819302,
+              6.702325,
+              5.507836,
+              18.969392,
+              1.945733,
+              11.073555,
+              2.354264,
+              6.130005,
+              4.263714
+            ]
+          },
+          "note": "overlapping windows are correlated and are not an effective sample size; the independent count is the honest one"
+        },
+        "30": {
+          "overlapping_windows": {
+            "n": 435,
+            "median": 14.084006,
+            "mean": 14.636354,
+            "p05": 0.812131,
+            "p25": 6.305307,
+            "p75": 20.971019,
+            "p95": 33.658753,
+            "p99": 38.553102,
+            "min": 0.0,
+            "max": 40.855424,
+            "stdev": 9.797394
+          },
+          "independent_windows": {
+            "n": 8,
+            "values_bps": [
+              3.281335,
+              11.115442,
+              17.065133,
+              5.498606,
+              7.59749,
+              14.607261,
+              19.073941,
+              21.995687
+            ]
+          },
+          "note": "overlapping windows are correlated and are not an effective sample size; the independent count is the honest one"
+        }
+      }
+    },
+    "perp/BTCUSDT": {
+      "samples": 496,
+      "horizons": {
+        "5": {
+          "overlapping_windows": {
+            "n": 485,
+            "median": 5.297216,
+            "mean": 6.288607,
+            "p05": 0.510816,
+            "p25": 2.750142,
+            "p75": 8.927083,
+            "p95": 15.867164,
+            "p99": 18.528165,
+            "min": 0.011947,
+            "max": 22.316719,
+            "stdev": 4.622021
+          },
+          "independent_windows": {
+            "n": 49,
+            "values_bps": [
+              14.107098,
+              5.627721,
+              8.884648,
+              4.927557,
+              10.659753,
+              4.062915,
+              5.984394,
+              1.207157,
+              6.405526,
+              5.656261,
+              8.497522,
+              2.547836,
+              1.387201,
+              7.96555,
+              6.750978,
+              11.043629,
+              3.885132,
+              12.825546,
+              7.122827,
+              15.886355,
+              1.689413,
+              10.521667,
+              2.063363,
+              8.375144,
+              3.153037,
+              4.401253,
+              1.858022,
+              4.412124,
+              18.016127,
+              21.144649,
+              2.879654,
+              0.108018,
+              11.978139,
+              1.450522,
+              0.731361,
+              0.755395,
+              11.186199,
+              5.940145,
+              0.359496,
+              12.642748,
+              10.091005,
+              5.88548,
+              11.765898,
+              15.7904,
+              5.03537,
+              5.601673,
+              5.190935,
+              4.965735,
+              3.420139
+            ]
+          },
+          "note": "overlapping windows are correlated and are not an effective sample size; the independent count is the honest one"
+        },
+        "30": {
+          "overlapping_windows": {
+            "n": 435,
+            "median": 9.479065,
+            "mean": 10.683596,
+            "p05": 0.827543,
+            "p25": 4.842781,
+            "p75": 15.236212,
+            "p95": 26.072924,
+            "p99": 32.881743,
+            "min": 0.011951,
+            "max": 34.537175,
+            "stdev": 7.645366
+          },
+          "independent_windows": {
+            "n": 8,
+            "values_bps": [
+              17.08646,
+              11.479047,
+              10.451839,
+              14.676615,
+              8.188305,
+              7.559091,
+              4.879724,
+              2.027214
+            ]
+          },
+          "note": "overlapping windows are correlated and are not an effective sample size; the independent count is the honest one"
+        }
+      }
+    },
+    "perp/ETHUSDT": {
+      "samples": 496,
+      "horizons": {
+        "5": {
+          "overlapping_windows": {
+            "n": 485,
+            "median": 6.353964,
+            "mean": 7.519554,
+            "p05": 0.784479,
+            "p25": 2.987789,
+            "p75": 10.921543,
+            "p95": 18.783648,
+            "p99": 21.814495,
+            "min": 0.037314,
+            "max": 25.6869,
+            "stdev": 5.48104
+          },
+          "independent_windows": {
+            "n": 49,
+            "values_bps": [
+              14.548629,
+              1.00575,
+              9.276179,
+              10.868008,
+              14.643061,
+              0.037314,
+              8.209124,
+              3.398382,
+              8.250409,
+              5.828627,
+              6.273327,
+              1.68141,
+              1.867919,
+              10.16338,
+              10.959191,
+              7.526328,
+              3.222645,
+              15.143819,
+              11.452974,
+              18.169209,
+              1.685396,
+              9.439811,
+              7.311518,
+              7.493513,
+              0.336956,
+              7.188628,
+              4.863804,
+              2.582814,
+              18.720877,
+              24.889613,
+              2.660018,
+              1.27415,
+              12.818086,
+              0.224591,
+              5.42749,
+              4.381801,
+              7.449542,
+              6.546229,
+              3.144248,
+              12.693278,
+              5.961051,
+              4.90838,
+              5.735503,
+              19.316858,
+              2.321041,
+              10.891391,
+              2.504912,
+              6.24515,
+              4.527757
+            ]
+          },
+          "note": "overlapping windows are correlated and are not an effective sample size; the independent count is the honest one"
+        },
+        "30": {
+          "overlapping_windows": {
+            "n": 435,
+            "median": 13.948432,
+            "mean": 14.761159,
+            "p05": 1.037143,
+            "p25": 6.215915,
+            "p75": 21.270436,
+            "p95": 34.07138,
+            "p99": 39.258557,
+            "min": 0.037344,
+            "max": 41.329315,
+            "stdev": 10.08891
+          },
+          "independent_windows": {
+            "n": 8,
+            "values_bps": [
+              2.685901,
+              11.828601,
+              18.604477,
+              3.069098,
+              6.813991,
+              8.054984,
+              14.86165,
+              22.081966
+            ]
+          },
+          "note": "overlapping windows are correlated and are not an effective sample size; the independent count is the honest one"
+        }
+      }
+    }
+  },
+  "truncated_segments_seen_during_measurement": [
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 6930
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/agg_trade/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 612
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2734
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/agg_trade/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 346
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/funding/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/funding/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/mark_price/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/mark_price/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/open_interest/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/open_interest/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 2
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 3
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 3
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 3
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError",
+      "rows_read_before_truncation": 3
+    }
+  ],
+  "stage_seconds": {
+    "coverage": 7.844,
+    "truncation_scan": 0.281,
+    "books": 540.485,
+    "realised_trades": 86.328,
+    "conditions": 22.5,
+    "market_moves": 0.187
+  },
+  "measure_seconds": 657.625
+}

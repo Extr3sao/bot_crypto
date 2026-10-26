@@ -1,0 +1,1853 @@
+{
+  "generated_at_utc": "2026-10-21T10:51:33Z",
+  "partition": "untouched_test",
+  "plan": {
+    "cost_multipliers": [
+      1.0,
+      2.0
+    ],
+    "datasets": {
+      "AAVE/USDT": {
+        "path": "data/quote-feed-1m/AAVEUSDT_1m_2021-01-04_2021-02-17.json",
+        "rows": 63281,
+        "sha256": "5c19ec3d9e54a1b4435dbf43043236028b0a010697f7d38ca4fd2c674235824c"
+      },
+      "UNI/USDT": {
+        "path": "data/quote-feed-1m/UNIUSDT_1m_2021-01-04_2021-02-17.json",
+        "rows": 63281,
+        "sha256": "05033895083b62b6664029181b0df1f3f2275d95c381dea213b9d9297002a6f9"
+      }
+    },
+    "executed_partition": "untouched_test",
+    "fixed": {
+      "data_delay_ms": 3620,
+      "decision_every_bars": 1,
+      "equity_usdt": 10000.0,
+      "max_opinion_age_ms": 60000,
+      "risk_config": "config/risk.yaml (sin cambios)",
+      "signal_source": "strategy_experimental",
+      "strategy_id": "ema_crossover",
+      "timeframe": "1m",
+      "variable": "vision lane opinion_lifecycle",
+      "warmup_bars": 40,
+      "window_bars": 22
+    },
+    "generated_at_utc": "2026-10-21T10:15:50Z",
+    "lifecycles": [
+      "SUPERSEDE",
+      "DEFER"
+    ],
+    "partitions": {
+      "development": {
+        "days": 27,
+        "first_day_utc": "2021-01-04",
+        "last_day_utc": "2021-01-30"
+      },
+      "untouched_test": {
+        "days": 8,
+        "first_day_utc": "2021-02-09",
+        "last_day_utc": "2021-02-16"
+      },
+      "validation": {
+        "days": 9,
+        "first_day_utc": "2021-01-31",
+        "last_day_utc": "2021-02-08"
+      }
+    },
+    "schema_version": "DEF_RUN_017_OOS_V1",
+    "symbols": [
+      "UNI/USDT",
+      "AAVE/USDT"
+    ],
+    "total_days": 44
+  },
+  "recount": {
+    "at_utc": "2026-10-21T11:23:06Z",
+    "changed_runs": 16,
+    "changes": [
+      {
+        "deferred_slots": [
+          0,
+          569
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-09.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          597
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-10.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          498
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-11.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          537
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-12.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          643
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-13.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          649
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-14.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          624
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-15.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          583
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-16.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          551
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-09.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          573
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-10.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          490
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-11.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          556
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-12.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          633
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-13.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          634
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-14.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          626
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-15.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      },
+      {
+        "deferred_slots": [
+          0,
+          613
+        ],
+        "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-16.jsonl",
+        "superseded": [
+          0,
+          0
+        ]
+      }
+    ],
+    "pnl_untouched": true,
+    "reason": "contadores de ciclo de vida le\u00eddos del ledger, no del resumen del runtime"
+  },
+  "runs": [
+    {
+      "bars": 1480,
+      "calls": 872,
+      "chain": {
+        "head_sha256": "0dc2d1c5cf12c12437a9bf093b6501158cc03866884403d9f69c8b7cdc6589ed",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 872,
+          "DECISION_OUTCOME": 568,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 569,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2052,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.9824897,
+      "day": 18667,
+      "day_utc": "2021-02-09",
+      "deferred_slots": 569,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 41.097642,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:50:14Z",
+      "gross_pnl_usdt": -15.54555811,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-09.jsonl",
+      "ledger_sha256": "152074a5da2feb17c18990617b479d159823ad95da2c4eb11a7568689b52981f",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -35.54555811,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:41:40Z",
+      "superseded": 0,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 589,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 844,
+      "chain": {
+        "head_sha256": "9ff7b8c914d373615b3bc8bfaf2075cda164e721bb016b07153638f86deec2a0",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 844,
+          "DECISION_OUTCOME": 596,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 597,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2080,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.97430632,
+      "day": 18668,
+      "day_utc": "2021-02-10",
+      "deferred_slots": 597,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 56.870999,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:50:42Z",
+      "gross_pnl_usdt": -33.96882306,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-10.jsonl",
+      "ledger_sha256": "54bb999882ef4011e10a43500c83e9ff540133cfd05ed8195432cdf997fc0c55",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -53.96882306,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:42:23Z",
+      "superseded": 0,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 617,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1401,
+      "calls": 864,
+      "chain": {
+        "head_sha256": "5982689992fd392b962c3c5988d57548dd14a026f2f28bff29170f9f68492529",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 864,
+          "DECISION_OUTCOME": 497,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 498,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 1902,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.990582,
+      "day": 18669,
+      "day_utc": "2021-02-11",
+      "deferred_slots": 498,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 50.904344,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:50:49Z",
+      "gross_pnl_usdt": -22.85897584,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-11.jsonl",
+      "ledger_sha256": "3abc27077612d1ca09c4ca13c8048dc73a47f18b8943e1dd85fec2851dd262f6",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1361,
+      "missing_minutes": 79,
+      "net_pnl_usdt": -42.85897584,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:42:28Z",
+      "superseded": 0,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 518,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 904,
+      "chain": {
+        "head_sha256": "7d4bc26d0b8c295c62bbad152c627ef4bc9eb1bd61a090c0701343ed72a1cee5",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 904,
+          "DECISION_OUTCOME": 537,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 537,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2021,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.98651303,
+      "day": 18670,
+      "day_utc": "2021-02-12",
+      "deferred_slots": 537,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 37.939432,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:51:25Z",
+      "gross_pnl_usdt": -15.80180688,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-12.jsonl",
+      "ledger_sha256": "30a70b00e0e27b616dd7d8817e06e84245c651957a8d15c5c8e7c9a4a4d2bdfe",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -35.80180688,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:42:33Z",
+      "superseded": 0,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 558,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 798,
+      "chain": {
+        "head_sha256": "0c37ffab98edc7cac41a6195c7a21765c89a829c8b07d3216e6843ae3965df5f",
+        "kinds": {
+          "DECISION": 798,
+          "DECISION_OUTCOME": 1109,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 643,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2553,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 0,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 0,
+      "day": 18671,
+      "day_utc": "2021-02-13",
+      "deferred_slots": 643,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 0.0,
+      "exit_reasons": [],
+      "fills": 0,
+      "finished_at_utc": "2026-10-21T10:50:45Z",
+      "gross_pnl_usdt": 0,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-13.jsonl",
+      "ledger_sha256": "c8b37bcf79a666eba71c551c76fd1f8e91006b89e881b66f4a65b92dd49fa4e9",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": 0,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:42:54Z",
+      "superseded": 0,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1110,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 792,
+      "chain": {
+        "head_sha256": "da8a82b9d26c492664e499bbc12cc0ea8c4d90345f5cdc51291025d425a4a89b",
+        "kinds": {
+          "DECISION": 792,
+          "DECISION_OUTCOME": 1040,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 649,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2484,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 0,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 0,
+      "day": 18672,
+      "day_utc": "2021-02-14",
+      "deferred_slots": 649,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 0.0,
+      "exit_reasons": [],
+      "fills": 0,
+      "finished_at_utc": "2026-10-21T10:50:44Z",
+      "gross_pnl_usdt": 0,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-14.jsonl",
+      "ledger_sha256": "69b12051295d62171e9a2b8fca345b3a04638372d2e611e4b6f1af75645a7aec",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": 0,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:43:01Z",
+      "superseded": 0,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1041,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 817,
+      "chain": {
+        "head_sha256": "4e0b269d3e098fba41ea69f3984889bd03e2773ed242cd2b423d3aabe58279bf",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 817,
+          "DECISION_OUTCOME": 624,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 624,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2108,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 32.00045033,
+      "day": 18673,
+      "day_utc": "2021-02-15",
+      "deferred_slots": 624,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 59.013866,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:51:01Z",
+      "gross_pnl_usdt": -29.1739546,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-15.jsonl",
+      "ledger_sha256": "470429b90d71261749512d2be80a98f418fa66ef250cdf48a89f9bc3191ca344",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -49.1739546,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:43:03Z",
+      "superseded": 0,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 645,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 858,
+      "chain": {
+        "head_sha256": "3b995476776a01eab7f9978eb385347ff1de964a41c1c77849a074a841ad57b9",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 858,
+          "DECISION_OUTCOME": 583,
+          "FILL": 20,
+          "OPINION_DEFERRED": 583,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2066,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.98826779,
+      "day": 18674,
+      "day_utc": "2021-02-16",
+      "deferred_slots": 583,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 29.698138,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:51:33Z",
+      "gross_pnl_usdt": -9.69813784,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\defer\\cost-1.0\\2021-02-16.jsonl",
+      "ledger_sha256": "4d9384b0b13f6e320bd8aa315a6f242385e3004bac0195d478cc0963e9580abb",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -29.69813784,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:43:09Z",
+      "superseded": 0,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 603,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "11f29a2e772769a7d5752162edc11c7792c18a900539e845cfbee5d3ac3819ba",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 94,
+          "FILL": 20,
+          "GUARD_REJECT": 954,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2531,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.98515289,
+      "day": 18667,
+      "day_utc": "2021-02-09",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 41.006565,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:42:22Z",
+      "gross_pnl_usdt": -15.39088589,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\supersede\\cost-1.0\\2021-02-09.jsonl",
+      "ledger_sha256": "b4999d1622701ee88deca03132fa586331c7b75c08d13a396e0592d8d59066f6",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -35.39088589,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:26:20Z",
+      "superseded": 953,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1068,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "8db3a3ceb8a78b703361f838b753ea6228e9add0336517577f66c23b899ce235",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 96,
+          "FILL": 20,
+          "GUARD_REJECT": 1054,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2633,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.98603816,
+      "day": 18668,
+      "day_utc": "2021-02-10",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 50.175025,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:42:27Z",
+      "gross_pnl_usdt": -25.11599617,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\supersede\\cost-1.0\\2021-02-10.jsonl",
+      "ledger_sha256": "72f9d37bb94a68856f2b1e4f01a13b8a79aa858bbd434ba76a55606001d5e554",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -45.11599617,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:26:29Z",
+      "superseded": 1053,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1170,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1401,
+      "calls": 1362,
+      "chain": {
+        "head_sha256": "4b4cb45d73ba9935897c815d7e9e1102b3b89cc372d2dca1831fe25175db3ee5",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1362,
+          "DECISION_OUTCOME": 86,
+          "FILL": 20,
+          "GUARD_REJECT": 860,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2350,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.99585,
+      "day": 18669,
+      "day_utc": "2021-02-11",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 49.463163,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:41:39Z",
+      "gross_pnl_usdt": -29.46316299,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\supersede\\cost-1.0\\2021-02-11.jsonl",
+      "ledger_sha256": "8932a64ddf6d48911ac061c84c48e657c1f4e3d2329823af2fec6d10384ea567",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1361,
+      "missing_minutes": 79,
+      "net_pnl_usdt": -49.46316299,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:26:37Z",
+      "superseded": 859,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 966,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "82ff1d1db54ac683881670aa6ac0f817406fbff299774ef6c96b86757d32284c",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 90,
+          "FILL": 20,
+          "GUARD_REJECT": 891,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2464,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.9908947,
+      "day": 18670,
+      "day_utc": "2021-02-12",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 37.420058,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:42:33Z",
+      "gross_pnl_usdt": -13.68924898,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\supersede\\cost-1.0\\2021-02-12.jsonl",
+      "ledger_sha256": "3d1c30a642e8aac9fbff2e58cbcb62c0a2b4ca3031e6cea2fd5694513f434b4f",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -33.68924898,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:26:43Z",
+      "superseded": 890,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1001,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "b8c8fc1f2e895d9b04ad501dbf93f199b24d66dbf2fa3d032c224556e7e63b94",
+        "kinds": {
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 183,
+          "GUARD_REJECT": 1118,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2744,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 0,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 0,
+      "day": 18671,
+      "day_utc": "2021-02-13",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 0.0,
+      "exit_reasons": [],
+      "fills": 0,
+      "finished_at_utc": "2026-10-21T10:42:53Z",
+      "gross_pnl_usdt": 0,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\supersede\\cost-1.0\\2021-02-13.jsonl",
+      "ledger_sha256": "eeb88cc40ef958f78cb1cf8757e1579f734bef37ee8a845458babd740b1f82e5",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": 0,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:27:11Z",
+      "superseded": 1117,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1301,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "4efed1878413c98de38c63de43c8df1514b5ac35f845efa2e86362685a236715",
+        "kinds": {
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 176,
+          "GUARD_REJECT": 1130,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2749,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 0,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 0,
+      "day": 18672,
+      "day_utc": "2021-02-14",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 0.0,
+      "exit_reasons": [],
+      "fills": 0,
+      "finished_at_utc": "2026-10-21T10:43:03Z",
+      "gross_pnl_usdt": 0,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\supersede\\cost-1.0\\2021-02-14.jsonl",
+      "ledger_sha256": "3bf32cee3ab3cbcf6e2efdbb2fdbbdd193184cc2674077ddc7a3826b665c7803",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": 0,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:27:25Z",
+      "superseded": 1129,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1306,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "28be05e0c82f7503a4dff17763cfb9195c16d42cf50274c87d8dc09eb3dd34c2",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 88,
+          "FILL": 20,
+          "GUARD_REJECT": 1064,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2635,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.99307728,
+      "day": 18673,
+      "day_utc": "2021-02-15",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 46.628971,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:43:01Z",
+      "gross_pnl_usdt": -14.19310114,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\supersede\\cost-1.0\\2021-02-15.jsonl",
+      "ledger_sha256": "46b73dc582ff2b656f76d29ecad498d72b333b4ea00f8a01334aeffeec514926",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -34.19310114,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:27:30Z",
+      "superseded": 1063,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1172,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "172e372f592657643ce6990a060660a0cc8d91c325ee708aa83855bb1cb6545b",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 88,
+          "FILL": 20,
+          "GUARD_REJECT": 963,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2534,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.97850049,
+      "day": 18674,
+      "day_utc": "2021-02-16",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 41.693013,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:43:09Z",
+      "gross_pnl_usdt": -21.69301309,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\AAVEUSDT\\supersede\\cost-1.0\\2021-02-16.jsonl",
+      "ledger_sha256": "05f191cbc14e2818c6ce50298938f8e0856a9b5a218e7b954358cdf54c86ac50",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -41.69301309,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:27:38Z",
+      "superseded": 963,
+      "symbol": "AAVE/USDT",
+      "terminal_rows": 1071,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 890,
+      "chain": {
+        "head_sha256": "c4e1ac2ac30e31ea807b7557d2227ee37c5a383d487bdb67496ee66a1a0c7309",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 890,
+          "DECISION_OUTCOME": 550,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 551,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2034,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.98809244,
+      "day": 18667,
+      "day_utc": "2021-02-09",
+      "deferred_slots": 551,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 47.861755,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:27:37Z",
+      "gross_pnl_usdt": -27.86175546,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-09.jsonl",
+      "ledger_sha256": "6f8eeba624fa54131156cbb4719946d60401612ab59ce14e6a3e14c24ae21707",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -47.86175546,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:16:07Z",
+      "superseded": 0,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 571,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 868,
+      "chain": {
+        "head_sha256": "7f8a445b4657ff2f58c1925dae6060b0e3feb9f1b4351afc7555964a381bdc5c",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 868,
+          "DECISION_OUTCOME": 572,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 573,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2056,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.99264994,
+      "day": 18668,
+      "day_utc": "2021-02-10",
+      "deferred_slots": 573,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 16.160021,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:27:10Z",
+      "gross_pnl_usdt": 10.15767956,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-10.jsonl",
+      "ledger_sha256": "64094d0dda37b6f244a8deafc46afd966970116ece25a80713b6684968d15ed4",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -9.84232044,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:16:06Z",
+      "superseded": 0,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 593,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1401,
+      "calls": 872,
+      "chain": {
+        "head_sha256": "5f0b679dfce6704c08d47085566971066b068a0c2043fe98b3cfb86abb0ae251",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 872,
+          "DECISION_OUTCOME": 489,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 490,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 1894,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.98467939,
+      "day": 18669,
+      "day_utc": "2021-02-11",
+      "deferred_slots": 490,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 40.89713,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:27:25Z",
+      "gross_pnl_usdt": -13.30684569,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-11.jsonl",
+      "ledger_sha256": "3eeaa5df6b1e0ef9dd34ff7f2e9bd8d72df95d3b86598cfc279edb880d53de20",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1361,
+      "missing_minutes": 79,
+      "net_pnl_usdt": -33.30684569,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:16:07Z",
+      "superseded": 0,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 510,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 885,
+      "chain": {
+        "head_sha256": "5d081fa451d488cf3592c4448863dc3602f7ea6735992d665ccb2be3d1286d23",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 885,
+          "DECISION_OUTCOME": 556,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 556,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2040,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.9840376,
+      "day": 18670,
+      "day_utc": "2021-02-12",
+      "deferred_slots": 556,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 51.629098,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:27:30Z",
+      "gross_pnl_usdt": -27.25023847,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-12.jsonl",
+      "ledger_sha256": "6506c1ef4c791744c0f2edee883f2e8260c6e4317eb0216603d4bf188a88bd9a",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -47.25023847,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:16:07Z",
+      "superseded": 0,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 577,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 808,
+      "chain": {
+        "head_sha256": "02166211962f44d9f7f767dd6ac71591470d1ee64aefa9511f73a9e890e7405b",
+        "kinds": {
+          "DECISION": 808,
+          "DECISION_OUTCOME": 1157,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 633,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2601,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 0,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 0,
+      "day": 18671,
+      "day_utc": "2021-02-13",
+      "deferred_slots": 633,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 0.0,
+      "exit_reasons": [],
+      "fills": 0,
+      "finished_at_utc": "2026-10-21T10:26:19Z",
+      "gross_pnl_usdt": 0,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-13.jsonl",
+      "ledger_sha256": "10fd898f2b5f9564742f2cb0f9bfbfb7c77aa2d162a5bce00ee0342d0b18752d",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": 0,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:16:07Z",
+      "superseded": 0,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1158,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 807,
+      "chain": {
+        "head_sha256": "9090fb82c9269a7529daf72fddd1a696722caa39e629f2027dbb7fa6e1838359",
+        "kinds": {
+          "DECISION": 807,
+          "DECISION_OUTCOME": 1071,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 634,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2515,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 0,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 0,
+      "day": 18672,
+      "day_utc": "2021-02-14",
+      "deferred_slots": 634,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 0.0,
+      "exit_reasons": [],
+      "fills": 0,
+      "finished_at_utc": "2026-10-21T10:26:36Z",
+      "gross_pnl_usdt": 0,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-14.jsonl",
+      "ledger_sha256": "7848f4a42c7807379dc04737c3c2003df27df3ebae8fbee813747e5c09fc61cc",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": 0,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:16:08Z",
+      "superseded": 0,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1072,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 815,
+      "chain": {
+        "head_sha256": "0a5d5cbb3022055c607ad62b115e437546eb9884c13b9fd6d0cde8bcdc4fe5f9",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 815,
+          "DECISION_OUTCOME": 625,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 626,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2109,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.99426783,
+      "day": 18673,
+      "day_utc": "2021-02-15",
+      "deferred_slots": 626,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 47.492576,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:26:29Z",
+      "gross_pnl_usdt": -20.13504169,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-15.jsonl",
+      "ledger_sha256": "ffe61231059de8d7f9a028e65b3674047e3afeb0226b65b129b9cb134244c6de",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -40.13504169,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:16:07Z",
+      "superseded": 0,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 646,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 1480,
+      "calls": 828,
+      "chain": {
+        "head_sha256": "8b07a20c2ef69e46237dbadc98c09fc085c4a944889262a9ba7bfc77f226f0bd",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 828,
+          "DECISION_OUTCOME": 613,
+          "FILL": 20,
+          "GUARD_REJECT": 1,
+          "OPINION_DEFERRED": 613,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2097,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.99305897,
+      "day": 18674,
+      "day_utc": "2021-02-16",
+      "deferred_slots": 613,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 22.333706,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:26:42Z",
+      "gross_pnl_usdt": 4.23335,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\defer\\cost-1.0\\2021-02-16.jsonl",
+      "ledger_sha256": "2c923a147dd903ed60f97448dd09612486da821508137213142999cedfd7119f",
+      "lifecycle": "DEFER",
+      "minutes_expected": 1440,
+      "minutes_observed": 1440,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -15.76665,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": "2026-10-21T10:16:07Z",
+      "superseded": 0,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 634,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 0,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "e77976da32d903c01a42f70bb2d4b719be5ec5e436a2a844bebd9d367d39b035",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 106,
+          "FILL": 20,
+          "GUARD_REJECT": 914,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2503,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.98511739,
+      "day": 18667,
+      "day_utc": "2021-02-09",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 45.940881,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:15:53Z",
+      "gross_pnl_usdt": -25.94088081,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\supersede\\cost-1.0\\2021-02-09.jsonl",
+      "ledger_sha256": "a15aafba494a20052e5b39bfd9afb8fd87e678effd52667f6eff94b9143619fe",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1441,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -45.94088081,
+      "resumed_from_ledger": true,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": null,
+      "superseded": 913,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1040,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 0,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "f1855990f009ff56617542c7ef25b871ab04fe98e0830374f160a66e8f2c4e8a",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 70,
+          "FILL": 20,
+          "GUARD_REJECT": 1129,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2682,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.99398496,
+      "day": 18668,
+      "day_utc": "2021-02-10",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 41.889966,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:15:54Z",
+      "gross_pnl_usdt": -17.4772363,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\supersede\\cost-1.0\\2021-02-10.jsonl",
+      "ledger_sha256": "f14cbd5071a57ced9d1fc8b3e6b4aa220ed09415d2e0cadc1dd2386fbbec7a99",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1441,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -37.4772363,
+      "resumed_from_ledger": true,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": null,
+      "superseded": 1128,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1219,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 0,
+      "calls": 1362,
+      "chain": {
+        "head_sha256": "64b8a6de61ea77ff2865a5868be97dbf5e411a6eeee97752468bb5a6d8084d78",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1362,
+          "DECISION_OUTCOME": 65,
+          "FILL": 20,
+          "GUARD_REJECT": 781,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2250,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.9838745,
+      "day": 18669,
+      "day_utc": "2021-02-11",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 21.593614,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:15:54Z",
+      "gross_pnl_usdt": 1.2440179,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\supersede\\cost-1.0\\2021-02-11.jsonl",
+      "ledger_sha256": "c35dcd568a341ba39b77ebf0c1a135e15f6452b005c3033579f95e0a096130c1",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1362,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -18.7559821,
+      "resumed_from_ledger": true,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": null,
+      "superseded": 780,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 866,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 0,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "ef4653269ac9b76f9402963d4f1f17b61c0b910c4da7f3e93ffa27198739fcb7",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 93,
+          "FILL": 20,
+          "GUARD_REJECT": 1004,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2580,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.99302573,
+      "day": 18670,
+      "day_utc": "2021-02-12",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 45.415589,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:15:55Z",
+      "gross_pnl_usdt": -19.56711418,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\supersede\\cost-1.0\\2021-02-12.jsonl",
+      "ledger_sha256": "a88816f908735be807eefeb1b125958857b3d072e31fc8aa1b364f5daa4fb5bc",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1441,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -39.56711418,
+      "resumed_from_ledger": true,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": null,
+      "superseded": 1003,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1117,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 0,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "f81432fa79ebb62389a3c493baa7f8d9b80439ca30dcf48ff6e1544d1f002a86",
+        "kinds": {
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 174,
+          "GUARD_REJECT": 1125,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2742,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 0,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 0,
+      "day": 18671,
+      "day_utc": "2021-02-13",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 0.0,
+      "exit_reasons": [],
+      "fills": 0,
+      "finished_at_utc": "2026-10-21T10:15:55Z",
+      "gross_pnl_usdt": 0,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\supersede\\cost-1.0\\2021-02-13.jsonl",
+      "ledger_sha256": "15ada5526717d71530b63129f03bd153a9e647dfe3c92ec98773feb79f72fe83",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1441,
+      "missing_minutes": 0,
+      "net_pnl_usdt": 0,
+      "resumed_from_ledger": true,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": null,
+      "superseded": 1124,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1299,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 0,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "a09c6f07e71bcf47e87af510974d5c34b3e736e36fad42699476c1c836dba78e",
+        "kinds": {
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 200,
+          "GUARD_REJECT": 1072,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2715,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 0,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 0,
+      "day": 18672,
+      "day_utc": "2021-02-14",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 0.0,
+      "exit_reasons": [],
+      "fills": 0,
+      "finished_at_utc": "2026-10-21T10:15:56Z",
+      "gross_pnl_usdt": 0,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\supersede\\cost-1.0\\2021-02-14.jsonl",
+      "ledger_sha256": "0697742b7c5751524b407430f1d8e544daecf2f7c443b8e4406bf3dc4ea808f8",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1441,
+      "missing_minutes": 0,
+      "net_pnl_usdt": 0,
+      "resumed_from_ledger": true,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": null,
+      "superseded": 1071,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1272,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 0,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "63d1a18ce11bb81351f448766f432ee9a71bf97659cc11bfda7345366f9fd838",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 86,
+          "FILL": 20,
+          "GUARD_REJECT": 1051,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2620,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.9895238,
+      "day": 18673,
+      "day_utc": "2021-02-15",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 38.630025,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:15:57Z",
+      "gross_pnl_usdt": -13.77953596,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\supersede\\cost-1.0\\2021-02-15.jsonl",
+      "ledger_sha256": "0b3ac403f7010a8bde34aea8b9a05edfefdbf9902c6630307a79002013389d47",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1441,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -33.77953596,
+      "resumed_from_ledger": true,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": null,
+      "superseded": 1050,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1157,
+      "warmup_bars": 40
+    },
+    {
+      "bars": 0,
+      "calls": 1441,
+      "chain": {
+        "head_sha256": "b8615d769e4df46bad16a703358edd4f55bcba5756fc84d594a107a5cdf823fb",
+        "kinds": {
+          "CLOSE": 20,
+          "DECISION": 1441,
+          "DECISION_OUTCOME": 80,
+          "FILL": 20,
+          "GUARD_REJECT": 1067,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 2630,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 20,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 31.98878767,
+      "day": 18674,
+      "day_utc": "2021-02-16",
+      "deferred_slots": 0,
+      "deferred_slots_source": "ledger:OPINION_DEFERRED",
+      "drawdown_usdt": 33.437021,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fills": 20,
+      "finished_at_utc": "2026-10-21T10:15:57Z",
+      "gross_pnl_usdt": -9.02267398,
+      "ledger": "reports\\ai-bots\\RFC-DEF-RUN-017\\evidence\\oos\\runs\\UNIUSDT\\supersede\\cost-1.0\\2021-02-16.jsonl",
+      "ledger_sha256": "ac99daba0c859a86a4c38b08e6c5b2ef45ba3a2d1b5e26e88fc0b01eac4357e5",
+      "lifecycle": "SUPERSEDE",
+      "minutes_expected": 1440,
+      "minutes_observed": 1441,
+      "missing_minutes": 0,
+      "net_pnl_usdt": -29.02267398,
+      "resumed_from_ledger": true,
+      "schema_version": "DEF_RUN_017_OOS_V1",
+      "started_at_utc": null,
+      "superseded": 1066,
+      "symbol": "UNI/USDT",
+      "terminal_rows": 1167,
+      "warmup_bars": 40
+    }
+  ],
+  "schema_version": "DEF_RUN_017_OOS_V1",
+  "totals": {
+    "AAVE/USDT|DEFER|1.0": {
+      "calls": 6749,
+      "chain_failures": 0,
+      "closed_trades": 120,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 191.92260917,
+      "days": 8,
+      "days_with_trades": 6,
+      "deferred_slots": 4700,
+      "expectancy_usdt": -2.058727,
+      "fills": 120,
+      "gross_pnl_usdt": -127.04725633,
+      "lifecycle": "DEFER",
+      "missing_minutes": 79,
+      "net_pnl_usdt": -247.04725633,
+      "per_day_net": [
+        -35.54555811,
+        -53.96882306,
+        -42.85897584,
+        -35.80180688,
+        0.0,
+        0.0,
+        -49.1739546,
+        -29.69813784
+      ],
+      "symbol": "AAVE/USDT",
+      "trades_per_day": 15.0
+    },
+    "AAVE/USDT|SUPERSEDE|1.0": {
+      "calls": 11449,
+      "chain_failures": 0,
+      "closed_trades": 120,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 191.92951352,
+      "days": 8,
+      "days_with_trades": 6,
+      "deferred_slots": 0,
+      "expectancy_usdt": -1.996212,
+      "fills": 120,
+      "gross_pnl_usdt": -119.54540826,
+      "lifecycle": "SUPERSEDE",
+      "missing_minutes": 79,
+      "net_pnl_usdt": -239.54540826,
+      "per_day_net": [
+        -35.39088589,
+        -45.11599617,
+        -49.46316299,
+        -33.68924898,
+        0.0,
+        0.0,
+        -34.19310114,
+        -41.69301309
+      ],
+      "symbol": "AAVE/USDT",
+      "trades_per_day": 15.0
+    },
+    "UNI/USDT|DEFER|1.0": {
+      "calls": 6773,
+      "chain_failures": 0,
+      "closed_trades": 120,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 191.93678617,
+      "days": 8,
+      "days_with_trades": 6,
+      "deferred_slots": 4676,
+      "expectancy_usdt": -1.618024,
+      "fills": 120,
+      "gross_pnl_usdt": -74.16285175,
+      "lifecycle": "DEFER",
+      "missing_minutes": 79,
+      "net_pnl_usdt": -194.16285175,
+      "per_day_net": [
+        -47.86175546,
+        -9.84232044,
+        -33.30684569,
+        -47.25023847,
+        0.0,
+        0.0,
+        -40.13504169,
+        -15.76665
+      ],
+      "symbol": "UNI/USDT",
+      "trades_per_day": 15.0
+    },
+    "UNI/USDT|SUPERSEDE|1.0": {
+      "calls": 11449,
+      "chain_failures": 0,
+      "closed_trades": 120,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 191.93431405,
+      "days": 8,
+      "days_with_trades": 6,
+      "deferred_slots": 0,
+      "expectancy_usdt": -1.704529,
+      "fills": 120,
+      "gross_pnl_usdt": -84.54342333,
+      "lifecycle": "SUPERSEDE",
+      "missing_minutes": 0,
+      "net_pnl_usdt": -204.54342333,
+      "per_day_net": [
+        -45.94088081,
+        -37.4772363,
+        -18.7559821,
+        -39.56711418,
+        0.0,
+        0.0,
+        -33.77953596,
+        -29.02267398
+      ],
+      "symbol": "UNI/USDT",
+      "trades_per_day": 15.0
+    }
+  },
+  "workers": 8
+}

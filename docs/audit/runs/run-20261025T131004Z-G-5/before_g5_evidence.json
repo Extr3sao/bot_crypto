@@ -1,0 +1,861 @@
+{
+  "schema_version": "g5-paper-e2e-evidence/v1",
+  "generated_at_utc": "2026-10-25T13:28:34.247122+00:00",
+  "execution_class": "PAPER_ONLY_SYNTHETIC_FIXTURE",
+  "live": false,
+  "credentials_used": false,
+  "exchange_clients_constructed": false,
+  "order_sent": false,
+  "ledger": "C:\\tmp\\g5-base\\docs\\audit\\fixtures\\g5_paper_ledger.json",
+  "ledger_claim": "CONTROLLED_TEST_FIXTURE \u2014 not market evidence, not a production admission",
+  "pinned_clock_utc": "2026-10-21T12:00:00+00:00",
+  "pinned_clock_reason": "committed policy forbids weekend trading; Wednesday is deliberate",
+  "engine": "PaperCycleEngine (scripts/start_paper_trading.py::build_cycle_engine)",
+  "state_store": "PaperStateStore + StartupReconcilerV4",
+  "scenarios": {
+    "trade": {
+      "scenario": "trade",
+      "clock_utc": "2026-10-21T12:00:00+00:00",
+      "synthetic_data": true,
+      "reconciliation_before": {
+        "status": "CONSISTENT",
+        "restored_open_positions": 0,
+        "restored_closed_trades": 0,
+        "restored_intents": 0,
+        "restored_equity": null,
+        "restored_risk": {},
+        "restored_run_id": "",
+        "checked_at_ms": 1792934914032,
+        "details": [
+          "no persisted state: starting with a fresh book"
+        ]
+      },
+      "positions_after_reconcile": [],
+      "risk_open_positions_after_reconcile": 0,
+      "state_after": {
+        "open_positions": 0,
+        "closed_trades": 0,
+        "sent_intents": 0,
+        "equity": 10000.0
+      },
+      "status": {
+        "running": false,
+        "mode": "paper",
+        "sessions_completed": 1,
+        "last_session_id": "d036f276b6084446935c1d598066ff7d",
+        "last_session_metrics": {
+          "total_snapshots": 1,
+          "active_snapshots": 1,
+          "inactive_snapshots": 0,
+          "scanner_errors": 0,
+          "fills_opened": 0,
+          "ending_equity": 10000.0
+        },
+        "realized_pnl": 0.0,
+        "equity": 10000.0,
+        "kill_switch_active": false,
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 1,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 1,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {
+            "weekend_trading": 1
+          },
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "defensive_block",
+              "reason": "weekend_trading: weekend (Sunday) and blocks.weekend_trading=false"
+            }
+          ]
+        },
+        "last_errors": []
+      },
+      "cycle": {
+        "contexts_built": 1,
+        "context_errors": 0,
+        "router_invocations": 1,
+        "router_no_trade": 0,
+        "router_errors": 0,
+        "strategy_invocations": 1,
+        "signals_generated": 1,
+        "strategy_errors": 0,
+        "adapter_errors": 0,
+        "bar_close_skips": 0,
+        "duplicate_intents": 0,
+        "risk_accepted": 0,
+        "risk_rejected": 1,
+        "risk_errors": 0,
+        "orders_created": 0,
+        "broker_errors": 0,
+        "hot_stop_blocked": 0,
+        "exits_requested": 0,
+        "exits_closed": 0,
+        "reversals_refused": 0,
+        "same_side_skips": 0,
+        "defensive_blocks": {
+          "weekend_trading": 1
+        },
+        "rejections": [
+          {
+            "symbol": "BTC/USDT",
+            "stage": "defensive_block",
+            "reason": "weekend_trading: weekend (Sunday) and blocks.weekend_trading=false"
+          }
+        ]
+      },
+      "positions": [],
+      "closed_trades": [],
+      "broker_calls": {
+        "execute_signal": 0,
+        "close_position": 0
+      },
+      "equity": 10000.0,
+      "realized_pnl": 0,
+      "realized_pnl_matches_equity": true,
+      "accounting": {
+        "initial_equity": 10000.0,
+        "cash": 10000.0,
+        "realised_pnl": 0,
+        "unrealised_pnl": 0.0,
+        "accrued_entry_commissions": 0,
+        "unrealised_pnl_net": 0.0,
+        "equity_mark_to_market": 10000.0,
+        "ledger_equity": 10000.0,
+        "open_positions": [],
+        "identities": {
+          "cash_equals_initial_plus_realised": true,
+          "ledger_equity_equals_initial_plus_realised": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "closed_trade_pnl_rebuilds": true,
+          "closed_trade_costs_are_named": true
+        }
+      },
+      "state_path": "C:\\tmp\\g5-before-evidence\\scenarios\\trade\\paper_state.json",
+      "state_bytes": 476,
+      "elapsed_ms": 8.923
+    },
+    "restart": {
+      "scenario": "restart",
+      "clock_utc": "2026-10-21T12:05:00+00:00",
+      "synthetic_data": true,
+      "reconciliation_before": {
+        "status": "RECOVERED",
+        "restored_open_positions": 0,
+        "restored_closed_trades": 0,
+        "restored_intents": 0,
+        "restored_equity": 10000.0,
+        "restored_risk": {
+          "consecutive_losses": 0,
+          "daily_pnl": 0.0,
+          "day_peak_equity": 10000.0,
+          "kill_switch_active": false,
+          "last_loss_ms": 0,
+          "open_positions": {},
+          "peak_equity": 10000.0,
+          "trades_today": 0,
+          "weekly_pnl": 0.0,
+          "weekly_start_ms": 1792368000000
+        },
+        "restored_run_id": "d036f276b6084446935c1d598066ff7d",
+        "checked_at_ms": 1792934914078,
+        "details": [
+          "broker restored: equity=10000.00 open=0 closed=0",
+          "risk state restored before first decision",
+          "intent ledger restored: 0 cloids"
+        ]
+      },
+      "positions_after_reconcile": [],
+      "risk_open_positions_after_reconcile": 0,
+      "state_after": {
+        "open_positions": 0,
+        "closed_trades": 0,
+        "sent_intents": 0,
+        "equity": 10000.0
+      },
+      "status": {
+        "running": false,
+        "mode": "paper",
+        "sessions_completed": 1,
+        "last_session_id": "72c630c487bf4917a92d5ef28082816b",
+        "last_session_metrics": {
+          "total_snapshots": 1,
+          "active_snapshots": 1,
+          "inactive_snapshots": 0,
+          "scanner_errors": 0,
+          "fills_opened": 0,
+          "ending_equity": 10000.0
+        },
+        "realized_pnl": 0.0,
+        "equity": 10000.0,
+        "kill_switch_active": false,
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 1,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 1,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {
+            "weekend_trading": 1
+          },
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "defensive_block",
+              "reason": "weekend_trading: weekend (Sunday) and blocks.weekend_trading=false"
+            }
+          ]
+        },
+        "last_errors": []
+      },
+      "cycle": {
+        "contexts_built": 1,
+        "context_errors": 0,
+        "router_invocations": 1,
+        "router_no_trade": 0,
+        "router_errors": 0,
+        "strategy_invocations": 1,
+        "signals_generated": 1,
+        "strategy_errors": 0,
+        "adapter_errors": 0,
+        "bar_close_skips": 0,
+        "duplicate_intents": 0,
+        "risk_accepted": 0,
+        "risk_rejected": 1,
+        "risk_errors": 0,
+        "orders_created": 0,
+        "broker_errors": 0,
+        "hot_stop_blocked": 0,
+        "exits_requested": 0,
+        "exits_closed": 0,
+        "reversals_refused": 0,
+        "same_side_skips": 0,
+        "defensive_blocks": {
+          "weekend_trading": 1
+        },
+        "rejections": [
+          {
+            "symbol": "BTC/USDT",
+            "stage": "defensive_block",
+            "reason": "weekend_trading: weekend (Sunday) and blocks.weekend_trading=false"
+          }
+        ]
+      },
+      "positions": [],
+      "closed_trades": [],
+      "broker_calls": {
+        "execute_signal": 0,
+        "close_position": 0
+      },
+      "equity": 10000.0,
+      "realized_pnl": 0,
+      "realized_pnl_matches_equity": true,
+      "accounting": {
+        "initial_equity": 10000.0,
+        "cash": 10000.0,
+        "realised_pnl": 0,
+        "unrealised_pnl": 0.0,
+        "accrued_entry_commissions": 0,
+        "unrealised_pnl_net": 0.0,
+        "equity_mark_to_market": 10000.0,
+        "ledger_equity": 10000.0,
+        "open_positions": [],
+        "identities": {
+          "cash_equals_initial_plus_realised": true,
+          "ledger_equity_equals_initial_plus_realised": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "closed_trade_pnl_rebuilds": true,
+          "closed_trade_costs_are_named": true
+        }
+      },
+      "state_path": "C:\\tmp\\g5-before-evidence\\scenarios\\trade\\paper_state.json",
+      "state_bytes": 476,
+      "elapsed_ms": 6.117
+    },
+    "no_trade": {
+      "scenario": "no_trade",
+      "clock_utc": "2026-10-21T12:00:00+00:00",
+      "synthetic_data": true,
+      "reconciliation_before": {
+        "status": "CONSISTENT",
+        "restored_open_positions": 0,
+        "restored_closed_trades": 0,
+        "restored_intents": 0,
+        "restored_equity": null,
+        "restored_risk": {},
+        "restored_run_id": "",
+        "checked_at_ms": 1792934914113,
+        "details": [
+          "no persisted state: starting with a fresh book"
+        ]
+      },
+      "positions_after_reconcile": [],
+      "risk_open_positions_after_reconcile": 0,
+      "state_after": {
+        "open_positions": 0,
+        "closed_trades": 0,
+        "sent_intents": 0,
+        "equity": 10000.0
+      },
+      "status": {
+        "running": false,
+        "mode": "paper",
+        "sessions_completed": 1,
+        "last_session_id": "f722be4c4a724cf8bd3309a9905baa1f",
+        "last_session_metrics": {
+          "total_snapshots": 1,
+          "active_snapshots": 1,
+          "inactive_snapshots": 0,
+          "scanner_errors": 0,
+          "fills_opened": 0,
+          "ending_equity": 10000.0
+        },
+        "realized_pnl": 0.0,
+        "equity": 10000.0,
+        "kill_switch_active": false,
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 1,
+          "signals_generated": 0,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {},
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "strategy",
+              "reason": "no_alpha_in_direction:ANY"
+            }
+          ]
+        },
+        "last_errors": []
+      },
+      "cycle": {
+        "contexts_built": 1,
+        "context_errors": 0,
+        "router_invocations": 1,
+        "router_no_trade": 0,
+        "router_errors": 0,
+        "strategy_invocations": 1,
+        "signals_generated": 0,
+        "strategy_errors": 0,
+        "adapter_errors": 0,
+        "bar_close_skips": 0,
+        "duplicate_intents": 0,
+        "risk_accepted": 0,
+        "risk_rejected": 0,
+        "risk_errors": 0,
+        "orders_created": 0,
+        "broker_errors": 0,
+        "hot_stop_blocked": 0,
+        "exits_requested": 0,
+        "exits_closed": 0,
+        "reversals_refused": 0,
+        "same_side_skips": 0,
+        "defensive_blocks": {},
+        "rejections": [
+          {
+            "symbol": "BTC/USDT",
+            "stage": "strategy",
+            "reason": "no_alpha_in_direction:ANY"
+          }
+        ]
+      },
+      "positions": [],
+      "closed_trades": [],
+      "broker_calls": {
+        "execute_signal": 0,
+        "close_position": 0
+      },
+      "equity": 10000.0,
+      "realized_pnl": 0,
+      "realized_pnl_matches_equity": true,
+      "accounting": {
+        "initial_equity": 10000.0,
+        "cash": 10000.0,
+        "realised_pnl": 0,
+        "unrealised_pnl": 0.0,
+        "accrued_entry_commissions": 0,
+        "unrealised_pnl_net": 0.0,
+        "equity_mark_to_market": 10000.0,
+        "ledger_equity": 10000.0,
+        "open_positions": [],
+        "identities": {
+          "cash_equals_initial_plus_realised": true,
+          "ledger_equity_equals_initial_plus_realised": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "closed_trade_pnl_rebuilds": true,
+          "closed_trade_costs_are_named": true
+        }
+      },
+      "state_path": "C:\\tmp\\g5-before-evidence\\scenarios\\no_trade\\paper_state.json",
+      "state_bytes": 476,
+      "elapsed_ms": 6.482
+    },
+    "stale": {
+      "scenario": "stale",
+      "clock_utc": "2026-10-21T12:00:00+00:00",
+      "synthetic_data": true,
+      "reconciliation_before": {
+        "status": "CONSISTENT",
+        "restored_open_positions": 0,
+        "restored_closed_trades": 0,
+        "restored_intents": 0,
+        "restored_equity": null,
+        "restored_risk": {},
+        "restored_run_id": "",
+        "checked_at_ms": 1792934914164,
+        "details": [
+          "no persisted state: starting with a fresh book"
+        ]
+      },
+      "positions_after_reconcile": [],
+      "risk_open_positions_after_reconcile": 0,
+      "state_after": {
+        "open_positions": 0,
+        "closed_trades": 0,
+        "sent_intents": 0,
+        "equity": 10000.0
+      },
+      "status": {
+        "running": false,
+        "mode": "paper",
+        "sessions_completed": 1,
+        "last_session_id": "e8000581f3c04dad86846d8c3ec42e3a",
+        "last_session_metrics": {
+          "total_snapshots": 1,
+          "active_snapshots": 1,
+          "inactive_snapshots": 0,
+          "scanner_errors": 0,
+          "fills_opened": 0,
+          "ending_equity": 10000.0
+        },
+        "realized_pnl": 0.0,
+        "equity": 10000.0,
+        "kill_switch_active": false,
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 1,
+          "router_errors": 0,
+          "strategy_invocations": 0,
+          "signals_generated": 0,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {},
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "router",
+              "reason": "NO_TRADE:stale_context"
+            }
+          ]
+        },
+        "last_errors": []
+      },
+      "cycle": {
+        "contexts_built": 1,
+        "context_errors": 0,
+        "router_invocations": 1,
+        "router_no_trade": 1,
+        "router_errors": 0,
+        "strategy_invocations": 0,
+        "signals_generated": 0,
+        "strategy_errors": 0,
+        "adapter_errors": 0,
+        "bar_close_skips": 0,
+        "duplicate_intents": 0,
+        "risk_accepted": 0,
+        "risk_rejected": 0,
+        "risk_errors": 0,
+        "orders_created": 0,
+        "broker_errors": 0,
+        "hot_stop_blocked": 0,
+        "exits_requested": 0,
+        "exits_closed": 0,
+        "reversals_refused": 0,
+        "same_side_skips": 0,
+        "defensive_blocks": {},
+        "rejections": [
+          {
+            "symbol": "BTC/USDT",
+            "stage": "router",
+            "reason": "NO_TRADE:stale_context"
+          }
+        ]
+      },
+      "positions": [],
+      "closed_trades": [],
+      "broker_calls": {
+        "execute_signal": 0,
+        "close_position": 0
+      },
+      "equity": 10000.0,
+      "realized_pnl": 0,
+      "realized_pnl_matches_equity": true,
+      "accounting": {
+        "initial_equity": 10000.0,
+        "cash": 10000.0,
+        "realised_pnl": 0,
+        "unrealised_pnl": 0.0,
+        "accrued_entry_commissions": 0,
+        "unrealised_pnl_net": 0.0,
+        "equity_mark_to_market": 10000.0,
+        "ledger_equity": 10000.0,
+        "open_positions": [],
+        "identities": {
+          "cash_equals_initial_plus_realised": true,
+          "ledger_equity_equals_initial_plus_realised": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "closed_trade_pnl_rebuilds": true,
+          "closed_trade_costs_are_named": true
+        }
+      },
+      "state_path": "C:\\tmp\\g5-before-evidence\\scenarios\\stale\\paper_state.json",
+      "state_bytes": 476,
+      "elapsed_ms": 5.472
+    },
+    "kill_switch": {
+      "scenario": "kill_switch",
+      "clock_utc": "2026-10-21T12:00:00+00:00",
+      "synthetic_data": true,
+      "reconciliation_before": {
+        "status": "CONSISTENT",
+        "restored_open_positions": 0,
+        "restored_closed_trades": 0,
+        "restored_intents": 0,
+        "restored_equity": null,
+        "restored_risk": {},
+        "restored_run_id": "",
+        "checked_at_ms": 1792934914203,
+        "details": [
+          "no persisted state: starting with a fresh book"
+        ]
+      },
+      "positions_after_reconcile": [],
+      "risk_open_positions_after_reconcile": 0,
+      "state_after": {
+        "open_positions": 0,
+        "closed_trades": 0,
+        "sent_intents": 0,
+        "equity": 10000.0
+      },
+      "status": {
+        "running": false,
+        "mode": "paper",
+        "sessions_completed": 1,
+        "last_session_id": "4d8cf6b44eb444be86ef1b440a2e3d11",
+        "last_session_metrics": {
+          "total_snapshots": 1,
+          "active_snapshots": 1,
+          "inactive_snapshots": 0,
+          "scanner_errors": 0,
+          "fills_opened": 0,
+          "ending_equity": 10000.0
+        },
+        "realized_pnl": 0.0,
+        "equity": 10000.0,
+        "kill_switch_active": false,
+        "cycle": {
+          "contexts_built": 1,
+          "context_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 1,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 1,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {
+            "weekend_trading": 1
+          },
+          "rejections": [
+            {
+              "symbol": "BTC/USDT",
+              "stage": "defensive_block",
+              "reason": "weekend_trading: weekend (Sunday) and blocks.weekend_trading=false"
+            }
+          ]
+        },
+        "last_errors": []
+      },
+      "cycle": {
+        "contexts_built": 1,
+        "context_errors": 0,
+        "router_invocations": 1,
+        "router_no_trade": 0,
+        "router_errors": 0,
+        "strategy_invocations": 1,
+        "signals_generated": 1,
+        "strategy_errors": 0,
+        "adapter_errors": 0,
+        "bar_close_skips": 0,
+        "duplicate_intents": 0,
+        "risk_accepted": 0,
+        "risk_rejected": 1,
+        "risk_errors": 0,
+        "orders_created": 0,
+        "broker_errors": 0,
+        "hot_stop_blocked": 0,
+        "exits_requested": 0,
+        "exits_closed": 0,
+        "reversals_refused": 0,
+        "same_side_skips": 0,
+        "defensive_blocks": {
+          "weekend_trading": 1
+        },
+        "rejections": [
+          {
+            "symbol": "BTC/USDT",
+            "stage": "defensive_block",
+            "reason": "weekend_trading: weekend (Sunday) and blocks.weekend_trading=false"
+          }
+        ]
+      },
+      "positions": [],
+      "closed_trades": [],
+      "broker_calls": {
+        "execute_signal": 0,
+        "close_position": 0
+      },
+      "equity": 10000.0,
+      "realized_pnl": 0,
+      "realized_pnl_matches_equity": true,
+      "accounting": {
+        "initial_equity": 10000.0,
+        "cash": 10000.0,
+        "realised_pnl": 0,
+        "unrealised_pnl": 0.0,
+        "accrued_entry_commissions": 0,
+        "unrealised_pnl_net": 0.0,
+        "equity_mark_to_market": 10000.0,
+        "ledger_equity": 10000.0,
+        "open_positions": [],
+        "identities": {
+          "cash_equals_initial_plus_realised": true,
+          "ledger_equity_equals_initial_plus_realised": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "closed_trade_pnl_rebuilds": true,
+          "closed_trade_costs_are_named": true
+        }
+      },
+      "state_path": "C:\\tmp\\g5-before-evidence\\scenarios\\kill_switch\\paper_state.json",
+      "state_bytes": 476,
+      "elapsed_ms": 8.28
+    },
+    "provider_exception": {
+      "scenario": "provider_exception",
+      "clock_utc": "2026-10-21T12:00:00+00:00",
+      "synthetic_data": true,
+      "reconciliation_before": {
+        "status": "CONSISTENT",
+        "restored_open_positions": 0,
+        "restored_closed_trades": 0,
+        "restored_intents": 0,
+        "restored_equity": null,
+        "restored_risk": {},
+        "restored_run_id": "",
+        "checked_at_ms": 1792934914241,
+        "details": [
+          "no persisted state: starting with a fresh book"
+        ]
+      },
+      "positions_after_reconcile": [],
+      "risk_open_positions_after_reconcile": 0,
+      "state_after": {
+        "open_positions": 0,
+        "closed_trades": 0,
+        "sent_intents": 0,
+        "equity": 10000.0
+      },
+      "status": {
+        "running": false,
+        "mode": "paper",
+        "sessions_completed": 1,
+        "last_session_id": "82f00d3c3aa942768162e6bf3f36beea",
+        "last_session_metrics": {
+          "total_snapshots": 0,
+          "active_snapshots": 0,
+          "inactive_snapshots": 0,
+          "scanner_errors": 1,
+          "fills_opened": 0,
+          "ending_equity": 10000.0
+        },
+        "realized_pnl": 0.0,
+        "equity": 10000.0,
+        "kill_switch_active": false,
+        "cycle": {
+          "contexts_built": 0,
+          "context_errors": 0,
+          "router_invocations": 0,
+          "router_no_trade": 0,
+          "router_errors": 0,
+          "strategy_invocations": 0,
+          "signals_generated": 0,
+          "strategy_errors": 0,
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "duplicate_intents": 0,
+          "risk_accepted": 0,
+          "risk_rejected": 0,
+          "risk_errors": 0,
+          "orders_created": 0,
+          "broker_errors": 0,
+          "hot_stop_blocked": 0,
+          "exits_requested": 0,
+          "exits_closed": 0,
+          "reversals_refused": 0,
+          "same_side_skips": 0,
+          "defensive_blocks": {},
+          "rejections": []
+        },
+        "last_errors": []
+      },
+      "cycle": {
+        "contexts_built": 0,
+        "context_errors": 0,
+        "router_invocations": 0,
+        "router_no_trade": 0,
+        "router_errors": 0,
+        "strategy_invocations": 0,
+        "signals_generated": 0,
+        "strategy_errors": 0,
+        "adapter_errors": 0,
+        "bar_close_skips": 0,
+        "duplicate_intents": 0,
+        "risk_accepted": 0,
+        "risk_rejected": 0,
+        "risk_errors": 0,
+        "orders_created": 0,
+        "broker_errors": 0,
+        "hot_stop_blocked": 0,
+        "exits_requested": 0,
+        "exits_closed": 0,
+        "reversals_refused": 0,
+        "same_side_skips": 0,
+        "defensive_blocks": {},
+        "rejections": []
+      },
+      "positions": [],
+      "closed_trades": [],
+      "broker_calls": {
+        "execute_signal": 0,
+        "close_position": 0
+      },
+      "equity": 10000.0,
+      "realized_pnl": 0,
+      "realized_pnl_matches_equity": true,
+      "accounting": {
+        "initial_equity": 10000.0,
+        "cash": 10000.0,
+        "realised_pnl": 0,
+        "unrealised_pnl": 0.0,
+        "accrued_entry_commissions": 0,
+        "unrealised_pnl_net": 0.0,
+        "equity_mark_to_market": 10000.0,
+        "ledger_equity": 10000.0,
+        "open_positions": [],
+        "identities": {
+          "cash_equals_initial_plus_realised": true,
+          "ledger_equity_equals_initial_plus_realised": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "closed_trade_pnl_rebuilds": true,
+          "closed_trade_costs_are_named": true
+        }
+      },
+      "state_path": "C:\\tmp\\g5-before-evidence\\scenarios\\provider_exception\\paper_state.json",
+      "state_bytes": 476,
+      "elapsed_ms": 5.105
+    }
+  },
+  "summary": {
+    "trade_orders": 0,
+    "restart_reconciliation": "RECOVERED",
+    "restart_orders": 0,
+    "restart_closed_trades": 0,
+    "no_trade_orders": 0,
+    "stale_orders": 0,
+    "kill_switch_orders": 0,
+    "kill_switch_broker_calls": {
+      "execute_signal": 0,
+      "close_position": 0
+    },
+    "exception_orders": 0
+  },
+  "evidence_sha256": "4210d83742e1d922a4453250ecfec4d634db955f9375d236bb0d75fe70a68d31"
+}

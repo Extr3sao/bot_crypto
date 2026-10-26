@@ -1,0 +1,272 @@
+{
+  "experiment": "h4",
+  "dir": "reports\\edge-recovery\\WP-EDGE-01\\vol-filter-h4",
+  "checks": [
+    {
+      "check": "ARTIFACTS_PRESENT",
+      "ok": true,
+      "detail": "6 artefacts match their digests"
+    },
+    {
+      "check": "WINDOW_IS_PREREGISTERED_DEV",
+      "ok": true,
+      "detail": "every one of 600 trades, 3733 refusals and 2555 signals sits inside the DEV window"
+    },
+    {
+      "check": "TRADE_SIGNAL_JOIN",
+      "ok": true,
+      "detail": "600 trades join their signal across 4 arm(s)"
+    },
+    {
+      "check": "GROSS_BEFORE_COSTS_RECOMPUTED",
+      "ok": true,
+      "detail": "baseline: gross 2,128.91 vs recomputed 2,128.91 | p25: gross 1,758.69 vs recomputed 1,758.69 | p50: gross 1,084.28 vs recomputed 1,084.28 | p75: gross 527.33 vs recomputed 527.33"
+    },
+    {
+      "check": "COST_SPLIT_IDENTITY",
+      "ok": true,
+      "detail": "cost split reconciles on every arm"
+    },
+    {
+      "check": "FUNNEL_ARITHMETIC",
+      "ok": true,
+      "detail": "baseline: 535 refusals over 1 reasons | p25: 771 refusals over 2 reasons | p50: 1072 refusals over 2 reasons | p75: 1355 refusals over 2 reasons"
+    },
+    {
+      "check": "ARM_METRICS_RECOMPUTED",
+      "ok": true,
+      "detail": "baseline: 223 trades, net 1,921.18 | p25: 188 trades, net 1,595.54 | p50: 131 trades, net 993.67 | p75: 58 trades, net 499.98"
+    },
+    {
+      "check": "MARKET_CONTEXT_ATTRIBUTION",
+      "ok": true,
+      "detail": "600 trades attributed from 2596 benchmark days (BEAR=71, BULL=427, SIDEWAYS=39, UNDEFINED=63)"
+    },
+    {
+      "check": "DECISION_RULE_FROZEN",
+      "ok": true,
+      "detail": "the decision rule matches the pre-registered constants ({'min_dev_trades': 30, 'min_improvement_usdt': 0.0, 'max_single_trade_share_of_net': 0.5})"
+    },
+    {
+      "check": "VERDICT_RECOMPUTED",
+      "ok": true,
+      "detail": "FILTER_NOT_JUSTIFIED_ON_DEV recomputed: winner baseline at 1,921.18 USDT against 1,921.18 unfiltered (+0.00)"
+    },
+    {
+      "check": "GRID_IS_DATASET_DERIVED",
+      "ok": true,
+      "detail": "grid {'p25': 1.551912, 'p50': 2.239198, 'p75': 3.330741} recomputed from 29206 DEV bars (nearest rank at [25.0, 50.0, 75.0])"
+    },
+    {
+      "check": "ARMS_ONE_FIELD_APART",
+      "ok": true,
+      "detail": "4 arms: the frozen candidate with ['p25', 'p50', 'p75'] and nothing else"
+    },
+    {
+      "check": "GATE_SOUNDNESS",
+      "ok": true,
+      "detail": "baseline: 0 volatility refusals | p25: 366 volatility refusals | p50: 794 volatility refusals | p75: 1243 volatility refusals"
+    },
+    {
+      "check": "SELECTION_MATCHES_THE_RUN",
+      "ok": true,
+      "detail": "FILTER_NOT_JUSTIFIED_ON_DEV: winner baseline at 1,921.18 USDT against 1,921.18 unfiltered (+0.00); VAL/OOS not read, ranking ['baseline', 'p25', 'p50', 'p75']"
+    }
+  ],
+  "passed": 14,
+  "total": 14,
+  "self_test": {
+    "baseline_all_green": true,
+    "baseline": {
+      "ARTIFACTS_PRESENT": true,
+      "WINDOW_IS_PREREGISTERED_DEV": true,
+      "TRADE_SIGNAL_JOIN": true,
+      "GROSS_BEFORE_COSTS_RECOMPUTED": true,
+      "COST_SPLIT_IDENTITY": true,
+      "FUNNEL_ARITHMETIC": true,
+      "ARM_METRICS_RECOMPUTED": true,
+      "MARKET_CONTEXT_ATTRIBUTION": true,
+      "DECISION_RULE_FROZEN": true,
+      "VERDICT_RECOMPUTED": true,
+      "GRID_IS_DATASET_DERIVED": true,
+      "ARMS_ONE_FIELD_APART": true,
+      "GATE_SOUNDNESS": true,
+      "SELECTION_MATCHES_THE_RUN": true
+    },
+    "mutations": [
+      {
+        "mutation": "M1_flattered_gross",
+        "expected_check": "GROSS_BEFORE_COSTS_RECOMPUTED",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY",
+          "GROSS_BEFORE_COSTS_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "baseline: ETH @ 1550448000000 publishes gross 51.9745, its own prices give 26.9745"
+      },
+      {
+        "mutation": "M2_tampered_fees",
+        "expected_check": "COST_SPLIT_IDENTITY",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY"
+        ],
+        "expected_check_failed": true,
+        "detail": "baseline: gross 43.1840 - costs 0.1977 - fees 6.0430 != net 41.9433; baseline: fills x qty - fees = 36.9433 != net 41.9433; baseline: declared fees_usdt 174.63 != the sum of the rows"
+      },
+      {
+        "mutation": "M3_window_moved_to_val",
+        "expected_check": "WINDOW_IS_PREREGISTERED_DEV",
+        "detected": [
+          "WINDOW_IS_PREREGISTERED_DEV"
+        ],
+        "expected_check_failed": true,
+        "detail": "declared window starts 1554076800000, DEV starts 1546300800000; declared window ends 1738540800000, DEV ends 1703980800000"
+      },
+      {
+        "mutation": "M4_out_of_window_trade",
+        "expected_check": "WINDOW_IS_PREREGISTERED_DEV",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "WINDOW_IS_PREREGISTERED_DEV"
+        ],
+        "expected_check_failed": true,
+        "detail": "trade entry_ts 1546214400000 outside DEV"
+      },
+      {
+        "mutation": "M5_refusals_trimmed",
+        "expected_check": "FUNNEL_ARITHMETIC",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "FUNNEL_ARITHMETIC"
+        ],
+        "expected_check_failed": true,
+        "detail": "baseline: file and JSON disagree (file-only {'candidate:trend_filter_fail': 534}, json-only {'candidate:trend_filter_fail': 535})"
+      },
+      {
+        "mutation": "M6_trade_dropped",
+        "expected_check": "TRADE_SIGNAL_JOIN",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY",
+          "GROSS_BEFORE_COSTS_RECOMPUTED",
+          "TRADE_SIGNAL_JOIN"
+        ],
+        "expected_check_failed": true,
+        "detail": "baseline: 222 trade rows but 223 declared"
+      },
+      {
+        "mutation": "M7_signal_removed",
+        "expected_check": "TRADE_SIGNAL_JOIN",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "TRADE_SIGNAL_JOIN"
+        ],
+        "expected_check_failed": true,
+        "detail": "baseline: 1 trades name a signal that is not published; p25: 1 trades name a signal that is not published"
+      },
+      {
+        "mutation": "M8_relabelled_market_context",
+        "expected_check": "MARKET_CONTEXT_ATTRIBUTION",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "MARKET_CONTEXT_ATTRIBUTION"
+        ],
+        "expected_check_failed": true,
+        "detail": "baseline/ETH @ 1550448000000: market_context 'BULL' != 'UNDEFINED' readable at that instant"
+      },
+      {
+        "mutation": "M9_flipped_verdict",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "declared FILTER_FROZEN_FOR_VALIDATION but the rule on the published numbers gives FILTER_NOT_JUSTIFIED_ON_DEV (winner baseline at 1,921.18 USDT against 1,921.18 unfiltered (+0.00))"
+      },
+      {
+        "mutation": "M10_relaxed_rule",
+        "expected_check": "DECISION_RULE_FROZEN",
+        "detected": [
+          "DECISION_RULE_FROZEN"
+        ],
+        "expected_check_failed": true,
+        "detail": "rule.min_dev_trades is 29, frozen value is 30"
+      },
+      {
+        "mutation": "M11_arm_net_tampered",
+        "expected_check": "ARM_METRICS_RECOMPUTED",
+        "detected": [
+          "ARM_METRICS_RECOMPUTED",
+          "COST_SPLIT_IDENTITY"
+        ],
+        "expected_check_failed": true,
+        "detail": "baseline.net_usdt: declared 2,171.1792 != recomputed 1,921.1792"
+      },
+      {
+        "mutation": "M12_artifact_touched",
+        "expected_check": "ARTIFACTS_PRESENT",
+        "detected": [
+          "ARTIFACTS_PRESENT"
+        ],
+        "expected_check_failed": true,
+        "detail": "VOL_FILTER_TRADES.csv: sha256 ea16f62ef13c != 81c500a69edd"
+      },
+      {
+        "mutation": "M13_grid_tampered",
+        "expected_check": "GRID_IS_DATASET_DERIVED",
+        "detected": [
+          "ARMS_ONE_FIELD_APART",
+          "GRID_IS_DATASET_DERIVED"
+        ],
+        "expected_check_failed": true,
+        "detail": "p25: declared 1.561912 != nearest-rank 1.551912 of the published sample"
+      },
+      {
+        "mutation": "M14_second_field_retuned",
+        "expected_check": "ARMS_ONE_FIELD_APART",
+        "detected": [
+          "ARMS_ONE_FIELD_APART"
+        ],
+        "expected_check_failed": true,
+        "detail": "p50: params differ from the frozen candidate plus one field ({'trailing_atr': 2.5})"
+      },
+      {
+        "mutation": "M15_vol_refusal_above_threshold",
+        "expected_check": "GATE_SOUNDNESS",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "GATE_SOUNDNESS"
+        ],
+        "expected_check_failed": true,
+        "detail": "p25: 1 volatility refusals are at or above their own threshold"
+      },
+      {
+        "mutation": "M16_baseline_gate_fires",
+        "expected_check": "GATE_SOUNDNESS",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "FUNNEL_ARITHMETIC",
+          "GATE_SOUNDNESS"
+        ],
+        "expected_check_failed": true,
+        "detail": "the baseline refuses 1 bars for volatility"
+      },
+      {
+        "mutation": "M17_frozen_threshold_flipped",
+        "expected_check": "SELECTION_MATCHES_THE_RUN",
+        "detected": [
+          "SELECTION_MATCHES_THE_RUN"
+        ],
+        "expected_check_failed": true,
+        "detail": "the verdict froze 1.551912 while the rule answers FILTER_NOT_JUSTIFIED_ON_DEV"
+      }
+    ],
+    "all_detected": true
+  },
+  "failed": 0
+}

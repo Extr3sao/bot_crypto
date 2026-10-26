@@ -1,0 +1,35 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "close-position",
+    "--position-id",
+    "p0-pos-1",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-after-close-position"
+  ],
+  "break_gate": "GATE-004",
+  "broken_gate_ids": [
+    "GATE-004"
+  ],
+  "broker_calls": 1,
+  "calls": [
+    {
+      "position_id": "p0-pos-1",
+      "sink": "futures.flash_close_position"
+    }
+  ],
+  "entrypoint": "close-position",
+  "error": "",
+  "exit_code": 0,
+  "gate_crash": false,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 0,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-after-close-position",
+  "settings_error": false,
+  "stderr_tail": "",
+  "stdout_tail": "{\"success\": true, \"marketKind\": \"futures\", \"result\": {\"positionId\": \"p0-pos-1\", \"closed\": true}}\n"
+}

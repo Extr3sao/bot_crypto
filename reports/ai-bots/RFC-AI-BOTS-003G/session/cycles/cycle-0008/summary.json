@@ -1,0 +1,90 @@
+{
+  "book_id": "paper-prospective-003g",
+  "calls": 14,
+  "closed_trades": 0,
+  "costs_usdt": 0,
+  "counters": {
+    "action:LONG": 4,
+    "action:NO_TRADE": 7,
+    "action:SHORT": 3,
+    "dropped:ALREADY_LONG": 3,
+    "dropped:MODEL_NO_TRADE": 7,
+    "dropped:OPPOSITE_LONG_OPEN": 3,
+    "fills": 1
+  },
+  "decision_points": 3,
+  "drawdown_pct": 0.024483,
+  "drawdown_status": "MEASURED",
+  "drawdown_usdt": 2.448499,
+  "equity_points": 55,
+  "estimated_spend_usd": 0.0,
+  "execution": {
+    "bar_interval_ms": 300000,
+    "data_gap_policy": "fail_closed_unless_independent_coverage",
+    "entry_bar_range_policy": "minutes_strictly_after_the_fill",
+    "entry_quote_sources": {
+      "binance_spot_1m_klines": 1
+    },
+    "exit_ts_resolutions": [
+      "OPEN_GAP",
+      "BAR_WINDOW",
+      "QUOTE"
+    ],
+    "expired_opinions": 0,
+    "fills": 1,
+    "gap_exits": 0,
+    "gap_policy": "open_on_gap",
+    "max_opinion_age_ms": 300000,
+    "open_phase_order": "gap_close>mark>entries>intrabar",
+    "quote_lag_ms": {
+      "max": 27044,
+      "median": 27044,
+      "min": 27044
+    },
+    "quote_source": "bar_open",
+    "stale_valuation_vetoes": 0,
+    "stop_coverage": "entry_bar_from_the_fill",
+    "sub_bar_fills": 1,
+    "subbar_entries": true,
+    "waiting_events": 0
+  },
+  "fills": 1,
+  "final_equity_usdt": 10000.0,
+  "gross_realised_usdt": 0,
+  "net_realised_usdt": 0,
+  "open_positions_at_end": {
+    "BTC/USDT": {
+      "entry_price": 82903.84589957909,
+      "notional_usdt": 500.0,
+      "side": "buy"
+    }
+  },
+  "provider": "paper-script",
+  "reconciliation": {
+    "curve_end_equity_usdt": 9998.37118687,
+    "entry_commission_usdt": 0,
+    "execution_cost_usdt": 0,
+    "exit_commission_usdt": 0,
+    "final_equity_usdt": 10000.0,
+    "identities": {
+      "cash_rebuilds_from_realised_pnl": true,
+      "curve_ends_at_final_equity": true,
+      "every_close_after_its_entry_quote": true,
+      "every_fill_pays_at_or_after_its_answer": true,
+      "net_pnl_nets_every_named_cost": true,
+      "risk_equity_matches_marked_equity": true
+    },
+    "initial_equity_usdt": 10000.0,
+    "marked_equity_usdt": 9998.37118687,
+    "marks_complete_at_end": true,
+    "net_realised_usdt": 0,
+    "open_gap_exits": 0,
+    "open_positions_at_end": 1,
+    "reference_gross_usdt": 0,
+    "risk_equity_usdt": 9998.37118687,
+    "tolerance_usdt": 1e-06
+  },
+  "risk_equity_usdt": 9998.371187,
+  "stop_reason": null,
+  "trades": []
+}

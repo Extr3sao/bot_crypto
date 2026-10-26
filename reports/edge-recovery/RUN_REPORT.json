@@ -1,0 +1,156 @@
+{
+  "artifact": "WP-EDGE-00-RUN-REPORT",
+  "work_package": "WP-EDGE-00 (runtime authority, baseline, first observable PAPER run)",
+  "generated_at_utc": "2026-10-12T09:10:00Z",
+  "run_id": "wp-edge-00-smoke-real",
+  "commit_sha": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "branch": "main",
+  "mode": "PAPER (no live path)",
+  "target": {
+    "entrypoint": "scripts/autonomous_paper.py",
+    "environment": "ccxt:binance",
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "timeframe": "5m",
+    "cycles": 2,
+    "data_class": "REAL_MARKET_DATA (public Binance spot, read-only, no keys)",
+    "period": {
+      "opened_at_ms": 1791795395133,
+      "closed_at_ms": 1791795418954,
+      "candles": "100-120 closed 5m bars per symbol fetched at each cycle; decision timestamps from market data"
+    }
+  },
+  "decisions": {
+    "total": 6,
+    "trade": 0,
+    "no_trade": 6,
+    "no_trade_kinds": {
+      "NO_TRADE_STRATEGIC": 4,
+      "NO_TRADE_DATA": 2
+    },
+    "reasons": {
+      "gross_edge_not_positive": 4,
+      "context_error": 2
+    },
+    "alphas_emitted": 4,
+    "strategies_selected": {
+      "ema_crossover@5m": 4
+    },
+    "risk": {
+      "approved": 4,
+      "vetoed": 0,
+      "not_applicable": 2
+    },
+    "trace_persisted": 6,
+    "trace_chain": {
+      "ok": true,
+      "records": 6,
+      "broken_at": null,
+      "detail": "hash chain intact"
+    },
+    "replay": {
+      "attempted": 6,
+      "ok": 6,
+      "failed": 0,
+      "statuses": {
+        "PARTIAL": 6
+      },
+      "failures": [],
+      "market_data_accessed": false
+    }
+  },
+  "orders_and_trades": {
+    "orders_created": 0,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "fills": [],
+    "production_actions": 0
+  },
+  "economics": {
+    "gross_edge_bps_observed": -4.56,
+    "round_trip_cost_bps_rederived": 22.7918,
+    "net_edge_bps_observed": -27.3518,
+    "cost_model": "COST_MODEL_V3 / BINANCE_SPOT_STANDARD_TAKER",
+    "fees_paid_usdt": 0.0,
+    "slippage_paid_usdt": 0.0,
+    "realized_pnl_usdt": 0.0,
+    "unrealized_pnl_usdt": 0.0,
+    "net_pnl_usdt": 0.0,
+    "pnl_status": "ZERO_BY_NO_TRADE - no position was opened; 0 is the arithmetic consequence, not a profit claim",
+    "starting_balance_usdt": 10000.0,
+    "ending_equity_usdt": 10000.0,
+    "max_drawdown_bps": 0.0
+  },
+  "errors": [
+    "SOL/USDT: context_error AssetContextError: no bars at or before ts 1791795395133 for SOL",
+    "SOL/USDT: context_error AssetContextError: no bars at or before ts 1791795415745 for SOL"
+  ],
+  "fixture_control_run": {
+    "run_id": "wp-edge-00-smoke-fixture (1 cycle)",
+    "data_class": "SYNTHETIC (provider=fake) + CONTROLLED_TEST_FIXTURE ledger",
+    "entrypoint": "scripts/start_paper_trading.py",
+    "mode": "paper",
+    "cycle": {
+      "contexts_built": 3,
+      "context_errors": 0,
+      "router_invocations": 3,
+      "router_no_trade": 0,
+      "router_errors": 0,
+      "strategy_invocations": 3,
+      "signals_generated": 0,
+      "strategy_errors": 0,
+      "adapter_errors": 0,
+      "bar_close_skips": 0,
+      "duplicate_intents": 0,
+      "risk_accepted": 0,
+      "risk_rejected": 0,
+      "risk_errors": 0,
+      "orders_created": 0,
+      "broker_errors": 0,
+      "rejections": [
+        {
+          "symbol": "BTC/USDT",
+          "stage": "strategy",
+          "reason": "no_alpha_in_direction:ANY"
+        },
+        {
+          "symbol": "ETH/USDT",
+          "stage": "strategy",
+          "reason": "no_alpha_in_direction:ANY"
+        },
+        {
+          "symbol": "SOL/USDT",
+          "stage": "strategy",
+          "reason": "no_alpha_in_direction:ANY"
+        }
+      ]
+    },
+    "equity": 10000.0,
+    "realized_pnl": 0.0,
+    "kill_switch_active": false,
+    "purpose": "prove contexts_built > 0, router_invocations > 0, strategy_invocations > 0 on the runtime's own cycle engine with an admitted-strategy ledger"
+  },
+  "tests": {
+    "focused_suite": {
+      "command": "python -m pytest tests/unit/autonomous tests/unit/paper tests/unit/cert tests/integration -q",
+      "passed": 385,
+      "failed": 0,
+      "skipped": 0
+    },
+    "contract_gate": "tests/unit/cert/test_paper_smoke_decision_path.py (included in the suite): exit 0 with a dead cycle is NOT verified"
+  },
+  "reproduce": [
+    "python scripts/start_paper_trading.py --assets BTC,ETH,SOL --provider fake --max-cycles 1 --interval 0 --ledger reports/edge-recovery/runs/WP-EDGE-00-smoke-fixture/fixture_ledger.json  (CERT_HERMETIC=1, PAPER_STATE_PATH=<run>/paper_state.json)",
+    "python scripts/autonomous_paper.py --assets BTC,ETH,SOL --timeframe 5m --provider ccxt --cycles 2 --interval 15 --run-id wp-edge-00-smoke-real --run-root reports/edge-recovery/runs/WP-EDGE-00-smoke-real --state-path <run>/paper_state.json --ledger config/strategy_admission.json --horizon-minutes 5.0 --size-usd 1000.0 --no-shadow",
+    "python -m pytest tests/unit/autonomous tests/unit/paper tests/unit/cert tests/integration -q"
+  ],
+  "honesty_notes": [
+    "0 trades is a valid, expected result while the admission ledger contains 0 PAPER_CANDIDATE strategies (17 NO_GROSS_EDGE, 7 COST_KILLED).",
+    "The real run's alpha was refused economically: gross -4.56 bps < cost 22.7918 bps; the verifier re-derived the arithmetic inside the runtime (net=-27.3518 bps).",
+    "The fixture run is synthetic and is labelled as such; it proves reachability of the decision path, not market performance.",
+    "No PnL figure is presented as profitability: every number above is an observed zero or a measured refusal."
+  ]
+}

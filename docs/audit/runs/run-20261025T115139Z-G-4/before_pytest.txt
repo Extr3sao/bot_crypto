@@ -1,0 +1,375 @@
+FFFFFFFF                                                                 [100%]
+================================== FAILURES ===================================
+_____________ test_a_marker_blocks_the_paper_entry_at_the_broker ______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-867/test_a_marker_blocks_the_paper0')
+
+    def test_a_marker_blocks_the_paper_entry_at_the_broker(tmp_path: Any) -> None:
+        """BEFORE G-4: one order and one broker call with the marker present."""
+        broker = _CountingBroker()
+        gate = _gate(tmp_path, marker=True)
+>       counts = _cycle(_engine(broker=broker, gate=gate))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\paper\test_g4_paper_hot_stop.py:157: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+broker = <test_g4_paper_hot_stop._CountingBroker object at 0x000001CA5BB15590>
+family = None
+gate = HotStopGate(kill_switch=KillSwitch(_state=<KillSwitchState.HALTED: 'halted'>, _history=[(<KillSwitchState.NORMAL: 'nor...st-867/test_a_marker_blocks_the_paper0/run/kill_switch_events.jsonl'), now_ms=<function _now_ms at 0x000001CA5A259580>)
+
+    def _engine(
+        *,
+        broker: _CountingBroker,
+        family: _DirectionFamily | None = None,
+        gate: HotStopGate | None = None,
+    ) -> PaperCycleEngine:
+        fam = family or _DirectionFamily()
+>       return PaperCycleEngine(
+            asset_registry=CryptoAssetAgentRegistry(),
+            router=StrategyRouter(),
+            strategy_map={
+                "ema_crossover": {
+                    "family": "ema_crossover",
+                    "regimes": [],
+                    "direction": "BOTH",
+                    "enabled": True,
+                    "status": "PAPER_ACTIVE",
+                    "priority": 0.0,
+                }
+            },
+            families={"ema_crossover": fam},
+            risk_manager=RiskManager(risk=_risk_settings(), equity=broker.equity),
+            broker=broker,
+            indicator_fn=lambda candles: {},
+            idempotency=IdempotencyGuard(),
+            hot_stop=gate,
+        )
+E       TypeError: PaperCycleEngine.__init__() got an unexpected keyword argument 'hot_stop'
+
+tests\unit\paper\test_g4_paper_hot_stop.py:119: TypeError
+____________________ test_the_clean_boundary_still_trades _____________________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-867/test_the_clean_boundary_still_0')
+
+    def test_the_clean_boundary_still_trades(tmp_path: Any) -> None:
+        """Positive control: without a marker the legitimate paper path is unchanged."""
+        broker = _CountingBroker()
+        gate = _gate(tmp_path, marker=False)
+>       counts = _cycle(_engine(broker=broker, gate=gate))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\paper\test_g4_paper_hot_stop.py:170: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+broker = <test_g4_paper_hot_stop._CountingBroker object at 0x000001CA5D8F3BD0>
+family = None
+gate = HotStopGate(kill_switch=KillSwitch(_state=<KillSwitchState.NORMAL: 'normal'>, _history=[], _activated_at=None, _activa...st-867/test_the_clean_boundary_still_0/run/kill_switch_events.jsonl'), now_ms=<function _now_ms at 0x000001CA5A259580>)
+
+    def _engine(
+        *,
+        broker: _CountingBroker,
+        family: _DirectionFamily | None = None,
+        gate: HotStopGate | None = None,
+    ) -> PaperCycleEngine:
+        fam = family or _DirectionFamily()
+>       return PaperCycleEngine(
+            asset_registry=CryptoAssetAgentRegistry(),
+            router=StrategyRouter(),
+            strategy_map={
+                "ema_crossover": {
+                    "family": "ema_crossover",
+                    "regimes": [],
+                    "direction": "BOTH",
+                    "enabled": True,
+                    "status": "PAPER_ACTIVE",
+                    "priority": 0.0,
+                }
+            },
+            families={"ema_crossover": fam},
+            risk_manager=RiskManager(risk=_risk_settings(), equity=broker.equity),
+            broker=broker,
+            indicator_fn=lambda candles: {},
+            idempotency=IdempotencyGuard(),
+            hot_stop=gate,
+        )
+E       TypeError: PaperCycleEngine.__init__() got an unexpected keyword argument 'hot_stop'
+
+tests\unit\paper\test_g4_paper_hot_stop.py:119: TypeError
+_______________ test_the_process_authority_blocks_a_paper_entry _______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-867/test_the_process_authority_blo0')
+
+    def test_the_process_authority_blocks_a_paper_entry(tmp_path: Any) -> None:
+        """The boot-time process switch is authority even without a marker."""
+        switch = KillSwitch()
+        switch.activate(KillSwitchAction.USER, target=KillSwitchState.HALTED)
+        run_dir = tmp_path / "run"
+        run_dir.mkdir()
+        gate = HotStopGate(kill_switch=switch, run_dir=run_dir)
+    
+        broker = _CountingBroker()
+>       counts = _cycle(_engine(broker=broker, gate=gate))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\paper\test_g4_paper_hot_stop.py:188: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+broker = <test_g4_paper_hot_stop._CountingBroker object at 0x000001CA5D8F3250>
+family = None
+gate = HotStopGate(kill_switch=KillSwitch(_state=<KillSwitchState.HALTED: 'halted'>, _history=[(<KillSwitchState.NORMAL: 'nor...st-867/test_the_process_authority_blo0/run/kill_switch_events.jsonl'), now_ms=<function _now_ms at 0x000001CA5A259580>)
+
+    def _engine(
+        *,
+        broker: _CountingBroker,
+        family: _DirectionFamily | None = None,
+        gate: HotStopGate | None = None,
+    ) -> PaperCycleEngine:
+        fam = family or _DirectionFamily()
+>       return PaperCycleEngine(
+            asset_registry=CryptoAssetAgentRegistry(),
+            router=StrategyRouter(),
+            strategy_map={
+                "ema_crossover": {
+                    "family": "ema_crossover",
+                    "regimes": [],
+                    "direction": "BOTH",
+                    "enabled": True,
+                    "status": "PAPER_ACTIVE",
+                    "priority": 0.0,
+                }
+            },
+            families={"ema_crossover": fam},
+            risk_manager=RiskManager(risk=_risk_settings(), equity=broker.equity),
+            broker=broker,
+            indicator_fn=lambda candles: {},
+            idempotency=IdempotencyGuard(),
+            hot_stop=gate,
+        )
+E       TypeError: PaperCycleEngine.__init__() got an unexpected keyword argument 'hot_stop'
+
+tests\unit\paper\test_g4_paper_hot_stop.py:119: TypeError
+____ test_a_marker_written_while_the_engine_is_alive_blocks_the_next_entry ____
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-867/test_a_marker_written_while_th0')
+
+    def test_a_marker_written_while_the_engine_is_alive_blocks_the_next_entry(tmp_path: Any) -> None:
+        """The boundary polls the file; it is not a constructor-only decision."""
+        broker = _CountingBroker()
+        gate = _gate(tmp_path, marker=False)
+>       engine = _engine(broker=broker, gate=gate)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\paper\test_g4_paper_hot_stop.py:199: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+broker = <test_g4_paper_hot_stop._CountingBroker object at 0x000001CA5DA19590>
+family = None
+gate = HotStopGate(kill_switch=KillSwitch(_state=<KillSwitchState.NORMAL: 'normal'>, _history=[], _activated_at=None, _activa...st-867/test_a_marker_written_while_th0/run/kill_switch_events.jsonl'), now_ms=<function _now_ms at 0x000001CA5A259580>)
+
+    def _engine(
+        *,
+        broker: _CountingBroker,
+        family: _DirectionFamily | None = None,
+        gate: HotStopGate | None = None,
+    ) -> PaperCycleEngine:
+        fam = family or _DirectionFamily()
+>       return PaperCycleEngine(
+            asset_registry=CryptoAssetAgentRegistry(),
+            router=StrategyRouter(),
+            strategy_map={
+                "ema_crossover": {
+                    "family": "ema_crossover",
+                    "regimes": [],
+                    "direction": "BOTH",
+                    "enabled": True,
+                    "status": "PAPER_ACTIVE",
+                    "priority": 0.0,
+                }
+            },
+            families={"ema_crossover": fam},
+            risk_manager=RiskManager(risk=_risk_settings(), equity=broker.equity),
+            broker=broker,
+            indicator_fn=lambda candles: {},
+            idempotency=IdempotencyGuard(),
+            hot_stop=gate,
+        )
+E       TypeError: PaperCycleEngine.__init__() got an unexpected keyword argument 'hot_stop'
+
+tests\unit\paper\test_g4_paper_hot_stop.py:119: TypeError
+____________________ test_a_stop_does_not_trap_a_reduction ____________________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-867/test_a_stop_does_not_trap_a_re0')
+
+    def test_a_stop_does_not_trap_a_reduction(tmp_path: Any) -> None:
+        """A stop halts new risk; it must not make the book impossible to flatten."""
+        broker = _CountingBroker()
+        gate = _gate(tmp_path, marker=False)
+        family = _DirectionFamily("LONG")
+>       engine = _engine(broker=broker, family=family, gate=gate)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\paper\test_g4_paper_hot_stop.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+broker = <test_g4_paper_hot_stop._CountingBroker object at 0x000001CA5D9C0CD0>
+family = <test_g4_paper_hot_stop._DirectionFamily object at 0x000001CA5D9C0A90>
+gate = HotStopGate(kill_switch=KillSwitch(_state=<KillSwitchState.NORMAL: 'normal'>, _history=[], _activated_at=None, _activa...st-867/test_a_stop_does_not_trap_a_re0/run/kill_switch_events.jsonl'), now_ms=<function _now_ms at 0x000001CA5A259580>)
+
+    def _engine(
+        *,
+        broker: _CountingBroker,
+        family: _DirectionFamily | None = None,
+        gate: HotStopGate | None = None,
+    ) -> PaperCycleEngine:
+        fam = family or _DirectionFamily()
+>       return PaperCycleEngine(
+            asset_registry=CryptoAssetAgentRegistry(),
+            router=StrategyRouter(),
+            strategy_map={
+                "ema_crossover": {
+                    "family": "ema_crossover",
+                    "regimes": [],
+                    "direction": "BOTH",
+                    "enabled": True,
+                    "status": "PAPER_ACTIVE",
+                    "priority": 0.0,
+                }
+            },
+            families={"ema_crossover": fam},
+            risk_manager=RiskManager(risk=_risk_settings(), equity=broker.equity),
+            broker=broker,
+            indicator_fn=lambda candles: {},
+            idempotency=IdempotencyGuard(),
+            hot_stop=gate,
+        )
+E       TypeError: PaperCycleEngine.__init__() got an unexpected keyword argument 'hot_stop'
+
+tests\unit\paper\test_g4_paper_hot_stop.py:119: TypeError
+____________ test_the_paper_launcher_wires_the_gate_to_the_engine _____________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-867/test_the_paper_launcher_wires_0')
+
+    def test_the_paper_launcher_wires_the_gate_to_the_engine(tmp_path: Any) -> None:
+        """The route that exists, not just the engine API, carries the authority."""
+        from trading_bot.market_data.fake import build_demo_settings
+    
+        from scripts.start_paper_trading import build_cycle_engine
+    
+        settings = build_demo_settings(
+            pairs=[("BTC/USDT", True)], mode="paper", kill_switch_enabled=True
+        )
+        broker = PaperBroker(equity=10_000.0)
+        run_dir = tmp_path / "paper-run"
+        run_dir.mkdir()
+>       engine = build_cycle_engine(
+            settings,
+            broker,
+            assets=["BTC"],
+            ledger_path="reports/edge-recovery/runs/WP-EDGE-00-smoke-fixture/fixture_ledger.json",
+            run_dir=run_dir,
+        )
+E       TypeError: build_cycle_engine() got an unexpected keyword argument 'run_dir'
+
+tests\unit\paper\test_g4_paper_hot_stop.py:244: TypeError
+__________ test_the_stop_decision_is_published_in_the_cycle_counters __________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-867/test_the_stop_decision_is_publ0')
+
+    def test_the_stop_decision_is_published_in_the_cycle_counters(tmp_path: Any) -> None:
+        broker = _CountingBroker()
+>       counts = _cycle(_engine(broker=broker, gate=_gate(tmp_path, marker=True)))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\paper\test_g4_paper_hot_stop.py:258: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+broker = <test_g4_paper_hot_stop._CountingBroker object at 0x000001CA5D90BFD0>
+family = None
+gate = HotStopGate(kill_switch=KillSwitch(_state=<KillSwitchState.HALTED: 'halted'>, _history=[(<KillSwitchState.NORMAL: 'nor...st-867/test_the_stop_decision_is_publ0/run/kill_switch_events.jsonl'), now_ms=<function _now_ms at 0x000001CA5A259580>)
+
+    def _engine(
+        *,
+        broker: _CountingBroker,
+        family: _DirectionFamily | None = None,
+        gate: HotStopGate | None = None,
+    ) -> PaperCycleEngine:
+        fam = family or _DirectionFamily()
+>       return PaperCycleEngine(
+            asset_registry=CryptoAssetAgentRegistry(),
+            router=StrategyRouter(),
+            strategy_map={
+                "ema_crossover": {
+                    "family": "ema_crossover",
+                    "regimes": [],
+                    "direction": "BOTH",
+                    "enabled": True,
+                    "status": "PAPER_ACTIVE",
+                    "priority": 0.0,
+                }
+            },
+            families={"ema_crossover": fam},
+            risk_manager=RiskManager(risk=_risk_settings(), equity=broker.equity),
+            broker=broker,
+            indicator_fn=lambda candles: {},
+            idempotency=IdempotencyGuard(),
+            hot_stop=gate,
+        )
+E       TypeError: PaperCycleEngine.__init__() got an unexpected keyword argument 'hot_stop'
+
+tests\unit\paper\test_g4_paper_hot_stop.py:119: TypeError
+_______________ test_the_gate_is_optional_for_embedding_callers _______________
+
+    def test_the_gate_is_optional_for_embedding_callers(tmp_path: Any) -> None:
+        """``None`` keeps the engine usable as an embedding API; the launcher wires it."""
+        del tmp_path
+        broker = _CountingBroker()
+>       counts = _cycle(_engine(broker=broker, gate=None))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\paper\test_g4_paper_hot_stop.py:268: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+broker = <test_g4_paper_hot_stop._CountingBroker object at 0x000001CA5DA19B10>
+family = None, gate = None
+
+    def _engine(
+        *,
+        broker: _CountingBroker,
+        family: _DirectionFamily | None = None,
+        gate: HotStopGate | None = None,
+    ) -> PaperCycleEngine:
+        fam = family or _DirectionFamily()
+>       return PaperCycleEngine(
+            asset_registry=CryptoAssetAgentRegistry(),
+            router=StrategyRouter(),
+            strategy_map={
+                "ema_crossover": {
+                    "family": "ema_crossover",
+                    "regimes": [],
+                    "direction": "BOTH",
+                    "enabled": True,
+                    "status": "PAPER_ACTIVE",
+                    "priority": 0.0,
+                }
+            },
+            families={"ema_crossover": fam},
+            risk_manager=RiskManager(risk=_risk_settings(), equity=broker.equity),
+            broker=broker,
+            indicator_fn=lambda candles: {},
+            idempotency=IdempotencyGuard(),
+            hot_stop=gate,
+        )
+E       TypeError: PaperCycleEngine.__init__() got an unexpected keyword argument 'hot_stop'
+
+tests\unit\paper\test_g4_paper_hot_stop.py:119: TypeError
+=========================== short test summary info ===========================
+FAILED tests/unit/paper/test_g4_paper_hot_stop.py::test_a_marker_blocks_the_paper_entry_at_the_broker
+FAILED tests/unit/paper/test_g4_paper_hot_stop.py::test_the_clean_boundary_still_trades
+FAILED tests/unit/paper/test_g4_paper_hot_stop.py::test_the_process_authority_blocks_a_paper_entry
+FAILED tests/unit/paper/test_g4_paper_hot_stop.py::test_a_marker_written_while_the_engine_is_alive_blocks_the_next_entry
+FAILED tests/unit/paper/test_g4_paper_hot_stop.py::test_a_stop_does_not_trap_a_reduction
+FAILED tests/unit/paper/test_g4_paper_hot_stop.py::test_the_paper_launcher_wires_the_gate_to_the_engine
+FAILED tests/unit/paper/test_g4_paper_hot_stop.py::test_the_stop_decision_is_published_in_the_cycle_counters
+FAILED tests/unit/paper/test_g4_paper_hot_stop.py::test_the_gate_is_optional_for_embedding_callers
+8 failed in 1.66s

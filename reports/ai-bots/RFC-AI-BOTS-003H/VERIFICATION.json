@@ -1,0 +1,173 @@
+{
+ "schema_version": "AI_BOTS_003H_VERIFICATION_V1",
+ "session": "reports\\ai-bots\\RFC-AI-BOTS-003H\\smoke",
+ "passed": 33,
+ "failed": 0,
+ "checks": [
+  {
+   "code": "stream_chain_intact",
+   "ok": true,
+   "detail": "13 chained rows"
+  },
+  {
+   "code": "session_is_paper",
+   "ok": true,
+   "detail": "mode=PAPER live_enabled=False"
+  },
+  {
+   "code": "subbar_enabled_for_paper_only",
+   "ok": true,
+   "detail": "subbar_entries=PAPER_ONLY"
+  },
+  {
+   "code": "tested_runtime_equals_used_runtime",
+   "ok": true,
+   "detail": "all runtime hashes match"
+  },
+  {
+   "code": "no_live_order_route_in_runtime",
+   "ok": true,
+   "detail": "no order endpoint or order call in the runtime set"
+  },
+  {
+   "code": "every_stored_minute_is_closed",
+   "ok": true,
+   "detail": "no forming bar was stored"
+  },
+  {
+   "code": "minutes_strictly_increasing",
+   "ok": true,
+   "detail": "no duplicate or out-of-order minute in any store"
+  },
+  {
+   "code": "a_cycle_was_executed",
+   "ok": true,
+   "detail": "10 executed cycles"
+  },
+  {
+   "code": "data_time_le_decision_time",
+   "ok": true,
+   "detail": "ok"
+  },
+  {
+   "code": "declared_delay_is_inside_the_wait",
+   "ok": true,
+   "detail": "declared delivery delay respected"
+  },
+  {
+   "code": "published_series_rebuilds_from_minutes",
+   "ok": true,
+   "detail": "per-cycle series digests match"
+  },
+  {
+   "code": "cycle_ledgers_are_chained",
+   "ok": true,
+   "detail": "chains intact"
+  },
+  {
+   "code": "subbar_fills_are_observed_prices",
+   "ok": true,
+   "detail": "fill price = 1m open at or after the answer"
+  },
+  {
+   "code": "entry_bar_range_is_post_fill",
+   "ok": true,
+   "detail": "range rebuilt minute by minute"
+  },
+  {
+   "code": "at_least_one_subbar_fill",
+   "ok": true,
+   "detail": "8 sub-bar fill rows across the session, 1 in the last ledger"
+  },
+  {
+   "code": "fills_have_an_approved_risk_gate",
+   "ok": true,
+   "detail": "every fill joins an approved decision"
+  },
+  {
+   "code": "close_pnl_identity_holds",
+   "ok": true,
+   "detail": "net = gross - commissions - execution cost"
+  },
+  {
+   "code": "no_past_decision_changed",
+   "ok": true,
+   "detail": "prefix determinism checked"
+  },
+  {
+   "code": "summary_net_matches_ledger",
+   "ok": true,
+   "detail": "summary=0 ledger=0"
+  },
+  {
+   "code": "summary_fills_match_ledger",
+   "ok": true,
+   "detail": "summary=1 ledger=1"
+  },
+  {
+   "code": "summary_closed_match_ledger",
+   "ok": true,
+   "detail": "summary=0 ledger=0"
+  },
+  {
+   "code": "no_live_orders_recorded",
+   "ok": true,
+   "detail": "every stream row records live_orders=0"
+  },
+  {
+   "code": "no_live_mode_in_any_artifact",
+   "ok": true,
+   "detail": "no artefact claims LIVE"
+  },
+  {
+   "code": "receipt_is_never_before_the_close",
+   "ok": true,
+   "detail": "572 minutes with a positive delivery latency"
+  },
+  {
+   "code": "manifest_matches_the_minute_bytes",
+   "ok": true,
+   "detail": "each store's sha256 matches the manifest"
+  },
+  {
+   "code": "accounting_contract_is_versioned_and_defined",
+   "ok": true,
+   "detail": "schema=paper-accounting/2 missing_terms=[] missing_meanings=[]"
+  },
+  {
+   "code": "costs_usdt_still_means_realised_cost",
+   "ok": true,
+   "detail": "summary=0 rebuilt_from_CLOSE_rows=0"
+  },
+  {
+   "code": "open_position_commissions_are_accrued_once",
+   "ok": true,
+   "detail": "open_positions=1 accrued_from_fills=0.5 published=0.5 costs_total=0.5 notes=[]"
+  },
+  {
+   "code": "marked_equity_rebuilds_from_raw_minutes",
+   "ok": true,
+   "detail": "marks={'BTC/USDT': 83005.66, 'ETH/USDT': 2444.61} unrealised_gross=0.99443125 rebuilt_net=0.49443125 published_net=0.49443125 rebuilt_marked=10000.49443125 published=10000.49443125 notes=[]"
+  },
+  {
+   "code": "no_position_is_counted_twice",
+   "ok": true,
+   "detail": "fills=1 distinct=1 open_and_closed=[]"
+  },
+  {
+   "code": "fill_instants_are_ordered_and_named",
+   "ok": true,
+   "detail": "fills=1 problems=[]"
+  },
+  {
+   "code": "live_minutes_were_seen_after_they_settled",
+   "ok": true,
+   "detail": "settle_ms=2500 live_minutes_checked=82 problems=[]"
+  },
+  {
+   "code": "session_summary_matches_the_lane_ledger",
+   "ok": true,
+   "detail": "schema=paper-accounting/2 disagreements=[] projected_keys=['costs_realised_usdt', 'costs_total_usdt', 'costs_usdt', 'entry_commissions_accrued_open_usdt', 'initial_equity_usdt', 'mark_prices', 'marked_equity_usdt', 'pnl_realised_usdt', 'pnl_total_usdt', 'pnl_unrealised_usdt', 'schema_version']"
+  }
+ ]
+}

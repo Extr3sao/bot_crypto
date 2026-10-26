@@ -1,0 +1,141 @@
+[admission] ledger=C:/Users/GVLLFR0035/Downloads/bot freebuff/config/strategy_admission.json
+[admission] strategies=['breakout@15m', 'breakout@1h', 'breakout@30m', 'breakout@5m', 'ema_crossover@15m', 'ema_crossover@1h', 'ema_crossover@30m', 'ema_crossover@5m', 'mean_reversion@15m', 'mean_reversion@1h', 'mean_reversion@30m', 'mean_reversion@5m', 'momentum@15m', 'momentum@1h', 'momentum@30m', 'momentum@5m', 'trend@15m', 'trend@1h', 'trend@30m', 'trend@5m', 'volatility@15m', 'volatility@1h', 'volatility@30m', 'volatility@5m']
+[admission] paper candidates=NONE
+[registry] COST_KILLED=7 NO_GROSS_EDGE=17
+[registry] paper-executable on 5m: NONE
+[registry]   refused breakout@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused ema_crossover@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused mean_reversion@5m: COST_KILLED — status COST_KILLED does not authorise PAPER
+[registry]   refused momentum@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused trend@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused volatility@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+2026-10-12 10:56:35 [info     ] multi_exchange.connector.resolve.started exchange_id=binance session_id=autonomous-paper
+2026-10-12 10:56:35 [info     ] connector_sandbox_enabled      ex_req_ms=15000 exchange=binance
+2026-10-12 10:56:35 [info     ] multi_exchange.connector.resolved exchange_id=binance market_type=spot sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:35 [info     ] multi_exchange.connector.sandbox_enabled exchange_id=binance market_type=spot sandbox=True session_id=autonomous-paper
+[preflight] universe: {"configured": ["BTC", "ETH", "SOL"], "asset_agent_supported": ["BTC", "ETH", "SOL"], "strategy_supported": ["BTC", "ETH", "SOL"], "provider_supported": null, "effective": ["BTC", "ETH", "SOL"], "unsupported": {}, "strategy_universe_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json", "provider_verified": false, "ok": true, "blocking_reason": null}
+2026-10-12 10:56:35 [info     ] reconcile.consistent_fresh_book
+[startup] reconciliation=CONSISTENT
+[run] wp-edge-00-smoke-real goal=2 cycle(s) interval=15.0s assets=['BTC', 'ETH', 'SOL'] timeframe=5m config=config/realdata
+[run] agents=['data-integrity', 'cost-economics', 'evidence-provenance', 'regime-alignment', 'risk-adversary']
+[run] cadence=interval timeframe=5m settlement=5.0s
+2026-10-12 10:56:35 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=4aa2e4d7a6ab48709637b78d28be2fb8
+2026-10-12 10:56:35 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=3eff4631-fac3-4729-8d27-1fcf37b03dca sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:35 [info     ] fetch_24h_volume_usdt_start    op=fetch_24h_volume_usdt req_id=51f28fe5-dde2-4220-838d-9206bc72bf5f symbol=BTC/USDT
+2026-10-12 10:56:38 [info     ] fetch_24h_volume_usdt_ok       op=fetch_24h_volume_usdt req_id=51f28fe5-dde2-4220-838d-9206bc72bf5f symbol=BTC/USDT volume_usdt=39098243.3716125
+2026-10-12 10:56:38 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=3eff4631-fac3-4729-8d27-1fcf37b03dca sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:38 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_spread_bps request_id=371da353-3996-4e67-98e4-18fccc78e46d sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:38 [info     ] fetch_spread_bps_start         op=fetch_spread_bps req_id=a0c3c8b7-8537-45a9-8f98-e3388e3c79a1 symbol=BTC/USDT
+2026-10-12 10:56:38 [info     ] fetch_spread_bps_ok            op=fetch_spread_bps req_id=a0c3c8b7-8537-45a9-8f98-e3388e3c79a1 spread_bps=0.0011973643865771412 symbol=BTC/USDT
+2026-10-12 10:56:38 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_spread_bps request_id=371da353-3996-4e67-98e4-18fccc78e46d sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:38 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=aef98bd3-0d30-44de-b98d-0fdd0a1d2aa6 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:38 [info     ] fetch_ohlcv_start              limit=100 op=fetch_ohlcv req_id=67980c4e-f716-41ec-9bc2-b6fd592ee594 symbol=BTC/USDT timeframe=5m
+2026-10-12 10:56:38 [info     ] fetch_ohlcv_ok                 limit=100 n=100 op=fetch_ohlcv req_id=67980c4e-f716-41ec-9bc2-b6fd592ee594 symbol=BTC/USDT timeframe=5m
+2026-10-12 10:56:38 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=aef98bd3-0d30-44de-b98d-0fdd0a1d2aa6 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:38 [info     ] scanner.pair.processed         active=True rank_score=0.8172747740417279 rejection_reason=None scan_iteration_id=4aa2e4d7a6ab48709637b78d28be2fb8 symbol=BTC/USDT
+2026-10-12 10:56:38 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=bf9ce12e-b8e0-4df4-a2d9-4ad7c4e104af sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:38 [info     ] fetch_24h_volume_usdt_start    op=fetch_24h_volume_usdt req_id=93e552d2-fe27-4dea-b401-930b5d567577 symbol=ETH/USDT
+2026-10-12 10:56:38 [info     ] fetch_24h_volume_usdt_ok       op=fetch_24h_volume_usdt req_id=93e552d2-fe27-4dea-b401-930b5d567577 symbol=ETH/USDT volume_usdt=11347063.374368
+2026-10-12 10:56:38 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=bf9ce12e-b8e0-4df4-a2d9-4ad7c4e104af sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:38 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_spread_bps request_id=bd61c096-f063-4c5f-a34f-0f357377b930 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:38 [info     ] fetch_spread_bps_start         op=fetch_spread_bps req_id=b2a1021b-90cd-4610-8aed-62e71d5c9e96 symbol=ETH/USDT
+2026-10-12 10:56:39 [info     ] fetch_spread_bps_ok            op=fetch_spread_bps req_id=b2a1021b-90cd-4610-8aed-62e71d5c9e96 spread_bps=0.03917397750929317 symbol=ETH/USDT
+2026-10-12 10:56:39 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_spread_bps request_id=bd61c096-f063-4c5f-a34f-0f357377b930 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:39 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=0bef613c-e602-47ac-b36e-804099c62aa6 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:39 [info     ] fetch_ohlcv_start              limit=100 op=fetch_ohlcv req_id=0a051ab9-43af-4feb-a8c7-ff35e5012767 symbol=ETH/USDT timeframe=5m
+2026-10-12 10:56:39 [info     ] fetch_ohlcv_ok                 limit=100 n=100 op=fetch_ohlcv req_id=0a051ab9-43af-4feb-a8c7-ff35e5012767 symbol=ETH/USDT timeframe=5m
+2026-10-12 10:56:39 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=0bef613c-e602-47ac-b36e-804099c62aa6 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:39 [info     ] scanner.pair.processed         active=True rank_score=0.7333882904979492 rejection_reason=None scan_iteration_id=4aa2e4d7a6ab48709637b78d28be2fb8 symbol=ETH/USDT
+2026-10-12 10:56:39 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=de974724-c0a4-4356-bab8-0f5c996d6f9f sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:39 [info     ] fetch_24h_volume_usdt_start    op=fetch_24h_volume_usdt req_id=ce0d703e-06f0-4b34-a1ff-8353f039394a symbol=SOL/USDT
+2026-10-12 10:56:39 [info     ] fetch_24h_volume_usdt_ok       op=fetch_24h_volume_usdt req_id=ce0d703e-06f0-4b34-a1ff-8353f039394a symbol=SOL/USDT volume_usdt=4923988.09382
+2026-10-12 10:56:39 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=de974724-c0a4-4356-bab8-0f5c996d6f9f sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:39 [info     ] scanner.pair.processed         active=False rejection_reason=volume_below_threshold scan_iteration_id=4aa2e4d7a6ab48709637b78d28be2fb8 symbol=SOL/USDT
+2026-10-12 10:56:39 [info     ] scanner.iteration.completed    all_failed=False duration_ms=4480 early_exit=None pairs_active=2 pairs_inactive=1 pairs_processed=3 scan_iteration_id=4aa2e4d7a6ab48709637b78d28be2fb8 scanner_errors=0
+2026-10-12 10:56:39 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=23d7d8a9-89f9-4a16-a620-dd7f05a1fdd2 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:39 [info     ] fetch_ohlcv_start              limit=120 op=fetch_ohlcv req_id=816e8497-9664-45f3-9be1-c9479471d9cc symbol=BTC/USDT timeframe=5m
+2026-10-12 10:56:40 [info     ] fetch_ohlcv_ok                 limit=120 n=120 op=fetch_ohlcv req_id=816e8497-9664-45f3-9be1-c9479471d9cc symbol=BTC/USDT timeframe=5m
+2026-10-12 10:56:40 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=23d7d8a9-89f9-4a16-a620-dd7f05a1fdd2 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:40 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-12 10:56:40 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=d8656e20-44c5-4a84-85bd-7f2c24c5f3a2 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:40 [info     ] fetch_ohlcv_start              limit=120 op=fetch_ohlcv req_id=744ba8a2-3599-40a3-a932-8d02a8131b06 symbol=ETH/USDT timeframe=5m
+2026-10-12 10:56:40 [info     ] fetch_ohlcv_ok                 limit=120 n=120 op=fetch_ohlcv req_id=744ba8a2-3599-40a3-a932-8d02a8131b06 symbol=ETH/USDT timeframe=5m
+2026-10-12 10:56:40 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=d8656e20-44c5-4a84-85bd-7f2c24c5f3a2 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:40 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-12 10:56:40 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=BTC/USDT
+2026-10-12 10:56:40 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=ETH/USDT
+[cycle 1] decisions=3 no_trade=3 shadow=0 paper=0 failures=0 strategies=18
+2026-10-12 10:56:55 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=1b77fac673be491886d936e23dc47b87
+2026-10-12 10:56:55 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=7ae73166-51ce-479f-8ad7-e26406e5d1e0 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:55 [info     ] fetch_24h_volume_usdt_start    op=fetch_24h_volume_usdt req_id=4e1a9a70-3960-4076-af93-739773f5739b symbol=BTC/USDT
+2026-10-12 10:56:55 [info     ] fetch_24h_volume_usdt_ok       op=fetch_24h_volume_usdt req_id=4e1a9a70-3960-4076-af93-739773f5739b symbol=BTC/USDT volume_usdt=39097094.400588
+2026-10-12 10:56:55 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=7ae73166-51ce-479f-8ad7-e26406e5d1e0 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:55 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_spread_bps request_id=2ece44fd-5f27-41c5-a70e-a11bc380ddf8 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:55 [info     ] fetch_spread_bps_start         op=fetch_spread_bps req_id=835d5693-0912-4a8b-a38b-e23390f9040e symbol=BTC/USDT
+2026-10-12 10:56:56 [info     ] fetch_spread_bps_ok            op=fetch_spread_bps req_id=835d5693-0912-4a8b-a38b-e23390f9040e spread_bps=0.0011973643865771412 symbol=BTC/USDT
+2026-10-12 10:56:56 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_spread_bps request_id=2ece44fd-5f27-41c5-a70e-a11bc380ddf8 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:56 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=cd00a1f2-4054-436d-8b37-28e92326f0c4 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:56 [info     ] fetch_ohlcv_start              limit=100 op=fetch_ohlcv req_id=56be2251-892e-443e-8eeb-1558b0771ac9 symbol=BTC/USDT timeframe=5m
+2026-10-12 10:56:56 [info     ] fetch_ohlcv_ok                 limit=100 n=100 op=fetch_ohlcv req_id=56be2251-892e-443e-8eeb-1558b0771ac9 symbol=BTC/USDT timeframe=5m
+2026-10-12 10:56:56 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=cd00a1f2-4054-436d-8b37-28e92326f0c4 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:56 [info     ] scanner.pair.processed         active=True rank_score=0.8172713271286545 rejection_reason=None scan_iteration_id=1b77fac673be491886d936e23dc47b87 symbol=BTC/USDT
+2026-10-12 10:56:56 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=eaf7b347-a439-4774-9368-947d86c1b666 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:56 [info     ] fetch_24h_volume_usdt_start    op=fetch_24h_volume_usdt req_id=1f4714ab-f425-4b2a-ab2e-c9681f19e100 symbol=ETH/USDT
+2026-10-12 10:56:57 [info     ] fetch_24h_volume_usdt_ok       op=fetch_24h_volume_usdt req_id=1f4714ab-f425-4b2a-ab2e-c9681f19e100 symbol=ETH/USDT volume_usdt=11347664.743039
+2026-10-12 10:56:57 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=eaf7b347-a439-4774-9368-947d86c1b666 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:57 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_spread_bps request_id=a929f487-fab0-413a-831c-c730e8de6ff6 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:57 [info     ] fetch_spread_bps_start         op=fetch_spread_bps req_id=ff0de570-bdbf-4707-a425-76d2bfc9d569 symbol=ETH/USDT
+2026-10-12 10:56:57 [info     ] fetch_spread_bps_ok            op=fetch_spread_bps req_id=ff0de570-bdbf-4707-a425-76d2bfc9d569 spread_bps=0.039176739985009146 symbol=ETH/USDT
+2026-10-12 10:56:57 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_spread_bps request_id=a929f487-fab0-413a-831c-c730e8de6ff6 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:57 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=6afe3850-9473-4649-9576-b14c472e4748 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:57 [info     ] fetch_ohlcv_start              limit=100 op=fetch_ohlcv req_id=35f84e50-05bf-41e5-8738-4a573ba62762 symbol=ETH/USDT timeframe=5m
+2026-10-12 10:56:57 [info     ] fetch_ohlcv_ok                 limit=100 n=100 op=fetch_ohlcv req_id=35f84e50-05bf-41e5-8738-4a573ba62762 symbol=ETH/USDT timeframe=5m
+2026-10-12 10:56:57 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=6afe3850-9473-4649-9576-b14c472e4748 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:57 [info     ] scanner.pair.processed         active=True rank_score=0.7333900485627001 rejection_reason=None scan_iteration_id=1b77fac673be491886d936e23dc47b87 symbol=ETH/USDT
+2026-10-12 10:56:57 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=d45d5b72-8f47-43d2-887a-b25319cd13b2 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:57 [info     ] fetch_24h_volume_usdt_start    op=fetch_24h_volume_usdt req_id=4aa6602e-27f9-441e-a77e-63264bea829c symbol=SOL/USDT
+2026-10-12 10:56:58 [info     ] fetch_24h_volume_usdt_ok       op=fetch_24h_volume_usdt req_id=4aa6602e-27f9-441e-a77e-63264bea829c symbol=SOL/USDT volume_usdt=4923453.8515
+2026-10-12 10:56:58 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_24h_volume_usdt request_id=d45d5b72-8f47-43d2-887a-b25319cd13b2 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:58 [info     ] scanner.pair.processed         active=False rejection_reason=volume_below_threshold scan_iteration_id=1b77fac673be491886d936e23dc47b87 symbol=SOL/USDT
+2026-10-12 10:56:58 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2687 early_exit=None pairs_active=2 pairs_inactive=1 pairs_processed=3 scan_iteration_id=1b77fac673be491886d936e23dc47b87 scanner_errors=0
+2026-10-12 10:56:58 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=5d282a74-3ea0-4fb5-b7d0-fd3a0f96f3b8 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:58 [info     ] fetch_ohlcv_start              limit=120 op=fetch_ohlcv req_id=0fdc0c82-5466-4415-9f6d-c3da179a9f76 symbol=BTC/USDT timeframe=5m
+2026-10-12 10:56:58 [info     ] fetch_ohlcv_ok                 limit=120 n=120 op=fetch_ohlcv req_id=0fdc0c82-5466-4415-9f6d-c3da179a9f76 symbol=BTC/USDT timeframe=5m
+2026-10-12 10:56:58 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=5d282a74-3ea0-4fb5-b7d0-fd3a0f96f3b8 sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:58 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-12 10:56:58 [info     ] multi_exchange.call.started    exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=8bc02899-8a46-4401-a176-7ca1d60dafda sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:58 [info     ] fetch_ohlcv_start              limit=120 op=fetch_ohlcv req_id=cc1d0733-62fa-4e6b-bcd7-3f4b175c0d64 symbol=ETH/USDT timeframe=5m
+2026-10-12 10:56:58 [info     ] fetch_ohlcv_ok                 limit=120 n=120 op=fetch_ohlcv req_id=cc1d0733-62fa-4e6b-bcd7-3f4b175c0d64 symbol=ETH/USDT timeframe=5m
+2026-10-12 10:56:58 [info     ] multi_exchange.call.completed  exchange_id=binance market_type=spot operation=fetch_ohlcv request_id=8bc02899-8a46-4401-a176-7ca1d60dafda sandbox=True session_id=autonomous-paper
+2026-10-12 10:56:58 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-12 10:56:58 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=BTC/USDT
+2026-10-12 10:56:58 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=ETH/USDT
+[cycle 2] decisions=3 no_trade=3 shadow=0 paper=0 failures=0 strategies=18
+2026-10-12 10:56:58 [info     ] paper_state.saved              open_positions=0 path='C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\runs\\WP-EDGE-00-smoke-real\\paper_state.json' sent_intents=0
+[run] paper state saved to C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\edge-recovery\runs\WP-EDGE-00-smoke-real\paper_state.json
+{
+  "asset_cycle_evaluations": 6,
+  "paper_trades": 0,
+  "shadow_trades": 0,
+  "no_trades": 6,
+  "runtime_failures": 0,
+  "orders_created": 0,
+  "traces_persisted": 6,
+  "outcomes_resolved": 0,
+  "outcomes_pending": 4,
+  "performance_updates": 0,
+  "no_trade_NO_TRADE_STRATEGIC": 4,
+  "no_trade_NO_TRADE_RISK": 0,
+  "no_trade_NO_TRADE_DATA": 2,
+  "no_trade_NO_TRADE_CONFLICT": 0,
+  "risk_APPROVED": 4,
+  "risk_VETOED": 0,
+  "risk_NOT_APPLICABLE": 2,
+  "risk_NOT_EVALUATED": 0
+}
+[run] stop reason: completed
+[run] report: C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\edge-recovery\runs\WP-EDGE-00-smoke-real\wp-edge-00-smoke-real\RUN_REPORT.md
+[run] report: C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\edge-recovery\runs\WP-EDGE-00-smoke-real\wp-edge-00-smoke-real\RUN_REPORT.json
+[run] traces: C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\edge-recovery\runs\WP-EDGE-00-smoke-real\wp-edge-00-smoke-real\traces.jsonl
+[run] heartbeat: C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\edge-recovery\runs\WP-EDGE-00-smoke-real\wp-edge-00-smoke-real\heartbeat.json (2 beats)
+[run] daily report: C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\edge-recovery\runs\WP-EDGE-00-smoke-real\wp-edge-00-smoke-real\PAPER_DAILY_REPORT.json

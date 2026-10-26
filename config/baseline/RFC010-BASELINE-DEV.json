@@ -1,0 +1,52 @@
+{
+  "baseline_id": "RFC010-BASELINE-DEV",
+  "code_sha": "6a9d47fa58fdecc56acae7af2ac60e732f63d591",
+  "runtime_entrypoint": "scripts/autonomous_paper.py",
+  "baseline_entrypoint": "scripts/rfc010_baseline_replay.py",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "timeframe": "5m",
+  "routing_mode": "LEGACY",
+  "split": "DEV",
+  "windows": [
+    "W1",
+    "W2",
+    "W3",
+    "W4"
+  ],
+  "cadence_step_bars": 60,
+  "initial_equity": 10000.0,
+  "size_usd": 1000.0,
+  "lookback_bars": 120,
+  "horizon_minutes": 5.0,
+  "spread_bps_assumption": 1.0,
+  "spread_class": "ESTIMATED",
+  "cost_model": "COST_MODEL_V3:BINANCE_SPOT_STANDARD_TAKER",
+  "dataset_corpus_sha256": "102eac98deccd5dae5b1c1ac1741c097a3157ab5361a062f168714a768e8b6da",
+  "config_files": {
+    "admission_ledger": {
+      "path": "config/strategy_admission.json",
+      "sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1"
+    },
+    "risk": {
+      "path": "config/realdata/risk.yaml",
+      "sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e"
+    },
+    "assets": {
+      "path": "config/realdata/assets.yaml",
+      "sha256": "3d29bb1619d9b97ed1ede5278dd919fe702ecb5d83a9cce93d137e66b303fc8b"
+    },
+    "strategies": {
+      "path": "config/realdata/strategies.yaml",
+      "sha256": "de1b2ada396ce980f1f6c5daa23e91d2ac458a1e0598a40453191479b2497d54"
+    },
+    "runtime": {
+      "path": "config/realdata/runtime.yaml",
+      "sha256": "b2b73d9e0c32af98b463ceea29cb12e385bb03f5716c16e4900a9a77fba8c1b9"
+    }
+  },
+  "cadence_note": "uniform sampling every 60th sealed 5m bar (~585 decision instants over DEV); compute-feasibility decision (the runtime's end-of-run replay is O(n^2)); NOT an economic parameter and chosen BEFORE observing any baseline result"
+}

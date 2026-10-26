@@ -1,0 +1,459 @@
+{
+  "campaign": "RFC-EDGE-012",
+  "certified_sources": [
+    {
+      "bytes": 21664,
+      "lines": 494,
+      "path": "scripts/edge04_observer.py",
+      "present": true,
+      "sha256": "fbfa8a1a504aadf57607d5f69159e666b6c468b279fbc59bcb8a009bcb94e014"
+    },
+    {
+      "bytes": 97245,
+      "lines": 2187,
+      "path": "src/trading_bot/research/edge03/autonomous.py",
+      "present": true,
+      "sha256": "6f512539e6635e1f0918be9a60bd5d4cb9fee5217e6555f4d7f33219ebcc650b"
+    },
+    {
+      "bytes": 14280,
+      "lines": 307,
+      "path": "src/trading_bot/research/edge03/forward_plan.py",
+      "present": true,
+      "sha256": "e9472a8a8a88db8d343aa210b4b9f5725e1942a22d5ef19bf7eeb45503269879"
+    }
+  ],
+  "checks": [
+    {
+      "detail": "agent/edge-recovery/WP-EDGE-00-baseline @ b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+      "name": "the_tree_is_at_a_named_commit",
+      "passed": true
+    },
+    {
+      "detail": "6/6 entry point(s) answered --help with status 0",
+      "name": "the_entry_points_answer_the_interpreter_this_lane_runs_under",
+      "passed": true
+    },
+    {
+      "detail": "9/9 module(s) imported in a fresh interpreter",
+      "name": "every_module_the_lane_imports_is_importable",
+      "passed": true
+    },
+    {
+      "detail": "255 tick(s), last 2026-10-16T06:26:42Z (OBSERVED)",
+      "name": "the_observer_has_a_runtime_record",
+      "passed": true
+    },
+    {
+      "detail": "host reports state=Ready logon_type=Interactive missed_runs=0",
+      "name": "the_registration_is_read_from_the_host_and_not_from_the_lane",
+      "passed": true
+    },
+    {
+      "detail": "guard status HEALTHY, 7.532 GiB free, NO_VOLUME_WITH_CAPACITY",
+      "name": "the_storage_guard_is_reachable",
+      "passed": true
+    },
+    {
+      "detail": "RFC-EDGE-011: NOT_PRESENT_IN_TREE over 8723 file(s) in 6 scope(s) \u2014 recorded as an external dependency, not assumed satisfied",
+      "name": "the_named_dependency_is_accounted_for",
+      "passed": true
+    },
+    {
+      "detail": "4 open failure(s) carried with an owner",
+      "name": "no_open_failure_is_reported_as_zero",
+      "passed": true
+    },
+    {
+      "detail": "order_sent=False, promotion=NONE",
+      "name": "no_artefact_claims_an_order_or_a_promotion",
+      "passed": true
+    }
+  ],
+  "dependency_named_by_the_request": {
+    "audit": {
+      "files_matching": 0,
+      "files_scanned": 8723,
+      "hits": [],
+      "identifier": "RFC-EDGE-011",
+      "reading": "the identifier was searched for across the repository's own document, report, source, script, test and task trees, with this package's own files excluded so a scan cannot satisfy a dependency by finding itself; a dependency absent from every one of them is an external dependency, and this audit says so rather than assuming it was satisfied",
+      "scopes_absent": [],
+      "search_scope": [
+        "docs/",
+        "reports/",
+        "src/",
+        "scripts/",
+        "tests/",
+        "tasks/"
+      ],
+      "self_references_excluded": [
+        "reports/edge-recovery/WP-EDGE-12/DEPENDENCY_GATE.json",
+        "reports/edge-recovery/WP-EDGE-12/DEPENDENCY_GATE.md",
+        "reports/edge-recovery/WP-EDGE-12/FINAL_REPORT.md",
+        "reports/edge-recovery/WP-EDGE-12/INFORME_EJECUTIVO.md",
+        "reports/edge-recovery/WP-EDGE-12/RUN_REPORT.json",
+        "src/trading_bot/research/edge12/gate.py",
+        "src/trading_bot/research/edge12/render.py",
+        "scripts/edge12_reports.py",
+        "tests/unit/research/test_edge12_continuity.py"
+      ],
+      "verdict": "NOT_PRESENT_IN_TREE"
+    },
+    "consequence": "the request names RFC-EDGE-011 as a dependency; nothing in this tree carries that identifier, so what this package can certify is what it can measure: the runtime it is pointed at. Treating an absent dependency as satisfied is exactly the failure mode RFC-EDGE-012 exists to prevent.",
+    "identifier": "RFC-EDGE-011",
+    "implementations_this_package_verifies_instead": [
+      "scripts/edge04_observer.py",
+      "src/trading_bot/research/edge03/autonomous.py",
+      "src/trading_bot/research/edge03/forward_plan.py"
+    ]
+  },
+  "entry_points": {
+    "entry_points": {
+      "continuity": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\edge04r_continuity.py --help",
+        "exit_code": 0,
+        "first_line": "usage: edge04r_continuity.py [-h] [--state-root STATE_ROOT]",
+        "reachable": true,
+        "target": "scripts/edge04r_continuity.py"
+      },
+      "continuity_verifier": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\edge04r_verify.py --help",
+        "exit_code": 0,
+        "first_line": "usage: edge04r_verify.py [-h] [--reports REPORTS] [--repo REPO] [--self-test]",
+        "reachable": true,
+        "target": "scripts/edge04r_verify.py"
+      },
+      "observer": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\edge04_observer.py --help",
+        "exit_code": 0,
+        "first_line": "usage: edge04_observer.py [-h] [--state-root STATE_ROOT]",
+        "reachable": true,
+        "target": "scripts/edge04_observer.py"
+      },
+      "observer_scheduled": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\edge04_observer.py --scheduled --due --help",
+        "exit_code": 0,
+        "first_line": "usage: edge04_observer.py [-h] [--state-root STATE_ROOT]",
+        "reachable": true,
+        "target": "scripts/edge04_observer.py --scheduled --due"
+      },
+      "session_probe": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\edge04r_session.py --help",
+        "exit_code": 0,
+        "first_line": "usage: edge04r_session.py [-h] [--reports REPORTS] [--no-probe] [--json]",
+        "reachable": true,
+        "target": "scripts/edge04r_session.py"
+      },
+      "supervisor": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cap004_supervisor.py --help",
+        "exit_code": 0,
+        "first_line": "usage: cap004_supervisor.py [-h] [--interval-seconds INTERVAL_SECONDS]",
+        "reachable": true,
+        "target": "scripts/cap004_supervisor.py"
+      }
+    },
+    "interpreter": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "python_version": "3.11.15",
+    "reachable": 6,
+    "total": 6
+  },
+  "failing_checks": [],
+  "generated_at_utc": "2026-10-16T06:30:35Z",
+  "hypothetical": true,
+  "identity": {
+    "ahead_of_upstream": 0,
+    "behind_upstream": 0,
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "head": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+    "head_committed_at": "2026-10-16T08:25:47+02:00",
+    "head_is_the_remote_ref": true,
+    "head_subject": "Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12]",
+    "modified_count": 34,
+    "modified_paths": [
+      "INAL_REPORT.md",
+      "RUN_REPORT.json",
+      "RUN_REPORT.md",
+      "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+      "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md",
+      "data/st6/RFC047_RUNTIME_VERIFICATION.json",
+      "data/st6/ST6_FORWARD_REGIME_REPORT.json",
+      "data/st6/ST6_FORWARD_REGIME_REPORT.md",
+      "data/st6/ST6_INDEPENDENT_RECONCILIATION.json",
+      "data/st6/ST6_INDEPENDENT_RECONCILIATION.md",
+      "data/st6/ST6_INDEPENDENT_VERIFICATION.json",
+      "data/st6/ST6_INDEPENDENT_VERIFICATION.md",
+      "data/st6/ST6_MODEL_DRIFT.json",
+      "data/st6/ST6_OBSERVATIONS.jsonl",
+      "data/st6/ST6_REGIME_COVERAGE.json",
+      "data/st6/ST6_SCHEDULER_PROVENANCE.json",
+      "data/st6/ST6_SCHEDULER_PROVENANCE.md",
+      "data/st6/ST6_SCHEDULER_REPORT.json",
+      "data/st6/ST6_SCHEDULER_REPORT.md",
+      "data/st6/ST6_SLOT_LEDGER.json",
+      "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl",
+      "data/st6/ST6_WINDOWS.jsonl",
+      "data/st6/rfc047/WINDOWS_EVENT_LIVE_STATE.json",
+      "docs/source_registry.md",
+      "evidence/real_decisions/evaluations.jsonl",
+      "evidence/real_decisions/outcomes.jsonl",
+      "reports/edge-recovery/WP-EDGE-12/INFORME_EJECUTIVO.md",
+      "reports/edge-recovery/WP-EDGE-12/RUN_REPORT.json",
+      "reports/edge-recovery/WP-EDGE-12/RUN_REPORT.md",
+      "reports/edge-recovery/WP-EDGE-12/evidence/OS_EVIDENCE.json",
+      "scripts/cap004c_verify.py",
+      "scripts/edge12_reports.py",
+      "scripts/edge12_verify.py",
+      "scripts/st6_scheduler_witness.py"
+    ],
+    "remote_read_error": null,
+    "remote_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote_sha": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+    "untracked_count": 121,
+    "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline",
+    "worktree_note": "the modified and untracked paths are other workstreams' live artefacts; this package neither stages nor discards them and measures only its own files"
+  },
+  "modules": {
+    "importable": 9,
+    "modules": {
+      "trading_bot.research.campaign_lock": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      },
+      "trading_bot.research.disk_space": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      },
+      "trading_bot.research.edge03.autonomous": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      },
+      "trading_bot.research.edge03.forward_plan": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      },
+      "trading_bot.research.edge03.ingest": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      },
+      "trading_bot.research.edge03.run": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      },
+      "trading_bot.research.edge04r.continuity": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      },
+      "trading_bot.research.edge04r.os_evidence": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      },
+      "trading_bot.research.edge05.reconcile": {
+        "exit_code": 0,
+        "importable": true,
+        "reason": null
+      }
+    },
+    "total": 9
+  },
+  "observer_runtime": {
+    "corrupt_run_lines": 0,
+    "corrupt_slot_lines": 0,
+    "coverage": {
+      "coverage_required": 0.9,
+      "days_with_any_data": 230,
+      "densely_covered_but_backfilled": 228,
+      "epoch_utc": "2026-03-01T00:00:00Z",
+      "generated_at_utc": "2026-10-16T06:26:41Z",
+      "prospectively_observed": 1,
+      "remaining_days": 59,
+      "required_days": 60
+    },
+    "current_slot": "2026-10-16T06:30Z",
+    "daily_files": 4,
+    "first_tick_utc": "2026-10-13T11:23:38Z",
+    "health": {
+      "reasons": [
+        "the measured growth rate is volatile"
+      ],
+      "status": "DEGRADED",
+      "ticks_in_window": 99
+    },
+    "hypothetical": true,
+    "last_consuming_tick_utc": "2026-10-16T06:26:42Z",
+    "last_tick_outcome": "OBSERVED",
+    "last_tick_utc": "2026-10-16T06:26:42Z",
+    "lease_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\lock\\CAMPAIGN_LOCK.json",
+    "order_sent": false,
+    "outcomes": {
+      "ALREADY_OBSERVED": 7,
+      "ALREADY_RUNNING": 2,
+      "DISK_BUDGET_EXCEEDED": 45,
+      "NO_NEW_DATA": 3,
+      "OBSERVED": 198
+    },
+    "promotion": "NONE",
+    "runs": 255,
+    "sealed_slots": 200,
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "state_root_bytes": 7457176,
+    "store_bytes": 5893043,
+    "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03"
+  },
+  "open_failures": {
+    "count": 4,
+    "open_failures": [
+      {
+        "id": "OPEN-EDGE12-1",
+        "status": "UNREADABLE",
+        "what": "the economic certificate or its input could not be read"
+      },
+      {
+        "action_taken_here": "re-attempted and recorded; no privilege was escalated and no setting changed",
+        "evidence": "reports\\edge-recovery\\WP-EDGE-04R\\SESSION_INDEPENDENCE.md",
+        "id": "OPEN-EDGE12-2",
+        "owner": "an operator with administrator rights on this host",
+        "status": "BLOCKED_NEEDS_ELEVATION",
+        "what": "S4U task registration, a Windows service and the Task Scheduler operational log"
+      },
+      {
+        "action_taken_here": "not attempted: this package holds no credential and will not acquire one",
+        "id": "OPEN-EDGE12-3",
+        "owner": "an operator who chooses to store a credential on the machine",
+        "status": "BLOCKED_NEEDS_CREDENTIALS",
+        "what": "automatic logon, which is the only non-elevated way to re-create a session after a reboot"
+      },
+      {
+        "action_taken_here": "re-run and reported; not skipped, not weakened, not marked xfail",
+        "id": "OPEN-EDGE12-4",
+        "owner": "the cost-barrier chain; not this work package",
+        "status": "INHERITED_AND_UNREPAIRED",
+        "what": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout"
+      }
+    ],
+    "reading": "a failure this package cannot repair is carried as an entry with an owner, not removed from the list to make the list look clean",
+    "resolved_here": 0
+  },
+  "order_sent": false,
+  "promotion": "NONE",
+  "scheduler": {
+    "default_task_name": "TradingAgentic-EDGE04-Forward",
+    "execution_time_limit": "PT1H",
+    "host_is_authoritative": "the scheduler's answer is the registration; install.json is what the lane asked for",
+    "interval": "PT15M",
+    "lane_reported": {
+      "enabled": true,
+      "installed": true,
+      "interval_minutes": 15
+    },
+    "last_run_utc": "10/16/2026 08:25:54",
+    "last_task_result": 0,
+    "logon_type": "Interactive",
+    "missed_runs": 0,
+    "multiple_instances": "IgnoreNew",
+    "next_run_utc": "10/16/2026 08:40:53",
+    "os_evidence_errors": [],
+    "os_evidence_supported": true,
+    "present_on_host": true,
+    "restart_count": "3",
+    "run_level": "Limited",
+    "scheduler_history": {
+      "enabled": false,
+      "log_name": "Microsoft-Windows-TaskScheduler/Operational",
+      "reading": "a disabled operational log is why a trigger that fired and could not start a process leaves no host-side trace at all",
+      "record_count": 0
+    },
+    "start_boundary": "2026-10-13T13:25:53",
+    "start_when_available": "True",
+    "state": "Ready",
+    "task_name": "TradingAgentic-EDGE04-Forward",
+    "trigger_count": 1,
+    "trigger_kinds": [
+      "MSFT_TaskTimeTrigger"
+    ],
+    "user_id": "GVLLFR0035",
+    "wake_to_run": "False"
+  },
+  "schema_version": "EDGE12_DEPENDENCY_GATE_V1",
+  "storage": {
+    "guard": {
+      "critical_free_bytes": 2147483648,
+      "free_gib": 7.532,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+      "status": "HEALTHY",
+      "used_percent": 96.83,
+      "warning_free_bytes": 5368709120
+    },
+    "lane_budget_bytes": 268435456,
+    "physical_disks": [
+      {
+        "bus_type": "NVMe",
+        "friendly_name": "KXG60ZNV256G KIOXIA",
+        "media_type": "SSD",
+        "size_gib": 238.4749
+      }
+    ],
+    "qualifying_volumes": [],
+    "relocation_verdict": "NO_VOLUME_WITH_CAPACITY",
+    "volumes": [
+      {
+        "can_hold_the_store": false,
+        "capacity_gib": 237.5264,
+        "drive_letter": "C:",
+        "file_system": "NTFS",
+        "free_gib": 7.5328,
+        "is_ntfs": true,
+        "is_the_current_volume": true,
+        "label": "",
+        "used_percent": 96.83
+      },
+      {
+        "can_hold_the_store": false,
+        "capacity_gib": 0.832,
+        "drive_letter": "",
+        "file_system": "NTFS",
+        "free_gib": 0.0532,
+        "is_ntfs": true,
+        "is_the_current_volume": false,
+        "label": "",
+        "used_percent": 93.6
+      },
+      {
+        "can_hold_the_store": false,
+        "capacity_gib": 0.0938,
+        "drive_letter": "",
+        "file_system": "FAT32",
+        "free_gib": 0.0065,
+        "is_ntfs": false,
+        "is_the_current_volume": false,
+        "label": "",
+        "used_percent": 93.1
+      },
+      {
+        "can_hold_the_store": false,
+        "capacity_gib": 237.5264,
+        "drive_letter": "G:",
+        "file_system": "FAT32",
+        "free_gib": 7.1561,
+        "is_ntfs": false,
+        "is_the_current_volume": false,
+        "label": "Google Drive",
+        "used_percent": 96.99
+      }
+    ]
+  },
+  "unresolved_dependency_ids": [
+    "OPEN-EDGE12-1",
+    "OPEN-EDGE12-2",
+    "OPEN-EDGE12-3"
+  ],
+  "verdict": "DEPENDENCY_GATE_PASS",
+  "work_package": "WP-EDGE-12A"
+}

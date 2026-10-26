@@ -1,0 +1,578 @@
+{
+  "tool": "verify_p0_live_gate",
+  "verdict": "P0_PARTIAL",
+  "independence": "PROCEDURALLY_SEPARATED (same author; different artefact)",
+  "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "rev": "6c90b21d",
+  "branch": "audit/mt0004-negative-controls",
+  "checks": [
+    {
+      "check_id": "V-1",
+      "criterion": "ACC-P0-14",
+      "description": "identity: commit, branch, no dirty source",
+      "passed": true,
+      "detail": "rev=6c90b21d branch=audit/mt0004-negative-controls dirty=1 dirty_source=0",
+      "evidence": {
+        "rev": "6c90b21d",
+        "head": "6c90b21d75707cd4a64783f90c30b28442f8df38",
+        "branch": "audit/mt0004-negative-controls",
+        "dirty_paths": [
+          "?? docs/audit/runs/run-20261024T163641Z-P0-LIVE-GATE/"
+        ],
+        "app_sha256": "ddcded50643b573d780c657b39a04295c1ad40bb8923d9ce70b0719c05f75c64",
+        "gate_sha256": "edabd6d3e5632b8fc2aaf68471dfceba09ad187865b9e0660614487816a27ed8"
+      }
+    },
+    {
+      "check_id": "V-2",
+      "criterion": "ACC-P0-09/10",
+      "description": "7 sinks inside the boundary; 7 boundaries declare opens_risk and settings",
+      "passed": true,
+      "detail": "sinks=7 unguarded=[] boundaries=7 incomplete=[]",
+      "evidence": {
+        "sinks": 7,
+        "boundaries": 7
+      }
+    },
+    {
+      "check_id": "V-3",
+      "criterion": "ACC-P0-01",
+      "description": "legal config: place-order and run each send exactly one order",
+      "passed": true,
+      "detail": "cli calls=1 exit=0 loop calls=1 exit=0",
+      "evidence": {
+        "cli": {
+          "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\app.py",
+          "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src",
+          "argv": [
+            "place-order",
+            "--symbol",
+            "BTCUSDT",
+            "--side",
+            "buy",
+            "--order-type",
+            "market",
+            "--amount",
+            "0.01",
+            "--confirm-live",
+            "--market-kind",
+            "futures",
+            "--trade-side",
+            "OPEN",
+            "--run-dir",
+            "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\ctl-entry"
+          ],
+          "break_gate": null,
+          "broken_gate_ids": [],
+          "broker_calls": 1,
+          "calls": [
+            {
+              "order_type": "market",
+              "position_id": null,
+              "price": null,
+              "qty": 0.01,
+              "reduce_only": false,
+              "side": "buy",
+              "sink": "futures.place_order",
+              "sl_price": null,
+              "symbol": "BTCUSDT",
+              "tp_price": null,
+              "trade_side": "OPEN"
+            }
+          ],
+          "entrypoint": "place-order-futures",
+          "error": "",
+          "exit_code": 0,
+          "gate_crash": false,
+          "gate_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\execution\\live_gate.py",
+          "gate_validations": 2,
+          "patched": {
+            "futures": "FakeFutures"
+          },
+          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\ctl-entry",
+          "settings_error": false,
+          "stderr_tail": "",
+          "stdout_tail": "2026-10-24 19:01:25 [info     ] gate.validation_complete       all_passed=True critical=0 failed=0 passed=10 total=10\n2026-10-24 19:01:25 [info     ] gate.validation_complete       all_passed=True critical=0 failed=0 passed=10 total=10\n{\"success\": true, \"marketKind\": \"futures\", \"symbol\": \"BTCUSDT\", \"side\": \"buy\", \"tradeSide\": \"OPEN\", \"orderType\": \"market\", \"amount\": 0.01, \"price\": null, \"orderId\": \"p0-order-1\", \"clientId\": null}\n",
+          "_returncode": 0
+        },
+        "loop": {
+          "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\app.py",
+          "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src",
+          "argv": [
+            "run",
+            "--mode",
+            "live",
+            "--once",
+            "--auto-trade",
+            "--market-kind",
+            "futures",
+            "--trade-quote-usdt",
+            "50",
+            "--loop-seconds",
+            "30",
+            "--env-file",
+            "",
+            "--run-dir",
+            "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\ctl-loop"
+          ],
+          "break_gate": null,
+          "broken_gate_ids": [],
+          "broker_calls": 1,
+          "calls": [
+            {
+              "order_type": "MARKET",
+              "qty": 0.5,
+              "side": "BUY",
+              "sink": "futures.place_order",
+              "sl_price": 99.5,
+              "symbol": "BTC/USDT",
+              "tp_price": 101.0,
+              "trade_side": "OPEN"
+            }
+          ],
+          "entrypoint": "run-futures",
+          "error": "",
+          "exit_code": 0,
+          "gate_crash": false,
+          "gate_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\execution\\live_gate.py",
+          "gate_validations": 2,
+          "patched": {
+            "futures": "FakeFutures"
+          },
+          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\ctl-loop",
+          "settings_error": false,
+          "stderr_tail": "",
+          "stdout_tail": "2026-10-24 19:01:27 [info     ] gate.validation_complete       all_passed=True critical=0 failed=0 passed=10 total=10\n[run] ejecutando una iteracion live real (mode=live).\n2026-10-24 19:01:27 [info     ] gate.validation_complete       all_passed=True critical=0 failed=0 passed=10 total=10\n[run] live-event={\"status\": \"FUTURES_ORDER_OK\", \"tradeCaseId\": \"p0-tc-1\", \"chartSnapshotPath\": \"\", \"positionId\": null, \"symbol\": \"BTC/USDT\", \"direction\": \"LONG\", \"assumption\": \"ohlcv_direction_last_close_gte_first_close\", \"score\": 0.9, \"qty\": 0.5, \"tpPrice\": 101.0, \"slPrice\": 99.5, \"orderId\": \"p0-order-1\", \"clientId\": null}\n\n==============================================================================\nMarket scanner iteration -- DEMO mode (mode=live, synthetic data)\n==============================================================================\n\n  SYMBOL               LAST     VOL_24H_USDT   SPR_BPS    ATR%   SCORE  STATUS\n  ----------------------------------------------------------------------------\n  BTC/USDT           100.00        5,000,000      1.00    0.50   0.900  ACTIVE\n\nCounters (pine contract: spec section 10):\n  pairs_processed:  1\n  pairs_active:     1\n  pairs_inactive:   0\n  scanner_errors:   0\n\n",
+          "_returncode": 0
+        }
+      }
+    },
+    {
+      "check_id": "V-3b",
+      "criterion": "ACC-P0-15",
+      "description": "the probe loaded this export's app and the real gate module",
+      "passed": true,
+      "detail": "app=C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\app.py gate=C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\execution\\live_gate.py",
+      "evidence": {
+        "patched": {
+          "futures": "FakeFutures"
+        }
+      }
+    },
+    {
+      "check_id": "V-4",
+      "criterion": "ACC-P0-02/08",
+      "description": "a rejecting gate sends 0 orders, exits 2, names the gate and reports no success",
+      "passed": true,
+      "detail": "GATE-001=calls:0/exit:2/named:True; GATE-002=calls:0/exit:2/named:True; GATE-003=calls:0/exit:2/named:True; GATE-004=calls:0/exit:2/named:True; GATE-005=calls:0/exit:2/named:True; GATE-006=calls:0/exit:2/named:True; GATE-007=calls:0/exit:2/named:True; GATE-008=calls:0/exit:2/named:True; GATE-009=calls:0/exit:2/named:True; GATE-010=calls:0/exit:2/named:True",
+      "evidence": {
+        "rows": [
+          {
+            "gate": "GATE-001",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-002",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-003",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-004",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-005",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-006",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-007",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-008",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-009",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          },
+          {
+            "gate": "GATE-010",
+            "calls": 0,
+            "exit": 2,
+            "validations": 1,
+            "named": true,
+            "no_false_success": true
+          }
+        ]
+      }
+    },
+    {
+      "check_id": "V-5",
+      "criterion": "ACC-P0-03",
+      "description": "all four entrypoints send 0 orders and exit 2 with a rejecting gate",
+      "passed": true,
+      "detail": "place-order-futures=calls:0/exit:2; place-order-spot=calls:0/exit:2; run-futures=calls:0/exit:2; run-spot=calls:0/exit:2",
+      "evidence": {
+        "rows": [
+          {
+            "entrypoint": "place-order-futures",
+            "broker_calls": 0,
+            "exit_code": 2,
+            "gate_validations": 1,
+            "stdout_tail": "2026-10-24 19:01:56 [info     ] gate.validation_complete       all_passed=False critical=1 failed=1 passed=9 total=10\n"
+          },
+          {
+            "entrypoint": "place-order-spot",
+            "broker_calls": 0,
+            "exit_code": 2,
+            "gate_validations": 1,
+            "stdout_tail": "2026-10-24 19:01:59 [info     ] gate.validation_complete       all_passed=False critical=1 failed=1 passed=9 total=10\n"
+          },
+          {
+            "entrypoint": "run-futures",
+            "broker_calls": 0,
+            "exit_code": 2,
+            "gate_validations": 1,
+            "stdout_tail": "2026-10-24 19:02:01 [info     ] gate.validation_complete       all_passed=False critical=1 failed=1 passed=9 total=10\n"
+          },
+          {
+            "entrypoint": "run-spot",
+            "broker_calls": 0,
+            "exit_code": 2,
+            "gate_validations": 1,
+            "stdout_tail": "2026-10-24 19:02:04 [info     ] gate.validation_complete       all_passed=False critical=1 failed=1 passed=9 total=10\n"
+          }
+        ]
+      }
+    },
+    {
+      "check_id": "V-6",
+      "criterion": "ACC-P0-07",
+      "description": "close-position, set-tpsl, CLOSE and spot sell still reach the broker",
+      "passed": true,
+      "detail": "close-position=calls:1/exit:0; set-tpsl=calls:1/exit:0; place-order-futures-close=calls:1/exit:0; place-order-spot-sell=calls:1/exit:0",
+      "evidence": {
+        "rows": [
+          {
+            "entrypoint": "close-position",
+            "broker_calls": 1,
+            "exit_code": 0,
+            "gate_validations": 0
+          },
+          {
+            "entrypoint": "set-tpsl",
+            "broker_calls": 1,
+            "exit_code": 0,
+            "gate_validations": 0
+          },
+          {
+            "entrypoint": "place-order-futures-close",
+            "broker_calls": 1,
+            "exit_code": 0,
+            "gate_validations": 0
+          },
+          {
+            "entrypoint": "place-order-spot-sell",
+            "broker_calls": 1,
+            "exit_code": 0,
+            "gate_validations": 0
+          }
+        ]
+      }
+    },
+    {
+      "check_id": "V-7",
+      "criterion": "ACC-P0-05",
+      "description": "unreadable settings and a crashing gate both send 0 orders and exit 2",
+      "passed": true,
+      "detail": "place-order-futures=calls:0/exit:2; run-futures=calls:0/exit:2; place-order-spot=calls:0/exit:2; run-spot=calls:0/exit:2",
+      "evidence": {
+        "settings": [
+          {
+            "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\app.py",
+            "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src",
+            "argv": [
+              "place-order",
+              "--symbol",
+              "BTCUSDT",
+              "--side",
+              "buy",
+              "--order-type",
+              "market",
+              "--amount",
+              "0.01",
+              "--confirm-live",
+              "--market-kind",
+              "futures",
+              "--trade-side",
+              "OPEN",
+              "--run-dir",
+              "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\badcfg-place-order-futures"
+            ],
+            "break_gate": null,
+            "broken_gate_ids": [],
+            "broker_calls": 0,
+            "calls": [],
+            "entrypoint": "place-order-futures",
+            "error": "",
+            "exit_code": 2,
+            "gate_crash": false,
+            "gate_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\execution\\live_gate.py",
+            "gate_validations": 0,
+            "patched": {
+              "futures": "FakeFutures"
+            },
+            "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\badcfg-place-order-futures",
+            "settings_error": true,
+            "stderr_tail": "ERROR: no se pudo cargar la configuracion live (ValueError); ninguna orden enviada.\n",
+            "stdout_tail": "",
+            "_returncode": 2
+          },
+          {
+            "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\app.py",
+            "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src",
+            "argv": [
+              "run",
+              "--mode",
+              "live",
+              "--once",
+              "--auto-trade",
+              "--market-kind",
+              "futures",
+              "--trade-quote-usdt",
+              "50",
+              "--loop-seconds",
+              "30",
+              "--env-file",
+              "",
+              "--run-dir",
+              "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\badcfg-run-futures"
+            ],
+            "break_gate": null,
+            "broken_gate_ids": [],
+            "broker_calls": 0,
+            "calls": [],
+            "entrypoint": "run-futures",
+            "error": "",
+            "exit_code": 2,
+            "gate_crash": false,
+            "gate_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\execution\\live_gate.py",
+            "gate_validations": 0,
+            "patched": {
+              "futures": "FakeFutures"
+            },
+            "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\badcfg-run-futures",
+            "settings_error": true,
+            "stderr_tail": "ERROR: live gate could not read the configuration (ValueError); auto-trade refused, no order sent.\n",
+            "stdout_tail": "",
+            "_returncode": 2
+          }
+        ],
+        "crash": [
+          {
+            "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\app.py",
+            "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src",
+            "argv": [
+              "place-order",
+              "--symbol",
+              "BTC/USDT",
+              "--side",
+              "buy",
+              "--order-type",
+              "market",
+              "--amount",
+              "0.01",
+              "--price",
+              "100",
+              "--confirm-live",
+              "--market-kind",
+              "spot",
+              "--run-dir",
+              "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\crash-place-order-spot"
+            ],
+            "break_gate": null,
+            "broken_gate_ids": [],
+            "broker_calls": 0,
+            "calls": [],
+            "entrypoint": "place-order-spot",
+            "error": "",
+            "exit_code": 2,
+            "gate_crash": true,
+            "gate_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\execution\\live_gate.py",
+            "gate_validations": 1,
+            "patched": {
+              "futures": "FakeFutures"
+            },
+            "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\crash-place-order-spot",
+            "settings_error": false,
+            "stderr_tail": "ERROR: live trading gate refused entry (live_gate_error:RuntimeError); order refused.\n",
+            "stdout_tail": "",
+            "_returncode": 2
+          },
+          {
+            "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\app.py",
+            "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src",
+            "argv": [
+              "run",
+              "--mode",
+              "live",
+              "--once",
+              "--auto-trade",
+              "--market-kind",
+              "spot",
+              "--trade-quote-usdt",
+              "50",
+              "--loop-seconds",
+              "30",
+              "--env-file",
+              "",
+              "--run-dir",
+              "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\crash-run-spot"
+            ],
+            "break_gate": null,
+            "broken_gate_ids": [],
+            "broker_calls": 0,
+            "calls": [],
+            "entrypoint": "run-spot",
+            "error": "",
+            "exit_code": 2,
+            "gate_crash": true,
+            "gate_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\tree\\src\\trading_bot\\execution\\live_gate.py",
+            "gate_validations": 1,
+            "patched": {
+              "futures": "FakeFutures"
+            },
+            "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\p0-verify-ztsk5w1b\\crash-run-spot",
+            "settings_error": false,
+            "stderr_tail": "ERROR: live trading gate refused auto-trade (live_gate_error:RuntimeError); no order sent.\n",
+            "stdout_tail": "",
+            "_returncode": 2
+          }
+        ]
+      }
+    },
+    {
+      "check_id": "V-8",
+      "criterion": "ACC-P0-06",
+      "description": "with a marker and a rejecting gate, the refusal names the stop, not the gate",
+      "passed": true,
+      "detail": "calls=0 exit=2 stderr='ERROR: live entry refused (kill_switch_engaged_hot:p0 verifier); order refused.\\n'",
+      "evidence": {
+        "stderr_tail": "ERROR: live entry refused (kill_switch_engaged_hot:p0 verifier); order refused.\n"
+      }
+    },
+    {
+      "check_id": "V-9",
+      "criterion": "ACC-P0-02/05",
+      "description": "ten checks; legal passes; GATE-006/008 and a short report are refusals",
+      "passed": false,
+      "detail": "verdict={}",
+      "evidence": {
+        "verdict": {},
+        "stderr": ""
+      }
+    },
+    {
+      "check_id": "V-11",
+      "criterion": "ACC-P0-11",
+      "description": "hot_stop.py is byte-identical to the G-1 baseline",
+      "passed": true,
+      "detail": "baseline_exit=0 equal=True",
+      "evidence": {
+        "sha256": "76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1"
+      }
+    },
+    {
+      "check_id": "V-12",
+      "criterion": "ACC-P0-13",
+      "description": "shipped config still declares live_trading_enabled: false",
+      "passed": true,
+      "detail": "runtime/risk configuration",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-13",
+      "criterion": "ACC-P0-12",
+      "description": "P0 + G-3 + CLI + autonomy suites pass on the export",
+      "passed": true,
+      "detail": "473 passed in 267.33s (0:04:27)",
+      "evidence": {
+        "failed_tests": []
+      }
+    },
+    {
+      "check_id": "V-14",
+      "criterion": "ACC-P0-12",
+      "description": "mutation matrix: baseline green, every mutant killed, same app.py",
+      "passed": true,
+      "detail": "7/7 killed; same_app=True",
+      "evidence": {
+        "variants": [
+          "M1",
+          "M2",
+          "M3",
+          "M4",
+          "M5",
+          "M6",
+          "M7"
+        ]
+      }
+    },
+    {
+      "check_id": "V-15",
+      "criterion": "ACC-P0-14",
+      "description": "artefact hashes supplied",
+      "passed": false,
+      "detail": "no --report given",
+      "evidence": {}
+    }
+  ],
+  "passed": 13,
+  "total": 15,
+  "total_seconds": 349.7,
+  "generated_at": "2026-10-24T17:06:57Z"
+}

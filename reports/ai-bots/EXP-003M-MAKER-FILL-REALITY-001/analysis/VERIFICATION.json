@@ -1,0 +1,234 @@
+{
+  "checks": [
+    {
+      "detail": {
+        "listed": 70,
+        "mismatched": [],
+        "missing": []
+      },
+      "name": "predecessor_seal",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "max_abs_gap": 0.0,
+        "problems": [],
+        "signals": 47
+      },
+      "name": "signals_reconstruct",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "pairs": 42,
+        "problems": [],
+        "rows": 680484
+      },
+      "name": "tape_integrity",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "bars_compared": 60480,
+        "bars_exact": 60480,
+        "problems": []
+      },
+      "name": "klines_provenance",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "problems": [],
+        "signals_checked": 47
+      },
+      "name": "tape_matches_bars",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "evaluations": 188,
+        "max_fill_gap": 4.284256283071386e-11,
+        "problems": []
+      },
+      "name": "fills_recompute",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "problems": []
+      },
+      "name": "economics_recompute",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "deltas": {
+          "fill_rate": 0.0,
+          "gross_per_fill_usdt": 0.0,
+          "net_per_fill_usdt": 0.0,
+          "net_per_signal_usdt": 0.0
+        },
+        "tolerance": 1e-08
+      },
+      "name": "reproduction_of_003l",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "files_scanned": 744210,
+        "holdout": {
+          "end_utc": "2026-08-20T00:00:00Z",
+          "rule": "no tape, klines or derived statistic for this window may be downloaded, stored or summarised in this experiment; the verifier fails if any file under dataset/ or analysis/ covers it",
+          "start_utc": "2026-08-06T00:00:00Z",
+          "status": "CLOSED"
+        },
+        "problems": []
+      },
+      "name": "holdout_closed",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "mode": "paper",
+        "problems": [],
+        "run_rows": 1
+      },
+      "name": "no_live_trading",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "drifted": {},
+        "files": [
+          "risk.yaml",
+          "runtime.yaml",
+          "vision.yaml"
+        ]
+      },
+      "name": "config_unchanged",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "ceiling_ok": false,
+        "consistent": true,
+        "pessimistic_ok": false,
+        "published": "REJECT",
+        "signals": 47,
+        "verdict": "REJECT"
+      },
+      "name": "decision_consistency",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "status": "NOT_SEALED"
+      },
+      "name": "seal",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "detail": {
+        "problems": [],
+        "sample": [
+          "BTCUSDT-2026-06-22",
+          "BTCUSDT-2026-07-13",
+          "BTCUSDT-2026-08-03",
+          "ETHUSDT-2026-07-09",
+          "ETHUSDT-2026-07-30",
+          "SOLUSDT-2026-07-09"
+        ],
+        "verified": 6
+      },
+      "name": "online_sample",
+      "status": "PASS"
+    }
+  ],
+  "experiment": "EXP-003M-MAKER-FILL-REALITY-001",
+  "independent_verifier": "PROGRAM_NOT_PERSON",
+  "negative_controls": [
+    {
+      "check": "fills_recompute",
+      "control": "fill_before_latency",
+      "detail": "pos-paper-003l-5m-mean_reversion-real-00000001: fill moved before the order could arrive",
+      "detected": true,
+      "observed": "FAIL"
+    },
+    {
+      "check": "fills_recompute",
+      "control": "queue_ignored",
+      "detail": "3 fills rewritten as if the queue were zero",
+      "detected": true,
+      "observed": "FAIL"
+    },
+    {
+      "check": "fills_recompute",
+      "control": "partial_forced_full",
+      "detail": "pos-paper-003l-5m-mean_reversion-real-00000113: partial fill forced to 100 %",
+      "detected": true,
+      "observed": "FAIL"
+    },
+    {
+      "check": "tape_integrity",
+      "control": "tape_byte_flip",
+      "detail": "BTCUSDT-2026-06-22: one byte flipped in the reduced tape",
+      "detected": true,
+      "observed": "FAIL"
+    },
+    {
+      "check": "tape_integrity",
+      "control": "missing_tape",
+      "detail": "BTCUSDT-2026-06-22: tape file deleted",
+      "detected": true,
+      "observed": "FAIL"
+    },
+    {
+      "check": "holdout_closed",
+      "control": "holdout_injection",
+      "detail": "one signal re-stamped inside the holdout window",
+      "detected": true,
+      "observed": "FAIL"
+    },
+    {
+      "check": "decision_consistency",
+      "control": "false_success",
+      "detail": "verdict replaced by PROMOTE while the economics are negative",
+      "detected": true,
+      "observed": "FAIL"
+    },
+    {
+      "check": "predecessor_seal",
+      "control": "predecessor_tamper",
+      "detail": "clean seal PASS, tampered seal FAIL",
+      "detected": true
+    }
+  ],
+  "notes": [
+    "this verifier shares no fill code with the producer: fills are recomputed with masks and cumsum",
+    "a program checking a program is independent code, not an independent party",
+    "the queue position remains unobservable; no check here can turn an estimate into an observed fill"
+  ],
+  "online_sample": true,
+  "schema_version": "AI_BOTS_003M_VERIFICATION_V1",
+  "summary": {
+    "checks": 14,
+    "failed": 0,
+    "failed_names": [],
+    "false_success": 0,
+    "negative_controls": 8,
+    "negative_controls_detected": 8,
+    "not_executed": 1,
+    "not_executed_names": [
+      "seal"
+    ],
+    "passed": 13
+  },
+  "verdict_recomputed": {
+    "ceiling_ok": false,
+    "consistent": true,
+    "pessimistic_ok": false,
+    "published": "REJECT",
+    "signals": 47,
+    "verdict": "REJECT"
+  }
+}

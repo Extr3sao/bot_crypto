@@ -1,0 +1,592 @@
+# PAPER LAB — INDEPENDENT VERIFICATION
+
+```text
+verified HEAD : 1376fa4456e59826608a13de4fad4b2a8faacf2b
+worktree      : C:\Users\GVLLFR0035\Downloads\bot-freebuff-verify-lab
+lab run       : C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\paper-lab\paper-lab-cert-01
+capture root  : C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\microstructure-forward-cert01
+checks        : 18/18 passed
+verdict       : PASS
+```
+
+| check | result |
+| --- | --- |
+| IMPORT_ISOLATION | PASS |
+| P1_NETWORK_DELAYS_BOUNDED | PASS |
+| RETENTION_LINEAGE_AND_ORDER | PASS |
+| STORAGE_CAPACITY_POLICY | PASS |
+| STRATEGY_ADMISSION_GATE | PASS |
+| DEF_AUTO_2_3_4 | PASS |
+| NO_LIVE_PATH | PASS |
+| FAILURE_ISOLATION | PASS |
+| SAFE_STOP_AND_RESTART | PASS |
+| FINAL_HEAD_EXECUTED | PASS |
+| M03_M07_PREREGISTERED | PASS |
+| DISK_LEVELS_AND_RATE | PASS |
+| OPERATOR_SURFACE_READ_ONLY | PASS |
+| STORAGE_TIERS_AND_DATA_ROOT | PASS |
+| COLLECTOR_EXIT_CONTRACT | PASS |
+| SUPERVISOR_FAILURE_PROPAGATION | PASS |
+| M03_M07_DATA_PRESERVATION | PASS |
+| PHASE_TESTS | PASS |
+
+## IMPORT_ISOLATION — PASS
+
+_the verifier measured the worktree's code, not an editable install_
+
+```json
+{
+  "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-verify-lab\\src\\trading_bot\\__init__.py",
+  "repo_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-verify-lab",
+  "offenders": []
+}
+```
+
+## P1_NETWORK_DELAYS_BOUNDED — PASS
+
+_latency telemetry is a fixed-geometry histogram, not per-event state_
+
+```json
+{
+  "source_files_still_declaring_network_delays": [],
+  "retained_bytes_100k_to_1m": 1368,
+  "peak_bytes": 5888,
+  "samples": 1000000,
+  "budget_bytes": 4096,
+  "measured_by": "tracemalloc in a subprocess, 1,000,000 observations"
+}
+```
+
+## RETENTION_LINEAGE_AND_ORDER — PASS
+
+_no raw is replaceable by an aggregate that cannot be re-verified_
+
+```json
+{
+  "aggregates_verified": 0,
+  "broken": [],
+  "sample": [],
+  "reports_layer_files": [
+    "reports\\RETENTION_REPORT.json"
+  ],
+  "deletion_rule": "raw is deletable only after the window is sealed, aggregated, the aggregate is fingerprinted, lineage is recorded and the aggregate still re-hashes to the recorded digest"
+}
+```
+
+## STORAGE_CAPACITY_POLICY — PASS
+
+_either the hot window fits the disk or the limitation is named EXTERNAL_STORAGE_REQUIRED with a bounded, safe hot window_
+
+```json
+{
+  "manifest": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-cert01\\manifest\\paper-lab-cert-01.json",
+  "measured_compressed_bytes_per_day": 4720978644.470868,
+  "measured_compressed_gb_per_day": 4.721,
+  "policy": {
+    "version": "FORWARD-RETENTION-V1",
+    "rotation_seconds": 900,
+    "raw_hot_hours": 20.0,
+    "sealed_grace_seconds": 1800,
+    "aggregate_timeframes_minutes": [
+      1,
+      5,
+      15,
+      30
+    ],
+    "aggregate_retention_days": null,
+    "report_retention_days": null,
+    "reserve_bytes": 536870912,
+    "target_operating_days": 7,
+    "raw_retention": "RAW HOT: 20.0 h behind the writer, then compacted",
+    "aggregate_retention": "indefinite",
+    "report_retention": "indefinite"
+  },
+  "verdict": "VIABLE",
+  "estimated_operating_days": 4187.05176960761,
+  "hours_until_guard_without_compaction": 21.2856803722834
+}
+```
+
+## STRATEGY_ADMISSION_GATE — PASS
+
+_no strategy is admitted, a rejected one cannot route, and PAPER promotion requires a record_
+
+```json
+{
+  "ledger": "config\\strategy_admission.json",
+  "lifecycle_counts": {
+    "RESEARCH_REQUIRED": 0,
+    "PAPER_CANDIDATE": 0,
+    "PAPER_ACTIVE": 0,
+    "PAPER_RETIRED": 0,
+    "REJECTED": 0,
+    "RESEARCH_CANDIDATE": 0,
+    "COST_KILLED": 7,
+    "NO_GROSS_EDGE": 17,
+    "UNKNOWN": 0
+  },
+  "paper_executable_on_5m": [],
+  "live_names_in_vocabulary": [],
+  "non_paper_statuses_that_could_route": [],
+  "promotion_without_record_denied": true,
+  "research_to_active_denied": true,
+  "rejected_cannot_route": true
+}
+```
+
+## DEF_AUTO_2_3_4 — PASS
+
+_the universe fails closed, freshness follows the timeframe, and no entrypoint marks everything CONFIRMED_
+
+```json
+{
+  "DEF-AUTO-2": {
+    "universe_preflight": {
+      "configured": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "BNB"
+      ],
+      "asset_agent_supported": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "strategy_supported": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "provider_supported": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "effective": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "unsupported": {
+        "BNB": "no AssetAgent registered (the runtime cannot build a context); no strategy evidence was researched on this asset; provider does not list this market"
+      },
+      "strategy_universe_source": "UNDECLARED",
+      "provider_verified": true,
+      "ok": false,
+      "blocking_reason": "unsupported assets: BNB (no AssetAgent registered (the runtime cannot build a context); no strategy evidence was researched on this asset; provider does not list this market)"
+    },
+    "every_configured_asset_has_an_explicit_classification": true,
+    "unregistered_asset_entries": {
+      "BNB": "no AssetAgent registered (the runtime cannot build a context); no strategy evidence was researched on this asset; provider does not list this market"
+    }
+  },
+  "DEF-AUTO-3": {
+    "freshness_by_timeframe": {
+      "1m": {
+        "bar_ms": 60000,
+        "stale_threshold_ms": 90000
+      },
+      "5m": {
+        "bar_ms": 300000,
+        "stale_threshold_ms": 450000
+      },
+      "15m": {
+        "bar_ms": 900000,
+        "stale_threshold_ms": 1350000
+      },
+      "30m": {
+        "bar_ms": 1800000,
+        "stale_threshold_ms": 2700000
+      },
+      "1h": {
+        "bar_ms": 3600000,
+        "stale_threshold_ms": 5400000
+      }
+    },
+    "strictly_increasing_with_timeframe": true,
+    "unknown_timeframe_raises": true
+  },
+  "DEF-AUTO-4": {
+    "entrypoints_inspected": [
+      "scripts\\start_paper_trading.py",
+      "scripts\\autonomous_paper.py",
+      "scripts\\start_paper_lab.py",
+      "src\\trading_bot\\autonomous\\runtime.py",
+      "src\\trading_bot\\autonomous\\strategy_state.py"
+    ],
+    "literal_CONFIRMED_assignments": []
+  }
+}
+```
+
+## NO_LIVE_PATH — PASS
+
+_LIVE is not reachable from this phase's entrypoints_
+
+```json
+{
+  "live_mode_refusal": {
+    "returncode": 1,
+    "stderr": "Refusing to start: runtime.mode='live' (autonomous_paper only runs PAPER).\n",
+    "stdout": ""
+  },
+  "note": "the PAPER entrypoint refuses to start when runtime.mode is not PAPER, before any broker, risk manager or reader is constructed"
+}
+```
+
+## FAILURE_ISOLATION — PASS
+
+_a collector crash cannot stop PAPER, and a crash loop is declared rather than retried forever_
+
+```json
+{
+  "paper_state": "RUNNING",
+  "paper_restarts": 0,
+  "collector_state": "FAILED",
+  "collector_failure_reason": "crash loop: 2 restarts inside 900s (budget 1)",
+  "system_state": "FAILED",
+  "events": [
+    "EXIT",
+    "RESTART_SCHEDULED",
+    "RESTARTED",
+    "EXIT",
+    "RESTART_SCHEDULED",
+    "RESTARTED",
+    "EXIT",
+    "CRASH_LOOP"
+  ]
+}
+```
+
+## SAFE_STOP_AND_RESTART — PASS
+
+_stop flushes, state persists, a restart resumes the capture and no economic decision is duplicated_
+
+```json
+{
+  "stop_reason": "duration reached",
+  "children_stopped": [
+    "paper",
+    "collector",
+    "retention",
+    "strategy_lab"
+  ],
+  "collector_partial_tails": 0,
+  "collector_resume_state_present": true,
+  "collector_resume_events": 546043,
+  "paper_state_present": true,
+  "paper_state_keys": [
+    "broker_state",
+    "closed_trades",
+    "open_positions",
+    "risk_state",
+    "run_id",
+    "schema_version",
+    "sent_intents",
+    "updated_at_ms"
+  ],
+  "paper_decisions": 24,
+  "duplicate_economic_decisions": [],
+  "final_state": "DEGRADED",
+  "supervisor_state": "DEGRADED"
+}
+```
+
+## FINAL_HEAD_EXECUTED — PASS
+
+_the certified HEAD is the HEAD that produced the runtime evidence_
+
+```json
+{
+  "verified_head": "1376fa4456e59826608a13de4fad4b2a8faacf2b",
+  "integrated_run_manifest": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-cert01\\manifest\\paper-lab-cert-01.json",
+  "integrated_run_commit": "f406a459b89f41e7771e5edb0a33f6725f708831",
+  "integrated_run_commit_matches_head": false,
+  "captures_stamped_with_head": [
+    {
+      "manifest": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-lab-smoke-cert4\\manifest\\smoke-cert4.json",
+      "commit": "1376fa4456e59826608a13de4fad4b2a8faacf2b",
+      "duration_seconds": 20.659
+    }
+  ],
+  "runtime_paths_changed_since_integrated_run": [],
+  "runtime_surface": [
+    "src/trading_bot",
+    "scripts/autonomous_paper.py",
+    "scripts/forward_collector.py",
+    "scripts/forward_retention.py",
+    "scripts/paper_lab_research.py",
+    "scripts/start_paper_lab.py",
+    "scripts/system_daily_report.py"
+  ],
+  "writer_certification_manifest": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-cert01\\manifest\\paper-lab-cert-01.json",
+  "writer_certification_commit": "f406a459b89f41e7771e5edb0a33f6725f708831",
+  "writer_modules_changed_since_certification": [],
+  "paper_run_stamp": null,
+  "working_tree": "clean",
+  "note": "the integrated run's manifest must record HEAD, or a later smoke stamped with HEAD must exist with no runtime module changed in between (brief §25); a certification capture may predate HEAD only when no writer-side module changed"
+}
+```
+
+## M03_M07_PREREGISTERED — PASS
+
+_neither hypothesis has been evaluated, and the threshold cannot be chosen after seeing a result_
+
+```json
+{
+  "path": "config\\microstructure_preregistration.json",
+  "states": {
+    "M-03": "TECHNICALLY_READY_NEEDS_HISTORY",
+    "M-07": "TECHNICALLY_READY_NEEDS_HISTORY"
+  },
+  "minimum_data_present": true,
+  "preregistered_at": "2026-09-29",
+  "preregistration_version": "M-PREREG-V1",
+  "not_yet_run": true,
+  "experiment_outputs_found": []
+}
+```
+
+## DISK_LEVELS_AND_RATE — PASS
+
+_free space is reported with its measured rate and the hours it leaves, at thresholds the operator sets rather than thresholds hardcoded in a report_
+
+```json
+{
+  "wrong_levels": {},
+  "crossing": {
+    "normal_above_warning_threshold": true,
+    "warning_below_warning_threshold": true
+  },
+  "telemetry": {
+    "level": "NORMAL",
+    "thresholds": {
+      "warning_bytes": 2000000000,
+      "critical_bytes": 1000000000,
+      "stop_bytes": 500000000,
+      "warning_gb": 2.0,
+      "critical_gb": 1.0,
+      "stop_gb": 0.5
+    },
+    "free_bytes": 3000000000,
+    "free_gb": 3.0,
+    "consumption_bytes_per_hour": 1000000000.0,
+    "consumption_gb_per_day": 24.0,
+    "estimated_hours_remaining": 2.5,
+    "reclaimed_bytes": 0,
+    "samples": 2,
+    "measured_from": "free space on the run volume, net of retention"
+  }
+}
+```
+
+## OPERATOR_SURFACE_READ_ONLY — PASS
+
+_one status command reports the independent readiness verdicts; the dashboard is loopback-only, read-only, and offers no endpoint that could start, stop or change anything — and no LIVE control, because there is no LIVE path_
+
+```json
+{
+  "status_schema": "paper-lab-status-v1",
+  "status_flags": [
+    "COLLECTOR_READY",
+    "PAPER_READY",
+    "RESEARCH_READY",
+    "STORAGE_READY",
+    "STRATEGY_LAB_READY",
+    "note",
+    "storage_recommendation"
+  ],
+  "status_exit_code": 0,
+  "remote_bind_refused": true,
+  "post_is_refused": true,
+  "http": {
+    "/api/status": 200,
+    "/healthz": 200,
+    "/nope": 404,
+    "POST /api/status": 405
+  },
+  "live_control": false,
+  "mutating_endpoints": []
+}
+```
+
+## STORAGE_TIERS_AND_DATA_ROOT — PASS
+
+_the tiers say which are lossless and which are lossy, and both the capture and the retention policy can be pointed at another volume_
+
+```json
+{
+  "tiers": [
+    {
+      "tier": "TIER 0",
+      "layer": "segments",
+      "kind": "LOSSLESS",
+      "resolution": "every event",
+      "retention": "4.0 h behind the writer, then compacted",
+      "serves": [
+        "replay",
+        "M-03 at quote level",
+        "any hypothesis not yet preregistered"
+      ],
+      "measured_share_of_bytes": 1.0
+    },
+    {
+      "tier": "TIER 1",
+      "layer": "aggregated",
+      "kind": "LOSSY",
+      "resolution": "1 m buckets + 5/15/30 m roll-ups",
+      "retention": "indefinite (the long-term record)",
+      "serves": [
+        "M-03 at 1/5 m",
+        "M-07 at 5/15/30 m"
+      ],
+      "measured_share_of_bytes": 0.0022
+    },
+    {
+      "tier": "TIER 2",
+      "layer": "lineage",
+      "kind": "LOSSLESS",
+      "resolution": "one record per compacted window",
+      "retention": "indefinite",
+      "serves": [
+        "auditability of every deletion"
+      ],
+      "measured_share_of_bytes": null
+    },
+    {
+      "tier": "TIER 3",
+      "layer": "reports",
+      "kind": "LOSSY",
+      "resolution": "per run",
+      "retention": "indefinite",
+      "serves": [
+        "quality",
+        "readiness",
+        "capacity"
+      ],
+      "measured_share_of_bytes": null
+    }
+  ],
+  "collector_root_with_data_root": "D:\\capture-root",
+  "retention_root_with_data_root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\retention-volume-dh37add4\\alt-volume",
+  "retention_driver_exit_code": 0,
+  "retention_driver_stdout": [
+    "[retention:dry-run] free=8652.1MB retain=0 compact=0 delete=0 reclaim=0.0MB",
+    "[retention] report: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\retention-volume-dh37add4\\alt-volume\\reports\\RETENTION_REPORT.json"
+  ]
+}
+```
+
+## COLLECTOR_EXIT_CONTRACT — PASS
+
+_a capture whose storage cannot be created exits non-zero and says FAILED, so a supervisor can never mistake it for a completed run_
+
+```json
+{
+  "probe_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\paper-lab-verify-n4xoqise\\blocked-root",
+  "probe_exit_code": 2,
+  "probe_payload": {
+    "run_id": "verifier-probe",
+    "root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\paper-lab-verify-n4xoqise\\blocked-root",
+    "status": "FAILED",
+    "failure_kind": "MANIFEST_FAILURE",
+    "failure_reason": "FileExistsError: [WinError 183] No se puede crear un archivo que ya existe: 'C:\\\\Users\\\\GVLLFR~1\\\\AppData\\\\Local\\\\Temp\\\\paper-lab-verify-n4xoqise\\\\blocked-root'",
+    "stop_reason": "storage failure",
+    "exit_code": 2
+  },
+  "probe_stderr_tail": [
+    "forward collector: FAILED — the run could not finalise (FileExistsError: [WinError 183] No se puede crear un archivo que ya existe: 'C:\\\\Users\\\\GVLLFR~1\\\\AppData\\\\Local\\\\Temp\\\\paper-lab-verify-n4xoqise\\\\blocked-root'); no manifest was written"
+  ],
+  "policy_mismatches": [],
+  "expected_failure_exit_code": 2,
+  "note": "0 means complete or a controlled stop; 2 means the capture failed"
+}
+```
+
+## SUPERVISOR_FAILURE_PROPAGATION — PASS
+
+_exit 2 is restarted with backoff and then given up on loudly, while PAPER keeps running in its own process_
+
+```json
+{
+  "events": [
+    "EXIT",
+    "RESTART_SCHEDULED",
+    "RESTARTED",
+    "EXIT",
+    "RESTART_SCHEDULED",
+    "RESTARTED",
+    "EXIT",
+    "CRASH_LOOP"
+  ],
+  "collector_state": "FAILED",
+  "paper_state": "RUNNING",
+  "collector_exit": 2
+}
+```
+
+## M03_M07_DATA_PRESERVATION — PASS
+
+_the preregistered M-03/M-07 series survive compaction at their preregistered resolution, and a compact tier that no longer matches the raw refuses the deletion by name_
+
+```json
+{
+  "preserved": {
+    "M-03": "PRESERVED_AT_PREREGISTERED_RESOLUTION",
+    "M-07": "PRESERVED_AT_PREREGISTERED_RESOLUTION"
+  },
+  "preserved_allows_deletion": true,
+  "comparisons": [
+    {
+      "feature": "M-03 book series",
+      "compared": 4
+    },
+    {
+      "feature": "M-03 trade flow",
+      "compared": 2
+    },
+    {
+      "feature": "M-07 open interest x price",
+      "compared": 4
+    }
+  ],
+  "tampered_verdict": {
+    "M-03": "RAW_NOT_DELETABLE_FOR_M03",
+    "M-07": "PRESERVED_AT_PREREGISTERED_RESOLUTION"
+  },
+  "sub_minute_verdict": {
+    "M-03": "RAW_NOT_DELETABLE_FOR_M03",
+    "M-07": "PRESERVED_AT_PREREGISTERED_RESOLUTION"
+  },
+  "not_covered_without_raw_quotes": [
+    "quote_level_spread_volatility (book_ticker, every update)",
+    "book_transition_count (depth_diff, every update)"
+  ]
+}
+```
+
+## PHASE_TESTS — PASS
+
+_the phase's own tests pass on the worktree's code with its own src first_
+
+```json
+{
+  "modules": [
+    "tests/unit/autonomous/test_supervisor.py",
+    "tests/unit/autonomous/test_strategy_state.py",
+    "tests/unit/autonomous/test_universe_preflight.py",
+    "tests/unit/autonomous/test_lab_operations.py",
+    "tests/unit/research/test_router_gates_freshness.py",
+    "tests/unit/forward/test_forward_latency_telemetry.py",
+    "tests/unit/forward/test_forward_retention.py",
+    "tests/unit/test_dependency_closure_guard.py"
+  ],
+  "returncode": 0,
+  "summary": [
+    "........................................................................ [ 54%]",
+    "...........................................................              [100%]",
+    "131 passed in 72.88s (0:01:12)"
+  ]
+}
+```

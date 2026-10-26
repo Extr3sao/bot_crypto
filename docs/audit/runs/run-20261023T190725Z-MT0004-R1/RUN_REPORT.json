@@ -1,0 +1,394 @@
+{
+  "task": "MT-0004-R1",
+  "task_kind": "REISSUED",
+  "original_task_status": "SPEC_REISSUE_REQUIRED",
+  "run_id": "run-20261023T190725Z-MT0004-R1",
+  "build_commit": "ef7955dc5973ab863f010e02a1297a455ef276da",
+  "branch": "audit/mt0004-negative-controls",
+  "baseline": {
+    "cut_from": "codepaper/supervisor-001@0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+    "parent_commit": "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+    "main_at_capture": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+    "main_behind_by": 299,
+    "mt0003_commit": "60455b460dfb805a934c4307f9778ac8b7ffb562",
+    "mt0003_is_ancestor": true,
+    "main_contains_mt0003": false,
+    "note": "main advanced to 47ca8dac during the run; re-checked, still without 60455b46. The tree is pinned by SHA, not by branch name."
+  },
+  "scope": {
+    "contract": "docs/audit/MT-0004-R1.md",
+    "allowed_paths": [
+      "docs/audit/**",
+      "tests/unit/autonomous/test_kill_switch_negative.py",
+      "tests/unit/test_audit_contracts_tracked.py",
+      "scripts/audit/negative_controls.py"
+    ],
+    "protected_paths": [
+      "src/**",
+      ".github/**",
+      "pyproject.toml",
+      ".gitignore",
+      "uv.lock",
+      "tests/unit/autonomous/test_decision_kill_switch.py",
+      "tests/unit/test_app_cli_contract.py"
+    ],
+    "protected_paths_changed": [],
+    "acceptance_criteria": {
+      "AC-1": "matrix reproducible from a git revision",
+      "AC-2": "every declared mutant killed, reason recorded",
+      "AC-3": "a blocked decision never reaches the broker",
+      "AC-4": "a malformed packet cannot preempt the stop",
+      "AC-5": "only an explicit off token boots the process trading",
+      "AC-6": "a mandatory contract cannot become untracked again"
+    }
+  },
+  "implemented": {
+    "files": [
+      {
+        "path": "docs/audit/AUDIT_BACKLOG.yaml",
+        "git_blob": "38871a6373d21ec284a45919224db1db43aba64b",
+        "sha256": "b464280c5977a141363671e9cc5dfeddc61ba2427ada57800f4f90baaae3325b"
+      },
+      {
+        "path": "docs/audit/MT-0004-R1.md",
+        "git_blob": "434af8381029c43dcdb62ac0aacfbff4850035dd",
+        "sha256": "8ec208f7cf697ea7c86fd7810405c75e846c59e4823f918fbb0bb119c3541507"
+      },
+      {
+        "path": "docs/audit/runtime_authority_map.md",
+        "git_blob": "ba8aaa7304756a2043b49b61d6c03db5a3a023ea",
+        "sha256": "4bd5cb54a5c2da0803f50bee815e3b2327ac1581237ef3013165342474270760"
+      },
+      {
+        "path": "scripts/audit/negative_controls.py",
+        "git_blob": "db55d2410c6f675cc028b3765c25c9159e54ab99",
+        "sha256": "b63153211f16e0e34b7aaaf9961e32091e99b8fd7b1700a25a1e80b94845dc8f"
+      },
+      {
+        "path": "tests/unit/autonomous/test_kill_switch_negative.py",
+        "git_blob": "c9c3a4eae0e7f3e61ea740545449558633aa7340",
+        "sha256": "c3a4a59aee9fc6e4b8254c176021cfabafc92865a1f605c973baa6140ca6fd07"
+      },
+      {
+        "path": "tests/unit/test_audit_contracts_tracked.py",
+        "git_blob": "8aa09a4dd672d61dc3e61a5294ddd7e6b7a847cc",
+        "sha256": "99fe98712f341ec629868f5462fcb38e1f429485bf8ede92dc0e1802b5083789"
+      }
+    ],
+    "insertions": 1326,
+    "deletions": 0,
+    "production_changes": 0
+  },
+  "tests": {
+    "exported_commit": {
+      "suites": 3,
+      "passed": 58,
+      "failed": 0,
+      "seconds": 37.2,
+      "exit": 0
+    },
+    "regression": {
+      "paths": [
+        "tests/unit/autonomous",
+        "tests/unit/test_app_cli_contract.py",
+        "tests/unit/test_audit_contracts_tracked.py"
+      ],
+      "passed": 350,
+      "failed": 0,
+      "seconds": 61.8,
+      "exit": 0
+    },
+    "guard_in_bare_export": {
+      "exit": 1,
+      "reason": "needs a git work tree (fail-closed, not skipped)"
+    },
+    "guard_adversarial": {
+      "exit": 1,
+      "reason": "contract under reports/ rejected"
+    },
+    "mt0003_recovered": {
+      "passed": 43,
+      "exit": 0
+    },
+    "full_suite_run": false,
+    "full_suite_reason": "high cost with other lanes writing the same checkout; targeted suites + full autonomous + mutants used instead"
+  },
+  "mutation_matrix": {
+    "harness": "scripts/audit/negative_controls.py",
+    "resolved_rev": "ef7955dc5973ab863f010e02a1297a455ef276da",
+    "baseline_exit": 0,
+    "all_mutants_killed": true,
+    "total_seconds": 151.09,
+    "variants": [
+      {
+        "variant": "baseline",
+        "killed": false,
+        "exit_code": 0,
+        "seconds": 19.75,
+        "description": "unmutated tree (control)",
+        "failing_tests": []
+      },
+      {
+        "variant": "M1",
+        "killed": true,
+        "exit_code": 1,
+        "seconds": 18.65,
+        "description": "rule 0 removed from decide",
+        "failing_tests": [
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[no_new_risk]",
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[protection_only]",
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[read_only]"
+        ]
+      },
+      {
+        "variant": "M2",
+        "killed": true,
+        "exit_code": 1,
+        "seconds": 19.21,
+        "description": "rule 0 removed from intend",
+        "failing_tests": [
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_the_engaged_switch_stops_the_intent_before_risk_runs"
+        ]
+      },
+      {
+        "variant": "M3",
+        "killed": true,
+        "exit_code": 1,
+        "seconds": 19.95,
+        "description": "unreadable state fails OPEN instead of closed",
+        "failing_tests": [
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_unreadable_state_fails_closed[broken0]",
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_unreadable_state_fails_closed[broken1]",
+          "FAILED tests/unit/autonomous/test_kill_switch_negative.py::test_a_broken_state_object_blocks[broken0]"
+        ]
+      },
+      {
+        "variant": "M4",
+        "killed": true,
+        "exit_code": 1,
+        "seconds": 19.04,
+        "description": "gate never blocks (plumbing kept, condition disabled)",
+        "failing_tests": [
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[no_new_risk]",
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[protection_only]",
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[read_only]"
+        ]
+      },
+      {
+        "variant": "M5",
+        "killed": true,
+        "exit_code": 1,
+        "seconds": 19.23,
+        "description": "derived is_active flag no longer consulted",
+        "failing_tests": [
+          "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_a_state_that_disagrees_with_the_flag_blocks"
+        ]
+      },
+      {
+        "variant": "M6",
+        "killed": true,
+        "exit_code": 1,
+        "seconds": 20.67,
+        "description": "unknown TRADING_BOT_KILL_SWITCH value boots NORMAL (fail open)",
+        "failing_tests": [
+          "FAILED tests/unit/autonomous/test_kill_switch_negative.py::test_only_an_explicit_off_token_boots_the_process_trading[yes-halted]"
+        ]
+      }
+    ]
+  },
+  "runtime_validation": {
+    "status": "DEMONSTRATED_IN_PROCESS",
+    "ac": "AC-3",
+    "evidence": "tests/unit/autonomous/test_kill_switch_negative.py::test_a_blocked_decision_never_reaches_the_broker",
+    "observed": {
+      "orders_created": 0,
+      "paper_trades": 0,
+      "broker_calls": 0,
+      "broker_positions": {},
+      "risk_evaluated": true,
+      "risk_verdict": "PASS",
+      "decision_mode": "NO_TRADE",
+      "reason": "KILL_SWITCH_ACTIVE"
+    },
+    "not_a_market_session": true
+  },
+  "paper_validation": "NOT_PERFORMED",
+  "live_validation": "NOT_PERFORMED",
+  "verifier": {
+    "script": "reports/multiagent-audit/tools/verify_mt0004_r1.py",
+    "verdict": "VERIFIED_SCOPED",
+    "checks_passed": 13,
+    "checks_total": 13,
+    "duration_s": 344.0,
+    "exit": 0,
+    "independence": "BUILDER == VERIFIER in authorship; independence is procedural (separate script, separate mutant literals, fresh git archive, commit-first).",
+    "limitations": [
+      "no second human/agent reviewed the change",
+      "the full repository suite was not run (targeted suites + regression of tests/unit/autonomous)",
+      "no live trading, no paper session against a real feed"
+    ],
+    "checks": [
+      {
+        "id": "V-01",
+        "title": "the delivered commit exists and is an ancestor of HEAD",
+        "passed": true
+      },
+      {
+        "id": "V-02",
+        "title": "the commit adds exactly the six declared files",
+        "passed": true
+      },
+      {
+        "id": "V-03",
+        "title": "no protected path was modified (src, CI, config, MT-0003/MT-0002 tests)",
+        "passed": true
+      },
+      {
+        "id": "V-04",
+        "title": "every delivered file matches the blob in the commit (git + sha256)",
+        "passed": true
+      },
+      {
+        "id": "V-05",
+        "title": "the three code suites pass on the exported commit",
+        "passed": true
+      },
+      {
+        "id": "V-05b",
+        "title": "the guard fails closed in a bare export instead of skipping",
+        "passed": true
+      },
+      {
+        "id": "V-05c",
+        "title": "the guard passes in a real work tree",
+        "passed": true
+      },
+      {
+        "id": "V-06",
+        "title": "the lost location is still ignored, the contract is not, and it is tracked",
+        "passed": true
+      },
+      {
+        "id": "V-07",
+        "title": "the guard rejects an ignored contract (adversarial control)",
+        "passed": true
+      },
+      {
+        "id": "V-08",
+        "title": "baseline green and the independent mutants killed, re-derived without the harness",
+        "passed": true
+      },
+      {
+        "id": "V-09",
+        "title": "the shipped harness reproduces from a revision (exit 0, 6/6 killed)",
+        "passed": true
+      },
+      {
+        "id": "V-10",
+        "title": "the harness fails closed on anchor drift",
+        "passed": true
+      },
+      {
+        "id": "V-11",
+        "title": "MT-0004 is recorded as lost, MT-0004-R1 as reissued, MT-0003 as done",
+        "passed": true
+      }
+    ]
+  },
+  "false_success": {
+    "observed": 0,
+    "own_false_greens_caught": [
+      "D-1: env test subprocess imported REPO_ROOT/src instead of the tree under test (found because M6 survived)",
+      "D-2: NameError in the -c snippet (found by the baseline run)"
+    ]
+  },
+  "defects": [
+    {
+      "id": "D-1",
+      "summary": "negative env test measured another checkout",
+      "state": "fixed",
+      "found_by": "M6 surviving"
+    },
+    {
+      "id": "D-2",
+      "summary": "NameError in the subprocess snippet",
+      "state": "fixed",
+      "found_by": "baseline run"
+    },
+    {
+      "id": "D-3",
+      "summary": "verifier did not create the export directory",
+      "state": "fixed",
+      "found_by": "V-04 crash"
+    },
+    {
+      "id": "D-4",
+      "summary": "verifier expected the guard to pass in a bare export",
+      "state": "fixed",
+      "found_by": "V-05"
+    },
+    {
+      "id": "D-5",
+      "summary": "V-07 asserted on text hidden by --tb=no",
+      "state": "fixed",
+      "found_by": "V-07"
+    },
+    {
+      "id": "D-6",
+      "summary": "MT-0003's env test still hardcodes REPO_ROOT/src (protected file, not edited)",
+      "state": "documented",
+      "found_by": "mutation matrix"
+    }
+  ],
+  "blockers": [
+    "MT-0004 original contract is unrecoverable: never tracked by git (reports/* is ignored)",
+    "G-1 kill switch state is not persisted",
+    "G-2 no hot activation surface (kill-switch CLI still refuses)",
+    "G-3 live order path not measured",
+    "G-4 paper_cycle.py does not import autonomous.decision, so rule 0 is absent there"
+  ],
+  "evidence": {
+    "00_scope.txt": {
+      "path": "evidence/00_scope.txt",
+      "sha256": "f9c6ed57569b0e547aed3a88cd8c479942b1fa3189820a6c234f3a83ca66a23e"
+    },
+    "01_tests_regression.txt": {
+      "path": "evidence/01_tests_regression.txt",
+      "sha256": "0683a8dd85d6195d71958f0b1d9d4612d6467239158d41422f68422ad4d33f77"
+    },
+    "02_static.txt": {
+      "path": "evidence/02_static.txt",
+      "sha256": "45d378fd9c8b8fb610fdc14aacdd717f2f72eeaf8a5db2b9a63782aaceed2bc0"
+    },
+    "03_mutants.json": {
+      "path": "evidence/03_mutants.json",
+      "sha256": "a27bf3abe2833b15408a67eb7b354eae01aa8e9f069557115aaaca3ed2089692"
+    },
+    "03_mutants.txt": {
+      "path": "evidence/03_mutants.txt",
+      "sha256": "547e8680fe602baf04961f074c5368f8ada8c19014a5e772b4c1e7d1fc7212ac"
+    },
+    "04_guard_negative_control.txt": {
+      "path": "evidence/04_guard_negative_control.txt",
+      "sha256": "45ca4c57c6cfa016f436f623ef053a58a773fc76a25fc207e15b286ba107e5ff"
+    },
+    "05_guard_fail_closed.txt": {
+      "path": "evidence/05_guard_fail_closed.txt",
+      "sha256": "059594b5869e3038ee9757cade92c39ded5c69d9cf45979c4673891280e42ecf"
+    },
+    "06_hashes.txt": {
+      "path": "evidence/06_hashes.txt",
+      "sha256": "0770cc0f5e645eb2beef8a64ec7450e733e6c89d717b687bcfa560d0a0f329a7"
+    }
+  },
+  "reports": {
+    "RUN_REPORT.md": "21970c55dafd527d960aa9046eaf1727b1d1723aca2d6c33967aa8df15defea8",
+    "FINAL_REPORT.md": "fa62a20b0d598e7ed2a88af4c8f205ba08f6d70246215714251d3231ad36e9ef",
+    "COMMITS.md": "570f97549299683c88ec7ec7013279d6572f50560ac561c161f2a3254122b603",
+    "verification.json": "c13773a9068d4ba134d12bca5b0f96222fe4f5167095b431dfac33b15f85118f"
+  },
+  "next_ready": {
+    "task": null,
+    "reason": "no evidenced task has a contract; recommending a G-2 ticket instead of inventing an id"
+  }
+}

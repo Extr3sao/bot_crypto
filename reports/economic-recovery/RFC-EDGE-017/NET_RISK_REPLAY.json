@@ -1,0 +1,382 @@
+{
+  "answer": "fills are 1x 146, 2x 146, 3x 121. Cost only removes a fill where a periodic loss rule binds, so 1x and 2x can share a count; unlike the pre-017F replay, a weekly veto no longer accumulates for the whole run.",
+  "baseline": {
+    "fills": 146,
+    "frictionless_realised_usdt": -53.384527,
+    "how_risk_saw_it": "gross: the broker charged nothing and the cost was subtracted from a report after every decision had already been approved",
+    "restated_net_1x_usdt": -239.7503,
+    "source": "reports\\economic-recovery\\RFC-EDGE-016\\experimental_paper\\CANONICAL_LANE_REPORT.json"
+  },
+  "drawdown_by_multiplier": {
+    "1x": 2.387705,
+    "2x": 4.256923,
+    "3x": 5.005718
+  },
+  "equivalence": {
+    "fills": 146,
+    "identical": true,
+    "rule": "with cost_mode=frictionless the repaired engine must mint the same 146 fills, prices, quantities, reasons and ids as WP-EDGE-016"
+  },
+  "fills_by_multiplier": {
+    "1x": 146,
+    "2x": 146,
+    "3x": 121
+  },
+  "generated_at_utc": "2026-10-17T17:03:49Z",
+  "monotonic": true,
+  "runs": {
+    "1x": {
+      "all_trades_reconcile": true,
+      "broker_equity_identity": true,
+      "commissions_usdt": 146.0,
+      "cost_multiplier": 1.0,
+      "cost_reconciles": true,
+      "drawdown": {
+        "curve_points": 2000,
+        "curve_sha256": "559d5e668fdaf2aee6e120cf3bdb3b5a178bd3801dae19f545cdaaee3c98f3c6",
+        "derived_from": "the curve, not from the lane's own peak_equity",
+        "drawdown_pct": 2.387705,
+        "drawdown_usdt": 238.770489,
+        "method": "max peak-to-trough of the mark-to-market net equity curve",
+        "peak_equity": 10000.0,
+        "peak_ts_ms": 1784761200000,
+        "points": 2000,
+        "reason": null,
+        "source": "reports\\economic-recovery\\RFC-EDGE-017\\scratch\\net_1x\\EQUITY_CURVE.jsonl",
+        "status": "MEASURED",
+        "trough_equity": 9761.229511,
+        "trough_ts_ms": 1791828000000
+      },
+      "drawdown_pct": 2.387705,
+      "execution_cost_usdt": 40.334453,
+      "fills": 146,
+      "gross_after_execution_usdt": -92.770489,
+      "net_realised_usdt": -238.770489,
+      "rejections_by_rule": {
+        "consecutive_loss_cooldown": 3
+      },
+      "risk_equity_equals_broker_net": true,
+      "risk_state": {
+        "consecutive_losses": 0,
+        "daily_pnl": 0.0,
+        "day_peak_equity": 9761.229510651669,
+        "equity": 9761.229510651669,
+        "kill_switch_active": false,
+        "open_positions": 0,
+        "peak_equity": 10000.0,
+        "trades_today": 0,
+        "weekly_pnl": -1.6895395957876755,
+        "weekly_start_ms": 1791763200000
+      },
+      "weekly_risk": {
+        "weekly_blocks_total": 0,
+        "weeks": [
+          {
+            "week_start_ms": 1784505600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": null
+          },
+          {
+            "week_start_ms": 1785110400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": 0.0
+          },
+          {
+            "week_start_ms": 1785715200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": 0.0
+          },
+          {
+            "week_start_ms": 1786320000000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -22.05403898202062
+          },
+          {
+            "week_start_ms": 1786924800000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -14.49881139876398
+          },
+          {
+            "week_start_ms": 1787529600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -8.122836555795114
+          },
+          {
+            "week_start_ms": 1788134400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -39.89419835001094
+          },
+          {
+            "week_start_ms": 1788739200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -4.348502936526437
+          },
+          {
+            "week_start_ms": 1789344000000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -25.104913030069465
+          },
+          {
+            "week_start_ms": 1789948800000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": 3.7612476764059783
+          },
+          {
+            "week_start_ms": 1790553600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -14.639463374748551
+          },
+          {
+            "week_start_ms": 1791158400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -33.41567548176835
+          },
+          {
+            "week_start_ms": 1791763200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -78.7637573192487
+          }
+        ],
+        "window": "UTC Monday 00:00 to Monday 00:00"
+      }
+    },
+    "2x": {
+      "all_trades_reconcile": true,
+      "broker_equity_identity": true,
+      "commissions_usdt": 292.0,
+      "cost_multiplier": 2.0,
+      "cost_reconciles": true,
+      "drawdown": {
+        "curve_points": 2000,
+        "curve_sha256": "8d202d4667346b8455e1e773b1fd59d7ced65840976f237e1c05fdb9bb95df9d",
+        "derived_from": "the curve, not from the lane's own peak_equity",
+        "drawdown_pct": 4.256923,
+        "drawdown_usdt": 425.692312,
+        "method": "max peak-to-trough of the mark-to-market net equity curve",
+        "peak_equity": 10000.0,
+        "peak_ts_ms": 1784761200000,
+        "points": 2000,
+        "reason": null,
+        "source": "reports\\economic-recovery\\RFC-EDGE-017\\scratch\\net_2x\\EQUITY_CURVE.jsonl",
+        "status": "MEASURED",
+        "trough_equity": 9574.307688,
+        "trough_ts_ms": 1791828000000
+      },
+      "drawdown_pct": 4.256923,
+      "execution_cost_usdt": 80.632906,
+      "fills": 146,
+      "gross_after_execution_usdt": -133.692312,
+      "net_realised_usdt": -425.692312,
+      "rejections_by_rule": {
+        "consecutive_loss_cooldown": 3
+      },
+      "risk_equity_equals_broker_net": true,
+      "risk_state": {
+        "consecutive_losses": 0,
+        "daily_pnl": 0.0,
+        "day_peak_equity": 9574.307687943161,
+        "equity": 9574.307687943161,
+        "kill_switch_active": false,
+        "open_positions": 0,
+        "peak_equity": 10000.0,
+        "trades_today": 0,
+        "weekly_pnl": -3.0541845893685107,
+        "weekly_start_ms": 1791763200000
+      },
+      "weekly_risk": {
+        "weekly_blocks_total": 0,
+        "weeks": [
+          {
+            "week_start_ms": 1784505600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": null
+          },
+          {
+            "week_start_ms": 1785110400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": 0.0
+          },
+          {
+            "week_start_ms": 1785715200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": 0.0
+          },
+          {
+            "week_start_ms": 1786320000000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -35.448227641401104
+          },
+          {
+            "week_start_ms": 1786924800000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -26.73333290058229
+          },
+          {
+            "week_start_ms": 1787529600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -15.405316239913844
+          },
+          {
+            "week_start_ms": 1788134400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -70.7412395791595
+          },
+          {
+            "week_start_ms": 1788739200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -7.946443721563435
+          },
+          {
+            "week_start_ms": 1789344000000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -50.314137438149814
+          },
+          {
+            "week_start_ms": 1789948800000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -8.365297461852226
+          },
+          {
+            "week_start_ms": 1790553600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -31.73115771806802
+          },
+          {
+            "week_start_ms": 1791158400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -55.82337195737772
+          },
+          {
+            "week_start_ms": 1791763200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -120.12960280941083
+          }
+        ],
+        "window": "UTC Monday 00:00 to Monday 00:00"
+      }
+    },
+    "3x": {
+      "all_trades_reconcile": true,
+      "broker_equity_identity": true,
+      "commissions_usdt": 363.0,
+      "cost_multiplier": 3.0,
+      "cost_reconciles": true,
+      "drawdown": {
+        "curve_points": 2000,
+        "curve_sha256": "27cfb7608d723dc912f2b941a7dcf8bad2366b99fe17c0a9dad70767d0ea1091",
+        "derived_from": "the curve, not from the lane's own peak_equity",
+        "drawdown_pct": 5.005718,
+        "drawdown_usdt": 500.571772,
+        "method": "max peak-to-trough of the mark-to-market net equity curve",
+        "peak_equity": 10000.0,
+        "peak_ts_ms": 1784761200000,
+        "points": 2000,
+        "reason": null,
+        "source": "reports\\economic-recovery\\RFC-EDGE-017\\scratch\\net_3x\\EQUITY_CURVE.jsonl",
+        "status": "MEASURED",
+        "trough_equity": 9499.428228,
+        "trough_ts_ms": 1791252000000
+      },
+      "drawdown_pct": 5.005718,
+      "execution_cost_usdt": 99.583602,
+      "fills": 121,
+      "gross_after_execution_usdt": -137.571772,
+      "net_realised_usdt": -500.571772,
+      "rejections_by_rule": {
+        "consecutive_loss_cooldown": 1,
+        "max_drawdown": 43
+      },
+      "risk_equity_equals_broker_net": true,
+      "risk_state": {
+        "consecutive_losses": 0,
+        "daily_pnl": 0.0,
+        "day_peak_equity": 9499.42822836413,
+        "equity": 9499.42822836413,
+        "kill_switch_active": false,
+        "open_positions": 0,
+        "peak_equity": 10000.0,
+        "trades_today": 0,
+        "weekly_pnl": 0.0,
+        "weekly_start_ms": 1791763200000
+      },
+      "weekly_risk": {
+        "weekly_blocks_total": 0,
+        "weeks": [
+          {
+            "week_start_ms": 1784505600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": null
+          },
+          {
+            "week_start_ms": 1785110400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": 0.0
+          },
+          {
+            "week_start_ms": 1785715200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": 0.0
+          },
+          {
+            "week_start_ms": 1786320000000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -51.247589201224216
+          },
+          {
+            "week_start_ms": 1786924800000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -45.23267722686643
+          },
+          {
+            "week_start_ms": 1787529600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -21.360552619441968
+          },
+          {
+            "week_start_ms": 1788134400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -97.18507946956353
+          },
+          {
+            "week_start_ms": 1788739200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -11.543984009252396
+          },
+          {
+            "week_start_ms": 1789344000000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -74.84435922836315
+          },
+          {
+            "week_start_ms": 1789948800000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -21.728480741100547
+          },
+          {
+            "week_start_ms": 1790553600000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -51.280638803589405
+          },
+          {
+            "week_start_ms": 1791158400000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -80.34460626900656
+          },
+          {
+            "week_start_ms": 1791763200000,
+            "weekly_blocks": 0,
+            "weekly_pnl_at_boundary": -45.80380406744277
+          }
+        ],
+        "window": "UTC Monday 00:00 to Monday 00:00"
+      }
+    }
+  },
+  "schema_version": "EDGE17_NET_RISK_REPLAY_V1",
+  "weekly_blocks_by_multiplier": {
+    "1x": 0,
+    "2x": 0,
+    "3x": 0
+  },
+  "weekly_window": "UTC Monday 00:00 to Monday 00:00 (ADR-017F-01)"
+}

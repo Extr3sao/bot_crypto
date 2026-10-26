@@ -1,0 +1,61 @@
+{
+  "generated_at_utc": "2026-10-13T20:18:29Z",
+  "hypothetical": true,
+  "measured": {
+    "from_the_lanes_own_samples": {
+      "bytes_per_day": 1493484.324,
+      "bytes_per_hour": 62228.514,
+      "lane_growth_bytes": 497833,
+      "window_hours": 8.0,
+      "window_seconds": 28800.283
+    },
+    "lane_samples_on_file": 35,
+    "lane_tree_bytes": 3288974,
+    "store_bars": {
+      "15m:BTC": 609,
+      "15m:ETH": 609,
+      "15m:SOL": 609,
+      "1h:BTC": 5444,
+      "1h:ETH": 5444,
+      "1h:SOL": 5444
+    },
+    "store_bars_total": 18159,
+    "store_bytes": 5621615,
+    "watchdog_tree_bytes": 213656
+  },
+  "never_deleted": [
+    "the forward store",
+    "daily/<date>.json, the lane's durable coverage record",
+    "every published report",
+    "the run log, the slot ledger and the ingest ledger of the lane"
+  ],
+  "order_sent": false,
+  "promotion": "NONE",
+  "pruned": [
+    "the lane's bounded operational logs, at their declared caps",
+    "the watchdog's own readings and alerts, at its own declared caps"
+  ],
+  "schema_version": "EDGE05_RESOURCE_BUDGET_V1",
+  "snapshots": {
+    "policy": "a snapshot that would be identical to the previous one is refused and the refusal recorded; the watchdog copies its own readings, never the store",
+    "store_slice_bytes": 14728
+  },
+  "thresholds": {
+    "free_space": {
+      "action": "below the warning floor the lane keeps ingesting and the heavy publication waits; below the critical floor the tick records DISK_BUDGET_EXCEEDED and makes no market request at all",
+      "critical_free_bytes": 2147483648,
+      "warn_free_bytes": 5368709120
+    },
+    "measured_growth": {
+      "action": "alert an operator; nothing is deleted, and the declared 256 MiB lane budget spread over the sixty days this lane observes is 4.37 MiB/day",
+      "stop_bytes_per_day": 67108864,
+      "warn_bytes_per_day": 16777216
+    }
+  },
+  "volume": {
+    "free_bytes": 6060654592,
+    "free_gib": 5.6444,
+    "total_bytes": 255041990656,
+    "used_percent": 97.62
+  }
+}

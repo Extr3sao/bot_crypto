@@ -1,0 +1,17 @@
+run,window,scenario,label_kind,label,trades,net_usdt,win_rate_pct
+DEV:BASE,DEV,BASE,candidate_trend_state,UP,223,1921.1792,56.9507
+DEV:BASE,DEV,BASE,benchmark_market_context,BEAR,26,16.4682,46.1538
+DEV:BASE,DEV,BASE,benchmark_market_context,BULL,159,1339.6867,57.8616
+DEV:BASE,DEV,BASE,benchmark_market_context,SIDEWAYS,14,77.0108,64.2857
+DEV:BASE,DEV,BASE,benchmark_market_context,UNDEFINED,24,488.0135,58.3333
+VAL:BASE,VAL,BASE,candidate_trend_state,UP,58,4.5253,48.2759
+VAL:BASE,VAL,BASE,benchmark_market_context,BULL,57,-0.1819,47.3684
+VAL:BASE,VAL,BASE,benchmark_market_context,SIDEWAYS,1,4.7072,100.0
+OOS:BASE,OOS,BASE,candidate_trend_state,UP,52,208.0056,44.2308
+OOS:BASE,OOS,BASE,benchmark_market_context,BEAR,7,-58.8791,42.8571
+OOS:BASE,OOS,BASE,benchmark_market_context,BULL,41,177.4313,41.4634
+OOS:BASE,OOS,BASE,benchmark_market_context,SIDEWAYS,4,89.4535,75.0
+OOS:2X_FEES,OOS,2X_FEES,candidate_trend_state,UP,52,160.6723,42.3077
+OOS:2X_FEES,OOS,2X_FEES,benchmark_market_context,BEAR,7,-65.6619,42.8571
+OOS:2X_FEES,OOS,2X_FEES,benchmark_market_context,BULL,41,140.7384,39.0244
+OOS:2X_FEES,OOS,2X_FEES,benchmark_market_context,SIDEWAYS,4,85.5958,75.0

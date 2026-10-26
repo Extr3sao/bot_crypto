@@ -1,0 +1,84 @@
+{
+  "artifacts": {
+    "ECONOMIC_ATTRIBUTION.json": {
+      "bytes": 37985,
+      "sha256": "71235f73582699d894f91e815132fa7085c872d24f5637ea3d97d2d3cf140e8c"
+    },
+    "INDEPENDENT_VERIFICATION.json": {
+      "bytes": 51505,
+      "sha256": "d76fcd6f35bd984af5245ed1581484861078a4eaf103b3cc01e2f874084ff7cc"
+    },
+    "PAIRED_DELTA.csv": {
+      "bytes": 3015,
+      "sha256": "38c35c371773df10cd85098a98d0e0b2beba7c793f49fcf7e6d9296dc237f1c4"
+    },
+    "TRADE_LEDGER.csv": {
+      "bytes": 9747,
+      "sha256": "6c92c6cadab319e58229a8f547e3909cc12d5a35dc3de9e82fe736d8a90afea7"
+    },
+    "oos/OOS_PLAN.json": {
+      "bytes": 1793,
+      "sha256": "59f2f06194b26c6ed6c4d1ed9284b2ae7040e2f67f1286d09c3a6ff18d6065c0"
+    },
+    "oos/OOS_RESULTS.json": {
+      "bytes": 4474,
+      "sha256": "5d1d9f1fde6d4e733477fc9582809baed76a514eabb6187a748dcb0d5b467d6a"
+    },
+    "oos/OOS_RUNS_untouched_test.json": {
+      "bytes": 55325,
+      "sha256": "25bf770d40db8ce18ceb4006d14cbe98e6624f17134e9080f1704ac2a0022cdb"
+    },
+    "oos/OOS_RUNS_untouched_test_cost2.json": {
+      "bytes": 26641,
+      "sha256": "323855d34d83840ccc7b963a57706e5d58706ebe10c1321303e17de3dfaf327b"
+    },
+    "oos/OOS_STRESS_COST2.json": {
+      "bytes": 2302,
+      "sha256": "0675068d07e07fe1f6e655b6469098e154d48cf213acb1998c564d49e445b7dc"
+    }
+  },
+  "evidence": {},
+  "generated_at_utc": "2026-10-21T12:02:36Z",
+  "note": "las claves son relativas a este directorio; el verificador las resuelve contra el \u00e1rbol limpio",
+  "provenance": {
+    "ECONOMIC_ATTRIBUTION.json": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/ECONOMIC_ATTRIBUTION.json",
+      "purpose": "artefacto de la reconstrucci\u00f3n econ\u00f3mica que el verificador contrasta"
+    },
+    "INDEPENDENT_VERIFICATION.json": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/INDEPENDENT_VERIFICATION.json",
+      "purpose": "dictamen del verificador independiente sobre este mismo paquete"
+    },
+    "PAIRED_DELTA.csv": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/PAIRED_DELTA.csv",
+      "purpose": "artefacto de la reconstrucci\u00f3n econ\u00f3mica que el verificador contrasta"
+    },
+    "TRADE_LEDGER.csv": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/TRADE_LEDGER.csv",
+      "purpose": "artefacto de la reconstrucci\u00f3n econ\u00f3mica que el verificador contrasta"
+    },
+    "oos/OOS_PLAN.json": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/oos/OOS_PLAN.json",
+      "purpose": "protocolo congelado y resultados fuera de muestra"
+    },
+    "oos/OOS_RESULTS.json": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/oos/OOS_RESULTS.json",
+      "purpose": "protocolo congelado y resultados fuera de muestra"
+    },
+    "oos/OOS_RUNS_untouched_test.json": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/oos/OOS_RUNS_untouched_test.json",
+      "purpose": "protocolo congelado y resultados fuera de muestra"
+    },
+    "oos/OOS_RUNS_untouched_test_cost2.json": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/oos/OOS_RUNS_untouched_test_cost2.json",
+      "purpose": "protocolo congelado y resultados fuera de muestra"
+    },
+    "oos/OOS_STRESS_COST2.json": {
+      "origin": "reports/ai-bots/RFC-DEF-RUN-017/evidence/oos/OOS_STRESS_COST2.json",
+      "purpose": "protocolo congelado y resultados fuera de muestra"
+    }
+  },
+  "rfc": "RFC-DEF-RUN-017",
+  "root": "data\\def-run-017",
+  "schema_version": "DEF_RUN_017_PACKAGE_V1"
+}

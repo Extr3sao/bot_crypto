@@ -1,0 +1,23 @@
+rea analyze-javascript-application — Statically reconstruct a local JavaScript/Electron application
+
+Usage: rea analyze-javascript-application <path> [options]
+
+Arguments:
+  path  ASAR or extracted application path
+
+Options:
+  --max-heap-mb <number>                         Maximum V8 old-space heap in MiB for the isolated JavaScript source analyzer; defaults to 1024. This does not change the CLI/MCP process heap.
+  --analysis-timeout-ms <number>                 Maximum startup, analysis and transfer time per JavaScript source, in milliseconds; defaults to 300000. On timeout, return collected partial Evidence and stop the analysis.
+  --artifact-format <auto|asar|directory>        Application artifact format (default: auto)
+  --integrity-policy <fail|record-and-continue>  Behavior when declared application integrity does not match (default: fail)
+
+Global Options:
+  --filter-output <keys>              Filter output by key paths (e.g. foo,bar.baz,a[0,3])
+  --format <toon|json|yaml|md|jsonl>  Output format
+  --full-output                       Show full output envelope
+  --help                              Show help
+  --llms, --llms-full                 Print LLM-readable manifest
+  --schema                            Show JSON Schema for command
+  --token-count                       Print token count of output (instead of output)
+  --token-limit <n>                   Limit output to n tokens
+  --token-offset <n>                  Skip first n tokens of output
