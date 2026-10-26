@@ -6,7 +6,8 @@
 | **rama** | `fix/tap-sync-unblock-19` (aislada, derivada de `sync/uncommitted-main-20261025`) |
 | **baseline** | `6381c9f7` = `sync/uncommitted-main-20261025` = `refs/pull/19/head` (PR #19) |
 | **commits de la corrección** | `23359fca`, `4cec0f0b`, `afd2c0c6` |
-| **HEAD final** | `afd2c0c69e52d833705ce1641119b5ab2b4b0bcb` |
+| **HEAD sobre el que corrieron todos los gates** | `afd2c0c69e52d833705ce1641119b5ab2b4b0bcb` |
+| **commit de documentación** | el que añade estos informes y `evidence/` (0 ficheros fuente; `git show --name-only <commit> \| grep -v 'RUN_REPORT\|FINAL_REPORT\|evidence/'` → 0). Por eso los gates siguen siendo válidos para `afd2c0c6`; la rama termina en ese commit de documentación (`git log sync/uncommitted-main-20261025..HEAD`). |
 | **ficheros cambiados** | 4 (+541 / −78) |
 | **modo** | sin red de trading, sin órdenes, sin claves, sin fusionar ningún PR |
 | **FALSE_SUCCESS** | **0** (ningún PASS sin ejecución; los gates en rojo se declaran en rojo) |

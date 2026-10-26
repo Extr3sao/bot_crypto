@@ -3,6 +3,7 @@
   "phase": "TAP-SYNC-UNBLOCK-19 / recuperar el contrato de configuración",
   "run_id": "tap-sync-unblock-19-2026-10-26",
   "commit": "afd2c0c69e52d833705ce1641119b5ab2b4b0bcb",
+  "commit_role": "HEAD sobre el que corrieron TODOS los gates; el commit que añade estos informes y evidence/ no contiene ficheros fuente, así que los resultados siguen siendo válidos (verificar con: git show --name-only <commit> | grep -v -E '^(RUN_REPORT|FINAL_REPORT|evidence/)' -> 0 líneas)",
   "branch": "fix/tap-sync-unblock-19",
   "baseline_head": "6381c9f7fb536d5512d616860bc0cef13c8bea35",
   "baseline_is": "sync/uncommitted-main-20261025 == refs/pull/19/head (PR #19)",

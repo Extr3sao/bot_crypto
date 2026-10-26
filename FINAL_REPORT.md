@@ -4,8 +4,8 @@
 TICKET:                         TAP-SYNC-UNBLOCK-19 — recuperar el contrato de configuración
 BRANCH:                         fix/tap-sync-unblock-19  (aislada, de sync/uncommitted-main-20261025)
 BASELINE_HEAD:                  6381c9f7fb536d5512d616860bc0cef13c8bea35  (== refs/pull/19/head, PR #19)
-FINAL_HEAD:                     afd2c0c69e52d833705ce1641119b5ab2b4b0bcb
-COMMITS:                        23359fca, 4cec0f0b, afd2c0c6
+GATED_HEAD:                     afd2c0c69e52d833705ce1641119b5ab2b4b0bcb  (todos los gates corrieron aquí)
+COMMITS:                        23359fca, 4cec0f0b, afd2c0c6, + commit de documentación (0 ficheros fuente)
 CHANGED_FILES:                  4 (+541 / −78)
 COLLECTION:                     BASELINE exit 2 (ImportError YamlDirectorySource) -> FIX exit 0
 CONFIG_TESTS:                   63 passed, exit 0 (worktree y clone)
