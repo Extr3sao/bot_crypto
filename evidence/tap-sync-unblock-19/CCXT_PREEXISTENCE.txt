@@ -1,0 +1,34 @@
+TAP-SYNC-UNBLOCK-19 — preexistencia de los 36 errores de recolección/ejecución
+
+### A) El mismo test en BASELINE y en FIX (idéntico TypeError -> preexistente)
+--- BASELINE 6381c9f7
+E   TypeError: CCXTExchangeConnector.__init__() missing 1 required positional argument: 'secret'
+=========================== short test summary info ===========================
+ERROR tests/unit/market_data/test_ccxt_connector.py::test_connector_is_exchange_connector
+1 error in 1.33s
+EXIT=1
+--- FIX afd2c0c6
+E   TypeError: CCXTExchangeConnector.__init__() missing 1 required positional argument: 'secret'
+=========================== short test summary info ===========================
+ERROR tests/unit/market_data/test_ccxt_connector.py::test_connector_is_exchange_connector
+1 error in 1.29s
+EXIT=1
+
+### B) RFC-048 (los 3 fallos que solo aparecen en clones) en un CLONE del BASELINE
+--- clone de 6381c9f7 (u19-base-clone), mismo core.autocrlf=true
+=========================== short test summary info ===========================
+FAILED tests/unit/risk/test_rfc048_provenance_integrity.py::test_v2_records_the_digest_of_the_bytes_git_delivers
+FAILED tests/unit/risk/test_rfc048_provenance_integrity.py::test_the_historical_v1_bundle_is_preserved_untouched
+FAILED tests/unit/risk/test_rfc048_provenance_integrity.py::test_the_v1_defect_is_reproducible_and_explained
+3 failed, 8 passed in 1.58s
+EXIT=1
+--- los mismos tests en el worktree FIX
+...........                                                              [100%]
+11 passed in 2.42s
+EXIT=0
+
+### C) Reparto de los 36 errores (FIX): 22 ccxt + 14 profitability
+22
+14
+total ERROR:
+36
