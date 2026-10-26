@@ -1,6 +1,6 @@
 {
   "schema_version": "rfc-paper-008-verify-v1",
-  "generated_at_ms": 1793020744291,
+  "generated_at_ms": 1793021233153,
   "report": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\docs\\agentic\\paper_rfc008\\RUN_REPORT.json",
   "run_id": "paper-lab-rfc008-live-02",
   "ok": true,
@@ -143,7 +143,7 @@
     {
       "name": "dashboard.gets",
       "ok": true,
-      "detail": "{\"/\": {\"bytes\": 126463, \"http\": 200, \"ms\": 79.0}, \"/api/analysis\": {\"bytes\": 35689, \"http\": 200, \"ms\": 78.0}, \"/api/signals\": {\"bytes\": 144442, \"http\": 200, \"ms\": 125.0}, \"/api/status\": {\"bytes\": 203556, \"http\": 200, \"ms\": 109.0}, \"/healthz\": {\"bytes\": 53, \"http\": 200, \"ms\": 94.0}}"
+      "detail": "{\"/\": {\"bytes\": 126536, \"http\": 200, \"ms\": 93.0}, \"/api/analysis\": {\"bytes\": 35689, \"http\": 200, \"ms\": 94.0}, \"/api/signals\": {\"bytes\": 144442, \"http\": 200, \"ms\": 110.0}, \"/api/status\": {\"bytes\": 203625, \"http\": 200, \"ms\": 109.0}, \"/healthz\": {\"bytes\": 53, \"http\": 200, \"ms\": 141.0}}"
     },
     {
       "name": "dashboard.refuses_mutation",
