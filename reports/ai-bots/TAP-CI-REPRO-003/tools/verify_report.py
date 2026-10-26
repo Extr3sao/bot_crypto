@@ -113,12 +113,11 @@ def manifest_problems(manifest: dict[str, Any], root: Path) -> list[str]:
             problems.append(f"{row['path']} is absent")
             continue
         data = path.read_bytes()
-        if sha256(data) != row["sha256"]:
-            problems.append(f"{row['path']} changed (raw digest)")
+        # The judgement is on content, not on a checkout's line endings: the same reason
+        # B13 was a false failure. `sha256` is kept in the manifest for identification,
+        # but a Windows checkout that expands LF to CRLF must not look like an edit.
         if sha256(data.replace(b"\r\n", b"\n")) != row["sha256_lf"]:
-            problems.append(f"{row['path']} changed (LF-normalised digest)")
-        if len(data) != row["bytes"]:
-            problems.append(f"{row['path']} changed length")
+            problems.append(f"{row['path']} changed (LF-normalised content)")
     return problems
 
 
@@ -308,7 +307,7 @@ def controls(manifest: dict[str, Any], certification: dict[str, Any],
     # C1: a digest changed under the manifest must be refused.
     tampered = copy.deepcopy(manifest)
     first = tampered["groups"]["code_and_workflows"][0]
-    first["sha256"] = "0" * 64
+    first["sha256_lf"] = "0" * 64
     problems = manifest_problems(tampered, ROOT)
     exercise("one manifest digest changed", bool(problems), problems[0] if problems else "not detected")
 

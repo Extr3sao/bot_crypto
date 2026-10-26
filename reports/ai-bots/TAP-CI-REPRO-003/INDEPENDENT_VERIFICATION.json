@@ -1,7 +1,7 @@
 {
   "artifact": "RFC_TAP_CI_003_INDEPENDENT_VERIFICATION",
-  "generated_at_utc": "2026-10-26T13:19:24Z",
-  "head": "eda14ae4e0aa18b9660441de31f94b1c7a6b9a61",
+  "generated_at_utc": "2026-10-26T13:20:45Z",
+  "head": "71be52ee5bb15fb0a4046429ceb6a63e71dd7b6c",
   "tested_commit": "63950a7295d7659fffe894e49d6fa5624d1280a2",
   "baseline_commit": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
   "status": "PASS",
@@ -68,7 +68,7 @@
     {
       "control": "one manifest digest changed",
       "detected": true,
-      "signal": "scripts/active_economic_audit.py changed (raw digest)"
+      "signal": "scripts/active_economic_audit.py changed (LF-normalised content)"
     },
     {
       "control": "certification fingerprint rewritten",
