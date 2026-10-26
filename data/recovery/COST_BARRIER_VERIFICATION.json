@@ -1,0 +1,110 @@
+{
+  "artifact": "COST_BARRIER_INDEPENDENT_VERIFICATION",
+  "work_package": "POST RFC-049 / ACTIVE RECOVERY - WP-6 verification",
+  "generated_at_utc": "2026-10-11T18:36:10Z",
+  "head": "66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0",
+  "verifier": "scripts/cost_barrier_verify.py",
+  "builder": "scripts/cost_barrier_explorer.py",
+  "builder_imported": false,
+  "method": "independent recomputation from primary sources (WP-3 audit + COST_MODEL_V3) of every published number, followed by 13 mutation controls against the artefact",
+  "subjects": [
+    "data/recovery/COST_BARRIER_EXPLORER.json",
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+  ],
+  "checks": [
+    {
+      "check": "recompute:every_published_number_matches_an_independent_derivation",
+      "result": "PASS",
+      "detail": "every cell gross, all 120 configuration costs, all 480 reachability sets, the 24 verdicts, the frontier, the horizon claims and the governance flags reproduce from the audit and the cost model"
+    },
+    {
+      "check": "recompute:campaign_line_free_of_the_artefact",
+      "result": "PASS",
+      "detail": "model-derived 23.353553390593273 vs frozen 23.353553391"
+    },
+    {
+      "check": "recompute:the_taker_barrier_is_above_every_cell",
+      "result": "PASS",
+      "detail": "best gross under the cheapest taker line: 8.912 < 12.176776695296637 bps"
+    },
+    {
+      "check": "recompute:no_source_or_code_duplication_of_the_builder",
+      "result": "PASS",
+      "detail": "this verifier imports only the cost model and the audit; it never imports scripts/cost_barrier_explorer.py and recomputes from primary sources"
+    }
+  ],
+  "checks_total": 4,
+  "checks_failed": 0,
+  "controls": [
+    {
+      "control": "M1 one cell's gross edge raised by +5 bps",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed bb56707332af1b1d8d3d68c3768addd5e168d83d30a7b682a8cea0c75ec2558f"
+    },
+    {
+      "control": "M2 every cell raised by +20 bps (fabricated edge)",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed 56fb7fa79d42e9bf44ad458e0d5b53d7ccfa2c8c9340ae0fc8ff81dc682892d0"
+    },
+    {
+      "control": "M3 a NOT_REACHABLE verdict flipped to REACHABLE_TAKER",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed 4b5faafeb9d6a0f8bb994db27b0a4f0ca890f27f8d5c60abf5ca396e7b53957a"
+    },
+    {
+      "control": "M4 the observed-only reachable count set to 1",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed b9b2c7125962257c47a14d6ffb32e875a336e40833a7118d3642774990161310"
+    },
+    {
+      "control": "M5 one configuration's round trip moved by +0.5 bps",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed 1f4f6bc0cd461c78c097d291aeac527b2ba8b99270df925279cf0ac2ee8d822e"
+    },
+    {
+      "control": "M6 a config's reachable cell list truncated",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed ea2976639e2226ff4780eb1d04e28aeda08a04200ce988f381c26a69a8887884"
+    },
+    {
+      "control": "M7 a per-stress reachable count incremented",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed e0b09485d854634086232e0362fa0855822602d25cabe739957756610a9b747a"
+    },
+    {
+      "control": "M8 a configuration removed from the matrix",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed f7ae53029650b3612dba53ea151ba93f52a5755a6603ac7a1cdc2d376fc75fec"
+    },
+    {
+      "control": "M9 payload_sha256 replaced by zeros",
+      "detected": true,
+      "signal": "payload_sha256 0000000000000000000000000000000000000000000000000000000000000000 != recomputed 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb"
+    },
+    {
+      "control": "M10 rentable_claimed flipped to true",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed 732ac188ee115c99e3541aca66c584bb99b12724d412ff6f494b0ff25a638461"
+    },
+    {
+      "control": "M11 the horizon verdict flipped to dependent",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed b8a01f8df4d7e05a54e25688e7fe51e9d59e119d23c495f709055b63434fe3b8"
+    },
+    {
+      "control": "M12 a funding carry value replaced by 999 bps",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed e32ddaed7bd8b59968c68ec5e0a5cad219b868072450d87f1ea20fc1bec44ed4"
+    },
+    {
+      "control": "M13 the artefact's own checks_failed counter rewritten",
+      "detected": true,
+      "signal": "payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb != recomputed fc53673c9366f72891b92567d1e9b46430aec74a2a1273b9271479dfd861d236"
+    }
+  ],
+  "controls_total": 13,
+  "controls_missed": 0,
+  "false_success": 0,
+  "status": "PASS",
+  "scope": "Verification of a derived, read-only artefact. It grants nothing: the explorer's own conclusion is that no cell clears a line priced without an assumed maker-fill model, and that the assumed lines are unmodelled. No promotion is implied."
+}

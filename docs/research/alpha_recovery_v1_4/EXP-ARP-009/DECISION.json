@@ -1,0 +1,18 @@
+{
+  "experiment_id": "EXP-ARP-009",
+  "final": "INSUFFICIENT_EVIDENCE",
+  "identity": {
+    "dataset": "baseline",
+    "kind": "xsec",
+    "max_hold_days": 30,
+    "min_trades": 20,
+    "strategy_id": "H-XSEC-RELSTR-001"
+  },
+  "oos_opened": false,
+  "stages": {
+    "COST": "NOT_REACHED",
+    "DEV": "INSUFFICIENT_EVIDENCE",
+    "ROBUSTNESS": "NOT_REACHED",
+    "VALIDATION": "NOT_REACHED"
+  }
+}

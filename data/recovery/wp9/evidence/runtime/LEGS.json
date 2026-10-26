@@ -1,0 +1,130 @@
+[
+  {
+    "name": "1-interval-cadence",
+    "notes": "free-running loop: the cadence that loses part of its cycles to the freshness gate",
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/autonomous_paper.py --assets BTC,ETH --timeframe 5m --provider ccxt --run-id wp9-runtime-legs --run-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper --state-path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\paper_state.json --horizon-minutes 5.0 --size-usd 1000.0 --verify-provider --cadence interval --cycles 3 --interval 20.0",
+    "exit_code": 0,
+    "seconds": 51.953,
+    "stop_file_written_at_seconds": null,
+    "stdout_tail": "  \"risk_NOT_EVALUATED\": 0\n}\n[run] stop reason: completed\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.md\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.json\n[run] traces: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\traces.jsonl\n[run] heartbeat: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\heartbeat.json (3 beats)\n[run] daily report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\PAPER_DAILY_REPORT.json",
+    "log": "reports/autonomous-paper/wp9-runtime-legs/legs/1-interval-cadence/stdout.log",
+    "run_report": "reports/autonomous-paper/wp9-runtime-legs/legs/1-interval-cadence/RUN_REPORT.json",
+    "traces_before": 0,
+    "traces_after": 6,
+    "traces_added": 6,
+    "cycles_reported": 3,
+    "resources": {
+      "samples": 101,
+      "measured_samples": 101,
+      "rss_mb_max": 148.844,
+      "peak_rss_mb_max": 148.959,
+      "cpu_seconds": 1.391,
+      "cpu_utilisation": 0.0268,
+      "processes_in_the_tree_max": 2,
+      "method": "win32 GetProcessMemoryInfo + GetProcessTimes"
+    },
+    "disk": {
+      "run_dir_bytes_before": 0,
+      "run_dir_bytes_after": 84341,
+      "run_root_bytes_before": 29395619,
+      "run_root_bytes_after": 29479960,
+      "bytes_written": 84341
+    }
+  },
+  {
+    "name": "2-bar-close-cadence",
+    "notes": "phase-aligned to sealed bars: the cadence that keeps the same budget",
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/autonomous_paper.py --assets BTC,ETH --timeframe 5m --provider ccxt --run-id wp9-runtime-legs --run-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper --state-path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\paper_state.json --horizon-minutes 5.0 --size-usd 1000.0 --verify-provider --cadence bar-close --cycles 1",
+    "exit_code": 0,
+    "seconds": 69.157,
+    "stop_file_written_at_seconds": null,
+    "stdout_tail": "  \"risk_NOT_EVALUATED\": 0\n}\n[run] stop reason: completed\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.md\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.json\n[run] traces: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\traces.jsonl\n[run] heartbeat: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\heartbeat.json (1 beats)\n[run] daily report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\PAPER_DAILY_REPORT.json",
+    "log": "reports/autonomous-paper/wp9-runtime-legs/legs/2-bar-close-cadence/stdout.log",
+    "run_report": "reports/autonomous-paper/wp9-runtime-legs/legs/2-bar-close-cadence/RUN_REPORT.json",
+    "traces_before": 6,
+    "traces_after": 8,
+    "traces_added": 2,
+    "cycles_reported": 1,
+    "resources": {
+      "samples": 134,
+      "measured_samples": 134,
+      "rss_mb_max": 148.627,
+      "peak_rss_mb_max": 148.746,
+      "cpu_seconds": 1.422,
+      "cpu_utilisation": 0.0206,
+      "processes_in_the_tree_max": 3,
+      "method": "win32 GetProcessMemoryInfo + GetProcessTimes"
+    },
+    "disk": {
+      "run_dir_bytes_before": 86629,
+      "run_dir_bytes_after": 108019,
+      "run_root_bytes_before": 29482248,
+      "run_root_bytes_after": 29503638,
+      "bytes_written": 21390
+    }
+  },
+  {
+    "name": "3-controlled-stop",
+    "notes": "stopped through the runtime's own STOP file (\u00a751), which must exit zero",
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/autonomous_paper.py --assets BTC,ETH --timeframe 5m --provider ccxt --run-id wp9-runtime-legs --run-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper --state-path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\paper_state.json --horizon-minutes 5.0 --size-usd 1000.0 --verify-provider --continuous --interval 20.0",
+    "exit_code": 0,
+    "seconds": 49.375,
+    "stop_file_written_at_seconds": 45.234,
+    "stdout_tail": "  \"risk_NOT_EVALUATED\": 0\n}\n[run] stop reason: STOP file\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.md\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.json\n[run] traces: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\traces.jsonl\n[run] heartbeat: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\heartbeat.json (2 beats)\n[run] daily report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\PAPER_DAILY_REPORT.json",
+    "log": "reports/autonomous-paper/wp9-runtime-legs/legs/3-controlled-stop/stdout.log",
+    "run_report": "reports/autonomous-paper/wp9-runtime-legs/legs/3-controlled-stop/RUN_REPORT.json",
+    "traces_before": 8,
+    "traces_after": 12,
+    "traces_added": 4,
+    "cycles_reported": 2,
+    "resources": {
+      "samples": 96,
+      "measured_samples": 96,
+      "rss_mb_max": 149.299,
+      "peak_rss_mb_max": 149.557,
+      "cpu_seconds": 1.563,
+      "cpu_utilisation": 0.0317,
+      "processes_in_the_tree_max": 3,
+      "method": "win32 GetProcessMemoryInfo + GetProcessTimes"
+    },
+    "disk": {
+      "run_dir_bytes_before": 110281,
+      "run_dir_bytes_after": 162015,
+      "run_root_bytes_before": 29505900,
+      "run_root_bytes_after": 29557634,
+      "bytes_written": 51734
+    }
+  },
+  {
+    "name": "4-resume-after-stop",
+    "notes": "the same run id, run root and state path, after the controlled stop",
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/autonomous_paper.py --assets BTC,ETH --timeframe 5m --provider ccxt --run-id wp9-runtime-legs --run-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper --state-path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\paper_state.json --horizon-minutes 5.0 --size-usd 1000.0 --verify-provider --cycles 3 --interval 20.0",
+    "exit_code": 0,
+    "seconds": 53.031,
+    "stop_file_written_at_seconds": null,
+    "stdout_tail": "  \"risk_NOT_EVALUATED\": 0\n}\n[run] stop reason: completed\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.md\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.json\n[run] traces: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\traces.jsonl\n[run] heartbeat: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\heartbeat.json (3 beats)\n[run] daily report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\PAPER_DAILY_REPORT.json",
+    "log": "reports/autonomous-paper/wp9-runtime-legs/legs/4-resume-after-stop/stdout.log",
+    "run_report": "reports/autonomous-paper/wp9-runtime-legs/legs/4-resume-after-stop/RUN_REPORT.json",
+    "traces_before": 12,
+    "traces_after": 18,
+    "traces_added": 6,
+    "cycles_reported": 3,
+    "resources": {
+      "samples": 103,
+      "measured_samples": 103,
+      "rss_mb_max": 148.832,
+      "peak_rss_mb_max": 148.935,
+      "cpu_seconds": 1.578,
+      "cpu_utilisation": 0.0298,
+      "processes_in_the_tree_max": 3,
+      "method": "win32 GetProcessMemoryInfo + GetProcessTimes"
+    },
+    "disk": {
+      "run_dir_bytes_before": 164279,
+      "run_dir_bytes_after": 235433,
+      "run_root_bytes_before": 29559898,
+      "run_root_bytes_after": 29631052,
+      "bytes_written": 71154
+    }
+  }
+]

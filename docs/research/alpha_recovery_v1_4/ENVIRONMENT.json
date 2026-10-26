@@ -1,0 +1,21 @@
+{
+  "baseline_dataset_fingerprint": "9d51385d570b8ff4ba1af22c3d4491f78c36111ec7383173e7d0351d5ee21658",
+  "branch_head": "eae4c27e8254303c30ddf42abebb4ddaecf10716",
+  "code_files": [
+    "src/trading_bot/research/alpha_recovery/__init__.py",
+    "src/trading_bot/research/alpha_recovery/series.py",
+    "src/trading_bot/research/alpha_recovery/simulate.py",
+    "src/trading_bot/research/alpha_recovery/experiments.py",
+    "src/trading_bot/research/alpha_recovery/metrics.py",
+    "src/trading_bot/research/alpha_recovery/campaign.py",
+    "src/trading_bot/research/alpha_recovery/daily.py",
+    "src/trading_bot/research/alpha_recovery/xsec.py",
+    "src/trading_bot/research/alpha_recovery/extended.py",
+    "src/trading_bot/research/alpha_recovery/daily_v1_4.py",
+    "scripts/alpha_recovery_v1_4.py"
+  ],
+  "code_hash": "6421480709beda15115148f538e251fc48af8f9bd0a4c2001ffbec9a6cfccbad",
+  "config_hash": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+  "cost_bps_rt": 23.559016994374947,
+  "extended_corpus_digest": "d3669d28de0014bf4299361adb9cca2c4d0de9a9b856077b8e1bff92260030e0"
+}

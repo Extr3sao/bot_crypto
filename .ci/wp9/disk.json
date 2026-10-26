@@ -1,0 +1,577 @@
+{
+  "artifact": "WP9_DISK_BUDGET_AUDIT",
+  "work_package": "WP-9B (CI RUNTIME CERTIFICATION & PAPER READINESS RECOVERY)",
+  "generated_at_utc": "2026-10-11T19:43:48Z",
+  "mode": "OFFLINE READ-ONLY \u2014 no process started, no segment read, no file written outside data/recovery/wp9/",
+  "windows": {
+    "sealed": {
+      "run_id": "paper-lab-continuous-02",
+      "sealed": true,
+      "manifest": "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json",
+      "started_at": "2026-09-29T22:59:18.288000Z",
+      "ended_at": "2026-09-30T03:08:51.773000Z",
+      "duration_seconds": 14973.485,
+      "duration_hours": 4.1593,
+      "rotation_seconds": 900,
+      "bytes_written": 799632725,
+      "uncompressed_bytes_written": 14225492225,
+      "bytes_per_hour_derived": 192251690.906,
+      "bytes_per_hour_published": 192251690.91,
+      "rate_reproduces": true,
+      "max_total_bytes": 800000000,
+      "stop_reason": "disk budget",
+      "status": "CONTROLLED_STOP",
+      "continuity": "INCOMPLETE_DATA",
+      "stopped_on_disk_budget": true,
+      "stopped_on_min_free": false,
+      "gaps": 67,
+      "reconnects": 9,
+      "events": 11575244,
+      "compression_ratio": 17.79,
+      "streams": [
+        {
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "event_type": "agg_trade",
+          "events": 0,
+          "bytes": 0,
+          "bytes_per_hour": 0.0
+        },
+        {
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "event_type": "book_checkpoint",
+          "events": 496,
+          "bytes": 99572,
+          "bytes_per_hour": 23939.597
+        },
+        {
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "event_type": "book_ticker",
+          "events": 5070497,
+          "bytes": 258445763,
+          "bytes_per_hour": 62136820.306
+        },
+        {
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "event_type": "depth_diff",
+          "events": 144802,
+          "bytes": 84425356,
+          "bytes_per_hour": 20297965.477
+        },
+        {
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "event_type": "depth_snapshot",
+          "events": 10,
+          "bytes": 91314,
+          "bytes_per_hour": 21954.168
+        },
+        {
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "event_type": "funding",
+          "events": 244,
+          "bytes": 25038,
+          "bytes_per_hour": 6019.761
+        },
+        {
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "event_type": "mark_price",
+          "events": 244,
+          "bytes": 33343,
+          "bytes_per_hour": 8016.49
+        },
+        {
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "event_type": "open_interest",
+          "events": 244,
+          "bytes": 24745,
+          "bytes_per_hour": 5949.316
+        },
+        {
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "event_type": "agg_trade",
+          "events": 0,
+          "bytes": 0,
+          "bytes_per_hour": 0.0
+        },
+        {
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "event_type": "book_checkpoint",
+          "events": 496,
+          "bytes": 100646,
+          "bytes_per_hour": 24197.814
+        },
+        {
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "event_type": "book_ticker",
+          "events": 3815872,
+          "bytes": 209580383,
+          "bytes_per_hour": 50388361.747
+        },
+        {
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "event_type": "depth_diff",
+          "events": 144301,
+          "bytes": 78949858,
+          "bytes_per_hour": 18981518.918
+        },
+        {
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "event_type": "depth_snapshot",
+          "events": 11,
+          "bytes": 125434,
+          "bytes_per_hour": 30157.468
+        },
+        {
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "event_type": "funding",
+          "events": 244,
+          "bytes": 24471,
+          "bytes_per_hour": 5883.44
+        },
+        {
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "event_type": "mark_price",
+          "events": 244,
+          "bytes": 32328,
+          "bytes_per_hour": 7772.459
+        },
+        {
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "event_type": "open_interest",
+          "events": 244,
+          "bytes": 25077,
+          "bytes_per_hour": 6029.138
+        },
+        {
+          "market": "spot",
+          "symbol": "BTCUSDT",
+          "event_type": "agg_trade",
+          "events": 91391,
+          "bytes": 7262938,
+          "bytes_per_hour": 1746191.805
+        },
+        {
+          "market": "spot",
+          "symbol": "BTCUSDT",
+          "event_type": "book_checkpoint",
+          "events": 496,
+          "bytes": 98552,
+          "bytes_per_hour": 23694.364
+        },
+        {
+          "market": "spot",
+          "symbol": "BTCUSDT",
+          "event_type": "book_ticker",
+          "events": 1241954,
+          "bytes": 56323965,
+          "bytes_per_hour": 13541688.792
+        },
+        {
+          "market": "spot",
+          "symbol": "BTCUSDT",
+          "event_type": "depth_diff",
+          "events": 149528,
+          "bytes": 36999566,
+          "bytes_per_hour": 8895620.332
+        },
+        {
+          "market": "spot",
+          "symbol": "BTCUSDT",
+          "event_type": "depth_snapshot",
+          "events": 1,
+          "bytes": 10697,
+          "bytes_per_hour": 2571.826
+        },
+        {
+          "market": "spot",
+          "symbol": "ETHUSDT",
+          "event_type": "agg_trade",
+          "events": 72269,
+          "bytes": 5722110,
+          "bytes_per_hour": 1375738.247
+        },
+        {
+          "market": "spot",
+          "symbol": "ETHUSDT",
+          "event_type": "book_checkpoint",
+          "events": 496,
+          "bytes": 99043,
+          "bytes_per_hour": 23812.412
+        },
+        {
+          "market": "spot",
+          "symbol": "ETHUSDT",
+          "event_type": "book_ticker",
+          "events": 692423,
+          "bytes": 33073704,
+          "bytes_per_hour": 7951744.995
+        },
+        {
+          "market": "spot",
+          "symbol": "ETHUSDT",
+          "event_type": "depth_diff",
+          "events": 148397,
+          "bytes": 27988971,
+          "bytes_per_hour": 6729248.108
+        },
+        {
+          "market": "spot",
+          "symbol": "ETHUSDT",
+          "event_type": "depth_snapshot",
+          "events": 1,
+          "bytes": 10874,
+          "bytes_per_hour": 2614.381
+        },
+        {
+          "market": "spot",
+          "symbol": "GLOBAL",
+          "event_type": "gap",
+          "events": 67,
+          "bytes": 0,
+          "bytes_per_hour": 0.0
+        },
+        {
+          "market": "spot",
+          "symbol": "GLOBAL",
+          "event_type": "heartbeat",
+          "events": 249,
+          "bytes": 0,
+          "bytes_per_hour": 0.0
+        },
+        {
+          "market": "spot",
+          "symbol": "GLOBAL",
+          "event_type": "lifecycle",
+          "events": 23,
+          "bytes": 0,
+          "bytes_per_hour": 0.0
+        }
+      ],
+      "governance_block": "A window that stopped on its own valve publishes the arithmetic of why: 799632725 B over 4.1593 h is 192.25 MB/h, and 4.61 GB is what 24 h needs."
+    },
+    "unsealed": {
+      "run_id": "paper-lab-continuous-03",
+      "sealed": false,
+      "monitor": "reports/paper-lab/paper-lab-continuous-03/MONITOR.jsonl",
+      "started_at": "2026-09-30T17:53:01.788000Z",
+      "ended_at": "2026-09-30T23:46:14.091000Z",
+      "duration_seconds": 21192.303,
+      "duration_hours": 5.8868,
+      "monitor_samples": 69,
+      "last_state": "HEALTHY",
+      "last_children": {
+        "paper": "RUNNING",
+        "collector": "RUNNING",
+        "retention": "RUNNING",
+        "strategy_lab": "RUNNING"
+      },
+      "last_child_restarts": {
+        "paper": 0,
+        "collector": 0,
+        "retention": 0,
+        "strategy_lab": 0
+      },
+      "last_paper_cycle": 328,
+      "last_paper_failures": 0,
+      "last_root_bytes": 1737427776,
+      "first_root_bytes": 842991978,
+      "last_segments": 1009,
+      "collector_stop_reason": null,
+      "disk_free_gb_first": 26.352,
+      "disk_free_gb_last": 31.502,
+      "disk_free_gb_min": 26.343,
+      "heartbeat_state": "HEALTHY",
+      "heartbeat_uptime_seconds": 21251.968,
+      "collector_state_bytes": 12873668,
+      "collector_state_stop_reason": null,
+      "manifest_published": false
+    }
+  },
+  "measurement": {
+    "rates": {
+      "sealed_window_derived": 192251690.906,
+      "sealed_window_published": 192251690.91,
+      "unsealed_window_filesystem": 159773130.82,
+      "unsealed_window_monitor_root_bytes": 154122256.067,
+      "peak_hour_observed": 223632438,
+      "planning_rate_bytes_per_hour": 192251690.906
+    },
+    "planning_rate_mb_per_hour": 192.252,
+    "planning_rate_source": "the higher of the two windows: a budget derived from the cheaper window under-provisions the next one by construction",
+    "filesystem_cross_check": {
+      "sealed_manifest_bytes_written": 799632725,
+      "segments_on_disk_in_window": 799632725,
+      "agrees_within_0_2_percent": true,
+      "difference_bytes": 0,
+      "segments_counted": 411
+    },
+    "by_class_window_1_bytes_per_hour": {
+      "perp/BTCUSDT/book_checkpoint": 23939.597,
+      "perp/BTCUSDT/book_ticker": 62136820.306,
+      "perp/BTCUSDT/depth_diff": 20297965.477,
+      "perp/BTCUSDT/depth_snapshot": 21954.168,
+      "perp/BTCUSDT/funding": 6019.761,
+      "perp/BTCUSDT/mark_price": 8016.49,
+      "perp/BTCUSDT/open_interest": 5949.316,
+      "perp/ETHUSDT/book_checkpoint": 24197.814,
+      "perp/ETHUSDT/book_ticker": 50388361.747,
+      "perp/ETHUSDT/depth_diff": 18981518.918,
+      "perp/ETHUSDT/depth_snapshot": 30157.468,
+      "perp/ETHUSDT/funding": 5883.44,
+      "perp/ETHUSDT/mark_price": 7772.459,
+      "perp/ETHUSDT/open_interest": 6029.138,
+      "spot/BTCUSDT/agg_trade": 1746191.805,
+      "spot/BTCUSDT/book_checkpoint": 23694.364,
+      "spot/BTCUSDT/book_ticker": 13541688.792,
+      "spot/BTCUSDT/depth_diff": 8895620.332,
+      "spot/BTCUSDT/depth_snapshot": 2571.826,
+      "spot/ETHUSDT/agg_trade": 1375738.247,
+      "spot/ETHUSDT/book_checkpoint": 23812.412,
+      "spot/ETHUSDT/book_ticker": 7951744.995,
+      "spot/ETHUSDT/depth_diff": 6729248.108,
+      "spot/ETHUSDT/depth_snapshot": 2614.381,
+      "spot/_GLOBAL/gap": 2077.753,
+      "spot/_GLOBAL/heartbeat": 10589.759,
+      "spot/_GLOBAL/lifecycle": 1512.033
+    },
+    "by_class_window_2_bytes_per_hour": {
+      "perp/BTCUSDT/book_checkpoint": 23546.266,
+      "perp/BTCUSDT/book_ticker": 46969883.868,
+      "perp/BTCUSDT/depth_diff": 18501631.389,
+      "perp/BTCUSDT/depth_snapshot": 69022.626,
+      "perp/BTCUSDT/funding": 6010.446,
+      "perp/BTCUSDT/mark_price": 7939.014,
+      "perp/BTCUSDT/open_interest": 5839.554,
+      "perp/ETHUSDT/book_checkpoint": 23735.334,
+      "perp/ETHUSDT/book_ticker": 40436452.593,
+      "perp/ETHUSDT/depth_diff": 16231942.324,
+      "perp/ETHUSDT/depth_snapshot": 84808.244,
+      "perp/ETHUSDT/funding": 5871.32,
+      "perp/ETHUSDT/mark_price": 7695.417,
+      "perp/ETHUSDT/open_interest": 5961.523,
+      "spot/BTCUSDT/agg_trade": 1792847.582,
+      "spot/BTCUSDT/book_checkpoint": 23422.259,
+      "spot/BTCUSDT/book_ticker": 14003284.041,
+      "spot/BTCUSDT/depth_diff": 8203688.82,
+      "spot/BTCUSDT/depth_snapshot": 9148.68,
+      "spot/ETHUSDT/agg_trade": 1044618.869,
+      "spot/ETHUSDT/book_checkpoint": 23165.92,
+      "spot/ETHUSDT/book_ticker": 6318538.198,
+      "spot/ETHUSDT/depth_diff": 5946548.952,
+      "spot/ETHUSDT/depth_snapshot": 9279.652,
+      "spot/_GLOBAL/gap": 5099.417,
+      "spot/_GLOBAL/heartbeat": 10631.501,
+      "spot/_GLOBAL/lifecycle": 2347.135,
+      "spot/_GLOBAL/violation": 169.873
+    },
+    "peak_hour_bytes": 223632438,
+    "peak_over_mean": 1.163
+  },
+  "components": {
+    "totals": {
+      "forward_segments": 1740177336,
+      "forward_state": 974,
+      "forward_reports": 8268,
+      "forward_aggregated": 846767,
+      "forward_lineage": 515395,
+      "forward_manifest": 310866,
+      "lab_run_dirs": 14218320
+    },
+    "lane_total_bytes": 1756077926,
+    "segments_share": 0.99095,
+    "non_segment_overhead_bytes": 1682270,
+    "non_segment_overhead_share": 0.00096,
+    "overhead_bytes_per_hour": 167455.032,
+    "note": "every component is measured on disk; the overhead term of the plan is this measurement rather than a padded percentage"
+  },
+  "projections": {
+    "reserve_bytes": 2000000000,
+    "reserve_reason": "below this the host itself becomes the failure mode and other writers on this volume start failing; the launcher's 0.3 GB stop threshold is a wall, not a reserve",
+    "rate_bytes_per_hour": 192251690.906,
+    "rate_at_cost_zero_multiplier": 1.0,
+    "horizons": [
+      {
+        "hours": 24.0,
+        "rate_bytes_per_hour": 192251690.906,
+        "required_bytes": 4614040581,
+        "required_gb": 4.614,
+        "free_bytes_available_for_data": 14946548736,
+        "headroom_gb": 10.333,
+        "fits": true,
+        "stress": {
+          "hours": 24.0,
+          "rate_bytes_per_hour": 288377536.359,
+          "required_bytes": 6921060872,
+          "required_gb": 6.921,
+          "free_bytes_available_for_data": 14946548736,
+          "headroom_gb": 8.025,
+          "fits": true,
+          "multiplier": 1.5
+        }
+      },
+      {
+        "hours": 48.0,
+        "rate_bytes_per_hour": 192251690.906,
+        "required_bytes": 9228081163,
+        "required_gb": 9.228,
+        "free_bytes_available_for_data": 14946548736,
+        "headroom_gb": 5.718,
+        "fits": true,
+        "stress": {
+          "hours": 48.0,
+          "rate_bytes_per_hour": 288377536.359,
+          "required_bytes": 13842121745,
+          "required_gb": 13.842,
+          "free_bytes_available_for_data": 14946548736,
+          "headroom_gb": 1.104,
+          "fits": true,
+          "multiplier": 1.5
+        }
+      },
+      {
+        "hours": 72.0,
+        "rate_bytes_per_hour": 192251690.906,
+        "required_bytes": 13842121745,
+        "required_gb": 13.842,
+        "free_bytes_available_for_data": 14946548736,
+        "headroom_gb": 1.104,
+        "fits": true,
+        "stress": {
+          "hours": 72.0,
+          "rate_bytes_per_hour": 288377536.359,
+          "required_bytes": 20763182617,
+          "required_gb": 20.763,
+          "free_bytes_available_for_data": 14946548736,
+          "headroom_gb": -5.817,
+          "fits": false,
+          "multiplier": 1.5
+        }
+      }
+    ],
+    "recommended_collector_max_bytes": {
+      "24": 6921060872,
+      "48": 13842121745,
+      "72": 20763182617
+    },
+    "recommendation_reason": "the valve must be able to pay for the whole window at the stress rate, or the run stops for a reason that was knowable before it started"
+  },
+  "retention": {
+    "report": "reports/microstructure-forward-continuous/reports/RETENTION_REPORT.json",
+    "retained_raw_segments": 75,
+    "planned_deletable_segments": 913,
+    "deleted": 0,
+    "freed_bytes": 0,
+    "free_bytes_then": 31507210240,
+    "compacted_windows": 0,
+    "note": "retention compacted but deleted nothing: no authoritative raw data was removed to make room, which is why the shortfall had to be fixed upstream of retention"
+  },
+  "findings": [
+    {
+      "id": "WP9-DISK-01",
+      "class": "CONFIGURATION_DEFECT",
+      "what": "window 1 was launched with a 800 MB collector valve while its own measured rate was 192.25 MB/h, so the valve fills in 4.2 h: 24 h was arithmetically impossible from the first byte, and no code defect was involved",
+      "evidence": [
+        "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json"
+      ],
+      "measured": {
+        "rate_mb_per_hour": 192.252,
+        "valve_bytes": 800000000,
+        "hours_to_valve": 4.161,
+        "target_hours": 24.0,
+        "shortfall_bytes": 3814040581
+      },
+      "bounds": "the guard did what it was told: segments sealed, manifest finalised, exit 0"
+    },
+    {
+      "id": "WP9-DISK-02",
+      "class": "UNRECORDED_TERMINATION",
+      "what": "window 2 stopped after 5.89 h with every child RUNNING, {'paper': 0, 'collector': 0, 'retention': 0, 'strategy_lab': 0} restarts, disk at 31.502 GB free and the valve only 1.74 GB used: nothing in the record says why, and no manifest was sealed, so the window's data cannot be used as evidence",
+      "evidence": [
+        "reports/paper-lab/paper-lab-continuous-03/MONITOR.jsonl"
+      ],
+      "measured": {
+        "duration_hours": 5.8868,
+        "last_state": "HEALTHY",
+        "collector_stop_reason": null,
+        "manifest_published": false,
+        "disk_free_gb_last": 31.502
+      },
+      "bounds": "the absence of a stop record is the finding; the cause is not reconstructed"
+    },
+    {
+      "id": "WP9-DISK-03",
+      "class": "SHARED_HOST_PRESSURE",
+      "what": "free space on this host moved by far more than the lane wrote, and 94 % of the volume is already in use by other writers, so a budget that counts only this lane's bytes budgets for a machine that does not exist",
+      "measured": {
+        "free_bytes_now": 16946548736,
+        "volume_total_bytes": 255041990656,
+        "volume_used_fraction": 0.9336,
+        "free_gb_at_window_2_start": 26.352,
+        "free_gb_at_window_2_end": 31.502,
+        "lane_bytes_written_window_2": 1737427776,
+        "reserve_bytes": 2000000000
+      },
+      "bounds": "the other writers are not attributed here; only the effect on the budget is"
+    }
+  ],
+  "checks": [
+    {
+      "check": "the sealed window's published rate reproduces from its own bytes/time",
+      "result": "PASS"
+    },
+    {
+      "check": "the filesystem agrees with the sealed manifest's byte counter",
+      "result": "PASS"
+    },
+    {
+      "check": "the unsealed window is measured from segment names, not from mtimes",
+      "result": "PASS"
+    },
+    {
+      "check": "no SQLite/embedded database carries market data (gzip JSONL only)",
+      "result": "PASS"
+    },
+    {
+      "check": "retention deleted no authoritative raw data",
+      "result": "PASS"
+    },
+    {
+      "check": "every horizon is planned at the stress rate as well as the mean",
+      "result": "PASS"
+    }
+  ],
+  "scope": {
+    "read": [
+      "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json",
+      "reports/paper-lab/paper-lab-continuous-03/MONITOR.jsonl",
+      "reports/microstructure-forward-continuous/segments/** (sizes only)",
+      "reports/microstructure-forward-continuous/reports/RETENTION_REPORT.json"
+    ],
+    "not_read": [
+      "every segment's contents",
+      "any other lane's evidence"
+    ],
+    "write": [
+      "data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.json",
+      "data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.md"
+    ]
+  },
+  "checks_total": 6,
+  "checks_failed": 0,
+  "verdict": "DISK_BUDGET_MEASURED"
+}

@@ -1,0 +1,10 @@
+{
+  "manifest_version": "RFC035E_DATASET_HASHES_V1",
+  "raw": {
+    "RF-01": "2e532435486112465a5ba09b3203585219343bcd5b6c8531e6a46ca339bae588",
+    "RF-02": "47b9e0c96f8588e792d062f77339f858a8a350328c1e18ff7df6fa58e5582531"
+  },
+  "derived": {
+    "etf_flow_btc_daily": "b58adaa74e7c73f93d6c4270eba673b88216727e4ee0c133de5334a354134900"
+  }
+}

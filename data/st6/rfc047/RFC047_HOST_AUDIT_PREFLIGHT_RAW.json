@@ -1,0 +1,52 @@
+{
+  "artifact": "RFC047_HOST_AUDIT_PREFLIGHT_RAW",
+  "purpose": "the raw, dated pre-activation reading of the Task Scheduler channels, kept verbatim so the before-state is checkable rather than asserted",
+  "read_only": true,
+  "taken_at_utc": "2026-10-09T16:59:43Z",
+  "queries": [
+    {
+      "command": [
+        "wevtutil",
+        "gl",
+        "Microsoft-Windows-TaskScheduler/Operational"
+      ],
+      "exit_code": 0,
+      "stdout": "name: Microsoft-Windows-TaskScheduler/Operational\nenabled: false\ntype: Operational\nowningPublisher: Microsoft-Windows-TaskScheduler\nisolation: Application\nchannelAccess: O:BAG:SYD:(A;;0x2;;;S-1-15-2-1)(A;;0x2;;;S-1-15-3-1024-3153509613-960666767-3724611135-2725662640-12138253-543910227-1950414635-4190290187)(A;;0xf0007;;;SY)(A;;0x7;;;BA)(A;;0x7;;;SO)(A;;0x3;;;IU)(A;;0x3;;;SU)(A;;0x3;;;S-1-5-3)(A;;0x3;;;S-1-5-33)(A;;0x1;;;S-1-5-32-573)\nlogging:\n  logFileName: %SystemRoot%\\System32\\Winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Operational.evtx\n  retention: false\n  autoBackup: false\n  maxSize: 10485760\npublishing:\n  fileMax: 1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "wevtutil",
+        "gl",
+        "Microsoft-Windows-TaskScheduler/Maintenance"
+      ],
+      "exit_code": 0,
+      "stdout": "name: Microsoft-Windows-TaskScheduler/Maintenance\nenabled: true\ntype: Operational\nowningPublisher: Microsoft-Windows-TaskScheduler\nisolation: Application\nchannelAccess: O:BAG:SYD:(A;;0x2;;;S-1-15-2-1)(A;;0x2;;;S-1-15-3-1024-3153509613-960666767-3724611135-2725662640-12138253-543910227-1950414635-4190290187)(A;;0xf0007;;;SY)(A;;0x7;;;BA)(A;;0x7;;;SO)(A;;0x3;;;IU)(A;;0x3;;;SU)(A;;0x3;;;S-1-5-3)(A;;0x3;;;S-1-5-33)(A;;0x1;;;S-1-5-32-573)\nlogging:\n  logFileName: %SystemRoot%\\System32\\Winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Maintenance.evtx\n  retention: false\n  autoBackup: false\n  maxSize: 1052672\npublishing:\n  fileMax: 1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "wevtutil",
+        "gli",
+        "Microsoft-Windows-TaskScheduler/Operational"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "wevtutil",
+        "sl",
+        "Microsoft-Windows-TaskScheduler/Operational",
+        "/e:true"
+      ],
+      "exit_code": 5,
+      "stdout": "",
+      "stderr": "Error al guardar la configuración o al activar el registro Microsoft-Windows-TaskScheduler/Operational.\nAcceso denegado."
+    }
+  ],
+  "session": {
+    "user": "directori\\gvllfr0035"
+  }
+}

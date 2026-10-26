@@ -1,0 +1,23 @@
+{
+  "rfc": "RFC-044",
+  "generated_at": "2026-10-06T08:11:33Z",
+  "description": "Decision ledger: every reentry review and its outcome.",
+  "entries": [
+    {
+      "review_id": "RFC042",
+      "date": "2026-10-06",
+      "opportunity": "external evidence screen (RFC-042 source registry)",
+      "trigger": "A_NEW_EXTERNAL_EVIDENCE",
+      "decision": "NO_REENTRY",
+      "reason": "no screened candidate produced a benchmark-adjusted, capital-fit business case for 200 USDT"
+    },
+    {
+      "review_id": "RFC044",
+      "date": "2026-10-06",
+      "opportunity": "(none)",
+      "trigger": "NONE",
+      "decision": "NO_ACTION",
+      "reason": "NO_NEW_EVENT = TRUE: no post-RFC-042 evidence or trigger A-E has been recorded"
+    }
+  ]
+}

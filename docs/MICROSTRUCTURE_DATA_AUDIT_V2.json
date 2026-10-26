@@ -1,0 +1,188 @@
+{
+  "model": "MICROSTRUCTURE_DATA_AUDIT_V2",
+  "phase": "MICROSTRUCTURE-EDGE & FORWARD-DATA V1",
+  "generated": "2026-09-28",
+  "generated_by": "scripts/microstructure_edge_v2.py + scripts/microstructure_collector.py (real, read-only)",
+  "supersedes_scope": "extends docs/MARKET_MICROSTRUCTURE_DATA_AUDIT.json (V1) with the sources exercised in this phase",
+  "credentials_used": false,
+  "order_api_used": false,
+  "sources": [
+    {
+      "source_id": "SRC-04",
+      "provider": "Binance",
+      "market": "spot",
+      "instrument": "BTCUSDT, ETHUSDT, SOLUSDT",
+      "field": "aggTrades (tick prints: price, qty, isBuyerMaker, aggTradeId)",
+      "historical_depth": "full daily archives (data.binance.vision)",
+      "resolution": "tick",
+      "event_timestamp": "trade timestamp (ms, exchange)",
+      "availability_timestamp": "derived: minute_open + 60_001 ms, bar close thereafter",
+      "rate_limits": "bulk download, no API rate limit",
+      "credentials_required": false,
+      "pit_suitability": "PIT-usable; aggregator uses only prints with timestamp < bar close",
+      "classification": "HISTORICAL_USABLE",
+      "sample_used": "42 daily files = 14 discontinuous days (12th and 24th of each month, 2026-03..09)"
+    },
+    {
+      "source_id": "SRC-01",
+      "provider": "Binance",
+      "market": "spot",
+      "instrument": "BTCUSDT, ETHUSDT, SOLUSDT",
+      "field": "klines 5m (OHLCV, trades, taker_buy_base/quote)",
+      "historical_depth": "59,905 bars (2026-03-01 .. 2026-09-25)",
+      "resolution": "5m",
+      "event_timestamp": "open time (ms)",
+      "availability_timestamp": "close + 1 ms",
+      "credentials_required": false,
+      "pit_suitability": "PIT-usable at bar close",
+      "classification": "HISTORICAL_USABLE",
+      "use_in_phase": "measured per-asset realized volatility; external volume cross-check of the aggregation (ratio 1.0 over 288 bars per asset)"
+    },
+    {
+      "source_id": "SRC-02",
+      "provider": "Binance USD-M",
+      "market": "perpetual",
+      "field": "fundingRate",
+      "historical_depth": "624 points",
+      "resolution": "8h",
+      "event_timestamp": "fundingTime (ms)",
+      "availability_timestamp": "fundingTime",
+      "credentials_required": false,
+      "pit_suitability": "PIT-usable",
+      "classification": "HISTORICAL_USABLE",
+      "status_in_phase": "previously tested in V1 (funding_z, NO_GROSS_EDGE); not re-run"
+    },
+    {
+      "source_id": "SRC-03",
+      "provider": "Binance USD-M",
+      "market": "perpetual",
+      "field": "premiumIndexKlines 5m (mark vs index)",
+      "historical_depth": "59,905 points",
+      "resolution": "5m",
+      "event_timestamp": "open time (ms)",
+      "availability_timestamp": "interval close",
+      "credentials_required": false,
+      "pit_suitability": "PIT-usable",
+      "classification": "HISTORICAL_USABLE",
+      "status_in_phase": "previously tested in V1 (premium_z, NO_GROSS_EDGE); not re-run"
+    },
+    {
+      "source_id": "SRC-05",
+      "provider": "Binance USD-M",
+      "market": "perpetual",
+      "field": "basis",
+      "historical_depth": "~30 days",
+      "resolution": "5m",
+      "credentials_required": false,
+      "pit_suitability": "PARTIAL: retention window shorter than the study period",
+      "classification": "LIMITED_HISTORY"
+    },
+    {
+      "source_id": "SRC-06",
+      "provider": "Binance USD-M",
+      "market": "perpetual",
+      "field": "openInterestHist 5m (sumOpenInterest, sumOpenInterestValue)",
+      "historical_depth": "8,928 points per symbol (~31 days, first timestamp 2026-08-26)",
+      "resolution": "5m",
+      "event_timestamp": "timestamp (ms)",
+      "availability_timestamp": "timestamp",
+      "credentials_required": false,
+      "pit_suitability": "PIT-usable within the retention window",
+      "classification": "LIMITED_HISTORY",
+      "measured_consequence": "M-07 has NO DEV/VAL observations: no quadrant can be selected on DEV, so the pre-registered rule cannot be evaluated. Classified LIMITED_HISTORY, not a result."
+    },
+    {
+      "source_id": "SRC-07",
+      "provider": "Binance spot",
+      "market": "spot",
+      "field": "bookTicker (bid, ask, spread_bps, crossed) and depth (top-20 levels, last_update_id)",
+      "historical_depth": "none (no historical endpoint)",
+      "resolution": "snapshot / poll",
+      "event_timestamp": "none (bookTicker has no exchange event time)",
+      "availability_timestamp": "receive_time",
+      "credentials_required": false,
+      "pit_suitability": "forward-only",
+      "classification": "FORWARD_ONLY",
+      "note": "synthesising a historical book from OHLCV is forbidden; M-03 (book imbalance) remains forward-collection-required"
+    },
+    {
+      "source_id": "SRC-13",
+      "provider": "Binance USD-M",
+      "market": "perpetual",
+      "field": "liquidations (allForceOrders)",
+      "probe_date": "2026-09-28",
+      "probe_result": "HTTP 404 with and without a 7-day window",
+      "credentials_required": false,
+      "pit_suitability": "not assessable",
+      "classification": "UNUSABLE_VIA_THIS_ENDPOINT",
+      "note": "recorded as a measured fact, not assumed: the endpoint returned 404 in a real read-only probe"
+    }
+  ],
+  "forward_collection": {
+    "collector_version": "FORWARD-COLLECTOR-V1",
+    "schema_version": "forward-record-v1",
+    "mode": "continuous",
+    "file": "reports/microstructure-v2/forward/forward_1790595680.jsonl",
+    "sha256": "010475859288580555e96bf63a58ede3723a7a9193581da780314b5a21a95498",
+    "bytes": 5711329,
+    "records": 11346,
+    "by_kind": { "bookTicker": 111, "depth": 111, "aggTrade": 11100, "premiumIndex": 24 },
+    "by_symbol": { "BTCUSDT": 3782, "ETHUSDT": 3782, "SOLUSDT": 3782 },
+    "coverage": {
+      "start_iso": "2026-09-28T11:41:20.347000+00:00",
+      "end_iso": "2026-09-28T11:43:02.748000+00:00",
+      "duration_s": 102.401
+    },
+    "duplicates": 0,
+    "out_of_order": 0,
+    "records_with_exchange_event_time": 11124,
+    "gaps": [
+      { "kind": "premiumIndex", "symbol": "BTCUSDT", "n": 8, "worst_gap_ms": 15277, "stale_periods": 1 },
+      { "kind": "premiumIndex", "symbol": "ETHUSDT", "n": 8, "worst_gap_ms": 15342, "stale_periods": 1 },
+      { "kind": "premiumIndex", "symbol": "SOLUSDT", "n": 8, "worst_gap_ms": 15322, "stale_periods": 1 }
+    ],
+    "sequence_gaps": [
+      { "symbol": "BTCUSDT", "kind": "aggTrade", "n_ids": 601, "holes": 1, "worst_step": 25 },
+      { "symbol": "ETHUSDT", "kind": "aggTrade", "n_ids": 743, "holes": 0, "worst_step": 0 },
+      { "symbol": "SOLUSDT", "kind": "aggTrade", "n_ids": 292, "holes": 0, "worst_step": 0 }
+    ],
+    "depth_sequence_regressions": [
+      { "symbol": "BTCUSDT", "kind": "depth", "n": 37, "sequence_regressions": 0 },
+      { "symbol": "ETHUSDT", "kind": "depth", "n": 37, "sequence_regressions": 0 },
+      { "symbol": "SOLUSDT", "kind": "depth", "n": 37, "sequence_regressions": 0 }
+    ],
+    "known_limitations": [
+      "REST depth/bookTicker snapshots are independent polls, not a sequenced stream; there is no diff-depth reconciliation",
+      "REST aggTrades polling skipped prints in a burst on BTCUSDT (1 hole, worst_step 25): a gap-free forward capture requires the WebSocket stream",
+      "premiumIndex polling is sampled every 5 ticks, which exceeds the 15 s staleness threshold once per symbol"
+    ],
+    "usable_as": "spread measurement (per-asset, OBSERVED) and forward structure validation; NOT a fill model and NOT a historical substitute"
+  },
+  "panel_quality": {
+    "dataset": "aggTrades 14-day sample aggregated to 5m and intersected across BTC/ETH/SOL",
+    "common_clock_slices": 4032,
+    "slices_per_day": 288,
+    "gaps": 0,
+    "max_gap_ms": 300000,
+    "duplicate_timestamps": 0,
+    "out_of_order": 0,
+    "aggregation_crosscheck_vs_klines": {
+      "BTCUSDT": { "bars_compared": 288, "mean_ratio": 1.0, "min_ratio": 1.0, "max_ratio": 1.0 },
+      "ETHUSDT": { "bars_compared": 288, "mean_ratio": 1.0, "min_ratio": 1.0, "max_ratio": 1.0 },
+      "SOLUSDT": { "bars_compared": 288, "mean_ratio": 1.0, "min_ratio": 1.0, "max_ratio": 1.0 }
+    }
+  },
+  "data_gaps": [
+    "order book history (M-03) does not exist at any provider used here: forward collection only",
+    "open interest history is ~31 days, so M-07 has no DEV/VAL window",
+    "liquidations: no accessible public endpoint from this environment (HTTP 404)",
+    "the aggTrades sample is 14 discontinuous days, not 7 continuous months"
+  ],
+  "gates": {
+    "fail_closed_on_missing_field": true,
+    "fail_closed_on_duplicate_minute": true,
+    "fail_closed_on_off_grid_bar": true,
+    "fail_closed_on_unobserved_spread": true,
+    "future_leaks_detected": 0
+  }
+}
