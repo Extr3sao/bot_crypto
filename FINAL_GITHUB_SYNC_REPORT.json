@@ -13,8 +13,8 @@
     "FALSE_SUCCESS = 0"
   ],
   "executive_summary": {
-    "what_was_local_only": "226 commits sin publicar en 17 ramas; 15 worktrees sucios (1338 entradas en el checkout principal + 246 ficheros sin commit en otros 14); 0 stashes; 0 huerfanos reflog",
-    "what_was_published": "35/35 ramas con SHA local == SHA remoto; 0 commits inalcanzables desde origin/*; 15 ramas de preservacion; 31 PR draft (#19-#35, #36-#49); roadmap v1.7; 4 reportes + manifiesto de exclusiones",
+    "what_was_local_only": "226 commits sin publicar en 17 ramas; 15 worktrees sucios (1338 entradas en el checkout principal + 246 ficheros sin commit en otros 14); 0 stashes; 40 commits huerfanos solo en reflog",
+    "what_was_published": "36/36 ramas con SHA local == SHA remoto; 0 commits inalcanzables desde origin/*; 15 ramas de preservacion; 40 tags sync/orphan-* (huerfanos de reflog); 31 PR draft (#19-#35, #36-#49); roadmap v1.7; 4 reportes + manifiesto de exclusiones",
     "what_was_integrated": "nada: origin/main sigue en 5e6f9632, 263 commits por detras; sin push a main, sin merge, sin rebase, sin force",
     "what_is_blocked": [
       "gates de main en rojo: ruff 130 / format 444 / mypy 297 / pytest 79F-3274P-34S-14E (baseline preexistente)",
@@ -45,10 +45,10 @@
       "Downloads/bot freebuff/tdm14a-base"
     ],
     "local_branches_initial": 19,
-    "local_branches_final": 35,
-    "remote_branches_final": 88,
+    "local_branches_final": 36,
+    "remote_branches_final": 106,
     "stashes": 0,
-    "recoverable_orphans": 0,
+    "recoverable_orphans": 40,
     "dirty_worktrees_initial": {
       "bot freebuff": 1338,
       "ff-wt-tdm06": 81,
@@ -86,7 +86,16 @@
         "reports/, logs/, data/raw/: politica .gitignore"
       ],
       "none_counted_as_synced": true
-    }
+    },
+    "orphan_reflog_preservation": {
+      "definition": "commits alcanzables solo desde el reflog (versiones sustituidas por amend/rebase)",
+      "discovered": 40,
+      "preserved_as_tags": 40,
+      "published_to_origin": 40,
+      "tag_pattern": "sync/orphan-<sha12>",
+      "reason": "el reflog expira a los 90 dias; sin tags se habrian perdido de GitHub"
+    },
+    "remote_tags_final": 40
   },
   "publication": {
     "unpublished_commits_initial": 226,
@@ -102,23 +111,130 @@
       "git ls-remote --heads origin"
     ],
     "preservation_branches": [
-      {"branch": "sync/uncommitted-main-20261025", "sha": "5b63f265", "source": "checkout principal", "files": 153, "commits": 8, "pr": 19},
-      {"branch": "sync/uncommitted-ff-wt-tdm06-20261025", "sha": "f6429009", "source": "ff-wt-tdm06", "files": 74, "pr": 36},
-      {"branch": "sync/uncommitted-ff-wt-tdm11-20261025", "sha": "1010e3f8", "source": "ff-wt-tdm11", "files": 47, "pr": 37},
-      {"branch": "sync/uncommitted-ff-wt-tdm09-repro-20261025", "sha": "809e1b71", "source": "ff-wt-tdm09-repro", "files": 34, "pr": 38},
-      {"branch": "sync/uncommitted-ff-wt-tdm12-20261025", "sha": "81119831", "source": "ff-wt-tdm12", "files": 29, "pr": 39},
-      {"branch": "sync/uncommitted-exp004a-recovery-02k-20261025", "sha": "4304a8ed", "source": "exp004a-recovery-02k", "files": 19, "pr": 40},
-      {"branch": "sync/uncommitted-ff-wt-tdm08-20261025", "sha": "87e47c01", "source": "ff-wt-tdm08", "files": 19, "pr": 41},
-      {"branch": "sync/uncommitted-ff-wt-tdm13-20261025", "sha": "57ea2e70", "source": "ff-wt-tdm13", "files": 10, "pr": 42},
-      {"branch": "sync/uncommitted-ff-wt-tdm14a-20261025", "sha": "c9122043", "source": "ff-wt-tdm14a", "files": 7, "pr": 43},
-      {"branch": "sync/uncommitted-ff-wt-trunkfmt-20261025", "sha": "76f94096", "source": "ff-wt-trunkfmt", "files": 7, "pr": 44},
-      {"branch": "sync/uncommitted-recovery-rehearsal-9vicsg7h-20261025", "sha": "a69fc7e6", "source": "%TEMP%/recovery-rehearsal-9vicsg7h/checkout", "files": 4, "pr": 45},
-      {"branch": "sync/uncommitted-ff-wt-base-20261025", "sha": "3247989a", "source": "ff-wt-base", "files": 2, "pr": 46},
-      {"branch": "sync/uncommitted-ff-wt-adm002-20261025", "sha": "7fae86c6", "source": "ff-wt-adm002", "files": 1, "pr": 47},
-      {"branch": "sync/uncommitted-ff-wt-eco001-20261025", "sha": "b8874ac7", "source": "ff-wt-eco001", "files": 1, "pr": 48},
-      {"branch": "sync/uncommitted-ff-wt-g7-20261025", "sha": "3e3d6c6f", "source": "ff-wt-g7", "files": 1, "pr": 49}
+      {
+        "branch": "sync/uncommitted-main-20261025",
+        "sha": "5b63f265",
+        "source": "checkout principal",
+        "files": 153,
+        "commits": 8,
+        "pr": 19
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-tdm06-20261025",
+        "sha": "f6429009",
+        "source": "ff-wt-tdm06",
+        "files": 74,
+        "pr": 36
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-tdm11-20261025",
+        "sha": "1010e3f8",
+        "source": "ff-wt-tdm11",
+        "files": 47,
+        "pr": 37
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-tdm09-repro-20261025",
+        "sha": "809e1b71",
+        "source": "ff-wt-tdm09-repro",
+        "files": 34,
+        "pr": 38
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-tdm12-20261025",
+        "sha": "81119831",
+        "source": "ff-wt-tdm12",
+        "files": 29,
+        "pr": 39
+      },
+      {
+        "branch": "sync/uncommitted-exp004a-recovery-02k-20261025",
+        "sha": "4304a8ed",
+        "source": "exp004a-recovery-02k",
+        "files": 19,
+        "pr": 40
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-tdm08-20261025",
+        "sha": "87e47c01",
+        "source": "ff-wt-tdm08",
+        "files": 19,
+        "pr": 41
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-tdm13-20261025",
+        "sha": "57ea2e70",
+        "source": "ff-wt-tdm13",
+        "files": 10,
+        "pr": 42
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-tdm14a-20261025",
+        "sha": "c9122043",
+        "source": "ff-wt-tdm14a",
+        "files": 7,
+        "pr": 43
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-trunkfmt-20261025",
+        "sha": "76f94096",
+        "source": "ff-wt-trunkfmt",
+        "files": 7,
+        "pr": 44
+      },
+      {
+        "branch": "sync/uncommitted-recovery-rehearsal-9vicsg7h-20261025",
+        "sha": "a69fc7e6",
+        "source": "%TEMP%/recovery-rehearsal-9vicsg7h/checkout",
+        "files": 4,
+        "pr": 45
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-base-20261025",
+        "sha": "3247989a",
+        "source": "ff-wt-base",
+        "files": 2,
+        "pr": 46
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-adm002-20261025",
+        "sha": "7fae86c6",
+        "source": "ff-wt-adm002",
+        "files": 1,
+        "pr": 47
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-eco001-20261025",
+        "sha": "b8874ac7",
+        "source": "ff-wt-eco001",
+        "files": 1,
+        "pr": 48
+      },
+      {
+        "branch": "sync/uncommitted-ff-wt-g7-20261025",
+        "sha": "3e3d6c6f",
+        "source": "ff-wt-g7",
+        "files": 1,
+        "pr": 49
+      }
     ],
-    "prs_created": [19, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+    "prs_created": [
+      19,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
     "prs_open_total": 38,
     "prs_ready": 7,
     "prs_draft": 31,
@@ -128,17 +244,48 @@
     },
     "secret_scan": {
       "scope": "89 MB de parches de los ~240 commits a publicar",
-      "patterns": ["private keys", "ghp_", "github_pat_", "AKIA", "xox[bars]-", "sk-", "AIza", "Bearer"],
+      "patterns": [
+        "private keys",
+        "ghp_",
+        "github_pat_",
+        "AKIA",
+        "xox[bars]-",
+        "sk-",
+        "AIza",
+        "Bearer"
+      ],
       "findings": 0,
       "env_file_versioned": false,
       "env_example_versioned": true
     },
     "before_after": {
-      "unpublished_commits": {"before": 226, "after": 0},
-      "branches_without_remote": {"before": 17, "after": 0},
-      "content_of_main_on_github": {"before": false, "after": true, "via": "origin/admission/integration-002 (PR #18)"},
-      "roadmap_version": {"before": "v1.6", "after": "v1.7"}
-    }
+      "unpublished_commits": {
+        "before": 226,
+        "after": 0
+      },
+      "branches_without_remote": {
+        "before": 17,
+        "after": 0
+      },
+      "content_of_main_on_github": {
+        "before": false,
+        "after": true,
+        "via": "origin/admission/integration-002 (PR #18)"
+      },
+      "roadmap_version": {
+        "before": "v1.6",
+        "after": "v1.7"
+      }
+    },
+    "tags_published": {
+      "pattern": "sync/orphan-*",
+      "count": 40
+    },
+    "late_publications_20261026": [
+      "fix/tdm14a: 5f42de14, 409050c3, c8a8af16 y la cadena de cierre TDM-14A (carrera con un agente paralelo)",
+      "project/roadmap-trading-agentic: b95c3119 (roadmap v1.7)",
+      "feat/wp-signal-001-003: rama nueva de un agente paralelo, publicada como WIP con cada barrido"
+    ]
   },
   "integration": {
     "merged_into_main": [],
@@ -151,7 +298,11 @@
     "conflicts": "no evaluados: no se ejecuto merge; origin/main es ancestro del linaje local (integracion potencialmente fast-forward)",
     "missing_dependencies": [],
     "ci": {
-      "workflows": ["ci.yml (CI Baseline)", "cost-barrier-gate.yml", "recovery-determinism.yml"],
+      "workflows": [
+        "ci.yml (CI Baseline)",
+        "cost-barrier-gate.yml",
+        "recovery-determinism.yml"
+      ],
       "ci_baseline_on_branches": "failure",
       "ci_baseline_on_origin_main": "failure (2026-07-10 y 2026-09-22) -> rojo preexistente",
       "recovery_determinism": "success en fix/tdm14a, paper/reald-data-001, evidence/tdm13; failure en audit/g7-real-paper, audit/mt0004-negative-controls"
@@ -171,13 +322,41 @@
       "pythonpath": "<clean>/src para que TEST_TARGET == RUNTIME_TARGET"
     },
     "commands": [
-      {"cmd": "python -m ruff check .", "result": "130 errors (81 fixable)", "exit": 1},
-      {"cmd": "python -m ruff format --check .", "result": "444 would be reformatted, 374 already formatted", "exit": 1},
-      {"cmd": "python -m mypy .", "result": "297 errors in 38 files (812 checked)", "exit": 1},
-      {"cmd": "python -m pytest -q", "result": "79 failed, 3274 passed, 34 skipped, 14 errors in 512s", "exit": 1},
-      {"cmd": "python -m pytest --collect-only -q", "result": "3401 tests collected, 0 collection errors", "exit": 0},
-      {"cmd": "python -m pytest --collect-only -q (sobre 5b63f265)", "result": "3532 collected + 1 error: ImportError YamlDirectorySource", "exit": 2},
-      {"cmd": "sha256sum -c SHA256SUMS.txt (respaldo)", "result": "554/554 OK", "exit": 0}
+      {
+        "cmd": "python -m ruff check .",
+        "result": "130 errors (81 fixable)",
+        "exit": 1
+      },
+      {
+        "cmd": "python -m ruff format --check .",
+        "result": "444 would be reformatted, 374 already formatted",
+        "exit": 1
+      },
+      {
+        "cmd": "python -m mypy .",
+        "result": "297 errors in 38 files (812 checked)",
+        "exit": 1
+      },
+      {
+        "cmd": "python -m pytest -q",
+        "result": "79 failed, 3274 passed, 34 skipped, 14 errors in 512s",
+        "exit": 1
+      },
+      {
+        "cmd": "python -m pytest --collect-only -q",
+        "result": "3401 tests collected, 0 collection errors",
+        "exit": 0
+      },
+      {
+        "cmd": "python -m pytest --collect-only -q (sobre 5b63f265)",
+        "result": "3532 collected + 1 error: ImportError YamlDirectorySource",
+        "exit": 2
+      },
+      {
+        "cmd": "sha256sum -c SHA256SUMS.txt (respaldo)",
+        "result": "554/554 OK",
+        "exit": 0
+      }
     ],
     "baseline_comparison": {
       "prior_run_same_commit": "2026-10-25: 90 failed, 3263 passed, 31 skipped, 3 deselected, 14 errors",
@@ -202,7 +381,18 @@
       "ejecucion de gates en checkout limpio separado del checkout de trabajo",
       "escaneo de secretos sobre los parches generados"
     ],
-    "false_success": 0
+    "false_success": 0,
+    "independent_clean_clone_20261026": {
+      "checkout": "git clone local de e67194e7 en gate-check-main-20261026 (0 entradas sucias), uv sync propio",
+      "uv_sync": "exit 0",
+      "ruff_format_check": "444 ficheros a reformatear / 374 OK (exit 1)",
+      "ruff_check": "130 errores, 81 auto-fixables (exit 1)",
+      "mypy": "297 errores en 38 ficheros, 812 comprobados (exit 1)",
+      "pytest": "78 failed, 3275 passed, 31 skipped, 3 deselected, 14 errors (786 s, exit 1)",
+      "coverage": "76.01% < 90% requerido (exit 1)",
+      "evidence": "evidence/sync/gates_clean_clone_20261026.txt",
+      "note": "reproduce exactamente ruff 130 / format 444 / mypy 297 del worktree gate-main-20261026 con un metodo distinto"
+    }
   },
   "roadmap": {
     "master_files": [
@@ -216,7 +406,12 @@
     "branch": "project/roadmap-trading-agentic",
     "commit": "b95c3119",
     "commit_pushed": true,
-    "rows_updated": ["TAP-072", "TAP-073", "TAP-075", "TAP-076"],
+    "rows_updated": [
+      "TAP-072",
+      "TAP-073",
+      "TAP-075",
+      "TAP-076"
+    ],
     "states": {
       "TAP-072": "VERIFICADO_FOCAL",
       "TAP-073": "BLOQUEADO",

@@ -1,0 +1,59 @@
+Independent gate run (BUILDER != VERIFIER) - clean clone of e67194e7
+repo: Extr3sao/bot_crypto  date: 2026-10-26  method: git clone + own uv sync
+
+[gate] cloning /c/Users/GVLLFR0035/Downloads/bot freebuff -> /c/Users/GVLLFR0035/Downloads/gate-check-main-20261026
+[gate] commit under test: e67194e79a42aef2a2ded3aca21ac4a0ea3689c5 Stop the final report from naming its own commit
+[gate] status: 0 entries
+[gate] === uv_sync :: uv sync --all-extras --dev
+[gate] === uv_sync EXIT=0
+[gate] === ruff_format :: uv run --no-sync ruff format --check .
+444 files would be reformatted, 374 files already formatted
+[gate] === ruff_format EXIT=1
+[gate] === ruff_check :: uv run --no-sync ruff check .
+Found 130 errors.
+[gate] === ruff_check EXIT=1
+[gate] === mypy :: uv run --no-sync mypy .
+docs\agentic\exp004a\wp051_02k\ops\collect_evidence.py:257: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\wp10_baseline_economic_audit.py:505: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\wp9_disk_budget_audit.py:545: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\wp9_disk_budget_audit.py:546: error: Incompatible types in assignment (expression has type "int", target has type "Collection[Collection[str]]")  [assignment]
+scripts\wp9_disk_budget_audit.py:547: error: Incompatible types in assignment (expression has type "int", target has type "Collection[Collection[str]]")  [assignment]
+scripts\wp9_disk_budget_audit.py:547: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\wp10_open_blockers.py:439: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\wp10_open_blockers.py:441: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\wp10_open_blockers.py:443: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\wp10_open_blockers.py:445: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\wp10_open_blockers.py:448: error: Value of type "Collection[str]" is not indexable  [index]
+scripts\rfc049b_admission.py:863: error: Incompatible types in assignment (expression has type "Collection[object]", variable has type "dict[date, float | None]")  [assignment]
+scripts\rfc049b_admission.py:875: error: Dict entry 0 has incompatible type "str": "Collection[object]"; expected "str": "str"  [dict-item]
+Found 297 errors in 38 files (checked 812 source files)
+[gate] === mypy EXIT=1
+[gate] === pytest :: uv run --no-sync pytest -m not slow and not market --cov --cov-fail-under=90
+TOTAL                                                            34672   6986   9080   1367    76%
+FAIL Required test coverage of 90% not reached. Total coverage: 76.01%
+= 78 failed, 3275 passed, 31 skipped, 3 deselected, 78 warnings, 14 errors in 786.78s (0:13:06) =
+[gate] === pytest EXIT=1
+[gate] ALL DONE
+
+FAILED TEST FILES (21):
+FAILED tests/unit/research/test_alpha_recovery_v1_4_manifests.py
+FAILED tests/unit/research/test_arp009_exp021_pit.py
+FAILED tests/unit/research/test_arp010_exp022_pit.py
+FAILED tests/unit/research/test_arp011_exp019_pit.py
+FAILED tests/unit/research/test_arp013_exp023_spec.py
+FAILED tests/unit/research/test_cost_barrier_adversarial.py
+FAILED tests/unit/research/test_cost_barrier_explorer.py
+FAILED tests/unit/research/test_cost_barrier_gate.py
+FAILED tests/unit/research/test_economic001_evidence_closure.py
+FAILED tests/unit/research/test_exp004a_wp051_02k.py
+FAILED tests/unit/research/test_profitability_gate035.py
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py
+FAILED tests/unit/research/test_rfc046_activation_and_campaign.py
+FAILED tests/unit/research/test_rfc046_discovery_proposal.py
+FAILED tests/unit/research/test_rfc046_economic_gate.py
+FAILED tests/unit/research/test_rfc047_windows_evidence.py
+FAILED tests/unit/research/test_sprint024_stats.py
+FAILED tests/unit/research/test_sprint026_execution.py
+FAILED tests/unit/research/test_st6_forward_regime.py
+FAILED tests/unit/research/test_st6_scheduler.py
+FAILED tests/unit/risk/test_futures_independent_verifier.py

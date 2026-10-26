@@ -13,7 +13,7 @@
 
 | | Estado |
 |---|---|
-| **Solo en local (antes)** | 226 commits sin publicar en 17 ramas, 15 worktrees sucios (1338 entradas sucias en el checkout principal + 246 ficheros sin commit en otros 14), 0 stashes, 0 huérfanos recuperables |
+| **Solo en local (antes)** | 226 commits sin publicar en 17 ramas, 15 worktrees sucios (1338 entradas sucias en el checkout principal + 246 ficheros sin commit en otros 14), 0 stashes, **40 commits huérfanos solo en reflog** |
 | **Se publicó** | **35/35 ramas** con `SHA local == SHA remoto`; **0 commits** inalcanzables desde `origin/*`; 15 ramas de preservación nuevas; **31 PR draft** (`#19`–`#35`, `#36`–`#49`); roadmap **v1.7**; los 4 reportes + manifiesto de exclusiones |
 | **Se integró en `main`** | **Nada.** `origin/main` sigue en `5e6f9632`, **263 commits por detrás**; no se hizo push a `main`, no se hizo merge, no se forzó ninguna rama |
 | **Sigue bloqueado** | Gates de `main` en rojo (ruff 130 / format 444 / mypy 297 / pytest 79F-3274P-14E); PR `#19` `BLOCKED` por error de colección; 31 PR en draft `NOT_VERIFIED`; `recovery/mt0003-kill-switch-*` crítico de riesgo |
@@ -33,12 +33,14 @@
 
 | Métrica | Inicial | Final |
 |---|---|---|
-| Ramas locales | 19 | **35** (20 preexistentes + 15 de preservación) |
-| Ramas remotas | 73 | 88 |
-| Commits locales sin publicar | **226** | **0** (`git rev-list --branches --not --remotes=origin`) |
+| Ramas locales | 19 | **36** (20 preexistentes + 15 de preservación + `feat/wp-signal-001-003`, rama en desarrollo de un agente paralelo) |
+| Ramas remotas | 73 | **106** |
+| Tags remotos | 0 | **40** (`sync/orphan-*`, huérfanos de reflog publicados) |
+| Commits locales sin publicar | **226** | **0** de esta sincronización; el único movimiento posterior son los commits que un agente paralelo sigue creando en `feat/wp-signal-001-003`, publicados con cada barrido final |
 | Ramas sin remoto | 17 | **0** |
 | Ramas divergentes / sobrescritas | — | **0** |
-| Stashes / huérfanos reflog | 0 / 0 | 0 / 0 |
+| Stashes | 0 | 0 |
+| Huérfanos de reflog | **40** (re-mirados con `git reflog --all`) | **40 preservados y publicados** como tags `sync/orphan-<sha12>` (el reflog expira a los 90 días) |
 
 ### 1.3 Trabajo sin commit encontrado y preservado
 
@@ -99,6 +101,10 @@ Todas las ramas locales, con `git ls-remote` verificado (`local == remoto`):
 
 Commits publicados en esta sesión: **226 commits** + 15 ramas nuevas + el commit de roadmap **v1.7** (`b95c3119`).
 
+Publicaciones tardías (2026-10-26, durante el cierre): `fix/tdm14a` (`5f42de14`, `409050c3`, `c8a8af16`
+y la cadena de cierre TDM-14A), la rama nueva `feat/wp-signal-001-003` (`98371acf`, WIP de otro agente)
+y **40 tags `sync/orphan-<sha12>`** con los commits huérfanos del reflog.
+
 ### 2.2 PR creados / actualizados
 
 | PR | Rama | Estado |
@@ -120,11 +126,18 @@ Total de PR abiertos: **38** (7 ready, 31 draft).
 
 | | Inicial | Final |
 |---|---|---|
-| Commits sin publicar | 226 | **0** |
+| Commits sin publicar | 226 | **0** de esta sincronización |
 | Ramas locales sin remoto | 17 | **0** |
 | Contenido de `main` en GitHub | no | sí (dentro de `admission/integration-002`) |
 | Evidencias solo en local | `.tdm09`, `.tdm10`, `.ci`, `reports/` de worktrees | publicadas en las ramas correspondientes (y las excluidas, en el manifiesto) |
 | Roadmap | v1.6 local | **v1.7 publicado** (`b95c3119`) |
+| Reportes de sincronización | solo en local | **publicados** (`c74c87f4`, PR #19) |
+
+**Exclusión identificada (no es fallo de la sincronización):** `feat/wp-signal-001-003` lleva 2 commits
+locales sin publicar (`9cc34c02`, `2ea36cf1`) porque otra rama de trabajo está en **desarrollo activo**
+(4 ficheros modificados sin commit en el mismo worktree); publicarlos podría impedir su
+`git commit --amend`. Excluidos a propósito y trazados aquí. Sus 40 commits huérfanos del reflog sí
+quedaron publicados como tags `sync/orphan-*` (40/40 verificados con `git ls-remote --tags`).
 
 ---
 
@@ -153,6 +166,21 @@ Checkout **limpio** (`git worktree add --detach gate-main-20261026 e67194e7`, 20
 | `python -m pytest -q` | **79 failed, 3274 passed, 34 skipped, 14 errors** (512 s) | 1 |
 | `python -m pytest --collect-only -q` | 3401 tests recogidos, 0 errores | 0 |
 | `sha256sum -c SHA256SUMS.txt` (respaldo) | 554/554 OK | 0 |
+
+**Segunda medición independiente** (`BUILDER != VERIFIER`): un `git clone` **nuevo** del mismo commit
+(`gate-check-main-20261026`, 0 entradas sucias, `uv sync` propio) con los flags de CI:
+
+| Comando | Resultado | Exit |
+|---|---|---|
+| `uv sync --all-extras --dev` | OK | 0 |
+| `ruff format --check .` | 444 a reformatear / 374 OK | 1 |
+| `ruff check .` | 130 errores (81 auto-fixables) | 1 |
+| `mypy .` | 297 errores en 38 ficheros (812 comprobados) | 1 |
+| `pytest -m "not slow and not market" --cov --cov-fail-under=90` | **78 failed, 3275 passed, 31 skipped, 3 deselected, 14 errors** (786 s) | 1 |
+| cobertura | **76,01 %** < 90 % requerido | 1 |
+
+ruff/format/mypy reproducidos **idénticos** con un método distinto (clone vs worktree): el rojo vive en
+el commit `e67194e7`, no en el checkout ni en la sincronización.
 
 ### 4.1 ¿Regresión de la sincronización? No
 
