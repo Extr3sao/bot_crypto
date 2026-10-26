@@ -1,0 +1,13 @@
+{
+  "key": "nyfed_rrp_last7.json",
+  "url": "https://markets.newyorkfed.org/api/rp/reverserepo/all/results/last/7.json",
+  "retrieved_at_utc": "2026-10-10T12:58:33Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "application/json;charset=utf-8",
+  "bytes": 4626,
+  "sha256": "26179b56b8d9cbaec4bb0391ba90cc48dbcd385458fdf1d115b5b51a9c8ddc63",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

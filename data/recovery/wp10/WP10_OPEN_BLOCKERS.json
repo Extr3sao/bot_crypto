@@ -1,0 +1,502 @@
+{
+  "artifact": "WP10_OPEN_BLOCKERS",
+  "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
+  "phase": "PHASE 6 \u2014 OPEN BLOCKERS",
+  "generated_at_utc": "2026-10-11T22:43:08Z",
+  "mode": "OFFLINE READ-ONLY \u2014 no process started, no order, no key",
+  "head": "5348fcd55ab9ef404c676d8aada8daa8c85b9785",
+  "branch": "main",
+  "blockers": {
+    "CI_RUNNER_CERTIFICATION": {
+      "remote": "https://github.com/Extr3sao/bot_crypto.git",
+      "upstream": "origin/main",
+      "unpublished_commits": 256,
+      "unpublished_files": 1524,
+      "workflows_tracked_at_head": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/cost-barrier-gate.yml",
+        ".github/workflows/recovery-determinism.yml"
+      ],
+      "workflow_files_on_disk": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/cost-barrier-gate.yml",
+        ".github/workflows/recovery-determinism.yml"
+      ],
+      "workflows_untracked": [],
+      "github_cli_present": false,
+      "state": "BLOCKED",
+      "what_is_missing": [
+        "the workflows must reach the remote before GitHub can register or run them",
+        "256 commits are not published, so no run can exist for the current HEAD",
+        "no GitHub CLI is installed here, and no token is configured for this checkout, so a run id cannot be read even if a run existed"
+      ],
+      "what_would_certify_it": [
+        "authorisation to publish the branch (the operator owns that decision and this lane does not make it)",
+        "a workflow run on a GitHub runner whose run id, commit SHA, runner image and exit codes are recorded in WP9_CI_EXECUTION_REPORT.json's format"
+      ],
+      "not_certified_by": "the local execution of the workflow's steps, which WP-9 ran and recorded: a local rehearsal is a rehearsal, never a certification"
+    },
+    "UNRECORDED_WINDOW_TERMINATION": {
+      "run_dir": "reports/paper-lab/paper-lab-continuous-03",
+      "plan": {
+        "duration_hours": 0.0,
+        "free_disk_bytes_at_plan_time": 12711817216,
+        "collector_max_total_bytes": 7000000000
+      },
+      "monitor": {
+        "records": 69,
+        "first_record_utc": "2026-09-30T18:06:02Z",
+        "last_record_utc": "2026-09-30T23:46:14Z",
+        "last_uptime_seconds": 21191.862,
+        "last_uptime_hours": 5.8866,
+        "last_state": "HEALTHY",
+        "children_at_last_record": {
+          "paper": "RUNNING",
+          "collector": "RUNNING",
+          "retention": "RUNNING",
+          "strategy_lab": "RUNNING"
+        },
+        "child_restarts_at_last_record": {
+          "paper": 0,
+          "collector": 0,
+          "retention": 0,
+          "strategy_lab": 0
+        },
+        "disk_free_gb_at_last_record": 31.502,
+        "collector_stop_reason_at_last_record": null
+      },
+      "final_heartbeat": {
+        "written_utc": "2026-09-30T23:47:05Z",
+        "uptime_seconds": 21251.968,
+        "state": "HEALTHY",
+        "degraded": false,
+        "heartbeat_write_failures": 0,
+        "storage_guard_stopped": [],
+        "children": {
+          "paper": {
+            "state": "RUNNING",
+            "forced_stop": false,
+            "exit_code": null,
+            "restarts": 0
+          },
+          "collector": {
+            "state": "RUNNING",
+            "forced_stop": false,
+            "exit_code": null,
+            "restarts": 0
+          },
+          "retention": {
+            "state": "RUNNING",
+            "forced_stop": false,
+            "exit_code": null,
+            "restarts": 0
+          },
+          "strategy_lab": {
+            "state": "RUNNING",
+            "forced_stop": false,
+            "exit_code": null,
+            "restarts": 0
+          }
+        }
+      },
+      "collector": {
+        "state_path": "reports/microstructure-forward-continuous/state/paper-lab-continuous-03.json",
+        "stop_reason": null,
+        "events": 12873668,
+        "saved_at_utc": "2026-09-30T23:47:04Z"
+      },
+      "last_segment": {
+        "path": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+        "written_utc": "2026-09-30T23:47:09Z"
+      },
+      "truncated_tails_found_in_the_tail_of_the_root": [
+        "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/depth_diff/2026-09-30/234500.jsonl.gz"
+      ],
+      "exit_artefacts_present": {
+        "LAB_RUN_REPORT.json": false,
+        "LAB_RUN_REPORT.md": false,
+        "LAB_RUN_SNAPSHOT.json": false
+      },
+      "exclusions": [
+        {
+          "suspect": "disk exhaustion or a storage guard",
+          "excluded": true,
+          "evidence": "free 31.509 GB at the last heartbeat, level NORMAL, storage_guard_stopped=[], and the collector had written 1.737 GB of its 7.0 GB valve"
+        },
+        {
+          "suspect": "a stop request through the documented stop files",
+          "excluded": true,
+          "evidence": "no stop file at reports/microstructure-forward-continuous/state/paper-lab-continuous-03.stop and the collector state records stop_reason=None"
+        },
+        {
+          "suspect": "a configured duration being reached",
+          "excluded": true,
+          "evidence": "the plan declares duration_hours=0.0 which the launcher turns into max_seconds=None, i.e. 'until stopped'"
+        },
+        {
+          "suspect": "a crash inside the launcher",
+          "excluded": true,
+          "evidence": "the launcher writes its report, snapshot and a system daily report inside a try/except BaseException + finally block, so even a crash leaves them; {'LAB_RUN_REPORT.json': False, 'LAB_RUN_REPORT.md': False, 'LAB_RUN_SNAPSHOT.json': False} - none exists"
+        },
+        {
+          "suspect": "an operator Ctrl+C (KeyboardInterrupt), which the same block catches",
+          "excluded": true,
+          "evidence": "same crash-survivable path; an interrupt would still have written the report"
+        }
+      ],
+      "unexplained_in_lane": [],
+      "finding": "EXTERNAL_TERMINATION \u2014 every in-lane suspect is excluded by an artefact, and the termination bypassed a crash-survivable exit path, so the actuator was outside the lane. It is not attributable from the repository: the candidate remains an operating-system or process-tree teardown on a shared host, and no evidence in this tree distinguishes it further",
+      "consequence": "the window's data cannot be used as evidence for M-03: no manifest was sealed, the collector state carries no stop reason, and the certification chain the repository requires (manifest + replay verification) was never completed"
+    },
+    "VOLUME_BUDGET": {
+      "free_bytes_now": 17050746880,
+      "free_gb_now": 17.051,
+      "volume_total_gb": 255.042,
+      "volume_used_fraction": 0.9331,
+      "planning_rate_bytes_per_hour": 192251690.906,
+      "planning_rate_mb_per_hour": 192.252,
+      "hours_affordable_now": 88.69,
+      "horizons": [
+        {
+          "hours": 24,
+          "needed_gb": 4.614,
+          "fits_in_free_now": true,
+          "fits_at_1p5x_stress": true
+        },
+        {
+          "hours": 48,
+          "needed_gb": 9.228,
+          "fits_in_free_now": true,
+          "fits_at_1p5x_stress": true
+        },
+        {
+          "hours": 72,
+          "needed_gb": 13.842,
+          "fits_in_free_now": true,
+          "fits_at_1p5x_stress": false
+        },
+        {
+          "hours": 168,
+          "needed_gb": 32.298,
+          "fits_in_free_now": false,
+          "fits_at_1p5x_stress": false
+        }
+      ],
+      "rule": "do not launch a 72 h or 168 h window while the budget cannot pay for it: the arithmetic is done before the launch, not discovered during it",
+      "shared_host_note": "free space on this host moved by far more than the lane wrote, and 94 % of the volume is already in use by other writers, so a budget that counts only this lane's bytes budgets for a machine that does not exist"
+    },
+    "M03_M07_HISTORY": {
+      "preregistration": {
+        "path": "config/microstructure_preregistration.json",
+        "version": "M-PREREG-V1",
+        "M-03_minimum": {
+          "forward_book_hours": 24.0,
+          "min_book_checkpoints": 1000,
+          "max_unrecovered_gap_seconds": 300.0,
+          "book_health_at_checkpoints_pct": 90.0,
+          "assets": [
+            "BTC",
+            "ETH",
+            "SOL"
+          ],
+          "timeframes_minutes": [
+            1,
+            5
+          ]
+        },
+        "M-07_minimum": {
+          "open_interest_days": 7.0,
+          "min_oi_samples": 10000,
+          "oi_sample_interval_seconds_max": 120.0,
+          "disjoint_periods_required": 3,
+          "assets": [
+            "BTC",
+            "ETH",
+            "SOL"
+          ],
+          "timeframes_minutes": [
+            5,
+            15,
+            30
+          ]
+        }
+      },
+      "admissible_forward_history": {
+        "sealed_hours_from_manifests": 4.159301,
+        "sealed_runs": [
+          {
+            "run_id": "paper-lab-continuous-02",
+            "hours": 4.1593,
+            "status": "CONTROLLED_STOP"
+          }
+        ],
+        "unsealed_window": {
+          "run_id": "paper-lab-continuous-03",
+          "admissible": false,
+          "why": "no manifest was sealed, so the window cannot be counted toward any pre-registered minimum; counting it would be the synthetic-history substitution the brief forbids",
+          "events_recorded": 12873668
+        },
+        "hours_added_since_wp9": 0.0
+      },
+      "M-03": {
+        "verdict": "NOT_READY",
+        "criteria_met": 3,
+        "criteria_not_met": 2,
+        "criteria_not_measurable": 1,
+        "missing": [
+          {
+            "criterion": "forward_book_hours",
+            "requirement": ">= 24.0 h of forward book",
+            "observed": 4.159301,
+            "result": "NOT_MET",
+            "shortfall": 19.8407,
+            "unit": "hours",
+            "why": null
+          },
+          {
+            "criterion": "assets",
+            "requirement": "captured: BTC, ETH, SOL",
+            "observed": [
+              "BTC",
+              "ETH"
+            ],
+            "result": "NOT_MET",
+            "shortfall": [
+              "SOL"
+            ],
+            "unit": "assets",
+            "why": "SOL was never captured, and the two windows that exist cover BTC and ETH"
+          }
+        ],
+        "cost_to_close": {
+          "hours": 72.0,
+          "days": 3.0,
+          "bytes_at_measured_rate": 13842121745,
+          "gb_at_measured_rate": 13.842,
+          "gb_at_stress": 20.763
+        }
+      },
+      "M-07": {
+        "verdict": "NOT_READY",
+        "criteria_met": 2,
+        "criteria_not_met": 4,
+        "missing": [
+          {
+            "criterion": "open_interest_days",
+            "requirement": ">= 7.0 days of open interest",
+            "observed": 0.173304,
+            "result": "NOT_MET",
+            "shortfall": 6.826696,
+            "unit": "days",
+            "why": null
+          },
+          {
+            "criterion": "min_oi_samples",
+            "requirement": ">= 10000 open-interest samples",
+            "observed": 488,
+            "result": "NOT_MET",
+            "shortfall": 9512,
+            "unit": "samples",
+            "why": null
+          },
+          {
+            "criterion": "disjoint_periods_required",
+            "requirement": "3 disjoint periods, each >= 1 day",
+            "observed": 0,
+            "result": "NOT_MET",
+            "shortfall": 3,
+            "unit": "periods",
+            "why": "a DEV/VAL/OOS split needs three windows that do not overlap, so the floor is three days of capture however the 24 h window is read"
+          },
+          {
+            "criterion": "assets",
+            "requirement": "captured: BTC, ETH, SOL",
+            "observed": [
+              "BTC",
+              "ETH"
+            ],
+            "result": "NOT_MET",
+            "shortfall": [
+              "SOL"
+            ],
+            "unit": "assets",
+            "why": null
+          }
+        ],
+        "cost_to_close": {
+          "hours": 168.0,
+          "days": 7.0,
+          "bytes_at_measured_rate": 32298284072,
+          "gb_at_measured_rate": 32.298,
+          "gb_at_stress": 48.447
+        }
+      },
+      "automatic_accumulation": {
+        "state": "PREPARED_NOT_AUTHORISED",
+        "what_exists": "the collector, its retention policy and the pre-registration are in place; the two windows that ran show the cadence meets the bar",
+        "what_is_missing": "authorisation for a window long enough to close the shortfall, and a volume whose budget can pay for it"
+      }
+    },
+    "GOVERNANCE": {
+      "source": "data/recovery/CAMPAIGN_STATE_VIEW.json",
+      "status": "CONSISTENT_WITH_ADVISORIES",
+      "resolved_flags": {
+        "SEALED_OOS": {
+          "effective": "CANCELLED_NOT_OPENED",
+          "decided_by": "tasks/decisions.md#ADR-0026"
+        },
+        "NEXT_CAMPAIGN": {
+          "effective": "NOT_AUTHORIZED",
+          "decided_by": "data/st6/ST6_HEALTH_STATUS.json"
+        },
+        "PAPER_PROMOTION": {
+          "effective": "NOT_AUTHORIZED",
+          "decided_by": "data/rfc049/discovery2/CAMPAIGN_CLOSURE.json"
+        },
+        "LIVE_TRADING": {
+          "effective": "DISABLED",
+          "decided_by": "data/st6/ST6_HEALTH_STATUS.json"
+        }
+      },
+      "invariants": [
+        {
+          "id": "I1_frozen_pins_verify",
+          "statement": "every hash-pinned frozen artefact matches its recorded digest",
+          "result": "PASS",
+          "detail": "16 verified, 0 failed, 0 missing"
+        },
+        {
+          "id": "I2_builder_is_not_verifier",
+          "statement": "no verification record is signed by the code that produced the measurement",
+          "result": "PASS",
+          "detail": "[{\"source\": \"data/rfc049/admission/INDEPENDENT_VERIFICATION.json\", \"builder\": \"scripts/rfc049b_admission.py\", \"verifier\": \"scripts/rfc049b_verify.py\", \"builder_imported\": false}, {\"source\": \"data/rfc049/discovery2/INDEPENDENT_VERIFICATION.json\", \"builder\": \"scripts/rfc049c_engine.py\", \"verifier\": \"scripts/rfc049c_verify.py\", \"builder_imported\": false}]"
+        },
+        {
+          "id": "I3_no_profitability_claim",
+          "statement": "no scanned artefact asserts profitability",
+          "result": "PASS",
+          "detail": "[]"
+        },
+        {
+          "id": "I4_sealed_window_never_read",
+          "statement": "the sealed OOS window is not read and the single licensed inspection is not spent",
+          "result": "PASS",
+          "detail": "[]"
+        },
+        {
+          "id": "I5_governance_mirrors_agree",
+          "statement": "the closure record and the forward-regime lane state the same governance flags",
+          "result": "PASS",
+          "detail": "4 shared flags agree (LIVE_TRADING, NEXT_CAMPAIGN, PROFITABILITY_VERIFIED, TRADES_AUTHORIZED)",
+          "coverage": {
+            "mirror_source": "data/st6/ST6_HEALTH_STATUS.json",
+            "mirror_resolved_from": "EVIDENCE_COPY",
+            "mirror_present": true,
+            "shared_flags": 4,
+            "coverage": "FULL"
+          }
+        },
+        {
+          "id": "I6_campaign_numbers_are_consistent",
+          "statement": "an RFC number is claimed by exactly one RFC: campaigns that share a number are phases of it",
+          "result": "PASS",
+          "detail": "declared [46, 48, 49]"
+        },
+        {
+          "id": "I7_inputs_are_reproducible",
+          "statement": "every input a finding rests on resolves from the commit - HEAD content or a committed, digest-verified evidence copy - and never from an uncommitted file",
+          "result": "PASS",
+          "detail": "8 declared inputs resolve from the repository",
+          "coverage": {
+            "declared_inputs": 8,
+            "classes": [
+              "COMMITTED",
+              "EXTERNAL_DATASET",
+              "EXTERNAL_GENERATED",
+              "EXTERNAL_LIVE"
+            ],
+            "resolved_from": [
+              "EVIDENCE_COPY",
+              "HEAD",
+              "LOCAL_MATERIALIZATION"
+            ]
+          }
+        }
+      ],
+      "advisories": [
+        "A1_registry_is_stale",
+        "A2_next_free_rfc_derived",
+        "A3_unresolved_pins",
+        "A4_append_only_drift"
+      ],
+      "rfc_numbering": {
+        "tree_occupancy": [
+          35,
+          46,
+          48,
+          49
+        ],
+        "registry_occupancy": [
+          0,
+          10,
+          20,
+          21,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          46,
+          47
+        ],
+        "registry_next_free_declared": "048",
+        "next_free_derived": 50
+      },
+      "note": "the flags are read from the record that already arbitrates between competing declarations, because re-typing them would create a second home for them"
+    }
+  },
+  "does_not_block": [
+    "offline economic investigations that need no new data: the E-1 measurement ran on already-sealed segments, and any further analysis of the same seal is equally unaffected by the CI, volume and history blockers",
+    "reading and re-verifying existing artefacts"
+  ],
+  "verdict": "BLOCKED for the four operational items that need publication, a longer window, a bigger volume or an operator decision; OPEN for offline economic work on data already captured",
+  "checks": [
+    {
+      "check": "the CI state is measured from the repository, not restated",
+      "ok": true
+    },
+    {
+      "check": "no in-lane suspect survives the termination forensics",
+      "ok": true
+    },
+    {
+      "check": "the budget verdict is arithmetic on measured numbers",
+      "ok": true
+    },
+    {
+      "check": "the unsealed window is explicitly not counted as history",
+      "ok": true
+    },
+    {
+      "check": "governance flags come from the state view's resolution",
+      "ok": true
+    }
+  ]
+}

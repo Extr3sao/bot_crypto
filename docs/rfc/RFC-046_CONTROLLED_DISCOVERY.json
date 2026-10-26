@@ -1,0 +1,255 @@
+{
+  "rfc": "RFC-046",
+  "title": "CONTROLLED QUANTITATIVE STRATEGY DISCOVERY",
+  "status": "APPROVED",
+  "approved": true,
+  "active": true,
+  "document": "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md",
+  "supersedes": null,
+  "parent_authority": "RFC-041 BUSINESS-FREEZE-2026-001",
+  "precedent": "reports/profitability_gate035/FINAL_REPORT.json (RFC-035 closed CLOSED_NO_SUITABLE_EXTERNAL_STRATEGY)",
+  "authority_order": [
+    "REAL_RUNTIME",
+    "EXECUTION_EVIDENCE",
+    "TESTS",
+    "CODE",
+    "RFC",
+    "EXTERNAL_SOURCE",
+    "ASSUMPTION"
+  ],
+  "authority_order_unchanged": true,
+  "numbering": {
+    "rfc_046": "taken by this document; free of prior artefacts",
+    "rfc_045": "UNAVAILABLE_BY_CONTROL - four campaign verifier scripts assert no RFC-045 artifact exists",
+    "rfc_036": "OCCUPIED - managed-futures trend reproduction opened in d0efb51; not reusable",
+    "occupied_numbers": 26,
+    "occupied_and_declared_in_tracked_docs": 9,
+    "occupied_without_any_versioned_declaration": 17,
+    "named_in_prose_only": [
+      "001",
+      "016",
+      "022"
+    ],
+    "downstream_stages": "stage names, not RFC numbers; no number block is reserved",
+    "registry_exists": false,
+    "registry_proposed_path": "docs/roadmap/RFC_REGISTRY.json"
+  },
+  "forbidden_by_this_rfc": [
+    "real trading",
+    "automatic modification of the risk engine",
+    "optimisation on out-of-sample data",
+    "auto-promotion to production",
+    "increase of leverage",
+    "retrospective adjustment of success criteria",
+    "a cheaper cost model than the applicable one",
+    "reuse of a family closed by RFC-041 reject conditions",
+    "new agents without a demonstrated blocker"
+  ],
+  "budget": {
+    "max_hypotheses": 3,
+    "max_candidates_per_hypothesis": 1,
+    "parameter_searches": 0,
+    "oos_inspections_per_candidate": 1,
+    "new_agents": 0,
+    "refillable": false,
+    "all_attempts_recorded_including_negative": true
+  },
+  "data_partition": {
+    "development": "free inside the hypothesis",
+    "validation": "once per candidate, after the hash",
+    "final_oos": "opened once, never for selection",
+    "mechanical_check": "data_time <= decision_time",
+    "blocks": [
+      "look-ahead",
+      "falsified timestamps",
+      "future HTF data"
+    ],
+    "known_open_defect": "DEF-HTF-PIT-001 (market_data/htf_pit.py::get_completed_htf_state_at)",
+    "existing_reusable_convention": [
+      "autonomous/pit.availability_ms",
+      "candle_filter.is_candle_complete"
+    ]
+  },
+  "cost_baseline": {
+    "model": "COST_MODEL_V3 / EXECUTION_COST_MODEL_V4",
+    "market": "Binance Spot",
+    "product": "Spot",
+    "admission_scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+    "venue": "Binance",
+    "tier": "VIP0 (regular user, 30d volume < 1,000,000 USD)",
+    "order_type": "market (taker on both legs)",
+    "fee_payment_mode": "quote_asset",
+    "size_usd": 1000.0,
+    "liquidity_regime": "normal",
+    "horizon_minutes": 25.0,
+    "measurement_date": "2026-09-27",
+    "round_trip_bps": 23.7906,
+    "documented_reference_bps": 23.791,
+    "known_bps": 20.0,
+    "estimated_bps": 3.7906,
+    "assumed_bps": 0.0,
+    "stress_multiple": 1.5,
+    "required_gross_edge_stressed_bps": 35.6859,
+    "validity_scope": "taker round trips in majors on Binance spot at VIP0 with a ~1,000 USD notional",
+    "not_valid_for": [
+      "the illiquid tail",
+      "a forecast of any particular strategy's realised cost",
+      "another venue without a new measurement"
+    ]
+  },
+  "profitability_gate_v1": {
+    "status": "FORMALISED_BY_THIS_RFC",
+    "existed_before": false,
+    "thresholds_frozen_before_results": true,
+    "retroactive_application": false,
+    "inherits_criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md (commit c1ffbaa)",
+    "requirements": [
+      {
+        "id": "PG-1",
+        "requirement": "net expectancy > 0 after the audited cost model",
+        "relation": "strengthens c2"
+      },
+      {
+        "id": "PG-2",
+        "requirement": "net out-of-sample PnL > 0",
+        "relation": "inherits c4"
+      },
+      {
+        "id": "PG-3",
+        "requirement": "profit factor >= 1.10",
+        "relation": "tightens c3 (which requires > 1.0)"
+      },
+      {
+        "id": "PG-4",
+        "requirement": "sufficient OOS sample per the applicable contract",
+        "relation": "inherits c1 (>= 100 total, >= 30 OOS)"
+      },
+      {
+        "id": "PG-5",
+        "requirement": "chronological validation across distinct periods",
+        "relation": "inherits c5 + walk-forward"
+      },
+      {
+        "id": "PG-6",
+        "requirement": "lower confidence bound of expectancy > 0 under serial dependence",
+        "relation": "new (block bootstrap / HAC; never an i.i.d. t-test)"
+      },
+      {
+        "id": "PG-7",
+        "requirement": "1.5x cost stress remains positive",
+        "relation": "tightens c7 (PF > 0.9 at 2x); both run"
+      },
+      {
+        "id": "PG-8",
+        "requirement": "no risk-engine violations",
+        "relation": "new"
+      },
+      {
+        "id": "PG-9",
+        "requirement": "no excessive dependence on one trade or one regime",
+        "relation": "inherits c8 (no window > 60% of positive net), extended to single-trade dependence"
+      },
+      {
+        "id": "PG-10",
+        "requirement": "multiple-testing correction when more than one trial ran",
+        "relation": "new"
+      },
+      {
+        "id": "PG-11",
+        "requirement": "no look-ahead or PIT violation",
+        "relation": "new; enforced mechanically"
+      }
+    ]
+  },
+  "failure_policy": {
+    "candidate_failure": "CANDIDATE_REJECTED",
+    "forbidden": "TUNE_UNTIL_PASS",
+    "infrastructure_defect": "new version (named commit) + repeat from a valid baseline",
+    "campaign_failure": "DISCOVERY_CAMPAIGN_FAILED",
+    "automatic_refill": false,
+    "stop_is_a_result": true
+  },
+  "verification": {
+    "builder_equals_verifier": false,
+    "false_success_target": 0,
+    "incomplete_verifier": "BLOCKS_PROMOTION",
+    "crashing_verifier": "IS_A_DEFECT",
+    "checks": 9
+  },
+  "runtime_state": {
+    "mode": "paper",
+    "sandbox": true,
+    "require_manual_confirmation_for_live": true,
+    "live_trading_enabled": false,
+    "risk_engine": "deterministic",
+    "reference_capital_usdt": 200.0,
+    "capital_tier": "TIER_0 CANARY",
+    "any_tier_authorized": false,
+    "business_edge_milestone": "M0",
+    "trades_authorized": 0,
+    "profitability_verified": false,
+    "discovery_offline_authorized": true
+  },
+  "technical_debt": [
+    {
+      "id": "TD-1",
+      "incident": "repo-wide mypy cannot complete (duplicate module name in reports/paper-strategy-lifecycle-shadow-02)",
+      "status": "OPEN",
+      "blocks_this_rfc": false
+    },
+    {
+      "id": "TD-2",
+      "incident": "RFC-035E verifier raises TypeError on missing inputs instead of FAIL/INCOMPLETE",
+      "status": "OPEN_NOT_REPAIRED",
+      "blocks_this_rfc": false
+    },
+    {
+      "id": "TD-3",
+      "incident": "concurrency risk in the gitignored reports/ scratch tree",
+      "status": "OPEN",
+      "blocks_this_rfc": false
+    },
+    {
+      "id": "TD-4",
+      "incident": "execution timestamps fixed by author constants (3 instances)",
+      "status": "OPEN",
+      "blocks_this_rfc": false
+    },
+    {
+      "id": "TD-5",
+      "incident": "evidence persistence ignored by git for reports/*; 17 of the 26 occupied RFC numbers have no versioned declaration",
+      "status": "OPEN",
+      "blocks_this_rfc": false,
+      "mitigated_here": true
+    }
+  ],
+  "next_gate": "FIRST_CAMPAIGN_RUN_AND_INDEPENDENT_VERIFICATION",
+  "forbidden_verdicts": [
+    "PROFITABLE",
+    "EDGE_CONFIRMED",
+    "PRODUCTION_READY"
+  ],
+  "approval": {
+    "approved_by": "owner",
+    "approved_at": "2026-10-08",
+    "decision": "option 5A - specific, dated RFC-041 exemption",
+    "scope": "offline controlled discovery only",
+    "adr": "tasks/decisions.md ADR-0024",
+    "activates": [
+      "docs/research/BUSINESS_REENTRY_POLICY.md - dated exemption applied",
+      "docs/research/PROFITABILITY_OPERATING_MODEL.json - trigger amended",
+      "docs/governance/PROFITABILITY_FIRST_FREEZE.md - RFC-035 freeze closed",
+      "tasks/roadmap.md - Fase 10 added",
+      "docs/roadmap/RFC_REGISTRY.json - registry created"
+    ]
+  },
+  "invariants_while_active": {
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "G_BUSINESS_REENTRY": "NOT_PASS",
+    "RISK_ENGINE": "DETERMINISTIC",
+    "BUILDER": "NOT_VERIFIER",
+    "FALSE_SUCCESS": 0,
+    "real_orders": "REFUSED_BY_POLICY"
+  }
+}

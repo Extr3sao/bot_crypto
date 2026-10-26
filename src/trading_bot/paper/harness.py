@@ -125,6 +125,10 @@ class PaperSessionRunner:
         cycle_engine: PaperCycleEngine | RouteOnlyEngine | None = None,
         cycle_history_reader: Any | None = None,  # HistoricalBarReader
         history_lookback_bars: int = 120,
+        # -- GAP-R1 durable state (optional; default off) --------------------
+        state_store: Any | None = None,
+        # -- BURN-IN-V1 observability (optional; default off) -----------------
+        burnin_events_path: Path | str | None = None,
     ) -> None:
         self._scanner = scanner
         self._settings = settings
@@ -136,6 +140,10 @@ class PaperSessionRunner:
         self._cycle_engine = cycle_engine
         self._history_reader = cycle_history_reader
         self._history_lookback = history_lookback_bars
+        self._state_store = state_store
+        self._burnin_events_path = (
+            Path(burnin_events_path) if burnin_events_path is not None else None
+        )
         self._log = structlog.get_logger(self.__class__.__module__)
 
     async def run_session(self) -> PaperSessionResult:
@@ -184,6 +192,21 @@ class PaperSessionRunner:
                 risk_events=execution_summary.risk_events,
             )
             self._record_closed_trades_in_risk(execution_summary)
+
+        if self._state_store is not None and self._broker is not None:
+            # Durable post-session snapshot (crash window = one session).
+            from trading_bot.paper.paper_runtime_state import save_session_state
+
+            engine: Any = self._cycle_engine
+            save_session_state(
+                store=self._state_store,
+                run_id=session_id,
+                broker=self._broker,
+                risk=getattr(engine, "risk_manager", None),
+                idempotency=getattr(engine, "idempotency", None),
+            )
+            log.info("paper.state.saved")
+
         metrics = build_session_metrics(snapshots, counters, execution_summary)
         report_markdown_path: Path | None = None
         report_json_path: Path | None = None
@@ -205,6 +228,9 @@ class PaperSessionRunner:
             execution_summary=execution_summary,
             cycle_counts=cycle_counts,
         )
+
+        # BURN-IN-V1: per-cycle structured event (best-effort, never fatal).
+        self._write_burnin_event(result)
 
         if self._settings.runtime.reports.paper_report:
             report_markdown_path, report_json_path = write_session_report(
@@ -251,6 +277,112 @@ class PaperSessionRunner:
             report_json_path=None if report_json_path is None else str(report_json_path),
         )
         return result
+
+    # -- burn-in observability (BURN-IN-V1) -----------------------------------
+
+    def _write_burnin_event(self, result: PaperSessionResult) -> None:
+        """Append one JSONL event per session (minimum reusable instrumentation).
+
+        Best-effort: observability must never break the trading loop. Schema
+        (docs/PAPER_BURN_IN_V1_RUN_REPORT.md): type/ts/cycle_id/latency/
+        health (HEALTHY|DEGRADED)/metrics/cycle stage counts (rejections =
+        NO_TRADE + veto reasons)/portfolio rows/pnl/data_health/state bytes.
+        """
+        if self._burnin_events_path is None:
+            return
+        try:
+            import json
+            from datetime import UTC, datetime
+
+            summary = result.execution_summary
+            cycle_counts = result.cycle_counts
+            portfolio: dict[str, Any] = {}
+            if self._broker is not None:
+                portfolio = {s: p.to_row() for s, p in self._broker.positions.items()}
+            now_ms = int(datetime.now(UTC).timestamp() * 1000)
+            degraded = bool(
+                cycle_counts is not None
+                and (cycle_counts.context_errors or cycle_counts.adapter_errors)
+            )
+            event: dict[str, Any] = {
+                "type": "paper.session",
+                "ts_ms": now_ms,
+                "cycle_id": result.session_id,
+                "started_at_ms": int(result.started_at.timestamp() * 1000),
+                "ended_at_ms": int(result.ended_at.timestamp() * 1000),
+                "latency_ms": result.duration_ms,
+                "health": "DEGRADED" if degraded else "HEALTHY",
+                "metrics": result.metrics.to_dict(),
+                "cycle": cycle_counts.to_dict() if cycle_counts is not None else None,
+                "no_trade_and_veto_reasons": [
+                    str(r.get("reason", ""))
+                    for r in (cycle_counts.rejections if cycle_counts is not None else [])
+                ],
+                "portfolio": portfolio,
+                "pnl": {
+                    "realized": float(summary.realized_pnl) if summary is not None else 0.0,
+                    "ending_equity": (
+                        float(summary.ending_equity) if summary is not None else None
+                    ),
+                },
+                "data_health": {
+                    "snapshots": result.metrics.total_snapshots,
+                    "active": result.metrics.active_snapshots,
+                    "scanner_errors": result.metrics.scanner_errors,
+                },
+                "state_file_bytes": (
+                    self._burnin_state_size() if self._state_store is not None else None
+                ),
+                "mtm": self._mtm_snapshot(list(result.snapshots)),
+            }
+            self._burnin_events_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(self._burnin_events_path, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(event, ensure_ascii=False, default=str) + "\n")
+        except Exception as exc:  # observability must never kill the loop
+            self._log.warning("paper.burnin.event_write_failed", error=str(exc))
+
+    def _burnin_state_size(self) -> int | None:
+        try:
+            import os
+
+            assert self._state_store is not None
+            return os.path.getsize(self._state_store.path)
+        except Exception:
+            return None
+
+    def _mtm_snapshot(self, snapshots: list[Any]) -> dict[str, Any]:
+        """Mark-to-market telemetry for this cycle (BURN-IN-V2 §10).
+
+        Prices come ONLY from this cycle's scanner snapshots (which are
+        built from closed candles at or before the decision timestamp —
+        PIT-valid by construction). A position without a snapshot price is
+        reported as MTM_INCOMPLETE, never guessed.
+        """
+        if self._broker is None:
+            return {"status": "MTM_NA"}
+        prices: dict[str, float] = {}
+        for snap in snapshots:
+            symbol = str(getattr(snap, "symbol", "") or "")
+            price = getattr(snap, "last_price", None)
+            if symbol and price is not None and float(price) > 0:
+                prices[symbol] = float(price)
+        equity = float(self._broker.equity)
+        realized = equity - float(self._broker.extract_state().get("initial_equity", equity))
+        missing = [s for s in self._broker.positions if s not in prices]
+        unrealized = self._broker.unrealized_pnl(prices)
+        mtm = equity + unrealized
+        gross = sum(p.notional_usdt for p in self._broker.positions.values())
+        return {
+            "status": "MTM_INCOMPLETE" if missing else "MTM_OK",
+            "missing_prices": missing,
+            "cash_realized_equity": round(equity, 6),
+            "realized_pnl": round(realized, 6),
+            "unrealized_pnl": round(unrealized, 6),
+            "equity_mtm": round(mtm, 6),
+            "gross_exposure": round(gross, 6),
+            "open_positions": len(self._broker.positions),
+            "prices_used": {s: round(p, 8) for s, p in prices.items()},
+        }
 
     # -- CP-PO-002: canonical decision cycle ---------------------------------
 
@@ -319,13 +451,29 @@ class PaperSessionRunner:
         risk = getattr(engine, "risk_manager", None)
         if risk is None or not hasattr(risk, "record_trade_result"):
             return
-        for trade in getattr(execution_summary, "closed_trades", []) or []:
+        # DEF-101: feed only the reconcile delta — never the full ledger
+        # (re-feeding double-counted trades_today/daily_pnl cumulatively
+        # until the daily trade limit vetoed every new intent).
+        new_trades = getattr(execution_summary, "new_closed_trades", []) or []
+        if new_trades and engine is not None and hasattr(engine, "bump_state_version"):
+            # Portfolio changed (positions closed) → legitimate re-evaluation
+            # reason for the BAR_CLOSE gate (BURN-IN-V2).
+            engine.bump_state_version(f"positions_closed:{len(new_trades)}")
+        for trade in new_trades:
             try:
                 risk.record_trade_result(float(trade.pnl))
             except (TypeError, ValueError) as exc:
                 self._log.warning("paper.cycle.risk_record_failed", error=str(exc))
 
     def _sync_risk_equity(self) -> None:
+        """Sync the risk engine with the REAL paper book (equity + positions).
+
+        PORTFOLIO-CONTEXT-01: exposure-dependent decisions must see the
+        portfolio state at decision time. Without the position map below,
+        ``max_open_positions`` and the exposure clamp would operate on an
+        empty book while the broker actually holds positions (zero-
+        exposure assumption — forbidden after a restart).
+        """
         broker = self._broker
         engine = self._cycle_engine
         if broker is None or engine is None:
@@ -335,6 +483,15 @@ class PaperSessionRunner:
             try:
                 risk.equity = float(broker.equity)
                 risk.peak_equity = max(risk.peak_equity, risk.equity)
+                risk.open_positions = {
+                    symbol: {
+                        "notional_usdt": float(p.notional_usdt),
+                        "side": str(p.side),
+                        "entry_price": float(p.entry_price),
+                        "quantity": float(p.quantity),
+                    }
+                    for symbol, p in broker.positions.items()
+                }
             except (TypeError, ValueError):
                 self._log.warning("paper.cycle.risk_equity_sync_failed")
 

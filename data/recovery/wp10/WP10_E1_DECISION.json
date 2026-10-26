@@ -1,0 +1,678 @@
+{
+  "artifact": "WP10_E1_DECISION",
+  "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
+  "phase": "E-1 DECISION",
+  "generated_at_utc": "2026-10-12T06:10:29Z",
+  "mode": "OFFLINE READ-ONLY \u2014 no process, no order, no key, no network, no capital",
+  "head": "90ed615b1b2514682bbf9a85834fdd81c45f0774",
+  "inputs": {
+    "distribution": {
+      "path": "data/recovery/wp10/WP10_EXECUTION_COST_DISTRIBUTION.json",
+      "sha256": "a64543fc3732c26e593082616b5d929261438481c34e526c5f55259482bc510b",
+      "state": "PLANE_OVERSTATES_MICROSTRUCTURE"
+    },
+    "baseline": {
+      "path": "data/recovery/wp10/WP10_BASELINE_ECONOMIC_AUDIT.json",
+      "sha256": "aff9dbd04995d6c3960b2951660ce028ef474759d05d4c7efde6077633951b2c",
+      "headline": {
+        "strategies_total": 24,
+        "admitted": 0,
+        "no_gross_edge": 17,
+        "cost_killed": 7,
+        "best_gross_bps": 8.912,
+        "best_gross_strategies": [
+          "volatility@30m"
+        ],
+        "admission_round_trip_bps": 23.353553391,
+        "positive_zero_cost_cells": [
+          "volatility@30m",
+          "volatility@1h",
+          "mean_reversion@30m",
+          "mean_reversion@15m",
+          "trend@30m",
+          "mean_reversion@5m",
+          "trend@15m"
+        ]
+      }
+    },
+    "fee_schedule_context": [
+      {
+        "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+        "fee_source_id": "SRC-01",
+        "maker_fee_bps": 10.0,
+        "taker_fee_bps": 10.0,
+        "in_venue_registry": true
+      },
+      {
+        "scenario_id": "BINANCE_USDM_STANDARD_TAKER",
+        "fee_source_id": "SRC-02",
+        "maker_fee_bps": 2.0,
+        "taker_fee_bps": 5.0,
+        "in_venue_registry": false
+      }
+    ],
+    "baseline_arm_source": "scripts/multi_family_backtest.py \u2014 documented execution contract, BASE scenario multipliers (1.0, 1.0)"
+  },
+  "planes": {
+    "frozen_admission": {
+      "round_trip_bps": 23.353553,
+      "fees_bps": 20.0,
+      "non_fee_bps": 3.353554,
+      "knowledge": "fees KNOWN (published schedule) + non-fee ESTIMATED (heuristic)",
+      "role": "the plane the 24 admission verdicts were taken against"
+    },
+    "measured": {
+      "round_trip_bps": 20.024697,
+      "fees_bps": 20.0,
+      "non_fee_bps": 0.024697,
+      "knowledge": "fees KNOWN + non-fee OBSERVED_FORWARD (this seal, BTC/ETH, 50-2000 USDT)",
+      "role": "a measurement of what the captured book charged, not a proposal"
+    },
+    "measured_worst_tail": {
+      "round_trip_bps": 24.58632,
+      "fees_bps": 20.0,
+      "non_fee_bps": 4.58632,
+      "knowledge": "fees KNOWN + non-fee OBSERVED_FORWARD p95 of the worst book's realised round trip",
+      "role": "the same measurement read at its tail rather than its centre"
+    },
+    "baseline_arm": {
+      "round_trip_bps": 12.0,
+      "fees_bps": 10.0,
+      "non_fee_bps": 2.0,
+      "knowledge": "ASSUMED (documented execution contract of the baseline backtest)",
+      "role": "the cost arm the published per-cell net expectancy was computed with"
+    },
+    "discounted_fee_tier": {
+      "round_trip_bps": 15.024697,
+      "fees_bps": 15.0,
+      "non_fee_bps": 0.024697,
+      "knowledge": "fees KNOWN (published alternative tier) + non-fee OBSERVED_FORWARD",
+      "role": "arithmetic only: what the published token-discounted tier would cost"
+    }
+  },
+  "answers": {
+    "q1_does_the_plane_over_or_understate": {
+      "answer": "It overstates the *centre* of observable execution cost and sits near the tail: at the median the measured non-fee cost is 0.024697 bps against the plane's 3.353554 bps ESTIMATED non-fee allowance (136x), but the plane's allowance is *below* the p95 of realised taker cost on the worst book (4.5863 bps). It is conservative as a median estimate and roughly a p95-p99 allowance, so it is not uniformly generous and the difference is not free budget.",
+      "observed": "round trip microstructure median across four books 0.024697 bps; realised aggressor round trips {'spot/BTCUSDT': 0.065705, 'spot/ETHUSDT': 0.487184}; worst book p95 4.5863 bps; worst single checkpoint 0.3680 bps",
+      "assumed": "that the plane's non-fee terms were ever intended as a median rather than as a conservative allowance \u2014 the artefacts do not say which"
+    },
+    "q2_where_are_costs_materially_lower": {
+      "answer": "Only in the fee schedule, and only by a factor of ~2.3 bps: the non-fee component measured at or near its floor (0.024697 bps median, 0.0 bps of book walk at every size up to 2000 USDT), so no re-optimisation of order placement can move a round trip by more than ~3.35 bps. The published token-discounted tier moves it by 5.0 bps, and that is an account/tier decision, not an execution-skill finding.",
+      "observed": "fees are 20 of the 23.3536 bps and are KNOWN from the schedule; measured walk beyond best 0.0 bps at every size on all four books",
+      "assumed": "that any future order would in fact receive the tier the schedule publishes \u2014 no account statement exists in this repository"
+    },
+    "q3_are_those_conditions_frequent_and_executable": {
+      "answer": "The fee tier is available on essentially every taker order and therefore frequent and executable; the measured cheap execution is *evidence about a book state*, not about a fill. Nothing in the capture records order lifecycle, queue position or partial fills, so maker execution cannot be claimed as available at all.",
+      "observed": "the measured window is one 4.1 h session of a single regime; 496 checkpoints; no order was placed",
+      "assumed": "nothing: the maker question is reported INSUFFICIENT_EVIDENCE rather than assumed away"
+    },
+    "q4_what_explains_most_of_the_cost": {
+      "answer": "The fee schedule: 85.64 % of the plane is two KNOWN exchange fee legs, which no market condition in this capture could change. Everything the venue's book contributed, at the median, is 0.11 % of the plane.",
+      "observed": "plane decomposition rebuilt in-process; measured non-fee cost across four books and a 50-2000 USDT size ladder",
+      "assumed": "the published fee schedule applies (a documented policy, not a measurement)"
+    },
+    "q5_any_asset_or_modality_worth_more_research": {
+      "answer": "No asset in this seal offers a materially better net condition: the difference between the best and worst book's realised round trip (0.0657 vs 0.4872 bps) is two orders of magnitude below the fee floor, so asset selection is not where the economics are decided. The only modality that could change the answer is maker execution priced from order-level evidence, which requires a capture this campaign does not have; it is recorded as a gap, not recommended as a result.",
+      "observed": "BTC and ETH only; no third asset exists in the seal",
+      "assumed": "that BTC/ETH generalise to the alts in the register \u2014 they are not tested here and are not claimed to"
+    },
+    "q6_observed_versus_assumed": {
+      "answer": "The measured layer is OBSERVED_FORWARD and cannot promote anything: the best gross edge in the register is 8.912 bps and the KNOWN fee legs alone are 20.0 bps, so even a hypothetically free non-fee component leaves 0 of the 24 cells net positive (none). The fee level, the tiers and any change to the plane are governance assumptions, not measurements.",
+      "observed": "forward book, trades, latency and funding from the sealed window: 1984 checkpoints reproduced, 0 look-ahead violations, 163658 real aggressor prints joined",
+      "assumed": "the fee schedule; that a static book walk approximates a live order; that one 4.1 h session represents the regimes the strategies would meet"
+    }
+  },
+  "readjudication": {
+    "cells": [
+      {
+        "strategy_id": "volatility@30m",
+        "family": "volatility",
+        "timeframe": "30m",
+        "ledger_status": "COST_KILLED",
+        "rebuilt_status": "COST_KILLED",
+        "zero_cost_gross_bps": 8.912,
+        "trades": 196,
+        "trades_per_day": 0.947,
+        "net_bps_at_plane": {
+          "frozen_admission": -14.441553,
+          "measured": -11.112697,
+          "measured_worst_tail": -15.67432,
+          "baseline_arm": -3.088,
+          "discounted_fee_tier": -6.112697
+        },
+        "ci95_half_width_bps": 12.009576,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "volatility@1h",
+        "family": "volatility",
+        "timeframe": "1h",
+        "ledger_status": "COST_KILLED",
+        "rebuilt_status": "COST_KILLED",
+        "zero_cost_gross_bps": 6.276,
+        "trades": 96,
+        "trades_per_day": 0.464,
+        "net_bps_at_plane": {
+          "frozen_admission": -17.077553,
+          "measured": -13.748697,
+          "measured_worst_tail": -18.31032,
+          "baseline_arm": -5.724,
+          "discounted_fee_tier": -8.748697
+        },
+        "ci95_half_width_bps": 18.564808,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "mean_reversion@30m",
+        "family": "mean_reversion",
+        "timeframe": "30m",
+        "ledger_status": "COST_KILLED",
+        "rebuilt_status": "COST_KILLED",
+        "zero_cost_gross_bps": 5.472,
+        "trades": 935,
+        "trades_per_day": 4.517,
+        "net_bps_at_plane": {
+          "frozen_admission": -17.881553,
+          "measured": -14.552697,
+          "measured_worst_tail": -19.11432,
+          "baseline_arm": -6.528,
+          "discounted_fee_tier": -9.552697
+        },
+        "ci95_half_width_bps": 5.272215,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "mean_reversion@15m",
+        "family": "mean_reversion",
+        "timeframe": "15m",
+        "ledger_status": "COST_KILLED",
+        "rebuilt_status": "COST_KILLED",
+        "zero_cost_gross_bps": 2.714,
+        "trades": 1604,
+        "trades_per_day": 7.749,
+        "net_bps_at_plane": {
+          "frozen_admission": -20.639553,
+          "measured": -17.310697,
+          "measured_worst_tail": -21.87232,
+          "baseline_arm": -9.286,
+          "discounted_fee_tier": -12.310697
+        },
+        "ci95_half_width_bps": 3.591391,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "trend@30m",
+        "family": "trend",
+        "timeframe": "30m",
+        "ledger_status": "COST_KILLED",
+        "rebuilt_status": "COST_KILLED",
+        "zero_cost_gross_bps": 2.206,
+        "trades": 1575,
+        "trades_per_day": 7.609,
+        "net_bps_at_plane": {
+          "frozen_admission": -21.147553,
+          "measured": -17.818697,
+          "measured_worst_tail": -22.38032,
+          "baseline_arm": -9.794,
+          "discounted_fee_tier": -12.818697
+        },
+        "ci95_half_width_bps": 4.771974,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "mean_reversion@5m",
+        "family": "mean_reversion",
+        "timeframe": "5m",
+        "ledger_status": "COST_KILLED",
+        "rebuilt_status": "COST_KILLED",
+        "zero_cost_gross_bps": 1.485392,
+        "trades": 3190,
+        "trades_per_day": 15.411,
+        "net_bps_at_plane": {
+          "frozen_admission": -21.868161,
+          "measured": -18.539305,
+          "measured_worst_tail": -23.100928,
+          "baseline_arm": -10.514608,
+          "discounted_fee_tier": -13.539305
+        },
+        "ci95_half_width_bps": null,
+        "resolution_available": false
+      },
+      {
+        "strategy_id": "trend@15m",
+        "family": "trend",
+        "timeframe": "15m",
+        "ledger_status": "COST_KILLED",
+        "rebuilt_status": "COST_KILLED",
+        "zero_cost_gross_bps": 1.284,
+        "trades": 1625,
+        "trades_per_day": 7.85,
+        "net_bps_at_plane": {
+          "frozen_admission": -22.069553,
+          "measured": -18.740697,
+          "measured_worst_tail": -23.30232,
+          "baseline_arm": -10.716,
+          "discounted_fee_tier": -13.740697
+        },
+        "ci95_half_width_bps": 4.52761,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "breakout@5m",
+        "family": "breakout",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -0.084007,
+        "trades": 2426,
+        "trades_per_day": 11.72,
+        "net_bps_at_plane": {
+          "frozen_admission": -23.43756,
+          "measured": -20.108704,
+          "measured_worst_tail": -24.670327,
+          "baseline_arm": -12.084007,
+          "discounted_fee_tier": -15.108704
+        },
+        "ci95_half_width_bps": null,
+        "resolution_available": false
+      },
+      {
+        "strategy_id": "breakout@1h",
+        "family": "breakout",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -0.222,
+        "trades": 714,
+        "trades_per_day": 3.449,
+        "net_bps_at_plane": {
+          "frozen_admission": -23.575553,
+          "measured": -20.246697,
+          "measured_worst_tail": -24.80832,
+          "baseline_arm": -12.222,
+          "discounted_fee_tier": -15.246697
+        },
+        "ci95_half_width_bps": 6.444677,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "ema_crossover@30m",
+        "family": "ema_crossover",
+        "timeframe": "30m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -0.726,
+        "trades": 3233,
+        "trades_per_day": 15.618,
+        "net_bps_at_plane": {
+          "frozen_admission": -24.079553,
+          "measured": -20.750697,
+          "measured_worst_tail": -25.31232,
+          "baseline_arm": -12.726,
+          "discounted_fee_tier": -15.750697
+        },
+        "ci95_half_width_bps": 2.685637,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "ema_crossover@1h",
+        "family": "ema_crossover",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -0.964,
+        "trades": 2641,
+        "trades_per_day": 12.758,
+        "net_bps_at_plane": {
+          "frozen_admission": -24.317553,
+          "measured": -20.988697,
+          "measured_worst_tail": -25.55032,
+          "baseline_arm": -12.964,
+          "discounted_fee_tier": -15.988697
+        },
+        "ci95_half_width_bps": 3.279934,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "ema_crossover@15m",
+        "family": "ema_crossover",
+        "timeframe": "15m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.122,
+        "trades": 3166,
+        "trades_per_day": 15.295,
+        "net_bps_at_plane": {
+          "frozen_admission": -24.475553,
+          "measured": -21.146697,
+          "measured_worst_tail": -25.70832,
+          "baseline_arm": -13.122,
+          "discounted_fee_tier": -16.146697
+        },
+        "ci95_half_width_bps": 2.367062,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "trend@1h",
+        "family": "trend",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.252,
+        "trades": 1407,
+        "trades_per_day": 6.797,
+        "net_bps_at_plane": {
+          "frozen_admission": -24.605553,
+          "measured": -21.276697,
+          "measured_worst_tail": -25.83832,
+          "baseline_arm": -13.252,
+          "discounted_fee_tier": -16.276697
+        },
+        "ci95_half_width_bps": 5.370709,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "trend@5m",
+        "family": "trend",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.644771,
+        "trades": 1291,
+        "trades_per_day": 6.237,
+        "net_bps_at_plane": {
+          "frozen_admission": -24.998324,
+          "measured": -21.669468,
+          "measured_worst_tail": -26.231091,
+          "baseline_arm": -13.644771,
+          "discounted_fee_tier": -16.669468
+        },
+        "ci95_half_width_bps": null,
+        "resolution_available": false
+      },
+      {
+        "strategy_id": "breakout@30m",
+        "family": "breakout",
+        "timeframe": "30m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.792,
+        "trades": 1285,
+        "trades_per_day": 6.208,
+        "net_bps_at_plane": {
+          "frozen_admission": -25.145553,
+          "measured": -21.816697,
+          "measured_worst_tail": -26.37832,
+          "baseline_arm": -13.792,
+          "discounted_fee_tier": -16.816697
+        },
+        "ci95_half_width_bps": 4.430577,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "breakout@15m",
+        "family": "breakout",
+        "timeframe": "15m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.822,
+        "trades": 2058,
+        "trades_per_day": 9.942,
+        "net_bps_at_plane": {
+          "frozen_admission": -25.175553,
+          "measured": -21.846697,
+          "measured_worst_tail": -26.40832,
+          "baseline_arm": -13.822,
+          "discounted_fee_tier": -16.846697
+        },
+        "ci95_half_width_bps": 3.168101,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "momentum@5m",
+        "family": "momentum",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.883531,
+        "trades": 2526,
+        "trades_per_day": 12.203,
+        "net_bps_at_plane": {
+          "frozen_admission": -25.237084,
+          "measured": -21.908228,
+          "measured_worst_tail": -26.469851,
+          "baseline_arm": -13.883531,
+          "discounted_fee_tier": -16.908228
+        },
+        "ci95_half_width_bps": null,
+        "resolution_available": false
+      },
+      {
+        "strategy_id": "mean_reversion@1h",
+        "family": "mean_reversion",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -2.226,
+        "trades": 448,
+        "trades_per_day": 2.164,
+        "net_bps_at_plane": {
+          "frozen_admission": -25.579553,
+          "measured": -22.250697,
+          "measured_worst_tail": -26.81232,
+          "baseline_arm": -14.226,
+          "discounted_fee_tier": -17.250697
+        },
+        "ci95_half_width_bps": 8.692807,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "momentum@1h",
+        "family": "momentum",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -2.334,
+        "trades": 2315,
+        "trades_per_day": 11.184,
+        "net_bps_at_plane": {
+          "frozen_admission": -25.687553,
+          "measured": -22.358697,
+          "measured_worst_tail": -26.92032,
+          "baseline_arm": -14.334,
+          "discounted_fee_tier": -17.358697
+        },
+        "ci95_half_width_bps": 3.674085,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "momentum@30m",
+        "family": "momentum",
+        "timeframe": "30m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -2.612,
+        "trades": 3001,
+        "trades_per_day": 14.498,
+        "net_bps_at_plane": {
+          "frozen_admission": -25.965553,
+          "measured": -22.636697,
+          "measured_worst_tail": -27.19832,
+          "baseline_arm": -14.612,
+          "discounted_fee_tier": -17.636697
+        },
+        "ci95_half_width_bps": 2.931925,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "momentum@15m",
+        "family": "momentum",
+        "timeframe": "15m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -3.972,
+        "trades": 3163,
+        "trades_per_day": 15.28,
+        "net_bps_at_plane": {
+          "frozen_admission": -27.325553,
+          "measured": -23.996697,
+          "measured_worst_tail": -28.55832,
+          "baseline_arm": -15.972,
+          "discounted_fee_tier": -18.996697
+        },
+        "ci95_half_width_bps": 2.593819,
+        "resolution_available": true
+      },
+      {
+        "strategy_id": "ema_crossover@5m",
+        "family": "ema_crossover",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -4.560812,
+        "trades": 1725,
+        "trades_per_day": 8.333,
+        "net_bps_at_plane": {
+          "frozen_admission": -27.914365,
+          "measured": -24.585509,
+          "measured_worst_tail": -29.147132,
+          "baseline_arm": -16.560812,
+          "discounted_fee_tier": -19.585509
+        },
+        "ci95_half_width_bps": null,
+        "resolution_available": false
+      },
+      {
+        "strategy_id": "volatility@5m",
+        "family": "volatility",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -4.735385,
+        "trades": 520,
+        "trades_per_day": 2.512,
+        "net_bps_at_plane": {
+          "frozen_admission": -28.088938,
+          "measured": -24.760082,
+          "measured_worst_tail": -29.321705,
+          "baseline_arm": -16.735385,
+          "discounted_fee_tier": -19.760082
+        },
+        "ci95_half_width_bps": null,
+        "resolution_available": false
+      },
+      {
+        "strategy_id": "volatility@15m",
+        "family": "volatility",
+        "timeframe": "15m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "rebuilt_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -7.064,
+        "trades": 277,
+        "trades_per_day": 1.338,
+        "net_bps_at_plane": {
+          "frozen_admission": -30.417553,
+          "measured": -27.088697,
+          "measured_worst_tail": -31.65032,
+          "baseline_arm": -19.064,
+          "discounted_fee_tier": -22.088697
+        },
+        "ci95_half_width_bps": 9.374829,
+        "resolution_available": true
+      }
+    ],
+    "admitted_by_plane": {
+      "frozen_admission": [],
+      "measured": [],
+      "measured_worst_tail": [],
+      "baseline_arm": [],
+      "discounted_fee_tier": []
+    },
+    "admitted_total": 0,
+    "best_cell": "volatility@30m",
+    "best_gross_bps": 8.912,
+    "required_plane_below_bps": 8.912,
+    "required_fee_per_side_bps_for_best_cell": 4.443652,
+    "required_gross_bps_at_measured_plane": 20.024697,
+    "required_gross_multiple_of_best": 2.2469,
+    "admitted_on_a_zero_microstructure_plane": [],
+    "admitted_on_a_completely_free_plane": [
+      "mean_reversion@15m",
+      "mean_reversion@30m",
+      "mean_reversion@5m",
+      "trend@15m",
+      "trend@30m",
+      "volatility@1h",
+      "volatility@30m"
+    ],
+    "reading": "the plane is not the binding constraint: no plane at or above the best cell's own gross edge admits anything, and the best cell's gross edge is the number that has to move"
+  },
+  "resolution": {
+    "positive_cells": 7,
+    "positive_cells_with_an_interval": 6,
+    "positive_cells_separated_from_zero": 1,
+    "separated_cells": [
+      "mean_reversion@30m"
+    ],
+    "best_cell_ci95_half_width_bps": 12.009576,
+    "reading": "the best gross edge is quoted from 196 trades and its own 95 % envelope is \u00b112.009576 bps, so an E-1 improvement of ~3 bps is two orders of magnitude smaller than the uncertainty in the quantity it would have to rescue"
+  },
+  "funding": {
+    "median_bps_per_interval": 0.5985,
+    "intervals_per_day": 3,
+    "median_bps_per_day": 1.7955,
+    "reading": "a position that spans a funding stamp pays the measured median; at a 30 min horizon the expected drag is a small fraction of one stamp, and it never favours the strategy because the sign is not controlled"
+  },
+  "limitations": [
+    "one sealed window of 4.159301 h in one session regime, stopped by the run's own disk valve rather than by a measurement boundary",
+    "BTC and ETH only; the register's SOL arm is not covered by this seal",
+    "the size ladder is a static book walk; a real order arrives at a moving book, and the measured receive-clock latency (median ~187 ms on the busiest perp stream) is the size of that motion",
+    "no order was ever placed, so every number here is an estimate of what an order would have paid, never a fill",
+    "maker execution, queue position, partial fills and fill probability are not measurable from this capture: INSUFFICIENT_EVIDENCE",
+    "the per-cell gross edges the re-adjudication uses are themselves unresolved at the published sample sizes, which is a limitation of the register and not of E-1",
+    "this is a RESEARCH_RESULT about cost. It is not a PROFITABILITY_VERIFIED claim and it authorises no campaign"
+  ],
+  "checks": [
+    {
+      "check": "the register holds 24 cells and every one is re-adjudicated at every plane",
+      "ok": true
+    },
+    {
+      "check": "the plane under test re-derives to the frozen value",
+      "ok": true
+    },
+    {
+      "check": "the KNOWN fee legs are carried as KNOWN and the measured layer as OBSERVED",
+      "ok": true
+    },
+    {
+      "check": "no strategy is admitted, promoted or re-classified by this decision",
+      "ok": true,
+      "admitted": 0
+    },
+    {
+      "check": "no threshold, criterion or cost model is modified",
+      "ok": true,
+      "frozen_artifacts_modified": 0
+    },
+    {
+      "check": "the measured layer is used to describe cost, never to declare edge",
+      "ok": true
+    },
+    {
+      "check": "every answer separates the observed part from the assumed part",
+      "ok": true
+    }
+  ],
+  "no_promotion": {
+    "strategies_admitted": 0,
+    "strategies_reopened": 0,
+    "thresholds_changed": 0,
+    "cost_model_changed": false,
+    "live_trading": "DISABLED",
+    "trades_authorized": 0
+  },
+  "verdict": "PARTIAL \u2014 the plane's non-fee allowance is conservative at the median (measured, not asserted) and is not the binding constraint: the KNOWN fee legs alone exceed the best gross edge in the register, so no execution improvement available in this capture can admit any of the 24 cells",
+  "false_success": 0,
+  "payload_sha256": "8c2225286f0f621cd83b1a3e4c44a19cc7ef20b7ae5d6271b59aa220db6f85ec"
+}
