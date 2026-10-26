@@ -1,0 +1,126 @@
+{
+  "cases": [
+    {
+      "detail": "the authoritative arm reports closed fills while creating no orders",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A01",
+      "kind": "TAMPER_DETECTED",
+      "name": "fill_without_an_order",
+      "passed": true,
+      "replaces_legacy_policy_assertion": "S12 fill_without_a_broker"
+    },
+    {
+      "detail": "a fill claims maker liquidity, which no model in this package produces",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A02",
+      "kind": "TAMPER_DETECTED",
+      "name": "invented_maker_fill",
+      "passed": true,
+      "replaces_legacy_policy_assertion": "S17 invented_maker_fill"
+    },
+    {
+      "detail": "the runtime configuration no longer puts the bot in paper mode",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A03",
+      "kind": "TAMPER_DETECTED",
+      "name": "runtime_change_enabling_live",
+      "passed": true,
+      "replaces_legacy_policy_assertion": "S27 runtime_change_enabling_live"
+    },
+    {
+      "detail": "the recorded dataset hash does not match the exported bars",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A04",
+      "kind": "TAMPER_DETECTED",
+      "name": "dataset_digest_replaced",
+      "passed": true,
+      "replaces_legacy_policy_assertion": null
+    },
+    {
+      "detail": "a fill's net PnL no longer reconciles with the broker's charging rule",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A05",
+      "kind": "TAMPER_DETECTED",
+      "name": "broker_commission_charged_on_exit_notional",
+      "passed": true,
+      "replaces_legacy_policy_assertion": null
+    },
+    {
+      "detail": "an engine's per-trade residual no longer satisfies the closed-form gap",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A06",
+      "kind": "TAMPER_DETECTED",
+      "name": "fee_convention_identity_broken",
+      "passed": true,
+      "replaces_legacy_policy_assertion": null
+    },
+    {
+      "detail": "a residual pair was edited so the identity no longer holds",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A07",
+      "kind": "TAMPER_DETECTED",
+      "name": "reported_residual_swapped",
+      "passed": true,
+      "replaces_legacy_policy_assertion": null
+    },
+    {
+      "detail": "the same trade appears twice, which inflates the trade count",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A08",
+      "kind": "TAMPER_DETECTED",
+      "name": "trade_count_inflated_by_duplication",
+      "passed": true,
+      "replaces_legacy_policy_assertion": null
+    },
+    {
+      "detail": "the reserved holdout was read while choosing a strategy",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A09",
+      "kind": "TAMPER_DETECTED",
+      "name": "oos_slice_read_by_selection",
+      "passed": true,
+      "replaces_legacy_policy_assertion": null
+    },
+    {
+      "detail": "a stage with no ledger is reported as a measured zero",
+      "detector_fired_on_clean": false,
+      "detector_fired_on_tampered": true,
+      "id": "A10",
+      "kind": "TAMPER_DETECTED",
+      "name": "unknown_stage_reported_as_measured_zero",
+      "passed": true,
+      "replaces_legacy_policy_assertion": null
+    }
+  ],
+  "counts": {
+    "declared": 0,
+    "executed": 10,
+    "failed": 0,
+    "passed": 10,
+    "total": 10
+  },
+  "legacy_note": "S12, S17 and S27 were POLICY_ASSERTED in RFC-EDGE-014: the artifacts they needed did not exist. Two of the three now exist (a real fill ledger and a real paper runtime), so all three are executed tests here, and the earlier declared grouping is left untouched in its own report",
+  "legacy_policy_assertions_replaced": [
+    "S12 fill_without_a_broker",
+    "S17 invented_maker_fill",
+    "S27 runtime_change_enabling_live"
+  ],
+  "limitations": [
+    "a detector that is written by the same author as the artifact can share its blind spots; the clean/tampered pairing removes the most common one",
+    "the suite tests this package's own evidence, not the engine internals"
+  ],
+  "order_sent": false,
+  "promotion": "NONE",
+  "schema_version": "EDGE14R_ADVERSARIAL_V1",
+  "separation": "every case in this suite is EXECUTED: a detector runs on the untouched artifact and on a mutated copy, and only a quiet-then-firing pair counts as a pass. There are no declared-only cases here",
+  "work_package": "WP-EDGE-14R/P4"
+}

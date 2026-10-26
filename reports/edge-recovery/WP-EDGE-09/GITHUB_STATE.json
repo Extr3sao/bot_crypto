@@ -1,0 +1,20 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09",
+  "as_of_utc": "2026-10-15T05:56:25Z",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "head": "d5c93bd9f7246122792694cbfb86537637c00612",
+  "remote": "https://github.com/Extr3sao/bot_crypto.git",
+  "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+  "remote_has_this_branch": true,
+  "remote_tip": "d5c93bd9f7246122792694cbfb86537637c00612",
+  "remote_matches_head": true,
+  "pushed_range_at_last_push": "d5c93bd..d5c93bd (+0 ahead, 0 behind)",
+  "force_push_used": false,
+  "push_kind": "normal fast-forward of an existing remote branch",
+  "own_uncommitted_paths": [
+    " M scripts/edge09_report.py"
+  ],
+  "credentials_read_or_printed": false,
+  "note": "this file is written before the commit that publishes it, so the pushed range describes the ref at the last push and the remote tip is read from the remote; the one-commit lag is stated rather than hidden"
+}

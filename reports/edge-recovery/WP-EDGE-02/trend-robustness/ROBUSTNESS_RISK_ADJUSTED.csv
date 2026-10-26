@@ -1,0 +1,6 @@
+run,candidate_net_usdt,candidate_return_pct,candidate_max_drawdown_pct,candidate_sharpe_annualised,candidate_mar_ratio,candidate_return_on_drawdown,buy_and_hold_best_return_on_drawdown,candidate_beats_every_buy_and_hold,deepest_buy_and_hold_drawdown_pct
+DEV:BASE,1921.179200,19.211800,4.279300,1.224300,4.489471,4.489473,34.050940,False,96.598824
+VAL:BASE,4.525300,0.045300,4.100200,0.030100,0.011037,0.011048,3.941328,False,45.321787
+OOS:BASE,208.005600,2.080100,2.567000,0.665800,0.810306,0.810323,-0.599006,True,73.200811
+OOS:2X_FEES,160.672300,1.606700,2.702500,0.513900,0.594532,0.594524,-0.601819,True,73.200811
+OOS:ADVERSE,146.890800,1.468900,2.731200,0.471600,0.537825,0.537822,-0.602602,True,73.200811

@@ -1,0 +1,252 @@
+{
+  "branch": "recovery/exp004a-02k-9983b050",
+  "builder": [
+    "scripts/wp_edge04_freeze.py",
+    "scripts/wp_edge04_deps.py"
+  ],
+  "corpus_recovered": false,
+  "dependency_matrix": {
+    "availability": {
+      "alpha003_price": {
+        "exists": false,
+        "root": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data\\raw\\alpha003\\price",
+        "shards": 0,
+        "timeframes": {}
+      },
+      "one_hour": {
+        "exists": true,
+        "root": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\reports\\alpha-expansion-v1\\data",
+        "shards": 23,
+        "timeframes": {}
+      }
+    },
+    "blocked": [
+      "scripts/edge01_ablation.py",
+      "scripts/edge01_closure_experiments.py",
+      "scripts/edge01_mechanism_ablation.py",
+      "scripts/edge01_risk_ablation.py",
+      "scripts/edge01_robustness_experiments.py",
+      "scripts/edge01_run.py",
+      "scripts/edge03_run.py",
+      "scripts/edge03_verify.py",
+      "scripts/edge04_closure.py",
+      "scripts/edge04_observer.py",
+      "scripts/edge04r_continuity.py",
+      "scripts/edge05_reconcile.py",
+      "scripts/edge05_verify.py",
+      "scripts/edge05_watchdog.py",
+      "scripts/edge06_research.py",
+      "scripts/edge06_verify.py",
+      "scripts/edge07_active.py",
+      "scripts/edge07_active_barrier.py",
+      "scripts/edge07_validate.py",
+      "scripts/edge07_verify.py",
+      "scripts/edge08_economics.py",
+      "scripts/edge08_screen.py",
+      "scripts/edge08_universe_report.py",
+      "scripts/edge08_validate.py",
+      "scripts/edge12_continuity.py",
+      "scripts/edge12_gate.py",
+      "scripts/edge12_operational.py",
+      "scripts/edge12_runner.py",
+      "scripts/edge12_storage.py"
+    ],
+    "definition": "statically_reachable = closure resolves, sources compile, and every corpus root the closure reads exists. Entrypoints are NOT executed here.",
+    "degraded": [
+      "scripts/alpha003_run.py",
+      "scripts/alpha003_verify.py",
+      "scripts/economic001_closure.py",
+      "scripts/economic001_closure_verify.py",
+      "scripts/edge01_wp02_verify.py",
+      "scripts/edge04_15m_audit.py",
+      "scripts/edge04_15m_refetch.py",
+      "scripts/edge04_15m_verify.py",
+      "scripts/edge08_fetch_universe.py",
+      "scripts/edge08_verify.py",
+      "scripts/rfc046_campaign.py",
+      "scripts/rfc046_campaign_verify.py",
+      "scripts/rfc046_cost_forensics.py",
+      "scripts/rfc046_economic_gate.py",
+      "scripts/rfc046_economic_gate_verify.py",
+      "scripts/st6_forward_regime.py",
+      "scripts/wp_edge04_verify.py"
+    ],
+    "generated_by": "scripts/wp_edge04_deps.py",
+    "readers_of_the_missing_directory": [
+      "trading_bot.research.edge01.campaign",
+      "trading_bot.research.edge01.data",
+      "trading_bot.research.edge03.forward_plan",
+      "trading_bot.research.edge03.shadow",
+      "trading_bot.research.edge08.disjointness",
+      "trading_bot.research.edge08.registration",
+      "trading_bot.research.edge08.universe"
+    ],
+    "totals": {
+      "blocked_by_corpus": 29,
+      "entrypoints": 470,
+      "need_15m": 29,
+      "reachable_without_alpha003": 441
+    }
+  },
+  "exp004a_unblocked": false,
+  "false_success": 0,
+  "freeze": {
+    "bars": 174094,
+    "bytes": 19380640,
+    "cli": "scripts/wp_edge04_freeze.py",
+    "closed_bar_rule": "a shard whose last_ts + interval_ms > freeze instant is refused (UNCLOSED_BAR)",
+    "corpus_digest": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+    "last_bar_closed_utc_ms": 1772323200000,
+    "manifest": "reports\\alpha-expansion-v1\\data\\_FREEZE_MANIFEST.json",
+    "module": "src/trading_bot/research/prospective/freeze.py",
+    "root": "reports\\alpha-expansion-v1\\data",
+    "shards": 23,
+    "verify_after_code_change": {
+      "corpus_digest": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+      "ok": true,
+      "problems": 0,
+      "shards": 23
+    }
+  },
+  "gates": {
+    "edge03_verify": "exit 1 (cannot complete: the frozen 15m shard is absent)",
+    "edge04_verify": "exit 1, 7/15 (no tick has consumed a slot)",
+    "exp004a_forward_task": {
+      "enabled": false,
+      "name": "TradingAgentic-EDGE04-Forward"
+    },
+    "frozen_15m_shards_present": 0,
+    "frozen_1h_pins_recomputed": {
+      "1h:BTC": "f4d16c3664c142d1",
+      "1h:ETH": "365046d4738aa7b1",
+      "1h:SOL": "847d8eb45eafebd8",
+      "all_match": true
+    }
+  },
+  "generated_at_utc": "2026-10-24T12:01:45Z",
+  "head_at_run": "c02edc0a",
+  "mirror": {
+    "bytes": 19380640,
+    "corpus_digest": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+    "destination": "C:\\Users\\GVLLFR0035\\exp004a-corpus-mirror\\alpha-expansion-v1-data",
+    "shards": 23,
+    "verified": true
+  },
+  "mode": "PAPER/OFFLINE ONLY \u2014 fake provider, no order, no credential, no risk limit touched",
+  "new_campaign_minimal_change": [
+    "freeze first with the closed-bar rule; UNCLOSED_BAR means the corpus is not ready",
+    "own corpus and own pin: 15m fetched forward from the venue, new run_id, new hashes",
+    "mirror outside the tree at creation time, and run `drill` as part of the start",
+    "one admission rule: verify() == 0 and drill restored=true with the reader agreeing"
+  ],
+  "paper_runtime": {
+    "commit_at_run": "c02edc0a46a3499e4869bd6aa4ae944fd89b8970",
+    "cycles": 2,
+    "entrypoint": "scripts/autonomous_paper.py",
+    "environment": "fake:binance",
+    "evidence": "raw/paper/RUN_REPORT.json",
+    "mode": "paper",
+    "reaches_live": false,
+    "run_id": "WP-EDGE04-PAPER-20261024T115217Z",
+    "totals": {
+      "asset_cycle_evaluations": 2,
+      "no_trades": 2,
+      "orders_created": 0,
+      "paper_trades": 0,
+      "runtime_failures": 0,
+      "traces_persisted": 2
+    }
+  },
+  "restore_drill": {
+    "digest_after": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+    "digest_before": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+    "during_loss_problems": [
+      "MISSING"
+    ],
+    "during_loss_verify_ok": false,
+    "reader_after": {
+      "bars": 62724,
+      "first_ts": 1546300800000,
+      "last_ts": 1772319600000,
+      "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
+    },
+    "reader_agrees": true,
+    "reader_before": {
+      "bars": 62724,
+      "first_ts": 1546300800000,
+      "last_ts": 1772319600000,
+      "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
+    },
+    "restored": true,
+    "shards_removed": 24
+  },
+  "scripts": {
+    "scripts/wp_edge04_deps.py": {
+      "sha256_prefix16": "b0c3a5b5dd962b59"
+    },
+    "scripts/wp_edge04_freeze.py": {
+      "sha256_prefix16": "3b4d9e03c8febe92"
+    },
+    "scripts/wp_edge04_verify.py": {
+      "sha256_prefix16": "43523925dae233a4"
+    },
+    "src/trading_bot/research/prospective/freeze.py": {
+      "sha256_prefix16": "dc2cde59538df918"
+    }
+  },
+  "tests": {
+    "freeze_unit": "10 passed",
+    "paper_and_autonomous": "395 passed",
+    "ruff": "All checks passed",
+    "verifier": "11/11 EVIDENCE_CONSISTENT_WITH_BLOCKED"
+  },
+  "verdict": "EXP004A_BLOCKED__OPERATIONAL_PROGRESS_UNBLOCKED",
+  "verifier": "scripts/wp_edge04_verify.py",
+  "verifier_checks": [
+    {
+      "check": "FREEZE_MANIFEST_ANSWERS_TO_BYTES",
+      "status": "PASS"
+    },
+    {
+      "check": "EVERY_FROZEN_BAR_WAS_CLOSED",
+      "status": "PASS"
+    },
+    {
+      "check": "FREEZING_DID_NOT_MOVE_THE_PINS",
+      "status": "PASS"
+    },
+    {
+      "check": "MIRROR_IS_A_REAL_SECOND_COPY",
+      "status": "PASS"
+    },
+    {
+      "check": "RESTORE_DRILL_IS_REAL",
+      "status": "PASS"
+    },
+    {
+      "check": "PAPER_RUN_WAS_PAPER_AND_RAN",
+      "status": "PASS"
+    },
+    {
+      "check": "EXP004A_STILL_BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "check": "FORWARD_TASK_STILL_PARKED",
+      "status": "PASS"
+    },
+    {
+      "check": "MATRIX_BLOCKS_ONLY_WHAT_IT_CAN_NAME",
+      "status": "PASS"
+    },
+    {
+      "check": "FALSE_SUCCESS_ZERO",
+      "status": "PASS"
+    },
+    {
+      "check": "BUILDER_NEQ_VERIFIER",
+      "status": "PASS"
+    }
+  ],
+  "wp": "EXP004A-PROGRESS"
+}

@@ -1,0 +1,24 @@
+{
+ "1h:BTC": {
+  "bars": 62724,
+  "last_ts": 1772319600000,
+  "digest": "f4d16c3664c142d1",
+  "pin": "f4d16c3664c142d1",
+  "matches": true
+ },
+ "1h:ETH": {
+  "bars": 62724,
+  "last_ts": 1772319600000,
+  "digest": "365046d4738aa7b1",
+  "pin": "365046d4738aa7b1",
+  "matches": true
+ },
+ "1h:SOL": {
+  "bars": 48646,
+  "last_ts": 1772319600000,
+  "digest": "847d8eb45eafebd8",
+  "pin": "847d8eb45eafebd8",
+  "matches": true
+ }
+}
+ALL_MATCH True

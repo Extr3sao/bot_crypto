@@ -1,0 +1,88 @@
+{
+  "captured_at_utc": "2026-10-23T11:08:13Z",
+  "note": "LastTaskResult is the channel that survives a full volume: the scheduler keeps it, not the disk. Its value is read here, and nothing on this host reads it automatically.",
+  "package": "WP-051-02I",
+  "recent_transitions": [
+    {
+      "at_utc": "2026-10-23T11:02:03Z",
+      "escalated": false,
+      "exit_code": 0,
+      "forecast": {
+        "base_bytes_per_hour": 1001972224.0,
+        "basis": "worst daily drawdown in the observer's own readings, applied from the current free space to the critical floor; a rate, not a promise",
+        "history_days": 8,
+        "hours_to_critical": 3.96,
+        "label": "AT_RISK",
+        "max_daily_drawdown_bytes": 24047333376
+      },
+      "free_gib": 5.6973,
+      "last_tick": "2026-10-23T10:55:58Z",
+      "previous_status": "DEGRADED",
+      "reasons": [],
+      "status": "OK"
+    }
+  ],
+  "scheduled_tasks": [
+    {
+      "last_result": "0",
+      "last_run_local": "10/23/2026 12:55:54",
+      "next_run_local": "10/23/2026 13:10:53",
+      "task": "TradingAgentic-EDGE04-Forward"
+    },
+    {
+      "last_result": "0",
+      "last_run_local": "10/23/2026 13:02:01",
+      "next_run_local": "10/23/2026 13:17:00",
+      "task": "TradingAgentic-EDGE04-Watchdog"
+    }
+  ],
+  "schema_version": "EXP004A_WP051_02I_LIVE_ALARM_V1",
+  "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+  "watchdog_verdict": {
+    "age_seconds": 269.5,
+    "consecutive_blocked_ticks": 0,
+    "disk": {
+      "critical_free_bytes": 2147483648,
+      "free_bytes": 6117400576,
+      "free_gib": 5.6973,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+      "status": "HEALTHY",
+      "total_bytes": 255041990656,
+      "used_percent": 97.6,
+      "warning_free_bytes": 5368709120
+    },
+    "exit_code": 0,
+    "forecast": {
+      "base_bytes_per_hour": 1001972224.0,
+      "basis": "worst daily drawdown in the observer's own readings, applied from the current free space to the critical floor; a rate, not a promise",
+      "history_days": 8,
+      "hours_to_critical": 3.96,
+      "label": "AT_RISK",
+      "max_daily_drawdown_bytes": 24047333376
+    },
+    "generated_at_utc": "2026-10-23T11:02:03Z",
+    "history": {
+      "basis": "max/min and first/last free-space reading of each complete UTC day",
+      "days": 8,
+      "days_recovering": 3,
+      "days_spending": 5,
+      "max_daily_drawdown_bytes": 24047333376,
+      "median_daily_net_bytes": -1386872832,
+      "samples": 700,
+      "status": "MEASURED"
+    },
+    "last_tick": {
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-23T10:57:34Z",
+      "new_bars": 3,
+      "outcome": "OBSERVED",
+      "run_id": "FWD-EDGE04-20261023T104500Z",
+      "started_at_utc": "2026-10-23T10:55:58Z"
+    },
+    "previous_status": "DEGRADED",
+    "reasons": [],
+    "schema_version": "EDGE04_WATCHDOG_V2",
+    "status": "OK"
+  },
+  "why": "the alarm this package changed, running on the host it reports on. Captured by reading the files the scheduler produced, not by running the watchdog again."
+}

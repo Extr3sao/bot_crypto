@@ -1,0 +1,34 @@
+{
+  "schema": "evidence004/current-manifest/1",
+  "generated_by": "scripts/evidence004_generate.py",
+  "canonical": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/canonical/CANONICAL_RUN.json",
+  "derived_dir": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9",
+  "documents": [
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/CLAIMS.md",
+      "role": "DERIVED",
+      "sha256": "fe05553b9686335018543000965720640d53954800ef28e51807524613552b1d",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/INFORME_EJECUTIVO_NUMEROS.md",
+      "role": "DERIVED",
+      "sha256": "621fbbd56f18641f46e6f2f7381ec5955088d2b2e8c3368553f81ae22dbdad8f",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/RUN_REPORT.json",
+      "role": "DERIVED",
+      "sha256": "0475cafb22bcbc48ab296cb376684cbc497019b0e9fcde0fcd79d5593db67668",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/RUN_REPORT.md",
+      "role": "DERIVED",
+      "sha256": "52b7c618022161c6c34160bb4b56ed24664d9515a569690a1102505b58a0a6b6",
+      "hash_domain": "TEXT_CANONICAL_LF"
+    }
+  ],
+  "canonical_sha256": "c7feb234c7bf186b617dccaf7526dd00d68934433373a2cf261f369dd1c8edb5",
+  "ledger_sha256": "0ba3a1bece61e61bcdc12bcd02adda5e53153aae65cb5dc46879773a223f343b"
+}

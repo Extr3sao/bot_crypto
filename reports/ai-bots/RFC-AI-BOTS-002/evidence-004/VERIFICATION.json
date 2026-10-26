@@ -1,0 +1,220 @@
+{
+  "verifier": "scripts/evidence004_verify.py",
+  "verified_ledger_sha256": "0ba3a1bece61e61bcdc12bcd02adda5e53153aae65cb5dc46879773a223f343b",
+  "role": "independent of scripts/evidence004_generate.py and scripts/evidence004_ledger.py",
+  "checks": [
+    {
+      "name": "canonical_exists",
+      "ok": true,
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/canonical/CANONICAL_RUN.json"
+    },
+    {
+      "name": "current_manifest_exists",
+      "ok": true,
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/CURRENT_MANIFEST.json"
+    },
+    {
+      "name": "supersession_manifest_exists",
+      "ok": true,
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/SUPERSESSION_MANIFEST.json"
+    },
+    {
+      "name": "raw_logs_parse_without_loss",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "copies_of_one_event_agree",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no_event_recorded_twice_in_the_same_file",
+      "ok": true,
+      "detail": "0 duplicated record(s)"
+    },
+    {
+      "name": "canonical_event_set_equals_raw_checkout",
+      "ok": true,
+      "detail": "canonical=16 raw=16"
+    },
+    {
+      "name": "every_event_matches_its_raw_bytes",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "stored_spans_point_at_the_bytes_they_hashed",
+      "ok": true,
+      "detail": "32 span(s); "
+    },
+    {
+      "name": "source_pins_use_one_declared_hash_domain",
+      "ok": true,
+      "detail": "5 pin(s); "
+    },
+    {
+      "name": "counts_recomputed_from_raw_logs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phase_counter_is_seven_plus_two",
+      "ok": true,
+      "detail": "phase work: 7 + 2"
+    },
+    {
+      "name": "dossier_counter_is_twelve_distinct_ids",
+      "ok": true,
+      "detail": "12"
+    },
+    {
+      "name": "scopes_are_declared_as_separate",
+      "ok": true,
+      "detail": "the canonical object must say the two scopes are not one counter"
+    },
+    {
+      "name": "claims_file_exists",
+      "ok": true,
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/CLAIMS.json"
+    },
+    {
+      "name": "claims_resolve_to_evidence_or_counters",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "canonical_carries_verified_claims",
+      "ok": true,
+      "detail": "claim count"
+    },
+    {
+      "name": "narrative_claims_are_not_written_by_hand",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no_local_key_is_attributed_to_rea",
+      "ok": true,
+      "detail": "the canonical ledger itself must contain no local key in an evidence_id field"
+    },
+    {
+      "name": "current_manifest_names_an_existing_projection",
+      "ok": true,
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9"
+    },
+    {
+      "name": "projection_is_named_by_the_ledger_it_projects",
+      "ok": true,
+      "detail": "0ba3a1bece61.4ed5e5e9 vs ledger 0ba3a1bece61"
+    },
+    {
+      "name": "current_manifest_names_this_ledger",
+      "ok": true,
+      "detail": "a projection of another ledger is being served as current"
+    },
+    {
+      "name": "derived_manifest_exists",
+      "ok": true,
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/MANIFEST.json"
+    },
+    {
+      "name": "derived_files_match_their_hashes",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "every_report_carries_the_same_counts_block",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "stable_reports_are_byte_identical_to_derived",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "derived_json_counts_match_recomputation",
+      "ok": true,
+      "detail": "RUN_REPORT.json counters diverge from the raw logs"
+    },
+    {
+      "name": "superseded_documents_are_pinned_not_edited",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "supersession_declares_the_identity_it_pins",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "historical_report_still_shows_the_defect_it_had",
+      "ok": true,
+      "detail": "the preserved v3 report must still contain the exit-code count, not a silent rewrite"
+    },
+    {
+      "name": "historical_report_is_declared_superseded",
+      "ok": true,
+      "detail": "a stale report that is not in the supersession manifest is still being served as current"
+    },
+    {
+      "name": "editorial_documents_are_registered_and_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no_unregistered_report_is_presented_as_current",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "current_reports_do_not_count_an_exit_code_as_success",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "current_reports_only_use_ids_rea_emitted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "superseded_local_keys_are_declared_as_defects",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no_provider_claim_without_a_real_model_call",
+      "ok": true,
+      "detail": "providers=[] but real_model_called=False: a run attributed to a real provider needs a receipt in the canonical object"
+    },
+    {
+      "name": "mock_runs_are_declared_as_mock",
+      "ok": true,
+      "detail": "providers=['mock-script'] real_model_called=False"
+    },
+    {
+      "name": "no_orders_no_risk_change",
+      "ok": true,
+      "detail": "the canonical object must record zero orders and an untouched risk config"
+    },
+    {
+      "name": "readme_exists",
+      "ok": true,
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/README.md"
+    },
+    {
+      "name": "readme_documents_how_to_reproduce",
+      "ok": true,
+      "detail": "the README must name both the generator and this verifier"
+    },
+    {
+      "name": "checks_carry_no_absolute_path",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "passed": 42,
+  "failed": 0,
+  "failures": []
+}

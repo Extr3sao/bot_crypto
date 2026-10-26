@@ -1,0 +1,29 @@
+{
+  "bytes": 0,
+  "consolidated_at_utc": "2026-10-22T22:10:43.225Z",
+  "consolidation_id": "1h:ETH@20261022T221043Z-a2bce8a6",
+  "counts_toward_coverage": true,
+  "coverage_status": "PENDING_WINDOW_OPEN",
+  "dataset_id": "EXP-004A-1H-ETH-P3",
+  "days": [],
+  "declaration": {
+    "declaration_id": "EXP-004A.datasets.phase3/v1",
+    "path": "config/preregistrations/EXP-004A.datasets.phase3.json",
+    "sha256": "baeffad097f7d9370cd5b3aa3ab91517ee01d409b7dcbb00c96aad82e54a2cfe"
+  },
+  "declared_rows": 2160,
+  "defects": [],
+  "note": "Deterministic in the shards: the bytes are the shards' own lines, days in order, bars by open. Nothing about this run is written inside them.",
+  "prospective": true,
+  "quarantined_days": [],
+  "row_count": 0,
+  "run_id": "20261022T221043Z-a2bce8a6",
+  "schema_version": "1.0",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "sha256_on_disk": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "slice": "1h:ETH",
+  "window": {
+    "end_utc": "2027-01-21T00:00:00.000Z",
+    "start_utc": "2026-10-23T00:00:00.000Z"
+  }
+}

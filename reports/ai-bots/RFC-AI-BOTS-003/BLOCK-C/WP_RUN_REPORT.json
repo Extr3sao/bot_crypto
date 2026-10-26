@@ -1,0 +1,270 @@
+{
+  "authority": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_paths": 181,
+    "head": "ffbc0cad593bbe3a8202a99d6c90fd9a499fda03"
+  },
+  "baseline": "ffbc0cad593bbe3a8202a99d6c90fd9a499fda03",
+  "capture": {
+    "real_0ms": {
+      "chain": true,
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "latency_ms": 0,
+      "lines": 210,
+      "net_realised_usdt": -85.426764,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    "real_900ms": {
+      "chain": true,
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16,
+        "requote:WAITING_FOR_QUOTE": 50
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "latency_ms": 900,
+      "lines": 210,
+      "net_realised_usdt": -97.926767,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    "real_900ms_hole": {
+      "chain": true,
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 14,
+        "guard:DATA_GAP": 2,
+        "requote:WAITING_FOR_QUOTE": 48
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "latency_ms": 900,
+      "lines": 208,
+      "net_realised_usdt": -85.449238,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    "real_900ms_wide_stop": {
+      "chain": true,
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16,
+        "requote:WAITING_FOR_QUOTE": 50
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "latency_ms": 900,
+      "lines": 210,
+      "net_realised_usdt": -34.247921,
+      "policy_override": {
+        "default_stop_loss_pct": 2.0,
+        "default_take_profit_pct": 3.0
+      },
+      "synthetic_dataset": false
+    },
+    "synthetic_gap_open": {
+      "chain": true,
+      "closed_trades": 1,
+      "counters": {
+        "action:LONG": 58,
+        "action:NO_TRADE": 56,
+        "closed_trades": 1,
+        "dropped:ALREADY_LONG": 52,
+        "dropped:MODEL_NO_TRADE": 56,
+        "fills": 1,
+        "gap_exits": 1,
+        "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+        "risk_blocked:daily_loss_limit": 4
+      },
+      "fills": 1,
+      "gap_exits": 1,
+      "latency_ms": 0,
+      "lines": 124,
+      "net_realised_usdt": -16.232058,
+      "policy_override": {
+        "max_daily_loss_pct": 0.05
+      },
+      "synthetic_dataset": true
+    }
+  },
+  "declarations": {
+    "BUILDER": "scripts/ai_bots_003c_capture.py",
+    "FALSE_SUCCESS": 0,
+    "PROSPECTIVE_PAPER_VALIDATED": false,
+    "REAL_MODEL_CALLED": false,
+    "TEST_TARGET": "src/trading_bot/vision/lane.py::VisionLane.run with the production RiskManager and PaperBroker",
+    "VERIFIER": "scripts/ai_bots_003c_verify.py (no trading_bot import)"
+  },
+  "independent_verification": {
+    "real_0ms": {
+      "failed": 0,
+      "passed": 24,
+      "verdict": "PASS"
+    },
+    "real_900ms": {
+      "failed": 0,
+      "passed": 24,
+      "verdict": "PASS"
+    },
+    "real_900ms_hole": {
+      "failed": 0,
+      "passed": 24,
+      "verdict": "PASS"
+    },
+    "real_900ms_wide_stop": {
+      "failed": 0,
+      "passed": 24,
+      "verdict": "PASS"
+    },
+    "synthetic_gap_open": {
+      "failed": 0,
+      "passed": 24,
+      "verdict": "PASS"
+    }
+  },
+  "known_limitations": [
+    "The provider is a deterministic script, not a model: every ledger records provider=replay. No alpha, no profitability and no live latency is claimed.",
+    "The open-gap stop is unreachable on this dataset: over 3000 hourly bars of UNI and AAVE the largest close-to-open move is 0.30 %, and 0 of 426 simulated entries with a 2 % stop were stopped at an open. The branch is exercised by tests C-01/C-02/C-03 and by the declared synthetic scenario.",
+    "The ledger is not byte-identical between runs: every line seals the wall-clock instant it was written (recorded_at_utc). The economic projection is what must and does match.",
+    "Position sizing is the risk policy's (0.5 % stop for the canonical runs), never the script's stop: the lane records the model's stop as advice only."
+  ],
+  "mutations": {
+    "real_0ms": {
+      "applied": 10,
+      "caught": 10,
+      "skipped": 3,
+      "verdict": "PASS"
+    },
+    "real_900ms": {
+      "applied": 10,
+      "caught": 10,
+      "skipped": 3,
+      "verdict": "PASS"
+    },
+    "real_900ms_hole": {
+      "applied": 10,
+      "caught": 10,
+      "skipped": 3,
+      "verdict": "PASS"
+    },
+    "real_900ms_wide_stop": {
+      "applied": 10,
+      "caught": 10,
+      "skipped": 3,
+      "verdict": "PASS"
+    },
+    "synthetic_gap_open": {
+      "applied": 13,
+      "caught": 13,
+      "skipped": 0,
+      "verdict": "PASS"
+    }
+  },
+  "parent": "RFC-TAP-AI-BOTS-003",
+  "scope": "PAPER/SHADOW only: no credentials, no live exchange calls, no paid API, no changes to config/risk.yaml",
+  "test_suites": [
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/vision -q -p no:warnings",
+      "exit_code": 0,
+      "result": "160 passed in 155.72s (0:02:35)",
+      "suite": "tests/unit/vision"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/paper -q -p no:warnings",
+      "exit_code": 0,
+      "result": "73 passed in 2.20s",
+      "suite": "tests/unit/paper"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/risk -q -p no:warnings",
+      "exit_code": 0,
+      "result": "147 passed in 11.67s",
+      "suite": "tests/unit/risk"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/intelligence -q -p no:warnings",
+      "exit_code": 0,
+      "result": "28 passed in 4.90s",
+      "suite": "tests/unit/intelligence"
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/reports -q -p no:warnings",
+      "exit_code": 0,
+      "result": "51 passed in 9.22s",
+      "suite": "tests/unit/reports"
+    }
+  ],
+  "work_package": "WP-TAP-AI-BOTS-003C",
+  "publication": {
+    "runtime_commit": "86d4f12",
+    "runtime_commit_parent": "ffbc0ca",
+    "clean_archive_rehearsal": {
+      "extracted_at": "/tmp/003c_archive",
+      "verifier": {
+        "scenario": "synthetic_gap_open",
+        "passed": 24,
+        "failed": 0,
+        "verdict": "PASS",
+        "exit": 0
+      },
+      "tests": {
+        "file": "tests/unit/vision/test_open_phase_causality.py",
+        "passed": 19,
+        "failed": 0,
+        "exit": 0
+      },
+      "note": "run from committed code, not the working copy"
+    },
+    "artifacts": [
+      "PIT_OPEN_EVENT_TRACE.jsonl",
+      "DATA_COVERAGE_LEDGER.jsonl",
+      "RISK_NET_RECONCILIATION.json",
+      "WP_RUN_REPORT.json",
+      "RUN_REPORT.md",
+      "FINAL_REPORT.md",
+      "INDEPENDENT_VERIFICATION.json",
+      "MUTATION_REPORT.json",
+      "evidence/TEST_COMMANDS.txt",
+      "evidence/CLEAN_ARCHIVE.json"
+    ]
+  }
+}

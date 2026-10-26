@@ -1,0 +1,113 @@
+{
+  "builder": [
+    "scripts/wp_edge04_freeze.py",
+    "scripts/wp_edge04_deps.py"
+  ],
+  "checks": [
+    {
+      "check": "FREEZE_MANIFEST_ANSWERS_TO_BYTES",
+      "detail": "23 shard(s) re-hashed; 0 difference(s)",
+      "ok": true,
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "check": "EVERY_FROZEN_BAR_WAS_CLOSED",
+      "detail": "a shard ending on an open bar is refused at freeze time; none here is open",
+      "ok": true,
+      "open_shards": [],
+      "status": "PASS"
+    },
+    {
+      "agree": {
+        "1h:BTC": true,
+        "1h:ETH": true,
+        "1h:SOL": true
+      },
+      "check": "FREEZING_DID_NOT_MOVE_THE_PINS",
+      "derived": {
+        "1h:BTC": "f4d16c3664c142d1",
+        "1h:ETH": "365046d4738aa7b1",
+        "1h:SOL": "847d8eb45eafebd8"
+      },
+      "detail": "3/3 EDGE-03 1h pins still hold after the manifest was added",
+      "ok": true,
+      "pins": {
+        "1h:BTC": "f4d16c3664c142d1",
+        "1h:ETH": "365046d4738aa7b1",
+        "1h:SOL": "847d8eb45eafebd8"
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "MIRROR_IS_A_REAL_SECOND_COPY",
+      "detail": "23/23 shards identical in C:\\Users\\GVLLFR0035\\exp004a-corpus-mirror\\alpha-expansion-v1-data",
+      "ok": true,
+      "status": "PASS"
+    },
+    {
+      "check": "RESTORE_DRILL_IS_REAL",
+      "detail": "24 file(s) deleted, verify said not ok, restored digest e813921a0c91d682, reader agrees=True",
+      "drill": {
+        "reader_agrees": true,
+        "restored": true,
+        "shards_removed": 24
+      },
+      "ok": true,
+      "status": "PASS"
+    },
+    {
+      "check": "PAPER_RUN_WAS_PAPER_AND_RAN",
+      "commit": "c02edc0a46a3499e4869bd6aa4ae944fd89b8970",
+      "detail": "mode=paper environment=fake:binance cycles=2 orders=0 failures=0 traces=2",
+      "ok": true,
+      "status": "PASS"
+    },
+    {
+      "check": "EXP004A_STILL_BLOCKED",
+      "detail": "3/3 frozen 15m shards absent; no substitute was placed under data/",
+      "missing": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "ok": true,
+      "status": "PASS"
+    },
+    {
+      "check": "FORWARD_TASK_STILL_PARKED",
+      "detail": "TradingAgentic-EDGE04-Forward enabled=False",
+      "ok": true,
+      "status": "PASS",
+      "task": {
+        "enabled": false,
+        "exit_code": 0
+      }
+    },
+    {
+      "check": "MATRIX_BLOCKS_ONLY_WHAT_IT_CAN_NAME",
+      "detail": "29 blocked of 470; every blocked row names the reader that needs the absent directory",
+      "ok": true,
+      "status": "PASS"
+    },
+    {
+      "check": "FALSE_SUCCESS_ZERO",
+      "claims": [],
+      "detail": "0 artefact(s) claim the frozen campaign is recovered or unblocked",
+      "ok": true,
+      "status": "PASS"
+    },
+    {
+      "check": "BUILDER_NEQ_VERIFIER",
+      "detail": "builder: scripts/wp_edge04_freeze.py + scripts/wp_edge04_deps.py; verifier: scripts/wp_edge04_verify.py (re-hashes, re-derives pins from the source text)",
+      "ok": true,
+      "status": "PASS"
+    }
+  ],
+  "false_success": 0,
+  "passed": 11,
+  "total": 11,
+  "verdict": "EVIDENCE_CONSISTENT_WITH_BLOCKED",
+  "verifier": "scripts/wp_edge04_verify.py",
+  "wp": "EDGE04-PROGRESS"
+}

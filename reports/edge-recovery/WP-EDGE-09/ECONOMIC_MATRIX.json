@@ -1,0 +1,323 @@
+{
+  "schema_version": "EDGE09_V1",
+  "rows": [
+    {
+      "market": "perp",
+      "symbol": "BTCUSDT",
+      "round_trip_bps": 23.1104,
+      "required_bps": 34.6656,
+      "fee_component_bps": 20.0,
+      "best_horizon_seconds": 60,
+      "best_long_only_gross_bps": 0.620064,
+      "net_bps": -22.490336,
+      "deficit_to_break_even_bps": -22.490336,
+      "ic": 0.097206,
+      "n": 5852,
+      "verdict": "COST_KILLED",
+      "what_would_be_needed": 34.045536
+    },
+    {
+      "market": "perp",
+      "symbol": "ETHUSDT",
+      "round_trip_bps": 23.1512,
+      "required_bps": 34.7268,
+      "fee_component_bps": 20.0,
+      "best_horizon_seconds": 60,
+      "best_long_only_gross_bps": 1.148407,
+      "net_bps": -22.002793,
+      "deficit_to_break_even_bps": -22.002793,
+      "ic": 0.15202,
+      "n": 5867,
+      "verdict": "COST_KILLED",
+      "what_would_be_needed": 33.578393
+    },
+    {
+      "market": "perp",
+      "symbol": "SOLUSDT",
+      "round_trip_bps": 24.0731,
+      "required_bps": 36.1096,
+      "fee_component_bps": 20.0,
+      "best_horizon_seconds": 60,
+      "best_long_only_gross_bps": 1.582703,
+      "net_bps": -22.490397,
+      "deficit_to_break_even_bps": -22.490397,
+      "ic": 0.152669,
+      "n": 5785,
+      "verdict": "COST_KILLED",
+      "what_would_be_needed": 34.526947
+    },
+    {
+      "market": "spot",
+      "symbol": "BTCUSDT",
+      "round_trip_bps": 23.0968,
+      "required_bps": 34.6452,
+      "fee_component_bps": 20.0,
+      "best_horizon_seconds": 60,
+      "best_long_only_gross_bps": 0.817203,
+      "net_bps": -22.279597,
+      "deficit_to_break_even_bps": -22.279597,
+      "ic": 0.229057,
+      "n": 14488,
+      "verdict": "COST_KILLED",
+      "what_would_be_needed": 33.827997
+    },
+    {
+      "market": "spot",
+      "symbol": "ETHUSDT",
+      "round_trip_bps": 23.1508,
+      "required_bps": 34.7262,
+      "fee_component_bps": 20.0,
+      "best_horizon_seconds": 60,
+      "best_long_only_gross_bps": 0.827246,
+      "net_bps": -22.323554,
+      "deficit_to_break_even_bps": -22.323554,
+      "ic": 0.140261,
+      "n": 6712,
+      "verdict": "COST_KILLED",
+      "what_would_be_needed": 33.898954
+    },
+    {
+      "market": "spot",
+      "symbol": "SOLUSDT",
+      "round_trip_bps": 24.0813,
+      "required_bps": 36.122,
+      "fee_component_bps": 20.0,
+      "best_horizon_seconds": 60,
+      "best_long_only_gross_bps": 1.46279,
+      "net_bps": -22.61851,
+      "deficit_to_break_even_bps": -22.61851,
+      "ic": 0.142395,
+      "n": 6598,
+      "verdict": "COST_KILLED",
+      "what_would_be_needed": 34.65916
+    }
+  ],
+  "venue_comparison": {
+    "hypothesis": "E-02",
+    "best_measured_gross_bps": 1.582703,
+    "scenarios": [
+      {
+        "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+        "venue": "Binance",
+        "assets_compared": 10,
+        "cheapest_round_trip_bps": 22.9866,
+        "fee_component_bps": 20.0,
+        "net_at_best_gross_bps": -21.403897,
+        "clears_cost": false,
+        "clears_1_5x": false
+      },
+      {
+        "scenario": "MEXC_SPOT_TAKER",
+        "venue": "MEXC",
+        "assets_compared": 10,
+        "cheapest_round_trip_bps": 12.9866,
+        "fee_component_bps": 10.0,
+        "net_at_best_gross_bps": -11.403897,
+        "clears_cost": false,
+        "clears_1_5x": false
+      },
+      {
+        "scenario": "OKX_SPOT_TAKER",
+        "venue": "OKX",
+        "assets_compared": 10,
+        "cheapest_round_trip_bps": 22.9866,
+        "fee_component_bps": 20.0,
+        "net_at_best_gross_bps": -21.403897,
+        "clears_cost": false,
+        "clears_1_5x": false
+      },
+      {
+        "scenario": "KRAKENPRO_SPOT_TAKER",
+        "venue": "Kraken Pro",
+        "assets_compared": 10,
+        "cheapest_round_trip_bps": 82.9866,
+        "fee_component_bps": 80.0,
+        "net_at_best_gross_bps": -81.403897,
+        "clears_cost": false,
+        "clears_1_5x": false
+      }
+    ],
+    "cheapest_scenario": "MEXC_SPOT_TAKER",
+    "falsified": true,
+    "note": "a venue change is a governance decision; this only measures whether the fee schedule is what blocks the edge"
+  },
+  "frequency_pooled": [
+    {
+      "horizon_seconds": 1,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 0.0,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 0.0,
+        "perp|ETHUSDT": 0.0,
+        "spot|BTCUSDT": 0.0,
+        "spot|ETHUSDT": 0.0,
+        "perp|SOLUSDT": 0.0,
+        "spot|SOLUSDT": 0.0
+      },
+      "streams_with_any_clearing": {},
+      "active_target_per_day": 3.0,
+      "meets_target": false,
+      "is_upper_bound": true
+    },
+    {
+      "horizon_seconds": 5,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 0.0,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 0.0,
+        "perp|ETHUSDT": 0.0,
+        "spot|BTCUSDT": 0.0,
+        "spot|ETHUSDT": 0.0,
+        "perp|SOLUSDT": 0.0,
+        "spot|SOLUSDT": 0.0
+      },
+      "streams_with_any_clearing": {},
+      "active_target_per_day": 3.0,
+      "meets_target": false,
+      "is_upper_bound": true
+    },
+    {
+      "horizon_seconds": 60,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 48.018,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 12.003,
+        "perp|ETHUSDT": 0.0,
+        "spot|BTCUSDT": 0.0,
+        "spot|ETHUSDT": 0.0,
+        "perp|SOLUSDT": 24.01,
+        "spot|SOLUSDT": 12.005
+      },
+      "streams_with_any_clearing": {
+        "perp|BTCUSDT": 12.003,
+        "perp|SOLUSDT": 24.01,
+        "spot|SOLUSDT": 12.005
+      },
+      "active_target_per_day": 3.0,
+      "meets_target": true,
+      "is_upper_bound": true
+    },
+    {
+      "horizon_seconds": 900,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 179.619,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 12.003,
+        "perp|ETHUSDT": 24.01,
+        "spot|BTCUSDT": 24.007,
+        "spot|ETHUSDT": 24.01,
+        "perp|SOLUSDT": 48.02,
+        "spot|SOLUSDT": 36.016
+      },
+      "streams_with_any_clearing": {
+        "perp|BTCUSDT": 12.003,
+        "perp|ETHUSDT": 24.01,
+        "spot|BTCUSDT": 24.007,
+        "spot|ETHUSDT": 24.01,
+        "perp|SOLUSDT": 48.02,
+        "spot|SOLUSDT": 36.016
+      },
+      "active_target_per_day": 3.0,
+      "meets_target": true,
+      "is_upper_bound": true
+    },
+    {
+      "horizon_seconds": 3600,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 11.553,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 0.0,
+        "perp|ETHUSDT": 0.0,
+        "spot|BTCUSDT": 0.0,
+        "spot|ETHUSDT": 0.0,
+        "perp|SOLUSDT": 0.0,
+        "spot|SOLUSDT": 0.0
+      },
+      "streams_with_any_clearing": {},
+      "active_target_per_day": 3.0,
+      "meets_target": true,
+      "is_upper_bound": true
+    }
+  ],
+  "capacity": {
+    "hypothesis": "E-03",
+    "rows": [
+      {
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "snapshots": 123,
+        "median_notional_within_5bps_usd": 391074.9372,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "snapshots": 124,
+        "median_notional_within_5bps_usd": 312455.2294,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "snapshots": 119,
+        "median_notional_within_5bps_usd": 957722.9294,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "snapshots": 4,
+        "median_notional_within_5bps_usd": 125441.138,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "snapshots": 4,
+        "median_notional_within_5bps_usd": 41478.1355,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "snapshots": 3,
+        "median_notional_within_5bps_usd": 234023.5061,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      }
+    ],
+    "capacity_ok_for_all": true,
+    "note": "spot depth snapshots are rare in this capture, so a spot capacity claim rests on a small number of observations and is reported as such"
+  },
+  "promotion": "NONE"
+}

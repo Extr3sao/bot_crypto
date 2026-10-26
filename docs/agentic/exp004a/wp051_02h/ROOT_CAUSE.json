@@ -1,0 +1,99 @@
+{
+  "claims": [
+    {
+      "claim": "the instant 02G named was a copy, not the live store",
+      "evidence": {
+        "claimed_last_bar_utc": "2026-10-22T18:00:00Z",
+        "live_last_bar_is_newer": true,
+        "live_last_bar_utc": "2026-10-23T06:00:00.000Z",
+        "worktree_copy": "data/forward/ is git-ignored; the 02G worktree holds a copy"
+      },
+      "id": "RC1",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "claim": "the live store has a real hole, and its cause was the disk guard",
+      "evidence": {
+        "blocked_ticks_in_window": 36,
+        "first_blocked_utc": "2026-10-22T18:10:56.000Z",
+        "last_blocked_utc": "2026-10-23T06:55:57.000Z",
+        "min_free_gib": 0.0,
+        "reason": "0.6594 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request"
+      },
+      "id": "RC2",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "claim": "the observer resumed by itself after the audited episode, without any intervention",
+      "evidence": {
+        "a_newer_episode_is_still_open": false,
+        "audited_episode": {
+          "blocked_ticks": 2,
+          "first_blocked_start_utc": "2026-10-23T06:40:57.000Z",
+          "last_block_free_gib": 0.6594,
+          "last_block_health": "BLOCKED",
+          "last_block_reason": "0.6594 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+          "last_blocked_start_utc": "2026-10-23T06:55:57.000Z"
+        },
+        "open_episode": null,
+        "recovery_latency_seconds": 899.0,
+        "resume": {
+          "new_bars": 12,
+          "run_id": "FWD-EDGE04-20261023T070000Z",
+          "started_at_utc": "2026-10-23T07:10:56.000Z"
+        }
+      },
+      "id": "RC3",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "claim": "the hole cost the declaration a whole day, and no repair is possible",
+      "evidence": {
+        "complete_days_by_asset": {
+          "BTC": [],
+          "ETH": [],
+          "SOL": []
+        },
+        "coverage_complete_reachable": false,
+        "declared_days": 90,
+        "declared_rows": 6480,
+        "fraction_still_reachable": 0.988889,
+        "lost_days_any_asset": [
+          "2026-10-23"
+        ],
+        "lost_days_by_asset": {
+          "BTC": [
+            "2026-10-23"
+          ],
+          "ETH": [
+            "2026-10-23"
+          ],
+          "SOL": [
+            "2026-10-23"
+          ]
+        },
+        "reading": "COVERAGE_COMPLETE requires admissible_rows == declared_rows exactly. Once a day is quarantined that equality is arithmetically unreachable, so the declaration as written can no longer be completed, whatever the remaining days do. The ceiling is computed by removing the lost days only; it assumes every remaining day arrives clean, which is an assumption, not a result.",
+        "required_fraction": 0.9,
+        "rows_per_day": 72,
+        "rows_still_reachable": 6408,
+        "status_now": "CEILING_BELOW_DECLARED"
+      },
+      "id": "RC4",
+      "verdict": "CONFIRMED"
+    }
+  ],
+  "finding": "It did not. The store 02G measured is a copy of data/forward made inside that package's worktree for a rehearsal, and a copy stops when the copying stops. The live store kept growing; the real interruption was elsewhere and shorter.",
+  "generated_at_utc": "2026-10-23T07:43:55.619Z",
+  "head": "6987afcf2ab6150414496a096ef249c367768316",
+  "not_the_cause": [
+    "the scheduler was never disabled or unregistered",
+    "no duplicate observer contended for the lease",
+    "the provider did not fail: refused ticks made zero market requests",
+    "the store was not corrupt: no corrupt line appears in the tick log"
+  ],
+  "package": "WP-051-02H",
+  "question": "why did the forward store stop at 2026-10-22T18:00Z?",
+  "root_cause": "DISK_BUDGET_EXCEEDED: the observer's own storage guard refused to make a market request while the volume was below its critical free-space floor, and it said so in every tick it refused. Nothing was broken; nothing was fetched.",
+  "schema_version": "1.0",
+  "why_nobody_noticed": "the refusal reached alerts.jsonl and health.json, both of which are files that must be opened. The scheduler's last-result field carried exit 5 for hours and no one read that either. There was no push, and there is still none: C9."
+}

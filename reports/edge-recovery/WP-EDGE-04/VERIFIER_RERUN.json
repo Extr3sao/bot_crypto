@@ -1,0 +1,237 @@
+{
+  "self_test": {
+    "applied": 20,
+    "baseline_verdict": "VERIFY_PASS",
+    "detected": 20,
+    "sabotages": [
+      {
+        "applied": true,
+        "check": "ARTIFACTS_PRESENT",
+        "detail": "missing or unparsable: health.json",
+        "detected": true,
+        "sabotage": "delete a required artefact"
+      },
+      {
+        "applied": true,
+        "check": "SLOT_DISCIPLINE",
+        "detail": "a slot was observed more than once: ['2026-10-15T15:30Z']",
+        "detected": true,
+        "sabotage": "duplicate an observed slot"
+      },
+      {
+        "applied": true,
+        "check": "SLOT_DISCIPLINE",
+        "detail": "slot key is not on the 15-minute grid: 2026-10-13T00:07Z; run rows that consumed a slot without a slot row: ['2026-10-13T11:15Z']; slot rows with no consuming run row: ['2026-10-13T00:07Z']; slot 2026-10-13T00:07Z: no consuming run row answers for 'FWD-EDGE04-20261013T111500Z'",
+        "detected": true,
+        "sabotage": "move a slot key off the grid"
+      },
+      {
+        "applied": true,
+        "check": "OUTCOMES_AND_EXIT_CODES",
+        "detail": "FWD-EDGE04-20261013T111500Z: exit code 99 does not follow from NO_NEW_DATA; FWD-EDGE04-20261013T111500Z: exit code 99 does not follow from ALREADY_OBSERVED; FWD-EDGE04-20261013T111500Z: exit code 0 does not follow from ALREADY_RUNNING; FWD-EDGE04-20261013T111500Z: exit code 99 does not follow from ALREADY_OBSERVED; FWD-EDGE04-20261013T113000Z: exit code 99 does not follow from OBSERVED",
+        "detected": true,
+        "sabotage": "flatten every exit code to zero"
+      },
+      {
+        "applied": true,
+        "check": "NO_ORDER_PATH_OR_PROMOTION",
+        "detail": "runs.jsonl: order_sent is not false",
+        "detected": true,
+        "sabotage": "claim an order was sent"
+      },
+      {
+        "applied": true,
+        "check": "NO_ORDER_PATH_OR_PROMOTION",
+        "detail": "daily/2026-10-13.json: promotion is not NONE; daily/2026-10-14.json: promotion is not NONE; daily/2026-10-15.json: promotion is not NONE; daily/2026-10-13.json: names a PAPER or LIVE state; daily/2026-10-14.json: names a PAPER or LIVE state",
+        "detected": true,
+        "sabotage": "promote the lane in a day file"
+      },
+      {
+        "applied": true,
+        "check": "EXPECTATION_ARITHMETIC",
+        "detail": "FWD-EDGE04-20261013T111500Z/1h:BTC: missing 0 != 5; FWD-EDGE04-20261013T111500Z: expected_new_bars is not the sum of its series; FWD-EDGE04-20261013T111500Z: missing_bars is not the sum of its series; FWD-EDGE04-20261013T111500Z: 5 bar(s) missing but the outcome is NO_NEW_DATA",
+        "detected": true,
+        "sabotage": "hide a shortfall in one series"
+      },
+      {
+        "applied": true,
+        "check": "MARKET_REQUESTS_ARE_SPENT",
+        "detail": "FWD-EDGE04-SABOTAGE: DISK_BUDGET_EXCEEDED spent 42 market request(s)",
+        "detected": true,
+        "sabotage": "spend requests on a refusal"
+      },
+      {
+        "applied": true,
+        "check": "RULESET_PINNED_AND_UNCHANGED",
+        "detail": "the published ruleset digest d073a2d686b9b198\u2026 is not the one the run log pinned; the coverage artefact names a different ruleset digest",
+        "detected": true,
+        "sabotage": "re-pin the ruleset to another digest"
+      },
+      {
+        "applied": true,
+        "check": "COVERAGE_RULE_APPLIED",
+        "detail": "the counted observation days do not match the day list",
+        "detected": true,
+        "sabotage": "inflate the observation day count"
+      },
+      {
+        "applied": true,
+        "check": "BACKFILL_IS_NOT_AN_OBSERVATION",
+        "detail": "days counted as observed and as backfilled: ['2026-03-01']; 2026-03-01: counted as observed with coverage {'1h:BTC': 0.0, '1h:ETH': 0.0, '1h:SOL': 0.0}",
+        "detected": true,
+        "sabotage": "call a backfilled day observed"
+      },
+      {
+        "applied": true,
+        "check": "FREEZE_AND_FLOOR_DECLARED",
+        "detail": "the 1h freeze is not 2026-02-28T23:00:00Z",
+        "detected": true,
+        "sabotage": "move the 1h freeze"
+      },
+      {
+        "applied": true,
+        "check": "DAILY_EVIDENCE_CONSISTENT",
+        "detail": "daily/2026-10-13.json: 15m:BTC digest does not answer to the store",
+        "detected": true,
+        "sabotage": "flip a day's store digest"
+      },
+      {
+        "applied": true,
+        "check": "HEALTH_FOLLOWS_THE_LOG",
+        "detail": "8 consecutive non-observations but the health reading is HEALTHY; the published run of failures (0) is not 8; the health artefact names a different last tick than the run log",
+        "detected": true,
+        "sabotage": "declare HEALTHY under a failure streak"
+      },
+      {
+        "applied": true,
+        "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
+        "detail": "the measured lane size 999999999 is larger than the tree 5463235; the over-budget flag does not follow from the declared limit",
+        "detected": true,
+        "sabotage": "inflate the measured lane size"
+      },
+      {
+        "applied": true,
+        "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
+        "detail": "runs.jsonl holds 2881 rows, above its declared cap of 2880",
+        "detected": true,
+        "sabotage": "grow a bounded log past its cap"
+      },
+      {
+        "applied": true,
+        "check": "PUBLICATION_SWAPPED_ATOMICALLY",
+        "detail": "a published file disagrees with its recorded digest: CUMULATIVE.json (49446 bytes on disk, 49446 recorded)",
+        "detected": true,
+        "sabotage": "break a published digest"
+      },
+      {
+        "applied": true,
+        "check": "PUBLICATION_SWAPPED_ATOMICALLY",
+        "detail": "a staging tree survived: ['.staging-1']; 1 published file(s) the pointer does not name: ['.staging-1/HALF.md']",
+        "detected": true,
+        "sabotage": "leave a staging tree behind"
+      },
+      {
+        "applied": true,
+        "check": "SCHEDULER_REGISTRATION_READ",
+        "detail": "the task is not enabled",
+        "detected": true,
+        "sabotage": "disable the registered task"
+      },
+      {
+        "applied": true,
+        "check": "SLOT_DISCIPLINE",
+        "detail": "slot rows with no consuming run row: ['2026-10-15T15:30Z']; slot 2026-10-15T15:30Z: no consuming run row answers for 'FWD-EDGE04-20261015T153000Z'",
+        "detected": true,
+        "sabotage": "remove the run row behind a slot"
+      }
+    ],
+    "skipped": 0,
+    "undetected": 0,
+    "verdict": "SELF_TEST_PASS"
+  },
+  "verification": {
+    "checks": [
+      {
+        "check": "ARTIFACTS_PRESENT",
+        "detail": "9 file(s), 3 daily evidence file(s)",
+        "passed": true
+      },
+      {
+        "check": "SLOT_DISCIPLINE",
+        "detail": "141 slot(s), no duplicates, all on the grid",
+        "passed": true
+      },
+      {
+        "check": "OUTCOMES_AND_EXIT_CODES",
+        "detail": "196 run row(s) agree with the vocabulary",
+        "passed": true
+      },
+      {
+        "check": "NO_ORDER_PATH_OR_PROMOTION",
+        "detail": "no order path and no promotion in any artefact",
+        "passed": true
+      },
+      {
+        "check": "EXPECTATION_ARITHMETIC",
+        "detail": "142 run row(s) recomputed from their own series",
+        "passed": true
+      },
+      {
+        "check": "MARKET_REQUESTS_ARE_SPENT",
+        "detail": "196 run row(s) spent their requests coherently",
+        "passed": true
+      },
+      {
+        "check": "RULESET_PINNED_AND_UNCHANGED",
+        "detail": "142 run row(s) pinned to d073a2d686b9b198\u2026",
+        "passed": true
+      },
+      {
+        "check": "COVERAGE_RULE_APPLIED",
+        "detail": "0 prospective day(s), 228 dense-but-backfilled",
+        "passed": true
+      },
+      {
+        "check": "BACKFILL_IS_NOT_AN_OBSERVATION",
+        "detail": "0 day(s) counted, none backfilled",
+        "passed": true
+      },
+      {
+        "check": "DAILY_EVIDENCE_CONSISTENT",
+        "detail": "3 day file(s), 18 digest(s) recomputed from the store",
+        "passed": true
+      },
+      {
+        "check": "HEALTH_FOLLOWS_THE_LOG",
+        "detail": "DEGRADED with 0 consecutive non-observation(s)",
+        "passed": true
+      },
+      {
+        "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
+        "detail": "lane 5462253 bytes of 268435456 declared",
+        "passed": true
+      },
+      {
+        "check": "PUBLICATION_SWAPPED_ATOMICALLY",
+        "detail": "15 published file(s) named and answered (15 digest(s) recomputed)",
+        "passed": true
+      },
+      {
+        "check": "FREEZE_AND_FLOOR_DECLARED",
+        "detail": "freeze, coverage rule, primary series and floor declared",
+        "passed": true
+      },
+      {
+        "check": "SCHEDULER_REGISTRATION_READ",
+        "detail": "the registration names the entry point, the flags and the cadence \u2014 a declaration, not a measurement",
+        "passed": true
+      }
+    ],
+    "checks_passed": 15,
+    "checks_total": 15,
+    "failures": [],
+    "reading": "this process imports nothing from trading_bot and drives none of the observer's code: it recomputes every claim from the files the observer left behind",
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04\\evidence",
+    "verdict": "VERIFY_PASS"
+  }
+}

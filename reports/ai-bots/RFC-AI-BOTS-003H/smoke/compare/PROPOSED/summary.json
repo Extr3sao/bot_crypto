@@ -1,0 +1,140 @@
+{
+  "accounting": {
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+      "BTC/USDT": 83005.66,
+      "ETH/USDT": 2444.61
+    },
+    "meanings": {
+      "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
+      "costs_total_usdt": "costs_usdt + entry_commissions_accrued_open_usdt",
+      "costs_usdt": "realised cost of closed trades only: execution + entry + exit commissions. Unchanged since 003B; it does NOT include open positions.",
+      "entry_commissions_accrued_open_usdt": "entry commissions of positions still open: charged at close by the broker, but already owed and already withheld from marked equity",
+      "entry_commissions_realised_usdt": "entry commissions inside closed trades",
+      "execution_costs_realised_usdt": "spread/impact cost embedded in closed-trade fills",
+      "exit_commissions_realised_usdt": "exit commissions inside closed trades",
+      "marked_equity_usdt": "initial equity + pnl_total_usdt",
+      "pnl_realised_usdt": "net PnL of closed trades (same value as net_realised_usdt)",
+      "pnl_total_usdt": "pnl_realised_usdt + pnl_unrealised_usdt",
+      "pnl_unrealised_usdt": "open positions marked at the last observable close, net of accrued entry commissions"
+    },
+    "schema_version": "paper-accounting/2"
+  },
+  "book_id": "paper-003g-proposed",
+  "calls": 18,
+  "closed_trades": 0,
+  "costs_realised_usdt": 0,
+  "costs_total_usdt": 0.5,
+  "costs_usdt": 0,
+  "counters": {
+    "action:LONG": 5,
+    "action:NO_TRADE": 9,
+    "action:SHORT": 4,
+    "dropped:ALREADY_LONG": 4,
+    "dropped:MODEL_NO_TRADE": 9,
+    "dropped:OPPOSITE_LONG_OPEN": 4,
+    "fills": 1
+  },
+  "decision_points": 3,
+  "drawdown_pct": 0.009644,
+  "drawdown_status": "MEASURED",
+  "drawdown_usdt": 0.96445,
+  "entry_commissions_accrued_open_usdt": 0.5,
+  "entry_commissions_realised_usdt": 0,
+  "equity_points": 57,
+  "estimated_spend_usd": 0.0,
+  "execution": {
+    "bar_interval_ms": 300000,
+    "data_gap_policy": "fail_closed_unless_independent_coverage",
+    "entry_bar_range_policy": "minutes_strictly_after_the_fill",
+    "entry_quote_sources": {
+      "binance_spot_1m_klines": 1
+    },
+    "exit_ts_resolutions": [
+      "OPEN_GAP",
+      "BAR_WINDOW",
+      "QUOTE"
+    ],
+    "expired_opinions": 0,
+    "fills": 1,
+    "gap_exits": 0,
+    "gap_policy": "open_on_gap",
+    "max_opinion_age_ms": 300000,
+    "open_phase_order": "gap_close>mark>entries>intrabar",
+    "quote_lag_ms": {
+      "max": 21538,
+      "median": 21538,
+      "min": 21538
+    },
+    "quote_source": "bar_open",
+    "stale_valuation_vetoes": 0,
+    "stop_coverage": "entry_bar_from_the_fill",
+    "sub_bar_fills": 1,
+    "subbar_entries": true,
+    "waiting_events": 0
+  },
+  "execution_costs_realised_usdt": 0,
+  "exit_commissions_realised_usdt": 0,
+  "fills": 1,
+  "final_equity_usdt": 10000.0,
+  "gross_realised_usdt": 0,
+  "marked_equity_usdt": 10000.49443125,
+  "net_realised_usdt": 0,
+  "open_positions_at_end": {
+    "BTC/USDT": {
+      "entry_commission_usdt": 0.5,
+      "entry_price": 82840.90083909685,
+      "mark_price": 83005.66,
+      "notional_usdt": 500.0,
+      "position_id": "pos-paper-003g-proposed-00000001",
+      "side": "buy",
+      "unrealised_pnl_usdt": 0.99443125
+    }
+  },
+  "pnl_realised_usdt": 0,
+  "pnl_total_usdt": 0.49443125,
+  "pnl_unrealised_usdt": 0.49443125,
+  "provider": "paper-script",
+  "reconciliation": {
+    "accounting_schema_version": "paper-accounting/2",
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "curve_end_equity_usdt": 10000.49443125,
+    "entry_commission_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "execution_cost_usdt": 0,
+    "exit_commission_usdt": 0,
+    "final_equity_usdt": 10000.0,
+    "identities": {
+      "cash_rebuilds_from_realised_pnl": true,
+      "curve_ends_at_final_equity": true,
+      "every_close_after_its_entry_quote": true,
+      "every_fill_pays_at_or_after_its_answer": true,
+      "marked_equity_rebuilds_from_open_position": true,
+      "net_pnl_nets_every_named_cost": true,
+      "open_positions_are_disjoint_from_closed_trades": true,
+      "realised_costs_equal_closed_trade_legs": true,
+      "risk_equity_matches_marked_equity": true,
+      "total_costs_equal_realised_plus_accrued": true,
+      "total_pnl_moves_the_marked_book": true
+    },
+    "initial_equity_usdt": 10000.0,
+    "marked_equity_usdt": 10000.49443125,
+    "marks_complete_at_end": true,
+    "net_realised_usdt": 0,
+    "open_gap_exits": 0,
+    "open_position_ids_at_end": [
+      "pos-paper-003g-proposed-00000001"
+    ],
+    "open_positions_at_end": 1,
+    "pnl_total_usdt": 0.49443125,
+    "reference_gross_usdt": 0,
+    "risk_equity_usdt": 10000.49443125,
+    "tolerance_usdt": 1e-06,
+    "unrealised_pnl_gross_usdt": 0.99443125,
+    "unrealised_pnl_net_usdt": 0.49443125
+  },
+  "risk_equity_usdt": 10000.494431,
+  "stop_reason": null,
+  "trades": []
+}

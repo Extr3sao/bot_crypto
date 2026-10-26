@@ -1,0 +1,11 @@
+{
+  "bars": 174094,
+  "bytes": 19380640,
+  "command": "freeze",
+  "corpus_digest": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+  "last_close_utc": 1772323200000,
+  "manifest": "reports\\alpha-expansion-v1\\data\\_FREEZE_MANIFEST.json",
+  "ok": true,
+  "root": "reports\\alpha-expansion-v1\\data",
+  "shards": 23
+}

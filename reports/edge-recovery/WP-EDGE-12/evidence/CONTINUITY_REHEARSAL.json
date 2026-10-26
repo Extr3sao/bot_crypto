@@ -1,0 +1,322 @@
+{
+  "failures": [],
+  "generated_at_utc": "2026-10-15T22:36:16Z",
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE",
+  "schema_version": "EDGE12_CONTINUITY_REHEARSAL_V1",
+  "steps": [
+    {
+      "artifacts": {},
+      "expected": "an isolated copy of the live store, byte for byte, over an empty state root",
+      "observed": {
+        "series": {
+          "15m:BTC": {
+            "bytes": 254718,
+            "rows": 810,
+            "sha256": "88861614c0df1c2e0c061417f56b753b62cfeb5839b86756ce5437fca5213262"
+          },
+          "15m:ETH": {
+            "bytes": 252073,
+            "rows": 810,
+            "sha256": "e4a8a5617f31ad3cc4e3de12c45ebdc8ff89482451755ba9865b056a84e0d8c7"
+          },
+          "15m:SOL": {
+            "bytes": 248822,
+            "rows": 810,
+            "sha256": "0b8a5532701bf1c0f522c3af83ae906cd940d821cbaf6e2219f42ca7b70d5452"
+          },
+          "1h:BTC": {
+            "bytes": 1725123,
+            "rows": 5494,
+            "sha256": "d3ed26ea2afe0ef1d5b41f5761dde3ade8edc164212e1bd2e08ea6ba0ef0fe37"
+          },
+          "1h:ETH": {
+            "bytes": 1707117,
+            "rows": 5494,
+            "sha256": "5f3c2e1dabeb12978b876b31804f87da7876abb4a0bb986767a70bbab99cf354"
+          },
+          "1h:SOL": {
+            "bytes": 1667900,
+            "rows": 5494,
+            "sha256": "d4120ec92d65260942d609516904561d7198a3459fbecfe4e581ce8f178e4cce"
+          }
+        },
+        "source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
+        "state_root_emptied": true
+      },
+      "property": "BASELINE",
+      "step_id": "copy_the_store",
+      "verdict": "PASS"
+    },
+    {
+      "artifacts": {},
+      "expected": "a tick that runs the whole pipeline and seals its slot",
+      "observed": {
+        "duration_seconds_the_tick_reports": 215.963,
+        "market_requests": 4,
+        "new_bars": 3,
+        "outcome": "OBSERVED",
+        "slot_key": "2026-10-15T22:30Z",
+        "slot_sealed": true,
+        "store_after": {
+          "15m:BTC": {
+            "bytes": 255032,
+            "rows": 811,
+            "sha256": "bf7c11e29dca7d80127af0e33dc58997332de185735d00b3c69e5a4d97871b09"
+          },
+          "15m:ETH": {
+            "bytes": 252383,
+            "rows": 811,
+            "sha256": "95a1bb218677d3d985bd531facdfb410f8f654441f2ad7ff55716287d1c72fef"
+          },
+          "15m:SOL": {
+            "bytes": 249128,
+            "rows": 811,
+            "sha256": "e35bb177811800c015f3d72f767526ae8eca4214895aa4fb9711d2c5c3d63a00"
+          },
+          "1h:BTC": {
+            "bytes": 1725123,
+            "rows": 5494,
+            "sha256": "d3ed26ea2afe0ef1d5b41f5761dde3ade8edc164212e1bd2e08ea6ba0ef0fe37"
+          },
+          "1h:ETH": {
+            "bytes": 1707117,
+            "rows": 5494,
+            "sha256": "5f3c2e1dabeb12978b876b31804f87da7876abb4a0bb986767a70bbab99cf354"
+          },
+          "1h:SOL": {
+            "bytes": 1667900,
+            "rows": 5494,
+            "sha256": "d4120ec92d65260942d609516904561d7198a3459fbecfe4e581ce8f178e4cce"
+          }
+        },
+        "wall_seconds": 56.398
+      },
+      "property": "BASELINE",
+      "step_id": "first_tick",
+      "verdict": "PASS"
+    },
+    {
+      "artifacts": {},
+      "expected": "ALREADY_OBSERVED with zero market requests and an unchanged store",
+      "observed": {
+        "market_requests": 0,
+        "outcome": "ALREADY_OBSERVED",
+        "slot_seals": 1,
+        "store_unchanged": true,
+        "wall_seconds": 0.028
+      },
+      "property": "IDEMPOTENT_SLOT",
+      "step_id": "repeat_inside_the_same_slot",
+      "verdict": "PASS"
+    },
+    {
+      "artifacts": {},
+      "expected": "ALREADY_RUNNING, no market request, the store untouched",
+      "observed": {
+        "holder": {
+          "acquired_at": 1792104300,
+          "campaign_id": "EDGE04_FORWARD_OBSERVER",
+          "host": "rehearsal",
+          "lease_version": "CAMPAIGN_LEASE_V1",
+          "pid": 32236,
+          "renewed_at": 1792104300,
+          "stale_after_seconds": 300
+        },
+        "lease": {
+          "acquired": false,
+          "holder": {
+            "acquired_at": 1792104300,
+            "campaign_id": "EDGE04_FORWARD_OBSERVER",
+            "host": "rehearsal",
+            "lease_version": "CAMPAIGN_LEASE_V1",
+            "pid": 32236,
+            "renewed_at": 1792104300,
+            "stale_after_seconds": 300
+          },
+          "lease_age_seconds": 30,
+          "status": "ALREADY_RUNNING"
+        },
+        "market_requests": 0,
+        "outcome": "ALREADY_RUNNING",
+        "store_unchanged": true,
+        "wall_seconds": 0.031
+      },
+      "property": "SINGLE_INSTANCE",
+      "step_id": "trigger_while_another_tick_holds_the_lease",
+      "verdict": "PASS"
+    },
+    {
+      "artifacts": {},
+      "expected": "the lease is reclaimed by age and the tick proceeds",
+      "observed": {
+        "lease": {
+          "acquired": true,
+          "holder": {
+            "acquired_at": 1792105230,
+            "campaign_id": "EDGE04_FORWARD_OBSERVER",
+            "host": "DESKTOP-4CHO695",
+            "lease_version": "CAMPAIGN_LEASE_V1",
+            "pid": 32236,
+            "renewed_at": 1792105230,
+            "stale_after_seconds": 300
+          },
+          "previous_holder": {
+            "acquired_at": 1792104300,
+            "campaign_id": "EDGE04_FORWARD_OBSERVER",
+            "host": "rehearsal",
+            "lease_version": "CAMPAIGN_LEASE_V1",
+            "pid": 999999,
+            "renewed_at": 1792103940,
+            "stale_after_seconds": 300
+          },
+          "status": "STALE_LEASE_RECLAIMED"
+        },
+        "lease_age_seconds": 360,
+        "lease_status": "STALE_LEASE_RECLAIMED",
+        "outcome": "NO_NEW_DATA",
+        "previous_holder_pid": 999999,
+        "wall_seconds": 42.629
+      },
+      "property": "STALE_LEASE_RECLAIM",
+      "step_id": "lease_left_by_a_crashed_process",
+      "verdict": "PASS"
+    },
+    {
+      "artifacts": {},
+      "expected": "the next tick recovers every removed bar that had closed by the declared market instant, and only those",
+      "observed": {
+        "clock_instant_utc": "2026-10-15T23:15:30Z",
+        "dropped": {
+          "dropped_per_series": {
+            "15m:BTC": 2,
+            "15m:ETH": 2,
+            "15m:SOL": 2,
+            "1h:BTC": 2,
+            "1h:ETH": 2,
+            "1h:SOL": 2
+          },
+          "dropped_total": 12
+        },
+        "expected_recovery_per_series": {
+          "15m:BTC": 2,
+          "15m:ETH": 2,
+          "15m:SOL": 2,
+          "1h:BTC": 2,
+          "1h:ETH": 2,
+          "1h:SOL": 2
+        },
+        "market_instant_utc": "2026-10-15T22:33:09Z",
+        "new_bars_reported": 12,
+        "note": "the market instant is the first tick's, re-declared: the recovery is measured as the deficit being filled, not as whatever closed while the rehearsal ran",
+        "outcome": "OBSERVED",
+        "rows_after_drop": {
+          "15m:BTC": 809,
+          "15m:ETH": 809,
+          "15m:SOL": 809,
+          "1h:BTC": 5492,
+          "1h:ETH": 5492,
+          "1h:SOL": 5492
+        },
+        "rows_after_recovery": {
+          "15m:BTC": 811,
+          "15m:ETH": 811,
+          "15m:SOL": 811,
+          "1h:BTC": 5494,
+          "1h:ETH": 5494,
+          "1h:SOL": 5494
+        },
+        "rows_before_drop": {
+          "15m:BTC": 811,
+          "15m:ETH": 811,
+          "15m:SOL": 811,
+          "1h:BTC": 5494,
+          "1h:ETH": 5494,
+          "1h:SOL": 5494
+        },
+        "rows_restored_per_series": {
+          "15m:BTC": 2,
+          "15m:ETH": 2,
+          "15m:SOL": 2,
+          "1h:BTC": 2,
+          "1h:ETH": 2,
+          "1h:SOL": 2
+        },
+        "wall_seconds": 45.56
+      },
+      "property": "RESUME_AFTER_RESTART",
+      "step_id": "bars_that_closed_while_the_observer_was_down",
+      "verdict": "PASS"
+    },
+    {
+      "artifacts": {},
+      "expected": "the truncated line is counted and the lane still records its own row",
+      "observed": {
+        "corrupt_log_lines": 1,
+        "outcome": "NO_NEW_DATA",
+        "partial_line_still_present": true,
+        "rows_after": 6,
+        "rows_before": 5,
+        "wall_seconds": 42.187
+      },
+      "property": "INCOMPLETE_WRITE_SURVIVAL",
+      "step_id": "a_log_line_interrupted_mid_write",
+      "verdict": "PASS"
+    },
+    {
+      "artifacts": {},
+      "expected": "the duplicate is dropped and the slot ledger behaves like a set",
+      "observed": {
+        "daily": {
+          "2026-10-15.json": {
+            "hypothetical": true,
+            "new_bars": 15,
+            "order_sent": false,
+            "slots": 3,
+            "ticks": 4
+          }
+        },
+        "duplicates_dropped": 1,
+        "rows_after_repair": 4,
+        "unique_slot_keys": 4
+      },
+      "property": "LEDGER_RECONCILIATION",
+      "step_id": "a_duplicated_slot_seal",
+      "verdict": "PASS"
+    },
+    {
+      "artifacts": {},
+      "expected": "every rehearsal tick fits inside the interval with room for its successor",
+      "observed": {
+        "interval_seconds": 900,
+        "lease_shorter_than_the_interval": true,
+        "lease_stale_after_seconds": 300,
+        "maximum_seconds": 56.398,
+        "note": "the wall figures come from a stopwatch around the call; the reported ones are wall_clock minus the pinned clock and are kept only as a cross-check, because a tick that takes its start from an injected clock cannot time itself",
+        "reported_durations_seconds": [
+          215.963,
+          6.026,
+          -683.927,
+          -1541.287,
+          -2395.676,
+          -3253.46
+        ],
+        "wall_seconds": [
+          56.398,
+          0.028,
+          0.031,
+          42.629,
+          45.56,
+          42.187
+        ]
+      },
+      "property": "TIMEOUT_HANDLING",
+      "step_id": "a_tick_against_its_own_interval",
+      "verdict": "PASS"
+    }
+  ],
+  "store_source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
+  "verdict": "REHEARSAL_PASS",
+  "work_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge12\\rehearsal"
+}

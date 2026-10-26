@@ -1,0 +1,306 @@
+{
+  "candidates_that_match": [],
+  "corpus_present_in_expected_location": false,
+  "every_name_match_hashed": [
+    {
+      "bytes": 347523,
+      "file_sha256": "f9561e3d56c2ab75af973754445db86763a493a29a117e9a6867c502e38980cd",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\BTCUSDT_15m.json"
+    },
+    {
+      "bytes": 347523,
+      "file_sha256": "ab5bba5f9edfa70a5a2f3095534d9fd6c3ccc5e949b77150bc5487bb991c31eb",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\ETHUSDT_15m.json"
+    },
+    {
+      "bytes": 347523,
+      "file_sha256": "849a71302bd0eb1d4e719667fcc8fcac93313f453816dcbc3d03207565ea14f8",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\SOLUSDT_15m.json"
+    },
+    {
+      "bytes": 492327,
+      "file_sha256": "a070ea21ed45721566f0529d6cfe8d2b5e56765d0b7aff617e4dcedf080ae420",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\open_interest_hist\\BTCUSDT_15m.json"
+    },
+    {
+      "bytes": 501011,
+      "file_sha256": "69d5fc114e9771c7f4d1e4aaae62a6a6e6f89e4440900ee2f935a3fcfb1cd6a1",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\open_interest_hist\\ETHUSDT_15m.json"
+    },
+    {
+      "bytes": 498686,
+      "file_sha256": "b5a52a4ff23908e7d0ce632ab601175cc7ff76e3aa300c2bea3c594c917e66de",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\open_interest_hist\\SOLUSDT_15m.json"
+    },
+    {
+      "bytes": 269982,
+      "file_sha256": "bb7fb4b40bef9713dc84ae4246b3eee130ef7c63f364b1a3ec083994d6543aa0",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\taker_long_short_ratio\\BTCUSDT_15m.json"
+    },
+    {
+      "bytes": 277960,
+      "file_sha256": "f4e1dfb9d8344a910fa5e526fcc6b35a60a2231255d1418c77112120cbb033f0",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\taker_long_short_ratio\\ETHUSDT_15m.json"
+    },
+    {
+      "bytes": 282277,
+      "file_sha256": "5652b4e6d78fe47fc4bc0d278f313210e4247f9b4a51aa77f96f9073421f5a9f",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\taker_long_short_ratio\\SOLUSDT_15m.json"
+    },
+    {
+      "bytes": 347523,
+      "file_sha256": "029dd068eee0e8625959ddc115a9e250327de6bbfbb2784afd258d48c0501efd",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_account_ratio\\BTCUSDT_15m.json"
+    },
+    {
+      "bytes": 347523,
+      "file_sha256": "2fda6de0fff780b71d660924693b9cf56231db4212f42846b859d073d024bbff",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_account_ratio\\ETHUSDT_15m.json"
+    },
+    {
+      "bytes": 347523,
+      "file_sha256": "0431f327d8ca676432166738c9e89966b8894819f74152d957319df56e1e44c3",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_account_ratio\\SOLUSDT_15m.json"
+    },
+    {
+      "bytes": 347403,
+      "file_sha256": "07ebdd2fa2e2b37038e8046918dd1484f6607d048789b5d216fc54c476fe71ae",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_position_ratio\\BTCUSDT_15m.json"
+    },
+    {
+      "bytes": 347403,
+      "file_sha256": "bd01bf0ba6430619feb198dfbd5dd5a0d9885763939d5cc74d161f101d70f7d9",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_position_ratio\\ETHUSDT_15m.json"
+    },
+    {
+      "bytes": 347523,
+      "file_sha256": "586c8c4ae4e0dcb53d4ddf00e5ddc8c34c41061dc48fc57c71b9d32637b3cce7",
+      "matches_frozen_pin": false,
+      "matches_recorded_file_sha256": false,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_position_ratio\\SOLUSDT_15m.json"
+    }
+  ],
+  "frozen_pin": {
+    "BTC": "cd1d2ea256a97f7c",
+    "ETH": "b8fd5744cc66f635",
+    "SOL": "72a268137cbe944b"
+  },
+  "purpose": "locate a byte-identical copy of the frozen 15m corpus, or prove there is none",
+  "recorded": {
+    "all_pins_agree": true,
+    "economic001_generated_at_utc": "2026-10-08T15:39:55Z",
+    "shards": {
+      "BTC": {
+        "frozen_pin": "cd1d2ea256a97f7c",
+        "path": "data/raw/alpha003/price/BTCUSDT_15m.json",
+        "pin_agrees": true,
+        "pin_rederived_from_record": "cd1d2ea256a97f7c",
+        "recorded_bytes": 4497888,
+        "recorded_file_sha256": "60b0630153dc8e879d63c9691712c8e15d06ede0cc2ae815725340e44c4e9d7f"
+      },
+      "ETH": {
+        "frozen_pin": "b8fd5744cc66f635",
+        "path": "data/raw/alpha003/price/ETHUSDT_15m.json",
+        "pin_agrees": true,
+        "pin_rederived_from_record": "b8fd5744cc66f635",
+        "recorded_bytes": 4466466,
+        "recorded_file_sha256": "b3b1f02e9a299500b77fc3b8d31a31c3856820daa1c99bba3921d74cec5b943e"
+      },
+      "SOL": {
+        "frozen_pin": "72a268137cbe944b",
+        "path": "data/raw/alpha003/price/SOLUSDT_15m.json",
+        "pin_agrees": true,
+        "pin_rederived_from_record": "72a268137cbe944b",
+        "recorded_bytes": null,
+        "recorded_file_sha256": "d3a637c2f5e98c121f8d197bf8b15229d7ec754d41d59bebf2de2e232a99d0ed"
+      }
+    }
+  },
+  "searches": {
+    "alpha003_trees": {
+      "files_scanned": 143647,
+      "hits": [],
+      "roots": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data",
+        "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\reports",
+        "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\docs",
+        "C:\\Users\\GVLLFR0035\\Downloads",
+        "C:\\Users\\GVLLFR0035\\incident-backup-20261023",
+        "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp"
+      ]
+    },
+    "drives_present": [
+      "C:\\",
+      "G:\\"
+    ],
+    "git": {
+      "dangling_blobs": 155,
+      "largest_dangling_blobs": [
+        {
+          "bytes": 3580812,
+          "sha": "062684631ca7890183ef248442d6a8dcbb93cd61"
+        },
+        {
+          "bytes": 2099828,
+          "sha": "30f45f0a9687eee41fb47b38998c9c54988b65b5"
+        },
+        {
+          "bytes": 1893361,
+          "sha": "1063e683db85466e46e021c9129b5d017290dd7c"
+        },
+        {
+          "bytes": 1786519,
+          "sha": "149b767e4f2637b9270eaecf9f4839d8d6d0ae1d"
+        },
+        {
+          "bytes": 473482,
+          "sha": "3fcb173c41c0f979922f256256521cf5ed26da14"
+        }
+      ],
+      "lfs_attributes": [],
+      "lfs_files": [],
+      "tracked_or_reachable_objects_named_15m": [
+        "d1edbdcc767fd51b1dc10bf83f738f648403a905 docs/agentic/exp004a/wp051_02k/ops/raw/corpus_report_15m.json"
+      ]
+    },
+    "named_shards": {
+      "files_scanned": 143640,
+      "hits": [
+        {
+          "bytes": 347403,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\BTCUSDT_15m.json"
+        },
+        {
+          "bytes": 347403,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\ETHUSDT_15m.json"
+        },
+        {
+          "bytes": 347403,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\SOLUSDT_15m.json"
+        },
+        {
+          "bytes": 492157,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\open_interest_hist\\BTCUSDT_15m.json"
+        },
+        {
+          "bytes": 500838,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\open_interest_hist\\ETHUSDT_15m.json"
+        },
+        {
+          "bytes": 498514,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\open_interest_hist\\SOLUSDT_15m.json"
+        },
+        {
+          "bytes": 269889,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\taker_long_short_ratio\\BTCUSDT_15m.json"
+        },
+        {
+          "bytes": 277865,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\taker_long_short_ratio\\ETHUSDT_15m.json"
+        },
+        {
+          "bytes": 282180,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\taker_long_short_ratio\\SOLUSDT_15m.json"
+        },
+        {
+          "bytes": 347403,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_account_ratio\\BTCUSDT_15m.json"
+        },
+        {
+          "bytes": 347403,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_account_ratio\\ETHUSDT_15m.json"
+        },
+        {
+          "bytes": 347403,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_account_ratio\\SOLUSDT_15m.json"
+        },
+        {
+          "bytes": 347283,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_position_ratio\\BTCUSDT_15m.json"
+        },
+        {
+          "bytes": 347283,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_position_ratio\\ETHUSDT_15m.json"
+        },
+        {
+          "bytes": 347403,
+          "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\top_long_short_position_ratio\\SOLUSDT_15m.json"
+        }
+      ],
+      "roots": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data",
+        "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\reports",
+        "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\docs",
+        "C:\\Users\\GVLLFR0035\\Downloads",
+        "C:\\Users\\GVLLFR0035\\incident-backup-20261023",
+        "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp"
+      ]
+    },
+    "recycle_bin": {
+      "files": 12,
+      "largest": [
+        {
+          "bytes": 9836191,
+          "path": "C:\\$Recycle.Bin\\S-1-12-1-2907394642-1261797007-1573842048-3608101379\\.\uf76d\uf773\uf779\uf773000c0000001457e88b0069a1d28b9eda"
+        },
+        {
+          "bytes": 177436,
+          "path": "C:\\$Recycle.Bin\\S-1-12-1-2907394642-1261797007-1573842048-3608101379\\$RWEXDSA\\CdC Secretaria General\\14. GESINS\\Projectes GESIN's\\BI - Projectes Gesin.xlsx"
+        },
+        {
+          "bytes": 45568,
+          "path": "C:\\$Recycle.Bin\\S-1-12-1-2907394642-1261797007-1573842048-3608101379\\.\uf76d\uf773\uf779\uf773000d000000145775acfafecbf3a2aa66"
+        },
+        {
+          "bytes": 225,
+          "path": "C:\\$Recycle.Bin\\S-1-12-1-2907394642-1261797007-1573842048-3608101379\\$RWEXDSA\\CdC Secretaria General\\CdC Secretaria General DMOREIRAS.url"
+        },
+        {
+          "bytes": 225,
+          "path": "C:\\$Recycle.Bin\\S-1-12-1-2907394642-1261797007-1573842048-3608101379\\$RWEXDSA\\CdC Secretaria General\\CdC Secretaria General.url"
+        }
+      ],
+      "root": "C:\\$Recycle.Bin",
+      "searched": true,
+      "unreadable": 41
+    },
+    "whole_drive_named_shards": {
+      "files_scanned": 8372,
+      "hits": [],
+      "roots": [
+        "G:\\"
+      ]
+    }
+  },
+  "verdict": "NO_BYTE_IDENTICAL_COPY_FOUND",
+  "wp": "WP-EDGE04-RECOVERY-15M"
+}
+

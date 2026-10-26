@@ -1,0 +1,80 @@
+[registry] PAPER_CANDIDATE=1
+[registry] paper-executable on 5m: ['ema_crossover@5m']
+2026-10-12 10:58:13 [info     ] reconcile.consistent_fresh_book
+[startup] reconciliation=CONSISTENT
+Starting PAPER trading loop — assets=['BTC', 'ETH', 'SOL'] timeframe=5m interval=0.0s provider=fake balance=10000.0
+2026-10-12 10:58:13 [info     ] paper.orchestrator.started     interval_seconds=0.0 max_sessions=1 mode=paper
+2026-10-12 10:58:13 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=484646aa87c84f419a2ead830f130896
+2026-10-12 10:58:13 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=637ea26909dd4ede89f19ae2c2657015
+2026-10-12 10:58:13 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=637ea26909dd4ede89f19ae2c2657015 symbol=BTC/USDT
+2026-10-12 10:58:13 [info     ] scanner.pair.processed         active=True rank_score=0.6566666666666667 rejection_reason=None scan_iteration_id=637ea26909dd4ede89f19ae2c2657015 symbol=ETH/USDT
+2026-10-12 10:58:13 [info     ] scanner.pair.processed         active=True rank_score=0.524 rejection_reason=None scan_iteration_id=637ea26909dd4ede89f19ae2c2657015 symbol=SOL/USDT
+2026-10-12 10:58:13 [info     ] scanner.iteration.completed    all_failed=False duration_ms=1 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=637ea26909dd4ede89f19ae2c2657015 scanner_errors=0
+2026-10-12 10:58:13 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=484646aa87c84f419a2ead830f130896 total_snapshots=3
+2026-10-12 10:58:13 [info     ] candle_filter.filtered         completed=95 removed=5 timeframe=5m total=100
+2026-10-12 10:58:13 [info     ] candle_filter.filtered         completed=95 removed=5 timeframe=5m total=100
+2026-10-12 10:58:13 [info     ] candle_filter.filtered         completed=95 removed=5 timeframe=5m total=100
+2026-10-12 10:58:13 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=3 duplicate_intents=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'strategy', 'reason': 'no_alpha_in_direction:ANY'}, {'symbol': 'ETH/USDT', 'stage': 'strategy', 'reason': 'no_alpha_in_direction:ANY'}, {'symbol': 'SOL/USDT', 'stage': 'strategy', 'reason': 'no_alpha_in_direction:ANY'}] risk_accepted=0 risk_errors=0 risk_rejected=0 router_errors=0 router_invocations=3 router_no_trade=0 session_id=484646aa87c84f419a2ead830f130896 signals_generated=0 strategy_errors=0 strategy_invocations=3
+2026-10-12 10:58:13 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=484646aa87c84f419a2ead830f130896
+2026-10-12 10:58:13 [info     ] paper_state.saved              open_positions=0 path=reports\edge-recovery\runs\WP-EDGE-00-smoke-fixture\paper_state.json sent_intents=0
+2026-10-12 10:58:13 [info     ] paper.state.saved              mode=paper session_id=484646aa87c84f419a2ead830f130896
+2026-10-12 10:58:13 [info     ] paper.report.written           json_path=reports\paper\report.json markdown_path=reports\paper\report.md mode=paper session_id=484646aa87c84f419a2ead830f130896
+2026-10-12 10:58:13 [info     ] paper.session.completed        active_snapshots=3 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=reports\paper\report.json report_markdown_path=reports\paper\report.md scanner_errors=0 session_id=484646aa87c84f419a2ead830f130896 total_snapshots=3
+2026-10-12 10:58:13 [info     ] paper.orchestrator.session     duration_ms=0 realized_pnl=0 session_id=484646aa87c84f419a2ead830f130896 total_snapshots=3
+2026-10-12 10:58:13 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1
+2026-10-12 10:58:13 [info     ] paper_state.saved              open_positions=0 path=reports\edge-recovery\runs\WP-EDGE-00-smoke-fixture\paper_state.json sent_intents=0
+[startup] paper state saved to reports\edge-recovery\runs\WP-EDGE-00-smoke-fixture\paper_state.json
+Paper trading loop stopped.
+{
+  "running": false,
+  "mode": "paper",
+  "sessions_completed": 1,
+  "last_session_id": "484646aa87c84f419a2ead830f130896",
+  "last_session_metrics": {
+    "total_snapshots": 3,
+    "active_snapshots": 3,
+    "inactive_snapshots": 0,
+    "scanner_errors": 0,
+    "fills_opened": 0,
+    "ending_equity": 10000.0
+  },
+  "realized_pnl": 0.0,
+  "equity": 10000.0,
+  "kill_switch_active": false,
+  "cycle": {
+    "contexts_built": 3,
+    "context_errors": 0,
+    "router_invocations": 3,
+    "router_no_trade": 0,
+    "router_errors": 0,
+    "strategy_invocations": 3,
+    "signals_generated": 0,
+    "strategy_errors": 0,
+    "adapter_errors": 0,
+    "bar_close_skips": 0,
+    "duplicate_intents": 0,
+    "risk_accepted": 0,
+    "risk_rejected": 0,
+    "risk_errors": 0,
+    "orders_created": 0,
+    "broker_errors": 0,
+    "rejections": [
+      {
+        "symbol": "BTC/USDT",
+        "stage": "strategy",
+        "reason": "no_alpha_in_direction:ANY"
+      },
+      {
+        "symbol": "ETH/USDT",
+        "stage": "strategy",
+        "reason": "no_alpha_in_direction:ANY"
+      },
+      {
+        "symbol": "SOL/USDT",
+        "stage": "strategy",
+        "reason": "no_alpha_in_direction:ANY"
+      }
+    ]
+  },
+  "last_errors": []
+}

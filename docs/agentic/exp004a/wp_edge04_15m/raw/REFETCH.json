@@ -1,0 +1,107 @@
+{
+  "ccxt_version": "4.5.63",
+  "control_5m": {
+    "byte_delta_vs_recorded": 0,
+    "bytes": 13389298,
+    "file_sha256": "092a0c5c56064e764807af6a6a71a096a49c7ea8dc7c9eff88f306f445424b6e",
+    "matches_frozen_pin": null,
+    "matches_recorded_file_sha256": false,
+    "pin_digest_prefix16": "c557d1f13752c9f6",
+    "recorded_bytes": 13389298,
+    "requests": 218,
+    "rows": 212109,
+    "truncated_at_ms": 1791373200000
+  },
+  "cut_15m_ms": 1791372600000,
+  "fetched_at_utc": "2026-10-24T11:18:48Z",
+  "producer": "scripts/alpha003_run.py (fetch_ohlcv + json.dumps(rows))",
+  "series": {
+    "BTC": {
+      "candidate_path": ".tmp15m\\candidates\\candidate_BTCUSDT_15m.json",
+      "frozen": {
+        "byte_delta_vs_recorded": 1,
+        "bytes": 4497889,
+        "file_sha256": "4830906879e6238d68ccba743d599dc876f3f729e0ba18d533305bd53755e084",
+        "matches_frozen_pin": false,
+        "matches_recorded_file_sha256": false,
+        "pin_digest_prefix16": "b21d66e3aa2292ea",
+        "recorded_bytes": 4497888,
+        "rows": 70703
+      },
+      "frozen_first_ts": 1727740800000,
+      "frozen_last_ts": 1791372600000,
+      "last_ts_now": 1792840500000,
+      "requests": 73,
+      "rows_fetched_now": 72334,
+      "untruncated": {
+        "byte_delta_vs_recorded": null,
+        "bytes": 4599519,
+        "file_sha256": "aadbb0232b0bc572616752ad7d4e56f81539a171f2d7408517870e3f790dc8f5",
+        "matches_frozen_pin": null,
+        "matches_recorded_file_sha256": null,
+        "pin_digest_prefix16": "ab16cd48fcfbb6f0",
+        "recorded_bytes": null,
+        "rows": 72334
+      }
+    },
+    "ETH": {
+      "candidate_path": ".tmp15m\\candidates\\candidate_ETHUSDT_15m.json",
+      "frozen": {
+        "byte_delta_vs_recorded": 1,
+        "bytes": 4466467,
+        "file_sha256": "511de6ac63eceb64c9d01d76e65873dbba563212bc224ccb56f3e002081bde3b",
+        "matches_frozen_pin": false,
+        "matches_recorded_file_sha256": false,
+        "pin_digest_prefix16": "9b9eaca812a7dbac",
+        "recorded_bytes": 4466466,
+        "rows": 70703
+      },
+      "frozen_first_ts": 1727740800000,
+      "frozen_last_ts": 1791372600000,
+      "last_ts_now": 1792840500000,
+      "requests": 73,
+      "rows_fetched_now": 72334,
+      "untruncated": {
+        "byte_delta_vs_recorded": null,
+        "bytes": 4569499,
+        "file_sha256": "16dbb6a3e27be3e2d6c0936de1c14add0798b7926ced97b375445e790ce4a639",
+        "matches_frozen_pin": null,
+        "matches_recorded_file_sha256": null,
+        "pin_digest_prefix16": "d9147b5ccd7ac381",
+        "recorded_bytes": null,
+        "rows": 72334
+      }
+    },
+    "SOL": {
+      "candidate_path": ".tmp15m\\candidates\\candidate_SOLUSDT_15m.json",
+      "frozen": {
+        "byte_delta_vs_recorded": null,
+        "bytes": 4095008,
+        "file_sha256": "00daffcdd9dc6da4e6a48485c3b968a0c8c3516176d0f5bcc46525cfb4632460",
+        "matches_frozen_pin": false,
+        "matches_recorded_file_sha256": false,
+        "pin_digest_prefix16": "9ba67d2602574211",
+        "recorded_bytes": null,
+        "rows": 70703
+      },
+      "frozen_first_ts": 1727740800000,
+      "frozen_last_ts": 1791372600000,
+      "last_ts_now": 1792840500000,
+      "requests": 73,
+      "rows_fetched_now": 72334,
+      "untruncated": {
+        "byte_delta_vs_recorded": null,
+        "bytes": 4191291,
+        "file_sha256": "14fc93d8a719418590a8ab918be275fbdd8421d0d4c456cafc0568b263f1c56c",
+        "matches_frozen_pin": null,
+        "matches_recorded_file_sha256": null,
+        "pin_digest_prefix16": "5f27bdca2a33a89c",
+        "recorded_bytes": null,
+        "rows": 72334
+      }
+    }
+  },
+  "since": "2024-10-01T00:00:00Z",
+  "venue": "ccxt.binanceusdm -> fapi.binance.com /fapi/v1/klines",
+  "wp": "WP-EDGE04-RECOVERY-15M"
+}

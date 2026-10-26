@@ -1,0 +1,202 @@
+{
+  "generated_at_utc": "2026-10-23T11:00:55Z",
+  "largest_local_appdata_children": [
+    {
+      "bytes": 14162039601,
+      "bytes_gib": 13.189,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Microsoft",
+      "truncated": null
+    },
+    {
+      "bytes": 7543650117,
+      "bytes_gib": 7.026,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs",
+      "truncated": null
+    },
+    {
+      "bytes": 6691608479,
+      "bytes_gib": 6.232,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp",
+      "truncated": null
+    },
+    {
+      "bytes": 6616551767,
+      "bytes_gib": 6.162,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\wsl",
+      "truncated": null
+    },
+    {
+      "bytes": 3516571630,
+      "bytes_gib": 3.275,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright",
+      "truncated": null
+    },
+    {
+      "bytes": 2970416782,
+      "bytes_gib": 2.766,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\hermes",
+      "truncated": null
+    },
+    {
+      "bytes": 2618429590,
+      "bytes_gib": 2.439,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Google",
+      "truncated": null
+    },
+    {
+      "bytes": 2566969692,
+      "bytes_gib": 2.391,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Packages",
+      "truncated": null
+    },
+    {
+      "bytes": 2401824063,
+      "bytes_gib": 2.237,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Spark Desktop",
+      "truncated": null
+    },
+    {
+      "bytes": 1560828212,
+      "bytes_gib": 1.454,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\AnthropicClaude",
+      "truncated": null
+    },
+    {
+      "bytes": 1215292561,
+      "bytes_gib": 1.132,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Discord",
+      "truncated": null
+    },
+    {
+      "bytes": 890986919,
+      "bytes_gib": 0.83,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\WebEx",
+      "truncated": null
+    },
+    {
+      "bytes": 744570137,
+      "bytes_gib": 0.693,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\CiscoSparkLauncher",
+      "truncated": null
+    },
+    {
+      "bytes": 695490814,
+      "bytes_gib": 0.648,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\OpenAI",
+      "truncated": null
+    },
+    {
+      "bytes": 607417488,
+      "bytes_gib": 0.566,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\lm-studio-updater",
+      "truncated": null
+    }
+  ],
+  "roots": [
+    {
+      "bytes": 36436435460,
+      "bytes_gib": 33.934,
+      "bytes_mib": 34748.49,
+      "exists": true,
+      "files": 182875,
+      "path": "C:\\Windows",
+      "truncated": null
+    },
+    {
+      "bytes": 21897473903,
+      "bytes_gib": 20.394,
+      "bytes_mib": 20883.06,
+      "exists": true,
+      "files": 59082,
+      "path": "C:\\Program Files",
+      "truncated": null
+    },
+    {
+      "bytes": 9884351647,
+      "bytes_gib": 9.206,
+      "bytes_mib": 9426.45,
+      "exists": true,
+      "files": 8731,
+      "path": "C:\\Program Files (x86)",
+      "truncated": null
+    },
+    {
+      "bytes": 2133853565,
+      "bytes_gib": 1.987,
+      "bytes_mib": 2035.0,
+      "exists": true,
+      "files": 9525,
+      "path": "C:\\ProgramData",
+      "truncated": null
+    },
+    {
+      "bytes": 4914266155,
+      "bytes_gib": 4.577,
+      "bytes_mib": 4686.61,
+      "exists": true,
+      "files": 908,
+      "path": "C:\\ESD",
+      "truncated": null
+    },
+    {
+      "bytes": 2121158217,
+      "bytes_gib": 1.975,
+      "bytes_mib": 2022.89,
+      "exists": true,
+      "files": 42629,
+      "path": "C:\\tmp",
+      "truncated": null
+    },
+    {
+      "bytes": 59875456040,
+      "bytes_gib": 55.763,
+      "bytes_mib": 57101.68,
+      "exists": true,
+      "files": 445074,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local",
+      "truncated": null
+    },
+    {
+      "bytes": 12286298361,
+      "bytes_gib": 11.443,
+      "bytes_mib": 11717.13,
+      "exists": true,
+      "files": 118518,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Roaming",
+      "truncated": null
+    },
+    {
+      "bytes": 19896840430,
+      "bytes_gib": 18.53,
+      "bytes_mib": 18975.11,
+      "exists": true,
+      "files": 388735,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads",
+      "truncated": null
+    },
+    {
+      "bytes": 30805215340,
+      "bytes_gib": 28.69,
+      "bytes_mib": 29378.14,
+      "exists": true,
+      "files": 159895,
+      "path": "C:\\Users\\GVLLFR0035\\OneDrive - Generalitat de Catalunya",
+      "truncated": null
+    }
+  ],
+  "schema_version": "EXP004A_WP051_02I_STORAGE_V1",
+  "threshold_note": "directories under 256 MiB are not listed; absence here is not zero",
+  "volume": {
+    "anchor": "C:\\",
+    "critical_free_bytes": 2147483648,
+    "free_bytes": 5468557312,
+    "free_gib": 5.093,
+    "path": "C:\\",
+    "status": "HEALTHY",
+    "total_bytes": 255041990656,
+    "total_gib": 237.5264,
+    "used_bytes": 249573433344,
+    "used_percent": 97.86,
+    "warning_free_bytes": 5368709120
+  }
+}

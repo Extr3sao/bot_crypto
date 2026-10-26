@@ -1,0 +1,185 @@
+{
+  "cells": {
+    "AAVE/USDT|DEFER|1.0": {
+      "calls": 6749,
+      "chain_failures": 0,
+      "closed_trades": 120,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 191.92260917,
+      "days": 8,
+      "days_with_trades": 6,
+      "deferred_slots": 4700,
+      "expectancy_usdt": -2.058727,
+      "fills": 120,
+      "gross_pnl_usdt": -127.04725633,
+      "lifecycle": "DEFER",
+      "missing_minutes": 79,
+      "net_pnl_usdt": -247.04725633,
+      "per_day_net": [
+        -35.54555811,
+        -53.96882306,
+        -42.85897584,
+        -35.80180688,
+        0.0,
+        0.0,
+        -49.1739546,
+        -29.69813784
+      ],
+      "symbol": "AAVE/USDT",
+      "trades_per_day": 15.0
+    },
+    "AAVE/USDT|SUPERSEDE|1.0": {
+      "calls": 11449,
+      "chain_failures": 0,
+      "closed_trades": 120,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 191.92951352,
+      "days": 8,
+      "days_with_trades": 6,
+      "deferred_slots": 0,
+      "expectancy_usdt": -1.996212,
+      "fills": 120,
+      "gross_pnl_usdt": -119.54540826,
+      "lifecycle": "SUPERSEDE",
+      "missing_minutes": 79,
+      "net_pnl_usdt": -239.54540826,
+      "per_day_net": [
+        -35.39088589,
+        -45.11599617,
+        -49.46316299,
+        -33.68924898,
+        0.0,
+        0.0,
+        -34.19310114,
+        -41.69301309
+      ],
+      "symbol": "AAVE/USDT",
+      "trades_per_day": 15.0
+    },
+    "UNI/USDT|DEFER|1.0": {
+      "calls": 6773,
+      "chain_failures": 0,
+      "closed_trades": 120,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 191.93678617,
+      "days": 8,
+      "days_with_trades": 6,
+      "deferred_slots": 4676,
+      "expectancy_usdt": -1.618024,
+      "fills": 120,
+      "gross_pnl_usdt": -74.16285175,
+      "lifecycle": "DEFER",
+      "missing_minutes": 79,
+      "net_pnl_usdt": -194.16285175,
+      "per_day_net": [
+        -47.86175546,
+        -9.84232044,
+        -33.30684569,
+        -47.25023847,
+        0.0,
+        0.0,
+        -40.13504169,
+        -15.76665
+      ],
+      "symbol": "UNI/USDT",
+      "trades_per_day": 15.0
+    },
+    "UNI/USDT|SUPERSEDE|1.0": {
+      "calls": 11449,
+      "chain_failures": 0,
+      "closed_trades": 120,
+      "cost_multiplier": 1.0,
+      "costs_usdt": 191.93431405,
+      "days": 8,
+      "days_with_trades": 6,
+      "deferred_slots": 0,
+      "expectancy_usdt": -1.704529,
+      "fills": 120,
+      "gross_pnl_usdt": -84.54342333,
+      "lifecycle": "SUPERSEDE",
+      "missing_minutes": 0,
+      "net_pnl_usdt": -204.54342333,
+      "per_day_net": [
+        -45.94088081,
+        -37.4772363,
+        -18.7559821,
+        -39.56711418,
+        0.0,
+        0.0,
+        -33.77953596,
+        -29.02267398
+      ],
+      "symbol": "UNI/USDT",
+      "trades_per_day": 15.0
+    }
+  },
+  "chain_failures": 0,
+  "decision": {
+    "ci95_excludes_zero_in_both": false,
+    "defer_better_in_both": false,
+    "defer_expectancy_positive_in_both": false,
+    "defer_worse_in_both": false,
+    "economic_status": "NOT_EVIDENCED",
+    "net_defer_usdt": {
+      "AAVE/USDT": -247.04725633,
+      "UNI/USDT": -194.16285175
+    },
+    "net_supersede_usdt": {
+      "AAVE/USDT": -239.54540826,
+      "UNI/USDT": -204.54342333
+    },
+    "rule": "ECONOMIC_STATUS=EVIDENCED exige DEFER>SUPERSEDE en ambos s\u00edmbolos, IC95 del delta diario sin cero y expectancy de DEFER positiva (coste x1.0)"
+  },
+  "generated_at_utc": "2026-10-21T11:23:12Z",
+  "paired_day_deltas": {
+    "AAVE/USDT": {
+      "ci95": [
+        -6.525228,
+        4.362695
+      ],
+      "days_flat": 2,
+      "days_negative": 4,
+      "days_positive": 2,
+      "mean": -0.937731,
+      "per_day_usdt": [
+        -0.15467222,
+        -8.85282689,
+        6.60418715,
+        -2.1125579,
+        0.0,
+        0.0,
+        -14.98085346,
+        11.99487525
+      ],
+      "resamples": 2000,
+      "samples": 8,
+      "seed": 17017
+    },
+    "UNI/USDT": {
+      "ci95": [
+        -6.43722,
+        10.919347
+      ],
+      "days_flat": 2,
+      "days_negative": 4,
+      "days_positive": 2,
+      "mean": 1.297571,
+      "per_day_usdt": [
+        -1.92087465,
+        27.63491586,
+        -14.55086359,
+        -7.68312429,
+        0.0,
+        0.0,
+        -6.35550573,
+        13.25602398
+      ],
+      "resamples": 2000,
+      "samples": 8,
+      "seed": 17017
+    }
+  },
+  "partition": "untouched_test",
+  "plan_sha256": "59f2f06194b26c6ed6c4d1ed9284b2ae7040e2f67f1286d09c3a6ff18d6065c0",
+  "schema_version": "DEF_RUN_017_OOS_V1"
+}

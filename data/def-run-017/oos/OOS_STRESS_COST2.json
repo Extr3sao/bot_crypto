@@ -1,0 +1,95 @@
+{
+  "cells": {
+    "UNI/USDT|DEFER|2.0": {
+      "calls": 6575,
+      "chain_failures": 0,
+      "closed_trades": 79,
+      "cost_multiplier": 2.0,
+      "costs_usdt": 252.65701465,
+      "days": 8,
+      "days_with_trades": 5,
+      "deferred_slots": 4874,
+      "expectancy_usdt": -2.857946,
+      "fills": 79,
+      "gross_pnl_usdt": -67.77774031,
+      "lifecycle": "DEFER",
+      "missing_minutes": 79,
+      "net_pnl_usdt": -225.77774031,
+      "per_day_net": [
+        0.0,
+        -49.81951125,
+        -32.12546968,
+        -54.12953388,
+        0.0,
+        0.0,
+        -37.50341328,
+        -52.19981222
+      ],
+      "symbol": "UNI/USDT",
+      "trades_per_day": 9.875
+    },
+    "UNI/USDT|SUPERSEDE|2.0": {
+      "calls": 11449,
+      "chain_failures": 0,
+      "closed_trades": 38,
+      "cost_multiplier": 2.0,
+      "costs_usdt": 121.55855195,
+      "days": 8,
+      "days_with_trades": 5,
+      "deferred_slots": 0,
+      "expectancy_usdt": -3.305192,
+      "fills": 38,
+      "gross_pnl_usdt": -49.59730546,
+      "lifecycle": "SUPERSEDE",
+      "missing_minutes": 79,
+      "net_pnl_usdt": -125.59730546,
+      "per_day_net": [
+        0.0,
+        -41.92270563,
+        -9.9262518,
+        -11.24612298,
+        0.0,
+        0.0,
+        -46.79503241,
+        -15.70719264
+      ],
+      "symbol": "UNI/USDT",
+      "trades_per_day": 4.75
+    }
+  },
+  "chain_failures": 0,
+  "cost_multiplier": 2.0,
+  "generated_at_utc": "2026-10-21T11:58:44Z",
+  "paired_day_deltas": {
+    "UNI/USDT": {
+      "ci95": [
+        -25.393086,
+        -0.451997
+      ],
+      "days_flat": 3,
+      "days_negative": 4,
+      "days_positive": 1,
+      "mean": -12.522554,
+      "per_day_usdt": [
+        0.0,
+        -7.89680562,
+        -22.19921788,
+        -42.8834109,
+        0.0,
+        0.0,
+        9.29161913,
+        -36.49261958
+      ],
+      "resamples": 2000,
+      "samples": 8,
+      "seed": 17017
+    }
+  },
+  "partition": "untouched_test",
+  "runs": 16,
+  "schema_version": "DEF_RUN_017_OOS_V1",
+  "source": "OOS_RUNS_untouched_test_cost2.json",
+  "stress_status": "NEGATIVE",
+  "used_for_decision": false,
+  "why": "robustez declarada en el protocolo: duplicar el peaje no puede convertir una se\u00f1al en ventaja, pero puede cambiar qu\u00e9 operaciones pasan el gate de coste"
+}

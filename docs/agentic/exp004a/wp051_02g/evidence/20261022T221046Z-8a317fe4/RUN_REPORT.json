@@ -1,0 +1,213 @@
+{
+  "at_utc": "2026-10-22T22:10:46.558Z",
+  "builder": "capture/EXP-004A/WP-051-02G",
+  "certifiable": false,
+  "certifiable_reason": "the builder never certifies. Coverage is COVERAGE_COMPLETE; the independent verifier decides whether the bytes match their manifests and whether that state may be called complete.",
+  "consolidation": {
+    "counts_toward_coverage": false,
+    "defect_count": 0,
+    "prospective": false,
+    "slices": [
+      {
+        "dataset_id": "EXP-004A-1H-BTC-P3",
+        "days": 3,
+        "declared_rows": 72,
+        "defect_count": 0,
+        "defects": [],
+        "deterministic_match": true,
+        "fraction": 1.0,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_BTC/20261022T221046Z-8a317fe4.MANIFEST.json",
+        "path": "data/exp004a/phase3/rehearsal/consolidated/1h_BTC/20261022T221046Z-8a317fe4.jsonl",
+        "quarantined": 0,
+        "rows": 72,
+        "sha256": "04361e8cdc343b5906f86ad5833060b2ccfd92e611cb0bca84e1cfccb57a5e88",
+        "slice": "1h:BTC",
+        "status": "COVERAGE_COMPLETE"
+      },
+      {
+        "dataset_id": "EXP-004A-1H-ETH-P3",
+        "days": 3,
+        "declared_rows": 72,
+        "defect_count": 0,
+        "defects": [],
+        "deterministic_match": true,
+        "fraction": 1.0,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_ETH/20261022T221046Z-8a317fe4.MANIFEST.json",
+        "path": "data/exp004a/phase3/rehearsal/consolidated/1h_ETH/20261022T221046Z-8a317fe4.jsonl",
+        "quarantined": 0,
+        "rows": 72,
+        "sha256": "65c17b79d8c7e7f6fa9a1135eb357373990c938107bdc0c1e71535679eb8aac5",
+        "slice": "1h:ETH",
+        "status": "COVERAGE_COMPLETE"
+      },
+      {
+        "dataset_id": "EXP-004A-1H-SOL-P3",
+        "days": 3,
+        "declared_rows": 72,
+        "defect_count": 0,
+        "defects": [],
+        "deterministic_match": true,
+        "fraction": 1.0,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_SOL/20261022T221046Z-8a317fe4.MANIFEST.json",
+        "path": "data/exp004a/phase3/rehearsal/consolidated/1h_SOL/20261022T221046Z-8a317fe4.jsonl",
+        "quarantined": 0,
+        "rows": 72,
+        "sha256": "a2366231303309cb49e58dcfb0880b8cb059cc195f44112fb1d8fe4d2c95ab34",
+        "slice": "1h:SOL",
+        "status": "COVERAGE_COMPLETE"
+      }
+    ],
+    "status": "COVERAGE_COMPLETE"
+  },
+  "coverage": {
+    "admissible_rows": 216,
+    "counts_toward_coverage": false,
+    "declared_rows": 216,
+    "fraction": 1.0,
+    "required_fraction": 0.9,
+    "status": "COVERAGE_COMPLETE"
+  },
+  "declaration": {
+    "commit_time": "2026-10-23T00:10:29+02:00",
+    "declaration_id": "EXP-004A.datasets.phase3/v1",
+    "effective_from_utc": "2026-10-23T00:00:00.000Z",
+    "git_blob_sha": "82aec64affaf33e4092bc81fd89db792b3303b60",
+    "lag_policy": {
+      "action": "a day holding any inadmissible bar is written once, marked admissible=false with its defects, and excluded from the consolidated dataset and from the coverage numerator. Nothing is repaired or re-fetched.",
+      "admission": "a bar is admissible only when 0 <= lag_ms <= bound_ms and the bar is closed at the capture instant and was stored at or after effective_from_utc",
+      "bound_ms": 7200000,
+      "definition": "lag_ms = fetched_at_ms - (ts + interval_ms), the forward store's own definition",
+      "rationale": "the lag is the only field that distinguishes a bar that was watched from a bar that was backfilled; a day that holds one backfilled bar cannot be called a forward observation of that day"
+    },
+    "path": "config/preregistrations/EXP-004A.datasets.phase3.json",
+    "rehearsal": {
+      "counts_toward_coverage": false,
+      "end_utc": "2026-10-22T00:00:00.000Z",
+      "note": "Three fully closed days of the same forward store, chosen because the lag policy accepts every bar in them (max lag 86.6 min against a 120 min bound). They are historical bytes, not prospective observations, and they can never move the window's coverage. The store also contains days the policy rejects (2026-10-13 .. 2026-10-18, up to 476 min of lag); the rehearsal is not run over them because this window's purpose is to exercise the mechanism's completeness path, and their rejection is proved by the adversarial suite and reported by name in the run report.",
+      "start_utc": "2026-10-19T00:00:00.000Z"
+    },
+    "sha256": "baeffad097f7d9370cd5b3aa3ab91517ee01d409b7dcbb00c96aad82e54a2cfe",
+    "shard_granularity": "UTC_DAY",
+    "window": {
+      "end_utc": "2027-01-21T00:00:00.000Z",
+      "start_utc": "2026-10-23T00:00:00.000Z"
+    }
+  },
+  "gates": {
+    "certification": "NOT_CLAIMED_BY_BUILDER",
+    "economic_executions": "0",
+    "live_trading": "DISABLED",
+    "orders_placed": "0",
+    "paper_orders_placed": "0",
+    "promotion": "NO_PROMOTION",
+    "risk_limits": "UNCHANGED"
+  },
+  "generator": {
+    "git_blob_sha": "2fec148451ed74245435dfc6e82de2b168625f16",
+    "script": "scripts/exp004a_wp051_02g_capture.py",
+    "script_sha256": "b778c642efdf9b4dc4056875c8589035148839c403ee31d9f5b3357c9e16f8e5",
+    "verifier": "scripts/exp004a_wp051_02g_verify.py",
+    "verifier_sha256": "e67a4f5b0b16e0a46f0ee403f0fea21ab28fbf01b8df66e833482f3408a5344c"
+  },
+  "head": "937a55c31df10cf3d1236dbca76049df5588c022",
+  "mode": "once",
+  "notes": [
+    "This run is a rehearsal over the declared rehearsal window. Every shard is stamped prospective=false and counts_toward_coverage=false; the phase's own coverage is not moved by it and is reported separately."
+  ],
+  "package": "WP-051-02G",
+  "plan": {
+    "already_held": [
+      {
+        "day": "2026-10-19",
+        "sha256": "08ad8f215a8253f14c8575a9cbab89dc66586cb5a446f0e2aa4a4abbb6f879f7",
+        "slice": "1h:BTC"
+      },
+      {
+        "day": "2026-10-20",
+        "sha256": "6155aaaf4358b383813dda5b18b875f6b0b60a460d324370de1def4b19b8a276",
+        "slice": "1h:BTC"
+      },
+      {
+        "day": "2026-10-21",
+        "sha256": "491ef6db45b044edfee07a9e253df14492ea8a6a4ad488a2f5e28fa8b9614828",
+        "slice": "1h:BTC"
+      },
+      {
+        "day": "2026-10-19",
+        "sha256": "77dd6756b1847f675450181bdf3dc26d9e6666c3d79b821950544763f554eca0",
+        "slice": "1h:ETH"
+      },
+      {
+        "day": "2026-10-20",
+        "sha256": "0ebc13b0c7d7f0468d00c37e5f54b7a6227ba34140e93d6642ae1d9222602d1d",
+        "slice": "1h:ETH"
+      },
+      {
+        "day": "2026-10-21",
+        "sha256": "c66d5240ba5417c89cfec2aa7ce91e81f3b5822a8f5dbf12c30eaaeaa6750722",
+        "slice": "1h:ETH"
+      },
+      {
+        "day": "2026-10-19",
+        "sha256": "340b5669349864671f9119c8eada52de247a3a3f6d29d188bac4ad35a53ea99b",
+        "slice": "1h:SOL"
+      },
+      {
+        "day": "2026-10-20",
+        "sha256": "085fc73baf06cd270376ead5e44c908e24e7bb180e81624377a30e06513ab05c",
+        "slice": "1h:SOL"
+      },
+      {
+        "day": "2026-10-21",
+        "sha256": "5ab3c343e1d6091e97e246ceed13755061289de558f6314aa046bb9b74f47397",
+        "slice": "1h:SOL"
+      }
+    ],
+    "captured_days": [],
+    "conflicts": [],
+    "counts": {
+      "ALREADY_HELD": 9
+    },
+    "incomplete_days": 0,
+    "incomplete_first": [],
+    "not_due": [],
+    "not_due_count": 0,
+    "refused": []
+  },
+  "platform": {
+    "machine": "AMD64",
+    "python": "3.11.15",
+    "system": "Windows"
+  },
+  "prospective": false,
+  "recovered_partials": [],
+  "rehearsal": true,
+  "rfc": "RFC-EXP004A-051-02G",
+  "run_id": "20261022T221046Z-8a317fe4",
+  "scheduler_state": {
+    "path": "data/exp004a/phase3/rehearsal/state/scheduler.json",
+    "runs_recorded": 2,
+    "slices": [
+      "1h:BTC",
+      "1h:ETH",
+      "1h:SOL"
+    ]
+  },
+  "schema_version": "1.0",
+  "shards_written": [],
+  "state": "NOT_DUE",
+  "window": {
+    "declared_days": [
+      3,
+      3,
+      3
+    ],
+    "declared_rows_per_slice": [
+      72,
+      72,
+      72
+    ],
+    "end_utc": "2026-10-22T00:00:00.000Z",
+    "start_utc": "2026-10-19T00:00:00.000Z"
+  }
+}

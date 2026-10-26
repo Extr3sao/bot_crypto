@@ -1,0 +1,23 @@
+{
+  "best_case_net_per_fill_usdt": -0.48309107,
+  "best_case_scenario": "F0_touch_full",
+  "cost_floor_per_fill_usdt": 0.75,
+  "experiment": "EXP-003M-MAKER-FILL-REALITY-001",
+  "gates": {
+    "G1_reproduces_003l": true,
+    "G4_economics_pessimistic": false,
+    "G5_optimistic_ceiling": false,
+    "G7_evidence_class": false
+  },
+  "gates_failed": [
+    "G4_economics_pessimistic",
+    "G5_optimistic_ceiling",
+    "G7_evidence_class"
+  ],
+  "holdout_opened": false,
+  "live_orders": false,
+  "promotion_allowed": false,
+  "rationale": "The candidate loses under the pessimistic maker model and already loses under the most generous one. Fill realism is not the binding constraint: the gross edge per fill is smaller than the fees it must clear, so a better fill rate has nothing to rescue.",
+  "schema_version": "AI_BOTS_003M_DECISION_V1",
+  "verdict": "REJECT"
+}

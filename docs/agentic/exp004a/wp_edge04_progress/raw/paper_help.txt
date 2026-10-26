@@ -1,0 +1,82 @@
+usage: autonomous_paper.py [-h] [--assets ASSETS] [--timeframe TIMEFRAME]
+                           [--cycles CYCLES] [--continuous]
+                           [--interval INTERVAL]
+                           [--cadence {interval,bar-close}]
+                           [--bar-close-settlement-seconds BAR_CLOSE_SETTLEMENT_SECONDS]
+                           [--balance BALANCE]
+                           [--horizon-minutes HORIZON_MINUTES]
+                           [--size-usd SIZE_USD]
+                           [--lookback-bars LOOKBACK_BARS]
+                           [--config-dir CONFIG_DIR] [--provider {ccxt,fake}]
+                           [--run-id RUN_ID] [--run-root RUN_ROOT]
+                           [--state-path STATE_PATH] [--ledger LEDGER]
+                           [--no-shadow] [--verify-provider]
+                           [--no-verify-provider]
+                           [--daily-report-seconds DAILY_REPORT_SECONDS]
+                           [--strategy-routing-mode {LEGACY,SHADOW,LIFECYCLE}]
+
+Autonomous PAPER/SHADOW entrypoint (AUTONOMOUS-PAPER-RUNTIME-V1). uv run
+python scripts/autonomous_paper.py --cycles 3 --assets BTC,ETH,SOL uv run
+python scripts/autonomous_paper.py --continuous --interval 60 One-shot is
+``--cycles 1``; a bounded loop is any ``--cycles N`` with ``--interval``;
+``--continuous`` runs until stopped. There is no code path that can reach
+LIVE: the script refuses to start unless ``runtime.mode`` is ``paper``, the
+only execution boundary it composes is ``PaperBroker``, and the strategy
+vocabulary it consumes has no live state at all. Composition (canonical
+components only): settings → scanner source (read-only market data) →
+UniverseScanner → FetcherBarReader (PIT history) → CryptoAssetAgentRegistry →
+StrategyRegistry (lifecycle states, DEF-AUTO-4) → StrategyRouter + committed
+AlphaFamilies → autonomous decision layer (proposal → reviews → verifier →
+decision engine → deterministic Risk) → PaperBroker → DecisionTrace / Outcome
+/ StrategyPerformance → heartbeat + PAPER_DAILY_REPORT + RUN_REPORT Continuous
+operation adds three things and changes nothing about a cycle: a heartbeat
+written per cycle, a daily report regenerated on a cadence, and a stop that
+flushes state instead of killing the process (§13-§15, §51). Nothing here
+writes to an exchange, holds a private key or moves capital.
+
+options:
+  -h, --help            show this help message and exit
+  --assets ASSETS
+  --timeframe TIMEFRAME
+  --cycles CYCLES       1 = ONE_SHOT
+  --continuous          run until stopped (STOP file or SIGINT/SIGTERM);
+                        implies unlimited cycles
+  --interval INTERVAL   Seconds between cycles (bounded loop). 0 = back-to-
+                        back.
+  --cadence {interval,bar-close}
+                        WP-STRAT-09 — evaluation cadence. 'interval' (default)
+                        keeps the free-running sleep; 'bar-close' wakes at
+                        each sealed bar's close plus the settlement delay so
+                        the decision lands inside the existing freshness
+                        window. The freshness budget is never changed.
+  --bar-close-settlement-seconds BAR_CLOSE_SETTLEMENT_SECONDS
+                        Seconds after a bar close to evaluate under --cadence
+                        bar-close. Must stay below interval *
+                        (freshness_grace_bars - 1), which is asserted at
+                        startup; it is not a freshness-threshold expansion.
+  --balance BALANCE
+  --horizon-minutes HORIZON_MINUTES
+                        Pre-registered forecast horizon for proposals
+                        (default: one 5m bar).
+  --size-usd SIZE_USD
+  --lookback-bars LOOKBACK_BARS
+  --config-dir CONFIG_DIR
+  --provider {ccxt,fake}
+  --run-id RUN_ID
+  --run-root RUN_ROOT
+  --state-path STATE_PATH
+  --ledger LEDGER       Admission ledger (fail closed when missing).
+  --no-shadow           Disable SHADOW evaluation (research observations) for
+                        this run.
+  --verify-provider     Ask the provider which markets it lists (best effort,
+                        DEF-AUTO-2).
+  --no-verify-provider  Skip the provider half of the universe preflight
+                        (offline runs).
+  --daily-report-seconds DAILY_REPORT_SECONDS
+                        How often to rewrite PAPER_DAILY_REPORT while running
+                        continuously.
+  --strategy-routing-mode {LEGACY,SHADOW,LIFECYCLE}
+                        WP-STRAT-07: LEGACY keeps route() only (default,
+                        unchanged); SHADOW records the lifecycle-aware
+                        selection next to the legacy one; LIFECYCLE lets the
+                        eligible set gate executable proposals (PAPER only).

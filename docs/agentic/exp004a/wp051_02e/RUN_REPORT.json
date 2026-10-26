@@ -1,0 +1,380 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02e/EXP-004A/2026-10-21",
+  "rfc": "RFC-EXP004A-051-02E",
+  "role": "builder",
+  "generated_at_utc": "2026-10-21T19:27:14Z",
+  "head_at_report": "8176502f4f39f733df990be64a50b1b71b602087",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "commits": {
+    "wp_051_02e": "the commit that carries this file; git log -- docs/agentic/exp004a/wp051_02e",
+    "frozen_generator": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "phase2_declaration": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95"
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe"
+  },
+  "declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "schema_version": "3.0",
+    "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "governance_status": "AUTHORIZED_FOR_CAPTURE"
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "declared_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+  },
+  "capture_window": {
+    "start_utc": "2026-10-22T00:00:00.000Z",
+    "end_utc": "2027-01-20T00:00:00.000Z",
+    "declared_days": 90.0,
+    "effective_from_utc": "2026-10-21T16:00:00.000Z",
+    "state_at_preflight": "BEFORE_WINDOW",
+    "instant_utc": "2026-10-21T19:25:58.956Z",
+    "seconds_until_open": 16441
+  },
+  "status": {
+    "WP_051_02E": "PENDING_WINDOW",
+    "CAPTURE": "NOT_PERFORMED_WINDOW_NOT_OPEN",
+    "C_004": "PASS",
+    "C_013": "TIME_PROOF_WEAK",
+    "C_015": "PASS for the declaration chain; unchanged by this WP",
+    "C_016": "UNREACHABLE_UNDER_DECLARED_COST_MODEL",
+    "PAPER_VALIDATION": "NOT_PASS",
+    "CERTIFICATION": "BLOCKED",
+    "PROMOTION": "NO_PROMOTION"
+  },
+  "attempts": {
+    "state_at_capture": "BEFORE_WINDOW",
+    "started_at_utc": "2026-10-21T19:25:58Z",
+    "finished_at_utc": "2026-10-21T19:26:26Z",
+    "slices": [
+      {
+        "slice": "1h:BTC",
+        "command": "python scripts/exp004a_capture.py --slice 1h:BTC",
+        "exit_code": 3,
+        "duration_s": 3.677,
+        "dataset_published": false
+      },
+      {
+        "slice": "1h:ETH",
+        "command": "python scripts/exp004a_capture.py --slice 1h:ETH",
+        "exit_code": 3,
+        "duration_s": 4.216,
+        "dataset_published": false
+      },
+      {
+        "slice": "1h:SOL",
+        "command": "python scripts/exp004a_capture.py --slice 1h:SOL",
+        "exit_code": 3,
+        "duration_s": 3.849,
+        "dataset_published": false
+      }
+    ],
+    "tape_exit_code": 2,
+    "accepted": 0,
+    "rejected": 3,
+    "datasets_published": [],
+    "reason": "no bar opens inside the declared window yet; the extractor refused with exit 3 and wrote nothing",
+    "seconds_until_window_open": 16441
+  },
+  "source": {
+    "1h:BTC": {
+      "path": "data/forward/edge03/1h/BTC.jsonl",
+      "asset": "BTC",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1769095,
+      "sha256_at_read": "06c9552026e14326d833fca26ddd4ce67ed3a9863dcaef34aa55984cbea1b818",
+      "bytes_at_read": 1769095,
+      "readable": true,
+      "bars": 5634,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-21T17:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-21T18:10:58.480Z",
+      "bars_opening_in_window": 0,
+      "first_open_in_window_utc": null,
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 4500476
+    },
+    "1h:ETH": {
+      "path": "data/forward/edge03/1h/ETH.jsonl",
+      "asset": "ETH",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1750595,
+      "sha256_at_read": "f522f237593f0ebf366ad89407f32f9f96d6449c44a5ab2a1caa6499fefedacd",
+      "bytes_at_read": 1750595,
+      "readable": true,
+      "bars": 5634,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-21T17:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-21T18:10:58.480Z",
+      "bars_opening_in_window": 0,
+      "first_open_in_window_utc": null,
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 4500476
+    },
+    "1h:SOL": {
+      "path": "data/forward/edge03/1h/SOL.jsonl",
+      "asset": "SOL",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1710825,
+      "sha256_at_read": "244854e3276fe55e49a732cbd01fe234be8d1cfc94b1c953a162719c9671f77f",
+      "bytes_at_read": 1710825,
+      "readable": true,
+      "bars": 5634,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-21T17:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-21T18:10:58.480Z",
+      "bars_opening_in_window": 0,
+      "first_open_in_window_utc": null,
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 4500476
+    }
+  },
+  "temporal": {
+    "external_timestamp": "UNAVAILABLE",
+    "time_proof": "TIME_PROOF_WEAK",
+    "basis": "GIT_ANCESTRY_PLUS_INGEST_CLOCK",
+    "note": "Git proves that the declaration precedes the window; it does not prove when this run happened to a third party. No HTTP Date header, host clock or commit has been promoted to an attestation."
+  },
+  "tests": [
+    {
+      "id": "capture_provenance",
+      "command": "python -m pytest tests/unit/research/test_exp004a_capture.py tests/unit/research/test_exp004a_provenance.py -q",
+      "purpose": "the frozen extractor and the declaration contract WP-051-02D sealed",
+      "exit_code": 0,
+      "passed": 46,
+      "skipped": 0,
+      "duration_s": 27.91,
+      "summary": "46 passed in 27.91s",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_capture_provenance.log"
+    },
+    {
+      "id": "wp051_02e_unit",
+      "command": "python -m pytest tests/unit/research/test_exp004a_wp051_02e.py -q",
+      "purpose": "the 02E preflight classifier and the independent verifier's refusals",
+      "exit_code": 0,
+      "passed": 30,
+      "skipped": 0,
+      "duration_s": 41.68,
+      "summary": "30 passed in 41.68s",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_wp051_02e.log"
+    },
+    {
+      "id": "exp004a_adversarial",
+      "command": "python -m pytest tests/unit/research/test_exp004a_verify_adversarial.py -q",
+      "purpose": "adversarial cases against the 02D verifier",
+      "exit_code": 0,
+      "passed": 20,
+      "skipped": 0,
+      "duration_s": 5.24,
+      "summary": "20 passed in 5.24s",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_adversarial.log"
+    },
+    {
+      "id": "prospective_admission",
+      "command": "python -m pytest tests/unit/research/test_prospective_admission.py -q",
+      "purpose": "admission, which decides the day and which this WP did not touch",
+      "exit_code": 0,
+      "passed": 36,
+      "skipped": 0,
+      "duration_s": 1.59,
+      "summary": "36 passed in 1.59s",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_admission.log"
+    },
+    {
+      "id": "prereg_gate",
+      "command": "python -m pytest tests/unit/research/test_prereg_gate.py tests/unit/research/test_prereg_gate_two_phase.py tests/unit/research/test_prereg_gate_escape.py -q",
+      "purpose": "the preregistration gate, including the two-phase freeze",
+      "exit_code": 0,
+      "passed": 69,
+      "skipped": 1,
+      "duration_s": 107.63,
+      "summary": "69 passed, 1 skipped in 107.63s (0:01:47)",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_prereg_gate.log"
+    }
+  ],
+  "tests_summary": {
+    "passed": 201,
+    "skipped": 1,
+    "all_exit_zero": true,
+    "lint_exit_code": 0,
+    "not_run": [
+      {
+        "suite": "tests/unit/research (complete)",
+        "reason": "WP-051-02C exhausted a 600 s budget without finishing it; running it here would report a timeout as coverage. The suites above are the ones this WP affects, plus the two that would catch a regression in the freeze.",
+        "status": "NOT_RUN"
+      }
+    ]
+  },
+  "preflight": {
+    "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_PREFLIGHT.json",
+    "status": "READY_FOR_WINDOW",
+    "controls": 10,
+    "failed": []
+  },
+  "independent_verification": {
+    "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_INDEPENDENT_VERIFICATION.json",
+    "producer": "verifier-d/EXP-004A/WP-051-02E",
+    "verdict": "read the file; the builder does not count its own verdict"
+  },
+  "artefacts": [
+    {
+      "role": "rfc",
+      "path": "docs/agentic/exp004a/wp051_02e/RFC_EXP004A_051_02E.md",
+      "bytes": 18300,
+      "sha256": "053774d7e222f48b34225a45c282e889ae7b004de4210f34c6dde7c9f5c06c96"
+    },
+    {
+      "role": "baseline",
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_BASELINE.json",
+      "bytes": 4589,
+      "sha256": "d42d2bffa54906a436a6e8e470f79ee8d5d4c4310d94ab31ae74ea37375e1b7e"
+    },
+    {
+      "role": "builder",
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_PREFLIGHT.json",
+      "bytes": 13727,
+      "sha256": "ebfc9aff54381fb00f09d261955ee72ef4afc94fd881edcc25944cb005d668e2"
+    },
+    {
+      "role": "builder",
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_CAPTURE_REPORT.json",
+      "bytes": 7099,
+      "sha256": "059ba996e7a7f102caa5eb2c6f6cf1d62460eb2feffda6250e6ff83ffa8f62bc"
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02e/RUN_REPORT.md",
+      "bytes": 8763,
+      "sha256": "51f7d5a3674e8a6b7464e3f4b59f4a0f23b0fd103012cf636a2e03838e82d7d3"
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/TEST_RUNS.json",
+      "bytes": 3267,
+      "sha256": "70929ade5df0f860952b5aff7c4a139ab65efb4d31a27e053c3e70f7b7283b00"
+    }
+  ],
+  "admission_ledgers": {
+    "admission_1h+15m.jsonl": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+    "admission_1h.jsonl": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+  },
+  "limitations": [
+    {
+      "id": "L-01",
+      "statement": "The frozen extractor accepts a bar whose fetched_at_ms is later than the capture instant and marks it eligible, so a forged store is indistinguishable from a real one at the declaration level.",
+      "observed_exit_code": 0,
+      "probe": "verifier probe: one bar opening inside the window with fetched_at_ms = now + 1h, run through the declared command into a temporary directory",
+      "remediation": "A phase-3 successor declaration pinning a generator commit that refuses an ingest later than the capture instant, committed before the window it governs.",
+      "exploited": false
+    },
+    {
+      "id": "L-02",
+      "statement": "No scheduler runs the declared commands; the opening instant needs an operator.",
+      "observed_exit_code": null,
+      "exploited": false
+    },
+    {
+      "id": "L-03",
+      "statement": "Without an external attestation, chronology rests on Git order and the ingest clock.",
+      "observed_exit_code": null,
+      "exploited": false
+    }
+  ],
+  "defects": [
+    {
+      "id": "DEF-02E-01",
+      "severity": "material to provenance, not to this attempt",
+      "summary": "L-01: no future-ingest guard in the frozen extractor.",
+      "fixed": false,
+      "why_not_fixed": "the generator is pinned by generator.blob_sha256 in the phase-2 declaration; editing it would make every capture exit 2 with GENERATOR_FILE_DIFFERS_FROM_DECLARED"
+    }
+  ],
+  "acceptance_criteria": {
+    "ACC-01": {
+      "status": "PASS",
+      "evidence": "V-TECH-04, builder PHASE_ONE_BYTES_INTACT"
+    },
+    "ACC-02": {
+      "status": "PASS",
+      "evidence": "V-PROV-08 (GENERATOR_BLOB_MISMATCH), V-TECH-03"
+    },
+    "ACC-03": {
+      "status": "PASS",
+      "evidence": "V-PROV-03 exit 5, V-PROV-04 exit 3, V-PROV-07 exit 2"
+    },
+    "ACC-04": {
+      "status": "PENDING_WINDOW",
+      "evidence": "window opens 2026-10-22T00:00:00Z; no eligible bar exists"
+    },
+    "ACC-05": {
+      "status": "PENDING_WINDOW",
+      "evidence": "no dataset, so no bytes to measure; zero fabricated"
+    },
+    "ACC-06": {
+      "status": "PASS",
+      "evidence": "V-POL-01 AST, V-TECH-01..06, V-PROV-01..09"
+    },
+    "ACC-07": {
+      "status": "PASS",
+      "evidence": "V-TEMP-03, V-TEMP-05, C-013 stays TIME_PROOF_WEAK"
+    },
+    "ACC-08": {
+      "status": "PASS",
+      "evidence": "V-PROV-06 st6:tape exit 2; admission and gates untouched"
+    },
+    "ACC-09": {
+      "status": "PASS",
+      "evidence": "V-PROV-02 overwrite exit 2, 201 tests, V-POL-04"
+    },
+    "ACC-10": {
+      "status": "PASS",
+      "evidence": "WP_051_02E_VERIFIER_SEAL.json over the sealed manifest"
+    }
+  },
+  "false_success_controls": {
+    "FALSE_SUCCESS": 0,
+    "builder_is_not_verifier": true,
+    "capture_claimed_without_dataset": false,
+    "retroactive_validity_claimed": false,
+    "external_timestamp_invented": false,
+    "checks": [
+      "V-POL-02",
+      "V-POL-04",
+      "V-TEMP-02",
+      "V-TEMP-03"
+    ]
+  },
+  "next_action": "Re-run the preflight shortly before 2026-10-22T00:00:00Z, confirm bars_opening_in_window>0, then execute the three declared commands and re-run the verifier over the new capture report.",
+  "economic_executions": 0
+}

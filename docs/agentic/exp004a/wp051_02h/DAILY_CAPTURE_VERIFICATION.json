@@ -1,0 +1,87 @@
+{
+  "verification": {
+    "checks": [
+      {
+        "check": "ARTIFACTS_PRESENT",
+        "detail": "8 file(s), 11 daily evidence file(s)",
+        "passed": true
+      },
+      {
+        "check": "SLOT_DISCIPLINE",
+        "detail": "729 slot(s), no duplicates, all on the grid",
+        "passed": true
+      },
+      {
+        "check": "OUTCOMES_AND_EXIT_CODES",
+        "detail": "912 run row(s) agree with the vocabulary",
+        "passed": true
+      },
+      {
+        "check": "NO_ORDER_PATH_OR_PROMOTION",
+        "detail": "no order path and no promotion in any artefact",
+        "passed": true
+      },
+      {
+        "check": "EXPECTATION_ARITHMETIC",
+        "detail": "731 run row(s) recomputed from their own series",
+        "passed": true
+      },
+      {
+        "check": "MARKET_REQUESTS_ARE_SPENT",
+        "detail": "912 run row(s) spent their requests coherently",
+        "passed": true
+      },
+      {
+        "check": "RULESET_PINNED_AND_UNCHANGED",
+        "detail": "731 run row(s) pinned to d073a2d686b9b198\u2026",
+        "passed": true
+      },
+      {
+        "check": "COVERAGE_RULE_APPLIED",
+        "detail": "7 prospective day(s), 229 dense-but-backfilled",
+        "passed": true
+      },
+      {
+        "check": "BACKFILL_IS_NOT_AN_OBSERVATION",
+        "detail": "7 day(s) counted, none backfilled",
+        "passed": true
+      },
+      {
+        "check": "DAILY_EVIDENCE_CONSISTENT",
+        "detail": "11 day file(s), 66 digest(s) recomputed from the store",
+        "passed": true
+      },
+      {
+        "check": "HEALTH_FOLLOWS_THE_LOG",
+        "detail": "DEGRADED with 0 consecutive non-observation(s)",
+        "passed": true
+      },
+      {
+        "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
+        "detail": "lane 14228034 bytes of 268435456 declared",
+        "passed": true
+      },
+      {
+        "check": "PUBLICATION_SWAPPED_ATOMICALLY",
+        "detail": "21 published file(s) named and answered (21 digest(s) recomputed)",
+        "passed": true
+      },
+      {
+        "check": "FREEZE_AND_FLOOR_DECLARED",
+        "detail": "freeze, coverage rule, primary series and floor declared",
+        "passed": true
+      },
+      {
+        "check": "SCHEDULER_REGISTRATION_READ",
+        "detail": "the registration names the entry point, the flags and the cadence \u2014 a declaration, not a measurement",
+        "passed": true
+      }
+    ],
+    "checks_passed": 15,
+    "checks_total": 15,
+    "failures": [],
+    "reading": "this process imports nothing from trading_bot and drives none of the observer's code: it recomputes every claim from the files the observer left behind",
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "verdict": "VERIFY_PASS"
+  }
+}

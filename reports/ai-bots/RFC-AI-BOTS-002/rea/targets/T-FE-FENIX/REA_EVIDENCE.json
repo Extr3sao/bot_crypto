@@ -1,0 +1,62 @@
+{
+  "target_id": "T-FE-FENIX",
+  "rea_executed": true,
+  "operations": [
+    {
+      "operation": "analyze_javascript_application",
+      "evidence_id": "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+      "subject_sha256": "36a11145d5182a16c519cea6237ba5b1f49123da9f05859a541908aec6d6b696",
+      "statistics": {
+        "relevant_files": 2,
+        "parsed_javascript_files": 1,
+        "visited_ast_nodes": 256917,
+        "findings": 35,
+        "parse_failures": 0
+      },
+      "graph": {
+        "schema": "JavaScriptApplicationGraph",
+        "nodes": 33,
+        "edges": 40
+      },
+      "coverage": {
+        "status": "incomplete_explicit",
+        "truncated": false
+      }
+    },
+    {
+      "operation": "analyze_web_bundle",
+      "evidence_id": "ev_fc2b6552ff6ca513ad2cfcf4563e44b5d50354c61453bb999a4088cb3116d5c8",
+      "subject_url": "http://127.0.0.1:8123/login",
+      "statistics": {
+        "scripts_observed": 1,
+        "scripts_analyzed": 1,
+        "observations": 5,
+        "inferences": 1,
+        "unknowns": 0
+      },
+      "completeness": {
+        "status": "complete",
+        "parsed_scripts": 1,
+        "visited_ast_nodes": 256917
+      }
+    },
+    {
+      "operation": "capture_web_screenshot",
+      "evidence_id": "ev_b3b1e8374c0403d7b7c2cd9c4af9dbb33144920f515de8cd95d647b4d73527a7",
+      "artifact_sha256": "977ade7ba3afccd7370f0779f0611ccea168c82e26d383d52565ca9358a70233",
+      "viewport": {
+        "width": 1262,
+        "height": 804
+      },
+      "completeness": "complete_within_window",
+      "file": "rea_screenshot.png"
+    }
+  ],
+  "evidence_ids": [
+    "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+    "ev_fc2b6552ff6ca513ad2cfcf4563e44b5d50354c61453bb999a4088cb3116d5c8",
+    "ev_b3b1e8374c0403d7b7c2cd9c4af9dbb33144920f515de8cd95d647b4d73527a7"
+  ],
+  "what_rea_can_say": "El frontend del commit exacto compila y renderiza; su bundle es un único módulo de 868 kB con 256.917 nodos AST y la app arranca en /login sin backend.",
+  "what_rea_cannot_say": "Nada del pipeline visual: el render del gráfico y el envío al modelo viven en Python, que REA no ejecuta."
+}

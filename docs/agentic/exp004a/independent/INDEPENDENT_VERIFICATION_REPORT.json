@@ -1,0 +1,4153 @@
+{
+  "blocking_reasons": [
+    "ADMISSION_REPLAY_MISMATCH",
+    "COST_SCOPE_UNPROVEN",
+    "INDEPENDENCE_NOT_PROVEN",
+    "TIME_PROOF_WEAK"
+  ],
+  "builder": {
+    "agent_id": "tap-foundation-2026-10-21",
+    "run_id": null
+  },
+  "claims": [
+    {
+      "claim": "verifier identity is independent of the builder (RFC-051 §5)",
+      "claim_id": "C-000",
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/RUN_REPORT.json#independence"
+      ],
+      "observed": {
+        "builder_identity_in_manifest": "tap-foundation-2026-10-21",
+        "declared_verifier_identity": "NOT_YET_ASSIGNED",
+        "disjoint_write_rights": true,
+        "output_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\independent",
+        "own_source_audit": {
+          "clean": true,
+          "forbidden_imports": [],
+          "forbidden_literals": [],
+          "imports": [
+            "__future__",
+            "__future__.annotations",
+            "argparse",
+            "ast",
+            "collections.abc",
+            "collections.abc.Iterable",
+            "collections.abc.Sequence",
+            "dataclasses",
+            "dataclasses.dataclass",
+            "dataclasses.field",
+            "datetime",
+            "datetime.UTC",
+            "datetime.datetime",
+            "hashlib",
+            "json",
+            "math",
+            "os",
+            "pathlib",
+            "pathlib.Path",
+            "subprocess",
+            "sys",
+            "tempfile",
+            "time",
+            "typing",
+            "typing.Any"
+          ],
+          "module": "exp004a_verify.py"
+        },
+        "same_principal_as_builder": true,
+        "separate_worktree": false,
+        "verifier_id": "verifier-b/EXP-004A/WP-051-02",
+        "verifier_principal": null,
+        "why": "RFC-051 §5: a role label or a new prompt in the same build session is insufficient evidence of independence; a distinct principal or agent run with its own worktree was not available to this execution"
+      },
+      "reason_code": "INDEPENDENCE_NOT_PROVEN",
+      "scope": "program-level separation demonstrable; principal-level separation not",
+      "status": "BLOCKED"
+    },
+    {
+      "claim": "115 tests passed, 1 skipped; ruff and mypy clean",
+      "claim_id": "C-001",
+      "evidence_refs": [
+        "tests/unit/research/test_prereg_gate.py",
+        "tests/unit/research/test_prereg_gate_two_phase.py",
+        "tests/unit/research/test_prereg_gate_escape.py",
+        "tests/unit/research/test_prospective_admission.py",
+        "tests/unit/research/test_execution_cost_measured.py",
+        "tests/unit/research/test_exp004a_evidence_inventory.py"
+      ],
+      "observed": {
+        "claimed": "115 passed, 1 skipped",
+        "exit_code": 0,
+        "missing_suites": [],
+        "skips": [
+          "SKIPPED [1] tests\\unit\\research\\test_prereg_gate.py:591: symlinks unavailable in this environment",
+          "128 passed, 1 skipped in 223.98s (0:03:43)"
+        ],
+        "stdout_sha256": "68323ac70b6df87fada2f153b623118e7585b767de1cae9aeead583eb427d8e4",
+        "suites": [
+          "tests/unit/research/test_prereg_gate.py",
+          "tests/unit/research/test_prereg_gate_two_phase.py",
+          "tests/unit/research/test_prereg_gate_escape.py",
+          "tests/unit/research/test_prospective_admission.py",
+          "tests/unit/research/test_execution_cost_measured.py",
+          "tests/unit/research/test_exp004a_evidence_inventory.py"
+        ],
+        "summary": "128 passed, 1 skipped in 223.98s (0:03:43)"
+      },
+      "reason_code": null,
+      "scope": "re-executed by the verifier",
+      "status": "PASS"
+    },
+    {
+      "claim": "prereg gate inspect exits 3 with zero defects",
+      "claim_id": "C-002",
+      "evidence_refs": [],
+      "observed": {
+        "authorize_errors": [
+          "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+        ],
+        "authorize_exit": 2,
+        "inspect_errors": [],
+        "inspect_exit": 3,
+        "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "recorded_authorize_exit": 2,
+        "recorded_inspect_exit": 3,
+        "results": {
+          "authorize": {
+            "exit_code": 2,
+            "payload": {
+              "checks": [
+                "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "GIT_HEAD=881f0610a13d971404e7aaaa24d486a15b4d7277",
+                "IDENTIFIER_UNSPENT:EXP-004A",
+                "NO_PRIOR_RUNS:EXP-004A",
+                "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.datasets.json:47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.json:fed25aa893fa6964a22afa61a51e5e68ef930335",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.prior_runs.json:47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+                "PROTOCOL_FROZEN_BEFORE_CAPTURE_START"
+              ],
+              "decision": "BLOCKED",
+              "economic_executions": 0,
+              "errors": [
+                "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+              ],
+              "exit_code": 2,
+              "experiment_id": "EXP-004A",
+              "gate_version": "PREREG_GATE_V1",
+              "mode": "authorize",
+              "runtime_earning_or_execution_validated": false,
+              "verification_scope": "prereg_and_dataset_preflight_only"
+            },
+            "stderr_sha256": "37205465b4dbb90045fe59c73c6fc4a33f9dfc928d9da98bd8ff75f7d2f91a74",
+            "stderr_tail": [
+              "[prereg-gate] FAIL TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+            ],
+            "stdout_sha256": "3b7b9e0d3b8dad2b098748f0a901eda238bd097ba1ca6a41c16fd003a55ac1db"
+          },
+          "inspect": {
+            "exit_code": 3,
+            "payload": {
+              "checks": [
+                "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "IDENTIFIER_UNSPENT:EXP-004A",
+                "NO_PRIOR_RUNS:EXP-004A",
+                "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+                "PROTOCOL_FROZEN_BEFORE_CAPTURE_START"
+              ],
+              "decision": "INSPECTION_ONLY_NO_RUN",
+              "economic_executions": 0,
+              "errors": [],
+              "exit_code": 3,
+              "experiment_id": "EXP-004A",
+              "gate_version": "PREREG_GATE_V1",
+              "mode": "inspect",
+              "runtime_earning_or_execution_validated": false,
+              "verification_scope": "prereg_and_dataset_preflight_only"
+            },
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_tail": [],
+            "stdout_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711"
+          }
+        }
+      },
+      "reason_code": null,
+      "scope": "both modes re-executed",
+      "status": "PASS"
+    },
+    {
+      "claim": "prereg gate authorize exits 2 with TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE and nothing else",
+      "claim_id": "C-003",
+      "evidence_refs": [],
+      "observed": {
+        "authorize_errors": [
+          "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+        ],
+        "authorize_exit": 2,
+        "inspect_errors": [],
+        "inspect_exit": 3,
+        "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "recorded_authorize_exit": 2,
+        "recorded_inspect_exit": 3,
+        "results": {
+          "authorize": {
+            "exit_code": 2,
+            "payload": {
+              "checks": [
+                "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "GIT_HEAD=881f0610a13d971404e7aaaa24d486a15b4d7277",
+                "IDENTIFIER_UNSPENT:EXP-004A",
+                "NO_PRIOR_RUNS:EXP-004A",
+                "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.datasets.json:47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.json:fed25aa893fa6964a22afa61a51e5e68ef930335",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.prior_runs.json:47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+                "PROTOCOL_FROZEN_BEFORE_CAPTURE_START"
+              ],
+              "decision": "BLOCKED",
+              "economic_executions": 0,
+              "errors": [
+                "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+              ],
+              "exit_code": 2,
+              "experiment_id": "EXP-004A",
+              "gate_version": "PREREG_GATE_V1",
+              "mode": "authorize",
+              "runtime_earning_or_execution_validated": false,
+              "verification_scope": "prereg_and_dataset_preflight_only"
+            },
+            "stderr_sha256": "37205465b4dbb90045fe59c73c6fc4a33f9dfc928d9da98bd8ff75f7d2f91a74",
+            "stderr_tail": [
+              "[prereg-gate] FAIL TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+            ],
+            "stdout_sha256": "3b7b9e0d3b8dad2b098748f0a901eda238bd097ba1ca6a41c16fd003a55ac1db"
+          },
+          "inspect": {
+            "exit_code": 3,
+            "payload": {
+              "checks": [
+                "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "IDENTIFIER_UNSPENT:EXP-004A",
+                "NO_PRIOR_RUNS:EXP-004A",
+                "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+                "PROTOCOL_FROZEN_BEFORE_CAPTURE_START"
+              ],
+              "decision": "INSPECTION_ONLY_NO_RUN",
+              "economic_executions": 0,
+              "errors": [],
+              "exit_code": 3,
+              "experiment_id": "EXP-004A",
+              "gate_version": "PREREG_GATE_V1",
+              "mode": "inspect",
+              "runtime_earning_or_execution_validated": false,
+              "verification_scope": "prereg_and_dataset_preflight_only"
+            },
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_tail": [],
+            "stdout_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711"
+          }
+        }
+      },
+      "reason_code": null,
+      "scope": "phase 1 refused with exactly one named error",
+      "status": "PASS"
+    },
+    {
+      "claim": "admission coverage 235 -> 234 -> 229 -> 5 prospective (1h) and 4 joint (1h+15m)",
+      "claim_id": "C-004",
+      "evidence_refs": [],
+      "observed": {
+        "admitted_days_out_of_target": "0/90",
+        "capture": {
+          "end_utc": "2027-01-20",
+          "start_utc": "2026-10-22",
+          "target_days": 90
+        },
+        "corrupt": [],
+        "days_sealed_1h": 234,
+        "days_sealed_joint": 14,
+        "days_with_any_bar": 235,
+        "lanes": {
+          "1h": {
+            "recomputed_admissible": 3,
+            "sealed": 234,
+            "sealed_admissible": 5,
+            "sealed_classes": {
+              "DENSE_BUT_BACKFILLED": 229,
+              "PROSPECTIVELY_OBSERVED": 5
+            }
+          },
+          "1h+15m": {
+            "recomputed_admissible": 1,
+            "sealed": 14,
+            "sealed_admissible": 4,
+            "sealed_classes": {
+              "DENSE_BUT_BACKFILLED": 9,
+              "INCOMPLETE": 1,
+              "PROSPECTIVELY_OBSERVED": 4
+            }
+          }
+        },
+        "mismatches": [
+          {
+            "day": "2026-10-15",
+            "lane": "1h",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          },
+          {
+            "day": "2026-10-17",
+            "lane": "1h",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          },
+          {
+            "day": "2026-10-17",
+            "lane": "1h+15m",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          },
+          {
+            "day": "2026-10-19",
+            "lane": "1h+15m",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          },
+          {
+            "day": "2026-10-20",
+            "lane": "1h+15m",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          }
+        ],
+        "per_day": {
+          "2026-03-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-31": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-31": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-31": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-31": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-16": {
+            "1h": "PROSPECTIVELY_OBSERVED",
+            "1h+15m": "PROSPECTIVELY_OBSERVED"
+          },
+          "2026-10-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-19": {
+            "1h": "PROSPECTIVELY_OBSERVED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-20": {
+            "1h": "PROSPECTIVELY_OBSERVED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-21": {
+            "1h": "INCOMPLETE",
+            "1h+15m": "INCOMPLETE"
+          }
+        },
+        "recomputed_admissible_inside_window": [],
+        "recomputed_admissible_inside_window_count": 0,
+        "recomputed_admissible_outside_window": [
+          "2026-10-16"
+        ],
+        "unavailable_series": [],
+        "unreplayable_lanes": {}
+      },
+      "reason_code": "ADMISSION_REPLAY_MISMATCH",
+      "scope": "",
+      "status": "FAIL"
+    },
+    {
+      "claim": "234 + 14 attestations, series prefix digests and 14 joint records, zero byte-verification errors",
+      "claim_id": "C-005",
+      "evidence_refs": [],
+      "observed": {
+        "checked": 28,
+        "eol_normalised_files": [
+          "docs/agentic/exp004a/RUN_REPORT.json",
+          "scripts/exp004a_foundation.py",
+          "config/preregistrations/EXP-004A.json",
+          "tests/unit/research/test_prereg_gate_two_phase.py"
+        ],
+        "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mismatches": [],
+        "records": [
+          {
+            "checkout_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "checkout_size": 284812,
+            "git_blob_sha256_at_evaluated": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "git_blob_size_at_evaluated": 284812,
+            "group": "admission_ledgers",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "data/exp004a/admission_1h.jsonl",
+            "present": true,
+            "published_blob_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "published_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+          },
+          {
+            "checkout_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "checkout_size": 28985,
+            "git_blob_sha256_at_evaluated": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "git_blob_size_at_evaluated": 28985,
+            "group": "admission_ledgers",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "data/exp004a/admission_1h+15m.jsonl",
+            "present": true,
+            "published_blob_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "published_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1"
+          },
+          {
+            "checkout_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "checkout_size": 1072,
+            "git_blob_sha256_at_evaluated": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "git_blob_size_at_evaluated": 1072,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "last_commit_declared": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "path": "docs/agentic/exp004a/GATE_INSPECT.json",
+            "present": true,
+            "published_blob_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "published_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c"
+          },
+          {
+            "checkout_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711",
+            "checkout_size": 1054,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": null,
+            "last_commit_declared": null,
+            "path": "docs/agentic/exp004a/GATE_INSPECT.log",
+            "present": true,
+            "published_blob_sha256": null,
+            "published_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711"
+          },
+          {
+            "checkout_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "checkout_size": 1498,
+            "git_blob_sha256_at_evaluated": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "git_blob_size_at_evaluated": 1498,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "last_commit_declared": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "path": "docs/agentic/exp004a/GATE_AUTHORIZE.json",
+            "present": true,
+            "published_blob_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "published_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1"
+          },
+          {
+            "checkout_sha256": "1090c2e1406cf83cadeeb66aa7851bde7f202571808a5b2f14d65052016781d3",
+            "checkout_size": 1543,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": null,
+            "last_commit_declared": null,
+            "path": "docs/agentic/exp004a/GATE_AUTHORIZE.log",
+            "present": true,
+            "published_blob_sha256": null,
+            "published_sha256": "1090c2e1406cf83cadeeb66aa7851bde7f202571808a5b2f14d65052016781d3"
+          },
+          {
+            "checkout_sha256": "3550fc04f1a07afcced17a084cf01006b610e578d632639c69b15cc7b383b67d",
+            "checkout_size": 23988,
+            "git_blob_sha256_at_evaluated": "dce8f8347fe881e20df41e984003d54b986a90ff35723a925616eff174036bb9",
+            "git_blob_size_at_evaluated": 23329,
+            "group": "builder_reports",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/agentic/exp004a/RUN_REPORT.json",
+            "present": true,
+            "published_blob_sha256": "dce8f8347fe881e20df41e984003d54b986a90ff35723a925616eff174036bb9",
+            "published_sha256": "3550fc04f1a07afcced17a084cf01006b610e578d632639c69b15cc7b383b67d"
+          },
+          {
+            "checkout_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "checkout_size": 6592,
+            "git_blob_sha256_at_evaluated": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "git_blob_size_at_evaluated": 6592,
+            "group": "builder_reports",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/agentic/exp004a/RUN_REPORT.md",
+            "present": true,
+            "published_blob_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "published_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f"
+          },
+          {
+            "checkout_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "checkout_size": 15622,
+            "git_blob_sha256_at_evaluated": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "git_blob_size_at_evaluated": 15622,
+            "group": "builder_reports",
+            "last_commit_actual": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+            "last_commit_declared": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+            "path": "docs/agentic/exp004a/FINAL_REPORT.md",
+            "present": true,
+            "published_blob_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "published_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172"
+          },
+          {
+            "checkout_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "checkout_size": 35663,
+            "git_blob_sha256_at_evaluated": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "git_blob_size_at_evaluated": 35663,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prereg_gate.py",
+            "present": true,
+            "published_blob_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "published_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4"
+          },
+          {
+            "checkout_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "checkout_size": 2648,
+            "git_blob_sha256_at_evaluated": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "git_blob_size_at_evaluated": 2648,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/__init__.py",
+            "present": true,
+            "published_blob_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "published_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329"
+          },
+          {
+            "checkout_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "checkout_size": 13268,
+            "git_blob_sha256_at_evaluated": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "git_blob_size_at_evaluated": 13268,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/admission.py",
+            "present": true,
+            "published_blob_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "published_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66"
+          },
+          {
+            "checkout_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "checkout_size": 6504,
+            "git_blob_sha256_at_evaluated": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "git_blob_size_at_evaluated": 6504,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/independence.py",
+            "present": true,
+            "published_blob_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "published_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada"
+          },
+          {
+            "checkout_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "checkout_size": 11003,
+            "git_blob_sha256_at_evaluated": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "git_blob_size_at_evaluated": 11003,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/ledger.py",
+            "present": true,
+            "published_blob_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "published_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8"
+          },
+          {
+            "checkout_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "checkout_size": 7216,
+            "git_blob_sha256_at_evaluated": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "git_blob_size_at_evaluated": 7216,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/store.py",
+            "present": true,
+            "published_blob_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "published_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d"
+          },
+          {
+            "checkout_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "checkout_size": 1932,
+            "git_blob_sha256_at_evaluated": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "git_blob_size_at_evaluated": 1932,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/execution_cost/__init__.py",
+            "present": true,
+            "published_blob_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "published_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963"
+          },
+          {
+            "checkout_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "checkout_size": 17721,
+            "git_blob_sha256_at_evaluated": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "git_blob_size_at_evaluated": 17721,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/execution_cost/measured.py",
+            "present": true,
+            "published_blob_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "published_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7"
+          },
+          {
+            "checkout_sha256": "ef300441f9c3f14d3baba67667ba281d034bb8cdcaec4106348cdd1dfe2f092f",
+            "checkout_size": 25517,
+            "git_blob_sha256_at_evaluated": "4c53a60b075f82ebd85697acbcc24498564bc9345af0b6860e400cbe2765fee5",
+            "git_blob_size_at_evaluated": 24965,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "scripts/exp004a_foundation.py",
+            "present": true,
+            "published_blob_sha256": "4c53a60b075f82ebd85697acbcc24498564bc9345af0b6860e400cbe2765fee5",
+            "published_sha256": "ef300441f9c3f14d3baba67667ba281d034bb8cdcaec4106348cdd1dfe2f092f"
+          },
+          {
+            "checkout_sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9",
+            "checkout_size": 6960,
+            "git_blob_sha256_at_evaluated": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+            "git_blob_size_at_evaluated": 6830,
+            "group": "preregistration",
+            "last_commit_actual": "fed25aa893fa6964a22afa61a51e5e68ef930335",
+            "last_commit_declared": "fed25aa893fa6964a22afa61a51e5e68ef930335",
+            "path": "config/preregistrations/EXP-004A.json",
+            "present": true,
+            "published_blob_sha256": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+            "published_sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9"
+          },
+          {
+            "checkout_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "checkout_size": 4669,
+            "git_blob_sha256_at_evaluated": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "git_blob_size_at_evaluated": 4669,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.datasets.json",
+            "present": true,
+            "published_blob_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "published_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+          },
+          {
+            "checkout_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "checkout_size": 1767,
+            "git_blob_sha256_at_evaluated": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "git_blob_size_at_evaluated": 1767,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.prior_runs.json",
+            "present": true,
+            "published_blob_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "published_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7"
+          },
+          {
+            "checkout_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "checkout_size": 447,
+            "git_blob_sha256_at_evaluated": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "git_blob_size_at_evaluated": 447,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.baseline.json",
+            "present": true,
+            "published_blob_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "published_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890"
+          },
+          {
+            "checkout_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "checkout_size": 6540,
+            "git_blob_sha256_at_evaluated": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "git_blob_size_at_evaluated": 6540,
+            "group": "protocol",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md",
+            "present": true,
+            "published_blob_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "published_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5"
+          },
+          {
+            "checkout_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "checkout_size": 26541,
+            "git_blob_sha256_at_evaluated": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "git_blob_size_at_evaluated": 26541,
+            "group": "tests",
+            "last_commit_actual": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+            "last_commit_declared": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+            "path": "tests/unit/research/test_prereg_gate.py",
+            "present": true,
+            "published_blob_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "published_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e"
+          },
+          {
+            "checkout_sha256": "e99dab8625a2368262c3e027e13ed13f9218155302a75e4b2d6e690b66a11567",
+            "checkout_size": 12829,
+            "git_blob_sha256_at_evaluated": "8cbdaac511a4975611a16ecee8e4fd9dc87ff3e06023684f2d481dd654dfb969",
+            "git_blob_size_at_evaluated": 12538,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prereg_gate_two_phase.py",
+            "present": true,
+            "published_blob_sha256": "8cbdaac511a4975611a16ecee8e4fd9dc87ff3e06023684f2d481dd654dfb969",
+            "published_sha256": "e99dab8625a2368262c3e027e13ed13f9218155302a75e4b2d6e690b66a11567"
+          },
+          {
+            "checkout_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "checkout_size": 2998,
+            "git_blob_sha256_at_evaluated": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "git_blob_size_at_evaluated": 2998,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prereg_gate_escape.py",
+            "present": true,
+            "published_blob_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "published_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd"
+          },
+          {
+            "checkout_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "checkout_size": 15884,
+            "git_blob_sha256_at_evaluated": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "git_blob_size_at_evaluated": 15884,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prospective_admission.py",
+            "present": true,
+            "published_blob_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "published_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a"
+          },
+          {
+            "checkout_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "checkout_size": 9615,
+            "git_blob_sha256_at_evaluated": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "git_blob_size_at_evaluated": 9615,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_execution_cost_measured.py",
+            "present": true,
+            "published_blob_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "published_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e"
+          }
+        ]
+      },
+      "reason_code": null,
+      "scope": "tracked references",
+      "status": "PASS"
+    },
+    {
+      "claim": "a repeated run adds zero records",
+      "claim_id": "C-006",
+      "evidence_refs": [],
+      "observed": {
+        "ledger_sha256_after": {
+          "admission_1h+15m.jsonl": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+          "admission_1h.jsonl": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+        },
+        "ledger_sha256_before": {
+          "admission_1h+15m.jsonl": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+          "admission_1h.jsonl": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+        },
+        "repeatable": true,
+        "replay_budget_seconds": 300,
+        "runs": [
+          {
+            "attempt": 1,
+            "elapsed_s": 159.0,
+            "exit_code": 0,
+            "output_sha256": "07f1c2fd48073c6912877a1febbe2b20e1efe48c35c468a3aeba21719cc91978",
+            "output_tail": [
+              "    \"spent\": false,",
+              "    \"report_directory\": \"docs\\\\agentic\\\\exp004a\",",
+              "    \"report_directory_inside_runs_root\": false",
+              "  }",
+              "}"
+            ],
+            "reports": {
+              "RUN_REPORT.json": "5c64793be03b50fa0780ddf464a9654610c43589262da96a87f6dce5d321ef49",
+              "RUN_REPORT.md": "fbfe2d81e79e90307c11b6966c5ee7fc45243e4b35851668abd7bd6c251e499d"
+            },
+            "reports_stable": {
+              "RUN_REPORT.json": "28554530644df260c2102ffbfc42b531db9251ab5c22df22ba317c784b890668"
+            },
+            "timed_out": false
+          },
+          {
+            "attempt": 2,
+            "elapsed_s": 148.2,
+            "exit_code": 0,
+            "output_sha256": "07f1c2fd48073c6912877a1febbe2b20e1efe48c35c468a3aeba21719cc91978",
+            "output_tail": [
+              "    \"spent\": false,",
+              "    \"report_directory\": \"docs\\\\agentic\\\\exp004a\",",
+              "    \"report_directory_inside_runs_root\": false",
+              "  }",
+              "}"
+            ],
+            "reports": {
+              "RUN_REPORT.json": "b6ad7f10b49d4288a7d4df55f51c8f340659fc986aedbfed6ce9f4dafb615564",
+              "RUN_REPORT.md": "524b65500e00c7e26e3f45c96ea13a31a4aa008232756cc2d8ab2cfedd0b048b"
+            },
+            "reports_stable": {
+              "RUN_REPORT.json": "28554530644df260c2102ffbfc42b531db9251ab5c22df22ba317c784b890668"
+            },
+            "timed_out": false
+          }
+        ],
+        "store_unchanged": true
+      },
+      "reason_code": null,
+      "scope": "measurement replayed twice, ledger untouched",
+      "status": "PASS"
+    },
+    {
+      "claim": "ST-6 cost at 200 USDT: BTC 20.0012, ETH 20.0408, SOL 20.9414 bps median",
+      "claim_id": "C-007",
+      "evidence_refs": [
+        "data/st6/ST6_OBSERVATIONS.jsonl"
+      ],
+      "observed": {
+        "assets_without_claim": [
+          "XRP"
+        ],
+        "declared_notional_usdt": 500.0,
+        "declared_size_walked": false,
+        "definition": "recomputed as 2*fee + spread + buy_impact + sell_impact (the builder's arithmetic); the two-spread variant charges the half-spread on entry and again on exit, which is what a round trip across the book actually pays",
+        "fee_bps_per_side": 10.0,
+        "medians": {
+          "BTC": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.0012,
+            "median_one_spread": 20.0012,
+            "median_spread_bps": 0.0012,
+            "median_two_spread": 20.0024,
+            "rows": 228
+          },
+          "ETH": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.0408,
+            "median_one_spread": 20.0408,
+            "median_spread_bps": 0.0407,
+            "median_two_spread": 20.0816,
+            "rows": 228
+          },
+          "SOL": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.9414,
+            "median_one_spread": 20.9414,
+            "median_spread_bps": 0.9406,
+            "median_two_spread": 21.8828,
+            "rows": 228
+          },
+          "XRP": {
+            "agrees_with_claim_one_spread": false,
+            "claimed": null,
+            "median_one_spread": 20.7444,
+            "median_spread_bps": 0.7444,
+            "median_two_spread": 21.4888,
+            "rows": 228
+          }
+        },
+        "sizes_walked_usdt": [
+          200.0
+        ],
+        "tape": {
+          "parse_errors": [],
+          "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+          "rows": 912,
+          "sha256": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+          "size_bytes": 2030451
+        }
+      },
+      "reason_code": "COST_SCOPE_UNPROVEN",
+      "scope": "medians reproduce; the round-trip interpretation does not",
+      "status": "BLOCKED"
+    },
+    {
+      "claim": "declared 500 USDT not walked: DECLARED_SIZE_NOT_WALKED remains",
+      "claim_id": "C-008",
+      "evidence_refs": [],
+      "observed": {
+        "assets_without_claim": [
+          "XRP"
+        ],
+        "declared_notional_usdt": 500.0,
+        "declared_size_walked": false,
+        "definition": "recomputed as 2*fee + spread + buy_impact + sell_impact (the builder's arithmetic); the two-spread variant charges the half-spread on entry and again on exit, which is what a round trip across the book actually pays",
+        "fee_bps_per_side": 10.0,
+        "medians": {
+          "BTC": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.0012,
+            "median_one_spread": 20.0012,
+            "median_spread_bps": 0.0012,
+            "median_two_spread": 20.0024,
+            "rows": 228
+          },
+          "ETH": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.0408,
+            "median_one_spread": 20.0408,
+            "median_spread_bps": 0.0407,
+            "median_two_spread": 20.0816,
+            "rows": 228
+          },
+          "SOL": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.9414,
+            "median_one_spread": 20.9414,
+            "median_spread_bps": 0.9406,
+            "median_two_spread": 21.8828,
+            "rows": 228
+          },
+          "XRP": {
+            "agrees_with_claim_one_spread": false,
+            "claimed": null,
+            "median_one_spread": 20.7444,
+            "median_spread_bps": 0.7444,
+            "median_two_spread": 21.4888,
+            "rows": 228
+          }
+        },
+        "sizes_walked_usdt": [
+          200.0
+        ],
+        "tape": {
+          "parse_errors": [],
+          "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+          "rows": 912,
+          "sha256": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+          "size_bytes": 2030451
+        }
+      },
+      "reason_code": null,
+      "scope": "declared size absent from every walked row",
+      "status": "PASS"
+    },
+    {
+      "claim": "RUN_REPORT used d05f8de while later commits exist; evaluated vs report commit must be distinguished",
+      "claim_id": "C-009",
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/RUN_REPORT.json#authority"
+      ],
+      "observed": {
+        "builder_label_matches_manifest_pin": false,
+        "builder_report_claimed_head": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "code_drift_since_evaluated": [],
+        "code_scope": [
+          "src/trading_bot/research/prospective",
+          "src/trading_bot/research/execution_cost"
+        ],
+        "committer_iso_evaluated": "2026-10-21T10:00:56+02:00",
+        "dirty_entries_in_builder_tree": 262,
+        "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "evaluated_tree": "51394aa9efc02ba7ddc595428419253d3b229857",
+        "head": "881f0610a13d971404e7aaaa24d486a15b4d7277",
+        "head_tree": "fb30e79963425fab4088a4ec432d0e8d50f43c12",
+        "note": "the builder report's HEAD label is not the commit the manifest pins; the evaluated commit is the pinned one and the code under it is unchanged up to HEAD",
+        "parents": [
+          "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6"
+        ],
+        "protocol_commit_in_manifest": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "protocol_is_ancestor_of_evaluated": true
+      },
+      "reason_code": null,
+      "scope": "",
+      "status": "PASS"
+    },
+    {
+      "claim": "a clean checkout reproduces the sealed ledger bytes; the external store is outside Git",
+      "claim_id": "C-010",
+      "evidence_refs": [],
+      "observed": {
+        "checkout": {
+          "data/exp004a/admission_1h+15m.jsonl": {
+            "checkout_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "in_checkout": true,
+            "live_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "store_series_in_checkout": false
+          },
+          "data/exp004a/admission_1h.jsonl": {
+            "checkout_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "in_checkout": true,
+            "live_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "store_series_in_checkout": false
+          }
+        },
+        "ledgers_reproduced": true,
+        "limit": "the gitignored bar store is absent, so this cannot verify source bytes"
+      },
+      "reason_code": null,
+      "scope": "ledgers reproduce; raw bars are not in Git",
+      "status": "PASS"
+    },
+    {
+      "claim": "Windows junction escape refused with a positive control; symlink test skipped for want of privilege",
+      "claim_id": "C-011",
+      "evidence_refs": [],
+      "observed": {
+        "escape_refused": true,
+        "junction_created": true,
+        "link_reaches_file": true,
+        "parent_traversal_refused": true,
+        "platform": "win32",
+        "positive_control_inside": true,
+        "symlink_privilege_available": false
+      },
+      "reason_code": null,
+      "scope": "junction escape refused; POSIX symlink coverage not exercised on this host",
+      "status": "PASS"
+    },
+    {
+      "claim": "economic_executions is 0 and phase-2 capture is still open",
+      "claim_id": "C-012",
+      "evidence_refs": [],
+      "observed": {
+        "economic_executions": 0,
+        "see": [
+          "handoff/gate/INSPECT.json",
+          "config/preregistrations/EXP-004A.json"
+        ]
+      },
+      "reason_code": null,
+      "scope": "",
+      "status": "PASS"
+    },
+    {
+      "claim": "the protocol freeze provably precedes the capture start under a trusted clock",
+      "claim_id": "C-013",
+      "evidence_refs": [
+        "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md#2"
+      ],
+      "observed": {
+        "capture_start_attestations": [],
+        "capture_start_utc": "2026-10-22T00:00:00Z",
+        "now_utc": "2026-10-21T10:26:29.350514Z",
+        "protocol_commit_committer_iso": "2026-10-21T10:00:56+02:00",
+        "why": "ordering rests on the Git committer clock and on builder-written sealed_at_utc fields; neither is an external timestamp authority",
+        "window_has_opened": false
+      },
+      "reason_code": "TIME_PROOF_WEAK",
+      "scope": "ordering rests on Git commit times and builder-sealed timestamps",
+      "status": "BLOCKED"
+    },
+    {
+      "claim": "the verifier's own adversarial acceptance suite passes with FALSE_SUCCESS = 0",
+      "claim_id": "C-014",
+      "evidence_refs": [
+        "tests/unit/research/test_exp004a_verify_adversarial.py"
+      ],
+      "observed": {
+        "exit_code": 0,
+        "false_success_invariant": "every adversarial case must be non-PASS",
+        "stdout_sha256": "4b47fc22fada79c8a5af7335a68cab9d319971295627597249bb76757ac28d1e",
+        "suite": "tests/unit/research/test_exp004a_verify_adversarial.py",
+        "summary": "20 passed in 23.53s"
+      },
+      "reason_code": null,
+      "scope": "refusals re-executed",
+      "status": "PASS"
+    }
+  ],
+  "economic_executions": 0,
+  "environment": {
+    "evidence_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "os": "win32",
+    "output_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\independent",
+    "python": "3.11.15",
+    "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "source_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "worktree_dirty_entries": 263,
+    "worktree_head": "881f0610a13d971404e7aaaa24d486a15b4d7277"
+  },
+  "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+  "false_success": 0,
+  "findings": [
+    {
+      "claim_id": "C-000",
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/RUN_REPORT.json#independence"
+      ],
+      "observed": {
+        "builder_identity_in_manifest": "tap-foundation-2026-10-21",
+        "declared_verifier_identity": "NOT_YET_ASSIGNED",
+        "disjoint_write_rights": true,
+        "output_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\independent",
+        "own_source_audit": {
+          "clean": true,
+          "forbidden_imports": [],
+          "forbidden_literals": [],
+          "imports": [
+            "__future__",
+            "__future__.annotations",
+            "argparse",
+            "ast",
+            "collections.abc",
+            "collections.abc.Iterable",
+            "collections.abc.Sequence",
+            "dataclasses",
+            "dataclasses.dataclass",
+            "dataclasses.field",
+            "datetime",
+            "datetime.UTC",
+            "datetime.datetime",
+            "hashlib",
+            "json",
+            "math",
+            "os",
+            "pathlib",
+            "pathlib.Path",
+            "subprocess",
+            "sys",
+            "tempfile",
+            "time",
+            "typing",
+            "typing.Any"
+          ],
+          "module": "exp004a_verify.py"
+        },
+        "same_principal_as_builder": true,
+        "separate_worktree": false,
+        "verifier_id": "verifier-b/EXP-004A/WP-051-02",
+        "verifier_principal": null,
+        "why": "RFC-051 §5: a role label or a new prompt in the same build session is insufficient evidence of independence; a distinct principal or agent run with its own worktree was not available to this execution"
+      },
+      "reason_code": "INDEPENDENCE_NOT_PROVEN",
+      "scope": "program-level separation demonstrable; principal-level separation not",
+      "status": "BLOCKED"
+    },
+    {
+      "claim_id": "C-005",
+      "evidence_refs": [],
+      "observed": {
+        "checked": 28,
+        "eol_normalised_files": [
+          "docs/agentic/exp004a/RUN_REPORT.json",
+          "scripts/exp004a_foundation.py",
+          "config/preregistrations/EXP-004A.json",
+          "tests/unit/research/test_prereg_gate_two_phase.py"
+        ],
+        "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mismatches": [],
+        "records": [
+          {
+            "checkout_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "checkout_size": 284812,
+            "git_blob_sha256_at_evaluated": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "git_blob_size_at_evaluated": 284812,
+            "group": "admission_ledgers",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "data/exp004a/admission_1h.jsonl",
+            "present": true,
+            "published_blob_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "published_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+          },
+          {
+            "checkout_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "checkout_size": 28985,
+            "git_blob_sha256_at_evaluated": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "git_blob_size_at_evaluated": 28985,
+            "group": "admission_ledgers",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "data/exp004a/admission_1h+15m.jsonl",
+            "present": true,
+            "published_blob_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "published_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1"
+          },
+          {
+            "checkout_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "checkout_size": 1072,
+            "git_blob_sha256_at_evaluated": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "git_blob_size_at_evaluated": 1072,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "last_commit_declared": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "path": "docs/agentic/exp004a/GATE_INSPECT.json",
+            "present": true,
+            "published_blob_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "published_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c"
+          },
+          {
+            "checkout_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711",
+            "checkout_size": 1054,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": null,
+            "last_commit_declared": null,
+            "path": "docs/agentic/exp004a/GATE_INSPECT.log",
+            "present": true,
+            "published_blob_sha256": null,
+            "published_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711"
+          },
+          {
+            "checkout_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "checkout_size": 1498,
+            "git_blob_sha256_at_evaluated": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "git_blob_size_at_evaluated": 1498,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "last_commit_declared": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "path": "docs/agentic/exp004a/GATE_AUTHORIZE.json",
+            "present": true,
+            "published_blob_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "published_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1"
+          },
+          {
+            "checkout_sha256": "1090c2e1406cf83cadeeb66aa7851bde7f202571808a5b2f14d65052016781d3",
+            "checkout_size": 1543,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": null,
+            "last_commit_declared": null,
+            "path": "docs/agentic/exp004a/GATE_AUTHORIZE.log",
+            "present": true,
+            "published_blob_sha256": null,
+            "published_sha256": "1090c2e1406cf83cadeeb66aa7851bde7f202571808a5b2f14d65052016781d3"
+          },
+          {
+            "checkout_sha256": "3550fc04f1a07afcced17a084cf01006b610e578d632639c69b15cc7b383b67d",
+            "checkout_size": 23988,
+            "git_blob_sha256_at_evaluated": "dce8f8347fe881e20df41e984003d54b986a90ff35723a925616eff174036bb9",
+            "git_blob_size_at_evaluated": 23329,
+            "group": "builder_reports",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/agentic/exp004a/RUN_REPORT.json",
+            "present": true,
+            "published_blob_sha256": "dce8f8347fe881e20df41e984003d54b986a90ff35723a925616eff174036bb9",
+            "published_sha256": "3550fc04f1a07afcced17a084cf01006b610e578d632639c69b15cc7b383b67d"
+          },
+          {
+            "checkout_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "checkout_size": 6592,
+            "git_blob_sha256_at_evaluated": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "git_blob_size_at_evaluated": 6592,
+            "group": "builder_reports",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/agentic/exp004a/RUN_REPORT.md",
+            "present": true,
+            "published_blob_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "published_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f"
+          },
+          {
+            "checkout_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "checkout_size": 15622,
+            "git_blob_sha256_at_evaluated": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "git_blob_size_at_evaluated": 15622,
+            "group": "builder_reports",
+            "last_commit_actual": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+            "last_commit_declared": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+            "path": "docs/agentic/exp004a/FINAL_REPORT.md",
+            "present": true,
+            "published_blob_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "published_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172"
+          },
+          {
+            "checkout_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "checkout_size": 35663,
+            "git_blob_sha256_at_evaluated": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "git_blob_size_at_evaluated": 35663,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prereg_gate.py",
+            "present": true,
+            "published_blob_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "published_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4"
+          },
+          {
+            "checkout_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "checkout_size": 2648,
+            "git_blob_sha256_at_evaluated": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "git_blob_size_at_evaluated": 2648,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/__init__.py",
+            "present": true,
+            "published_blob_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "published_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329"
+          },
+          {
+            "checkout_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "checkout_size": 13268,
+            "git_blob_sha256_at_evaluated": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "git_blob_size_at_evaluated": 13268,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/admission.py",
+            "present": true,
+            "published_blob_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "published_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66"
+          },
+          {
+            "checkout_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "checkout_size": 6504,
+            "git_blob_sha256_at_evaluated": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "git_blob_size_at_evaluated": 6504,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/independence.py",
+            "present": true,
+            "published_blob_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "published_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada"
+          },
+          {
+            "checkout_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "checkout_size": 11003,
+            "git_blob_sha256_at_evaluated": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "git_blob_size_at_evaluated": 11003,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/ledger.py",
+            "present": true,
+            "published_blob_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "published_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8"
+          },
+          {
+            "checkout_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "checkout_size": 7216,
+            "git_blob_sha256_at_evaluated": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "git_blob_size_at_evaluated": 7216,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/store.py",
+            "present": true,
+            "published_blob_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "published_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d"
+          },
+          {
+            "checkout_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "checkout_size": 1932,
+            "git_blob_sha256_at_evaluated": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "git_blob_size_at_evaluated": 1932,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/execution_cost/__init__.py",
+            "present": true,
+            "published_blob_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "published_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963"
+          },
+          {
+            "checkout_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "checkout_size": 17721,
+            "git_blob_sha256_at_evaluated": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "git_blob_size_at_evaluated": 17721,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/execution_cost/measured.py",
+            "present": true,
+            "published_blob_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "published_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7"
+          },
+          {
+            "checkout_sha256": "ef300441f9c3f14d3baba67667ba281d034bb8cdcaec4106348cdd1dfe2f092f",
+            "checkout_size": 25517,
+            "git_blob_sha256_at_evaluated": "4c53a60b075f82ebd85697acbcc24498564bc9345af0b6860e400cbe2765fee5",
+            "git_blob_size_at_evaluated": 24965,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "scripts/exp004a_foundation.py",
+            "present": true,
+            "published_blob_sha256": "4c53a60b075f82ebd85697acbcc24498564bc9345af0b6860e400cbe2765fee5",
+            "published_sha256": "ef300441f9c3f14d3baba67667ba281d034bb8cdcaec4106348cdd1dfe2f092f"
+          },
+          {
+            "checkout_sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9",
+            "checkout_size": 6960,
+            "git_blob_sha256_at_evaluated": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+            "git_blob_size_at_evaluated": 6830,
+            "group": "preregistration",
+            "last_commit_actual": "fed25aa893fa6964a22afa61a51e5e68ef930335",
+            "last_commit_declared": "fed25aa893fa6964a22afa61a51e5e68ef930335",
+            "path": "config/preregistrations/EXP-004A.json",
+            "present": true,
+            "published_blob_sha256": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+            "published_sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9"
+          },
+          {
+            "checkout_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "checkout_size": 4669,
+            "git_blob_sha256_at_evaluated": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "git_blob_size_at_evaluated": 4669,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.datasets.json",
+            "present": true,
+            "published_blob_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "published_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+          },
+          {
+            "checkout_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "checkout_size": 1767,
+            "git_blob_sha256_at_evaluated": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "git_blob_size_at_evaluated": 1767,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.prior_runs.json",
+            "present": true,
+            "published_blob_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "published_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7"
+          },
+          {
+            "checkout_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "checkout_size": 447,
+            "git_blob_sha256_at_evaluated": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "git_blob_size_at_evaluated": 447,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.baseline.json",
+            "present": true,
+            "published_blob_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "published_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890"
+          },
+          {
+            "checkout_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "checkout_size": 6540,
+            "git_blob_sha256_at_evaluated": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "git_blob_size_at_evaluated": 6540,
+            "group": "protocol",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md",
+            "present": true,
+            "published_blob_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "published_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5"
+          },
+          {
+            "checkout_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "checkout_size": 26541,
+            "git_blob_sha256_at_evaluated": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "git_blob_size_at_evaluated": 26541,
+            "group": "tests",
+            "last_commit_actual": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+            "last_commit_declared": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+            "path": "tests/unit/research/test_prereg_gate.py",
+            "present": true,
+            "published_blob_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "published_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e"
+          },
+          {
+            "checkout_sha256": "e99dab8625a2368262c3e027e13ed13f9218155302a75e4b2d6e690b66a11567",
+            "checkout_size": 12829,
+            "git_blob_sha256_at_evaluated": "8cbdaac511a4975611a16ecee8e4fd9dc87ff3e06023684f2d481dd654dfb969",
+            "git_blob_size_at_evaluated": 12538,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prereg_gate_two_phase.py",
+            "present": true,
+            "published_blob_sha256": "8cbdaac511a4975611a16ecee8e4fd9dc87ff3e06023684f2d481dd654dfb969",
+            "published_sha256": "e99dab8625a2368262c3e027e13ed13f9218155302a75e4b2d6e690b66a11567"
+          },
+          {
+            "checkout_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "checkout_size": 2998,
+            "git_blob_sha256_at_evaluated": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "git_blob_size_at_evaluated": 2998,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prereg_gate_escape.py",
+            "present": true,
+            "published_blob_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "published_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd"
+          },
+          {
+            "checkout_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "checkout_size": 15884,
+            "git_blob_sha256_at_evaluated": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "git_blob_size_at_evaluated": 15884,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prospective_admission.py",
+            "present": true,
+            "published_blob_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "published_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a"
+          },
+          {
+            "checkout_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "checkout_size": 9615,
+            "git_blob_sha256_at_evaluated": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "git_blob_size_at_evaluated": 9615,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_execution_cost_measured.py",
+            "present": true,
+            "published_blob_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "published_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e"
+          }
+        ]
+      },
+      "reason_code": null,
+      "scope": "tracked references",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-005",
+      "evidence_refs": [],
+      "observed": {
+        "duplicate_series_days": [],
+        "errors": [],
+        "errors_by_kind": {},
+        "ledgers": {
+          "1h": 234,
+          "1h+15m": 14
+        },
+        "lookahead_observations": [],
+        "series_prefixes_checked": 786,
+        "verified": 786
+      },
+      "reason_code": null,
+      "scope": "sealed prefixes and full store bytes",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-005",
+      "evidence_refs": [],
+      "observed": {
+        "1h": {
+          "back_links_valid": 234,
+          "chain_tip": "40693a413ab83c4e110140198d6beef369ab263edeac08f223972841c2e2b43e",
+          "digest_recomputed": 234,
+          "published_chain_tip": "40693a413ab83c4e110140198d6beef369ab263edeac08f223972841c2e2b43e",
+          "records": 234,
+          "seq_contiguous": 234,
+          "unique_days": 234
+        },
+        "1h+15m": {
+          "back_links_valid": 14,
+          "chain_tip": "1d0661bb1982885f197ef0d05c2f3e977b5807eb115b7ec1bb79b1b85791036f",
+          "digest_recomputed": 14,
+          "published_chain_tip": "1d0661bb1982885f197ef0d05c2f3e977b5807eb115b7ec1bb79b1b85791036f",
+          "records": 14,
+          "seq_contiguous": 14,
+          "unique_days": 14
+        },
+        "total_records": 248
+      },
+      "reason_code": null,
+      "scope": "append-only chain",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-009",
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/RUN_REPORT.json#authority"
+      ],
+      "observed": {
+        "builder_label_matches_manifest_pin": false,
+        "builder_report_claimed_head": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "code_drift_since_evaluated": [],
+        "code_scope": [
+          "src/trading_bot/research/prospective",
+          "src/trading_bot/research/execution_cost"
+        ],
+        "committer_iso_evaluated": "2026-10-21T10:00:56+02:00",
+        "dirty_entries_in_builder_tree": 262,
+        "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "evaluated_tree": "51394aa9efc02ba7ddc595428419253d3b229857",
+        "head": "881f0610a13d971404e7aaaa24d486a15b4d7277",
+        "head_tree": "fb30e79963425fab4088a4ec432d0e8d50f43c12",
+        "note": "the builder report's HEAD label is not the commit the manifest pins; the evaluated commit is the pinned one and the code under it is unchanged up to HEAD",
+        "parents": [
+          "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6"
+        ],
+        "protocol_commit_in_manifest": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "protocol_is_ancestor_of_evaluated": true
+      },
+      "reason_code": null,
+      "scope": "",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-013",
+      "evidence_refs": [
+        "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md#2"
+      ],
+      "observed": {
+        "capture_start_attestations": [],
+        "capture_start_utc": "2026-10-22T00:00:00Z",
+        "now_utc": "2026-10-21T10:26:29.350514Z",
+        "protocol_commit_committer_iso": "2026-10-21T10:00:56+02:00",
+        "why": "ordering rests on the Git committer clock and on builder-written sealed_at_utc fields; neither is an external timestamp authority",
+        "window_has_opened": false
+      },
+      "reason_code": "TIME_PROOF_WEAK",
+      "scope": "ordering rests on Git commit times and builder-sealed timestamps",
+      "status": "BLOCKED"
+    },
+    {
+      "claim_id": "C-004",
+      "evidence_refs": [],
+      "observed": {
+        "admitted_days_out_of_target": "0/90",
+        "capture": {
+          "end_utc": "2027-01-20",
+          "start_utc": "2026-10-22",
+          "target_days": 90
+        },
+        "corrupt": [],
+        "days_sealed_1h": 234,
+        "days_sealed_joint": 14,
+        "days_with_any_bar": 235,
+        "lanes": {
+          "1h": {
+            "recomputed_admissible": 3,
+            "sealed": 234,
+            "sealed_admissible": 5,
+            "sealed_classes": {
+              "DENSE_BUT_BACKFILLED": 229,
+              "PROSPECTIVELY_OBSERVED": 5
+            }
+          },
+          "1h+15m": {
+            "recomputed_admissible": 1,
+            "sealed": 14,
+            "sealed_admissible": 4,
+            "sealed_classes": {
+              "DENSE_BUT_BACKFILLED": 9,
+              "INCOMPLETE": 1,
+              "PROSPECTIVELY_OBSERVED": 4
+            }
+          }
+        },
+        "mismatches": [
+          {
+            "day": "2026-10-15",
+            "lane": "1h",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          },
+          {
+            "day": "2026-10-17",
+            "lane": "1h",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          },
+          {
+            "day": "2026-10-17",
+            "lane": "1h+15m",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          },
+          {
+            "day": "2026-10-19",
+            "lane": "1h+15m",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          },
+          {
+            "day": "2026-10-20",
+            "lane": "1h+15m",
+            "recomputed": "DENSE_BUT_BACKFILLED",
+            "sealed": "PROSPECTIVELY_OBSERVED"
+          }
+        ],
+        "per_day": {
+          "2026-03-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-03-31": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-04-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-05-31": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-06-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-07-31": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-08-31": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-16": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-19": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-20": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-21": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-22": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-23": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-24": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-25": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-26": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-27": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-28": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-29": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-09-30": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-01": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-02": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-03": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-04": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-05": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-06": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-07": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "INCOMPLETE"
+          },
+          "2026-10-08": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-09": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-10": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-11": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-12": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-13": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-14": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-15": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-16": {
+            "1h": "PROSPECTIVELY_OBSERVED",
+            "1h+15m": "PROSPECTIVELY_OBSERVED"
+          },
+          "2026-10-17": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-18": {
+            "1h": "DENSE_BUT_BACKFILLED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-19": {
+            "1h": "PROSPECTIVELY_OBSERVED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-20": {
+            "1h": "PROSPECTIVELY_OBSERVED",
+            "1h+15m": "DENSE_BUT_BACKFILLED"
+          },
+          "2026-10-21": {
+            "1h": "INCOMPLETE",
+            "1h+15m": "INCOMPLETE"
+          }
+        },
+        "recomputed_admissible_inside_window": [],
+        "recomputed_admissible_inside_window_count": 0,
+        "recomputed_admissible_outside_window": [
+          "2026-10-16"
+        ],
+        "unavailable_series": [],
+        "unreplayable_lanes": {}
+      },
+      "reason_code": "ADMISSION_REPLAY_MISMATCH",
+      "scope": "",
+      "status": "FAIL"
+    },
+    {
+      "claim_id": "C-002",
+      "evidence_refs": [],
+      "observed": {
+        "authorize_errors": [
+          "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+        ],
+        "authorize_exit": 2,
+        "inspect_errors": [],
+        "inspect_exit": 3,
+        "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "recorded_authorize_exit": 2,
+        "recorded_inspect_exit": 3,
+        "results": {
+          "authorize": {
+            "exit_code": 2,
+            "payload": {
+              "checks": [
+                "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "GIT_HEAD=881f0610a13d971404e7aaaa24d486a15b4d7277",
+                "IDENTIFIER_UNSPENT:EXP-004A",
+                "NO_PRIOR_RUNS:EXP-004A",
+                "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.datasets.json:47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.json:fed25aa893fa6964a22afa61a51e5e68ef930335",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.prior_runs.json:47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+                "PROTOCOL_FROZEN_BEFORE_CAPTURE_START"
+              ],
+              "decision": "BLOCKED",
+              "economic_executions": 0,
+              "errors": [
+                "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+              ],
+              "exit_code": 2,
+              "experiment_id": "EXP-004A",
+              "gate_version": "PREREG_GATE_V1",
+              "mode": "authorize",
+              "runtime_earning_or_execution_validated": false,
+              "verification_scope": "prereg_and_dataset_preflight_only"
+            },
+            "stderr_sha256": "37205465b4dbb90045fe59c73c6fc4a33f9dfc928d9da98bd8ff75f7d2f91a74",
+            "stderr_tail": [
+              "[prereg-gate] FAIL TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+            ],
+            "stdout_sha256": "3b7b9e0d3b8dad2b098748f0a901eda238bd097ba1ca6a41c16fd003a55ac1db"
+          },
+          "inspect": {
+            "exit_code": 3,
+            "payload": {
+              "checks": [
+                "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "IDENTIFIER_UNSPENT:EXP-004A",
+                "NO_PRIOR_RUNS:EXP-004A",
+                "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+                "PROTOCOL_FROZEN_BEFORE_CAPTURE_START"
+              ],
+              "decision": "INSPECTION_ONLY_NO_RUN",
+              "economic_executions": 0,
+              "errors": [],
+              "exit_code": 3,
+              "experiment_id": "EXP-004A",
+              "gate_version": "PREREG_GATE_V1",
+              "mode": "inspect",
+              "runtime_earning_or_execution_validated": false,
+              "verification_scope": "prereg_and_dataset_preflight_only"
+            },
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_tail": [],
+            "stdout_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711"
+          }
+        }
+      },
+      "reason_code": null,
+      "scope": "both modes re-executed",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-003",
+      "evidence_refs": [],
+      "observed": {
+        "authorize_errors": [
+          "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+        ],
+        "authorize_exit": 2,
+        "inspect_errors": [],
+        "inspect_exit": 3,
+        "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "recorded_authorize_exit": 2,
+        "recorded_inspect_exit": 3,
+        "results": {
+          "authorize": {
+            "exit_code": 2,
+            "payload": {
+              "checks": [
+                "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "GIT_HEAD=881f0610a13d971404e7aaaa24d486a15b4d7277",
+                "IDENTIFIER_UNSPENT:EXP-004A",
+                "NO_PRIOR_RUNS:EXP-004A",
+                "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.datasets.json:47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.json:fed25aa893fa6964a22afa61a51e5e68ef930335",
+                "PREREG_FILE_COMMIT:config/preregistrations/EXP-004A.prior_runs.json:47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+                "PROTOCOL_FROZEN_BEFORE_CAPTURE_START"
+              ],
+              "decision": "BLOCKED",
+              "economic_executions": 0,
+              "errors": [
+                "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+              ],
+              "exit_code": 2,
+              "experiment_id": "EXP-004A",
+              "gate_version": "PREREG_GATE_V1",
+              "mode": "authorize",
+              "runtime_earning_or_execution_validated": false,
+              "verification_scope": "prereg_and_dataset_preflight_only"
+            },
+            "stderr_sha256": "37205465b4dbb90045fe59c73c6fc4a33f9dfc928d9da98bd8ff75f7d2f91a74",
+            "stderr_tail": [
+              "[prereg-gate] FAIL TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+            ],
+            "stdout_sha256": "3b7b9e0d3b8dad2b098748f0a901eda238bd097ba1ca6a41c16fd003a55ac1db"
+          },
+          "inspect": {
+            "exit_code": 3,
+            "payload": {
+              "checks": [
+                "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+                "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+                "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+                "IDENTIFIER_UNSPENT:EXP-004A",
+                "NO_PRIOR_RUNS:EXP-004A",
+                "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+                "PROTOCOL_FROZEN_BEFORE_CAPTURE_START"
+              ],
+              "decision": "INSPECTION_ONLY_NO_RUN",
+              "economic_executions": 0,
+              "errors": [],
+              "exit_code": 3,
+              "experiment_id": "EXP-004A",
+              "gate_version": "PREREG_GATE_V1",
+              "mode": "inspect",
+              "runtime_earning_or_execution_validated": false,
+              "verification_scope": "prereg_and_dataset_preflight_only"
+            },
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_tail": [],
+            "stdout_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711"
+          }
+        }
+      },
+      "reason_code": null,
+      "scope": "phase 1 refused with exactly one named error",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-007",
+      "evidence_refs": [
+        "data/st6/ST6_OBSERVATIONS.jsonl"
+      ],
+      "observed": {
+        "assets_without_claim": [
+          "XRP"
+        ],
+        "declared_notional_usdt": 500.0,
+        "declared_size_walked": false,
+        "definition": "recomputed as 2*fee + spread + buy_impact + sell_impact (the builder's arithmetic); the two-spread variant charges the half-spread on entry and again on exit, which is what a round trip across the book actually pays",
+        "fee_bps_per_side": 10.0,
+        "medians": {
+          "BTC": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.0012,
+            "median_one_spread": 20.0012,
+            "median_spread_bps": 0.0012,
+            "median_two_spread": 20.0024,
+            "rows": 228
+          },
+          "ETH": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.0408,
+            "median_one_spread": 20.0408,
+            "median_spread_bps": 0.0407,
+            "median_two_spread": 20.0816,
+            "rows": 228
+          },
+          "SOL": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.9414,
+            "median_one_spread": 20.9414,
+            "median_spread_bps": 0.9406,
+            "median_two_spread": 21.8828,
+            "rows": 228
+          },
+          "XRP": {
+            "agrees_with_claim_one_spread": false,
+            "claimed": null,
+            "median_one_spread": 20.7444,
+            "median_spread_bps": 0.7444,
+            "median_two_spread": 21.4888,
+            "rows": 228
+          }
+        },
+        "sizes_walked_usdt": [
+          200.0
+        ],
+        "tape": {
+          "parse_errors": [],
+          "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+          "rows": 912,
+          "sha256": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+          "size_bytes": 2030451
+        }
+      },
+      "reason_code": "COST_SCOPE_UNPROVEN",
+      "scope": "medians reproduce; the round-trip interpretation does not",
+      "status": "BLOCKED"
+    },
+    {
+      "claim_id": "C-008",
+      "evidence_refs": [],
+      "observed": {
+        "assets_without_claim": [
+          "XRP"
+        ],
+        "declared_notional_usdt": 500.0,
+        "declared_size_walked": false,
+        "definition": "recomputed as 2*fee + spread + buy_impact + sell_impact (the builder's arithmetic); the two-spread variant charges the half-spread on entry and again on exit, which is what a round trip across the book actually pays",
+        "fee_bps_per_side": 10.0,
+        "medians": {
+          "BTC": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.0012,
+            "median_one_spread": 20.0012,
+            "median_spread_bps": 0.0012,
+            "median_two_spread": 20.0024,
+            "rows": 228
+          },
+          "ETH": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.0408,
+            "median_one_spread": 20.0408,
+            "median_spread_bps": 0.0407,
+            "median_two_spread": 20.0816,
+            "rows": 228
+          },
+          "SOL": {
+            "agrees_with_claim_one_spread": true,
+            "claimed": 20.9414,
+            "median_one_spread": 20.9414,
+            "median_spread_bps": 0.9406,
+            "median_two_spread": 21.8828,
+            "rows": 228
+          },
+          "XRP": {
+            "agrees_with_claim_one_spread": false,
+            "claimed": null,
+            "median_one_spread": 20.7444,
+            "median_spread_bps": 0.7444,
+            "median_two_spread": 21.4888,
+            "rows": 228
+          }
+        },
+        "sizes_walked_usdt": [
+          200.0
+        ],
+        "tape": {
+          "parse_errors": [],
+          "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+          "rows": 912,
+          "sha256": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+          "size_bytes": 2030451
+        }
+      },
+      "reason_code": null,
+      "scope": "declared size absent from every walked row",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-006",
+      "evidence_refs": [],
+      "observed": {
+        "ledger_sha256_after": {
+          "admission_1h+15m.jsonl": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+          "admission_1h.jsonl": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+        },
+        "ledger_sha256_before": {
+          "admission_1h+15m.jsonl": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+          "admission_1h.jsonl": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+        },
+        "repeatable": true,
+        "replay_budget_seconds": 300,
+        "runs": [
+          {
+            "attempt": 1,
+            "elapsed_s": 159.0,
+            "exit_code": 0,
+            "output_sha256": "07f1c2fd48073c6912877a1febbe2b20e1efe48c35c468a3aeba21719cc91978",
+            "output_tail": [
+              "    \"spent\": false,",
+              "    \"report_directory\": \"docs\\\\agentic\\\\exp004a\",",
+              "    \"report_directory_inside_runs_root\": false",
+              "  }",
+              "}"
+            ],
+            "reports": {
+              "RUN_REPORT.json": "5c64793be03b50fa0780ddf464a9654610c43589262da96a87f6dce5d321ef49",
+              "RUN_REPORT.md": "fbfe2d81e79e90307c11b6966c5ee7fc45243e4b35851668abd7bd6c251e499d"
+            },
+            "reports_stable": {
+              "RUN_REPORT.json": "28554530644df260c2102ffbfc42b531db9251ab5c22df22ba317c784b890668"
+            },
+            "timed_out": false
+          },
+          {
+            "attempt": 2,
+            "elapsed_s": 148.2,
+            "exit_code": 0,
+            "output_sha256": "07f1c2fd48073c6912877a1febbe2b20e1efe48c35c468a3aeba21719cc91978",
+            "output_tail": [
+              "    \"spent\": false,",
+              "    \"report_directory\": \"docs\\\\agentic\\\\exp004a\",",
+              "    \"report_directory_inside_runs_root\": false",
+              "  }",
+              "}"
+            ],
+            "reports": {
+              "RUN_REPORT.json": "b6ad7f10b49d4288a7d4df55f51c8f340659fc986aedbfed6ce9f4dafb615564",
+              "RUN_REPORT.md": "524b65500e00c7e26e3f45c96ea13a31a4aa008232756cc2d8ab2cfedd0b048b"
+            },
+            "reports_stable": {
+              "RUN_REPORT.json": "28554530644df260c2102ffbfc42b531db9251ab5c22df22ba317c784b890668"
+            },
+            "timed_out": false
+          }
+        ],
+        "store_unchanged": true
+      },
+      "reason_code": null,
+      "scope": "measurement replayed twice, ledger untouched",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-011",
+      "evidence_refs": [],
+      "observed": {
+        "escape_refused": true,
+        "junction_created": true,
+        "link_reaches_file": true,
+        "parent_traversal_refused": true,
+        "platform": "win32",
+        "positive_control_inside": true,
+        "symlink_privilege_available": false
+      },
+      "reason_code": null,
+      "scope": "junction escape refused; POSIX symlink coverage not exercised on this host",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-012",
+      "evidence_refs": [],
+      "observed": {
+        "economic_executions": 0,
+        "see": [
+          "handoff/gate/INSPECT.json",
+          "config/preregistrations/EXP-004A.json"
+        ]
+      },
+      "reason_code": null,
+      "scope": "",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-001",
+      "evidence_refs": [
+        "tests/unit/research/test_prereg_gate.py",
+        "tests/unit/research/test_prereg_gate_two_phase.py",
+        "tests/unit/research/test_prereg_gate_escape.py",
+        "tests/unit/research/test_prospective_admission.py",
+        "tests/unit/research/test_execution_cost_measured.py",
+        "tests/unit/research/test_exp004a_evidence_inventory.py"
+      ],
+      "observed": {
+        "claimed": "115 passed, 1 skipped",
+        "exit_code": 0,
+        "missing_suites": [],
+        "skips": [
+          "SKIPPED [1] tests\\unit\\research\\test_prereg_gate.py:591: symlinks unavailable in this environment",
+          "128 passed, 1 skipped in 223.98s (0:03:43)"
+        ],
+        "stdout_sha256": "68323ac70b6df87fada2f153b623118e7585b767de1cae9aeead583eb427d8e4",
+        "suites": [
+          "tests/unit/research/test_prereg_gate.py",
+          "tests/unit/research/test_prereg_gate_two_phase.py",
+          "tests/unit/research/test_prereg_gate_escape.py",
+          "tests/unit/research/test_prospective_admission.py",
+          "tests/unit/research/test_execution_cost_measured.py",
+          "tests/unit/research/test_exp004a_evidence_inventory.py"
+        ],
+        "summary": "128 passed, 1 skipped in 223.98s (0:03:43)"
+      },
+      "reason_code": null,
+      "scope": "re-executed by the verifier",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-014",
+      "evidence_refs": [
+        "tests/unit/research/test_exp004a_verify_adversarial.py"
+      ],
+      "observed": {
+        "exit_code": 0,
+        "false_success_invariant": "every adversarial case must be non-PASS",
+        "stdout_sha256": "4b47fc22fada79c8a5af7335a68cab9d319971295627597249bb76757ac28d1e",
+        "suite": "tests/unit/research/test_exp004a_verify_adversarial.py",
+        "summary": "20 passed in 23.53s"
+      },
+      "reason_code": null,
+      "scope": "refusals re-executed",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-010",
+      "evidence_refs": [],
+      "observed": {
+        "checkout": {
+          "data/exp004a/admission_1h+15m.jsonl": {
+            "checkout_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "in_checkout": true,
+            "live_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "store_series_in_checkout": false
+          },
+          "data/exp004a/admission_1h.jsonl": {
+            "checkout_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "in_checkout": true,
+            "live_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "store_series_in_checkout": false
+          }
+        },
+        "ledgers_reproduced": true,
+        "limit": "the gitignored bar store is absent, so this cannot verify source bytes"
+      },
+      "reason_code": null,
+      "scope": "ledgers reproduce; raw bars are not in Git",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-000",
+      "evidence_refs": [],
+      "observed": {
+        "changed": [],
+        "files_watched": 23,
+        "output_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\independent",
+        "output_root_under_forbidden": []
+      },
+      "reason_code": null,
+      "scope": "no builder-owned byte changed under verification",
+      "status": "PASS"
+    }
+  ],
+  "independence": {
+    "evidence": {
+      "builder_identity_in_manifest": "tap-foundation-2026-10-21",
+      "declared_verifier_identity": "NOT_YET_ASSIGNED",
+      "disjoint_write_rights": true,
+      "output_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\independent",
+      "own_source_audit": {
+        "clean": true,
+        "forbidden_imports": [],
+        "forbidden_literals": [],
+        "imports": [
+          "__future__",
+          "__future__.annotations",
+          "argparse",
+          "ast",
+          "collections.abc",
+          "collections.abc.Iterable",
+          "collections.abc.Sequence",
+          "dataclasses",
+          "dataclasses.dataclass",
+          "dataclasses.field",
+          "datetime",
+          "datetime.UTC",
+          "datetime.datetime",
+          "hashlib",
+          "json",
+          "math",
+          "os",
+          "pathlib",
+          "pathlib.Path",
+          "subprocess",
+          "sys",
+          "tempfile",
+          "time",
+          "typing",
+          "typing.Any"
+        ],
+        "module": "exp004a_verify.py"
+      },
+      "same_principal_as_builder": true,
+      "separate_worktree": false,
+      "verifier_id": "verifier-b/EXP-004A/WP-051-02",
+      "verifier_principal": null,
+      "why": "RFC-051 §5: a role label or a new prompt in the same build session is insufficient evidence of independence; a distinct principal or agent run with its own worktree was not available to this execution"
+    },
+    "reason_code": "INDEPENDENCE_NOT_PROVEN",
+    "status": "BLOCKED"
+  },
+  "mode": "verify",
+  "promotion": {
+    "blocking_reasons": [
+      "PHASE2_CAPTURE_OPEN",
+      "INSUFFICIENT_ADMITTED_DAYS",
+      "DECLARED_SIZE_NOT_WALKED",
+      "ZERO_ADMITTED_DAYS_INSIDE_CAPTURE_WINDOW",
+      "BLOCKED_MISSING_INDEPENDENT_VERIFIER"
+    ],
+    "decision": "NO_PROMOTION",
+    "note": "eligibility is never a live order; phase 1 stays un-authorisable"
+  },
+  "rfc050_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+  "rfc_id": "RFC-051",
+  "run_finished_at_utc": "2026-10-21T10:36:06.121829Z",
+  "run_id": "verifier-b/EXP-004A/WP-051-02:2026-10-21T10:26:12.509519Z",
+  "run_started_at_utc": "2026-10-21T10:26:12.509519Z",
+  "schema_version": "1.0",
+  "source_mutations": 0,
+  "source_tree_sha": "51394aa9efc02ba7ddc595428419253d3b229857",
+  "status": "FAIL",
+  "verifier": {
+    "agent_id": "verifier-b/EXP-004A/WP-051-02",
+    "implementation": "scripts/exp004a_verify.py",
+    "implementation_sha256": "35cdf88ec40e671d6eaac43cdabbf3e1b77a8b9f58f0a7068afd6fad5c4eb6d9",
+    "run_id": "verifier-b/EXP-004A/WP-051-02:2026-10-21T10:26:12.509519Z"
+  }
+}

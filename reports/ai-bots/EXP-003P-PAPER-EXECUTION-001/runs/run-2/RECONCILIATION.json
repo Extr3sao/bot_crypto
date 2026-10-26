@@ -1,0 +1,884 @@
+{
+  "paper_validation": "BLOCKED_NOT_CONFIGURED",
+  "paper_validation_note": "no authorised paper provider is configured; the offline book is not a venue",
+  "result": "PASS",
+  "run_id": "EXP-003P-PAPER-EXECUTION-001",
+  "runtime": {
+    "as_of_time": "2026-08-06T00:00:00Z",
+    "cash_delta": -1474.811608862,
+    "differences": [],
+    "evidence_refs": [
+      "PAPER_BROKER_BOOK",
+      "broker_snapshot",
+      "realised_pnl_comparison=DEFERRED_OPEN_POSITION"
+    ],
+    "fee_delta": 34.5,
+    "local_order_state": {
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000008": {
+        "cum_filled_qty": 0.007723151578,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000010": {
+        "cum_filled_qty": 0.260741396363,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000012": {
+        "cum_filled_qty": 6.709858043466,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000018": {
+        "cum_filled_qty": 0.262396396897,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000020": {
+        "cum_filled_qty": 0.00777791195,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000028": {
+        "cum_filled_qty": 0.264550588798,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000032": {
+        "cum_filled_qty": 0.007834689699,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000034": {
+        "cum_filled_qty": 0.2656071445,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000036": {
+        "cum_filled_qty": 6.790425483389,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000044": {
+        "cum_filled_qty": 6.824706523488,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000046": {
+        "cum_filled_qty": 0.007954711945,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000048": {
+        "cum_filled_qty": 0.26822251811,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000054": {
+        "cum_filled_qty": 0.007894807906,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000056": {
+        "cum_filled_qty": 0.266765056107,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000064": {
+        "cum_filled_qty": 0.269610646314,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000066": {
+        "cum_filled_qty": 0.007964957168,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000068": {
+        "cum_filled_qty": 6.865926439347,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000076": {
+        "cum_filled_qty": 0.007996604824,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000078": {
+        "cum_filled_qty": 0.271756901296,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000080": {
+        "cum_filled_qty": 6.911465263319,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000086": {
+        "cum_filled_qty": 6.807645405309,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000092": {
+        "cum_filled_qty": 0.267463024039,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000094": {
+        "cum_filled_qty": 6.768007117912,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000098": {
+        "cum_filled_qty": 0.270145119966,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000104": {
+        "cum_filled_qty": 6.769840520897,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000108": {
+        "cum_filled_qty": 0.007838007441,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000110": {
+        "cum_filled_qty": 6.771674917461,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000116": {
+        "cum_filled_qty": 6.72973375061,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000120": {
+        "cum_filled_qty": 0.267601910084,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000124": {
+        "cum_filled_qty": 6.74699413685,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000126": {
+        "cum_filled_qty": 0.266423826142,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000132": {
+        "cum_filled_qty": 0.263712573152,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000134": {
+        "cum_filled_qty": 0.007769235294,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000002": {
+        "cum_filled_qty": 0.007723151578,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000014": {
+        "cum_filled_qty": 0.00777791195,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000023": {
+        "cum_filled_qty": 0.007834689699,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000041": {
+        "cum_filled_qty": 0.007954711945,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000140": {
+        "cum_filled_qty": 0.007894807906,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000149": {
+        "cum_filled_qty": 0.007964957168,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000161": {
+        "cum_filled_qty": 0.007996604824,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000176": {
+        "cum_filled_qty": 0.007838007441,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000220": {
+        "cum_filled_qty": 0.007769235294,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-BTC-000256": {
+        "cum_filled_qty": 0.007711480391,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000003": {
+        "cum_filled_qty": 0.260741396363,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000015": {
+        "cum_filled_qty": 0.262396396897,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000024": {
+        "cum_filled_qty": 0.264550588798,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000034": {
+        "cum_filled_qty": 0.2656071445,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000042": {
+        "cum_filled_qty": 0.26822251811,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000141": {
+        "cum_filled_qty": 0.266765056107,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000150": {
+        "cum_filled_qty": 0.269610646314,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000162": {
+        "cum_filled_qty": 0.271756901296,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000185": {
+        "cum_filled_qty": 0.267463024039,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000194": {
+        "cum_filled_qty": 0.270145119966,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000200": {
+        "cum_filled_qty": 0.267601910084,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000241": {
+        "cum_filled_qty": 0.266423826142,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000248": {
+        "cum_filled_qty": 0.263712573152,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-ETH-000257": {
+        "cum_filled_qty": 0.260748196775,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000004": {
+        "cum_filled_qty": 6.709858043466,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000025": {
+        "cum_filled_qty": 6.790425483389,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000043": {
+        "cum_filled_qty": 6.824706523488,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000151": {
+        "cum_filled_qty": 6.865926439347,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000163": {
+        "cum_filled_qty": 6.911465263319,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000178": {
+        "cum_filled_qty": 6.807645405309,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000186": {
+        "cum_filled_qty": 6.768007117912,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000201": {
+        "cum_filled_qty": 6.769840520897,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000212": {
+        "cum_filled_qty": 6.771674917461,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000222": {
+        "cum_filled_qty": 6.72973375061,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000236": {
+        "cum_filled_qty": 6.74699413685,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:LANE-paper-003p-SOL-000249": {
+        "cum_filled_qty": 6.72792200374,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      }
+    },
+    "local_qty": 6.996381680906,
+    "position_delta": 6.996381680906,
+    "provider_order_state": {
+      "orders": {
+        "ord-paper-003p-00000002": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007723151578
+        },
+        "ord-paper-003p-00000004": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.260741396363
+        },
+        "ord-paper-003p-00000006": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.709858043466
+        },
+        "ord-paper-003p-00000014": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.00777791195
+        },
+        "ord-paper-003p-00000016": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.262396396897
+        },
+        "ord-paper-003p-00000022": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007834689699
+        },
+        "ord-paper-003p-00000024": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.264550588798
+        },
+        "ord-paper-003p-00000026": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.790425483389
+        },
+        "ord-paper-003p-00000030": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.2656071445
+        },
+        "ord-paper-003p-00000038": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007954711945
+        },
+        "ord-paper-003p-00000040": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.26822251811
+        },
+        "ord-paper-003p-00000042": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.824706523488
+        },
+        "ord-paper-003p-00000050": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007894807906
+        },
+        "ord-paper-003p-00000052": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.266765056107
+        },
+        "ord-paper-003p-00000058": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007964957168
+        },
+        "ord-paper-003p-00000060": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.269610646314
+        },
+        "ord-paper-003p-00000062": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.865926439347
+        },
+        "ord-paper-003p-00000070": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007996604824
+        },
+        "ord-paper-003p-00000072": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.271756901296
+        },
+        "ord-paper-003p-00000074": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.911465263319
+        },
+        "ord-paper-003p-00000082": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007838007441
+        },
+        "ord-paper-003p-00000084": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.807645405309
+        },
+        "ord-paper-003p-00000088": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.267463024039
+        },
+        "ord-paper-003p-00000090": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.768007117912
+        },
+        "ord-paper-003p-00000096": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.270145119966
+        },
+        "ord-paper-003p-00000100": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.267601910084
+        },
+        "ord-paper-003p-00000102": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.769840520897
+        },
+        "ord-paper-003p-00000106": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.771674917461
+        },
+        "ord-paper-003p-00000112": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007769235294
+        },
+        "ord-paper-003p-00000114": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.72973375061
+        },
+        "ord-paper-003p-00000118": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.74699413685
+        },
+        "ord-paper-003p-00000122": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.266423826142
+        },
+        "ord-paper-003p-00000128": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.263712573152
+        },
+        "ord-paper-003p-00000130": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 6.72792200374
+        },
+        "ord-paper-003p-00000136": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.007711480391
+        },
+        "ord-paper-003p-00000138": {
+          "fees_usdt": 0.5,
+          "notional": 500.0,
+          "quantity": 0.260748196775
+        },
+        "ordx-paper-003p-00000008": {
+          "fees_usdt": 0.5,
+          "notional": 503.629470797711,
+          "quantity": 0.007723151578
+        },
+        "ordx-paper-003p-00000010": {
+          "fees_usdt": 0.5,
+          "notional": 503.629470797711,
+          "quantity": 0.260741396363
+        },
+        "ordx-paper-003p-00000012": {
+          "fees_usdt": 0.5,
+          "notional": 503.56595560025,
+          "quantity": 6.709858043466
+        },
+        "ordx-paper-003p-00000018": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.262396396897
+        },
+        "ordx-paper-003p-00000020": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.00777791195
+        },
+        "ordx-paper-003p-00000028": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.264550588798
+        },
+        "ordx-paper-003p-00000032": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.007834689699
+        },
+        "ordx-paper-003p-00000034": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.2656071445
+        },
+        "ordx-paper-003p-00000036": {
+          "fees_usdt": 0.5,
+          "notional": 496.431370548109,
+          "quantity": 6.790425483389
+        },
+        "ordx-paper-003p-00000044": {
+          "fees_usdt": 0.5,
+          "notional": 496.431370548109,
+          "quantity": 6.824706523488
+        },
+        "ordx-paper-003p-00000046": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.007954711945
+        },
+        "ordx-paper-003p-00000048": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.26822251811
+        },
+        "ordx-paper-003p-00000054": {
+          "fees_usdt": 0.5,
+          "notional": 497.206223016988,
+          "quantity": 0.007894807906
+        },
+        "ordx-paper-003p-00000056": {
+          "fees_usdt": 0.5,
+          "notional": 495.648595790184,
+          "quantity": 0.266765056107
+        },
+        "ordx-paper-003p-00000064": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.269610646314
+        },
+        "ordx-paper-003p-00000066": {
+          "fees_usdt": 0.5,
+          "notional": 496.368763138585,
+          "quantity": 0.007964957168
+        },
+        "ordx-paper-003p-00000068": {
+          "fees_usdt": 0.5,
+          "notional": 496.431370548109,
+          "quantity": 6.865926439347
+        },
+        "ordx-paper-003p-00000076": {
+          "fees_usdt": 0.5,
+          "notional": 502.90691248186,
+          "quantity": 0.007996604824
+        },
+        "ordx-paper-003p-00000078": {
+          "fees_usdt": 0.5,
+          "notional": 504.616196451852,
+          "quantity": 0.271756901296
+        },
+        "ordx-paper-003p-00000080": {
+          "fees_usdt": 0.5,
+          "notional": 503.959450922369,
+          "quantity": 6.911465263319
+        },
+        "ordx-paper-003p-00000086": {
+          "fees_usdt": 0.5,
+          "notional": 503.56595560025,
+          "quantity": 6.807645405309
+        },
+        "ordx-paper-003p-00000092": {
+          "fees_usdt": 0.5,
+          "notional": 495.208106208673,
+          "quantity": 0.267463024039
+        },
+        "ordx-paper-003p-00000094": {
+          "fees_usdt": 0.5,
+          "notional": 495.461102779793,
+          "quantity": 6.768007117912
+        },
+        "ordx-paper-003p-00000098": {
+          "fees_usdt": 0.5,
+          "notional": 504.640042157269,
+          "quantity": 0.270145119966
+        },
+        "ordx-paper-003p-00000104": {
+          "fees_usdt": 0.5,
+          "notional": 495.370600856636,
+          "quantity": 6.769840520897
+        },
+        "ordx-paper-003p-00000108": {
+          "fees_usdt": 0.5,
+          "notional": 503.629470797711,
+          "quantity": 0.007838007441
+        },
+        "ordx-paper-003p-00000110": {
+          "fees_usdt": 0.5,
+          "notional": 503.56595560025,
+          "quantity": 6.771674917461
+        },
+        "ordx-paper-003p-00000116": {
+          "fees_usdt": 0.5,
+          "notional": 495.085650001105,
+          "quantity": 6.72973375061
+        },
+        "ordx-paper-003p-00000120": {
+          "fees_usdt": 0.5,
+          "notional": 503.629470797711,
+          "quantity": 0.267601910084
+        },
+        "ordx-paper-003p-00000124": {
+          "fees_usdt": 0.5,
+          "notional": 495.538609452483,
+          "quantity": 6.74699413685
+        },
+        "ordx-paper-003p-00000126": {
+          "fees_usdt": 0.5,
+          "notional": 495.930393350057,
+          "quantity": 0.266423826142
+        },
+        "ordx-paper-003p-00000132": {
+          "fees_usdt": 0.5,
+          "notional": 503.629470797711,
+          "quantity": 0.263712573152
+        },
+        "ordx-paper-003p-00000134": {
+          "fees_usdt": 0.5,
+          "notional": 503.629470797711,
+          "quantity": 0.007769235294
+        }
+      }
+    },
+    "provider_qty": 163.460439244148,
+    "result": "PASS",
+    "run_id": "EXP-003P-PAPER-EXECUTION-001",
+    "source": "PAPER_BROKER_BOOK"
+  },
+  "scenario": {
+    "as_of_time": "2026-07-26T01:00:00Z",
+    "cash_delta": -451.70275,
+    "differences": [],
+    "evidence_refs": [
+      "OFFLINE_SIM_PAPER_VENUE",
+      "broker_snapshot=NOT_AVAILABLE"
+    ],
+    "fee_delta": 0.26100142,
+    "local_order_state": {
+      "OFFLINE:SCN-S01_FULL_FILL": {
+        "cum_filled_qty": 1.0,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:SCN-S02_PARTIAL_THEN_FILL": {
+        "cum_filled_qty": 2.0,
+        "fills": 2,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:SCN-S03_PARTIAL_THEN_CANCEL": {
+        "cum_filled_qty": 1.0,
+        "fills": 1,
+        "state": "CANCELED",
+        "terminal": true
+      },
+      "OFFLINE:SCN-S04_DUPLICATE_DELIVERY": {
+        "cum_filled_qty": 1.5,
+        "fills": 1,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:SCN-S05_OUT_OF_ORDER": {
+        "cum_filled_qty": 1.0,
+        "fills": 2,
+        "state": "FILLED",
+        "terminal": true
+      },
+      "OFFLINE:SCN-S06_TIMEOUT_UNKNOWN": {
+        "cum_filled_qty": 0.0,
+        "fills": 0,
+        "state": "UNKNOWN",
+        "terminal": false
+      },
+      "OFFLINE:SCN-S07_REJECT": {
+        "cum_filled_qty": 0.0,
+        "fills": 0,
+        "state": "REJECTED",
+        "terminal": true
+      },
+      "OFFLINE:SCN-S08_ACK_WITHOUT_FILL": {
+        "cum_filled_qty": 0.0,
+        "fills": 0,
+        "state": "ACKNOWLEDGED",
+        "terminal": false
+      }
+    },
+    "local_qty": 4.5,
+    "position_delta": 4.5,
+    "provider_order_state": {
+      "orders": {
+        "SIM-000001": {
+          "fees_usdt": 0.04,
+          "notional": 100.0,
+          "quantity": 1.0
+        },
+        "SIM-000002": {
+          "fees_usdt": 0.08016008,
+          "notional": 200.4002,
+          "quantity": 2.0
+        },
+        "SIM-000003": {
+          "fees_usdt": 0.04016016,
+          "notional": 100.4004,
+          "quantity": 1.0
+        },
+        "SIM-000004": {
+          "fees_usdt": 0.06036054,
+          "notional": 150.90135,
+          "quantity": 1.5
+        },
+        "SIM-000005": {
+          "fees_usdt": 0.04032064,
+          "notional": 100.8016,
+          "quantity": 1.0
+        }
+      }
+    },
+    "provider_qty": 6.5,
+    "result": "PASS",
+    "run_id": "EXP-003P-PAPER-EXECUTION-001",
+    "source": "OFFLINE_SIM_PAPER_VENUE"
+  },
+  "schema_version": "AI_BOTS_003P_RECONCILIATION_V1"
+}

@@ -1,0 +1,123 @@
+{
+  "rfc": "RFC-043",
+  "generated_at": "2026-10-06T07:13:27Z",
+  "capital_tiers": [
+    {
+      "tier": "TIER_0",
+      "capital_usdt": 200.0,
+      "label": "CANARY"
+    },
+    {
+      "tier": "TIER_1",
+      "capital_usdt": 500.0,
+      "label": "FIRST_SCALE_REVIEW"
+    },
+    {
+      "tier": "TIER_2",
+      "capital_usdt": 1000.0,
+      "label": "SMALL"
+    },
+    {
+      "tier": "TIER_3",
+      "capital_usdt": 2500.0,
+      "label": "SMALL_PLUS"
+    },
+    {
+      "tier": "TIER_4",
+      "capital_usdt": 5000.0,
+      "label": "MEDIUM"
+    },
+    {
+      "tier": "TIER_5",
+      "capital_usdt": 10000.0,
+      "label": "MEDIUM_PLUS_AND_ABOVE"
+    }
+  ],
+  "any_tier_authorized": false,
+  "capital_scale_gate_conditions": [
+    "business_edge_still_valid",
+    "paper_execution_pass",
+    "forward_evidence_acceptable",
+    "actual_costs_consistent",
+    "no_major_reconciliation_defect",
+    "drawdown_within_expected_envelope",
+    "human_approval"
+  ],
+  "capital_scale_decision": {
+    "capital_scale_authorized": false,
+    "G_CAPITAL_SCALE": "FAIL",
+    "current_milestone": "M0",
+    "failing_conditions": [
+      "business_edge_still_valid",
+      "paper_execution_pass",
+      "forward_evidence_acceptable",
+      "actual_costs_consistent",
+      "no_major_reconciliation_defect",
+      "drawdown_within_expected_envelope",
+      "human_approval",
+      "realized_net_pnl_not_positive"
+    ]
+  },
+  "leverage_policy": "LEVERAGE_IS_NOT_A_CAPITAL_SUBSTITUTE",
+  "note": "no automatic scale; each step needs evidence, risk decision and human approval",
+  "current_milestone": "M0",
+  "milestones": [
+    {
+      "milestone": "M0",
+      "meaning": "BUSINESS_EDGE = 0"
+    },
+    {
+      "milestone": "M1",
+      "meaning": "BUSINESS_EDGE = 1"
+    },
+    {
+      "milestone": "M2",
+      "meaning": "PAPER_EXECUTION = PASS"
+    },
+    {
+      "milestone": "M3",
+      "meaning": "FORWARD_EVIDENCE = PASS"
+    },
+    {
+      "milestone": "M4",
+      "meaning": "CANARY_DEPLOYED"
+    },
+    {
+      "milestone": "M5",
+      "meaning": "REALIZED_NET_PNL > 0"
+    },
+    {
+      "milestone": "M6",
+      "meaning": "CAPITAL_SCALE_1"
+    },
+    {
+      "milestone": "M7",
+      "meaning": "REPEATED_PROFITABILITY"
+    },
+    {
+      "milestone": "M8",
+      "meaning": "ECONOMICALLY_MEANINGFUL_PNL"
+    }
+  ],
+  "profit_levels": {
+    "LEVEL_A_PROOF_OF_PROFITABILITY": "REALIZED_NET_PNL > 0 after real costs",
+    "LEVEL_B_ECONOMICALLY_NOTICEABLE": "annual profit materially above execution and operational costs",
+    "LEVEL_C_MEANINGFUL_INCOME_CONTRIBUTION": "requires significantly larger capital; the 'meaningful' threshold is the owner's to set and is never invented here"
+  },
+  "official_sequence": [
+    "BUSINESS EDGE",
+    "PAPER",
+    "FORWARD",
+    "200 USDT CANARY",
+    "REALIZED NET PROFIT",
+    "CAPITAL SCALE",
+    "MEANINGFUL ABSOLUTE PROFIT"
+  ],
+  "priority_order": [
+    "FIND BUSINESS EDGE",
+    "VERIFY PAPER EXECUTION",
+    "DEPLOY 200 USDT CANARY",
+    "VERIFY REAL PNL",
+    "SCALE CAPITAL"
+  ]
+}

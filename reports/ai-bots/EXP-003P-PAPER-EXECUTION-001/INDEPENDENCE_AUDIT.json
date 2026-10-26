@@ -1,0 +1,49 @@
+{
+  "organizational_independence": false,
+  "organizational_note": "one agent wrote the producer, the verifier and the controls; the separation is between programs, not between people, and is reported as such",
+  "producer_programs": [
+    "src/trading_bot/paper/lifecycle/contracts.py",
+    "src/trading_bot/paper/lifecycle/store.py",
+    "src/trading_bot/paper/lifecycle/engine.py",
+    "src/trading_bot/paper/lifecycle/venue.py",
+    "src/trading_bot/paper/lifecycle/reconcile.py",
+    "src/trading_bot/paper/lifecycle/recorder.py",
+    "scripts/exp_003p_rehearsal.py"
+  ],
+  "producer_sha256": {
+    "scripts/exp_003p_rehearsal.py": "9ff5deb966d941fe32b4dfffcaa86f967aa3cf36e37a16893e5c6123d0394656",
+    "src/trading_bot/paper/lifecycle/contracts.py": "32a4720e85b246693c903272ff7a50fb951d29218dea4f18d6e7875d8ac25fd0",
+    "src/trading_bot/paper/lifecycle/engine.py": "0015e82fe302c0c6300ae0c5b731ea6b5c55e00722062d1294ee0134695596e2",
+    "src/trading_bot/paper/lifecycle/reconcile.py": "ecb32c4f38fea9f5fc88a273e458d25eb602a4fd7db8ec06dff0ad9f111d6994",
+    "src/trading_bot/paper/lifecycle/recorder.py": "33192f6e7e642ce23b00753d539ca5928886468c361aaa54d5a46f1819a54bdb",
+    "src/trading_bot/paper/lifecycle/store.py": "46eb1ce9adc4206645d8e4d04d4c983d376e817b9e88e2e70e526a1377ec33e6",
+    "src/trading_bot/paper/lifecycle/venue.py": "6e615bd6aaf5b1c6308c373eeb059c600a35cd99a8b045972ff5c43fe5cd3c2b"
+  },
+  "program_independence": true,
+  "reused_modules_check": {
+    "imported_modules": [
+      "__future__",
+      "argparse",
+      "ast",
+      "datetime",
+      "exp_003p_contract",
+      "hashlib",
+      "json",
+      "pathlib",
+      "re",
+      "subprocess",
+      "sys",
+      "typing"
+    ],
+    "imports_producer_modules": [],
+    "verified_by": "ast.parse of the verifier source, collecting Import/ImportFrom"
+  },
+  "schema_version": "AI_BOTS_003P_INDEPENDENCE_V1",
+  "shared_surface": [
+    "src/trading_bot/paper/lifecycle/contracts.py (producer only; verifier transcribes the tables)",
+    "scripts/exp_003p_contract.py (frozen data: paths, windows, scenarios)",
+    "the documented canonical-JSON and chain formats"
+  ],
+  "verifier_program": "scripts/exp_003p_verify.py",
+  "verifier_sha256": "395c21d83012670318e5edff408d9707ca2cbd0d297f32fa7a543ebccd75fdd4"
+}

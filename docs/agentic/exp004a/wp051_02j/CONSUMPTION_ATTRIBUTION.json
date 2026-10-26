@@ -1,0 +1,114 @@
+{
+  "dropped_bytes": 1609121792,
+  "generated_at_utc": "2026-10-23T11:33:41Z",
+  "intervals": 43,
+  "intervals_with_a_drop": 37,
+  "method_caveat": "the writers are the eight largest per interval, so the explained share is a lower bound; a low share means the consumption is not visible in process write counters, not that no process exists",
+  "sample_span_minutes": 11.1,
+  "samples": 44,
+  "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+  "share_explained_percent": 99.6,
+  "top_writer_name": "python.exe",
+  "top_writers_during_drops": [
+    {
+      "bytes": 1412553623,
+      "intervals": 26,
+      "mib": 1347.12,
+      "name": "python.exe"
+    },
+    {
+      "bytes": 474439293,
+      "intervals": 36,
+      "mib": 452.46,
+      "name": "bun.exe"
+    },
+    {
+      "bytes": 303758882,
+      "intervals": 13,
+      "mib": 289.69,
+      "name": "SearchIndexer.exe"
+    },
+    {
+      "bytes": 258069238,
+      "intervals": 96,
+      "mib": 246.11,
+      "name": "chrome.exe"
+    },
+    {
+      "bytes": 82201370,
+      "intervals": 1,
+      "mib": 78.39,
+      "name": "git.exe"
+    },
+    {
+      "bytes": 60686502,
+      "intervals": 37,
+      "mib": 57.88,
+      "name": "System"
+    },
+    {
+      "bytes": 12614730,
+      "intervals": 37,
+      "mib": 12.03,
+      "name": "ChatGPT.exe"
+    },
+    {
+      "bytes": 10429328,
+      "intervals": 7,
+      "mib": 9.95,
+      "name": "svchost.exe"
+    },
+    {
+      "bytes": 2428928,
+      "intervals": 2,
+      "mib": 2.32,
+      "name": "Registry"
+    },
+    {
+      "bytes": 2373196,
+      "intervals": 7,
+      "mib": 2.26,
+      "name": "msedgewebview2.exe"
+    }
+  ],
+  "tree_growth": [
+    {
+      "grew_bytes": 4686,
+      "grew_mib": 0.0,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp"
+    },
+    {
+      "grew_bytes": 0,
+      "grew_mib": 0.0,
+      "path": "C:\\Windows\\SoftwareDistribution\\Download"
+    },
+    {
+      "grew_bytes": 0,
+      "grew_mib": 0.0,
+      "path": "C:\\Windows\\Temp"
+    },
+    {
+      "grew_bytes": 0,
+      "grew_mib": 0.0,
+      "path": "C:\\ESD"
+    },
+    {
+      "grew_bytes": 0,
+      "grew_mib": 0.0,
+      "path": "C:\\Windows\\Logs"
+    },
+    {
+      "grew_bytes": 0,
+      "grew_mib": 0.0,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\wsl"
+    },
+    {
+      "grew_bytes": 0,
+      "grew_mib": 0.0,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Microsoft\\Windows\\Explorer"
+    }
+  ],
+  "trees_measured": 6,
+  "verdict": "ATTRIBUTED",
+  "written_by_the_top_writers_during_drops": 1602846300
+}

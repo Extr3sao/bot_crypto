@@ -1,0 +1,114 @@
+{
+  "artifact": "ST6_HEALTH_STATUS",
+  "credentials_used": 0,
+  "evidence": {
+    "consecutive_failures": 1,
+    "consecutive_failures_over": "non-manual run events only",
+    "declared_slots_ended": 3,
+    "declared_slots_pending": 80,
+    "disk": {
+      "critical_free_bytes": 2147483648,
+      "free_bytes": 22230986752,
+      "free_gib": 20.7042,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+      "status": "HEALTHY",
+      "total_bytes": 255041990656,
+      "total_gib": 237.5264,
+      "used_percent": 91.28,
+      "warning_free_bytes": 5368709120
+    },
+    "heartbeat_age_seconds": 16,
+    "heartbeat_basis": "LAST_NON_MANUAL_RUN",
+    "invocation_provenance": {
+      "last_manual_error": "rounds=0, spacing=5.0, depth-limit=100: a window must declare a positive cadence",
+      "manual_invocations": 8,
+      "manual_invocations_with_errors": 8,
+      "newest_event_is_manual": true,
+      "reading": "a manual or verification invocation is not the schedule: it neither raises the status of the observation programme nor refreshes its heartbeat"
+    },
+    "last_run": {
+      "actual_end_utc": "2026-10-09T07:39:22Z",
+      "exit_code": 1,
+      "result": "REFUSED_INVALID_ARGUMENTS",
+      "run_id": "20261009T073912Z-669bde81"
+    },
+    "last_scheduled_run": {
+      "actual_end_utc": "2026-10-09T07:39:11Z",
+      "errors": "another run holds the lease",
+      "exit_code": 2,
+      "result": "ALREADY_RUNNING",
+      "run_id": "20261009T073911Z-7997213b"
+    },
+    "missed_fraction_of_ended_slots": 0.0,
+    "missed_window_attendance": {
+      "by_classification": {},
+      "claims": 0,
+      "reading": "the cause of every missed window was re-derived from the run events and from the declared grid, never taken from the record on trust",
+      "unattended_reading": "a slot with no scheduled run event inside it while the retained run log spans the slot is a failure of the host or of the task, not of the data",
+      "unattended_slots": [],
+      "unknown_reading": "old slots whose events were pruned are recorded as unknown: absence of an event is not proof of an unattended slot once the log no longer reaches back to it",
+      "unknown_slots": [],
+      "unsupported": [],
+      "vocabulary": [
+        "ATTENDED_NOT_COLLECTED",
+        "ATTENDED_REQUEST_FAILED",
+        "UNATTENDED_NO_RUN_EVENT",
+        "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
+      ]
+    },
+    "missed_windows_recorded": 0,
+    "observations": 48,
+    "raw_evidence": {
+      "mismatched": [],
+      "missing": [],
+      "reading": "every window's uncompressed bytes were re-hashed before it was counted",
+      "windows": 4
+    },
+    "run_events": 199,
+    "run_events_by_provenance": {
+      "MANUAL": 8,
+      "SCHEDULED": 62,
+      "UNRECORDED": 129
+    },
+    "scheduler": {
+      "enabled": true,
+      "installed": true,
+      "query_error": null,
+      "query_exit_code": 0,
+      "repetition_interval": "PT15M",
+      "task_name": "TradingAgentic-ST6-Forward"
+    },
+    "tick_grace_seconds": 2700,
+    "unaccounted_slots": [],
+    "windows_completed": 4
+  },
+  "exit_code": 10,
+  "generated_at_utc": "2026-10-09T07:39:27Z",
+  "heartbeat_is_not_evidence": true,
+  "next_expected_window": {
+    "day": "2026-10-09",
+    "ends_at_utc": "2026-10-09T12:00:00Z",
+    "key": "2026-10-09#2",
+    "slot_index": 2
+  },
+  "orders_sent": 0,
+  "period": {
+    "consolidation_present": false,
+    "consolidation_reading": "absent",
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "over": false,
+    "started_at_utc": "2026-10-08T16:21:20Z"
+  },
+  "reading": "a tick that ran and skipped the exchange observed nothing: health is about the schedule and about the evidence on disk, and no heartbeat is ever counted as a sample",
+  "reasons": [
+    "the last scheduled run recorded an error: another run holds the lease"
+  ],
+  "standing_state": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "LIVE_TRADING": "DISABLED",
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "PROFITABILITY_VERIFIED": false,
+    "TRADES_AUTHORIZED": 0
+  },
+  "status": "WARNING"
+}

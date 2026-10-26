@@ -1,0 +1,123 @@
+[
+  {
+    "experiment": "trend",
+    "checks": [
+      {
+        "check": "trend_metrics_match_the_trade_ledger",
+        "result": "PASS",
+        "detail": "5 runs recomputed; 0 mismatch(es)"
+      },
+      {
+        "check": "trend_reproduces_the_wp_edge01_oos_figure",
+        "result": "PASS",
+        "detail": "OOS net 208.005600 vs the published 208.0056"
+      },
+      {
+        "check": "trend_leave_out_is_recomputed",
+        "result": "PASS",
+        "detail": "10 leave-out rows recomputed"
+      },
+      {
+        "check": "trend_intervals_are_recomputed",
+        "result": "PASS",
+        "detail": "5 intervals recomputed (HAC and block bootstrap)"
+      },
+      {
+        "check": "trend_curve_rebuilt_from_the_corpus_matches",
+        "result": "PASS",
+        "detail": "5 curves rebuilt bar by bar"
+      },
+      {
+        "check": "trend_contribution_is_recomputed",
+        "result": "PASS",
+        "detail": "35 contribution rows recomputed"
+      },
+      {
+        "check": "trend_risk_adjusted_is_recomputed",
+        "result": "PASS",
+        "detail": "5 runs recomputed"
+      },
+      {
+        "check": "trend_verdict_follows_the_frozen_rule",
+        "result": "PASS",
+        "detail": "declared INSUFFICIENT_EVIDENCE; recomputed INSUFFICIENT_EVIDENCE (decisive=none, inconclusive=['concentration_above_limit', 'interval_contains_zero'])"
+      },
+      {
+        "check": "trend_verdict_is_not_a_promotion",
+        "result": "PASS",
+        "detail": "verdict INSUFFICIENT_EVIDENCE with concentration 0.7987 and leave-one-out net 41.8740"
+      }
+    ],
+    "passed": 9,
+    "failed": 0,
+    "artifacts_dir": "reports\\edge-recovery\\WP-EDGE-02\\trend-robustness"
+  },
+  {
+    "experiment": "risk",
+    "checks": [
+      {
+        "check": "risk_orders_are_686_with_the_published_outcomes",
+        "result": "PASS",
+        "detail": "686 orders, outcomes {'filled': 372, 'expired': 128, 'refused_by_risk_budget': 183, 'cancelled_window_end': 3} vs the published {'filled': 372, 'expired': 128, 'refused_by_risk_budget': 183, 'cancelled_window_end': 3}"
+      },
+      {
+        "check": "risk_every_order_has_one_declared_outcome",
+        "result": "PASS",
+        "detail": "0 unknown outcome(s), 0 left resting"
+      },
+      {
+        "check": "risk_order_rows_are_the_published_ones",
+        "result": "PASS",
+        "detail": "686 published rows compared with 686 reconstructed; 0 mismatch(es)"
+      },
+      {
+        "check": "risk_equity_curve_is_rebuilt_from_the_corpus",
+        "result": "PASS",
+        "detail": "26113/26113 bars compared with the published curve; 0 mismatch(es)"
+      },
+      {
+        "check": "risk_accounting_identity_holds",
+        "result": "PASS",
+        "detail": "start 10,000.00 + net -495.8756 = 9,504.1244 vs the replayed curve end 9,504.1244"
+      },
+      {
+        "check": "risk_refusal_reasons_are_the_published_split",
+        "result": "PASS",
+        "detail": "183 refusals, reasons {'risk_loss_cooldown': 35, 'risk_drawdown_halt': 148} vs the published {'risk_drawdown_halt': 148, 'risk_loss_cooldown': 35}"
+      },
+      {
+        "check": "risk_every_refusal_is_justified_by_the_reconstructed_state",
+        "result": "PASS",
+        "detail": "183 refusals re-decided from the corpus; 0 disagreement(s), 0 within 0.02 percentage points of the boundary"
+      },
+      {
+        "check": "risk_refusal_instants_are_the_published_order_touches",
+        "result": "PASS",
+        "detail": "183 refusals matched against 183 refused orders"
+      },
+      {
+        "check": "risk_no_duplicate_refusals",
+        "result": "PASS",
+        "detail": "0 duplicated (asset, instant, reason) refusal(s) in the primary window"
+      },
+      {
+        "check": "risk_invariants_are_all_declared_and_hold",
+        "result": "PASS",
+        "detail": "10 invariants declared (expected 10); 0 failure(s); 150 scope rows"
+      },
+      {
+        "check": "risk_verdict_follows_the_declared_rule",
+        "result": "PASS",
+        "detail": "declared AUDIT_PASS; recomputed AUDIT_PASS"
+      },
+      {
+        "check": "risk_no_limit_was_relaxed",
+        "result": "PASS",
+        "detail": "the audit's budget matches config/risk.yaml on 8 limits"
+      }
+    ],
+    "passed": 12,
+    "failed": 0,
+    "artifacts_dir": "reports\\edge-recovery\\WP-EDGE-02\\h6-risk-audit"
+  }
+]

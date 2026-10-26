@@ -1,0 +1,555 @@
+{
+  "anomalies": [
+    "DUPLICATE_EVENT",
+    "DUPLICATE_FILL",
+    "OUT_OF_ORDER_EVENT",
+    "FILL_WITHOUT_ACK",
+    "ILLEGAL_TRANSITION",
+    "TERMINAL_STATE_MUTATION",
+    "QUANTITY_EXCEEDED",
+    "NEGATIVE_QUANTITY",
+    "CAUSALITY_VIOLATION",
+    "PROVENANCE_MISMATCH",
+    "DATA_INTEGRITY_FAIL",
+    "RISK_GATE_VIOLATION",
+    "LIVE_MODE_FORBIDDEN",
+    "EXIT_WITHOUT_POSITION",
+    "FEE_UNPRICED",
+    "LEDGER_MISMATCH",
+    "UNKNOWN_REQUIRES_RECONCILIATION"
+  ],
+  "event_types": {
+    "ORDER_ACKNOWLEDGED": "ACKNOWLEDGED",
+    "ORDER_CANCELED": "CANCELED",
+    "ORDER_CREATED": "CREATED",
+    "ORDER_EXPIRED": "EXPIRED",
+    "ORDER_FILLED": "FILLED",
+    "ORDER_PARTIALLY_FILLED": "PARTIALLY_FILLED",
+    "ORDER_REJECTED": "REJECTED",
+    "ORDER_RISK_REJECTED": "RISK_REJECTED",
+    "ORDER_STATE_RESOLVED": "ACKNOWLEDGED",
+    "ORDER_SUBMITTED": "SUBMITTING",
+    "ORDER_UNKNOWN": "UNKNOWN"
+  },
+  "generated_from": "src/trading_bot/paper/lifecycle/contracts.py",
+  "order_states": [
+    "CREATED",
+    "RISK_REJECTED",
+    "SUBMITTING",
+    "ACKNOWLEDGED",
+    "PARTIALLY_FILLED",
+    "FILLED",
+    "CANCELED",
+    "REJECTED",
+    "EXPIRED",
+    "UNKNOWN"
+  ],
+  "provenance_environment_pairs": {
+    "OFFLINE_SIMULATED": [
+      "OFFLINE"
+    ],
+    "REPLAY_CAPTURED": [
+      "OFFLINE",
+      "REPLAY"
+    ],
+    "VENUE_REPORTED_PAPER": [
+      "PAPER",
+      "TESTNET"
+    ]
+  },
+  "provenances": [
+    "OFFLINE_SIMULATED",
+    "REPLAY_CAPTURED",
+    "VENUE_REPORTED_PAPER"
+  ],
+  "provider_environments": [
+    "OFFLINE",
+    "REPLAY",
+    "TESTNET",
+    "PAPER"
+  ],
+  "reconciliation_results": [
+    "PASS",
+    "FAIL",
+    "INCOMPLETE"
+  ],
+  "records": {
+    "ExecutionEnvelope": {
+      "dataclass": "ExecutionEnvelope",
+      "fields": [
+        {
+          "default": null,
+          "name": "run_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "commit_sha",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "config_digest",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "client_order_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "event_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "asset",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "strategy_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "adapter_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "event_type",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "event_time_utc",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "received_time_utc",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "clock_source",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "provenance",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "provider_environment",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": "None",
+          "name": "decision_id",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "None",
+          "name": "proposal_id",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "None",
+          "name": "signal_id",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "None",
+          "name": "venue_order_id",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "None",
+          "name": "correlation_parent_id",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "'AI_BOTS_003P_ENVELOPE_V1'",
+          "name": "schema_version",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "payload",
+          "required": false,
+          "type": "dict[str, Any]"
+        }
+      ]
+    },
+    "FillFact": {
+      "dataclass": "FillFact",
+      "fields": [
+        {
+          "default": null,
+          "name": "fill_key",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "client_order_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "asset",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "side",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "filled_quantity",
+          "required": true,
+          "type": "float"
+        },
+        {
+          "default": null,
+          "name": "fill_price",
+          "required": true,
+          "type": "float"
+        },
+        {
+          "default": null,
+          "name": "fee_amount",
+          "required": true,
+          "type": "float"
+        },
+        {
+          "default": null,
+          "name": "fee_currency",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "event_time_utc",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "provenance",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "provider_environment",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "raw_event_digest",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": "None",
+          "name": "venue_order_id",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "None",
+          "name": "fee_conversion_rate",
+          "required": false,
+          "type": "float | None"
+        },
+        {
+          "default": "None",
+          "name": "fee_conversion_currency",
+          "required": false,
+          "type": "str | None"
+        }
+      ]
+    },
+    "OrderIntent": {
+      "dataclass": "OrderIntent",
+      "fields": [
+        {
+          "default": null,
+          "name": "client_order_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "asset",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "side",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "order_type",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "quantity",
+          "required": true,
+          "type": "float"
+        },
+        {
+          "default": null,
+          "name": "strategy_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "decision_time_utc",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "data_cutoff_utc",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": "None",
+          "name": "limit_price",
+          "required": false,
+          "type": "float | None"
+        },
+        {
+          "default": "None",
+          "name": "time_in_force",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "''",
+          "name": "risk_evaluation_id",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "''",
+          "name": "policy_verification_id",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "0.0",
+          "name": "notional_usdt",
+          "required": false,
+          "type": "float"
+        },
+        {
+          "default": "None",
+          "name": "stop_loss_pct",
+          "required": false,
+          "type": "float | None"
+        },
+        {
+          "default": "None",
+          "name": "take_profit_pct",
+          "required": false,
+          "type": "float | None"
+        },
+        {
+          "default": "None",
+          "name": "decision_id",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "None",
+          "name": "proposal_id",
+          "required": false,
+          "type": "str | None"
+        },
+        {
+          "default": "None",
+          "name": "signal_id",
+          "required": false,
+          "type": "str | None"
+        }
+      ]
+    },
+    "ReconciliationResult": {
+      "dataclass": "ReconciliationResult",
+      "fields": [
+        {
+          "default": null,
+          "name": "run_id",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "source",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "as_of_time",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": null,
+          "name": "local_order_state",
+          "required": true,
+          "type": "dict[str, Any]"
+        },
+        {
+          "default": null,
+          "name": "provider_order_state",
+          "required": true,
+          "type": "dict[str, Any] | None"
+        },
+        {
+          "default": null,
+          "name": "local_qty",
+          "required": true,
+          "type": "float"
+        },
+        {
+          "default": null,
+          "name": "provider_qty",
+          "required": true,
+          "type": "float | None"
+        },
+        {
+          "default": null,
+          "name": "cash_delta",
+          "required": true,
+          "type": "float | None"
+        },
+        {
+          "default": null,
+          "name": "position_delta",
+          "required": true,
+          "type": "float | None"
+        },
+        {
+          "default": null,
+          "name": "fee_delta",
+          "required": true,
+          "type": "float | None"
+        },
+        {
+          "default": null,
+          "name": "differences",
+          "required": true,
+          "type": "tuple[dict[str, Any], ...]"
+        },
+        {
+          "default": null,
+          "name": "result",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": "()",
+          "name": "evidence_refs",
+          "required": false,
+          "type": "tuple[str, ...]"
+        }
+      ]
+    }
+  },
+  "rules": [
+    "event_id is deduplicated inside (provenance, provider_environment)",
+    "an envelope is refused before persistence if provenance and environment disagree",
+    "LIVE is never a paper provider_environment",
+    "received_time_utc >= event_time_utc >= decision_time_utc >= data_cutoff_utc",
+    "a fill key books exactly once inside its provenance namespace",
+    "ACK never moves quantity; only a fill fact does",
+    "a terminal state is never reopened; a contradiction is audited, not applied",
+    "UNKNOWN blocks any further send for that intent until a primary source resolves it"
+  ],
+  "run_id": "EXP-003P-PAPER-EXECUTION-001",
+  "schema_version": "AI_BOTS_003P_ENVELOPE_V1",
+  "terminal_states": [
+    "CANCELED",
+    "EXPIRED",
+    "FILLED",
+    "REJECTED",
+    "RISK_REJECTED"
+  ],
+  "transitions": {
+    "ACKNOWLEDGED": [
+      "CANCELED",
+      "EXPIRED",
+      "FILLED",
+      "PARTIALLY_FILLED",
+      "UNKNOWN"
+    ],
+    "CANCELED": [],
+    "CREATED": [
+      "RISK_REJECTED",
+      "SUBMITTING"
+    ],
+    "EXPIRED": [],
+    "FILLED": [],
+    "PARTIALLY_FILLED": [
+      "CANCELED",
+      "EXPIRED",
+      "FILLED",
+      "UNKNOWN"
+    ],
+    "REJECTED": [],
+    "RISK_REJECTED": [],
+    "SUBMITTING": [
+      "ACKNOWLEDGED",
+      "REJECTED",
+      "UNKNOWN"
+    ],
+    "UNKNOWN": [
+      "ACKNOWLEDGED",
+      "CANCELED",
+      "FILLED",
+      "PARTIALLY_FILLED",
+      "REJECTED"
+    ]
+  }
+}

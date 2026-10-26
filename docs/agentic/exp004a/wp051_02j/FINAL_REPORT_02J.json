@@ -1,0 +1,91 @@
+{
+  "alerts": {
+    "delivered_with_receipt": 2,
+    "delivery_verdict": "PASS_LOCAL",
+    "remote_verdict": "BLOCKED",
+    "suppressed": 0
+  },
+  "campaign": {
+    "admissible_rows_that_day": 24,
+    "floor_rows": 5832,
+    "lost_day": "2026-10-23",
+    "lost_rows": 72,
+    "rows_still_available": 6408,
+    "window": {
+      "days": 90,
+      "end": "2027-01-21T00:00:00Z",
+      "start": "2026-10-23T00:00:00Z"
+    }
+  },
+  "capacity": {
+    "after_free_bytes": 3859378176,
+    "before_free_bytes": 3888033792,
+    "deleted_bytes": 1421356,
+    "required_at_p90_gib": 14.565,
+    "shortfall_gib": 11.317,
+    "verdict": "INSUFFICIENT"
+  },
+  "consumption": {
+    "active_or_protected_gib": 11.829,
+    "approval_gib": 26.565,
+    "safe_owned_gib": 0.001,
+    "unknown_gib": null
+  },
+  "generated_at_utc": "2026-10-23T11:52:32Z",
+  "head": "7f9758d9bbff55dd2cbc01a1146f8a2ed5d49b77",
+  "package": "WP-051-02J",
+  "risks": [
+    "the volume still holds far less than the p90 budget: any multi-day cleaning pause costs days",
+    "no remote channel exists: an overnight failure is recorded, not delivered",
+    "the toast needs an interactive session; a signed-out machine cannot be paged",
+    "the drawdown's source is not attributed to a process; it is larger than the sum of measured writes"
+  ],
+  "scheduling": {
+    "firing": 2,
+    "registered": 2,
+    "tasks": [
+      {
+        "fires_automatically": true,
+        "last_result": "1",
+        "last_run_utc": "2026-10-23T11:47:01Z",
+        "task": "TradingAgentic-EDGE04-Watchdog"
+      },
+      {
+        "fires_automatically": true,
+        "last_result": "0",
+        "last_run_utc": "2026-10-23T11:48:01Z",
+        "task": "TradingAgentic-EDGE04-Alarm"
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+  "tests": {
+    "command": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -m pytest tests/unit/research/test_exp004a_wp051_02j.py -q",
+    "duration_seconds": 1.84,
+    "errors": 0,
+    "exit_code": 0,
+    "failed": 0,
+    "generated_at_utc": "2026-10-23T11:52:32Z",
+    "note": "the exit code is the recorder's own, not a summary line: a suite that did not run, or ran and failed, cannot be reported as a pass from here.",
+    "passed": 15,
+    "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+    "status": "PASS",
+    "stderr_tail": [],
+    "stdout_tail": [
+      "...............                                                          [100%]",
+      "15 passed in 0.13s"
+    ],
+    "suite": "tests/unit/research/test_exp004a_wp051_02j.py",
+    "suite_bytes": 13331,
+    "suite_sha256": "20850bdf6a686010a04b1bfc0e9070693baf290ff8a093f0839693bdff4a85f5",
+    "summary": "15 passed in 0.13s"
+  },
+  "verdict": "BLOCKED",
+  "verification": {
+    "checks": 15,
+    "passed": 15,
+    "verdict": "PASS"
+  },
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h"
+}

@@ -1,0 +1,259 @@
+{
+  "schema_version": "wp-edge-03-run-report-v1",
+  "package": "WP-EDGE-03",
+  "title": "Forward evidence and runtime parity",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "base_commit": "4be09fb",
+  "head_at_run": "51bc497",
+  "commits_since_base": 27,
+  "lane_commit_tag": "[WP-EDGE-03]",
+  "lane_commit_selector": "git log --oneline --grep='\\[WP-EDGE-03\\]'",
+  "lane_commits_before_this_session": [
+    "51bc497 Ingest forward bars, read the frozen rulesets on them and audit risk parity. [WP-EDGE-03]"
+  ],
+  "mode": "read-only public market data + hypothetical shadow: no orders, no credentials, no capital",
+  "claims": {
+    "promotion": "NONE",
+    "rentable": false,
+    "certified": false,
+    "production_ready": false,
+    "paper_admitted": false,
+    "false_success": 0
+  },
+  "runs": {
+    "observed_run_id": "FWD-EDGE03-20261013T053048Z",
+    "market_instant_utc": "2026-10-13T05:30:48Z",
+    "generated_at_utc": "2026-10-13T05:31:12Z",
+    "real_runtime_runs_today": [
+      {
+        "run_id": "FWD-EDGE03-20261013T050053Z",
+        "observed_at_utc": "2026-10-13T05:00:53Z",
+        "new_bars": 84,
+        "outcomes": {"ingested": 6},
+        "exit_code": 0
+      },
+      {
+        "run_id": "FWD-EDGE03-20261013T051043Z",
+        "observed_at_utc": "2026-10-13T05:10:43Z",
+        "new_bars": 0,
+        "outcomes": {"no_new_data": 6},
+        "exit_code": 0,
+        "note": "the venue had closed no new bar since the previous poll: recorded, not treated as a failure"
+      },
+      {
+        "run_id": "FWD-EDGE03-20261013T051627Z",
+        "observed_at_utc": "2026-10-13T05:16:27Z",
+        "new_bars": 3,
+        "outcomes": {"ingested": 3, "no_new_data": 3},
+        "exit_code": 0
+      },
+      {
+        "run_id": "FWD-EDGE03-20261013T053048Z",
+        "observed_at_utc": "2026-10-13T05:30:48Z",
+        "new_bars": 3,
+        "outcomes": {"ingested": 3, "no_new_data": 3},
+        "exit_code": 0
+      }
+    ],
+    "reports_only_offline": {
+      "command": "python scripts/edge03_run.py --reports-only <OBSERVATION.json> --outdir <scratch>",
+      "exit_code": 0,
+      "network": "none",
+      "byte_identical": {"CUMULATIVE.md": true, "CUMULATIVE.json": true, "DAILY_REPORTS.json": true, "DAILY_2026-10-13.md": true},
+      "claim": "the published reports are a function of the stored observation and of nothing else"
+    }
+  },
+  "verdict": {
+    "observation_state": "OBSERVATION_AVAILABLE",
+    "observation_days": 226,
+    "observation_floor_days": 60,
+    "coverage_required": 0.9,
+    "promotion": "NONE",
+    "parity": "PARITY_PASS",
+    "reason": "226 independent observation day(s) accumulated; the lane still promotes nothing"
+  },
+  "ingest": {
+    "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
+    "store": "data/forward/edge03 (append-only, local, git-ignored; provenance and digests are versioned)",
+    "series": {
+      "1h:BTC": {"bars": 5429, "first_ts": 1772323200000, "last_ts": 1791864000000, "gaps": 0, "duplicates": 0, "out_of_order": 0, "contiguous": true},
+      "1h:ETH": {"bars": 5429, "first_ts": 1772323200000, "last_ts": 1791864000000, "gaps": 0, "duplicates": 0, "out_of_order": 0, "contiguous": true},
+      "1h:SOL": {"bars": 5429, "first_ts": 1772323200000, "last_ts": 1791864000000, "gaps": 0, "duplicates": 0, "out_of_order": 0, "contiguous": true},
+      "15m:BTC": {"bars": 551, "first_ts": 1791373500000, "last_ts": 1791868500000, "gaps": 0, "duplicates": 0, "out_of_order": 0, "contiguous": true},
+      "15m:ETH": {"bars": 551, "first_ts": 1791373500000, "last_ts": 1791868500000, "gaps": 0, "duplicates": 0, "out_of_order": 0, "contiguous": true},
+      "15m:SOL": {"bars": 551, "first_ts": 1791373500000, "last_ts": 1791868500000, "gaps": 0, "duplicates": 0, "out_of_order": 0, "contiguous": true}
+    },
+    "frozen_ends_ms": {"1h": 1772319600000, "15m": 1791372600000},
+    "restart_proof": {
+      "second_pass_outcome": ["no_new_data"],
+      "second_pass_appended": 0,
+      "digests_unchanged": true,
+      "duplicate_timestamps": 0,
+      "duplicate_refusals_primary": 0
+    },
+    "frozen_params_pin": {
+      "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "imported_params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "published_params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "published_by": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json#params_hash",
+      "agrees_with_imported_constant": true,
+      "agrees_with_publication": true
+    },
+    "latency_seconds": {
+      "this_run": {"15m:BTC": 48.801, "15m:ETH": 48.801, "15m:SOL": 48.801, "1h:BTC": null, "1h:ETH": null, "1h:SOL": null},
+      "window_including_backfill": {"15m:BTC": {"samples": 551, "median": 227391.233, "max": 473991.233}, "1h:BTC": {"samples": 5429, "median": 9751191.233, "max": 19521591.233}},
+      "reading_rule": "fresh = bars stamped with this run's fetch instant (the lag a scheduled reader meets); window = every stored bar, dominated by the one-time backfill and NOT a feed latency"
+    }
+  },
+  "shadow": {
+    "hypothetical_only": true,
+    "orders_sent": 0,
+    "order_path": "none (no exchange client in the process)",
+    "primary_arm": "edge_trend_01_4h:BASE",
+    "window_bars": {"4h": 4065, "1d": 675, "15m": 1581},
+    "arms": {
+      "edge_trend_01_4h:BASE": {"timeframe": "4h", "scenario": "BASE", "signals": 103, "hypothetical_fills": 31, "net_usdt": -44.307497, "max_drawdown_pct": 2.776571, "exposure_pct": 28.862687},
+      "edge_trend_01_4h:2X_FEES": {"timeframe": "4h", "scenario": "2X_FEES", "signals": 103, "hypothetical_fills": 31, "net_usdt": -73.770259, "max_drawdown_pct": 2.943476, "exposure_pct": 28.862687},
+      "edge_trend_01_4h:ADVERSE": {"timeframe": "4h", "scenario": "ADVERSE", "signals": 103, "hypothetical_fills": 30, "net_usdt": -69.687446, "max_drawdown_pct": 2.923307, "exposure_pct": 30.164579},
+      "edge_trend_01_1d:BASE": {"timeframe": "1d", "scenario": "BASE", "signals": 5, "hypothetical_fills": 3, "net_usdt": -54.66212, "max_drawdown_pct": 0.656631, "exposure_pct": 8.702065},
+      "edge_intra_01:15m": {"timeframe": "15m", "scenario": "BASE", "signals": 0, "hypothetical_fills": 0, "net_usdt": 0.0, "note": "RESEARCH ONLY, never promoted"},
+      "edge_intra_02:15m": {"timeframe": "15m", "scenario": "BASE", "signals": 0, "hypothetical_fills": 0, "net_usdt": 0.0, "note": "RESEARCH ONLY, never promoted"},
+      "edge_intra_01r:15m": {"timeframe": "15m", "scenario": "BASE", "signals": 0, "hypothetical_fills": 0, "net_usdt": 0.0, "note": "H6 entry variant, research read forward"}
+    },
+    "primary_refusals": {"candidate:trend_filter_fail": 86},
+    "claim": "a working forward pipeline is not evidence of an edge: no metric here is compared against an admission criterion"
+  },
+  "parity": {
+    "verdict": "PARITY_PASS",
+    "cases_classified": 544,
+    "counts": {
+      "AGREE_APPROVED": 79,
+      "AGREE_REFUSED_SAME_RULE": 155,
+      "RULE_ORDER_DIFFERS": 194,
+      "RULE_NOT_MODELLED_BY_RESEARCH": 72,
+      "SIZING_ROUNDING_ONLY": 35,
+      "RESEARCH_ONLY_REFUSAL": 9,
+      "SIZING_DIFFERS": 0,
+      "PARITY_DEFECT": 0
+    },
+    "limits_relaxed": 0,
+    "rules_not_modelled_by_research": ["kill_switch", "daily_loss_limit", "weekly_loss_limit", "daily_drawdown"],
+    "claim": "the comparison says whether two implementations agree on identical inputs, not which limits are right"
+  },
+  "verification": {
+    "verifier": "scripts/edge03_verify.py (imports nothing from trading_bot)",
+    "checks_passed": 19,
+    "checks_failed": 0,
+    "verdict": "VERIFY_PASS",
+    "self_test": {"applied": 20, "detected": 20, "undetected": 0, "skipped": 0, "collateral_breaks": 4, "verdict": "SELF_TEST_PASS"},
+    "rerun_on_the_committed_tree": {
+      "command": "python scripts/edge03_verify.py --json-out <scratch>",
+      "exit_code": 0,
+      "result": "the fresh check list equals the committed VERIFICATION.json#checks exactly (19 passed, 0 failed)"
+    },
+    "highlights": {
+      "forward_bars_admissible": 17940,
+      "shadow_rows_inside_window": 1356,
+      "hypothetical_rows": 425,
+      "observed_arms": 16,
+      "no_order_path_sources_scanned": 7
+    }
+  },
+  "defects_found_and_fixed_in_this_session": [
+    {
+      "id": "EDGE03-D1",
+      "what": "the plan declared that the frozen ruleset digest is re-derived and compared; no comparison existed",
+      "impact": "a later edit to FROZEN_PARAMS would have been read forward as if it were the frozen ruleset, silently",
+      "fix": "assert_frozen_params() re-hashes FROZEN_PARAMS, compares with the imported constant and with the published OOS_TREND.json#params_hash, aborts on mismatch and publishes the pin in OBSERVATION.json#frozen_params",
+      "verified_by": ["FROZEN_PARAMS_PINNED (verifier, parses the source with ast)", "sabotage: tune a frozen ruleset parameter", "4 unit tests"]
+    },
+    {
+      "id": "EDGE03-D2",
+      "what": "the published ingestion latency aggregated every stored bar, so the daily report showed the one-time backfill (about 226 days) as today's process state",
+      "impact": "the daily observability report described a number that was an artefact of when the lane started",
+      "fix": "two readings (this run's bars vs the whole window), two tables in the cumulative report, a daily line limited to this run, verifier recomputes both and requires null when the run pulled nothing",
+      "verified_by": ["LATENCY_RECOMPUTED (window and last-run)", "sabotage: publish the backfill as the last-run latency", "2 unit tests"]
+    },
+    {
+      "id": "EDGE03-D3",
+      "what": "the package's own files carried 23 ruff findings and 15 mypy strict errors",
+      "impact": "the lane could not declare its own gates green",
+      "fix": "all 38 points resolved without disabling a rule and without adding a type: ignore",
+      "verified_by": ["ruff check on the 9 lane files", "mypy strict on the 9 lane files"]
+    }
+  ],
+  "gates": {
+    "ruff_lane": {"command": "python -m ruff check src/trading_bot/research/edge03 scripts/edge03_run.py scripts/edge03_verify.py tests/unit/research/test_edge03_forward.py", "result": "All checks passed!", "exit_code": 0, "before": "23 findings"},
+    "mypy_lane": {"command": "python -m mypy <the same 9 files>", "result": "Success: no issues found in 9 source files", "exit_code": 0, "before": "15 errors"},
+    "pytest_lane": {"command": "python -m pytest tests/unit/research/test_edge03_forward.py -q", "result": "33 passed", "exit_code": 0},
+    "pytest_repo": {
+      "command": "python -m pytest -q",
+      "result": "15 failed, 3663 passed, 78 warnings in 487.47 s",
+      "exit_code": "non-zero (failures present)",
+      "failures_in_this_lane": 0,
+      "failure_causes": [
+        {"file": "tests/unit/scanner/test_universe_scanner.py", "failures": 8, "cause": "another lane (scanner)"},
+        {"file": "tests/unit/research/test_wp9_disk_budget.py", "failures": 3, "cause": "host disk preflight responded INSUFFICIENT_FREE_SPACE where the test expects INCOHERENT_BUDGET; the host is at 97% (7.4 GB free of 238 GB)"},
+        {"file": "tests/unit/research/test_recovery_determinism.py", "failures": 2, "cause": "the committed state view is stale and ACTIVE_ECONOMIC_AUDIT.json digest moved: other lanes' artifacts in the shared checkout"},
+        {"file": "tests/unit/research/test_cost_barrier_adversarial.py", "failures": 1, "cause": "cost barrier reproduction returned REPRODUCTION_FAILED"},
+        {"file": "tests/unit/research/test_active_recovery_wp.py", "failures": 1, "cause": "INSUFFICIENT_FREE_SPACE (same host cause)"}
+      ]
+    },
+    "ruff_format_lane": {"command": "python -m ruff format --check <the 9 lane files>", "result": "8 of 9 files would be reformatted", "treated_as": "pre-existing repo-wide formatting debt; not reformatted to keep the semantic diff readable, and not declared green"},
+    "ruff_repo": {"command": "python -m ruff check .", "result": "150 findings, 0 in the files of this lane", "treated_as": "pre-existing debt of other lanes under the locally installed ruff 0.15.20 (the repo pins ruff>=0.4.0), measured and published rather than fixed"},
+    "toolchain": {"python": "3.11.15", "ruff": "0.15.20", "mypy": "2.1.0", "pytest": "9.1.1"}
+  },
+  "artifacts": {
+    "note": "digests of the runtime and verification artefacts. RUN_REPORT.md, RUN_REPORT.json and FINAL_REPORT.md are excluded by construction: a file cannot carry its own digest.",
+    "files": {
+      "VERIFICATION.json": {"bytes": 9338, "sha256": "222f815db233eebfb22f33901b9e9b5ffc566cdd99baeac75cb01770ddb288c5"},
+      "forward-observation/OBSERVATION.json": {"bytes": 1083413, "sha256": "c5367783f111f7c8ae74fb8001d2017910ae834527d1330ccc97402fd74b7e28"},
+      "forward-observation/CUMULATIVE.json": {"bytes": 48837, "sha256": "de90483765e14945d27b0a0fde9a768b48a89c476b632b3a4fdb0b78d182a35e"},
+      "forward-observation/CUMULATIVE.md": {"bytes": 5517, "sha256": "b797127f1ed88ea52f55303e14a392900350220a59065a56fe4872dfa17658c0"},
+      "forward-observation/DAILY_2026-10-13.md": {"bytes": 3653, "sha256": "89a8855fdaa4383ea4c13fab31ee14a616266b2651bf506cc1f9f1e2a9cae29d"},
+      "forward-observation/DAILY_REPORTS.json": {"bytes": 146324, "sha256": "8f1863f88630f87bdd8ff8118ab7c72528c564f3e02a2f15e7698ab4302f77b9"},
+      "forward-observation/INGEST_LEDGER.jsonl": {"bytes": 50001, "sha256": "ddb3fb492f1ff646b14aabb167b784aea9a991d13fcfd23b5903ccfab27ec68d"},
+      "forward-observation/SHADOW_DECISIONS.jsonl": {"bytes": 59304, "sha256": "86494c33acf997613bcd1becd5e128f70c937887ed0dbe42581728bcc0c5501a"},
+      "forward-observation/SHADOW_EQUITY.csv": {"bytes": 64808, "sha256": "45f07392b7b6b86cb402bec6e5cf2d4930b351a6d5984683140abbb967ca591f"},
+      "forward-observation/SHADOW_REFUSALS.csv": {"bytes": 57287, "sha256": "70357ae241061bad1f4fffc90e54ed3e7d590fb1dbb3edd54dcaf8c35ae0da27"},
+      "forward-observation/SHADOW_SIGNALS.csv": {"bytes": 40525, "sha256": "c04daaaa69135eeb26cdf7fd607612313b19b7d98e9451f0ca068a72ae5f6df7"},
+      "forward-observation/SHADOW_TRADES.csv": {"bytes": 20885, "sha256": "07bc3c44c848330b3154e79ddae52b556ae96a3601343ccc2f80f5a8d3e541fd"},
+      "risk-parity/PARITY.json": {"bytes": 597905, "sha256": "4a9e1fe97fa508d2e81ced0a039fdac1e954a8980ca232d5f0fd2ec4361fdc39"},
+      "risk-parity/PARITY.md": {"bytes": 46657, "sha256": "d3137ca781359ea6a7a029d5cb80e21b83cfa6c00896cc46ad199c7f56401044"},
+      "risk-parity/PARITY_CASES.csv": {"bytes": 136989, "sha256": "548b77a42127df3fa632008067f0b23fcb4f17e2d366a93ca831c886dad2e637"}
+    }
+  },
+  "push": {
+    "status": "BLOCKED_GITHUB_AUTH",
+    "commits_location": "local only",
+    "probes": [
+      {"command": "GIT_TERMINAL_PROMPT=0 git push --dry-run", "exit_code": 128, "result": "the branch has no upstream: no remote write was attempted"},
+      {"command": "GIT_TERMINAL_PROMPT=0 git -c credential.helper= push --dry-run origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-03", "exit_code": 128, "result": "fatal: could not read Username for 'https://github.com': terminal prompts disabled"},
+      {"command": "GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-03 (default helper)", "exit_code": 124, "result": "hangs: the interactive helper opens its own dialog, which GIT_TERMINAL_PROMPT does not suppress; cut at 45 s"},
+      {"command": "GIT_TERMINAL_PROMPT=0 git push -u origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-00-baseline (default helper, after the closure commits)", "exit_code": 124, "result": "same hang; no write was attempted and no ref was created"},
+      {"command": "GIT_TERMINAL_PROMPT=0 git ls-remote --heads origin 'refs/heads/agent/edge-recovery/*'", "exit_code": 0, "result": "anonymous read OK; no ref of this lane exists on the remote"}
+    ],
+    "credentials": {"GITHUB_TOKEN": "unset", "GH_TOKEN": "unset", "GIT_ASKPASS": "unset", "git_credentials_file": "absent", "gh_cli": "not installed"},
+    "tokens_read_or_printed": 0,
+    "unlock_procedure": [
+      "1. Provide a credential the helper can use without a dialog: a fine-grained PAT with 'Contents: read and write' on the target repository, exported as GITHUB_TOKEN for the session (never written into the repository).",
+      "2. Alternative A: `gh auth login` (the gh CLI is not installed on this machine) and push through gh's credential helper.",
+      "3. Alternative B: an SSH remote (`git remote set-url origin git@github.com:<owner>/<repo>.git`) with a key already trusted by the account.",
+      "4. Alternative C: `git -c credential.helper=store` plus a git-credentials file created outside the repository, removed after the push.",
+      "5. Push the branch: `git push -u origin agent/edge-recovery/WP-EDGE-00-baseline` (the lane branch carries all WP-EDGE-01/02/03 commits).",
+      "6. Verify with an anonymous read: `git ls-remote --heads origin 'refs/heads/agent/edge-recovery/*'` must show the ref and its sha.",
+      "7. Confirm the pushed head equals the local head: `git rev-parse HEAD` against the sha the step-6 listing shows.",
+      "8. Do not push tags or force anything; the lane history is append-only.",
+      "9. Record the push exit code and the verified sha in this file, replacing BLOCKED_GITHUB_AUTH with the observed result."
+    ]
+  },
+  "limitations": [
+    "The forward window is short by construction: 2 new independent days since the freeze, 226 counting the frozen prefix. The lane reports the count and reads no admission criterion.",
+    "Every PnL figure in this record is hypothetical (hypothetical: true, order_sent: false). No capital, no order, no private endpoint anywhere in the lane.",
+    "Risk parity compares two implementations on identical inputs; it says nothing about which limits are right.",
+    "The intraday arms read BTC's 1h series as context, exactly as the frozen campaign did, extended with the forward 1h bars so the context covers the window.",
+    "The lane depends on public Binance REST; when no bar has closed it records no_new_data and adds nothing (exercised for real in this session).",
+    "ruff format --check is not green on the lane's files (8 of 9) and ruff check . reports 150 findings elsewhere in the repo under the locally installed ruff 0.15.20; both are pre-existing toolchain/repo debt, measured and published, not fixed here.",
+    "The repository-wide pytest run reports 15 failures, none of them in this lane: they belong to other lanes and to the host state of this shared checkout (disk at 97% makes WP-9's disk preflight refuse, and other lanes' state views drifted). They are measured and published here, not fixed, because fixing them would mean touching work that is not this package's."
+  ]
+}

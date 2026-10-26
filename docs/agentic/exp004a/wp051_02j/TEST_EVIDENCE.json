@@ -1,0 +1,21 @@
+{
+  "command": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -m pytest tests/unit/research/test_exp004a_wp051_02j.py -q",
+  "duration_seconds": 1.84,
+  "errors": 0,
+  "exit_code": 0,
+  "failed": 0,
+  "generated_at_utc": "2026-10-23T11:52:32Z",
+  "note": "the exit code is the recorder's own, not a summary line: a suite that did not run, or ran and failed, cannot be reported as a pass from here.",
+  "passed": 15,
+  "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+  "status": "PASS",
+  "stderr_tail": [],
+  "stdout_tail": [
+    "...............                                                          [100%]",
+    "15 passed in 0.13s"
+  ],
+  "suite": "tests/unit/research/test_exp004a_wp051_02j.py",
+  "suite_bytes": 13331,
+  "suite_sha256": "20850bdf6a686010a04b1bfc0e9070693baf290ff8a093f0839693bdff4a85f5",
+  "summary": "15 passed in 0.13s"
+}

@@ -1,0 +1,78 @@
+{
+  "asset": "BTC",
+  "bytes": 4403,
+  "dataset_id": "EXP-004A-1H-BTC",
+  "declaration": {
+    "coverage_required": 0.9,
+    "declaration_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+    "declared_normalized_file": "data/exp004a/EXP-004A-1H-BTC.jsonl",
+    "declared_raw_file": "data/exp004a/EXP-004A-1H-BTC.raw.jsonl",
+    "generator_command": "python scripts/exp004a_capture.py --slice 1h:BTC",
+    "lag_bound_ms": 7200000,
+    "path": "config/preregistrations/EXP-004A.datasets.json"
+  },
+  "first_open_utc": "2026-10-22T00:00:00.000Z",
+  "generator": {
+    "argv": [
+      "python",
+      "scripts/exp004a_capture.py",
+      "--slice",
+      "1h:BTC"
+    ],
+    "script": "scripts/exp004a_capture.py",
+    "script_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+  },
+  "interval": "1h",
+  "last_open_utc": "2026-10-22T13:00:00.000Z",
+  "note": "Bytes are the forward store's own lines, selected by bar open instant. Late bars are retained so admission, not the extractor, decides the day. No timestamp is written into this manifest, so re-extracting an unchanged source yields identical bytes.",
+  "observed": {
+    "bars_outside_lag_bound": 0,
+    "bars_with_negative_lag": 0,
+    "late_bars_kept": true,
+    "max_lag_ms": 1558067,
+    "min_lag_ms": 43904
+  },
+  "period": {
+    "end_utc": "2027-01-20T00:00:00.000Z",
+    "fencepost": "bar_open >= start_utc and bar_open < end_utc",
+    "start_utc": "2026-10-22T00:00:00.000Z"
+  },
+  "provenance": {
+    "bars": 14,
+    "declaration_commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "declaration_path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "eligible": true,
+    "generator": {
+      "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+      "path": "scripts/exp004a_capture.py",
+      "sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+    },
+    "supersedes": {
+      "path": "config/preregistrations/EXP-004A.datasets.json",
+      "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+    },
+    "temporal": {
+      "basis": "GIT_ANCESTRY_PLUS_INGEST_CLOCK",
+      "capture_window": {
+        "end_utc": "2027-01-20T00:00:00.000Z",
+        "start_utc": "2026-10-22T00:00:00.000Z"
+      },
+      "effective_from_utc": "2026-10-21T16:00:00.000Z",
+      "external_timestamp": "UNAVAILABLE",
+      "reading": "eligible captures must open at or after the declared window and must have been fetched at or after the declaration's effective instant; the declaration's commit must be an ancestor of the capture's commit"
+    }
+  },
+  "row_count": 14,
+  "schema_version": "1.0",
+  "sha256": "da7310abcacc410ee20b2dbfdd814d78ff5d5689267554eace6632bf274950cd",
+  "source": {
+    "bars_in_source": 5654,
+    "path": "data/forward/edge03/1h/BTC.jsonl",
+    "prefix_bytes": 1775383,
+    "prefix_sha256": "69f2bc7f7e5e2e844d88a25a0e850a697c7bc3f6fde8681db87816eafe920d99",
+    "sha256_at_read": "69f2bc7f7e5e2e844d88a25a0e850a697c7bc3f6fde8681db87816eafe920d99",
+    "total_bytes_at_read": 1775383
+  }
+}

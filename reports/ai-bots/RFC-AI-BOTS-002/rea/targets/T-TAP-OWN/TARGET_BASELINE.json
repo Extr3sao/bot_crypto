@@ -1,0 +1,12 @@
+{
+  "target_id": "T-TAP-OWN",
+  "source": "este repositorio (Trading Agentic Portable)",
+  "commit_pinned": null,
+  "license": "propietario del repositorio",
+  "language": "Python",
+  "reported_at": "2026-10-17T22:17:33+00:00",
+  "rea_executed": false,
+  "rea_operation_that_would_apply": "REA sobre dashboard/UI JS propio",
+  "blocked_reason": "el repositorio no contiene ningún `.js`/`.html` de aplicación (medido: `find . -name '*.js'` sin resultados fuera de `.venv`). No hay superficie REA que observar; la equivalencia se comprueba con tests del runtime canónico.",
+  "storage": "2.9 GB free (99 % used)"
+}

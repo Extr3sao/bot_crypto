@@ -1,0 +1,13 @@
+{
+  "key": "alfred_WTREGEN_2019-03-07.csv",
+  "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2019-03-07",
+  "retrieved_at_utc": "2026-10-10T12:58:28Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "application/csv",
+  "bytes": 30291,
+  "sha256": "b8fdc0251a315fbcb0710e1143df7cd4994345d1c2a2a4d89f8a7f26af90de29",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

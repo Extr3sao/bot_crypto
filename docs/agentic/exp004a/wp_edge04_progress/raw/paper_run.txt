@@ -1,0 +1,56 @@
+[admission] ledger=C:/Users/GVLLFR0035/Downloads/exp004a-recovery-02k/config/strategy_admission.json
+[admission] strategies=['breakout@15m', 'breakout@1h', 'breakout@30m', 'breakout@5m', 'ema_crossover@15m', 'ema_crossover@1h', 'ema_crossover@30m', 'ema_crossover@5m', 'mean_reversion@15m', 'mean_reversion@1h', 'mean_reversion@30m', 'mean_reversion@5m', 'momentum@15m', 'momentum@1h', 'momentum@30m', 'momentum@5m', 'trend@15m', 'trend@1h', 'trend@30m', 'trend@5m', 'volatility@15m', 'volatility@1h', 'volatility@30m', 'volatility@5m']
+[admission] paper candidates=NONE
+[registry] COST_KILLED=7 NO_GROSS_EDGE=17
+[registry] paper-executable on 5m: NONE
+[registry]   refused breakout@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused ema_crossover@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused mean_reversion@5m: COST_KILLED — status COST_KILLED does not authorise PAPER
+[registry]   refused momentum@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused trend@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused volatility@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[preflight] universe: {"configured": ["BTC"], "asset_agent_supported": ["BTC", "ETH", "SOL"], "strategy_supported": ["BTC", "ETH", "SOL"], "provider_supported": null, "effective": ["BTC"], "unsupported": {}, "strategy_universe_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json", "provider_verified": false, "ok": true, "blocking_reason": null}
+2026-10-24 13:52:19 [info     ] reconcile.consistent_fresh_book
+[startup] reconciliation=CONSISTENT
+[run] WP-EDGE04-PAPER-20261024T115217Z goal=2 cycle(s) interval=0.0s assets=['BTC'] timeframe=5m config=config/realdata
+[run] agents=['data-integrity', 'cost-economics', 'evidence-provenance', 'regime-alignment', 'risk-adversary']
+[run] cadence=interval timeframe=5m settlement=5.0s
+2026-10-24 13:52:19 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=0b5dd0b2de6744b5a838746b76f969b0
+2026-10-24 13:52:19 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=0b5dd0b2de6744b5a838746b76f969b0 symbol=BTC/USDT
+2026-10-24 13:52:19 [info     ] scanner.iteration.completed    all_failed=False duration_ms=1 early_exit=None pairs_active=1 pairs_inactive=0 pairs_processed=1 scan_iteration_id=0b5dd0b2de6744b5a838746b76f969b0 scanner_errors=0
+2026-10-24 13:52:19 [info     ] candle_filter.filtered         completed=95 removed=5 timeframe=5m total=100
+[cycle 1] decisions=1 no_trade=1 shadow=0 paper=0 failures=0 strategies=6
+2026-10-24 13:52:19 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=7e5edd646ec84c4d860076e1fc633a4e
+2026-10-24 13:52:19 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=7e5edd646ec84c4d860076e1fc633a4e symbol=BTC/USDT
+2026-10-24 13:52:19 [info     ] scanner.iteration.completed    all_failed=False duration_ms=1 early_exit=None pairs_active=1 pairs_inactive=0 pairs_processed=1 scan_iteration_id=7e5edd646ec84c4d860076e1fc633a4e scanner_errors=0
+2026-10-24 13:52:19 [info     ] candle_filter.filtered         completed=95 removed=5 timeframe=5m total=100
+[cycle 2] decisions=1 no_trade=1 shadow=0 paper=0 failures=0 strategies=6
+2026-10-24 13:52:20 [info     ] paper_state.saved              open_positions=0 path=C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\data\storage\autonomous_paper_state.json sent_intents=0
+[run] paper state saved to C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\data\storage\autonomous_paper_state.json
+{
+  "asset_cycle_evaluations": 2,
+  "paper_trades": 0,
+  "shadow_trades": 0,
+  "no_trades": 2,
+  "runtime_failures": 0,
+  "orders_created": 0,
+  "traces_persisted": 2,
+  "outcomes_resolved": 0,
+  "outcomes_pending": 0,
+  "performance_updates": 0,
+  "no_trade_NO_TRADE_STRATEGIC": 2,
+  "no_trade_NO_TRADE_RISK": 0,
+  "no_trade_NO_TRADE_DATA": 0,
+  "no_trade_NO_TRADE_UNIVERSE": 0,
+  "no_trade_NO_TRADE_CONFLICT": 0,
+  "risk_APPROVED": 0,
+  "risk_VETOED": 0,
+  "risk_NOT_APPLICABLE": 2,
+  "risk_NOT_EVALUATED": 0
+}
+[run] stop reason: completed
+[run] report: C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\.tmp15m\paper-run\WP-EDGE04-PAPER-20261024T115217Z\RUN_REPORT.md
+[run] report: C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\.tmp15m\paper-run\WP-EDGE04-PAPER-20261024T115217Z\RUN_REPORT.json
+[run] traces: C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\.tmp15m\paper-run\WP-EDGE04-PAPER-20261024T115217Z\traces.jsonl
+[run] heartbeat: C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\.tmp15m\paper-run\WP-EDGE04-PAPER-20261024T115217Z\heartbeat.json (2 beats)
+[run] daily report: C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\.tmp15m\paper-run\WP-EDGE04-PAPER-20261024T115217Z\PAPER_DAILY_REPORT.json

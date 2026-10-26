@@ -1,0 +1,173 @@
+{
+  "run_id": "WP-EDGE04-PAPER-20261024T115217Z",
+  "runtime_version": "autonomous-paper-runtime-v1",
+  "environment": "fake:binance",
+  "commit": "c02edc0a46a3499e4869bd6aa4ae944fd89b8970",
+  "mode": "paper",
+  "assets": [
+    "BTC"
+  ],
+  "timeframe": "5m",
+  "cycles": 2,
+  "started_at_ms": 1792842739923,
+  "ended_at_ms": 1792842740015,
+  "totals": {
+    "asset_cycle_evaluations": 2,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "no_trades": 2,
+    "runtime_failures": 0,
+    "orders_created": 0,
+    "traces_persisted": 2,
+    "outcomes_resolved": 0,
+    "outcomes_pending": 0,
+    "performance_updates": 0,
+    "no_trade_NO_TRADE_STRATEGIC": 2,
+    "no_trade_NO_TRADE_RISK": 0,
+    "no_trade_NO_TRADE_DATA": 0,
+    "no_trade_NO_TRADE_UNIVERSE": 0,
+    "no_trade_NO_TRADE_CONFLICT": 0,
+    "risk_APPROVED": 0,
+    "risk_VETOED": 0,
+    "risk_NOT_APPLICABLE": 2,
+    "risk_NOT_EVALUATED": 0
+  },
+  "cycles_detail": [
+    {
+      "cycle": 1,
+      "session_id": "9d12a4a78f2d4a62",
+      "started_at_ms": 1792842739923,
+      "ended_at_ms": 1792842739930,
+      "assets": [
+        {
+          "asset": "BTC",
+          "symbol": "BTC/USDT",
+          "regime": "RANGE",
+          "market_time_ms": 1792842739923,
+          "decision_time_ms": 1792842739923,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": null,
+          "mode": "NO_TRADE",
+          "reason": "no_candidate_emitted_an_alpha",
+          "classification": "NO_ALPHA",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": null,
+          "expected_cost_bps": null,
+          "expected_net_edge_bps": null,
+          "verifier_verdict": "NOT_RUN",
+          "risk_verdict": "NOT_APPLICABLE",
+          "risk_state": "NOT_APPLICABLE",
+          "risk_evaluated": false,
+          "risk_rule": "",
+          "decision_id": "9d12a4a78f2d4a62-BTC",
+          "trace_persisted": true,
+          "order_created": false
+        }
+      ],
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trades": 1,
+      "no_trade_kinds": {
+        "NO_TRADE_STRATEGIC": 1
+      },
+      "risk_states": {
+        "NOT_APPLICABLE": 1
+      },
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "traces_persisted": 1,
+      "outcomes_resolved": 0,
+      "outcomes_pending": 0,
+      "performance_updates": 0,
+      "broker_fills_closed": 0,
+      "errors": []
+    },
+    {
+      "cycle": 2,
+      "session_id": "0a45f853227643c7",
+      "started_at_ms": 1792842739934,
+      "ended_at_ms": 1792842739940,
+      "assets": [
+        {
+          "asset": "BTC",
+          "symbol": "BTC/USDT",
+          "regime": "RANGE",
+          "market_time_ms": 1792842739934,
+          "decision_time_ms": 1792842739934,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": null,
+          "mode": "NO_TRADE",
+          "reason": "no_candidate_emitted_an_alpha",
+          "classification": "NO_ALPHA",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": null,
+          "expected_cost_bps": null,
+          "expected_net_edge_bps": null,
+          "verifier_verdict": "NOT_RUN",
+          "risk_verdict": "NOT_APPLICABLE",
+          "risk_state": "NOT_APPLICABLE",
+          "risk_evaluated": false,
+          "risk_rule": "",
+          "decision_id": "0a45f853227643c7-BTC",
+          "trace_persisted": true,
+          "order_created": false
+        }
+      ],
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trades": 1,
+      "no_trade_kinds": {
+        "NO_TRADE_STRATEGIC": 1
+      },
+      "risk_states": {
+        "NOT_APPLICABLE": 1
+      },
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "traces_persisted": 1,
+      "outcomes_resolved": 0,
+      "outcomes_pending": 0,
+      "performance_updates": 0,
+      "broker_fills_closed": 0,
+      "errors": []
+    }
+  ],
+  "executions": [],
+  "outcomes": [],
+  "pending_decision_ids": [],
+  "performance": [],
+  "trace_chain": {
+    "ok": true,
+    "records": 2,
+    "broken_at": null,
+    "detail": "hash chain intact"
+  },
+  "replay": {
+    "attempted": 2,
+    "ok": 2,
+    "failed": 0,
+    "statuses": {
+      "PARTIAL": 2
+    },
+    "failures": [],
+    "market_data_accessed": false
+  },
+  "errors": [],
+  "production_actions": 0
+}

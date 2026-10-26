@@ -1,0 +1,232 @@
+{
+  "checks": [
+    {
+      "detail": "before: free 1.4558 GiB, delta 0 B",
+      "evidence": {
+        "free_bytes": 1563185152,
+        "kernel32": 1563185152
+      },
+      "id": "SNAPSHOT_BEFORE_TWO_INSTRUMENTS",
+      "status": "PASS"
+    },
+    {
+      "detail": "after: free 1.4985 GiB, delta 0 B",
+      "evidence": {
+        "free_bytes": 1608957952,
+        "kernel32": 1608957952
+      },
+      "id": "SNAPSHOT_AFTER_TWO_INSTRUMENTS",
+      "status": "PASS"
+    },
+    {
+      "detail": "measured 40.047 GiB against reported 1.498 GiB",
+      "evidence": {
+        "measured_free_bytes": 43000365056,
+        "measured_kernel32": 43000365056
+      },
+      "id": "VOLUME_IS_AT_LEAST_AS_TIGHT_AS_REPORTED",
+      "status": "FAIL"
+    },
+    {
+      "detail": "p90 0.000 GiB, required 0.000 GiB, delta 15638174694 B",
+      "evidence": {
+        "days": 0,
+        "own_window_bytes": 0,
+        "p90_bytes": 0,
+        "readings": 0,
+        "required_bytes": 0
+      },
+      "id": "BUDGET_RECOMPUTED_FROM_THE_LOG",
+      "status": "FAIL"
+    },
+    {
+      "detail": "store floor None B; guard module carries the same constant: True",
+      "evidence": {
+        "module_constant_found": true
+      },
+      "id": "FLOOR_UNCHANGED",
+      "status": "FAIL"
+    },
+    {
+      "detail": "git diff exit 0, window 90 d, rows 6480",
+      "id": "CONTRACT_UNCHANGED",
+      "status": "PASS"
+    },
+    {
+      "detail": "0/11 shard(s) byte-identical",
+      "evidence": {
+        "mismatched": [
+          "2026-10-13.json",
+          "2026-10-14.json",
+          "2026-10-15.json",
+          "2026-10-16.json",
+          "2026-10-17.json",
+          "2026-10-18.json",
+          "2026-10-19.json",
+          "2026-10-20.json",
+          "2026-10-21.json",
+          "2026-10-22.json",
+          "2026-10-23.json"
+        ]
+      },
+      "id": "WRITE_ONCE_SHARDS_UNCHANGED",
+      "status": "FAIL"
+    },
+    {
+      "detail": "0/5 append-only file(s) unchanged up to their old length",
+      "evidence": {
+        "broken": [
+          "ALERT_LEDGER.jsonl",
+          "WATCHDOG_EVENTS.jsonl",
+          "alerts.jsonl",
+          "runs.jsonl",
+          "slots.jsonl"
+        ]
+      },
+      "id": "APPEND_ONLY_PREFIXES_INTACT",
+      "status": "FAIL"
+    },
+    {
+      "detail": "0/5 append-only file(s) did not shrink",
+      "evidence": [
+        {
+          "before": 3,
+          "file": "ALERT_LEDGER.jsonl",
+          "now": -1,
+          "ok": false
+        },
+        {
+          "before": 4,
+          "file": "WATCHDOG_EVENTS.jsonl",
+          "now": -1,
+          "ok": false
+        },
+        {
+          "before": 63,
+          "file": "alerts.jsonl",
+          "now": -1,
+          "ok": false
+        },
+        {
+          "before": 940,
+          "file": "runs.jsonl",
+          "now": -1,
+          "ok": false
+        },
+        {
+          "before": 751,
+          "file": "slots.jsonl",
+          "now": -1,
+          "ok": false
+        }
+      ],
+      "id": "NO_ROW_LOST_OR_INVENTED",
+      "status": "FAIL"
+    },
+    {
+      "detail": "230.38 GiB of 236.09 GiB explained (0.976) by 28 top-level row(s)",
+      "evidence": {
+        "truncations": [],
+        "unexplained_gib": 5.704
+      },
+      "id": "INVENTORY_ACCOUNTS_FOR_THE_VOLUME",
+      "status": "PASS"
+    },
+    {
+      "detail": "209 director(ies) removed, all inside this repository family",
+      "evidence": {
+        "deleted_bytes": 61520363,
+        "foreign": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\__pycache__",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\unit\\research\\__pycache__",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\.pytest_cache",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\__pycache__",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\unit\\__pycache__"
+        ]
+      },
+      "id": "NOTHING_FOREIGN_WAS_DELETED",
+      "status": "FAIL"
+    },
+    {
+      "detail": "3/3 protected tree(s) still on disk",
+      "evidence": [
+        {
+          "bytes_then": 6616551767,
+          "exists": true,
+          "file_bytes_now": null,
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\wsl"
+        },
+        {
+          "bytes_then": 3516571630,
+          "exists": true,
+          "file_bytes_now": null,
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright"
+        },
+        {
+          "bytes_then": 2148887064,
+          "exists": true,
+          "file_bytes_now": null,
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\hermes"
+        }
+      ],
+      "id": "PROTECTED_TREES_STILL_PRESENT",
+      "status": "PASS"
+    },
+    {
+      "detail": "free 40.047 GiB, required 14.564 GiB, package verdict BLOCKED",
+      "evidence": {
+        "capacity": "INSUFFICIENT"
+      },
+      "id": "VERDICT_FOLLOWS_THE_ARITHMETIC",
+      "status": "PASS"
+    },
+    {
+      "detail": "5 item(s), 14.16 GiB against a 13.07 GiB gap",
+      "evidence": {
+        "covers_gap": true,
+        "incomplete": []
+      },
+      "id": "AUTHORISATION_REQUEST_IS_ACTIONABLE",
+      "status": "PASS"
+    },
+    {
+      "detail": "pytest exit 0: 32 passed in 0.84s",
+      "evidence": {
+        "suite_sha256": "a0e78131e12b98c79d8f6873b83a8f83d6d255f9efdcd90523770f36666f487b"
+      },
+      "id": "TESTS_RAN_AND_PASSED",
+      "status": "PASS"
+    },
+    {
+      "detail": "open: ['ALERT_REMOTE', 'DEF-02I-07', 'DEF-02I-08', 'DEF-02K-01']",
+      "evidence": {
+        "required": [
+          "ALERT_REMOTE",
+          "DEF-02I-07",
+          "DEF-02I-08"
+        ]
+      },
+      "id": "DEFECTS_STILL_OPEN",
+      "status": "PASS"
+    },
+    {
+      "detail": "commit(s): ['e508f3c9 Register WP-051-02J with the verdict it earned: BLOCKED'], committed verdict BLOCKED",
+      "id": "WP_02J_COMMITTED_WITH_ITS_VERDICT",
+      "status": "PASS"
+    },
+    {
+      "detail": "builder tokens found: none",
+      "id": "NO_ELEVATION_AND_NO_NETWORK",
+      "status": "PASS"
+    }
+  ],
+  "failed": 7,
+  "generated_at_utc": "2026-10-24T07:21:29Z",
+  "head": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
+  "not_a_certification": "this says the report agrees with the host. It promotes nothing, it frees nothing, and it does not replace the owner's decision about whose bytes may go.",
+  "package": "WP-051-02K",
+  "passed": 11,
+  "schema_version": "EXP004A_WP051_02K_VERIFICATION_V1",
+  "verdict": "FAIL",
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k"
+}

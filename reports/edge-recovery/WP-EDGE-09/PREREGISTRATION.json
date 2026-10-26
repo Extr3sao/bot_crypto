@@ -1,0 +1,200 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09C",
+  "title": "RFC-EDGE-009 \u2014 market microstructure and economic edge, registered",
+  "registered_before_reading": true,
+  "universe": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "markets": [
+    "spot",
+    "perp"
+  ],
+  "grid_seconds": 1,
+  "horizons_seconds": [
+    1,
+    5,
+    60
+  ],
+  "frequency_horizons_seconds": [
+    1,
+    5,
+    60,
+    900,
+    3600
+  ],
+  "thresholds": {
+    "min_observations": 500,
+    "min_abs_ic": 0.01,
+    "admission_safety_multiple": 1.5,
+    "active_frequency_target_trades_per_day": 3.0,
+    "quality_frequency_floor_trades_per_day": 0.05
+  },
+  "tracks": {
+    "ACTIVE": "1 s entries with intraday holds; the registered objective is three executed trades a day across the aggregate universe, never forced",
+    "QUALITY": "5-minute to daily clock; its own floor is 0.05 trades a day and it is judged separately, never pooled with ACTIVE"
+  },
+  "ladder": [
+    {
+      "id": "F0",
+      "name": "information",
+      "rule": "the feature must order the forward return (|Spearman IC| >= 0.01, n >= 500)"
+    },
+    {
+      "id": "F1",
+      "name": "gross edge",
+      "rule": "mean gross move in bps must be positive on the pooled sample"
+    },
+    {
+      "id": "F2",
+      "name": "cost survival",
+      "rule": "mean gross >= the measured round-trip cost of the venue/asset, in bps"
+    },
+    {
+      "id": "F3",
+      "name": "admission margin",
+      "rule": "mean gross >= 1.5 x round-trip cost (the frozen safety multiple)"
+    },
+    {
+      "id": "F4",
+      "name": "capacity",
+      "rule": "the measured book must absorb the order size inside the barrier; failing it is CAPACITY_KILLED"
+    },
+    {
+      "id": "F5",
+      "name": "frequency",
+      "rule": "the structure must offer >= 3 executed opportunities per day (ACTIVE); failing it is FREQUENCY_KILLED"
+    }
+  ],
+  "classifications": [
+    "ADMIT_RESEARCH",
+    "COST_KILLED",
+    "FREQUENCY_KILLED",
+    "CAPACITY_KILLED",
+    "NO_GROSS_EDGE",
+    "NO_INFORMATION",
+    "INSUFFICIENT_SAMPLE",
+    "LIMITED_HISTORY",
+    "NO_VIABLE_DATA",
+    "NON_EXECUTABLE_UNDER_RUNTIME",
+    "OBSERVED"
+  ],
+  "scenarios_compared": [
+    "BINANCE_SPOT_STANDARD_TAKER",
+    "MEXC_SPOT_TAKER",
+    "OKX_SPOT_TAKER",
+    "KRAKENPRO_SPOT_TAKER"
+  ],
+  "hypotheses": [
+    {
+      "id": "E-01",
+      "track": "ACTIVE",
+      "title": "quote imbalance is big enough to pay a taker round trip",
+      "statement": "the book's own imbalance (bid vs ask size at the touch, and its change) predicts the mid move over 1/5/60 s by more than the venue's round-trip taker cost, so the prediction is executable by a taker order",
+      "falsified_if": "the best measured mean gross move at any horizon is below the measured round-trip cost for that asset",
+      "data_requirement": "forward book_ticker at quote level (no historical substitute exists)",
+      "decided_at": "F2/F3 (cost survival, admission margin)",
+      "executable": true,
+      "note": ""
+    },
+    {
+      "id": "E-02",
+      "track": "CROSS-VENUE",
+      "title": "the fee schedule is the binding constraint, not the signal",
+      "statement": "the same measured gross move clears the barrier at a venue whose taker fee is lower, so the venue choice (not the model) is what blocks the edge",
+      "falsified_if": "no compared venue brings the round-trip cost at or below the measured gross move, including the venue with the lowest researched taker fee",
+      "data_requirement": "measured spread + the published fee schedules already registered",
+      "decided_at": "F2 (cost survival) with V3 venue scenarios",
+      "executable": false,
+      "note": "a venue change is a governance decision; this measures, it does not adopt"
+    },
+    {
+      "id": "E-03",
+      "track": "ACTIVE",
+      "title": "the measured book can absorb our order size inside the barrier",
+      "statement": "at the registered order size the captured book offers enough notional inside the barrier-implied impact, so the modelled cost is not a fiction",
+      "falsified_if": "the notional available within the barrier-implied price band is below the runtime's minimum order notional",
+      "data_requirement": "forward depth snapshots (10 levels) per symbol and market",
+      "decided_at": "F4 (capacity)",
+      "executable": true,
+      "note": ""
+    },
+    {
+      "id": "E-04",
+      "track": "QUALITY",
+      "title": "open interest with price is exploitable on a slower clock",
+      "statement": "the quadrant 'price down and open interest up' carries a positive forward move large enough to pay the round trip at a 5-minute horizon",
+      "falsified_if": "no quadrant cell reaches a positive mean gross move at or above the round-trip cost, or the sample is below the registered floor",
+      "data_requirement": "forward open interest + mid at 5-minute resolution",
+      "decided_at": "F1/F2 with an explicit sample floor",
+      "executable": true,
+      "note": ""
+    },
+    {
+      "id": "E-05",
+      "track": "ACTIVE",
+      "title": "three executed trades a day is reachable by a positive structure",
+      "statement": "a structure whose expected move clears the barrier occurs at least three times a day across the aggregate universe, so the ACTIVE objective is a strategy question and not an arithmetic impossibility",
+      "falsified_if": "the measured count of barrier-clearing opportunities per day is below the registered 3.0, no trade being forced to reach it",
+      "data_requirement": "the same quote panel, counted without a performance filter",
+      "decided_at": "F5 (frequency), on the pooled universe",
+      "executable": true,
+      "note": ""
+    },
+    {
+      "id": "E-06",
+      "track": "EXECUTION",
+      "title": "a taker entry pays no more than the measured spread and impact",
+      "statement": "the price a taker order actually pays, measured against the mid at the decision instant, matches the modelled spread plus impact component, so the cost model is not systematically optimistic",
+      "falsified_if": "the measured execution shortfall exceeds the modelled spread+impact component by more than the published tolerance",
+      "data_requirement": "forward tape (agg_trade with aggressor side) + book_ticker",
+      "decided_at": "measured, then compared to the model; not an admission filter",
+      "executable": true,
+      "note": ""
+    },
+    {
+      "id": "E-07",
+      "track": "GUARD",
+      "title": "negative control: the pipeline does not manufacture an edge",
+      "statement": "the identical pipeline, fed a feature destroyed by a deterministic shuffle inside each day, produces no cost-surviving edge",
+      "falsified_if": "the negative control reaches the positive classification, which would invalidate every other result in this package",
+      "data_requirement": "the same panel",
+      "decided_at": "must end COST_KILLED or NO_GROSS_EDGE or NO_INFORMATION",
+      "executable": false,
+      "note": "FALSE_SUCCESS guard: a positive control here stops the package"
+    }
+  ],
+  "consumed_holdouts": [
+    {
+      "holder": "WP-EDGE-07",
+      "what": "the pre-registered decisive window of the EDGE-07 thrust book",
+      "evidence": "reports/edge-recovery/WP-EDGE-07/validation/VALIDATION.json"
+    },
+    {
+      "holder": "WP-EDGE-08",
+      "what": "a cross-section of six symbols never measured before",
+      "symbols": "AAVEUSDT, UNIUSDT, KSMUSDT, SNXUSDT, CRVUSDT, SUSHIUSDT",
+      "window": "2025-01-01..2026-10-14 (the decisive window, bars 1h/4h/1d)",
+      "evidence": "reports/edge-recovery/WP-EDGE-08/validation/VALIDATION.json"
+    }
+  ],
+  "declared_limitations": [
+    "profitability of any book: promotion is NONE and no order is sent",
+    "anything about liquidity outside the 4.16 h the forward capture covers",
+    "anything about the perp trade flow: this environment delivered zero perp aggTrade messages (SRC-15/SRC-18) and the absence is declared, never substituted",
+    "anything about realised maker fills: no venue in this project has a measured fill model",
+    "anything about markets the runtime excludes (derivatives are information, not product)"
+  ],
+  "bound_code": {
+    "src/trading_bot/research/edge09/registration.py": "bb5e2122c428682fe5bd834f67f04517d8c600917091a2ad251691107ad21d4a",
+    "src/trading_bot/research/edge09/panel.py": "84615ea7a9d1d8dd90e9d133e522d28d15e22f215ea20653c25817ed1322650e",
+    "src/trading_bot/research/edge09/gates.py": "dd02afad054b4b09482c688b77f4943d9b591992c2b35b29f21d7ba3c84bf9fa",
+    "src/trading_bot/research/edge09/experiments.py": "487feefab56b0339a59c3b968ffa846c986525531900d7f07cc8b4b9ea75924a",
+    "src/trading_bot/research/edge09/verdict.py": "26f92198573edeb5f022186d1ce5ce6279c4d0968eef53054a32bce26e96169b"
+  },
+  "negative_control_rule": "E-07 runs the identical pipeline on a feature destroyed by a deterministic shuffle; if it is classified positive, every other result of this package is void",
+  "promotion": "NONE",
+  "order_sent": false
+}

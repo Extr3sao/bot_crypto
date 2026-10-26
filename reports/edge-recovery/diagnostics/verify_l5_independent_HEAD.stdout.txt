@@ -1,0 +1,62 @@
+=== GATE-L5-09 PIT: adversarial future-bar injection ===
+[FAIL] GATE-L5-09 PIT: 30 future bars injected; trim keeps 100/130 (future=30 excluded); context+order built on the 100-bar PIT slice only
+=== GATE-L5-11 NEGATIVE MATRIX ===
+[PASS] NEG no strategy: orders_created=0, rejections=['router']
+[PASS] NEG strategy exception: orders_created=0, rejections=['router']
+[PASS] NEG invalid/empty context: orders_created=0, rejections=['context']
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-300.0 equity=9700.0 pnl=-300.0 weekly_pnl=-300.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=2 daily_pnl=-600.0 equity=9400.0 pnl=-300.0 weekly_pnl=-600.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=3 daily_pnl=-900.0 equity=9100.0 pnl=-300.0 weekly_pnl=-900.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=4 daily_pnl=-1200.0 equity=8800.0 pnl=-300.0 weekly_pnl=-1200.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=5 daily_pnl=-1500.0 equity=8500.0 pnl=-300.0 weekly_pnl=-1500.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=6 daily_pnl=-1800.0 equity=8200.0 pnl=-300.0 weekly_pnl=-1800.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=7 daily_pnl=-2100.0 equity=7900.0 pnl=-300.0 weekly_pnl=-2100.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=8 daily_pnl=-2400.0 equity=7600.0 pnl=-300.0 weekly_pnl=-2400.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=9 daily_pnl=-2700.0 equity=7300.0 pnl=-300.0 weekly_pnl=-2700.0
+2026-10-12 10:59:38 [info     ] risk.trade_recorded            consecutive_losses=10 daily_pnl=-3000.0 equity=7000.0 pnl=-300.0 weekly_pnl=-3000.0
+[PASS] NEG risk rejection (daily loss): orders_created=0, rejections=['router']
+[PASS] NEG risk exception: orders_created=0, rejections=['router']
+[FAIL] GATE-L5-08 idempotency: intent1 orders=0, intent2 orders=0, duplicates=0
+[PASS] NEG stale data (no bar at decision ts): orders_created=0, rejections=['router']
+[PASS] NEG broker exception: orders_created=0, rejections=['router']
+=== GATE-L5-10 lifecycle through real runner ===
+2026-10-12 10:59:38 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=0602018d57f64f69978ba9bf8bbff2e8
+2026-10-12 10:59:38 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=6bf00dcb9d8c452f92b251dfbb092a99
+2026-10-12 10:59:38 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=6bf00dcb9d8c452f92b251dfbb092a99 symbol=BTC/USDT
+2026-10-12 10:59:38 [info     ] scanner.pair.processed         active=True rank_score=0.6566666666666667 rejection_reason=None scan_iteration_id=6bf00dcb9d8c452f92b251dfbb092a99 symbol=ETH/USDT
+2026-10-12 10:59:38 [info     ] scanner.pair.processed         active=True rank_score=0.524 rejection_reason=None scan_iteration_id=6bf00dcb9d8c452f92b251dfbb092a99 symbol=SOL/USDT
+2026-10-12 10:59:38 [info     ] scanner.iteration.completed    all_failed=False duration_ms=0 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=6bf00dcb9d8c452f92b251dfbb092a99 scanner_errors=0
+2026-10-12 10:59:38 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=0602018d57f64f69978ba9bf8bbff2e8 total_snapshots=3
+2026-10-12 10:59:38 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=3 duplicate_intents=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'router', 'reason': 'NO_TRADE:no_strategy_passed_gates'}, {'symbol': 'ETH/USDT', 'stage': 'router', 'reason': 'NO_TRADE:no_strategy_passed_gates'}, {'symbol': 'SOL/USDT', 'stage': 'router', 'reason': 'NO_TRADE:no_strategy_passed_gates'}] risk_accepted=0 risk_errors=0 risk_rejected=0 router_errors=0 router_invocations=3 router_no_trade=3 session_id=0602018d57f64f69978ba9bf8bbff2e8 signals_generated=0 strategy_errors=0 strategy_invocations=0
+2026-10-12 10:59:38 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=0602018d57f64f69978ba9bf8bbff2e8
+2026-10-12 10:59:38 [info     ] paper.report.written           json_path=reports\paper\report.json markdown_path=reports\paper\report.md mode=paper session_id=0602018d57f64f69978ba9bf8bbff2e8
+2026-10-12 10:59:38 [info     ] paper.session.completed        active_snapshots=3 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=reports\paper\report.json report_markdown_path=reports\paper\report.md scanner_errors=0 session_id=0602018d57f64f69978ba9bf8bbff2e8 total_snapshots=3
+2026-10-12 10:59:38 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=622ec5fc6ffd43f691d8918805756891
+2026-10-12 10:59:38 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=e589e4bc27b443708473f56104cbb259
+2026-10-12 10:59:38 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=e589e4bc27b443708473f56104cbb259 symbol=BTC/USDT
+2026-10-12 10:59:38 [info     ] scanner.pair.processed         active=True rank_score=0.6566666666666667 rejection_reason=None scan_iteration_id=e589e4bc27b443708473f56104cbb259 symbol=ETH/USDT
+2026-10-12 10:59:38 [info     ] scanner.pair.processed         active=True rank_score=0.524 rejection_reason=None scan_iteration_id=e589e4bc27b443708473f56104cbb259 symbol=SOL/USDT
+2026-10-12 10:59:38 [info     ] scanner.iteration.completed    all_failed=False duration_ms=0 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=e589e4bc27b443708473f56104cbb259 scanner_errors=0
+2026-10-12 10:59:38 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=622ec5fc6ffd43f691d8918805756891 total_snapshots=3
+2026-10-12 10:59:38 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=3 duplicate_intents=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'router', 'reason': 'NO_TRADE:no_strategy_passed_gates'}, {'symbol': 'ETH/USDT', 'stage': 'router', 'reason': 'NO_TRADE:no_strategy_passed_gates'}, {'symbol': 'SOL/USDT', 'stage': 'router', 'reason': 'NO_TRADE:no_strategy_passed_gates'}] risk_accepted=0 risk_errors=0 risk_rejected=0 router_errors=0 router_invocations=3 router_no_trade=3 session_id=622ec5fc6ffd43f691d8918805756891 signals_generated=0 strategy_errors=0 strategy_invocations=0
+2026-10-12 10:59:38 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=622ec5fc6ffd43f691d8918805756891
+2026-10-12 10:59:38 [info     ] paper.report.written           json_path=reports\paper\report.json markdown_path=reports\paper\report.md mode=paper session_id=622ec5fc6ffd43f691d8918805756891
+2026-10-12 10:59:38 [info     ] paper.session.completed        active_snapshots=3 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=reports\paper\report.json report_markdown_path=reports\paper\report.md scanner_errors=0 session_id=622ec5fc6ffd43f691d8918805756891 total_snapshots=3
+[FAIL] GATE-L5-10 lifecycle: cycle1 opened=0, cycle2 closed=0, realized_pnl=0.00
+=== GATE-L5-17: live/credential refs in canonical runtime ===
+[PASS] GATE-L5-17 paper-only: grep of canonical cycle modules for exchange/credential refs: no matches
+
+=== SUMMARY ===
+FAIL GATE-L5-09 PIT
+PASS NEG no strategy
+PASS NEG strategy exception
+PASS NEG invalid/empty context
+PASS NEG risk rejection (daily loss)
+PASS NEG risk exception
+FAIL GATE-L5-08 idempotency
+PASS NEG stale data (no bar at decision ts)
+PASS NEG broker exception
+FAIL GATE-L5-10 lifecycle
+PASS GATE-L5-17 paper-only
+
+8/11 verification checks PASS; 3 FAIL

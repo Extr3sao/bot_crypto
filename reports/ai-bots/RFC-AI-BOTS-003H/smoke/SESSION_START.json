@@ -1,0 +1,39 @@
+{
+  "config": {
+    "decision_every_bars": 1,
+    "declared_latency_ms": 30000,
+    "duration_s": 3600,
+    "equity": 10000.0,
+    "poll_interval_s": 12.0,
+    "settle_ms": 2500,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT"
+    ],
+    "timeframe": "5m",
+    "warmup_minutes": 240,
+    "window_bars": 20
+  },
+  "live_enabled": false,
+  "live_orders": 0,
+  "mode": "PAPER",
+  "provider": "paper-script",
+  "real_model_called": false,
+  "runtime_sha256": {
+    "src/trading_bot/market_data/minute_collector.py": "38ab83ebc2c33add3c5a5996c17d4c7055b123c766cc64d7dfe6674da5001301",
+    "src/trading_bot/paper/broker.py": "3cb099fa72bd052ddb1e2340d0c02ee3799aa4dd8eb4395faed9a49f86814e1f",
+    "src/trading_bot/risk/manager.py": "ee8e84c38a00be80ccafbd4168e6d0a8180a2829b288e7345140d0b33b41473a",
+    "src/trading_bot/vision/clock.py": "5c39bc4fbd1b3eaacf806108ab2a6e290d6ee835f8cddee33e7bd0a5bfc7dfc3",
+    "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1",
+    "src/trading_bot/vision/lane.py": "e316b68eded2934a1f2a053dd8404876eb0d73e4539e4c28a1045bea3febf498",
+    "src/trading_bot/vision/ledger.py": "9b44d75c8492a2b32a90b7684d6a2436e53a1152add3b4ab30be27d671cf0251",
+    "src/trading_bot/vision/prospective.py": "a6aa3610660cfe80f3d35be8029f5cbc1e4688c209551806b99234822d30fe8f",
+    "src/trading_bot/vision/provider.py": "c436988ca2b96c7f991603ab4d817eb53620248ea17aadb6c6795de6415011b9",
+    "src/trading_bot/vision/quotes.py": "5ec0766e068ec1c49762555529e548dc82e27abf8fe0c92fb224d85072d3c086",
+    "src/trading_bot/vision/settings.py": "6df70baafa962f3c58c791ed8b23a394a7f94c4d8a01dcef0226b90c41a82f1b"
+  },
+  "schema_version": "PROSPECTIVE_PAPER_SESSION_V1",
+  "source": "binance_spot_rest_1m",
+  "started_at_utc": "2026-10-19T09:03:19Z",
+  "subbar_entries": "PAPER_ONLY"
+}

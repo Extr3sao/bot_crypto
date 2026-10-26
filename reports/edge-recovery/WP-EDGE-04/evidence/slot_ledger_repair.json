@@ -1,0 +1,19 @@
+{
+  "at_utc": "2026-10-13T14:47:36Z",
+  "corrupt_lines": 0,
+  "dropped": [
+    {
+      "at_utc": "2026-10-13T14:45:00Z",
+      "outcome": "NO_NEW_DATA",
+      "run_id": "FWD-EDGE04-20261013T143000Z",
+      "slot_key": "2026-10-13T14:30Z"
+    }
+  ],
+  "reading": "the seal of a slot is its first row; the seal of the consumed slot is never dropped, only a repeat row for a slot that already had one",
+  "rows_after": 14,
+  "rows_before": 15,
+  "schema_version": "EDGE04_TICK_V1",
+  "sha256_after": "e2c3390d0fb567ccb9d7fd03cb654dd58d5870f962ff8c5cbc5495acda7e0dc3",
+  "sha256_before": "3aa174f9dd5faefa902e024ed770a3f36a29f3b2b4b4e0305913b99e58a5c12e",
+  "slots_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\slots.jsonl"
+}

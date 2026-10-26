@@ -1,0 +1,139 @@
+{
+  "declaration_id": "EXP-004A.datasets.phase3/v1",
+  "experiment_id": "EXP-004A",
+  "phase": 3,
+  "work_package": "WP-051-02G",
+  "schema_version": "1.0",
+  "supersedes": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "git_blob": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b",
+    "reason": "phase 2's datasets were published once by an extractor that cannot extend them, so DEF-02F-01 froze three files at 14 of 2160 declared bars. This declaration does not revoke, reopen or rewrite them: it authorises a second mechanism over a new window, new shard root and new paths. Phase-2 artefacts keep their bytes."
+  },
+  "generator": {
+    "program": "scripts/exp004a_wp051_02g_capture.py",
+    "engine": "src/trading_bot/research/prospective/incremental.py",
+    "verifier": "scripts/exp004a_wp051_02g_verify.py",
+    "code_commit": "889abf304be89164fecad5ba83b222788bdc7e2a",
+    "program_blob": "2fec148451ed74245435dfc6e82de2b168625f16",
+    "program_sha256": "b778c642efdf9b4dc4056875c8589035148839c403ee31d9f5b3357c9e16f8e5",
+    "engine_block": "75d73669df037f661175c1d0b11f82c5f76b9d67",
+    "engine_sha256": "825ecfd65b1ae63f52714766ba9a1096c5627b5484f75ac457148a492d8a11cb",
+    "verifier_blob": "20503fb2a17d01e1e070d944aeb9b94b2d42d7a1",
+    "verifier_sha256": "e67a4f5b0b16e0a46f0ee403f0fea21ab28fbf01b8df66e833482f3408a5344c",
+    "hash_semantics": "two magnitudes, never interchangeable: a *_blob value is the Git object id and is the same in every clone; a *_sha256 value is the digest of the bytes in this checkout, which with core.autocrlf=true carry CRLF line endings while the stored blob carries LF. The verifier control GENERATOR_BLOB_RECORDED compares the blob ids, so a re-clone with different line endings still passes it; the sha256 digests are what the run reports and shard manifests record about the checkout that actually ran.",
+    "contract": "trading_bot.research.prospective.incremental.capture_plan"
+  },
+  "governance_status": "AUTHORIZED_FOR_INCREMENTAL_CAPTURE",
+  "issued_at_utc": "2026-10-22T21:40:00Z",
+  "effective_from_utc": "2026-10-23T00:00:00Z",
+  "capture_window": {
+    "start_utc": "2026-10-23T00:00:00Z",
+    "end_utc": "2027-01-21T00:00:00Z",
+    "days": 90
+  },
+  "fencepost": "period_start_utc <= bar_open < period_end_utc",
+  "bar_grid": "UTC epoch grid: a bar opens at k * interval_ms, so a 1h day holds exactly 24 openings and the window holds exactly 2160",
+  "shard_root": "data/exp004a/phase3",
+  "shard_policy": {
+    "granularity": "UTC_DAY",
+    "shard_id": "<interval>_<asset>/<YYYY-MM-DD>",
+    "write_once": true,
+    "publication_rule": "a day is captured only after its last expected bar has closed; a day whose bars are not yet all in the store is not captured, and the missing opens are named",
+    "duplicate_rule": "an existing shard is never rewritten: identical bytes are reported as already held, different bytes are a conflict and block the run",
+    "rehearsal_rule": "a rehearsal shard is stamped prospective=false and counts_toward_coverage=false, and lives under its own root"
+  },
+  "lag_policy": {
+    "definition": "lag_ms = fetched_at_ms - (ts + interval_ms), the forward store's own definition",
+    "bound_ms": 7200000,
+    "admission": "a bar is admissible only when 0 <= lag_ms <= bound_ms and the bar is closed at the capture instant and was stored at or after effective_from_utc",
+    "action": "a day holding any inadmissible bar is written once, marked admissible=false with its defects, and excluded from the consolidated dataset and from the coverage numerator. Nothing is repaired or re-fetched.",
+    "rationale": "the lag is the only field that distinguishes a bar that was watched from a bar that was backfilled; a day that holds one backfilled bar cannot be called a forward observation of that day"
+  },
+  "coverage": {
+    "denominator": "sum over entries of row_count, fixed by this declaration and never recomputed from the data on disk",
+    "required_fraction": 0.9,
+    "complete_rule": "COVERAGE_COMPLETE requires admissible_rows == declared_rows exactly and zero defects. required_fraction is a floor for adjudication, not a licence to certify a short dataset as the declared one.",
+    "states": [
+      "PENDING_WINDOW_OPEN",
+      "PENDING",
+      "BELOW_DECLARED",
+      "COVERAGE_COMPLETE"
+    ]
+  },
+  "rehearsal": {
+    "start_utc": "2026-10-19T00:00:00Z",
+    "end_utc": "2026-10-22T00:00:00Z",
+    "days": 3,
+    "declared_rows_per_slice": 72,
+    "shard_root": "data/exp004a/phase3/rehearsal",
+    "counts_toward_coverage": false,
+    "note": "Three fully closed days of the same forward store, chosen because the lag policy accepts every bar in them (max lag 86.6 min against a 120 min bound). They are historical bytes, not prospective observations, and they can never move the window's coverage. The store also contains days the policy rejects (2026-10-13 .. 2026-10-18, up to 476 min of lag); the rehearsal is not run over them because this window's purpose is to exercise the mechanism's completeness path, and their rejection is proved by the adversarial suite and reported by name in the run report."
+  },
+  "note": "Successor to EXP-004A.datasets.phase2.json and the contract for the incremental mechanism. The window opens after this file's commit, so every bar inside it is fetched after the declaration existed. Phase-2 datasets, the frozen extractor and the sealed wp051_02b..wp051_02f packages are read-only to this phase.",
+  "entries": [
+    {
+      "dataset_id": "EXP-004A-1H-BTC-P3",
+      "asset": "BTC",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "source_path": "data/forward/edge03/1h/BTC.jsonl",
+      "period_start_utc": "2026-10-23T00:00:00Z",
+      "period_end_utc": "2027-01-21T00:00:00Z",
+      "row_count": 2160,
+      "generator_command": "python scripts/exp004a_wp051_02g_capture.py --once",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    },
+    {
+      "dataset_id": "EXP-004A-1H-ETH-P3",
+      "asset": "ETH",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "source_path": "data/forward/edge03/1h/ETH.jsonl",
+      "period_start_utc": "2026-10-23T00:00:00Z",
+      "period_end_utc": "2027-01-21T00:00:00Z",
+      "row_count": 2160,
+      "generator_command": "python scripts/exp004a_wp051_02g_capture.py --once",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    },
+    {
+      "dataset_id": "EXP-004A-1H-SOL-P3",
+      "asset": "SOL",
+      "venue": "Binance",
+      "instrument_type": "spot",
+      "timeframe": "1h",
+      "provider": "Binance public REST /api/v3/klines via the WP-EDGE-03 forward observer",
+      "source_url": "https://api.binance.com/api/v3/klines",
+      "source_path": "data/forward/edge03/1h/SOL.jsonl",
+      "period_start_utc": "2026-10-23T00:00:00Z",
+      "period_end_utc": "2027-01-21T00:00:00Z",
+      "row_count": 2160,
+      "generator_command": "python scripts/exp004a_wp051_02g_capture.py --once",
+      "generator_parameters": {
+        "interval": "1h",
+        "lag_bound_ms": 7200000,
+        "coverage_required": 0.9
+      },
+      "reproduction_status": "PENDING_CAPTURE",
+      "digest_deferred_by": "TWO_PHASE_PHASE_1"
+    }
+  ]
+}

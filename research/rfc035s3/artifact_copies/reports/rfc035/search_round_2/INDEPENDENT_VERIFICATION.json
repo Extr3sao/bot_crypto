@@ -1,0 +1,317 @@
+{
+  "attribution": "builder != verifier: this script re-derives the artifacts written by scripts/rfc035s2_search.py and shares no function with it",
+  "candidates_checked": 18,
+  "checks": 863,
+  "false_success": 0,
+  "limitations": [
+    "the RFC-035 artifacts are not tracked in git at this commit, so history preservation is verified structurally (records intact, ranks and corrections kept, hashes re-derivable) instead of by comparison with an earlier revision",
+    "sources not reachable from this host (bot-blocked, paywalled or transient), reported rather than treated as evidence of absence: ['S2-15', 'S2-20', 'S2-35', 'S2-36']",
+    "source liveness 40/44; unreachable URLs are listed in the audit block, not silently marked verified"
+  ],
+  "mismatch_detail": [],
+  "mismatches": 0,
+  "notes": [
+    "reachability is a liveness probe, not a content check: a 200 does not confirm the claim",
+    "the final report's verification block was pending, so its self-consistency check is only evaluated from the next verification run onwards"
+  ],
+  "passed": 863,
+  "replicate_p0": [],
+  "replicate_p1": [
+    "C-02",
+    "C-07"
+  ],
+  "round_1_artifact_hashes": {
+    "OPP-0001": "68566d77352c5f086147a42c85de760be5f7777e938e9fe792d94d5b0d04fe2d",
+    "OPP-0002": "cffa73244d9522d9583b6f7853d203df34b0ab5af56b847772a9b97eff2fdfe5",
+    "OPP-0003": "0bc6313451b6109fb01028bc526750277926109cbc3a7af082d65bcf999bc639",
+    "OPP-0004": "ff88d9219ae1afc42589e8e7809a3128446090edcd16aee044f7c6782e1b6254",
+    "OPP-0005": "d43c24755e7bf8386184ab64af7b564866bc4824e4ee8b01e6eb375520d4481b",
+    "OPP-0006": "590bf0a734f3725261b89fea380b9d854cd2817b7049997f3dec9bf483c3907c",
+    "OPP-0007": "1db0783e53d5a3df62682f2d65e3768453c7ca552071c8997cd18638f9bc2507",
+    "OPP-0008": "ac773fc047cee4e468edf18f74572465d2cb84d96062d434be74ce1e302bbfc6",
+    "OPP-0009": "93372577807cb346ad42b13f041bb35175fba06950aa0667bb60c518289e5b3f"
+  },
+  "source_audit": {
+    "S2-01": {
+      "promoted_candidate_source": true,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/freqtrade/freqtrade-strategies"
+    },
+    "S2-02": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.freqtrade.io/en/stable/strategy-customization/"
+    },
+    "S2-03": {
+      "promoted_candidate_source": true,
+      "reachable": true,
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/freqtrade/freqtrade-strategies/main/user_data/strategies/Strategy001.py"
+    },
+    "S2-04": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/iterativv/NostalgiaForInfinity"
+    },
+    "S2-05": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.quantconnect.com/league/"
+    },
+    "S2-06": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.quantconnect.com/league/18106/2024-q4/crypto-and-stock-momentum/"
+    },
+    "S2-07": {
+      "promoted_candidate_source": true,
+      "reachable": true,
+      "status": 200,
+      "url": "https://quantiacs.com/documentation/en/quick_start/quick_start.html"
+    },
+    "S2-08": {
+      "promoted_candidate_source": true,
+      "reachable": true,
+      "status": 200,
+      "url": "https://quantiacs.com/documentation/en/examples/q24_crypto_guide.html"
+    },
+    "S2-09": {
+      "promoted_candidate_source": true,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/quantiacs/toolbox"
+    },
+    "S2-10": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://quantpedia.com/revisiting-trend-following-and-mean-reversion-strategies-in-bitcoin/"
+    },
+    "S2-11": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://quantpedia.com/trend-following-and-mean-reversion-in-bitcoin/"
+    },
+    "S2-12": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.quantifiedstrategies.com/trend-following-and-momentum-strategies-on-bitcoin/"
+    },
+    "S2-13": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.systematicmoney.org/systematic-trading-resources"
+    },
+    "S2-14": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/pst-group/pysystemtrade"
+    },
+    "S2-15": {
+      "permanent": true,
+      "promoted_candidate_source": false,
+      "reachable": false,
+      "status": 429,
+      "url": "https://github.com/topics/freqtrade-strategies"
+    },
+    "S2-16": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://arxiv.org/html/2110.14936v1"
+    },
+    "S2-17": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://arxiv.org/html/2510.07943v1"
+    },
+    "S2-18": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://arxiv.org/html/2510.08068v2"
+    },
+    "S2-19": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://arxiv.org/pdf/2407.09546"
+    },
+    "S2-20": {
+      "permanent": false,
+      "promoted_candidate_source": false,
+      "reachable": false,
+      "status": 403,
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4322637"
+    },
+    "S2-21": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://ideas.repec.org/a/eee/riibaf/v52y2020ics0275531919308062.html"
+    },
+    "S2-22": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.robots.ox.ac.uk/~sjrob/Theses/bryanLim.pdf"
+    },
+    "S2-23": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12404547/"
+    },
+    "S2-24": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/jesse-ai/jesse"
+    },
+    "S2-25": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://hummingbot.org/"
+    },
+    "S2-26": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.octobot.cloud/"
+    },
+    "S2-27": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://karaptic.com/research/"
+    },
+    "S2-28": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.kaggle.com/c/g-research-crypto-forecasting/discussion/327751"
+    },
+    "S2-29": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.gresearch.com/news/wrapping-up-the-g-research-crypto-forecasting-competition/"
+    },
+    "S2-30": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://kaggle.curtischong.me/competitions/G-Research-Crypto-Forecasting"
+    },
+    "S2-31": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/SanchitAjmera/G-Research-Crypto-Forecasting"
+    },
+    "S2-32": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/qAp/gresearch_crypto_forecasting_kaggle"
+    },
+    "S2-33": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/coderback/drw-crypto-market-prediction"
+    },
+    "S2-34": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/anthonymakarewicz/bitcoin-momentum-trading"
+    },
+    "S2-35": {
+      "permanent": false,
+      "promoted_candidate_source": false,
+      "reachable": false,
+      "status": 403,
+      "url": "https://www.researchgate.net/publication/395401021_Adaptive_Regime-Based_Trading_on_Bitcoin_Backtesting_and_Walk-Forward_Evaluation"
+    },
+    "S2-36": {
+      "permanent": false,
+      "promoted_candidate_source": false,
+      "reachable": false,
+      "status": 403,
+      "url": "https://www.researchgate.net/publication/406476873_Momentum_Trading_in_Cryptocurrencies_A_Comparative_Study_of_Time-Series_and_Cross-Sectional_Strategies"
+    },
+    "S2-37": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.tradingview.com/script/bq0ELG1b-Multi-Band-Comparison-Strategy-CRYPTO/"
+    },
+    "S2-38": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/chibui191/bitcoin_volatility_forecasting"
+    },
+    "S2-39": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://pypi.org/project/awesome-systematic-trading/"
+    },
+    "S2-40": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.quantconnect.com/docs/v2/cloud-platform/live-trading"
+    },
+    "S2-41": {
+      "promoted_candidate_source": true,
+      "reachable": true,
+      "status": 200,
+      "url": "https://quantiacs.com/documentation/en/user_guide/passFilters.html"
+    },
+    "S2-42": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/polakowo/vectorbt"
+    },
+    "S2-43": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://github.com/mementum/backtrader"
+    },
+    "S2-44": {
+      "promoted_candidate_source": false,
+      "reachable": true,
+      "status": 200,
+      "url": "https://www.quantconnect.com/strategies/"
+    },
+    "summary": {
+      "permanently_gone_promoted": [],
+      "reachable": 40,
+      "sources_probed": 44,
+      "unreachable": [
+        "S2-15",
+        "S2-20",
+        "S2-35",
+        "S2-36"
+      ]
+    }
+  },
+  "status": "PASS",
+  "verification": "RFC035S2_INDEPENDENT_VERIFICATION"
+}

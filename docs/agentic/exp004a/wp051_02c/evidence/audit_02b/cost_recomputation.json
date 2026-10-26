@@ -1,0 +1,186 @@
+{
+  "definitions": {
+    "declared_notional_usdt": 500.0,
+    "entry": "taker buy at the recorded ask",
+    "exit": "taker sell at the recorded bid",
+    "fee_per_side_bps": 10.0,
+    "fee_round_trip_bps": 20.0,
+    "fee_source": "manifest economics.taker_fee_bps_per_side (VENUE_SPECS VIP0 spot)",
+    "liquidity_assumption": "top-of-book fills at the recorded size; no queue position claimed",
+    "reference_price": "mid = (bid + ask) / 2 at the observed window",
+    "slippage": "the recorded depth walk at 200 USDT; not assumed, measured",
+    "spread_per_round_trip": "one full quoted spread: half paid on entry, half on exit"
+  },
+  "generated_at_utc": "2026-10-21T12:16:16Z",
+  "git": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+    "head": "f55e923a4b9221144b631b790c97e7d8976d58cb"
+  },
+  "inputs": [
+    {
+      "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+      "rows": 924,
+      "sha256": "896b9fa3498f31f590562085e00b1d4b3fa06a7716fd89bf3e0bcc3860b15280",
+      "size": 2057201
+    },
+    {
+      "path": "config/preregistrations/EXP-004A.json",
+      "sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9",
+      "size": 6960
+    }
+  ],
+  "mode": "cost",
+  "per_asset": {
+    "BTCUSDT": {
+      "declared_notional_walked": false,
+      "distinct_days": 14,
+      "median_depth_impact_bps": 0.0,
+      "median_spread_bps": 0.001213,
+      "minimum_possible_round_trip_bps": 20.001191,
+      "negative_depth_impact_rows": 0,
+      "observations_total": 231,
+      "observations_usable": 230,
+      "p90_depth_impact_bps": 0.0,
+      "p90_spread_bps": 0.001228,
+      "rejected_rows": 1,
+      "round_trip_one_spread": {
+        "cost_usdt_at_declared": 1.000061,
+        "knowledge": "ESTIMATED",
+        "median_bps": 20.001213,
+        "p90_bps": 20.001228,
+        "status": "DECLARED_SIZE_NOT_WALKED",
+        "worst_bps": 20.016573
+      },
+      "round_trip_two_spread": {
+        "median_bps": 20.002425,
+        "note": "each side charged the full quoted spread: double counts a round trip",
+        "p90_bps": 20.002456
+      },
+      "stale_rows": 1,
+      "walked_sizes_usdt": [
+        200.0
+      ]
+    },
+    "ETHUSDT": {
+      "declared_notional_walked": false,
+      "distinct_days": 14,
+      "median_depth_impact_bps": 0.0,
+      "median_spread_bps": 0.040734,
+      "minimum_possible_round_trip_bps": 20.039061,
+      "negative_depth_impact_rows": 3,
+      "observations_total": 231,
+      "observations_usable": 230,
+      "p90_depth_impact_bps": 0.0,
+      "p90_spread_bps": 0.04184,
+      "rejected_rows": 1,
+      "round_trip_one_spread": {
+        "cost_usdt_at_declared": 1.002037,
+        "knowledge": "ESTIMATED",
+        "median_bps": 20.040736,
+        "p90_bps": 20.041902,
+        "status": "DECLARED_SIZE_NOT_WALKED",
+        "worst_bps": 20.817532
+      },
+      "round_trip_two_spread": {
+        "median_bps": 20.081473,
+        "note": "each side charged the full quoted spread: double counts a round trip",
+        "p90_bps": 20.083804
+      },
+      "stale_rows": 1,
+      "walked_sizes_usdt": [
+        200.0
+      ]
+    },
+    "SOLUSDT": {
+      "declared_notional_walked": false,
+      "distinct_days": 14,
+      "median_depth_impact_bps": 0.0,
+      "median_spread_bps": 0.939894,
+      "minimum_possible_round_trip_bps": 20.890195,
+      "negative_depth_impact_rows": 0,
+      "observations_total": 231,
+      "observations_usable": 230,
+      "p90_depth_impact_bps": 0.0,
+      "p90_spread_bps": 0.964739,
+      "rejected_rows": 1,
+      "round_trip_one_spread": {
+        "cost_usdt_at_declared": 1.047021,
+        "knowledge": "ESTIMATED",
+        "median_bps": 20.940424,
+        "p90_bps": 20.965018,
+        "status": "DECLARED_SIZE_NOT_WALKED",
+        "worst_bps": 21.632165
+      },
+      "round_trip_two_spread": {
+        "median_bps": 21.880848,
+        "note": "each side charged the full quoted spread: double counts a round trip",
+        "p90_bps": 21.930036
+      },
+      "stale_rows": 1,
+      "walked_sizes_usdt": [
+        200.0
+      ]
+    },
+    "XRPUSDT": {
+      "declared_notional_walked": false,
+      "distinct_days": 14,
+      "median_depth_impact_bps": 0.0,
+      "median_spread_bps": 0.743965,
+      "minimum_possible_round_trip_bps": 20.703755,
+      "negative_depth_impact_rows": 0,
+      "observations_total": 231,
+      "observations_usable": 230,
+      "p90_depth_impact_bps": 0.0,
+      "p90_spread_bps": 0.77009,
+      "rejected_rows": 1,
+      "round_trip_one_spread": {
+        "cost_usdt_at_declared": 1.037218,
+        "knowledge": "ESTIMATED",
+        "median_bps": 20.744352,
+        "p90_bps": 20.770327,
+        "status": "DECLARED_SIZE_NOT_WALKED",
+        "worst_bps": 21.354128
+      },
+      "round_trip_two_spread": {
+        "median_bps": 21.488704,
+        "note": "each side charged the full quoted spread: double counts a round trip",
+        "p90_bps": 21.540654
+      },
+      "stale_rows": 1,
+      "walked_sizes_usdt": [
+        200.0
+      ]
+    }
+  },
+  "summary": {
+    "alternative_reachable": false,
+    "alternative_threshold_bps": 20.0,
+    "cheapest_observed_round_trip_bps": 20.001191,
+    "declared_size_walked": false,
+    "negative_depth_impact_rows": 3,
+    "sol_median_one_spread_bps": 20.940424,
+    "sol_median_two_spread_bps": 21.880848
+  },
+  "tape": {
+    "assets": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "XRPUSDT"
+    ],
+    "crossed_books": 0,
+    "declared_assets": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "max_spread_recompute_error_bps": 4.997799951667048e-10,
+    "undeclared_assets": [
+      "XRPUSDT"
+    ],
+    "walked_sizes_usdt": [
+      200.0
+    ]
+  }
+}

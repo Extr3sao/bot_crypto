@@ -1,0 +1,93 @@
+{
+  "github_workflows": {
+    "total": 3,
+    "with_a_schedule_trigger": []
+  },
+  "method": "for each stage the RFC names, the component is resolved by searching its file for the symbol recorded here; an unresolved row is reported as a gap, never as a convention",
+  "reading": "the decision clock, the fills, the risk engine, admission and the collector each have exactly one owner, and the scheduler has none: that is why the prospective lane is reported as not automated rather than as slow",
+  "rows": [
+    {
+      "component": "src/trading_bot/research/economic_recovery/pit15.py",
+      "does_not_own": "prices, sizes or admission \u2014 a machine emits a decision and nothing else",
+      "line": 575,
+      "owns": "the rule: one object per family, fed closed bars only, one construction site",
+      "resolved": true,
+      "sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "stage": "signal_calculation",
+      "symbol": "def machine_for"
+    },
+    {
+      "component": "src/trading_bot/research/economic_recovery/pit15.py",
+      "does_not_own": "the venue's clock: the series defines the period, not an assumption of one hour",
+      "line": 88,
+      "owns": "the bar's own spacing and therefore the instant its close becomes available",
+      "resolved": true,
+      "sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "stage": "closed_bar_availability",
+      "symbol": "def period_ms"
+    },
+    {
+      "component": "src/trading_bot/paper/broker.py",
+      "does_not_own": "an intrabar path: the policy (stop_first) is enforced and the residual gap optimism is declared",
+      "line": 398,
+      "owns": "whether a resting stop or target was touched, and the order of an ambiguous bar",
+      "resolved": true,
+      "sha256": "0250fc4791908a174a847d5bb378ab3d6ab6415e095c112f2dfce9437ba27bd1",
+      "stage": "ohlc_simulator",
+      "symbol": "def check_positions_ohlc"
+    },
+    {
+      "component": "src/trading_bot/paper/broker.py",
+      "does_not_own": "which bar is executable: the driver owns the clock and passes the price",
+      "line": 221,
+      "owns": "fills, commissions, position ids and the cash/realised/unrealised identities",
+      "resolved": true,
+      "sha256": "0250fc4791908a174a847d5bb378ab3d6ab6415e095c112f2dfce9437ba27bd1",
+      "stage": "paper_broker_fills",
+      "symbol": "def execute_signal"
+    },
+    {
+      "component": "src/trading_bot/risk/manager.py",
+      "does_not_own": "the cost model and the research restatement, which never place orders",
+      "line": 147,
+      "owns": "approval, refusal, sizing, exposure clamps, loss limits and the kill switch",
+      "resolved": true,
+      "sha256": "32f81b9a477d3c4e6f02621d7196dd056e0ea8c07153d45abdd03d7d1a6dcf80",
+      "stage": "portfolio_and_risk",
+      "symbol": "def check_signal"
+    },
+    {
+      "component": "src/trading_bot/autonomous/admission_ledger.py",
+      "does_not_own": "the research lane's own tag: an experimental lane bypasses it by design and says so",
+      "line": 168,
+      "owns": "whether a strategy may trade paper at all, from the committed ledger",
+      "resolved": true,
+      "sha256": "baab379768881dddb48d894f0722d2e80dd0d8d50e1d6222fe08a619986fd3bb",
+      "stage": "admission",
+      "symbol": "def is_paper_admitted"
+    },
+    {
+      "component": "scripts/edge16_capture.py",
+      "does_not_own": "the collector's execution; the ST6 Windows task belongs to another line and runs every 15 min",
+      "line": 65,
+      "owns": "nothing yet: no scheduled job runs this package's collector, and none was created",
+      "resolved": true,
+      "sha256": "535adf0eb6f6f67eedd22c55dfbe55745445b33b78611ec3d5e085d5eef71030",
+      "stage": "scheduler",
+      "symbol": "def main"
+    },
+    {
+      "component": "scripts/edge15_oos_preregistration.py",
+      "does_not_own": "the schedule: it is a manual command while the disk guard reports INSUFFICIENT_FREE_SPACE",
+      "line": 13,
+      "owns": "appending newly closed public bars to the frozen holdout slice, idempotently",
+      "resolved": true,
+      "sha256": "f2e3403c18897d0110a60a2f3abd47b75b6e904db5b09e81a0205d2dd46a0091",
+      "stage": "prospective_collector",
+      "symbol": "--capture"
+    }
+  ],
+  "scheduled_jobs_owned_by_this_package": [],
+  "schema_version": "EDGE16_RUNTIME_AUTHORITY_MAP_V1",
+  "unresolved": []
+}
