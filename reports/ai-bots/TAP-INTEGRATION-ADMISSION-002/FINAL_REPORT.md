@@ -232,6 +232,31 @@ esta rama ni los de `main`, ha visto ese workflow verde.
   bytes on checkout"). En Linux el checkout es LF y el digest deja de cuadrar. Es la misma clase de defecto que
   los payloads RFC-048 de §1.2.3, en otro bundle.
 
+#### 1.8.5 Segunda ronda: la misma pared, y el falso éxito ya no aparece
+
+Tras publicar `266761bf` (el cierre del falso éxito y las sesiones nuevas), GitHub volvió a ejecutar los cuatro
+workflows. Resultado: **los cuatro vuelven a fallar, y ahora por lo que deben**:
+
+| Workflow | Run | Conclusión |
+| --- | ---: | --- |
+| Integration gate | `40308569940` | `failure` — merge commit `c1cecb72`: 3 PASS, 9 FAIL, 3 NOT_TESTED, `false_success 0` |
+| recovery-determinism | `40308570056` | `failure` (B14: el audit sigue obsoleto) |
+| Cost-barrier drift gate | `40308570059` | `failure` (B13: digests sobre CRLF) |
+| CI Baseline | `40308569933` | `failure` (B12: deuda heredada) |
+
+La diferencia que importa está en un solo paso:
+
+```
+C3_LOCK_CAMPAIGN  FAIL  exit 1:
+  "iteration-01:NO_CYCLE_BEFORE_CRASH",
+  "incomplete:1/6 crash sites"
+```
+
+Antes ese mismo paso devolvía `0` con `{"iterations": 1, "cycles": [], "locks": 0}` y el gate lo contaba como
+`PASS`. Ahora falla con el motivo escrito y arrastra `J2`/`V2` a `NOT_TESTED` en lugar de fabricar un contrato
+verde sobre una campaña vacía. El número de `PASS` baja de 4 a 3: **el gate es más débil en apariencia y más
+honesto en realidad.**
+
 Ninguno de los dos se ha "arreglado" relajando la comprobación: quedan como bloqueos B11–B14 en §4.
 
 ---

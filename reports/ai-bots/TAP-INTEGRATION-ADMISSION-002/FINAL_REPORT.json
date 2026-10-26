@@ -133,7 +133,7 @@
     "status": "OPEN",
     "subject": "weekly loss veto rolled to UTC Monday 00:00"
   },
-  "generated_at_utc": "2026-10-26T12:40:00Z",
+  "generated_at_utc": "2026-10-26T13:05:00Z",
   "github_actions": {
     "branch_tip_at_the_time": "3c967185",
     "honest_summary": "the gate refuses to certify; it did not produce a false PASS. The only false success was the lock campaign's exit code, now closed.",
@@ -208,6 +208,43 @@
         "workflow": "CI Baseline"
       }
     ],
+    "second_round": {
+      "branch_tip": "266761bf",
+      "conclusion": "the false success is closed on the runner; the gate still cannot certify without a market feed",
+      "merge_commit_tested": "c1cecb72",
+      "runs": [
+        {
+          "conclusion": "failure",
+          "gate_report": {
+            "BLOCKED": 0,
+            "FAIL": 9,
+            "NOT_TESTED": 3,
+            "PASS": 3,
+            "false_success": 0,
+            "steps": 15,
+            "verdict": "FAIL"
+          },
+          "key_evidence": "C3_LOCK_CAMPAIGN now FAILs with iteration-01:NO_CYCLE_BEFORE_CRASH and incomplete:1/6 crash sites instead of exiting 0 with an empty campaign",
+          "run_id": 40308569940,
+          "workflow": "Integration gate"
+        },
+        {
+          "conclusion": "failure",
+          "run_id": 40308570056,
+          "workflow": "recovery-determinism"
+        },
+        {
+          "conclusion": "failure",
+          "run_id": 40308570059,
+          "workflow": "Cost-barrier drift gate"
+        },
+        {
+          "conclusion": "failure",
+          "run_id": 40308569933,
+          "workflow": "CI Baseline"
+        }
+      ]
+    },
     "status": "EXECUTED_FAILED",
     "trigger": "pull_request -> refs/pull/18/merge",
     "workflow_registered": true
