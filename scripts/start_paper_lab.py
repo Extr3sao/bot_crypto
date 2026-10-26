@@ -70,6 +70,10 @@ DISK_AUDIT_PATH = Path("data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.json")
 #: The preflight refused and started nothing (§10, WP-9B).
 EXIT_DISK_PREFLIGHT = 4
 
+#: A new run id cannot write into a capture root another run owns (§28), so the
+#: launch is refused before a single child exists.
+EXIT_CAPTURE_ROOT_CONFLICT = 5
+
 DEFAULT_LAB_ROOT = Path("reports/paper-lab")
 DEFAULT_FORWARD_ROOT = Path("reports/microstructure-forward-lab")
 DEFAULT_PAPER_ROOT = Path("reports/autonomous-paper")
@@ -334,6 +338,51 @@ def collector_resumes(forward_root: Path, run_id: str) -> bool:
     lab with the same run id" mean "continue the capture" (§51).
     """
     return (forward_root / "state" / f"{run_id}.json").exists()
+
+
+def capture_root_conflict(forward_root: Path, run_id: str) -> str | None:
+    """Why this run id may not write into this capture root, or ``None`` when it may.
+
+    A segment's path is a function of the window it covers, not of the run that wrote
+    it, so ``SegmentWriter`` refuses to append into a segment another capture already
+    owns ("one dataset root belongs to one run"). That refusal is right, but it used
+    to happen *inside* the collector: the lab started, the critical child crash-looped
+    three times and the supervisor published ``DEGRADED`` for a fact nobody had been
+    told before launch. The same fact is knowable before the first child exists — and
+    the two ways out (``--resume`` the owner, or point ``--data-root`` at a fresh
+    directory) can only be chosen by the operator, so it is decided here instead of
+    discovered later.
+    """
+    if (forward_root / "state" / f"{run_id}.json").exists():
+        # A restart of the run that owns the root: the collector appends to its past
+        # on purpose, and ``--resume`` is what tells it so.
+        return None
+    owned: list[str] = []
+    segments = forward_root / "segments"
+    if segments.exists():
+        owned.extend(str(path.relative_to(forward_root)) for path in segments.rglob("*.jsonl.gz"))
+    manifests = forward_root / "manifest"
+    if manifests.exists():
+        owned.extend(
+            f"manifest/{path.name}"
+            for path in manifests.glob("*.json")
+            if path.stem != run_id
+        )
+    state = forward_root / "state"
+    if state.exists():
+        owned.extend(
+            f"state/{path.name}"
+            for path in state.glob("*.json")
+            if path.stem != run_id
+        )
+    if not owned:
+        return None
+    return (
+        f"{forward_root} already holds a capture from another run "
+        f"({len(owned)} artefact(s), e.g. {owned[0]}); one dataset root belongs to one "
+        f"run. Start {run_id!r} with --data-root <fresh directory>, or --resume the run "
+        f"that owns this root."
+    )
 
 
 def child_stop_files(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Path]:
@@ -677,6 +726,8 @@ def main() -> int:
     run_id = args.run_id or f"paper-lab-{time.strftime('%Y%m%d-%H%M%S', time.gmtime())}"
     run_dir = lab_dir / run_id
     stop_files = child_stop_files(args, run_id, run_dir)
+    forward_root = (REPO_ROOT / args.forward_root).resolve()
+    capture_conflict = capture_root_conflict(forward_root, run_id)
     # §10/WP-9B — cost the window before the children exist, so an autoscaled valve is
     # the valve the collector is actually launched with.
     disk_budget, refused = disk_preflight(args)
@@ -723,6 +774,11 @@ def main() -> int:
                 "finalise, and only then terminates the ones that did not exit"
             ),
         },
+        "capture_root": {
+            "path": str(forward_root),
+            "conflict": capture_conflict,
+            "exit_code_when_refused": EXIT_CAPTURE_ROOT_CONFLICT,
+        },
         "no_live_path": (
             "children are read-only market data plus the PAPER broker; no child "
             "holds execution credentials"
@@ -730,13 +786,32 @@ def main() -> int:
     }
     if args.dry_run:
         print(json.dumps(plan, indent=2, ensure_ascii=False))
+        if capture_conflict:
+            print(f"[lab] capture root REFUSED: {capture_conflict}", file=sys.stderr)
         if refused:
             print(
                 f"[lab] disk preflight REFUSED: {disk_budget['state']} — "
                 + "; ".join(disk_budget["reasons"]),
                 file=sys.stderr,
             )
-        return refused or 0
+        return refused or (EXIT_CAPTURE_ROOT_CONFLICT if capture_conflict else 0)
+
+    if capture_conflict:
+        # Nothing has been created yet: no run directory, no child, no crash-loop for
+        # the supervisor to report as a mystery. The refusal names both ways out.
+        print(
+            json.dumps(
+                {
+                    "run_id": run_id,
+                    "capture_root": str(forward_root),
+                    "conflict": capture_conflict,
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+        print(f"[lab] capture root REFUSED: {capture_conflict}", file=sys.stderr)
+        return EXIT_CAPTURE_ROOT_CONFLICT
 
     if refused:
         # Nothing has been created yet: no run directory, no child, no partial capture

@@ -90,3 +90,37 @@ outside tests is either the autonomous runtime (behind two `RiskManager.check_si
 calls) or the legacy PAPER engine. `grep` for `.execute_signal` / `PaperBroker(` shows
 only `autonomous/runtime.py:1422`, `paper/paper_cycle.py:425`, entrypoint
 construction, and the L5 verifier script.
+
+---
+
+# UPDATE — RFC-TDM-015 (live signal plane, paper operations, dashboard)
+
+> Audited on: HEAD `3be8e5bd` (branch `feat/wp-signal-001-003`), re-verified by
+> execution on 2026-10-26, run `tdm15-live-02`. Evidence:
+> `evidence/tdm/wp-tdm-15/`. Classification is re-derived from the code paths the
+> run actually executed, not from the module's name.
+
+| Plane | Implementation | Classification | Evidence of reachability |
+| --- | --- | --- | --- |
+| PAPER loop (bar-close) | `scripts/autonomous_paper.py` | RUNTIME_AUTHORITATIVE | 7 bar closes, 21 decisions, all `NO_TRADE_STRATEGIC` on a negative gross edge; `logs/paper.log` |
+| Decision trace | `src/trading_bot/autonomous/trace.py` | RUNTIME_AUTHORITATIVE | 21 hash-chained traces; `traces.hash_chain_intact` in the verifier |
+| Signal projection | `src/trading_bot/autonomous/signals.py` | RUNTIME_AUTHORITATIVE | 21 `SignalEvent` rows, 21/21 linked to their trace by hash |
+| AI analyst sidecar | `scripts/ai_signal_analyst.py` + `autonomous/analysis.py` | RUNTIME_REACHABLE (no provider configured) | 6 `NOT_CONFIGURED` rows; `authority_over_orders=false`; no order import |
+| Dashboard | `scripts/paper_lab_dashboard.py` | RUNTIME_AUTHORITATIVE (read-only, loopback) | `GET /`, `/api/signals`, `/api/analysis`, `/api/status`, `/healthz` measured; `POST` → 405 |
+| Supervisor | `scripts/start_paper_lab.py` + `autonomous/supervisor.py` | RUNTIME_AUTHORITATIVE | 5 children started, one clean stop (`verdict CLEAN`, all exit 0), one `--restart` that resumed the same run id |
+| Forward capture | `scripts/forward_collector.py` | RUNTIME_REACHABLE, separate failure domain | 310 889 events on the resumed window; 34 gaps declared in its own state |
+| Admission ledger | `config/strategy_admission.json` | RUNTIME_AUTHORITATIVE (refusal) | 24 strategies, 0 admitted → `PAPER_ORDER: BLOCKED` |
+| Paper broker | `src/trading_bot/paper/broker.py` | RUNTIME_REACHABLE — no eligible strategy | 0 orders, 0 fills, equity 10 000 unchanged; not exercised with a live order by design |
+
+## What the run proved and what it did not
+
+* The signal plane is real: signals come from the persisted decision traces of a
+  live provider (`ccxt`, `source=REAL`), one row per asset per closed bar, with the
+  engine's own numbers (gross, cost, net) and its own refusal reason.
+* `EXPERIMENTAL_PAPER` has no eligible strategy: the ledger admits none of the 24,
+  so the honest state is `BLOCKED` with zero simulated orders — not "no trades
+  because nothing happened".
+* Live trading is `DISABLED`: no child holds execution credentials and no live
+  order was created (0 in the ledger, 0 in the broker).
+* The AI plane is `UNAVAILABLE` on this host (no `SIGNAL_ANALYST_API_KEY`); it
+  records the absence per signal instead of inventing analysis.

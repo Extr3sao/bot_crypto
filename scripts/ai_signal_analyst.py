@@ -199,27 +199,39 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     root = REPO_ROOT / args.run_root
     run_dir = resolve_run_dir(root, args.run_id)
-    if run_dir is None:
+    if run_dir is None and not args.loop:
         print(
             f"[analyst] no run with a signal stream under {root}"
             + (f" (run id {args.run_id!r})" if args.run_id else ""),
             file=sys.stderr,
         )
         return 2
+    if run_dir is None:
+        # The supervisor starts all children together, so the PAPER child may not
+        # have written its first bar yet. Exiting here would burn the supervisor's
+        # restart budget on a race the sidecar is supposed to lose gracefully.
+        print(
+            f"[analyst] waiting for the first signal stream under {root}"
+            + (f" (run id {args.run_id!r})" if args.run_id else ""),
+            file=sys.stderr,
+        )
     provider = provider_from_env()
     print(
-        f"[analyst] run={run_dir.name} provider="
+        f"[analyst] run={'-' if run_dir is None else run_dir.name} provider="
         f"{'-' if provider is None else provider.name + ':' + provider.model} "
         f"configured={provider is not None and provider.configured()} mode="
         f"{'loop' if args.loop else 'once'}"
     )
     stop_file = None if args.stop_file is None else Path(args.stop_file)
     if not args.loop:
+        assert run_dir is not None
         run_pass(args, run_dir, provider)
         return 0
     try:
         while not stop_requested(stop_file):
-            run_pass(args, run_dir, provider)
+            run_dir = resolve_run_dir(root, args.run_id)
+            if run_dir is not None:
+                run_pass(args, run_dir, provider)
             deadline = time.monotonic() + max(1.0, args.interval)
             while time.monotonic() < deadline:
                 if stop_requested(stop_file):

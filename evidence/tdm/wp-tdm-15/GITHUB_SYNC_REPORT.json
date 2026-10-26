@@ -1,0 +1,13 @@
+{
+  "schema_version": "rfc-tdm-015-evidence-v1",
+  "section": "github_sync",
+  "remote": "https://github.com/Extr3sao/bot_crypto.git",
+  "remote_identity_note": "origin is Extr3sao/bot_crypto, NOT the Extr3sao/Bot-Trading snapshot named in RFC §2. The lineage was checked with git ls-remote and by pushing this branch",
+  "branch": "feat/wp-signal-001-003",
+  "local_head": "3be8e5bd36cab4f6fc532a0b891147b1f21efe08",
+  "remote_head_before_push": "4d36e15077538650862442abe27f3fec156fe927",
+  "head_is_published": false,
+  "force_push_used": false,
+  "merged_to_main": false,
+  "evidence_refs": []
+}

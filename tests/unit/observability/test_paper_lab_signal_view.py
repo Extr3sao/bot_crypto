@@ -256,6 +256,35 @@ def test_page_embeds_the_signal_board(tmp_path: Path, run_dir: Path) -> None:
     assert "/api/signals" in page
 
 
+def test_the_page_honours_the_filter_it_was_asked_for(tmp_path: Path, run_dir: Path) -> None:
+    """A submit that changes the URL must change the board on the same response.
+
+    Observed on 2026-10-26: ``?symbol=BTC/USDT`` rendered every asset, and the
+    filtered board only appeared after the auto-refresh fetched ``/signals``.
+    """
+    with _serving(tmp_path, run_dir) as port:
+        status, _, body = _get(port, "/?symbol=BTC%2FUSDT")
+    assert status == 200
+    assert "showing 4/4" in body, body[body.find('showing') - 60 : body.find('showing') + 20]
+    assert "ETH/USDT" not in body
+
+
+def test_page_states_the_economic_verdict_while_nothing_is_admitted(
+    tmp_path: Path, run_dir: Path
+) -> None:
+    """§6.6 — live signals must not read as a validated product."""
+    args = _args(tmp_path, run_dir)
+    payload = DASH.status_payload(args)
+    page = DASH.render_page(payload)
+    assert "REJECTED_ALPHA — EXPERIMENTAL PAPER, NOT VALIDATED" in page
+    assert 'id="eligibility"' in page
+
+    payload["strategy_lab"] = {**(payload.get("strategy_lab") or {}), "admitted_for_paper": ["x@5m"]}
+    assert "REJECTED_ALPHA" not in DASH.render_page(payload), (
+        "the banner is a statement about admission, not a decoration"
+    )
+
+
 def test_api_analysis_reports_missing_coverage_honestly(tmp_path: Path, run_dir: Path) -> None:
     with _serving(tmp_path, run_dir) as port:
         status, content_type, body = _get(port, "/api/analysis")

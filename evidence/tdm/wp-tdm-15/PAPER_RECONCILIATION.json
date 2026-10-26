@@ -1,0 +1,75 @@
+{
+  "schema_version": "rfc-tdm-015-evidence-v1",
+  "section": "paper_reconciliation",
+  "run_id": "tdm15-live-02",
+  "eligibility": {
+    "admitted_for_paper": [],
+    "paper_order_enabled": false,
+    "layer_state": {
+      "state": "BLOCKED",
+      "reason": "the admission ledger admits none of its 24 strategies for paper (gate not met)"
+    },
+    "registry_counts": null,
+    "paper_candidates": null,
+    "note": "the ledger admits none of the 24 strategies, so PAPER_ORDER is BLOCKED and no experimental order can exist. That is the honest state, not a simulated trade"
+  },
+  "state": {
+    "state_file_present": true,
+    "schema_version": 1,
+    "equity": 10000.0,
+    "initial_equity": 10000.0,
+    "fills_opened": 0,
+    "fills_closed": 0,
+    "open_positions": 0,
+    "sent_intents": 0,
+    "risk": {
+      "kill_switch_active": false,
+      "peak_equity": 10000.0,
+      "trades_today": 0
+    }
+  },
+  "paper_orders_in_stream": 0,
+  "realised_pnl": 0,
+  "live_orders": 0,
+  "recovery": {
+    "collector_resumed_the_same_root": true,
+    "signal_rows": 21,
+    "unique_signal_ids": 21,
+    "duplicate_ids": 0,
+    "sequence_strictly_monotonic": true,
+    "restart_verified": true,
+    "process_starts_in_log": 2,
+    "reconciliation_events_in_log": [
+      "CONSISTENT",
+      "RECOVERED"
+    ],
+    "cycles_in_log": 7,
+    "note": "the same run id was stopped and resumed with --restart; the ledger continued its sequence without repeating a row, and the collector appended to the root it owns"
+  },
+  "evidence_refs": [
+    {
+      "path": "reports\\paper-lab\\tdm15-live-02\\paper_state.json",
+      "exists": true,
+      "bytes": 425,
+      "sha256": "65848d144a4ae3ab370023fa96f4b3af2b901ef50e43c6604e71e71bcbff2b8b"
+    },
+    {
+      "path": "reports\\autonomous-paper\\tdm15-live-02\\PAPER_RUN.json",
+      "exists": true,
+      "bytes": 856,
+      "sha256": "285d701c793ecb113ee4530b8fa8032dac031b0f49add2fda0faf29c4eda2301"
+    },
+    {
+      "path": "reports\\paper-lab\\tdm15-live-02\\LAB_PLAN.json",
+      "exists": true,
+      "bytes": 10360,
+      "sha256": "79723c170863666bdea0282dba719bbb86fb732cd9f1f56686c7ae1ceb2b8004"
+    },
+    {
+      "path": "reports\\paper-lab\\tdm15-live-02\\logs\\paper.log",
+      "exists": true,
+      "bytes": 86399,
+      "sha256": "643d1ca759b7fbc46b2e31e838268043e0ea9b0bd143f68db6f5ad43e70fea13"
+    }
+  ]
+}

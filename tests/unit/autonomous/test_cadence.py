@@ -14,6 +14,8 @@ while ``stale_threshold_for_timeframe("5m")`` still returns 450 000 ms.
 
 from __future__ import annotations
 
+import asyncio
+
 import pytest
 
 from trading_bot.autonomous.cadence import (
@@ -25,6 +27,7 @@ from trading_bot.autonomous.cadence import (
     seconds_until_next_evaluation,
     validate_settlement,
 )
+from trading_bot.autonomous.paper_loop import wait_for_cadence
 from trading_bot.autonomous.pit import closed_bar_slice
 from trading_bot.market_data.types import OHLCV
 from trading_bot.research.router_gates import (
@@ -152,6 +155,54 @@ def test_validate_settlement_rejects_negative() -> None:
 def test_cadence_constants_are_distinct() -> None:
     assert CADENCE_INTERVAL == "interval"
     assert CADENCE_BAR_CLOSE == "bar-close"
+
+
+# --- the nap is interruptible (§51) ----------------------------------------
+
+
+def test_a_cadence_wait_answers_a_stop_request_before_the_bar() -> None:
+    """A five-minute nap must not outlive a 120 s stop grace.
+
+    Observed on 2026-10-26: ``tdm15-live-01`` asked PAPER to stop while it slept
+    until the next bar close, the child did not finalise in time, the supervisor
+    escalated to a kill and the stop verdict read ``FAILED``. The wait is the same
+    length, in slices, and it reads the same predicate as the top of the loop.
+    """
+    slept: list[float] = []
+    state = {"stopped": False}
+
+    async def fake_sleep(seconds: float) -> None:
+        slept.append(seconds)
+        if len(slept) == 2:
+            state["stopped"] = True
+
+    monkeypatch = pytest.MonkeyPatch()
+    monkeypatch.setattr("asyncio.sleep", fake_sleep)
+    try:
+        stopped = asyncio.run(
+            wait_for_cadence(300.0, stopped=lambda: state["stopped"])
+        )
+    finally:
+        monkeypatch.undo()
+    assert stopped is True
+    assert len(slept) == 2, "it stopped as soon as the request was visible"
+    assert sum(slept) == pytest.approx(2.0)
+
+
+def test_a_cadence_wait_that_runs_out_reports_no_stop() -> None:
+    slept: list[float] = []
+
+    async def fake_sleep(seconds: float) -> None:
+        slept.append(seconds)
+
+    monkeypatch = pytest.MonkeyPatch()
+    monkeypatch.setattr("asyncio.sleep", fake_sleep)
+    try:
+        stopped = asyncio.run(wait_for_cadence(2.5, stopped=lambda: False))
+    finally:
+        monkeypatch.undo()
+    assert stopped is False
+    assert sum(slept) == pytest.approx(2.5), "the full bar wait still happens"
 
 
 # --- PIT safety at the cadence boundary ------------------------------------

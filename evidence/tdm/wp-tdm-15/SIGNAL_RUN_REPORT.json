@@ -1,0 +1,192 @@
+{
+  "schema_version": "rfc-tdm-015-evidence-v1",
+  "section": "signal_run",
+  "run_id": "tdm15-live-02",
+  "git_head": "3be8e5bd36cab4f6fc532a0b891147b1f21efe08",
+  "branch": "feat/wp-signal-001-003",
+  "remote": "https://github.com/Extr3sao/bot_crypto.git",
+  "env": {
+    "python": "3.11.15",
+    "platform": "nt",
+    "provider": "ccxt",
+    "provider_source": "LAB_PLAN.json (launch command)",
+    "environment": null,
+    "timeframe": "5m",
+    "assets": "BTC,ETH,SOL"
+  },
+  "real_vs_mock": {
+    "signal_source": {
+      "REAL": 21
+    },
+    "provider": "ccxt",
+    "venue_sandbox": true,
+    "note": "ccxt provider with source=REAL rows. config/realdata/exchange.yaml sets sandbox=true, so the venue is the venue that configuration names — testnet public market data, not the production book. A FAKE provider would be labelled FAKE and the verifier refuses the mismatch"
+  },
+  "data_source": "provider=ccxt, timeframe=5m, config/realdata (launch descriptor lost at shutdown, see D-06)",
+  "time_range": {
+    "first_bar_close_utc": "2026-10-26T09:35:05Z",
+    "last_bar_close_utc": "2026-10-26T10:05:06Z",
+    "first_decision_utc": "2026-10-26T09:35:05Z",
+    "last_decision_utc": "2026-10-26T10:05:06Z",
+    "distinct_bar_closes": 7
+  },
+  "strategies_evaluated": 2,
+  "strategy_ids_seen": [
+    "ema_crossover@5m",
+    "momentum@5m"
+  ],
+  "signal_counts": {
+    "total": 21,
+    "by_asset": {
+      "BTC": 7,
+      "ETH": 7,
+      "SOL": 7
+    },
+    "by_stage": {
+      "CANDIDATE": 21
+    },
+    "by_kind": {
+      "ALPHA": 21
+    },
+    "by_asset_stage": {
+      "BTC:CANDIDATE": 7,
+      "ETH:CANDIDATE": 7,
+      "SOL:CANDIDATE": 7
+    },
+    "no_trade_reasons": {
+      "gross_edge_not_positive:-4.5600bps": 18,
+      "gross_edge_not_positive:-1.8800bps": 3
+    },
+    "data_quality": {
+      "OK": 21
+    },
+    "malformed_lines": 0
+  },
+  "risk_decisions": {
+    "APPROVED": 21
+  },
+  "paper_orders": 0,
+  "orders_created": 0,
+  "live_orders": 0,
+  "analysis_rows": 6,
+  "analysis_statuses": {
+    "NOT_CONFIGURED": 6
+  },
+  "outcome_rows": 15,
+  "traces": {
+    "rows": 21,
+    "malformed_lines": 0
+  },
+  "audit": {
+    "look_ahead_rows": [],
+    "traces_without_a_signal": 0
+  },
+  "execution": {
+    "lab_state": "DEGRADED",
+    "stop_reason": "duration reached",
+    "duration_seconds": 376.528,
+    "processes": {
+      "paper": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit": 0
+      },
+      "collector": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit": 0
+      },
+      "retention": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit": 0
+      },
+      "strategy_lab": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit": 0
+      },
+      "analyst": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit": 0
+      }
+    },
+    "stop_report": {
+      "schema_version": "lab-stop-report-v1",
+      "at_ms": 1793009287812,
+      "asked_to_finalise": [
+        "analyst",
+        "collector",
+        "paper",
+        "retention",
+        "strategy_lab"
+      ],
+      "escalated": [],
+      "failed_children": [],
+      "exit_codes": {
+        "paper": 0,
+        "collector": 0,
+        "retention": 0,
+        "strategy_lab": 0,
+        "analyst": 0
+      },
+      "verdict": "CLEAN",
+      "note": "a child that exits non-zero, or that has to be killed because it did not finalise, is a failure even though it was stopped on purpose (§2, §57)"
+    }
+  },
+  "cost": {
+    "modeled_cost_bps_per_trade": [
+      22.7918,
+      22.8334,
+      23.7741,
+      23.7743,
+      23.7747,
+      23.7754,
+      23.7759,
+      23.7764
+    ],
+    "ai_cost_usd": 0.0
+  },
+  "latency": {
+    "decision_minus_bar_close_ms": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "evidence_refs": [
+    {
+      "path": "reports\\autonomous-paper\\tdm15-live-02\\signals.jsonl",
+      "exists": true,
+      "bytes": 53604,
+      "sha256": "311dd4cb04721e7a0d1b1f29de93cb54e9b6796e4a962460761ad648b4bb47c3"
+    },
+    {
+      "path": "reports\\autonomous-paper\\tdm15-live-02\\traces.jsonl",
+      "exists": true,
+      "bytes": 219836,
+      "sha256": "8d0c88e8aac62806630c3ba3fc3c4d260905dd8eeea92723a6263fc26b844c3a"
+    },
+    {
+      "path": "reports\\autonomous-paper\\tdm15-live-02\\analysis.jsonl",
+      "exists": true,
+      "bytes": 5118,
+      "sha256": "82bfefd077e3b0d6d62325a3272911dfa8db0c95a68bd0591af20ff3b7c56279"
+    },
+    {
+      "path": "reports\\paper-lab\\tdm15-live-02\\LAB_RUN_REPORT.json",
+      "exists": true,
+      "bytes": 18490,
+      "sha256": "9c43d39cb47f955287b4845277cf7aae8dfa80624c108558f80d09d405c512f2"
+    },
+    {
+      "path": "reports\\paper-lab\\tdm15-live-02\\SYSTEM_HEARTBEAT.json",
+      "exists": true,
+      "bytes": 8424,
+      "sha256": "39305b4f714baf43ed3c9384a3f28ad482842a491794edc7ee53ade8274ffe62"
+    }
+  ]
+}

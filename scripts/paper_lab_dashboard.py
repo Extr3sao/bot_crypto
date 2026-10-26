@@ -94,7 +94,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def status_payload(args: argparse.Namespace) -> dict[str, Any]:
+def status_payload(
+    args: argparse.Namespace, filters: dict[str, list[str]] | None = None
+) -> dict[str, Any]:
+    """The whole console state, with the signal board filtered by the request.
+
+    ``filters`` is the parsed query string of the page request. Passing it here is
+    what makes the ``filter`` button do what it says: the board is rendered by the
+    server, so a submit that only changes the URL used to keep showing every row
+    until the next auto-refresh replaced it (observed on 2026-10-26, 18 rows shown
+    for ``?symbol=BTC/USDT`` whose own fragment had 6).
+    """
     payload = build_status(
         lab_root=REPO / args.lab_root,
         run_id=args.run_id,
@@ -116,7 +126,7 @@ def status_payload(args: argparse.Namespace) -> dict[str, Any]:
     }
     # The page and /api/status both carry the signal view, computed once here so
     # the two cannot show different numbers in the same refresh.
-    payload["signals_view"] = signals_payload(args, {}, status=payload)
+    payload["signals_view"] = signals_payload(args, filters or {}, status=payload)
     payload["analysis_view"] = analysis_payload(args, {}, status=payload)
     return payload
 
@@ -532,12 +542,19 @@ def render_signals_section(payload: dict[str, Any]) -> str:
             "</tr>"
         )
     table = (
-        "<table><tr><th>decision (UTC)</th><th>symbol</th><th>strategy</th><th>stage</th>"
+        "<div class='table-wrap'><table>"
+        "<tr><th>decision (UTC)</th><th>symbol</th><th>strategy</th><th>stage</th>"
         "<th>dir</th><th>gross bps</th><th>cost bps</th><th>net bps</th><th>risk</th>"
         "<th>data</th><th>motivo / evidencia</th><th>IA</th></tr>"
         + ("".join(rows_html) or "<tr><td colspan='12'>no signal events in this page</td></tr>")
-        + "</table>"
+        + "</table></div>"
     )
+    stage_summary = ", ".join(
+        f"{key}={value}" for key, value in sorted((stats.get("by_stage") or {}).items())
+    ) or "—"
+    kind_summary = ", ".join(
+        f"{key}={value}" for key, value in sorted((stats.get("by_kind") or {}).items())
+    ) or "—"
     options = "".join(
         f"<option value='{_escape(key)}'>{_escape(key)} ({_escape(count)} )</option>"
         for key, count in sorted((stats.get("by_stage") or {}).items())
@@ -561,7 +578,7 @@ def render_signals_section(payload: dict[str, Any]) -> str:
     return f"""<div id="signals" class="panel">
 <h2 style="font-size:13px;letter-spacing:.08em;color:#8b93a1;margin:0 0 6px">SIGNALS — {_escape(payload.get('run_id') or 'no run')}</h2>
 <div class="banner {tone}">{_escape(state)} — {_escape(payload.get('state_reason'))}</div>
-<div class="small">events {_escape(stats.get('records'))} · stage {_escape(stats.get('by_stage'))} · kind {_escape(stats.get('by_kind'))} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> · <a href="/api/analysis" style="color:#7fb2ff">AI JSON</a> {next_link}</div>
+<div class="small">events {_escape(stats.get('records'))} · stage {_escape(stage_summary)} · kind {_escape(kind_summary)} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> · <a href="/api/analysis" style="color:#7fb2ff">AI JSON</a> {next_link}</div>
 <form method="get" action="/#signals" class="filters">
  <input name="symbol" placeholder="BTC/USDT" value="{_escape(filters.get('symbol') or '')}">
  <input name="strategy" placeholder="strategy_id" value="{_escape(filters.get('strategy') or '')}">
@@ -633,6 +650,14 @@ def render_page(payload: dict[str, Any]) -> str:
     state = system.get("state") or "UNKNOWN"
     tone = "ok" if state in ("HEALTHY",) and not system.get("heartbeat_is_stale") else (
         "bad" if state == "FAILED" else "warn"
+    )
+    # §6.6 — the economic verdict travels with the console, not with a footnote. A
+    # page that shows live signals but not that no strategy is admitted reads as a
+    # validated product; the banner says the opposite in the operator's face.
+    admitted = lab.get("admitted_for_paper")
+    eligibility = "" if admitted else (
+        '<div class="banner bad" id="eligibility">REJECTED_ALPHA — EXPERIMENTAL PAPER, NOT VALIDATED'
+        " · no strategy is admitted for paper, so this lab can create no order</div>"
     )
     cards = [
         _card(
@@ -796,6 +821,8 @@ th {{ color:#8b93a1; font-weight:400; }}
 td.num {{ text-align:right; }}
 details summary {{ cursor:pointer; color:#7fb2ff; }}
 pre {{ white-space:pre-wrap; word-break:break-word; margin:4px 0; }}
+.table-wrap {{ overflow-x:auto; }}
+table {{ min-width:1100px; }}
 footer {{ margin-top:20px; color:#8b93a1; }}
 code {{ background:#1b1f27; padding:2px 6px; border-radius:4px; }}
 </style></head>
@@ -805,6 +832,7 @@ code {{ background:#1b1f27; padding:2px 6px; border-radius:4px; }}
  · read-only · auto-refresh {_escape(dashboard.get('auto_refresh_seconds'))}s ·
  <a href="/api/status" style="color:#7fb2ff">raw JSON</a></div>
 <div class="banner {tone}">{_escape(state)}{' — STALE HEARTBEAT' if system.get('heartbeat_is_stale') else ''}</div>
+{eligibility}
 <div class="flags">{flags_html}</div>
 <div class="grid">{''.join(cards)}</div>
 <h2 style="font-size:13px;letter-spacing:.08em;color:#8b93a1;margin-top:22px">CHILD PROCESSES</h2>
@@ -871,7 +899,7 @@ def make_handler(args: argparse.Namespace) -> type[BaseHTTPRequestHandler]:
             path = parsed.path
             query = parse_qs(parsed.query, keep_blank_values=False)
             if path in ("/", "/index.html"):
-                payload = status_payload(args)
+                payload = status_payload(args, query)
                 self._send(200, render_page(payload).encode("utf-8"), "text/html; charset=utf-8")
                 return
             if path == "/signals":

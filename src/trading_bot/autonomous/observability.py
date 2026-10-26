@@ -26,7 +26,7 @@ import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Final
 
 from trading_bot.autonomous.paper_loop import STOP_FILE_NAME
 from trading_bot.autonomous.supervisor import (
@@ -81,6 +81,50 @@ def latest_lab_run(lab_root: Path | str) -> Path | None:
     return max(candidates, key=lambda path: path.stat().st_mtime)
 
 
+#: How long a process table may be reused. One ``tasklist`` spawn costs ~0.3 s on
+#: Windows, and the console asks about every child (twice: existence and image), so
+#: on 2026-10-26 ``GET /healthz`` measured 12.8 s for 25 spawns. Identities do not
+#: change inside a refresh, and an entry is at most this old.
+PROCESS_TABLE_TTL_SECONDS: Final[float] = 2.0
+_PROCESS_TABLE: dict[str, Any] = {"at": 0.0, "table": None}
+
+
+def _windows_process_table(now: float) -> dict[int, str] | None:
+    """``pid -> image`` for every process, from a single ``tasklist`` call.
+
+    ``None`` means the probe could not answer; blindness is never cached, so the
+    next caller looks again instead of inheriting a failed look.
+    """
+    cached = _PROCESS_TABLE.get("table")
+    if cached is not None and now - float(_PROCESS_TABLE.get("at") or 0.0) <= PROCESS_TABLE_TTL_SECONDS:
+        return cached
+    try:
+        completed = subprocess.run(
+            ["tasklist", "/FO", "CSV", "/NH"],
+            capture_output=True,
+            text=True,
+            timeout=15,
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError):  # pragma: no cover - platform
+        return None
+    table: dict[int, str] = {}
+    for line in (completed.stdout or "").splitlines():
+        parts = [part.strip().strip('"') for part in line.split('","')]
+        if len(parts) < 2:
+            continue
+        try:
+            identifier = int(parts[1])
+        except ValueError:
+            continue
+        table[identifier] = parts[0].lstrip('"').lower()
+    if not table:
+        return None
+    _PROCESS_TABLE["at"] = now
+    _PROCESS_TABLE["table"] = table
+    return table
+
+
 def process_image(pid: int | None) -> str | None:
     """Best-effort executable image name for a live PID, lower-cased.
 
@@ -92,26 +136,10 @@ def process_image(pid: int | None) -> str | None:
     if pid is None or pid <= 0:
         return None
     if sys.platform.startswith("win"):
-        try:
-            completed = subprocess.run(
-                ["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"],
-                capture_output=True,
-                text=True,
-                timeout=10,
-                check=False,
-            )
-        except (OSError, subprocess.SubprocessError):  # pragma: no cover - platform
+        table = _windows_process_table(time.monotonic())
+        if table is None:
             return None
-        text = (completed.stdout or "").strip()
-        if not text:
-            return None
-        # A real tasklist row starts with a quoted image name; the "no tasks"
-        # line is a localized INFO string and does not (locale-independent).
-        line = text.splitlines()[0].strip()
-        if not line.startswith('"'):
-            return None
-        parts = line.split('"')
-        return parts[1].lower() if len(parts) > 1 and parts[1] else None
+        return table.get(pid)
     try:
         comm = Path(f"/proc/{pid}/comm").read_text(encoding="utf-8").strip()
     except OSError:  # pragma: no cover - platform dependent
@@ -151,17 +179,10 @@ def process_alive(pid: int | None, *, expected_image: str | None = None) -> bool
     if pid is None:
         return None
     if sys.platform.startswith("win"):
-        try:
-            completed = subprocess.run(
-                ["tasklist", "/FI", f"PID eq {pid}", "/NH"],
-                capture_output=True,
-                text=True,
-                timeout=10,
-                check=False,
-            )
-        except (OSError, subprocess.SubprocessError):  # pragma: no cover - platform
+        table = _windows_process_table(time.monotonic())
+        if table is None:
             return None
-        exists: bool | None = str(pid) in (completed.stdout or "")
+        exists: bool | None = pid in table
     else:
         try:
             os.kill(pid, 0)

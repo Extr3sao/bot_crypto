@@ -96,3 +96,20 @@ rows cannot make a page repeat or skip. `POST`/`PUT`/`PATCH`/`DELETE` return 405
 - No 24×7 guarantee from this repository alone: the host has to stay up.
 - `SHADOW` rows are observations, never orders; `PAPER_ORDER` stays `BLOCKED` until
   the admission gate is met.
+
+## WP-TDM-015 — what the first live PAPER window changed
+
+Run `tdm15-live-02` (2026-10-26, BTC/ETH/SOL 5m, two windows, 7 closed bars,
+21 signals) exercised the plane end to end and found five defects that the code now
+closes; the evidence and the open ones live in `evidence/tdm/wp-tdm-15/`.
+
+| defect | how it showed up | fix |
+| --- | --- | --- |
+| capture root reused by a new run id | collector crash-looped 3×, lab `DEGRADED` | `start_paper_lab.py` refuses before launch (`EXIT_CAPTURE_ROOT_CONFLICT = 5`) and names `--data-root`/`--resume` |
+| bar-close nap ignored the stop file | PAPER had to be killed; stop verdict `FAILED` | `paper_loop.wait_for_cadence` sleeps in slices and answers the same predicate; verdict `CLEAN` |
+| console spent 12.8 s per request | 25 `tasklist` spawns per page (2 per child) | one cached process table (`PROCESS_TABLE_TTL_SECONDS`); 65–130 ms measured |
+| `filter` changed the URL but not the board | 18 rows for `?symbol=BTC/USDT` until the auto-refresh | `status_payload(args, filters)` renders the filtered board in the same response |
+| analyst exited when the run dir did not exist yet | supervisor restart budget burned on a race | the sidecar waits for the first stream instead of exiting |
+
+The economic verdict is now printed on the page itself: while the ledger admits no
+strategy, the console carries `REJECTED_ALPHA — EXPERIMENTAL PAPER, NOT VALIDATED`.

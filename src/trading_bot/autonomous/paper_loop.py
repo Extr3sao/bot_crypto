@@ -18,11 +18,13 @@ Three deliberate choices:
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import signal
 import sys
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
@@ -39,6 +41,7 @@ __all__ = [
     "build_daily_report",
     "durable_write",
     "render_daily_report_markdown",
+    "wait_for_cadence",
     "wait_for_stop_file",
     "write_daily_report",
 ]
@@ -110,6 +113,32 @@ def wait_for_stop_file(
         if remaining <= 0:
             return False
         time.sleep(min(chunk_seconds, remaining))
+
+
+async def wait_for_cadence(
+    seconds: float,
+    *,
+    stopped: Callable[[], bool],
+    chunk_seconds: float = 1.0,
+) -> bool:
+    """Sleep out a bar-close cadence without becoming deaf to a stop request.
+
+    The cadence waits up to one full bar (a five-minute timeframe means a five-minute
+    nap), while a portable supervisor allows ~120 s for a child to finalise before it
+    kills it. A single ``asyncio.sleep`` therefore turns every stop that lands inside
+    the nap into an escalation: on 2026-10-26 the PAPER child of ``tdm15-live-01`` was
+    killed for exactly this reason and the stop verdict read ``FAILED``. Sleeping in
+    slices keeps the same total wait and the same phase alignment, and answers the
+    same predicate the top of the loop already reads. ``True`` means stop now.
+    """
+    remaining = max(0.0, seconds)
+    while remaining > 0:
+        if stopped():
+            return True
+        chunk = min(chunk_seconds, remaining)
+        await asyncio.sleep(chunk)
+        remaining -= chunk
+    return stopped()
 
 
 def _iso(ms: int) -> str:
