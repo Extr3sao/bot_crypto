@@ -1,8 +1,8 @@
 {
   "artifact": "tdm14a-verification-result-v1",
   "rfc_id": "RFC-TDM-014A",
-  "run_id": "tdm14a-verify-closure-final",
-  "generated_at_utc": "2026-10-26T08:45:24Z",
+  "run_id": "tdm14a-verify-clean-tree",
+  "generated_at_utc": "2026-10-26T08:46:18Z",
   "verifier": "scripts/tdm14a_verify.py",
   "builder_executions": {
     "run_a": {
@@ -449,7 +449,7 @@
       "id": "ACC-10",
       "status": "PASS",
       "detail": {
-        "files_changed_since_baseline": 39,
+        "files_changed_since_baseline": 40,
         "trading_paths_touched": [],
         "processes_executed": [
           "tdm12_inventory.py",
@@ -476,10 +476,11 @@
     },
     {
       "id": "ACC-12",
-      "status": "FAIL",
+      "status": "PASS",
       "detail": {
-        "commits_since_baseline": 8,
+        "commits_since_baseline": 9,
         "commit_subjects": [
+          "a806a7bf Publish the regenerated deliverables and the closing report",
           "d7185a21 Render the closing report from the verdict instead of writing it by hand",
           "409050c3 Close the second evidence commit against its own blobs",
           "49c89696 Re-verify after the custody fix: twelve of twelve",
@@ -489,27 +490,11 @@
           "7a4593cb Keep the sealed TDM-13 inputs byte-identical in a CRLF checkout",
           "04b02c2d Fingerprint the committed blob so a checkout cannot rename the code"
         ],
-        "head": "d7185a2110fbfb267929101e11f14e4f0635b64a",
+        "head": "a806a7bf6866c38a03c6545e04f0512e3a016952",
         "uncommitted_tracked_changes": [
-          "M evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
-          " M evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json",
-          " M evidence/tdm/wp-tdm-14a/OUTPUT_MANIFEST.json",
-          " M evidence/tdm/wp-tdm-14a/REPLAY_REPORT.json",
-          " M evidence/tdm/wp-tdm-14a/REPLAY_REPORT.md",
-          " M evidence/tdm/wp-tdm-14a/RUN_REPORT.json",
-          " M evidence/tdm/wp-tdm-14a/RUN_REPORT.md",
-          " M evidence/tdm/wp-tdm-14a/verification_result.json",
-          "?? evidence/tdm/wp-tdm-14a/FINAL_REPORT.md"
+          "M evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json"
         ],
-        "uncommitted_outside_self_outputs": [
-          "evidence/tdm/wp-tdm-14a/FINAL_REPORT.md",
-          "evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json",
-          "evidence/tdm/wp-tdm-14a/OUTPUT_MANIFEST.json",
-          "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.json",
-          "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.md",
-          "evidence/tdm/wp-tdm-14a/RUN_REPORT.json",
-          "evidence/tdm/wp-tdm-14a/RUN_REPORT.md"
-        ],
+        "uncommitted_outside_self_outputs": [],
         "self_outputs_excluded": [
           "evidence/tdm/wp-tdm-14a/verification_result.json",
           "evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
@@ -520,10 +505,19 @@
         "post_commit_closure": "PASS",
         "closure_checked_head": "49c8969617e0effee3872b006efe45dc7fb266eb",
         "files_changed_since_closure_head": [
+          "evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
+          "evidence/tdm/wp-tdm-14a/FINAL_REPORT.md",
+          "evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json",
           "evidence/tdm/wp-tdm-14a/LOG_MANIFEST.json",
+          "evidence/tdm/wp-tdm-14a/OUTPUT_MANIFEST.json",
           "evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json",
+          "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.json",
+          "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.md",
+          "evidence/tdm/wp-tdm-14a/RUN_REPORT.json",
+          "evidence/tdm/wp-tdm-14a/RUN_REPORT.md",
           "evidence/tdm/wp-tdm-14a/TEST_RESULTS.json",
           "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt",
+          "evidence/tdm/wp-tdm-14a/verification_result.json",
           "scripts/tdm14a_report.py",
           "tests/unit/research/test_tdm14a_report.py"
         ],
@@ -533,7 +527,7 @@
       }
     }
   ],
-  "verdict": "FAILED",
+  "verdict": "VERIFIED_PORTABLE_FULL_REPLAY",
   "decision_economics": "NO_ELIGIBLE_CANDIDATE / REJECTED_ALPHA (inherited, not re-evaluated)",
   "paper_orders": 0,
   "live_orders": 0,

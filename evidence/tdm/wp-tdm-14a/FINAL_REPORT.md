@@ -1,6 +1,6 @@
 # FINAL_REPORT — RFC-TDM-014A
 
-**Veredicto:** `FAILED`
+**Veredicto:** `VERIFIED_PORTABLE_FULL_REPLAY`
 **Baseline:** `04fb8bc8a0900c278cd72c5e3478a45b66fcbc03` · **Árbol cubierto por el cierre:** `49c8969617e0effee3872b006efe45dc7fb266eb`
 **Decisión económica (heredada, no reevaluada):** NO_ELIGIBLE_CANDIDATE / REJECTED_ALPHA (inherited from TDM-11/12/13, untouched)
 
@@ -34,10 +34,11 @@
 | ACC-09 | PASS |
 | ACC-10 | PASS |
 | ACC-11 | PASS |
-| ACC-12 | FAIL |
+| ACC-12 | PASS |
 
 ## Commits de la rama
 
+- `a806a7bf Publish the regenerated deliverables and the closing report`
 - `d7185a21 Render the closing report from the verdict instead of writing it by hand`
 - `409050c3 Close the second evidence commit against its own blobs`
 - `49c89696 Re-verify after the custody fix: twelve of twelve`

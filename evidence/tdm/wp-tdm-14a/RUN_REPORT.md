@@ -1,10 +1,11 @@
 # RUN_REPORT — RFC-TDM-014A
 
-**Veredicto:** `FAILED`
-**Baseline:** `04fb8bc8a0900c278cd72c5e3478a45b66fcbc03` · **HEAD:** `d7185a2110fbfb267929101e11f14e4f0635b64a` · **Rama:** `fix/tdm14a`
+**Veredicto:** `VERIFIED_PORTABLE_FULL_REPLAY`
+**Baseline:** `04fb8bc8a0900c278cd72c5e3478a45b66fcbc03` · **HEAD:** `a806a7bf6866c38a03c6545e04f0512e3a016952` · **Rama:** `fix/tdm14a`
 
 ## Commits
 
+- `a806a7bf Publish the regenerated deliverables and the closing report`
 - `d7185a21 Render the closing report from the verdict instead of writing it by hand`
 - `409050c3 Close the second evidence commit against its own blobs`
 - `49c89696 Re-verify after the custody fix: twelve of twelve`
@@ -29,7 +30,7 @@
 | ACC-09 | PASS |
 | ACC-10 | PASS |
 | ACC-11 | PASS |
-| ACC-12 | FAIL |
+| ACC-12 | PASS |
 
 ## Ejecuciones
 
@@ -90,6 +91,7 @@
 - `A	evidence/tdm/wp-tdm-14a/BASELINE_REPORT.json`
 - `A	evidence/tdm/wp-tdm-14a/BASELINE_REPORT.md`
 - `A	evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json`
+- `A	evidence/tdm/wp-tdm-14a/FINAL_REPORT.md`
 - `A	evidence/tdm/wp-tdm-14a/FINGERPRINT_SCHEME_V2.md`
 - `A	evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json`
 - `A	evidence/tdm/wp-tdm-14a/LOG_MANIFEST.json`
