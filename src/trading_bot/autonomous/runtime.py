@@ -39,6 +39,7 @@ from trading_bot.execution.idempotency import IdempotencyGuard
 from trading_bot.market_data.types import OHLCV
 from trading_bot.paper.signal_adapter import AdapterError, alpha_signal_to_signal
 from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
+from trading_bot.research.router_gates import timeframe_ms as timeframe_width_ms
 from trading_bot.research.strategy_router import RouterGates, StrategyRouter
 from trading_bot.strategy_lifecycle.portfolio import (
     PortfolioProposal,
@@ -74,6 +75,7 @@ from .decision import DecisionEngine, DecisionRequest
 from .experience import StrategyPerformanceStore
 from .outcomes import OutcomeEvaluator
 from .pit import closed_bar_slice, infer_bar_interval_ms
+from .signals import SignalLedger, SignalSource
 from .trace import DecisionTraceStore
 from .verifier import IndependentVerifier, VerificationRequest
 
@@ -182,6 +184,9 @@ class CycleReport:
     no_trade_kinds: dict[str, int] = field(default_factory=dict)
     risk_states: dict[str, int] = field(default_factory=dict)
     runtime_failures: int = 0
+    #: WP-SIGNAL-001 — what the signal projection did this cycle (appended,
+    #: skipped duplicates, conflicts). Empty when projection is unsupported.
+    signals: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -202,6 +207,7 @@ class CycleReport:
             "outcomes_pending": self.outcomes_pending,
             "performance_updates": self.performance_updates,
             "broker_fills_closed": self.broker_fills_closed,
+            "signals": dict(self.signals),
             "errors": list(self.errors),
         }
 
@@ -313,6 +319,9 @@ class AutonomousPaperRuntime:
         now_fn: Callable[[], int] | None = None,
         routing_mode: StrategyRoutingMode | str = StrategyRoutingMode.LEGACY,
         lifecycle_ecosystem: Any | None = None,
+        venue: str | None = None,
+        signal_ledger: SignalLedger | None = None,
+        signal_source: SignalSource | str | None = None,
     ) -> None:
         self._settings = settings
         self._scanner_factory = scanner_factory
@@ -340,6 +349,13 @@ class AutonomousPaperRuntime:
         run_dir = Path(run_dir)
         self._run_dir = run_dir
         self._trace_store = DecisionTraceStore(run_dir)
+        # WP-SIGNAL-001 — the decision stream an operator can watch. It projects
+        # the persisted traces (never the market data) and is idempotent on a
+        # deterministic signal id, so a restart cannot duplicate or lose a row.
+        self._signal_ledger = signal_ledger or SignalLedger(run_dir)
+        self._venue = venue or _venue_from_settings(settings)
+        self._signal_source = SignalSource(signal_source or _signal_source_for(environment))
+        self._signals_caught_up = False
         self._performance = StrategyPerformanceStore(
             Path(performance_path) if performance_path is not None else run_dir / "performance.json"
         )
@@ -607,6 +623,7 @@ class AutonomousPaperRuntime:
         resolved, pending, updates = self._process_outcomes(
             raw_history, decisions_ts, session_started_ms=sessions_started_ms
         )
+        signal_stats = self._emit_signals(assets, errors=errors)
 
         # A row with an operational failure is NOT a NO_TRADE decision: it is
         # counted separately so an outage can never be read as "we decided not
@@ -638,6 +655,7 @@ class AutonomousPaperRuntime:
             no_trade_kinds=kinds,
             risk_states=states,
             runtime_failures=sum(1 for a in assets if a.failure_kind is not None),
+            signals=signal_stats,
         )
 
     # -- one asset ----------------------------------------------------------
@@ -1631,6 +1649,53 @@ class AutonomousPaperRuntime:
         if callable(sync):
             sync(positions)
 
+    def _emit_signals(
+        self, assets: Sequence[AssetCycleReport], *, errors: list[str]
+    ) -> dict[str, Any]:
+        """Project this cycle's traces into the append-only signal stream.
+
+        Reads ONLY the persisted traces: the projection cannot introduce market data
+        the decision did not have. The first cycle of a process projects the whole
+        store (a crash or a restart must not leave a hole); later cycles project only
+        the decisions they just made, because the ledger already knows the rest.
+        """
+        decision_ids = [row.decision_id for row in assets if row.trace_persisted]
+        try:
+            stats = self._signal_ledger.sync(
+                self._trace_store.read(),
+                venue=self._venue,
+                timeframe=self._timeframe,
+                source=self._signal_source,
+                timeframe_ms=timeframe_width_ms(self._timeframe),
+                decision_ids=None if not self._signals_caught_up else decision_ids,
+            )
+        except Exception as exc:  # a projection failure is loud, never fatal
+            errors.append(f"signal_projection_error {type(exc).__name__}: {exc}")
+            self._log.error("autonomous.signals.project_failed", error=str(exc))
+            return {"appended": 0, "error": f"{type(exc).__name__}: {exc}"}
+        self._signals_caught_up = True
+        if stats["conflicts"] or stats["appended"]:
+            self._log.info(
+                "autonomous.signals.projected",
+                appended=stats["appended"],
+                duplicates=stats["skipped_duplicates"],
+                conflicts=stats["conflicts"],
+            )
+        if stats["conflicts"]:
+            # A conflicting body under an existing id is a defect in the projection
+            # or a tampered ledger: it must be visible in the cycle report.
+            errors.append(f"signal_projection_conflicts={stats['conflicts']}")
+        return stats
+
+    @property
+    def signal_ledger(self) -> SignalLedger:
+        return self._signal_ledger
+
+    @property
+    def venue(self) -> str | None:
+        """The venue every projected signal names (from configuration)."""
+        return self._venue
+
     def _reconcile(self, session_id: str, snapshots: list[Any], errors: list[str]) -> int:
         """Reconcile the paper book and feed the delta into the risk engine."""
         try:
@@ -1706,6 +1771,23 @@ class _TerminalDecision:
     classification: str
     shadow: None = None
     order_authorised: bool = False
+
+
+def _venue_from_settings(settings: Any) -> str | None:
+    """The venue the run is reading, named from configuration rather than assumed."""
+    runtime = getattr(settings, "runtime", None)
+    exchange_id = getattr(runtime, "exchange_id", None)
+    return None if not exchange_id else str(exchange_id)
+
+
+def _signal_source_for(environment: str | None) -> str:
+    """`FAKE` when the run's provider is the demo fetcher, `REAL` otherwise.
+
+    A demo stream that looked live would be the exact false success this plane
+    exists to prevent, so the provider is encoded in every row.
+    """
+    prefix = str(environment or "").split(":", 1)[0].strip().lower()
+    return SignalSource.FAKE.value if prefix in {"fake", "demo", "synthetic"} else SignalSource.REAL.value
 
 
 def _safe_context(context: Any) -> dict[str, Any]:
