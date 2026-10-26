@@ -1,0 +1,559 @@
+{
+  "contract": {
+    "ema": "9/21",
+    "rsi": "14 (>50/<50)",
+    "stop": "1.5*ATR14",
+    "tp_pct": 0.75,
+    "risk_pct": 0.25,
+    "notional_clamp": [
+      25.0,
+      500.0
+    ],
+    "fees_bps": 5,
+    "slippage_bps": 1,
+    "cooldown_losses": 3,
+    "daily_loss_pct": 1.0,
+    "max_trades_day": 20,
+    "both_hit_policy": "stop_first"
+  },
+  "per_window_asset": {
+    "BTCUSDT_W1_2026-03": {
+      "window": "W1_2026-03",
+      "bars": 8928,
+      "trades": 56,
+      "gross": -41.94,
+      "fees": 28.01,
+      "net": -69.95,
+      "wins": 10,
+      "losses": 46,
+      "win_rate": 17.86,
+      "avg_win": 3.1996,
+      "avg_loss": -2.2162,
+      "payoff": 1.4437,
+      "expectancy": -1.2491,
+      "profit_factor": 0.3139,
+      "exit_mix": {
+        "stop": 46,
+        "tp": 10
+      },
+      "max_dd_pct_window": 0.6995,
+      "daily_lock_days": 0
+    },
+    "BTCUSDT_W2_2026-04": {
+      "window": "W2_2026-04",
+      "bars": 8640,
+      "trades": 63,
+      "gross": -22.06,
+      "fees": 31.49,
+      "net": -53.56,
+      "wins": 12,
+      "losses": 51,
+      "win_rate": 19.05,
+      "avg_win": 3.2011,
+      "avg_loss": -1.8034,
+      "payoff": 1.775,
+      "expectancy": -0.8502,
+      "profit_factor": 0.4177,
+      "exit_mix": {
+        "stop": 51,
+        "tp": 12
+      },
+      "max_dd_pct_window": 0.5957,
+      "daily_lock_days": 0
+    },
+    "BTCUSDT_W3_2026-05": {
+      "window": "W3_2026-05",
+      "bars": 8928,
+      "trades": 67,
+      "gross": 6.2,
+      "fees": 33.49,
+      "net": -27.3,
+      "wins": 15,
+      "losses": 52,
+      "win_rate": 22.39,
+      "avg_win": 3.2004,
+      "avg_loss": -1.4481,
+      "payoff": 2.2101,
+      "expectancy": -0.4074,
+      "profit_factor": 0.6375,
+      "exit_mix": {
+        "stop": 52,
+        "tp": 15
+      },
+      "max_dd_pct_window": 0.4066,
+      "daily_lock_days": 0
+    },
+    "BTCUSDT_W4_2026-06": {
+      "window": "W4_2026-06",
+      "bars": 8640,
+      "trades": 127,
+      "gross": 19.91,
+      "fees": 63.47,
+      "net": -43.57,
+      "wins": 47,
+      "losses": 80,
+      "win_rate": 37.01,
+      "avg_win": 3.2012,
+      "avg_loss": -2.4253,
+      "payoff": 1.3199,
+      "expectancy": -0.3431,
+      "profit_factor": 0.7754,
+      "exit_mix": {
+        "stop": 80,
+        "tp": 47
+      },
+      "max_dd_pct_window": 0.6205,
+      "daily_lock_days": 0
+    },
+    "BTCUSDT_W5_2026-07": {
+      "window": "W5_2026-07",
+      "bars": 8928,
+      "trades": 47,
+      "gross": -20.72,
+      "fees": 23.5,
+      "net": -44.21,
+      "wins": 5,
+      "losses": 42,
+      "win_rate": 10.64,
+      "avg_win": 3.2004,
+      "avg_loss": -1.4337,
+      "payoff": 2.2322,
+      "expectancy": -0.9407,
+      "profit_factor": 0.2657,
+      "exit_mix": {
+        "stop": 42,
+        "tp": 5
+      },
+      "max_dd_pct_window": 0.4834,
+      "daily_lock_days": 0
+    },
+    "BTCUSDT_W6_2026-08": {
+      "window": "W6_2026-08",
+      "bars": 8928,
+      "trades": 40,
+      "gross": -26.28,
+      "fees": 20.0,
+      "net": -46.28,
+      "wins": 3,
+      "losses": 37,
+      "win_rate": 7.5,
+      "avg_win": 3.1978,
+      "avg_loss": -1.5102,
+      "payoff": 2.1174,
+      "expectancy": -1.1571,
+      "profit_factor": 0.1717,
+      "exit_mix": {
+        "stop": 37,
+        "tp": 3
+      },
+      "max_dd_pct_window": 0.4742,
+      "daily_lock_days": 0
+    },
+    "BTCUSDT_W7_2026-09": {
+      "window": "W7_2026-09",
+      "bars": 7104,
+      "trades": 52,
+      "gross": -16.12,
+      "fees": 25.99,
+      "net": -42.11,
+      "wins": 8,
+      "losses": 44,
+      "win_rate": 15.38,
+      "avg_win": 3.2005,
+      "avg_loss": -1.5391,
+      "payoff": 2.0795,
+      "expectancy": -0.8099,
+      "profit_factor": 0.3781,
+      "exit_mix": {
+        "stop": 44,
+        "tp": 8
+      },
+      "max_dd_pct_window": 0.4351,
+      "daily_lock_days": 0
+    },
+    "ETHUSDT_W1_2026-03": {
+      "window": "W1_2026-03",
+      "bars": 8928,
+      "trades": 73,
+      "gross": -50.66,
+      "fees": 36.5,
+      "net": -87.16,
+      "wins": 19,
+      "losses": 54,
+      "win_rate": 26.03,
+      "avg_win": 3.2006,
+      "avg_loss": -2.7403,
+      "payoff": 1.168,
+      "expectancy": -1.194,
+      "profit_factor": 0.411,
+      "exit_mix": {
+        "stop": 54,
+        "tp": 19
+      },
+      "max_dd_pct_window": 0.9011,
+      "daily_lock_days": 0
+    },
+    "ETHUSDT_W2_2026-04": {
+      "window": "W2_2026-04",
+      "bars": 8640,
+      "trades": 82,
+      "gross": -10.88,
+      "fees": 41.0,
+      "net": -51.88,
+      "wins": 22,
+      "losses": 60,
+      "win_rate": 26.83,
+      "avg_win": 3.2006,
+      "avg_loss": -2.0381,
+      "payoff": 1.5703,
+      "expectancy": -0.6326,
+      "profit_factor": 0.5758,
+      "exit_mix": {
+        "stop": 60,
+        "tp": 22
+      },
+      "max_dd_pct_window": 0.6249,
+      "daily_lock_days": 0
+    },
+    "ETHUSDT_W3_2026-05": {
+      "window": "W3_2026-05",
+      "bars": 8928,
+      "trades": 85,
+      "gross": 7.72,
+      "fees": 42.5,
+      "net": -34.78,
+      "wins": 24,
+      "losses": 61,
+      "win_rate": 28.24,
+      "avg_win": 3.2,
+      "avg_loss": -1.8292,
+      "payoff": 1.7494,
+      "expectancy": -0.4092,
+      "profit_factor": 0.6883,
+      "exit_mix": {
+        "stop": 61,
+        "tp": 24
+      },
+      "max_dd_pct_window": 0.3982,
+      "daily_lock_days": 0
+    },
+    "ETHUSDT_W4_2026-06": {
+      "window": "W4_2026-06",
+      "bars": 8640,
+      "trades": 110,
+      "gross": -9.21,
+      "fees": 54.99,
+      "net": -64.2,
+      "wins": 40,
+      "losses": 70,
+      "win_rate": 36.36,
+      "avg_win": 3.2007,
+      "avg_loss": -2.7461,
+      "payoff": 1.1655,
+      "expectancy": -0.5836,
+      "profit_factor": 0.666,
+      "exit_mix": {
+        "stop": 70,
+        "tp": 40
+      },
+      "max_dd_pct_window": 0.706,
+      "daily_lock_days": 0
+    },
+    "ETHUSDT_W5_2026-07": {
+      "window": "W5_2026-07",
+      "bars": 8928,
+      "trades": 74,
+      "gross": -26.09,
+      "fees": 37.0,
+      "net": -63.09,
+      "wins": 17,
+      "losses": 57,
+      "win_rate": 22.97,
+      "avg_win": 3.1991,
+      "avg_loss": -2.061,
+      "payoff": 1.5522,
+      "expectancy": -0.8526,
+      "profit_factor": 0.4629,
+      "exit_mix": {
+        "stop": 57,
+        "tp": 17
+      },
+      "max_dd_pct_window": 0.7568,
+      "daily_lock_days": 0
+    },
+    "ETHUSDT_W6_2026-08": {
+      "window": "W6_2026-08",
+      "bars": 8928,
+      "trades": 56,
+      "gross": -20.2,
+      "fees": 28.01,
+      "net": -48.21,
+      "wins": 11,
+      "losses": 45,
+      "win_rate": 19.64,
+      "avg_win": 3.1994,
+      "avg_loss": -1.8534,
+      "payoff": 1.7263,
+      "expectancy": -0.8609,
+      "profit_factor": 0.422,
+      "exit_mix": {
+        "stop": 45,
+        "tp": 11
+      },
+      "max_dd_pct_window": 0.5412,
+      "daily_lock_days": 0
+    },
+    "ETHUSDT_W7_2026-09": {
+      "window": "W7_2026-09",
+      "bars": 7104,
+      "trades": 67,
+      "gross": -16.27,
+      "fees": 33.49,
+      "net": -49.77,
+      "wins": 16,
+      "losses": 51,
+      "win_rate": 23.88,
+      "avg_win": 3.2,
+      "avg_loss": -1.9798,
+      "payoff": 1.6163,
+      "expectancy": -0.7429,
+      "profit_factor": 0.5071,
+      "exit_mix": {
+        "stop": 51,
+        "tp": 16
+      },
+      "max_dd_pct_window": 0.5338,
+      "daily_lock_days": 0
+    },
+    "SOLUSDT_W1_2026-03": {
+      "window": "W1_2026-03",
+      "bars": 8928,
+      "trades": 108,
+      "gross": -31.14,
+      "fees": 54.0,
+      "net": -85.14,
+      "wins": 38,
+      "losses": 70,
+      "win_rate": 35.19,
+      "avg_win": 3.2001,
+      "avg_loss": -2.9535,
+      "payoff": 1.0835,
+      "expectancy": -0.7883,
+      "profit_factor": 0.5882,
+      "exit_mix": {
+        "stop": 70,
+        "tp": 38
+      },
+      "max_dd_pct_window": 0.9955,
+      "daily_lock_days": 0
+    },
+    "SOLUSDT_W2_2026-04": {
+      "window": "W2_2026-04",
+      "bars": 8640,
+      "trades": 144,
+      "gross": 44.74,
+      "fees": 71.99,
+      "net": -27.25,
+      "wins": 56,
+      "losses": 88,
+      "win_rate": 38.89,
+      "avg_win": 3.2005,
+      "avg_loss": -2.3464,
+      "payoff": 1.364,
+      "expectancy": -0.1893,
+      "profit_factor": 0.868,
+      "exit_mix": {
+        "stop": 88,
+        "tp": 56
+      },
+      "max_dd_pct_window": 0.4452,
+      "daily_lock_days": 0
+    },
+    "SOLUSDT_W3_2026-05": {
+      "window": "W3_2026-05",
+      "bars": 8928,
+      "trades": 65,
+      "gross": -19.2,
+      "fees": 32.5,
+      "net": -51.7,
+      "wins": 14,
+      "losses": 51,
+      "win_rate": 21.54,
+      "avg_win": 3.2006,
+      "avg_loss": -1.8923,
+      "payoff": 1.6914,
+      "expectancy": -0.7954,
+      "profit_factor": 0.4643,
+      "exit_mix": {
+        "stop": 51,
+        "tp": 14
+      },
+      "max_dd_pct_window": 0.599,
+      "daily_lock_days": 0
+    },
+    "SOLUSDT_W4_2026-06": {
+      "window": "W4_2026-06",
+      "bars": 8640,
+      "trades": 171,
+      "gross": -10.03,
+      "fees": 85.48,
+      "net": -95.51,
+      "wins": 71,
+      "losses": 100,
+      "win_rate": 41.52,
+      "avg_win": 3.2008,
+      "avg_loss": -3.2276,
+      "payoff": 0.9917,
+      "expectancy": -0.5585,
+      "profit_factor": 0.7041,
+      "exit_mix": {
+        "stop": 100,
+        "tp": 71
+      },
+      "max_dd_pct_window": 1.121,
+      "daily_lock_days": 0
+    },
+    "SOLUSDT_W5_2026-07": {
+      "window": "W5_2026-07",
+      "bars": 8928,
+      "trades": 90,
+      "gross": -14.4,
+      "fees": 44.98,
+      "net": -59.38,
+      "wins": 26,
+      "losses": 64,
+      "win_rate": 28.89,
+      "avg_win": 3.2005,
+      "avg_loss": -2.2281,
+      "payoff": 1.4365,
+      "expectancy": -0.6598,
+      "profit_factor": 0.5836,
+      "exit_mix": {
+        "stop": 64,
+        "tp": 26
+      },
+      "max_dd_pct_window": 0.7292,
+      "daily_lock_days": 0
+    },
+    "SOLUSDT_W6_2026-08": {
+      "window": "W6_2026-08",
+      "bars": 8928,
+      "trades": 97,
+      "gross": -23.32,
+      "fees": 48.51,
+      "net": -71.83,
+      "wins": 30,
+      "losses": 67,
+      "win_rate": 30.93,
+      "avg_win": 3.199,
+      "avg_loss": -2.5045,
+      "payoff": 1.2773,
+      "expectancy": -0.7405,
+      "profit_factor": 0.5719,
+      "exit_mix": {
+        "stop": 67,
+        "tp": 30
+      },
+      "max_dd_pct_window": 0.8646,
+      "daily_lock_days": 0
+    },
+    "SOLUSDT_W7_2026-09": {
+      "window": "W7_2026-09",
+      "bars": 7104,
+      "trades": 49,
+      "gross": -36.21,
+      "fees": 24.5,
+      "net": -60.71,
+      "wins": 9,
+      "losses": 40,
+      "win_rate": 18.37,
+      "avg_win": 3.1993,
+      "avg_loss": -2.2377,
+      "payoff": 1.4297,
+      "expectancy": -1.2391,
+      "profit_factor": 0.3217,
+      "exit_mix": {
+        "stop": 40,
+        "tp": 9
+      },
+      "max_dd_pct_window": 0.7228,
+      "daily_lock_days": 0
+    }
+  },
+  "totals": {
+    "trades": 1723,
+    "gross": -316.18,
+    "fees": 861.4,
+    "net": -1177.61,
+    "wins": 493,
+    "losses": 1230,
+    "win_rate": 28.61,
+    "avg_win": 3.2003,
+    "avg_loss": -2.2401,
+    "payoff": 1.4286,
+    "expectancy": -0.6835,
+    "profit_factor": 0.5726,
+    "exit_mix": {
+      "stop": 1230,
+      "tp": 493
+    }
+  },
+  "splits": {
+    "development_W1_W4": {
+      "trades": 1151,
+      "gross": -116.56,
+      "fees": 575.41,
+      "net": -691.99,
+      "wins": 368,
+      "losses": 783,
+      "win_rate": 31.97,
+      "avg_win": 3.2006,
+      "avg_loss": -2.388,
+      "payoff": 1.3403,
+      "expectancy": -0.6012,
+      "profit_factor": 0.6299,
+      "exit_mix": {
+        "stop": 783,
+        "tp": 368
+      }
+    },
+    "validation_W5_W6": {
+      "trades": 404,
+      "gross": -131.01,
+      "fees": 202.0,
+      "net": -333.01,
+      "wins": 92,
+      "losses": 312,
+      "win_rate": 22.77,
+      "avg_win": 3.1995,
+      "avg_loss": -2.0108,
+      "payoff": 1.5912,
+      "expectancy": -0.8243,
+      "profit_factor": 0.4692,
+      "exit_mix": {
+        "stop": 312,
+        "tp": 92
+      }
+    },
+    "oos_W7": {
+      "trades": 168,
+      "gross": -68.61,
+      "fees": 83.99,
+      "net": -152.6,
+      "wins": 33,
+      "losses": 135,
+      "win_rate": 19.64,
+      "avg_win": 3.1999,
+      "avg_loss": -1.9126,
+      "payoff": 1.6731,
+      "expectancy": -0.9083,
+      "profit_factor": 0.409,
+      "exit_mix": {
+        "stop": 135,
+        "tp": 33
+      }
+    }
+  },
+  "trade_count_total": 1723,
+  "sample_class": "ANALYZABLE_SAMPLE"
+}

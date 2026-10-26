@@ -1,0 +1,744 @@
+{
+  "adversarial": [
+    {
+      "changed_the_scenario": true,
+      "description": "the same cycle appears twice and every hash is recomputed: only numbering can catch it",
+      "detail": "duplicated stream row 4 (a CYCLE) and re-chained the file",
+      "detected": true,
+      "false_checks": [
+        "crash_boundaries_match_recorded_chains",
+        "cycle_gaps_are_interrupted_cycles",
+        "cycle_numbers_unique",
+        "every_resume_continued_the_session"
+      ],
+      "invalid": false,
+      "mutation": "duplicated_cycle_with_valid_chain",
+      "target_check": "cycle_numbers_unique",
+      "witness": 3
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a resume whose reclaim is not on the record proves nothing about the abandoned lock",
+      "detail": "removed LOCK_RECLAIMED at row 7 and re-chained the rest",
+      "detected": true,
+      "false_checks": [
+        "crash_boundaries_match_recorded_chains",
+        "every_recovery_is_reclaimed",
+        "every_resume_continued_the_session"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_row_removed",
+      "target_check": "every_recovery_is_reclaimed",
+      "witness": 6
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a takeover whose fence did not advance past the old record did not dispossess it",
+      "detail": "lowered the fence of reclaim row 7, lock 0",
+      "detected": true,
+      "false_checks": [
+        "crash_boundaries_match_recorded_chains",
+        "reclaim_fence_advances"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_fence_does_not_advance",
+      "target_check": "reclaim_fence_advances",
+      "witness": [
+        6,
+        0
+      ]
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "without the resumed SESSION_START there is no evidence the crash was continued",
+      "detail": "removed the resumed SESSION_START at row 5",
+      "detected": true,
+      "false_checks": [
+        "crash_boundaries_match_recorded_chains",
+        "every_resume_continued_the_session"
+      ],
+      "invalid": false,
+      "mutation": "resume_start_removed",
+      "target_check": "every_resume_continued_the_session",
+      "witness": 4
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a leftover lock must fail the campaign however healthy the stream looks",
+      "detail": "planted a residual lock whose owner is this live process",
+      "detected": true,
+      "false_checks": [
+        "final_state_not_failed",
+        "no_lock_remaining_now"
+      ],
+      "invalid": false,
+      "mutation": "residual_lock_presented_as_recovered",
+      "target_check": "no_lock_remaining_now",
+      "witness": "plant"
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a lock whose owner is alive must never be counted as abandoned",
+      "detail": "iteration 1 leftover 0 now names this live pid",
+      "detected": true,
+      "false_checks": [
+        "all_leftovers_proved_abandoned",
+        "leftover_state_matches_recomputed_verdict",
+        "one_owner_per_iteration",
+        "owner_identity_never_repeats",
+        "reclaim_takes_over_the_crashed_owner"
+      ],
+      "invalid": false,
+      "mutation": "leftover_owner_is_alive",
+      "target_check": "all_leftovers_proved_abandoned",
+      "witness": [
+        0,
+        0
+      ]
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a timed-out resume is not a recovery",
+      "detail": "iteration 1 resume exit set to 124",
+      "detected": true,
+      "false_checks": [
+        "resume_exited_zero"
+      ],
+      "invalid": false,
+      "mutation": "resume_did_not_exit_cleanly",
+      "target_check": "resume_exited_zero",
+      "witness": 0
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "two owners for one path is the state a single writer exists to forbid",
+      "detail": "iteration 1 now names two owners for market-1m/BTCUSDT.jsonl.lock",
+      "detected": true,
+      "false_checks": [
+        "one_owner_per_iteration",
+        "one_owner_per_path_per_crash",
+        "owner_identity_never_repeats"
+      ],
+      "invalid": false,
+      "mutation": "two_writers_claim_one_lock",
+      "target_check": "one_owner_per_path_per_crash",
+      "witness": 0
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a reclaim of a different process would leave the real owner unreclaimed",
+      "detail": "reclaim row 7 names a pid that owned nothing",
+      "detected": true,
+      "false_checks": [
+        "crash_boundaries_match_recorded_chains",
+        "reclaim_takes_over_the_crashed_owner"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_names_the_wrong_owner",
+      "target_check": "reclaim_takes_over_the_crashed_owner",
+      "witness": 6
+    }
+  ],
+  "artifacts": {
+    "CAMPAIGN.json": "44966c1110cf961a8fce80cd78db351a8d0e14a5a27a9f6bb2be47d951b2675b",
+    "iterations/iteration-01/LAUNCH.json": "f84aec40ccefc37ba67aeed566ad327063a970a856f80f4fe5236c6bd169a77f",
+    "iterations/iteration-01/LIVE_OWNER.json": "98e2dcd5c6f68f8f821baa299a1540dedc48095b860d204461a5c1263c7dc7f9",
+    "iterations/iteration-01/POST_CRASH.json": "ccd4d08c801b75cd6168c9c7c440b4ae150cb96cc883909b2bc25d4d109ec232",
+    "iterations/iteration-01/RECOVERY.json": "cc1410a382e24ae2c682282fe8c459827434b39af6ffedba672be2d955a76cbd",
+    "iterations/iteration-01/STALE_OWNER.json": "a6f6a683f803686b1630f1db5a0b8c84c83f0ee9ad835f5033a42510b825caf1",
+    "iterations/iteration-01/STATUS_AT_CRASH.json": "f206ed913bac3b154f18d6acdb0c6f1e30d4f8060e039b1a5e5f365aca4878bd",
+    "iterations/iteration-01/STATUS_BEFORE_LAUNCH.json": "ee3693278a91aced7920a0b3e906eac7fedd9377cfa162d7a9db755672c3c434",
+    "iterations/iteration-02/CONCURRENCY.json": "85f962318cad286b92315bbd2b398faf64d20234d3aa8eacaf8f30d85b6c64dd",
+    "iterations/iteration-02/LAUNCH.json": "e60e36f625ca6771caddee0349c210409cb100a75301ef35f67f0f51d15bdd84",
+    "iterations/iteration-02/LIVE_OWNER.json": "36a35c3ea9d5591e1e018e4aa8c646cf1ea91057ac462f35e95a0c5389253275",
+    "iterations/iteration-02/POST_CRASH.json": "d5a04daf81bac2ab6be4398dbd7b3ecce4ab232cfbd1a36eb2fcb28c2e57deda",
+    "iterations/iteration-02/RECOVERY.json": "1d7c8fa32314cef9f059fb70a56cdccd3eac76a975d89ca6221676ee11994ae1",
+    "iterations/iteration-02/STALE_OWNER.json": "d6544f541319336097b410bc1321342224241a5a7b91060e868bbe18ab620551",
+    "iterations/iteration-02/STATUS_AT_CRASH.json": "db8780d96cd74ff82c2ffa7cf703f0fbefdaa9db1cf712031b750b4bd74d08d3",
+    "iterations/iteration-02/STATUS_BEFORE_LAUNCH.json": "bc199a122e915b8cd6b8d0cce7b61e28c51a0abb42077e8ec0268c77ee30120f",
+    "iterations/iteration-02/race-0-afd08498.json": "8c440d98d0250df68865d3faa3b210662374ca934ef4b83678e54b060920f9bb",
+    "iterations/iteration-02/race-1-75ccdc42.json": "38b3be278cc91aad0b788586634e2fc8f488112f5b2392fa4ef518745064b60b",
+    "iterations/iteration-03/LAUNCH.json": "a72cb1f2b754b6ae98bda29a0d026c1d3f76a18aee11b521c418c47295f54673",
+    "iterations/iteration-03/LIVE_OWNER.json": "df6d65b8d76abd43f16c26cbbbbf8b435552abe4b30db56e22f43ac817b1d408",
+    "iterations/iteration-03/POST_CRASH.json": "204e7b9fe5dac62b1b154d8f5bbfac0b916ffa1d5885bd7e68825bcd82551089",
+    "iterations/iteration-03/RECOVERY.json": "879b01ebb01905928134585a61613c3808895ee96cf56b22c0ee5e4dac283aab",
+    "iterations/iteration-03/STALE_OWNER.json": "24cb7fc8a81934aa9c569fabed2c6197936a0681bdd5d146d5d3cde2386b9a60",
+    "iterations/iteration-03/STATUS_AT_CRASH.json": "cceb9c2b81bc22924a0a3a27515c0b9da11835d844e6fe5833afe8442136a2a3",
+    "iterations/iteration-03/STATUS_BEFORE_LAUNCH.json": "284ba0ef50239a8ba28b219a9899e09675036325c8c9188c7f49ee16c4575bfe",
+    "iterations/iteration-04/LAUNCH.json": "f04ef593637aed79434150e360fa3e414714ccba3558fc2c533556b05007aa9d",
+    "iterations/iteration-04/LIVE_OWNER.json": "c4d5c24f30fd4c9400e42f87e9f9d091062975072f19e821ddbcadb03d34c29b",
+    "iterations/iteration-04/POST_CRASH.json": "0309c7abc1cd7c33ead416c218c1fc8e97173c04fcfcfcf1936b91cbe2022b40",
+    "iterations/iteration-04/RECOVERY.json": "2eb3527aaef7377766d86a12ccf2ff73354bda05d6daee7f481cda9eb94ac539",
+    "iterations/iteration-04/STALE_OWNER.json": "46e2908cc9edf87bd06a3751af58ffd1cdb8eea78cf07b1f5f3e709f386985ab",
+    "iterations/iteration-04/STATUS_AT_CRASH.json": "1a8c1540667f9cb48926b9e2e6dedbb317170f5a06e8d994144c2dd494a26291",
+    "iterations/iteration-04/STATUS_BEFORE_LAUNCH.json": "2c57fbb3ebe12652e2dd7ad8edfcbf82fd23315c30fdae8f8897c721e677cc1a",
+    "iterations/iteration-05/CONCURRENCY.json": "37db16fbb905b7649f9c1bf6668e786c38522e30b844072d006a1b212d0ac110",
+    "iterations/iteration-05/LAUNCH.json": "b51e40fb7ccf8cd6b74fde6a6de9444bcaab2fd2621450b20d8403bd585ce526",
+    "iterations/iteration-05/LIVE_OWNER.json": "d68eddacd567e7d86b5f57826b1136f05e58b3201f3b04ccec9029b9e84a8742",
+    "iterations/iteration-05/POST_CRASH.json": "cb8416314aff333bcc6d8dc411573a690a0efd3b879876c0de3e80195e64ce92",
+    "iterations/iteration-05/RECOVERY.json": "49a4d871fcdf1d194e2ed549ff14b0e8abef02f290ac8d2a94417a16c16cea25",
+    "iterations/iteration-05/STALE_OWNER.json": "7d3231d0f295604624c97c67e5cb4c36630f51deec2afb26c6c50d337580ddfd",
+    "iterations/iteration-05/STATUS_AT_CRASH.json": "7a08d9a7ca5d8f41033f316a047f648158bf41663234545458affac13c4a36da",
+    "iterations/iteration-05/STATUS_BEFORE_LAUNCH.json": "05382f65c08596a6ac9fdfd128f6527a6ce52faac43155107b473971aa598b18",
+    "iterations/iteration-05/race-0-d5ba95d3.json": "b9134c623a89bde1464bb3670e713255d89e15b5dbc26758a75c1d772c78b507",
+    "iterations/iteration-05/race-1-2c0b9a4d.json": "4e0aa4603b23e76d77d777a11714f1bfe219eb3e7c3524ba9dcaef27ac99be6b",
+    "iterations/iteration-06/LAUNCH.json": "eb724f00289071172f63cea1ad1cbd8b26e4ba8ceeca9a112cef7f0ef6094b51",
+    "iterations/iteration-06/LIVE_OWNER.json": "9e3d2c050eb976dfbec9ce9059362e605f49c4243bb9a5eacc323d33365b6957",
+    "iterations/iteration-06/POST_CRASH.json": "8529401d39ec2edfec6734f45ee379d1009189d01692bc5dcf6ee6b8bcaad8cb",
+    "iterations/iteration-06/RECOVERY.json": "14a8494fc545d65fb38bf83a7b58cf9983402122501ebf11002b1b83616c52a9",
+    "iterations/iteration-06/STALE_OWNER.json": "12f8523ca491254fa05e1bab187a5112a2971ef9ff1bb7e8741197c7900f0766",
+    "iterations/iteration-06/STATUS_AT_CRASH.json": "18e35698271b5c9b5374091db95506bf1249b9f5027d1d370fb3511a0d0bf9e9",
+    "iterations/iteration-06/STATUS_BEFORE_LAUNCH.json": "932d32f71cd18bb9b8d31257ff24cc19a9eaa848a94aa8250f1af5d4a4ea43a6",
+    "session/STREAM.jsonl": "78d4602e4e5dd805a35f7d19eb6848eaecc7efd872637295be197e50d684dbf1",
+    "session/STREAM.jsonl.lock.fence": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+    "session/cycles/cycle-0001/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0002/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0003/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0004/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0005/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0006/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0007/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0008/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0009/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0010/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0011/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0012/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0013/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0014/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0015/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0016/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0017/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/market-1m/BTCUSDT.jsonl.lock.fence": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+    "session/market-1m/ETHUSDT.jsonl.lock.fence": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+    "session/market-1m/SOLUSDT.jsonl.lock.fence": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60"
+  },
+  "builder": "scripts/paper_lock_campaign.py",
+  "campaign": "reports\\ai-bots\\TAP-SUPERVISOR-INTEGRATION-002\\evidence\\LOCK_CAMPAIGN_FULL2",
+  "false_success": 0,
+  "invalid_mutations": [],
+  "judgement": {
+    "checks": {
+      "all_leftovers_proved_abandoned": true,
+      "at_least_five_recoveries": true,
+      "both_crash_sites_covered": true,
+      "concurrent_reclaim_has_one_winner": true,
+      "crash_boundaries_match_recorded_chains": true,
+      "cycle_gaps_are_interrupted_cycles": true,
+      "cycle_numbers_ordered": true,
+      "cycle_numbers_unique": true,
+      "every_crash_left_locks": true,
+      "every_recovery_is_reclaimed": true,
+      "every_resume_continued_the_session": true,
+      "every_resume_made_progress": true,
+      "final_state_not_failed": true,
+      "iterations_contiguous": true,
+      "leftover_state_matches_recomputed_verdict": true,
+      "live_owner_was_refused": true,
+      "no_live_orders": true,
+      "no_lock_after_any_resume": true,
+      "no_lock_remaining_now": true,
+      "one_owner_per_iteration": true,
+      "one_owner_per_path_per_crash": true,
+      "owner_identity_never_repeats": true,
+      "persisted_cycle_ledgers_intact": true,
+      "reclaim_fence_advances": true,
+      "reclaim_reason_is_a_proof": true,
+      "reclaim_takes_over_the_crashed_owner": true,
+      "resume_exited_zero": true,
+      "resume_flags_are_false_then_true": true,
+      "runtime_identity_stable": true,
+      "seq_continuous": true,
+      "stale_owner_was_refused": true,
+      "stream_chain_intact": true
+    },
+    "counts": {
+      "cycles": 17,
+      "iterations": 6,
+      "reclaim_rows": 6,
+      "rows": 64,
+      "starts": 12
+    },
+    "cycles": {
+      "directories": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "fences": {
+        "STREAM.jsonl.lock.fence": 18,
+        "cycles/cycle-0001/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0002/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0003/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0004/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0005/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0006/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0007/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0008/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0009/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0010/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0011/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0012/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0013/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0014/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0015/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0016/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0017/ledger.jsonl.lock.fence": 1,
+        "market-1m/BTCUSDT.jsonl.lock.fence": 18,
+        "market-1m/ETHUSDT.jsonl.lock.fence": 18,
+        "market-1m/SOLUSDT.jsonl.lock.fence": 18
+      },
+      "interrupted": [],
+      "ledgers": {
+        "cycle-0001": {
+          "head_sha256": "7a8fb20e45f9efeb533bbf9dcf047dff4d7f3e53f88f5a860a12b996ac04e0ed",
+          "kinds": {
+            "DECISION": 3,
+            "GUARD_REJECT": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 7,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0002": {
+          "head_sha256": "65689c65ce5b09c278c46a6cf4de3ca22a57d4c66dc81b85d63b7a7bb0d7bdf2",
+          "kinds": {
+            "DECISION": 4,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 10,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0003": {
+          "head_sha256": "177201ebc252d1862660c7220d0999cad83d21d9705f5973d226d0380d9f5404",
+          "kinds": {
+            "DECISION": 7,
+            "DECISION_OUTCOME": 4,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 17,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0004": {
+          "head_sha256": "98bf994ac9bee7c24f004e5531e883b5b5d1ccb42abce6d12c2b2093fd3eb747",
+          "kinds": {
+            "DECISION": 8,
+            "DECISION_OUTCOME": 4,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 4,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 20,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0005": {
+          "head_sha256": "f82c9ab9405c0ba42c8396b14ae68a9fa15045b798f1d72ad9d061525827d70e",
+          "kinds": {
+            "DECISION": 11,
+            "DECISION_OUTCOME": 8,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 4,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 27,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0006": {
+          "head_sha256": "8525f42f4c06115442bfa999a7d840a85f3ae555c84abbc7085c46eac2404fd5",
+          "kinds": {
+            "DECISION": 12,
+            "DECISION_OUTCOME": 8,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 6,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 30,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0007": {
+          "head_sha256": "1776008616272177208ad2508e58d1c36990720b8c011a2875a6b96bcd86b723",
+          "kinds": {
+            "DECISION": 15,
+            "DECISION_OUTCOME": 12,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 6,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 37,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0008": {
+          "head_sha256": "166ae8b047dacd6a83f5a2788b4f4bce0d5ebb5d454e1feb8ed4b437f57ac113",
+          "kinds": {
+            "DECISION": 16,
+            "DECISION_OUTCOME": 12,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 8,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 40,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0009": {
+          "head_sha256": "7ece904dcb37d9dd07860aeb586d06db789201b05e543f2b2047c1a4319cf19f",
+          "kinds": {
+            "DECISION": 19,
+            "DECISION_OUTCOME": 16,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 8,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 47,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0010": {
+          "head_sha256": "585cdfa42eb8f038856ae87d487228c5e49442f4fbf5b4966896ed086de7b5d6",
+          "kinds": {
+            "DECISION": 20,
+            "DECISION_OUTCOME": 16,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 10,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 50,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0011": {
+          "head_sha256": "e71fbaf079e195a11c7a7312662c9492fbe0417af562483061f671878f06e41e",
+          "kinds": {
+            "DECISION": 23,
+            "DECISION_OUTCOME": 20,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 10,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 57,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0012": {
+          "head_sha256": "68f6bb02ee3869897fd9371938b61e36c6081802bae5d3eb6345faac5a8af469",
+          "kinds": {
+            "DECISION": 24,
+            "DECISION_OUTCOME": 20,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 12,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 60,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0013": {
+          "head_sha256": "81c6cd5e46c6fdcd706ee45e4d3990fefcd51cb88a8b8132d0bd81ab8c7d5059",
+          "kinds": {
+            "DECISION": 27,
+            "DECISION_OUTCOME": 24,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 12,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 67,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0014": {
+          "head_sha256": "34f787e02efa2bf9fc9231435d2b9da1fa4902b9d7762423ff47935b8e673b53",
+          "kinds": {
+            "DECISION": 28,
+            "DECISION_OUTCOME": 24,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 14,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 70,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0015": {
+          "head_sha256": "65fe5f1cddb3a405e426623bd3eddabd6d39c10d0ac114789b81cde2b80166bd",
+          "kinds": {
+            "DECISION": 31,
+            "DECISION_OUTCOME": 28,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 14,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 77,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0016": {
+          "head_sha256": "1799f61fa05ce85d2f3ba8d681ce880bea77db3033b83bcf5c24a9e2be099d50",
+          "kinds": {
+            "DECISION": 32,
+            "DECISION_OUTCOME": 28,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 16,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 80,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0017": {
+          "head_sha256": "958db194021cf710e6acfc305f8afe32c05318378ccaedc6bcaad9a5e698bb40",
+          "kinds": {
+            "DECISION": 35,
+            "DECISION_OUTCOME": 32,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 16,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 87,
+          "ok": true,
+          "reason": "INTACT"
+        }
+      },
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ]
+    },
+    "final_state": "RECOVERED",
+    "iterations": [
+      {
+        "crash_rows": 4,
+        "crash_site": "AFTER_CYCLE",
+        "harness_locks_refused": true,
+        "iteration": 1,
+        "leftover_paths": [
+          "STREAM.jsonl.lock",
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock"
+        ],
+        "live_owner_outcome": "REFUSED",
+        "live_owner_unchanged": true,
+        "new_cycles_after_resume": 3,
+        "ownership": {
+          "fences_advance": true,
+          "ok": true,
+          "reasons_proved": true
+        },
+        "prefix_head_matches": true,
+        "prefix_ok": true,
+        "reclaimed_paths": [
+          "BTCUSDT.jsonl.lock",
+          "ETHUSDT.jsonl.lock",
+          "SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "resume_exit_code": 0
+      },
+      {
+        "crash_rows": 15,
+        "crash_site": "AFTER_CYCLE",
+        "harness_locks_refused": true,
+        "iteration": 2,
+        "leftover_paths": [
+          "STREAM.jsonl.lock",
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock"
+        ],
+        "live_owner_outcome": "REFUSED",
+        "live_owner_unchanged": true,
+        "new_cycles_after_resume": 2,
+        "ownership": {
+          "fences_advance": true,
+          "ok": true,
+          "reasons_proved": true
+        },
+        "prefix_head_matches": true,
+        "prefix_ok": true,
+        "reclaimed_paths": [
+          "BTCUSDT.jsonl.lock",
+          "ETHUSDT.jsonl.lock",
+          "SOLUSDT.jsonl.lock"
+        ],
+        "resume_exit_code": 0
+      },
+      {
+        "crash_rows": 24,
+        "crash_site": "BEFORE_CYCLE",
+        "harness_locks_refused": true,
+        "iteration": 3,
+        "leftover_paths": [
+          "STREAM.jsonl.lock",
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock"
+        ],
+        "live_owner_outcome": "REFUSED",
+        "live_owner_unchanged": true,
+        "new_cycles_after_resume": 3,
+        "ownership": {
+          "fences_advance": true,
+          "ok": true,
+          "reasons_proved": true
+        },
+        "prefix_head_matches": true,
+        "prefix_ok": true,
+        "reclaimed_paths": [
+          "BTCUSDT.jsonl.lock",
+          "ETHUSDT.jsonl.lock",
+          "SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "resume_exit_code": 0
+      },
+      {
+        "crash_rows": 35,
+        "crash_site": "AFTER_CYCLE",
+        "harness_locks_refused": true,
+        "iteration": 4,
+        "leftover_paths": [
+          "STREAM.jsonl.lock",
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock"
+        ],
+        "live_owner_outcome": "REFUSED",
+        "live_owner_unchanged": true,
+        "new_cycles_after_resume": 3,
+        "ownership": {
+          "fences_advance": true,
+          "ok": true,
+          "reasons_proved": true
+        },
+        "prefix_head_matches": true,
+        "prefix_ok": true,
+        "reclaimed_paths": [
+          "BTCUSDT.jsonl.lock",
+          "ETHUSDT.jsonl.lock",
+          "SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "resume_exit_code": 0
+      },
+      {
+        "crash_rows": 46,
+        "crash_site": "AFTER_CYCLE",
+        "harness_locks_refused": true,
+        "iteration": 5,
+        "leftover_paths": [
+          "STREAM.jsonl.lock",
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock"
+        ],
+        "live_owner_outcome": "REFUSED",
+        "live_owner_unchanged": true,
+        "new_cycles_after_resume": 3,
+        "ownership": {
+          "fences_advance": true,
+          "ok": true,
+          "reasons_proved": true
+        },
+        "prefix_head_matches": true,
+        "prefix_ok": true,
+        "reclaimed_paths": [
+          "BTCUSDT.jsonl.lock",
+          "ETHUSDT.jsonl.lock",
+          "SOLUSDT.jsonl.lock"
+        ],
+        "resume_exit_code": 0
+      },
+      {
+        "crash_rows": 57,
+        "crash_site": "AFTER_CYCLE",
+        "harness_locks_refused": true,
+        "iteration": 6,
+        "leftover_paths": [
+          "STREAM.jsonl.lock",
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock"
+        ],
+        "live_owner_outcome": "REFUSED",
+        "live_owner_unchanged": true,
+        "new_cycles_after_resume": 2,
+        "ownership": {
+          "fences_advance": true,
+          "ok": true,
+          "reasons_proved": true
+        },
+        "prefix_head_matches": true,
+        "prefix_ok": true,
+        "reclaimed_paths": [
+          "BTCUSDT.jsonl.lock",
+          "ETHUSDT.jsonl.lock",
+          "SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "resume_exit_code": 0
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "schema_version": "TAP_PAPER_LOCK_CAMPAIGN_VERIFICATION_V1",
+  "undetected_mutations": [],
+  "verdict": "PASS",
+  "verifier": "scripts/paper_lock_campaign_verify.py",
+  "verifier_commit": "59ddebda042fb29d990c074cfcaef47f9192d2a3"
+}

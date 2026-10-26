@@ -1,0 +1,245 @@
+{
+  "artifact": "ACTIVE_RECOVERY_INDEPENDENT_VERIFICATION",
+  "work_package": "WP-5 (POST RFC-049 / ACTIVE RECOVERY)",
+  "generated_at_utc": "2026-10-26T13:04:40Z",
+  "head": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+  "verifier": "scripts/recovery_verify.py",
+  "builders": [
+    "scripts/active_economic_audit.py",
+    "scripts/campaign_state_view.py"
+  ],
+  "builder_imported": false,
+  "shared_input_reader": {
+    "module": "scripts/recovery_input_evidence.py",
+    "why": "all three of the lane's programs must agree on what a source is and where its bytes come from; the module reads inputs and computes no finding, so sharing it does not make this verifier a second copy of the builder"
+  },
+  "method": "a second implementation: every headline number is re-derived from the primary artefacts with an independent code path, and each check is shown to fail under a deliberate mutation",
+  "independently_derived": {
+    "cells": {
+      "breakout@5m": -0.084,
+      "ema_crossover@5m": -4.5608,
+      "mean_reversion@5m": 1.4854,
+      "momentum@5m": -1.8835,
+      "trend@5m": -1.6448,
+      "volatility@5m": -4.7354,
+      "breakout@15m": -1.822,
+      "ema_crossover@15m": -1.122,
+      "mean_reversion@15m": 2.714,
+      "momentum@15m": -3.972,
+      "trend@15m": 1.284,
+      "volatility@15m": -7.064,
+      "breakout@1h": -0.222,
+      "ema_crossover@1h": -0.964,
+      "mean_reversion@1h": -2.226,
+      "momentum@1h": -2.334,
+      "trend@1h": -1.252,
+      "volatility@1h": 6.276,
+      "breakout@30m": -1.792,
+      "ema_crossover@30m": -0.726,
+      "mean_reversion@30m": 5.472,
+      "momentum@30m": -2.612,
+      "trend@30m": 2.206,
+      "volatility@30m": 8.912
+    },
+    "cost_plane_bps": 23.353553390593273
+  },
+  "checks": [
+    {
+      "check": "C1",
+      "name": "24 registered strategies, none admitted for paper",
+      "result": "PASS",
+      "detail": "24 registered, admitted=[]"
+    },
+    {
+      "check": "C2",
+      "name": "per-cell gross edge independently re-derived and matches the ledger",
+      "result": "PASS",
+      "detail": "23/24 exact; mismatches=['breakout@5m'] (registered exceptions ['breakout@5m'])"
+    },
+    {
+      "check": "C3",
+      "name": "runtime admission round trip independently re-derived",
+      "result": "PASS",
+      "detail": "derived 23.353553390593273 vs frozen 23.353553391"
+    },
+    {
+      "check": "C4",
+      "name": "no cell is net-positive and no cell clears the cost plane",
+      "result": "PASS",
+      "detail": "gross-positive 7 cells (best 8.912 bps), clearing the floor: []"
+    },
+    {
+      "check": "C5",
+      "name": "paper lane funnel reproduced from its own report",
+      "result": "PASS",
+      "detail": "337 cycles, trades=0, kind=NO_TRADE_STRATEGIC, verdict=PAPER_24H_DATA_FAILED"
+    },
+    {
+      "check": "C6",
+      "name": "closure state, OOS accounting and the frozen manifest",
+      "result": "PASS",
+      "detail": "terminal=DISCOVERY_CAMPAIGN_FAILED, oos=CANCELLED_NOT_OPENED, used=0, frozen_gate_authorized=False"
+    },
+    {
+      "check": "C7",
+      "name": "governance flags agree and nothing claims profitability",
+      "result": "PASS",
+      "detail": "4 shared flags (an empty comparison fails here, it does not pass); disagreements={}"
+    },
+    {
+      "check": "C8",
+      "name": "the audit answers all six questions",
+      "result": "PASS",
+      "detail": "{\"Q1_why_never_paper\": true, \"Q2_how_many_positive_net_with_sample\": true, \"Q3_dominant_limiter\": true, \"Q4_families_worth_new_experiments\": true, \"Q5_what_is_missing_for_verifiable_paper\": true, \"Q6_next_rfc\": true}"
+    },
+    {
+      "check": "C9",
+      "name": "every required deliverable exists and JSON deliverables parse",
+      "result": "PASS",
+      "detail": "missing=[] unparsable=[]"
+    },
+    {
+      "check": "C10",
+      "name": "the state view's governing decision is independently re-derived",
+      "result": "PASS",
+      "detail": "view decided_by=tasks/decisions.md#ADR-0026, verifier derived ADR-0026"
+    },
+    {
+      "check": "C11",
+      "name": "paper readiness gates reported as not ready, missing metrics declared",
+      "result": "PASS",
+      "detail": "m03=NOT_READY, m07=NOT_READY, strategies with max_drawdown=None: 24"
+    },
+    {
+      "check": "C13",
+      "name": "both artefacts' identities recompute from their own published fields",
+      "result": "PASS",
+      "detail": "state view e7bee5d8b710640c vs recorded e7bee5d8b710640c; audit c6ea34388745471e vs recorded c6ea34388745471e"
+    },
+    {
+      "check": "C14",
+      "name": "every external input a finding rests on is committed and answers to its published digest",
+      "result": "PASS",
+      "detail": "8 declared inputs verified against HEAD"
+    },
+    {
+      "check": "C15",
+      "name": "no artefact resolved a source from an uncommitted file",
+      "result": "PASS",
+      "detail": "every source of both artefacts resolved from the commit"
+    },
+    {
+      "check": "C16",
+      "name": "closure states hold, no strategy is admitted and nothing new is authorized",
+      "result": "PASS",
+      "detail": "terminal=DISCOVERY_CAMPAIGN_FAILED, oos=CANCELLED_NOT_OPENED, next=NOT_AUTHORIZED, paper=NOT_AUTHORIZED, admitted=0"
+    },
+    {
+      "check": "C17",
+      "name": "a clean checkout of an ancestor reproduces these artefacts",
+      "result": "PASS",
+      "detail": "rehearsal status=PASS on d62ecb76aaec (ancestor of HEAD: True); artefacts identical: ['data/recovery/CAMPAIGN_STATE_VIEW.json', 'data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md', 'data/recovery/ACTIVE_ECONOMIC_AUDIT.json', 'data/recovery/ACTIVE_ECONOMIC_AUDIT.md']"
+    },
+    {
+      "check": "C12",
+      "name": "this verification artefact was written and parses",
+      "result": "PASS",
+      "detail": "data/recovery/INDEPENDENT_VERIFICATION.json written=True"
+    }
+  ],
+  "checks_total": 17,
+  "checks_failed": 0,
+  "controls": [
+    {
+      "control": "N1",
+      "mutation": "set volatility@30m gross edge to 250 bps",
+      "result": "DETECTED",
+      "detail": "cells above the floor: ['volatility@30m']"
+    },
+    {
+      "control": "N2",
+      "mutation": "treat the breakout@5m discrepancy as undeclared",
+      "result": "DETECTED",
+      "detail": "mismatch detected: ['breakout@5m']; a check that required no mismatches would fail here"
+    },
+    {
+      "control": "N3",
+      "mutation": "set PROFITABILITY_VERIFIED = True",
+      "result": "DETECTED",
+      "detail": "the profitability invariant fails on a truthy flag"
+    },
+    {
+      "control": "N4",
+      "mutation": "spend the sealed-OOS inspection",
+      "result": "DETECTED",
+      "detail": "the closure accounting check fails when the window is read"
+    },
+    {
+      "control": "N5",
+      "mutation": "authorize the frozen gate in a copy of the manifest",
+      "result": "DETECTED",
+      "detail": "the frozen-gate assertion fails on a modified copy"
+    },
+    {
+      "control": "N6",
+      "mutation": "admit breakout@5m for paper",
+      "result": "DETECTED",
+      "detail": "the zero-admitted assertion fails: ['breakout@5m']"
+    },
+    {
+      "control": "N7",
+      "mutation": "sign a verification record with the builder",
+      "result": "DETECTED",
+      "detail": "the builder!=verifier invariant fails when the strings match"
+    },
+    {
+      "control": "N8",
+      "mutation": "remove the next-RFC answer",
+      "result": "DETECTED",
+      "detail": "the six-answer check fails on a missing key"
+    },
+    {
+      "control": "N9",
+      "mutation": "authorize a campaign inside a copy of the state view",
+      "result": "DETECTED",
+      "detail": "C13 recomputes the identity from the published fields, so a changed finding is caught"
+    },
+    {
+      "control": "N10",
+      "mutation": "read a pinned source back in its CRLF form",
+      "result": "DETECTED",
+      "detail": "the LF form is the authority: the CRLF form is different bytes of the same content, which is why a raw-digest pin (the WP-8 defect) fails on a Windows checkout for no edit at all"
+    },
+    {
+      "control": "N11",
+      "mutation": "add one byte to a pinned source",
+      "result": "DETECTED",
+      "detail": "a content change is a different content digest, so the pin grades DRIFTED and the bundle verify step fails"
+    },
+    {
+      "control": "N12",
+      "mutation": "create an untracked data/rfc050/ directory",
+      "result": "DETECTED",
+      "detail": "certified occupancy [35, 46, 48, 49] is derived from the commit and ignores rfc050 (a working-tree directory is not a claim)"
+    },
+    {
+      "control": "N13",
+      "mutation": "require a gitignored dataset to reproduce a finding",
+      "result": "DETECTED",
+      "detail": "['data/raw/alpha001/BTC-USDT_1d.json', 'data/raw/alpha001/ETH-USDT_1d.json'] carry no evidence copy, so C14 fails the moment one of them is promoted (the branch that tolerates them is the one that also checks their authority is in HEAD)"
+    }
+  ],
+  "controls_total": 13,
+  "controls_missed": 0,
+  "false_success": 0,
+  "status": "PASS",
+  "self_artifact": "data/recovery/INDEPENDENT_VERIFICATION.json",
+  "scope": {
+    "returns_computed": true,
+    "surface": "the ACTIVE pipeline audit and the campaign state view",
+    "not_covered": [
+      "the economic results of RFC-049 Discovery 2 (verified by its own verifier)",
+      "any live or paper execution path (none was exercised)"
+    ]
+  }
+}

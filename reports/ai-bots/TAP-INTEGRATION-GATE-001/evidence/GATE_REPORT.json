@@ -1,0 +1,312 @@
+{
+  "branch": "gate/integration-001",
+  "campaigns": {
+    "auditor": "scripts/tap_gate_campaign_audit.py",
+    "lock": {
+      "modes": [
+        "after_cycle",
+        "after_cycle",
+        "before_cycle",
+        "after_cycle",
+        "after_cycle",
+        "after_cycle"
+      ],
+      "producer": "scripts/paper_lock_campaign.py",
+      "race_iterations": [
+        2,
+        5
+      ],
+      "verifier": "scripts/paper_lock_campaign_verify.py"
+    },
+    "supervisor": {
+      "crashes": 1,
+      "producer": "scripts/paper_supervisor_campaign.py",
+      "verifier": "scripts/paper_supervisor_verify.py"
+    }
+  },
+  "certifies": true,
+  "commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+  "commit_stability": {
+    "commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+    "head_after": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+    "head_before": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+    "observed_commits": [
+      "9a420ff18179c1f196221495aba5fdd2a81f5073"
+    ]
+  },
+  "conclusion": "Both PAPER campaigns ran on this commit, their verifiers and an independent audit accepted what they wrote, and HEAD did not move while they ran.",
+  "contract": {
+    "scripts/paper_lock_campaign.py": "16d8e0679603dc4339fd665b6423c28a8be8dbc3af98b3d125e304661f7f6c76",
+    "scripts/paper_lock_campaign_verify.py": "20304e19763813e770eb96f8cc329fa30014366e7f500b2b4fb883d06a8a1607",
+    "scripts/paper_supervisor_campaign.py": "efc6c9d8ff137ff89c9f048092c6d7ad5cf77f989412c04a90a316618042a46e",
+    "scripts/paper_supervisor_verify.py": "3ce89ea787ba6820b2dfc1af857001c92c4af59e6a9e9b5fcd1edae9cc725cc9",
+    "scripts/tap_gate_campaign_audit.py": "2a2c7e0e0b40be0b9f9877a14f2b0de35ba103ff1e9017b362426ed7c2e1bbd6",
+    "scripts/tap_integration_gate.py": "ee7ca0653623fe92ce16daa5338c55302ccfe79cf440e1cc6bb41b6e52a57fff"
+  },
+  "false_success": 0,
+  "generated_at_utc": "2026-10-25T13:31:25Z",
+  "imposition": {
+    "note": "the workflow exists, but turning it into a required status check needs a repository administrator; nothing in the repository can impose it",
+    "required_check": false,
+    "state": "GOVERNANCE_BLOCKED"
+  },
+  "invariants": {
+    "g1": "OPEN_SIGNOFF",
+    "lane_merged": false,
+    "live_orders": 0,
+    "paper_admission": "NO_GO",
+    "risk_policy_changed": false
+  },
+  "label": "local:gate-001:9a420ff1:run3",
+  "lane": {
+    "merged_into_main": false,
+    "tip": "integ/supervisor-002"
+  },
+  "limitations": [
+    "a PASS certifies the campaigns and the commit, not profitability or PAPER admission",
+    "the gate runs on one host at a time; a second host is a second data point, not a substitute",
+    "G1 stays OPEN_SIGNOFF: the gate does not sign a risk-policy change"
+  ],
+  "schema": "TAP_INTEGRATION_GATE_REPORT_V1",
+  "steps": {
+    "A1_CAMPAIGN_AUDIT": {
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\scripts\\tap_gate_campaign_audit.py",
+        "--supervisor",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\supervisor",
+        "--lock",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock",
+        "--supervisor-report",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\SUPERVISOR_VERIFICATION.json",
+        "--lock-report",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\LOCK_CAMPAIGN_VERIFICATION.json",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\CAMPAIGN_AUDIT.json"
+      ],
+      "detail": "",
+      "duration_s": 0.56,
+      "evidence": [],
+      "exit_code": 0,
+      "id": "A1_CAMPAIGN_AUDIT",
+      "log": "logs/A1_CAMPAIGN_AUDIT.log",
+      "statement": "an independent audit re-derives both campaigns",
+      "status": "PASS"
+    },
+    "C1_SUPERVISOR_CAMPAIGN": {
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\scripts\\paper_supervisor_campaign.py",
+        "run",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\supervisor",
+        "--crashes",
+        "1"
+      ],
+      "detail": "",
+      "duration_s": 266.92,
+      "evidence": [],
+      "exit_code": 0,
+      "id": "C1_SUPERVISOR_CAMPAIGN",
+      "log": "logs/C1_SUPERVISOR_CAMPAIGN.log",
+      "statement": "the supervisor campaign runs on this commit",
+      "status": "PASS"
+    },
+    "C2_SUPERVISOR_SCENARIOS": {
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\scripts\\paper_supervisor_campaign.py",
+        "scenarios",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\supervisor\\scenarios",
+        "--source-session",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\supervisor\\session"
+      ],
+      "detail": "",
+      "duration_s": 13.59,
+      "evidence": [],
+      "exit_code": 0,
+      "id": "C2_SUPERVISOR_SCENARIOS",
+      "log": "logs/C2_SUPERVISOR_SCENARIOS.log",
+      "statement": "corrupt evidence and exhausted budget are exercised",
+      "status": "PASS"
+    },
+    "C3_LOCK_CAMPAIGN": {
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\scripts\\paper_lock_campaign.py",
+        "run",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock",
+        "--modes",
+        "after_cycle",
+        "after_cycle",
+        "before_cycle",
+        "after_cycle",
+        "after_cycle",
+        "after_cycle",
+        "--race-iterations",
+        "2",
+        "5"
+      ],
+      "detail": "",
+      "duration_s": 999.78,
+      "evidence": [],
+      "exit_code": 0,
+      "id": "C3_LOCK_CAMPAIGN",
+      "log": "logs/C3_LOCK_CAMPAIGN.log",
+      "statement": "six crash sites and two reclaim races, on this commit",
+      "status": "PASS"
+    },
+    "G0_ENTRYPOINTS": {
+      "command": [],
+      "detail": "all present",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "G0_ENTRYPOINTS",
+      "log": null,
+      "statement": "every campaign and verifier entrypoint is present",
+      "status": "PASS"
+    },
+    "G1_TREE": {
+      "command": [],
+      "detail": "clean at 9a420ff18179 on gate/integration-001",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "G1_TREE",
+      "log": null,
+      "statement": "the execution tree is clean before anything runs",
+      "status": "PASS"
+    },
+    "J1_SUPERVISOR_CONTRACT": {
+      "command": [],
+      "detail": "verdict=PASS checks=33 mutations=12 undetected=0 false_success=0",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "J1_SUPERVISOR_CONTRACT",
+      "log": null,
+      "statement": "the supervisor verifier's report satisfies its contract",
+      "status": "PASS"
+    },
+    "J2_LOCK_CONTRACT": {
+      "command": [],
+      "detail": "verdict=PASS checks=32 mutations=9 undetected=0 false_success=0",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "J2_LOCK_CONTRACT",
+      "log": null,
+      "statement": "the lock verifier's report satisfies its contract",
+      "status": "PASS"
+    },
+    "J3_AUDIT_CLAIMS": {
+      "command": [],
+      "detail": "claims=5/5 fail=0 unknown=0 false_success=0",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "J3_AUDIT_CLAIMS",
+      "log": null,
+      "statement": "C1, L1 and the two self-controls all pass",
+      "status": "PASS"
+    },
+    "J4_CANDIDATE_BINDING": {
+      "command": [],
+      "detail": "supervisor.campaign=9a420ff18179 lock.campaign=9a420ff18179 supervisor.verifier=9a420ff18179 lock.verifier=9a420ff18179",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "J4_CANDIDATE_BINDING",
+      "log": null,
+      "statement": "every artefact is bound to the candidate commit",
+      "status": "PASS"
+    },
+    "J5_CAMPAIGN_SHAPE": {
+      "command": [],
+      "detail": "lock iterations=6 races=2 sites=['AFTER_CYCLE', 'BEFORE_CYCLE']; supervisor episodes=1 cycles=5 state=RECOVERED",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "J5_CAMPAIGN_SHAPE",
+      "log": null,
+      "statement": "the campaigns have the shape the contract requires",
+      "status": "PASS"
+    },
+    "M1_MANIFEST": {
+      "command": [],
+      "detail": "all mandatory artefacts present",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "M1_MANIFEST",
+      "log": null,
+      "statement": "every artefact is hashed into a manifest",
+      "status": "PASS"
+    },
+    "S1_COMMIT_STABLE": {
+      "command": [],
+      "detail": "head=9a420ff18179 observed=1 clean=True/True",
+      "duration_s": 0.0,
+      "evidence": [],
+      "exit_code": null,
+      "id": "S1_COMMIT_STABLE",
+      "log": null,
+      "statement": "the commit did not move while the gate ran",
+      "status": "PASS"
+    },
+    "V1_SUPERVISOR_VERIFIER": {
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\scripts\\paper_supervisor_verify.py",
+        "--campaign",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\supervisor",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\SUPERVISOR_VERIFICATION.json"
+      ],
+      "detail": "",
+      "duration_s": 5.61,
+      "evidence": [],
+      "exit_code": 0,
+      "id": "V1_SUPERVISOR_VERIFIER",
+      "log": "logs/V1_SUPERVISOR_VERIFIER.log",
+      "statement": "the supervisor verifier judges the campaign",
+      "status": "PASS"
+    },
+    "V2_LOCK_VERIFIER": {
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\scripts\\paper_lock_campaign_verify.py",
+        "--campaign",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\LOCK_CAMPAIGN_VERIFICATION.json"
+      ],
+      "detail": "",
+      "duration_s": 4.38,
+      "evidence": [],
+      "exit_code": 0,
+      "id": "V2_LOCK_VERIFIER",
+      "log": "logs/V2_LOCK_VERIFIER.log",
+      "statement": "the lock verifier judges the campaign",
+      "status": "PASS"
+    }
+  },
+  "summary": {
+    "BLOCKED": 0,
+    "FAIL": 0,
+    "NOT_TESTED": 0,
+    "PASS": 15,
+    "steps": 15
+  },
+  "task": "TAP-INTEGRATION-GATE-001",
+  "tree": {
+    "clean_after": true,
+    "clean_before": true,
+    "porcelain_after": [],
+    "porcelain_before": []
+  },
+  "verdict": "PASS"
+}

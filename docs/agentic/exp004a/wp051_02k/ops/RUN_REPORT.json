@@ -1,0 +1,305 @@
+{
+  "schema_version": "EXP004A_WP051_02K_OPS_RUN_V1",
+  "work_package": "WP-051-02K Operational Unblock",
+  "generated_at_utc": "2026-10-24T07:30:00Z",
+  "verdict": "BLOCKED_WITH_EVIDENCE",
+  "trees": {
+    "main": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
+    "main_head_before": "0e13160a",
+    "campaign_tree": "C:/Users/GVLLFR0035/Downloads/exp004a-recovery-02k",
+    "campaign_branch": "recovery/exp004a-02k-9983b050",
+    "campaign_head_before": "9983b050",
+    "campaign_head_after": "688c5805",
+    "campaign_commits": [
+      "0e41566d Make the EDGE-04 alarm survive the case it exists for",
+      "688c5805 Give the observer's own cadence an action that exists"
+    ]
+  },
+  "defects": [
+    {
+      "id": "DEF-02K-OPS-01",
+      "severity": "high",
+      "status": "REPAIRED",
+      "summary": "the guard died with FileNotFoundError when the state root was absent, so its own UNREADABLE/exit 2 was unreachable exactly when it was needed",
+      "commit": "0e41566d"
+    },
+    {
+      "id": "DEF-02K-OPS-04",
+      "severity": "high",
+      "status": "REPAIRED_FOR_THIS_TASK_OPEN_AS_DESIGN",
+      "summary": "the Forward task's exit 2 was python's 'cannot open file', which is indistinguishable from the observer's own ALREADY_RUNNING code: eleven days of a cadence that never ran read like a lane that was already busy",
+      "commit": "688c5805"
+    },
+    {
+      "id": "DEF-02K-OPS-02",
+      "severity": "medium",
+      "status": "OPEN",
+      "summary": "the guard's OK certifies a fresh tick, not a valid observation: a lane whose every tick fails verification still reports OK"
+    },
+    {
+      "id": "DEF-02K-OPS-03",
+      "severity": "low",
+      "status": "OPEN",
+      "summary": "a blocking transition appends two identical rows to WATCHDOG_EVENTS.jsonl (persist() appends, then main appends the escalated copy)"
+    }
+  ],
+  "steps": [
+    {
+      "id": "S01",
+      "work_package": "WP-02",
+      "action": "measure free space against the frozen budget, twelve samples",
+      "command": "python docs/agentic/exp004a/wp051_02k/ops/measure_capacity.py --repo <campaign> --repo <main> --repo <temp> --samples 12 --interval-seconds 20",
+      "exit_code": 0,
+      "result": "CAPACITY_OK",
+      "detail": {
+        "frozen_budget_bytes": 15638712264,
+        "frozen_budget_gib": 14.5647,
+        "free_min_gib": 39.3457,
+        "free_median_gib": 40.6635,
+        "free_max_gib": 40.8043,
+        "worst_sample_margin_gib": 24.781,
+        "worst_observed_drop_gib": 0.4703,
+        "net_change_gib": -1.4581,
+        "span_seconds": 220
+      },
+      "artifact": "CAPACITY_MEASUREMENT.json"
+    },
+    {
+      "id": "S02",
+      "work_package": "WP-01",
+      "action": "repoint the two scheduled tasks at the recovered guard, no new tasks",
+      "command": "schtasks /change /tn TradingAgentic-EDGE04-Watchdog /tr <python> <guard> --state-root <campaign root>",
+      "exit_code": 0,
+      "result": "CHANGED",
+      "detail": {
+        "tasks_changed": ["TradingAgentic-EDGE04-Watchdog", "TradingAgentic-EDGE04-Alarm", "TradingAgentic-EDGE04-Forward"],
+        "created": 0,
+        "previous_action_target": [
+          "bot-freebuff-exp004a-02h/scripts/edge04_watchdog.py (deleted file, exit 2)",
+          "bot freebuff/scripts/edge04_observer.py (deleted file, exit 2)"
+        ],
+        "new_action_target": [
+          "exp004a-recovery-02k/scripts/edge04_watchdog.py",
+          "exp004a-recovery-02k/scripts/edge04_forward_r01.cmd (launcher: the action limit is 261 characters, too short for both roots)"
+        ],
+        "final_states": {"Watchdog": "ENABLED", "Alarm": "ENABLED", "Forward": "DISABLED_PENDING_THE_15M_SHARD"}
+      }
+    },
+    {
+      "id": "S02b",
+      "work_package": "WP-01",
+      "action": "prove the Forward registration works, then park it",
+      "command": "schtasks /change /tn TradingAgentic-EDGE04-Forward /enable ; schtasks /run /tn TradingAgentic-EDGE04-Forward",
+      "exit_code": 1,
+      "result": "REGISTRATION_WORKS_LANE_BLOCKED",
+      "detail": {
+        "last_task_result": 1,
+        "row_written": {"run_id": "FWD-EDGE04-20261024T071500Z", "mode": "SCHEDULED", "outcome": "RUNTIME_EXCEPTION", "exit_code": 1, "error_class": "FileNotFoundError"},
+        "then": "task disabled again: a cadence that cannot observe would keep a green light on a lane with no evidence"
+      }
+    },
+    {
+      "id": "S03",
+      "work_package": "WP-01",
+      "action": "guard against a state root that does not exist",
+      "command": "python scripts/edge04_watchdog.py --state-root <missing root> --json --no-persist",
+      "exit_code_before": 1,
+      "exit_code_after": 2,
+      "result": "DEFECT_REPAIRED",
+      "detail": "FileNotFoundError in shutil.disk_usage took the whole alarm down; the documented UNREADABLE exit 2 was unreachable exactly when the root disappeared"
+    },
+    {
+      "id": "S04",
+      "work_package": "WP-01",
+      "action": "six fault-injection cases against the repaired guard",
+      "command": "python docs/agentic/exp004a/wp051_02k/ops/verify_guard.py --repo <campaign> --python <campaign python>",
+      "exit_code": 0,
+      "result": "GUARD_OPERATIONAL",
+      "detail": {
+        "cases": [
+          {"case": "missing_root", "status": "UNREADABLE", "exit": 2, "passed": true},
+          {"case": "fresh_tick", "status": "OK", "exit": 0, "passed": true},
+          {"case": "silent_observer", "status": "STALE", "exit": 9, "passed": true},
+          {"case": "blocked_for_space", "status": "BLOCKED", "exit": 8, "passed": true, "alert_receipt": true},
+          {"case": "recovery_after_block", "status": "RECOVERED", "exit": 0, "passed": true},
+          {"case": "corrupt_rows", "status": "DEGRADED", "exit": 1, "passed": true}
+        ],
+        "passed": 6,
+        "failed": 0
+      },
+      "artifact": "GUARD_VERIFICATION.json"
+    },
+    {
+      "id": "S05",
+      "work_package": "WP-01",
+      "action": "run both tasks the way the scheduler runs them",
+      "command": "schtasks /run /tn TradingAgentic-EDGE04-Watchdog ; schtasks /run /tn TradingAgentic-EDGE04-Alarm",
+      "exit_code": 0,
+      "result": "REAL_EXECUTION_OK",
+      "detail": {
+        "watchdog_last_task_result": 0,
+        "alarm_last_task_result": 0,
+        "watchdog_verdict": "OK",
+        "supervisor_verdict": "WATCHDOG_ALIVE",
+        "supervisor_watchdog_age_seconds": 19.0,
+        "transitions_observed": ["UNREADABLE -> RECOVERED -> OK"]
+      }
+    },
+    {
+      "id": "S06",
+      "work_package": "WP-03",
+      "action": "re-derive the frozen 1h corpus from the same public source and test it against the pin",
+      "command": "python docs/agentic/exp004a/wp051_02k/ops/recover_frozen_corpus.py --repo <campaign> --assets BTC,ETH,SOL --timeframes 1h",
+      "exit_code": 0,
+      "result": "RESTORED_AND_PINNED",
+      "detail": {
+        "BTC": {"bars": 62724, "digest_prefix16": "f4d16c3664c142d1", "frozen": "f4d16c3664c142d1", "matches": true},
+        "ETH": {"bars": 62724, "digest_prefix16": "365046d4738aa7b1", "frozen": "365046d4738aa7b1", "matches": true},
+        "SOL": {"bars": 48646, "digest_prefix16": "847d8eb45eafebd8", "frozen": "847d8eb45eafebd8", "matches": true},
+        "files_written": 23,
+        "bytes_written": 19380640
+      },
+      "artifact": "EVIDENCE.json#corpus.one_hour"
+    },
+    {
+      "id": "S07",
+      "work_package": "WP-03",
+      "action": "solve for the published 15m shard bytes instead of guessing a date",
+      "command": "python docs/agentic/exp004a/wp051_02k/ops/recover_frozen_corpus.py --repo <campaign> --assets BTC,ETH,SOL --timeframes 15m",
+      "exit_code": 1,
+      "result": "NOT_REPRODUCIBLE",
+      "detail": {
+        "BTC": {"bars": 38994, "bytes": 4497772, "published_bytes": 4497888, "short": 116, "sha256_matches": false},
+        "ETH": {"bars": 40152, "bytes": 4466430, "published_bytes": 4466466, "short": 36, "sha256_matches": false},
+        "SOL": {"bars": 40095, "bytes": 4222969, "published_bytes": 4223041, "short": 72, "sha256_matches": false}
+      },
+      "artifact": "EVIDENCE.json#corpus.fifteen_minutes"
+    },
+    {
+      "id": "S08",
+      "work_package": "WP-03",
+      "action": "search every drive for the four lost 15m shards",
+      "command": "find /c -xdev -name '*USDT_15m.json' ; find /g -name '*USDT_15m.json'",
+      "exit_code": 0,
+      "result": "ABSENT",
+      "detail": {"c_drive_hits": 27, "c_drive_shard_hits": 0, "g_drive_hits": 0, "alpha_expansion_dirs": ["only the one this package created"]},
+      "artifact": "EVIDENCE.json#search"
+    },
+    {
+      "id": "S09",
+      "work_package": "WP-03",
+      "action": "call the frozen pin the way the observer calls it",
+      "command": "python -c 'from trading_bot.research.edge03 import forward_plan as FP; FP.assert_frozen_corpus()'",
+      "exit_code": 3,
+      "result": "PIN_REFUSES",
+      "detail": "FileNotFoundError: .../data/raw/alpha003/price/BTCUSDT_15m.json"
+    },
+    {
+      "id": "S10",
+      "work_package": "WP-03",
+      "action": "first tick of a new campaign identity, new roots, new run_id",
+      "command": "python scripts/edge04_observer.py --state-root data/forward/edge04r01 --store-root data/forward/edge03r01",
+      "exit_code": 1,
+      "result": "RUNTIME_EXCEPTION",
+      "detail": {
+        "run_id": "FWD-EDGE04-20261024T071500Z",
+        "slot_key": "2026-10-24T07:15Z",
+        "error_class": "FileNotFoundError",
+        "duration_seconds": 21.676,
+        "rows_persisted": 2,
+        "corrupt_log_lines": 0,
+        "lease_released": true,
+        "observation_produced": false
+      },
+      "artifact": "EVIDENCE.json#campaign"
+    },
+    {
+      "id": "S11",
+      "work_package": "WP-04",
+      "action": "independent verifier, sealed 02K package",
+      "command": "python scripts/exp004a_wp051_02k_verify.py",
+      "exit_code": 1,
+      "result": "11/18 PASS, 7 FAIL",
+      "detail": {
+        "failing": [
+          "VOLUME_IS_AT_LEAST_AS_TIGHT_AS_REPORTED",
+          "BUDGET_RECOMPUTED_FROM_THE_LOG",
+          "FLOOR_UNCHANGED",
+          "WRITE_ONCE_SHARDS_UNCHANGED",
+          "APPEND_ONLY_PREFIXES_INTACT",
+          "NO_ROW_LOST_OR_INVENTED",
+          "NOTHING_FOREIGN_WAS_DELETED"
+        ],
+        "reading": "the seven failures are the absent store and the 02K capacity figures that the host has since outgrown; the 02K verdict itself is unchanged"
+      },
+      "artifact": "VERIFIER_02K.stdout.txt"
+    },
+    {
+      "id": "S12",
+      "work_package": "WP-04",
+      "action": "independent verifier, the forward lane against the new campaign root",
+      "command": "python scripts/edge04_verify.py --state-root data/forward/edge04r01 --repo <campaign>",
+      "exit_code": 1,
+      "result": "VERIFY_FAIL 7/15",
+      "detail": {
+        "passing": [
+          "SLOT_DISCIPLINE",
+          "OUTCOMES_AND_EXIT_CODES",
+          "NO_ORDER_PATH_OR_PROMOTION",
+          "MARKET_REQUESTS_ARE_SPENT",
+          "HEALTH_FOLLOWS_THE_LOG",
+          "BUDGET_DECLARED_MEASURED_AND_BOUNDED"
+        ],
+        "failing": [
+          "ARTIFACTS_PRESENT",
+          "EXPECTATION_ARITHMETIC",
+          "RULESET_PINNED_AND_UNCHANGED",
+          "COVERAGE_RULE_APPLIED",
+          "BACKFILL_IS_NOT_AN_OBSERVATION",
+          "DAILY_EVIDENCE_CONSISTENT",
+          "PUBLICATION_SWAPPED_ATOMICALLY",
+          "FREEZE_AND_FLOOR_DECLARED"
+        ],
+        "skipped": ["SCHEDULER_REGISTRATION_READ (no captured install.json: no observer task to read)"]
+      },
+      "artifact": "VERIFIER_EDGE04.json"
+    },
+    {
+      "id": "S13",
+      "work_package": "WP-05",
+      "action": "commit the guard repair alone, in the campaign branch",
+      "command": "git commit -- scripts/edge04_watchdog.py",
+      "exit_code": 0,
+      "result": "0e41566d",
+      "detail": {"files": 1, "insertions": 14, "deletions": 1}
+    }
+  ],
+  "acceptance": {
+    "watchdog_operational_and_verified": "PASS",
+    "capacity_above_frozen_budget_with_margin": "PASS",
+    "new_execution_with_verifiable_storage": "FAIL",
+    "critical_verifiers_pass_without_unjustified_skip": "FAIL",
+    "complete_independent_evidence": "PASS",
+    "false_success": 0
+  },
+  "tests": {
+    "guard_harness": {"cases": 6, "passed": 6, "artifact": "GUARD_VERIFICATION.json"},
+    "forward_lane_suite": {
+      "command": "pytest tests/unit/research/test_edge04_autonomous.py tests/unit/research/test_edge04r_continuity.py tests/unit/research/test_exp004a_wp051_02k_continue.py",
+      "result": "104 passed, 5 failed",
+      "failed_in": "test_edge04_autonomous.py",
+      "cause": "the pipeline cannot return a payload without the frozen 15m shard (KeyError: 'decisions_digest' downstream of the pin refusal)",
+      "pre_existing": true,
+      "pre_existing_proof": "test_edge04_autonomous.py alone: 5 failed, 44 passed at sealed HEAD 9983b050 with the guard reverted, and the same 5 with the guard repaired"
+    },
+    "guard_dependent_suite": {
+      "command": "pytest tests/unit/research/test_exp004a_wp051_02h.py tests/unit/research/test_exp004a_wp051_02i.py tests/unit/research/test_exp004a_wp051_02j.py",
+      "result": "62 passed, 1 failed",
+      "failed": "test_exp004a_wp051_02h.py::test_the_verifier_recomputes_the_ceiling_from_the_bars (COVERAGE_CEILING 6408/6480 recomputed against a claimed 6456/6480)",
+      "pre_existing": true,
+      "pre_existing_proof": "same single failure with the guard reverted to 9983b050",
+      "note": "the 02J test that loads the guard module passes with the repair"
+    },
+    "verifier_02k_pytest": {"result": "exit 0, 32 passed"}
+  }
+}

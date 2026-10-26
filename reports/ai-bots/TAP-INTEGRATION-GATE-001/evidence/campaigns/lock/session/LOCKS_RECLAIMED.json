@@ -1,0 +1,35 @@
+{
+  "locks": [
+    {
+      "fence": 17,
+      "lock": "BTCUSDT.jsonl.lock",
+      "pid": 35456,
+      "process_start_ms": 1792934896740,
+      "reason": "OWNER_PROCESS_DEAD"
+    },
+    {
+      "fence": 17,
+      "lock": "ETHUSDT.jsonl.lock",
+      "pid": 35456,
+      "process_start_ms": 1792934896740,
+      "reason": "OWNER_PROCESS_DEAD"
+    },
+    {
+      "fence": 17,
+      "lock": "SOLUSDT.jsonl.lock",
+      "pid": 35456,
+      "process_start_ms": 1792934896740,
+      "reason": "OWNER_PROCESS_DEAD"
+    },
+    {
+      "fence": 17,
+      "lock": "STREAM.jsonl.lock",
+      "pid": 35456,
+      "process_start_ms": 1792934896740,
+      "reason": "OWNER_PROCESS_DEAD"
+    }
+  ],
+  "policy": "reclaim only when the recorded pid is provably gone",
+  "run_id": "run-043208c72bc5e8e7411a",
+  "session_id": "sess-2f6f78a25c6165640fb7"
+}

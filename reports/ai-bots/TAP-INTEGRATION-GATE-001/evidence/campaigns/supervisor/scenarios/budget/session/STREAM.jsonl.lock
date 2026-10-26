@@ -1,0 +1,11 @@
+{
+  "acquired_at_utc": "2026-10-25T13:14:34Z",
+  "fence": 3,
+  "host": "DESKTOP-4CHO695",
+  "path": "STREAM.jsonl.lock",
+  "pid": 37476,
+  "process_start_ms": 1792934069867,
+  "purpose": "ledger:STREAM.jsonl",
+  "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+  "token": "8d6f94531f944668a14d121c6ffd5e0d"
+}

@@ -1,0 +1,413 @@
+{
+  "artifact": "WP10_PHASE0_WP9_CLOSURE",
+  "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
+  "phase": "0 \u2014 CONTROLLED CLOSE OF WP-9",
+  "generated_at_utc": "2026-10-11T23:12:19Z",
+  "head": "90ed615b1b2514682bbf9a85834fdd81c45f0774",
+  "branch": "main",
+  "lane_commit": {
+    "sha": "90ed615b1b2514682bbf9a85834fdd81c45f0774",
+    "subject": "Close WP-9 on its own files: the disk defect, the rehearsal, and the register.",
+    "author": "Extr3sao",
+    "authored_at": "2026-10-12T00:57:50+02:00",
+    "resolved": true
+  },
+  "scope": {
+    "files_touched": 73,
+    "owned": [
+      ".ci/wp9/analyse.err",
+      ".ci/wp9/analyse.json",
+      ".ci/wp9/ci_norun.err",
+      ".ci/wp9/ci_norun.json",
+      ".ci/wp9/ci_run.err",
+      ".ci/wp9/ci_run.json",
+      ".ci/wp9/ci_run2.err",
+      ".ci/wp9/ci_run2.json",
+      ".ci/wp9/ci_run3.err",
+      ".ci/wp9/ci_run3.json",
+      ".ci/wp9/ci_run4.err",
+      ".ci/wp9/ci_run4.json",
+      ".ci/wp9/disk.err",
+      ".ci/wp9/disk.json",
+      ".ci/wp9/evidence/preflight_autoscale.err",
+      ".ci/wp9/evidence/preflight_autoscale.out",
+      ".ci/wp9/evidence/preflight_refusal.err",
+      ".ci/wp9/evidence/preflight_refusal.out",
+      ".ci/wp9/evidence/preflight_refusal_default.err",
+      ".ci/wp9/evidence/preflight_refusal_default.out",
+      ".ci/wp9/probe1.out",
+      ".ci/wp9/runreport.final.err",
+      ".ci/wp9/runreport.final.out",
+      ".ci/wp9/verify.final.err",
+      ".ci/wp9/verify.final.out",
+      ".ci/wp9/wp9_ci_audit.final.err",
+      ".ci/wp9/wp9_ci_audit.final.out",
+      ".ci/wp9/wp9_disk_budget_audit.final.err",
+      ".ci/wp9/wp9_disk_budget_audit.final.out",
+      ".ci/wp9/wp9_economic_blockers.final.err",
+      ".ci/wp9/wp9_economic_blockers.final.out",
+      ".ci/wp9/wp9_m03_m07_readiness.final.err",
+      ".ci/wp9/wp9_m03_m07_readiness.final.out",
+      "data/recovery/wp9/FINAL_REPORT.md",
+      "data/recovery/wp9/INDEPENDENT_VERIFICATION.json",
+      "data/recovery/wp9/RFC_050_COST_AND_ENTRY_DRAFT.md",
+      "data/recovery/wp9/RUN_REPORT.json",
+      "data/recovery/wp9/RUN_REPORT.md",
+      "data/recovery/wp9/WP9_ACTIVE_ECONOMIC_BLOCKERS.json",
+      "data/recovery/wp9/WP9_ACTIVE_ECONOMIC_BLOCKERS.md",
+      "data/recovery/wp9/WP9_CI_EXECUTION_REPORT.json",
+      "data/recovery/wp9/WP9_CI_EXECUTION_REPORT.md",
+      "data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.json",
+      "data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.md",
+      "data/recovery/wp9/WP9_M03_M07_READINESS.json",
+      "data/recovery/wp9/WP9_M03_M07_READINESS.md",
+      "data/recovery/wp9/WP9_RUNTIME_24H_REPORT.json",
+      "data/recovery/wp9/WP9_RUNTIME_24H_REPORT.md",
+      "data/recovery/wp9/evidence/preflight_autoscale.err",
+      "data/recovery/wp9/evidence/preflight_autoscale.out",
+      "data/recovery/wp9/evidence/preflight_refusal.err",
+      "data/recovery/wp9/evidence/preflight_refusal.out",
+      "data/recovery/wp9/evidence/preflight_refusal_default.err",
+      "data/recovery/wp9/evidence/preflight_refusal_default.out",
+      "data/recovery/wp9/evidence/runtime/1-interval-cadence/RUN_REPORT.json",
+      "data/recovery/wp9/evidence/runtime/2-bar-close-cadence/RUN_REPORT.json",
+      "data/recovery/wp9/evidence/runtime/3-controlled-stop/RUN_REPORT.json",
+      "data/recovery/wp9/evidence/runtime/4-resume-after-stop/RUN_REPORT.json",
+      "data/recovery/wp9/evidence/runtime/LEGS.json",
+      "data/recovery/wp9/evidence/runtime/PAPER_DAILY_REPORT.json",
+      "data/recovery/wp9/evidence/runtime/PAPER_RUN.json",
+      "data/recovery/wp9/evidence/runtime/heartbeat.json",
+      "data/recovery/wp9/evidence/runtime/traces.jsonl",
+      "scripts/wp9_ci_audit.py",
+      "scripts/wp9_disk_budget_audit.py",
+      "scripts/wp9_economic_blockers.py",
+      "scripts/wp9_m03_m07_readiness.py",
+      "scripts/wp9_run_report.py",
+      "scripts/wp9_runtime_rehearsal.py",
+      "scripts/wp9_verify.py",
+      "tests/unit/research/test_wp9_disk_budget.py"
+    ],
+    "declared_exceptions": [
+      {
+        "path": "scripts/start_paper_lab.py",
+        "reason": "the enforcement point of the disk valve: the preflight that refuses an unaffordable window lives in the launcher, and WP-9's defect is only closed if the launcher refuses"
+      },
+      {
+        "path": "src/trading_bot/research/disk_budget.py",
+        "reason": "the disk valve itself: the measured-rate budget WP-9 introduced"
+      }
+    ],
+    "foreign": [],
+    "undeclared": [],
+    "verdict": "PASS"
+  },
+  "secrets": {
+    "patterns": [
+      "private_key_block",
+      "openai_style",
+      "aws_access_key",
+      "binance_key_shape",
+      "generic_password",
+      "bearer",
+      "env_file_content"
+    ],
+    "files_scanned": 73,
+    "hits": [],
+    "canary_detected": true,
+    "verdict": "PASS"
+  },
+  "controls": [
+    {
+      "id": "control-classifier",
+      "what": "a foreign lane's path and an undeclared path are both reported",
+      "detected": true,
+      "observed": {
+        "data/recovery/wp9/RUN_REPORT.json": "owned",
+        "data/st6/ST6_RUNS.jsonl": "foreign",
+        "somewhere/else.txt": "undeclared",
+        "scripts/start_paper_lab.py": "declared_exception"
+      }
+    },
+    {
+      "id": "control-secret-canary",
+      "what": "the secret scanner sees a synthetic credential",
+      "detected": true
+    },
+    {
+      "id": "control-reproduction",
+      "what": "a comparison against a mutated reference is flagged",
+      "mutation": "WP9_M03_M07_READINESS.json: criteria_not_met 2 -> 3",
+      "detected": true,
+      "flagged": [
+        "WP9_ACTIVE_ECONOMIC_BLOCKERS.json"
+      ]
+    },
+    {
+      "id": "control-nothing-ran",
+      "what": "an artefact whose producer did not run is excluded from the identity claim",
+      "detected": true,
+      "excluded_when_its_producer_failed": [
+        "WP9_DISK_BUDGET_AUDIT.json"
+      ]
+    }
+  ],
+  "not_exercised": [
+    "the four runtime legs: they start the real launcher and a scheduler, so the closure runs them only when asked for explicitly (--run-runtime-legs)",
+    "the CI execution report: regenerating it re-runs two other lanes' workflow sequences (~9 min) and does not verify WP-9's own claims, which wp9_verify.py re-derives from the workflow text instead"
+  ],
+  "clean_checkout": {
+    "created": true,
+    "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp10-phase0-90ed615b",
+    "head": "90ed615b1b2514682bbf9a85834fdd81c45f0774",
+    "head_is_requested_commit": true,
+    "dirty_before_run": null,
+    "module_resolved_to": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp10-phase0-90ed615b\\src\\trading_bot\\__init__.py",
+    "module_resolved_inside_checkout": true,
+    "pristine_copy": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp10-phase0-pristine-90ed615b"
+  },
+  "rehearsal": [
+    {
+      "id": "disk-audit",
+      "what": "the disk budget audit (the defect)",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/wp9_disk_budget_audit.py",
+      "stdout_to": null,
+      "exit_code": 2,
+      "expected_exit_code": 0,
+      "result": "FAIL",
+      "seconds": 0.094,
+      "stdout_tail": "{\"verdict\": \"BLOCKED_MISSING_INPUT\", \"missing\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\microstructure-forward-continuous\\\\manifest\\\\paper-lab-continuous-02.json\"}",
+      "stderr_tail": "",
+      "missing_input_named": "C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\microstructure-forward-continuous\\\\manifest\\\\paper-lab-continuous-02.json"
+    },
+    {
+      "id": "readiness",
+      "what": "M-03 / M-07 readiness",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/wp9_m03_m07_readiness.py",
+      "stdout_to": null,
+      "exit_code": 1,
+      "expected_exit_code": 0,
+      "result": "FAIL",
+      "seconds": 0.11,
+      "stdout_tail": "",
+      "stderr_tail": "    sys.exit(main())\n             ^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp10-phase0-90ed615b\\scripts\\wp9_m03_m07_readiness.py\", line 628, in main\n    payload = audit()\n              ^^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp10-phase0-90ed615b\\scripts\\wp9_m03_m07_readiness.py\", line 411, in audit\n    hypotheses = evaluate(preregistration, history, rates)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp10-phase0-90ed615b\\scripts\\wp9_m03_m07_readiness.py\", line 262, in evaluate\n    interval_seconds = (hours * 3600.0) / (samples / max(1, len({\"perp|BTCUSDT\", \"perp|ETHUSDT\"})))\n                       ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nZeroDivisionError: float division by zero",
+      "missing_input_named": null
+    },
+    {
+      "id": "economics",
+      "what": "ACTIVE economic blockers",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/wp9_economic_blockers.py",
+      "stdout_to": null,
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "result": "PASS",
+      "seconds": 0.25,
+      "stdout_tail": "EXECUTION_COSTS (primary for 7, flagged for 24) on top of NO_ECONOMIC_ADVANTAGE (primary for 17): C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp10-phase0-90ed615b\\data\\recovery\\wp9\\WP9_ACTIVE_ECONOMIC_BLOCKERS.json \u00b7 C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp10-phase0-90ed615b\\data\\recovery\\wp9\\WP9_ACTIVE_ECONOMIC_BLOCKERS.md \u00b7 C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp10-phase0-90ed615b\\data\\recovery\\wp9\\RFC_050_COST_AND_ENTRY_DRAFT.md",
+      "stderr_tail": "",
+      "missing_input_named": null
+    },
+    {
+      "id": "preflight-refusal",
+      "what": "the launcher refuses a 24 h window its collector budget cannot pay for",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/start_paper_lab.py --duration-hours 24 --dry-run",
+      "stdout_to": "data/recovery/wp9/evidence/preflight_refusal.out",
+      "exit_code": 4,
+      "expected_exit_code": 4,
+      "result": "PASS",
+      "seconds": 1.859,
+      "stdout_tail": "      \"collector\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\microstructure-forward-lab\\\\state\\\\paper-lab-20261011-231227.stop\",\n      \"retention\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\paper-lab\\\\paper-lab-20261011-231227\\\\STOP.retention\",\n      \"strategy_lab\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\paper-lab\\\\paper-lab-20261011-231227\\\\STOP.strategy_lab\"\n    },\n    \"method\": \"the supervisor writes each child's stop file, waits for it to seal and finalise, and only then terminates the ones that did not exit\"\n  },\n  \"no_live_path\": \"children are read-only market data plus the PAPER broker; no child holds execution credentials\"\n}",
+      "stderr_tail": "[lab] disk preflight REFUSED: INCOHERENT_BUDGET \u2014 the collector valve cannot pay for the window: 1.100 GB affords 5.72 h of the 24.00 h declared, and 4.618 GB is needed at 192.42 MB/h (this is the defect that stopped the first 24 h window)",
+      "missing_input_named": null
+    },
+    {
+      "id": "preflight-refusal-default",
+      "what": "the same refusal on the default budget, with the run named",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/start_paper_lab.py --duration-hours 24 --dry-run --run-id wp9-preflight-refusal-default",
+      "stdout_to": "data/recovery/wp9/evidence/preflight_refusal_default.out",
+      "exit_code": 4,
+      "expected_exit_code": 4,
+      "result": "PASS",
+      "seconds": 1.656,
+      "stdout_tail": "      \"collector\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\microstructure-forward-lab\\\\state\\\\wp9-preflight-refusal-default.stop\",\n      \"retention\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\paper-lab\\\\wp9-preflight-refusal-default\\\\STOP.retention\",\n      \"strategy_lab\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\paper-lab\\\\wp9-preflight-refusal-default\\\\STOP.strategy_lab\"\n    },\n    \"method\": \"the supervisor writes each child's stop file, waits for it to seal and finalise, and only then terminates the ones that did not exit\"\n  },\n  \"no_live_path\": \"children are read-only market data plus the PAPER broker; no child holds execution credentials\"\n}",
+      "stderr_tail": "[lab] disk preflight REFUSED: INCOHERENT_BUDGET \u2014 the collector valve cannot pay for the window: 1.100 GB affords 5.72 h of the 24.00 h declared, and 4.618 GB is needed at 192.42 MB/h (this is the defect that stopped the first 24 h window)",
+      "missing_input_named": null
+    },
+    {
+      "id": "preflight-autoscale",
+      "what": "the same window, with the collector budget autoscaled, is accepted",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/start_paper_lab.py --duration-hours 24 --dry-run --autoscale-collector-budget --run-id wp9-preflight-autoscale",
+      "stdout_to": "data/recovery/wp9/evidence/preflight_autoscale.out",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "result": "PASS",
+      "seconds": 1.578,
+      "stdout_tail": "      \"collector\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\microstructure-forward-lab\\\\state\\\\wp9-preflight-autoscale.stop\",\n      \"retention\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\paper-lab\\\\wp9-preflight-autoscale\\\\STOP.retention\",\n      \"strategy_lab\": \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\paper-lab\\\\wp9-preflight-autoscale\\\\STOP.strategy_lab\"\n    },\n    \"method\": \"the supervisor writes each child's stop file, waits for it to seal and finalise, and only then terminates the ones that did not exit\"\n  },\n  \"no_live_path\": \"children are read-only market data plus the PAPER broker; no child holds execution credentials\"\n}",
+      "stderr_tail": "",
+      "missing_input_named": null
+    },
+    {
+      "id": "focused-tests",
+      "what": "the WP-9 focused test file",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_wp9_disk_budget.py",
+      "stdout_to": null,
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "result": "PASS",
+      "seconds": 2.438,
+      "stdout_tail": "...............                                                          [100%]\n15 passed in 1.55s",
+      "stderr_tail": "",
+      "missing_input_named": null
+    },
+    {
+      "id": "verifier",
+      "what": "the independent verifier, after the artefacts it checks exist",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/wp9_verify.py",
+      "stdout_to": null,
+      "exit_code": 1,
+      "expected_exit_code": 0,
+      "result": "FAIL",
+      "seconds": 0.125,
+      "stdout_tail": "",
+      "stderr_tail": "    manifest = read(MANIFEST)\n               ^^^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp10-phase0-90ed615b\\scripts\\wp9_verify.py\", line 74, in read\n    return json.loads(path.read_text(encoding=\"utf-8\"))\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 1058, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 1044, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\microstructure-forward-continuous\\\\manifest\\\\paper-lab-continuous-02.json'",
+      "missing_input_named": "C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\microstructure-forward-continuous\\\\manifest\\\\paper-lab-continuous-02.json"
+    },
+    {
+      "id": "run-report",
+      "what": "the run report, folded from the regenerated artefacts",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/wp9_run_report.py",
+      "stdout_to": null,
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "result": "PASS",
+      "seconds": 0.109,
+      "stdout_tail": "PARTIAL \u2014 every capability claim is verified and every missing one is named; CI_CERTIFIED and a 24 h stability verdict are both withheld by their own criteria: data/recovery/wp9/RUN_REPORT.json (0 missing artefact(s))",
+      "stderr_tail": "",
+      "missing_input_named": null
+    }
+  ],
+  "reproduction": {
+    "artifacts": [
+      {
+        "artifact": "INDEPENDENT_VERIFICATION.json",
+        "producer": "verifier",
+        "producer_result": "FAIL",
+        "comparison": "NOT_REPRODUCED",
+        "identical": null,
+        "why": "the step that writes this artefact did not run, so the file in the checkout is the commit's own copy"
+      },
+      {
+        "artifact": "RUN_REPORT.json",
+        "producer": "run-report",
+        "producer_result": "PASS",
+        "comparison": "full document, volatile keys excluded",
+        "excluded_keys": [
+          "generated_at_utc",
+          "hours_executed",
+          "seconds",
+          "traces_added"
+        ],
+        "digest_committed": "74167a8818485a67",
+        "digest_regenerated": "74167a8818485a67",
+        "identical": true
+      },
+      {
+        "artifact": "WP9_ACTIVE_ECONOMIC_BLOCKERS.json",
+        "producer": "economics",
+        "producer_result": "PASS",
+        "comparison": "full document, volatile keys excluded",
+        "excluded_keys": [
+          "generated_at_utc"
+        ],
+        "digest_committed": "78632b74e3702f16",
+        "digest_regenerated": "2522a22f3a88e819",
+        "identical": false
+      },
+      {
+        "artifact": "WP9_CI_EXECUTION_REPORT.json",
+        "producer": "ci-audit",
+        "producer_result": "NOT_RUN",
+        "comparison": "NOT_REPRODUCED",
+        "identical": null,
+        "why": "the step that writes this artefact did not run, so the file in the checkout is the commit's own copy"
+      },
+      {
+        "artifact": "WP9_DISK_BUDGET_AUDIT.json",
+        "producer": "disk-audit",
+        "producer_result": "FAIL",
+        "comparison": "NOT_REPRODUCED",
+        "identical": null,
+        "why": "the step that writes this artefact did not run, so the file in the checkout is the commit's own copy"
+      },
+      {
+        "artifact": "WP9_M03_M07_READINESS.json",
+        "producer": "readiness",
+        "producer_result": "FAIL",
+        "comparison": "NOT_REPRODUCED",
+        "identical": null,
+        "why": "the step that writes this artefact did not run, so the file in the checkout is the commit's own copy"
+      },
+      {
+        "artifact": "WP9_RUNTIME_24H_REPORT.json",
+        "producer": "runtime-legs",
+        "producer_result": "NOT_RUN",
+        "comparison": "NOT_REPRODUCED",
+        "identical": null,
+        "why": "the step that writes this artefact did not run, so the file in the checkout is the commit's own copy"
+      },
+      {
+        "artifact": "evidence/preflight_autoscale.out",
+        "producer": "preflight-autoscale",
+        "producer_result": "PASS",
+        "comparison": "projection(disk, duration_hours, processes, verdict)",
+        "digest_committed": "82e3ea840f9a6bf4",
+        "digest_regenerated": "82e3ea840f9a6bf4",
+        "identical": true
+      },
+      {
+        "artifact": "evidence/preflight_refusal.out",
+        "producer": "preflight-refusal",
+        "producer_result": "PASS",
+        "comparison": "projection(disk, duration_hours, processes, verdict)",
+        "digest_committed": "82e3ea840f9a6bf4",
+        "digest_regenerated": "82e3ea840f9a6bf4",
+        "identical": true
+      },
+      {
+        "artifact": "evidence/preflight_refusal_default.out",
+        "producer": "preflight-refusal-default",
+        "producer_result": "PASS",
+        "comparison": "projection(disk, duration_hours, processes, verdict)",
+        "digest_committed": "82e3ea840f9a6bf4",
+        "digest_regenerated": "82e3ea840f9a6bf4",
+        "identical": true
+      }
+    ],
+    "compared": 5,
+    "mismatches": [
+      "WP9_ACTIVE_ECONOMIC_BLOCKERS.json"
+    ],
+    "not_reproduced": [
+      "INDEPENDENT_VERIFICATION.json",
+      "WP9_CI_EXECUTION_REPORT.json",
+      "WP9_DISK_BUDGET_AUDIT.json",
+      "WP9_M03_M07_READINESS.json",
+      "WP9_RUNTIME_24H_REPORT.json"
+    ]
+  },
+  "clean_checkout_removed": {
+    "removed": true,
+    "stderr": null
+  },
+  "producers_failed": [
+    "disk-audit",
+    "readiness",
+    "verifier"
+  ],
+  "inputs_absent_from_the_commit": [
+    "C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\wp10-phase0-90ed615b\\\\reports\\\\microstructure-forward-continuous\\\\manifest\\\\paper-lab-continuous-02.json"
+  ],
+  "finding": "the lane's artefacts are functions of (this commit, untracked campaign inputs). They rebuild in the working tree they were produced in and not from the commit alone: the same defect class WP-8B closed for its own lane with evidence copies under evidence/inputs/, still open here. The closure is therefore scoped, not withdrawn: the scope and secret gates pass, the launcher evidence and the focused tests reproduce exactly, and the three artefacts that consume campaign data are named as unreproducible rather than reported as identical to themselves",
+  "free_bytes_before": 15889547264,
+  "elapsed_seconds": 14.166,
+  "verdict": "PARTIAL/FAIL \u2014 exit 4; producers failed: disk-audit, readiness, verifier; artefacts that did not match the commit: WP9_ACTIVE_ECONOMIC_BLOCKERS.json; inputs the commit does not carry: 1 named in this file",
+  "exit_code": 4
+}

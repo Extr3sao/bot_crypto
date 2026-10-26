@@ -1,0 +1,114 @@
+{
+  "artifact": "RFC_TAP_CI_003_INDEPENDENT_VERIFICATION",
+  "generated_at_utc": "2026-10-26T13:20:45Z",
+  "head": "71be52ee5bb15fb0a4046429ceb6a63e71dd7b6c",
+  "tested_commit": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+  "baseline_commit": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+  "status": "PASS",
+  "checks": [
+    {
+      "id": "S1",
+      "check": "every artefact the report cites still has the recorded digest",
+      "result": "PASS",
+      "detail": "31 files verified"
+    },
+    {
+      "id": "S2",
+      "check": "the certification is internally consistent, current and authorizes nothing",
+      "result": "PASS",
+      "detail": "CERTIFIED, fingerprint recomputes, evidence digests current"
+    },
+    {
+      "id": "S3",
+      "check": "the published audit's identity recomputes and matches its explorer pin",
+      "result": "PASS",
+      "detail": "c6ea34388745471e..."
+    },
+    {
+      "id": "S4",
+      "check": "`active_economic_audit.py --check` passes without writing",
+      "result": "PASS",
+      "detail": "exit 0: PASS (CURRENT)"
+    },
+    {
+      "id": "S5",
+      "check": "a fresh gate run reproduces every published number",
+      "result": "PASS",
+      "detail": "FULL_REPRODUCTION_PASS 13 checks, 0 failed"
+    },
+    {
+      "id": "S6",
+      "check": "the fix moved no economic finding or aggregate",
+      "result": "PASS",
+      "detail": "findings identical to a83ac165"
+    },
+    {
+      "id": "S7",
+      "check": "no risk, admission, cost or required-check file changed",
+      "result": "PASS",
+      "detail": "config/, risk/, cost model and CI gates untouched"
+    },
+    {
+      "id": "S8",
+      "check": "the report's numbers match the evidence it ships",
+      "result": "PASS",
+      "detail": "gate, evidence, certification, rehearsal and audit agree"
+    },
+    {
+      "id": "S9",
+      "check": "both affected workflows are green on the tested commit",
+      "result": "PASS",
+      "detail": "Cost-barrier drift gate=success, recovery-determinism=success"
+    }
+  ],
+  "checks_total": 9,
+  "checks_failed": 0,
+  "blocked": 0,
+  "controls": [
+    {
+      "control": "one manifest digest changed",
+      "detected": true,
+      "signal": "scripts/active_economic_audit.py changed (LF-normalised content)"
+    },
+    {
+      "control": "certification fingerprint rewritten",
+      "detected": true,
+      "signal": "evidence_fingerprint does not recompute from head+digests"
+    },
+    {
+      "control": "one cell's economics raised by 1 bps",
+      "detected": true,
+      "signal": "the identity no longer matches the stored payload_sha256"
+    },
+    {
+      "control": "the report's gate status flipped to FAILED",
+      "detected": true,
+      "signal": "TEST_RESULTS gate status contradicts the gate report"
+    }
+  ],
+  "controls_missed": 0,
+  "false_success": 0,
+  "ci_runs": [
+    {
+      "workflow": "Cost-barrier drift gate",
+      "id": 40326169405,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169405"
+    },
+    {
+      "workflow": "recovery-determinism",
+      "id": 40326169257,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169257"
+    }
+  ],
+  "manifest_sha256": "8a6ef9f80c4df7201cdfcca6f71f1de47cf7210f5905932e8d97003363763e48",
+  "report_sha256": {
+    "FINAL_REPORT.json": "bf056a04fc9a2e6b7d8d1b8decf271765fa7478e6bbaa16917e478b22c70bce4",
+    "FINAL_REPORT.md": "a24625ff6bbffcd4b88246a9231ea55ac1f24094736c1bbcd3f9dfeb3f4b970b"
+  },
+  "verifier": "reports/ai-bots/TAP-CI-REPRO-003/tools/verify_report.py",
+  "scope": "checks the delivered report, not the strategy: a PASS says the evidence is current, reproducible and honestly described; it authorizes no promotion, no PAPER change, no capital and no live order"
+}

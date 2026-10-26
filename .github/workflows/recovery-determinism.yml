@@ -1,0 +1,165 @@
+# Recovery lane determinism (WP-8E) — the clean-checkout rehearsal in CI.
+#
+# What this workflow is for: the ACTIVE recovery lane's published artefacts
+# (data/recovery/CAMPAIGN_STATE_VIEW.json, data/recovery/ACTIVE_ECONOMIC_AUDIT.json)
+# claim to be a function of the commit and not of the machine. Until WP-8 that claim
+# was false — the programs read gitignored `reports/` outputs and another lane's live
+# state file, and hashed raw bytes, so a clean checkout produced different numbers.
+#
+# The sequence below is the same rehearsal the developer runs locally
+# (``scripts/clean_checkout_rehearsal.py``), which reports ``runner: GITHUB_ACTIONS``
+# here and ``runner: LOCAL`` on a workstation: a green run on both is what the
+# cross-platform claim rests on. The rehearsal itself creates a *detached worktree of
+# the tested commit* and never operates on the checked-out tree, so a pass is a claim
+# about the commit rather than about the runner.
+#
+#   1. verify the committed input bundle against its own digests;
+#   2. run the lane's contract tests and the determinism regressions;
+#   3. run the rehearsal end to end (scope full): build the artefacts in the detached
+#      worktree from the commit, compare them with the published ones byte for byte,
+#      then run the independent verifier *inside* that worktree;
+#   4. keep the rehearsal report and the verifier's record as build artefacts, so a
+#      green run leaves something identifiable behind instead of a log line.
+#
+# No step is softened: there is no `continue-on-error` anywhere in this file, and the
+# rehearsal refuses to report PASS when any path under test is dirty.
+
+name: recovery-determinism
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "scripts/campaign_state_view.py"
+      - "scripts/active_economic_audit.py"
+      - "scripts/recovery_verify.py"
+      - "scripts/recovery_input_evidence.py"
+      - "scripts/recovery_economic_invariance.py"
+      - "scripts/clean_checkout_rehearsal.py"
+      - "scripts/cost_barrier_evidence.py"
+      - "scripts/cost_barrier_certify.py"
+      - "data/recovery/CAMPAIGN_STATE_VIEW.json"
+      - "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md"
+      - "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+      - "data/recovery/ACTIVE_ECONOMIC_AUDIT.md"
+      - "data/recovery/wp8/evidence/**"
+      - "data/recovery/wp8/RUN_REPORT.json"
+      - "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json"
+      - "PAPER_DATA_24H_REPORT.json"
+      - "config/strategy_admission.json"
+      - "data/rfc049/discovery2/CAMPAIGN_CLOSURE.json"
+      - "tasks/decisions.md"
+      - "tests/unit/research/test_active_recovery_wp.py"
+      - "tests/unit/research/test_recovery_determinism.py"
+      - "tests/unit/research/test_recovery_ci_parity.py"
+      - ".github/workflows/recovery-determinism.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/campaign_state_view.py"
+      - "scripts/active_economic_audit.py"
+      - "scripts/recovery_verify.py"
+      - "scripts/recovery_input_evidence.py"
+      - "scripts/recovery_economic_invariance.py"
+      - "scripts/clean_checkout_rehearsal.py"
+      - "scripts/cost_barrier_evidence.py"
+      - "scripts/cost_barrier_certify.py"
+      - "data/recovery/CAMPAIGN_STATE_VIEW.json"
+      - "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md"
+      - "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+      - "data/recovery/ACTIVE_ECONOMIC_AUDIT.md"
+      - "data/recovery/wp8/evidence/**"
+      - "data/recovery/wp8/RUN_REPORT.json"
+      - "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json"
+      - "PAPER_DATA_24H_REPORT.json"
+      - "config/strategy_admission.json"
+      - "data/rfc049/discovery2/CAMPAIGN_CLOSURE.json"
+      - "tasks/decisions.md"
+      - "tests/unit/research/test_active_recovery_wp.py"
+      - "tests/unit/research/test_recovery_determinism.py"
+      - "tests/unit/research/test_recovery_ci_parity.py"
+      - ".github/workflows/recovery-determinism.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  recovery-determinism:
+    name: Rehearse the recovery lane in a clean checkout of this commit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # a worktree of a moving parent needs the history the rehearsal walks
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Prepare the evidence directory
+        run: mkdir -p .ci
+
+      - name: Verify the committed input bundle
+        run: >-
+          uv run python scripts/recovery_input_evidence.py --verify --json
+          > .ci/recovery_input_verify.json
+
+      - name: The repair moved no economic finding
+        run: uv run python scripts/recovery_economic_invariance.py --check --json
+
+      # The audit's own determinism contract, exercised in the mode CI needs: the published
+      # artefact must equal a rebuild of this commit. `--check` is read-only, so a stale
+      # audit fails here instead of being rewritten into agreement with itself first.
+      - name: The published audit is current (read-only check)
+        run: uv run python scripts/active_economic_audit.py --check
+
+      - name: Lane contract tests and determinism regressions
+        run: >-
+          uv run python -m pytest
+          tests/unit/research/test_active_recovery_wp.py
+          tests/unit/research/test_recovery_determinism.py
+          tests/unit/research/test_recovery_ci_parity.py
+          -q -p no:cacheprovider
+
+      - name: Clean-checkout rehearsal (scope full)
+        run: >-
+          uv run python scripts/clean_checkout_rehearsal.py --scope full --json
+          > .ci/CLEAN_CHECKOUT_REHEARSAL_STDOUT.json
+
+      - name: Independent verification of the published artefacts
+        run: >-
+          uv run python scripts/recovery_verify.py --json
+          > .ci/INDEPENDENT_VERIFICATION_STDOUT.json
+
+      - name: Keep the evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery-determinism
+          path: |
+            .ci/
+            data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json
+            data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md
+            data/recovery/INDEPENDENT_VERIFICATION.json
+          # `.ci/` is hidden, and upload-artifact v4 drops dot-directories by default:
+          # the job looked green while the rehearsal and verifier outputs were missing
+          # from the artifact. Upload what the run actually produced.
+          include-hidden-files: true

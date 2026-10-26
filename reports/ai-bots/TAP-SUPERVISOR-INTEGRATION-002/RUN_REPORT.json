@@ -1,0 +1,236 @@
+{
+  "schema_version": "TAP_SUPERVISOR_INTEGRATION_RUN_REPORT_V1",
+  "task": "TAP-SUPERVISOR-INTEGRATION-002",
+  "verdict": "NOT_READY",
+  "blocking_item": "G1/D: the weekly loss veto now rolls at UTC Monday 00:00; the risk-manager must sign the loosening",
+  "branch": {
+    "name": "integ/supervisor-002",
+    "worktree": "C:/Users/GVLLFR0035/Downloads/ff-wt-integ002",
+    "base": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+    "main_unchanged": true,
+    "lane": "3b758e22f0c9835646c9eba9db6634757970b126",
+    "lane_merged": false,
+    "merge_commits": 0
+  },
+  "source_audit": {
+    "branch": "audit/supervisor-integration-001",
+    "commit": "a8abd83e",
+    "documents": [
+      "SUPERVISOR_INTEGRATION_AUDIT.md",
+      "RUNTIME_AUTHORITY_MAP.md",
+      "DEPENDENCY_MAP.md",
+      "INTEGRATION_PLAN.md",
+      "RUN_REPORT.json"
+    ]
+  },
+  "commits": [
+    {
+      "sha": "f238b632",
+      "subject": "Declare the chart dependency and pin it in the lock"
+    },
+    {
+      "sha": "537e4990",
+      "subject": "Migrate the supervisor's 47-route slice, not its 301-commit lane"
+    },
+    {
+      "sha": "b489d488",
+      "subject": "Pin the migrated risk contract against main's own arithmetic"
+    },
+    {
+      "sha": "HEAD",
+      "subject": "G2 completion, B1 forced window, independent verifier, reports"
+    }
+  ],
+  "routes": {
+    "slice": 47,
+    "verification_tests": 37,
+    "total": 84,
+    "desk_check": "PASS",
+    "declared_edits": [
+      "uv.lock",
+      ".gitignore",
+      "scripts/paper_supervisor_verify.py",
+      "tests/unit/vision/test_def_run_016_integrity.py"
+    ],
+    "main_only_paths": 66,
+    "main_only_overlap": 0
+  },
+  "tests": {
+    "paper_risk_branch": {"failed": 2, "passed": 220, "exit": 1, "log": "evidence/PYTEST_paper_risk_after_tests.log"},
+    "paper_risk_main_baseline": {"failed": 6, "passed": 170, "exit": 1, "log": "evidence/PYTEST_paper_risk_main_baseline.log"},
+    "ops": {"failed": 0, "passed": 76, "exit": 0, "log": "evidence/PYTEST_ops.log"},
+    "vision": {"failed": 17, "passed": 311, "skipped": 1, "exit": 1, "seconds": 1424, "log": "evidence/PYTEST_vision_verbose.log"},
+    "research_migrated": {"failed": 14, "passed": 159, "exit": 1, "seconds": 189, "log": "evidence/PYTEST_research_migrated.log"},
+    "risk_contract_014": {"failed": 0, "passed": 46, "exit": 0},
+    "lock_attribution_b1": {"failed": 0, "passed": 6, "exit": 0},
+    "dependency_lock_consistency": {"failed": 0, "passed": 3, "exit": 0, "negative_control_against_main_lock": {"failed": 3, "passed": 0}},
+    "paper_supervisor_verifier_fixture": {"failed": 0, "passed": 4, "exit": 0},
+    "def_run_016_integrity": {"failed": 0, "passed": 10, "skipped": 2, "exit": 0},
+    "no_regression": true
+  },
+  "failure_causes": {
+    "pre_existing_on_main": {
+      "count": 2,
+      "tests": "tests/unit/risk/test_futures_independent_verifier.py",
+      "cause": "data/rfc048/PROVENANCE.json records stale sha256/bytes for 6 of 7 raw sources; the committed raw files do not match. Re-deriving reproduces the ladder content but not the recorded hashes.",
+      "status": "OPEN_PRE_EXISTING"
+    },
+    "vision_data_bound": {
+      "count": 15,
+      "tests": "test_minute_quote_feed.py (14), test_subbar_execution.py (1)",
+      "cause": "data/quote-feed-1m/SOURCE_MANIFEST.json is lane-only; the corpus is not in main"
+    },
+    "vision_script_bound": {
+      "count": 1,
+      "tests": "test_def_run_016_integrity.py",
+      "cause": "loads scripts/def_run_016_verify.py, outside the slice; now skipped with the reason"
+    },
+    "vision_flaky": {
+      "count": 1,
+      "tests": "test_closed_trade_cycle.py::test_two_identical_runs_write_the_same_ledger",
+      "cause": "failed in full-suite order, passed in isolation (4.8 s); test isolation defect"
+    },
+    "research": {
+      "count": 14,
+      "cause": "10 alpha15 causality (lane-only 1h corpora), 1 Windows SystemError gap in main's campaign_lock._pid_probe (outside the slice), 1 pythonw.exe registration (script outside the slice), 2 rfc046 data/scripts"
+    }
+  },
+  "gates": {
+    "G1": {
+      "status": "OPEN_SIGNOFF",
+      "owner": "risk-manager",
+      "evidence": "RISK_CONTRACT_DELTA.md; tests/unit/risk/test_risk_contract_014.py (46 passed)",
+      "risk_semantics": {
+        "tightened": [
+          "broker refuses a signal with no stop (was default 1%/2%)",
+          "manager refuses unusable stops (was clamp / silent default)",
+          "stop inside its round trip refusable (OFF by default)"
+        ],
+        "loosened": [
+          "weekly loss veto lifts at UTC Monday 00:00 (was never)"
+        ],
+        "limits_changed": false,
+        "sizing_parity": "proven against a literal copy of main's formula"
+      }
+    },
+    "G2": {
+      "supervisor_verifier": {
+        "status": "CLOSED",
+        "verdict": "PASS",
+        "checks_passed": 31,
+        "not_applicable_checks": 2,
+        "applicable_mutations": 10,
+        "detected": 10,
+        "not_applicable_mutations": 2,
+        "false_success": 0,
+        "exit": 0,
+        "evidence": "evidence/REAL_CAMPAIGN_VERIFICATION.json"
+      },
+      "negative_controls": {
+        "absent": "FAIL",
+        "live_order": "FAIL",
+        "residual_lock": "FAIL",
+        "broken_chain": "FAIL",
+        "exit": 1
+      },
+      "lock_verifier_short_campaign": {
+        "status": "FAIL_AS_EXPECTED",
+        "schema_accepted": true,
+        "checks_passed": 29,
+        "checks_total": 32,
+        "checks_failed": [
+          "at_least_five_recoveries",
+          "both_crash_sites_covered",
+          "concurrent_reclaim_has_one_winner"
+        ],
+        "false_success": 0,
+        "note": "a 1-crash campaign is not the campaign's own minimum shape; its FAIL is the correct verdict"
+      },
+      "lock_verifier_full_campaign": {
+        "status": "CLOSED",
+        "verdict": "PASS",
+        "iterations": 6,
+        "crash_sites": ["after_cycle", "after_cycle", "before_cycle", "after_cycle", "after_cycle", "after_cycle"],
+        "races": [2, 5],
+        "cycles": 17,
+        "session_starts": 12,
+        "rows": 64,
+        "reclaim_rows": 6,
+        "reclaim_fences": [2, 5, 8, 11, 14, 17],
+        "checks_passed": 32,
+        "checks_total": 32,
+        "applicable_mutations": 9,
+        "detected": 9,
+        "false_success": 0,
+        "exit": 0,
+        "evidence": "evidence/LOCK_CAMPAIGN_VERIFICATION_FULL.json; evidence/LOCK_CAMPAIGN_FULL2/; evidence/LOCK_CAMPAIGN_FULL2_stdout.log"
+      }
+    },
+    "G3": {
+      "status": "DIAGNOSED",
+      "root_cause": "fallback creation path (O_CREAT|O_EXCL then write) exposes an empty lock if the process dies between the two syscalls; os.link removes the window where available",
+      "evidence": "tests/unit/ops/test_lock_attribution_b1.py (6 passed)"
+    }
+  },
+  "paper_campaign": {
+    "producer": "scripts/paper_supervisor_campaign.py",
+    "crashes_requested": 1,
+    "episodes": 1,
+    "cycles": [1, 2, 3, 4, 5],
+    "final_state": "RECOVERED",
+    "chain": {"ok": true, "reason": "INTACT", "lines": 13},
+    "locks": [],
+    "live_orders": 0,
+    "supervisor": "STOP_COMPLETED",
+    "exit": 0,
+    "finished_without_locks": true,
+    "credentials_used": false
+  },
+  "lock_campaign": {
+    "producer": "scripts/paper_lock_campaign.py run",
+    "contract": {"iterations": 6, "crash_sites": 5, "before_cycle": 1, "races": [2, 5]},
+    "iterations_completed": 6,
+    "cycles": 17,
+    "final_state": "RECOVERED",
+    "locks": [],
+    "live_orders": 0,
+    "finished_exit": 0,
+    "credentials_used": false,
+    "chain": {"ok": true, "reason": "INTACT", "lines": 64},
+    "recoveries": 6,
+    "race_winners": [1, 1]
+  },
+  "blockers": {
+    "B1_lock_unattributed": {"status": "DIAGNOSED", "reproduced_by_construction": true, "open": true},
+    "B2_verify_claims": {"status": "NOT_REAUDITED", "reason": "script absent from main and from the lane"},
+    "B3_uv_frozen": {"status": "FIXED", "reproduced": true, "lock_check_exit": 0, "frozen_sync_exit": 0, "matplotlib": "3.11.2"},
+    "B4_finished_without_locks": {"status": "NOT_REPRODUCED", "observed": true, "exit": 0, "cause": "the flag is a poll timeout, not a verdict"},
+    "B5_aborted_first_lock_campaign": {
+      "status": "EXPLAINED",
+      "cause": "COMMIT_CHANGED: the resume was refused because the branch moved after SESSION_START pinned the runtime identity",
+      "not_a_runtime_defect": true,
+      "counterproof": "the same campaign re-run against a frozen HEAD completed 6/6 iterations, exit 0",
+      "evidence": "evidence/LOCK_CAMPAIGN_FULL1_aborted_stdout.log"
+    }
+  },
+  "independent_verification": {
+    "tool": "tools/independent_verify.py",
+    "imports_from_src": false,
+    "claims": 9,
+    "pass": 9,
+    "fail": 0,
+    "unknown": 0,
+    "self_controls": {"S1": "tampered supervisor campaign must FAIL", "S2": "lock campaign without one RECOVERY.json must FAIL"},
+    "checker_defect_found_and_fixed": "L1 first demanded strictly increasing fences between the locks of one reclaim; the campaign was right and the check was corrected",
+    "false_success": 0,
+    "exit": 0,
+    "evidence": "evidence/INDEPENDENT_VERIFICATION.json"
+  },
+  "not_tested": [
+    "full pytest tests/unit (subsets alone take 27+ minutes)",
+    "authenticated ccxt path",
+    "B2 re-audit",
+    "profitability of anything"
+  ],
+  "false_success": 0
+}

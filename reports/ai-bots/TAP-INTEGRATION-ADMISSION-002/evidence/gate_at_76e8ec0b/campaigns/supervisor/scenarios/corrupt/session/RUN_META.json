@@ -1,0 +1,35 @@
+{
+  "branch": "admission/integration-002",
+  "commit": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
+  "config": {
+    "decision_every_bars": 1,
+    "duration_s": 240,
+    "equity": 10000.0,
+    "latency_ms": 30000,
+    "max_cycles": 50,
+    "max_skew_ms": 5000,
+    "mode": "PAPER",
+    "poll_interval_s": 5.0,
+    "settle_ms": 2500,
+    "signal_source": "legacy_parity",
+    "stale_after_ms": 150000,
+    "strategy_id": "ema_crossover",
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "timeframe": "1m",
+    "warmup_minutes": 120,
+    "window_bars": 20
+  },
+  "dirty_paths": [],
+  "live_enabled": false,
+  "live_orders": 0,
+  "mode": "PAPER",
+  "out_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\supervisor\\session",
+  "resume": true,
+  "root": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002",
+  "schema_version": "DEF_RUN_019_LIVE_META_V1",
+  "started_at_utc": "2026-10-26T09:34:21Z"
+}

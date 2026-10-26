@@ -1,0 +1,145 @@
+# Cost-barrier governance gate (WP-6 follow-on, hardened in WP-7)
+#
+# The explorer's published numbers and its verifier's attestation are only worth
+# something while they keep reproducing from the inputs on disk. This workflow is
+# the standing check that they do, on a clean runner, for the exact commit:
+#
+#   1. verify and materialize the declared inputs. The market-horizon input is
+#      gitignored by design (it is generated from cached bar datasets that are
+#      not committed), so the digest-pinned evidence copy in
+#      data/recovery/wp7/evidence/ is verified against the digest the published
+#      artefact itself recorded, and only then placed at its canonical path;
+#   2. re-run the builder and the independent verifier and compare every
+#      published number field by field (full reproduction - the only state that
+#      satisfies a full-certification requirement);
+#   3. run the adversarial suite, which mutates isolated copies of the artefacts,
+#      inputs, producers and this workflow, and fails if any attack escapes;
+#   4. record the evidence as a build artifact, so a green run leaves something
+#      identifiable behind rather than a log line.
+#
+# No step is softened: there is no `continue-on-error` anywhere in this file, and
+# the gate itself refuses to run this workflow's contract if that ever changes.
+#
+# Not a required status check: the four gates pinned in quality/release-gates.md
+# Bloque 6 are unchanged. Documented in docs/ci.md 3.
+
+name: Cost-barrier drift gate
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "config/strategy_admission.json"
+      - "src/trading_bot/research/microstructure/cost_model_v3.py"
+      - "docs/COST_MODEL_V3.json"
+      - "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+      - "reports/strategy-baseline/COST_BARRIER.json"
+      - "scripts/active_economic_audit.py"
+      - "scripts/cost_barrier.py"
+      - "scripts/cost_barrier_explorer.py"
+      - "scripts/cost_barrier_verify.py"
+      - "scripts/cost_barrier_gate.py"
+      - "scripts/cost_barrier_evidence.py"
+      - "scripts/cost_barrier_adversarial.py"
+      - "scripts/cost_barrier_certify.py"
+      - "data/recovery/COST_BARRIER_EXPLORER.json"
+      - "data/recovery/COST_BARRIER_EXPLORER.md"
+      - "data/recovery/COST_BARRIER_VERIFICATION.json"
+      - "data/recovery/wp7/evidence/COST_BARRIER.json"
+      - "data/recovery/wp7/evidence/INPUT_EVIDENCE.json"
+      - "data/recovery/wp7/evidence/PRODUCER_PINS.json"
+      - "tests/unit/research/test_cost_barrier_explorer.py"
+      - "tests/unit/research/test_cost_barrier_gate.py"
+      - "tests/unit/research/test_cost_barrier_adversarial.py"
+      - "tests/unit/research/test_cost_barrier_ci_parity.py"
+      - ".github/workflows/cost-barrier-gate.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "config/strategy_admission.json"
+      - "src/trading_bot/research/microstructure/cost_model_v3.py"
+      - "docs/COST_MODEL_V3.json"
+      - "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+      - "reports/strategy-baseline/COST_BARRIER.json"
+      - "scripts/active_economic_audit.py"
+      - "scripts/cost_barrier.py"
+      - "scripts/cost_barrier_explorer.py"
+      - "scripts/cost_barrier_verify.py"
+      - "scripts/cost_barrier_gate.py"
+      - "scripts/cost_barrier_evidence.py"
+      - "scripts/cost_barrier_adversarial.py"
+      - "scripts/cost_barrier_certify.py"
+      - "data/recovery/COST_BARRIER_EXPLORER.json"
+      - "data/recovery/COST_BARRIER_EXPLORER.md"
+      - "data/recovery/COST_BARRIER_VERIFICATION.json"
+      - "data/recovery/wp7/evidence/COST_BARRIER.json"
+      - "data/recovery/wp7/evidence/INPUT_EVIDENCE.json"
+      - "data/recovery/wp7/evidence/PRODUCER_PINS.json"
+      - "tests/unit/research/test_cost_barrier_explorer.py"
+      - "tests/unit/research/test_cost_barrier_gate.py"
+      - "tests/unit/research/test_cost_barrier_adversarial.py"
+      - "tests/unit/research/test_cost_barrier_ci_parity.py"
+      - ".github/workflows/cost-barrier-gate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cost-barrier-gate:
+    name: Reproduce the cost-barrier artefacts from the declared inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Verify and materialize the declared inputs
+        run: uv run python scripts/cost_barrier_evidence.py --materialize --json
+
+      - name: Reproduce the artefacts (full reproduction)
+        run: >-
+          uv run python scripts/cost_barrier_gate.py --json
+          --report .ci/cost_barrier_gate_report.json
+
+      - name: Adversarial verification of the gate
+        run: >-
+          uv run python scripts/cost_barrier_adversarial.py
+          --label "CI runner ${{ github.sha }}"
+          --out .ci/COST_BARRIER_ADVERSARIAL_REPORT.json
+          --report .ci/COST_BARRIER_ADVERSARIAL_REPORT.md
+
+      - name: Certification record
+        run: >-
+          uv run python scripts/cost_barrier_certify.py --json
+          --out .ci/COST_BARRIER_CERTIFICATION.json
+
+      - name: Keep the evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cost-barrier-certification
+          path: .ci/
+          if-no-files-found: error
+          # `.ci/` is a dot-directory: upload-artifact v4 excludes hidden files by
+          # default, so without this the step found nothing and failed the job after
+          # every contract inside it had passed. The evidence is the point.
+          include-hidden-files: true

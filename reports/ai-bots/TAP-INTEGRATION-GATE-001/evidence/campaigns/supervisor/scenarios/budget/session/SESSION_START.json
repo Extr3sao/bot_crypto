@@ -1,0 +1,54 @@
+{
+  "config": {
+    "decision_every_bars": 1,
+    "declared_latency_ms": 30000,
+    "duration_s": 240,
+    "equity": 10000.0,
+    "poll_interval_s": 5.0,
+    "settle_ms": 2500,
+    "signal_source": "legacy_parity",
+    "strategy_id": "ema_crossover",
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "timeframe": "1m",
+    "warmup_minutes": 120,
+    "window_bars": 20
+  },
+  "live_enabled": false,
+  "live_orders": 0,
+  "mode": "PAPER",
+  "provenance": {
+    "pinned_identity": "9c3ee04520a09b1579e8ce715f26fe132179dc8ecbf9be3ff47547ff1ebaea35",
+    "resumed": true,
+    "run_id": "run-9c3ee04520a09b1579e8",
+    "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+    "session_id": "sess-4bcee2ef957452a5ad9f"
+  },
+  "provider": "paper-script",
+  "real_model_called": false,
+  "runtime_sha256": {
+    "src/trading_bot/indicators/builtin.py": "001a3c5b75f4139ae3e5a970241b64b987c305781e181d782003a35031b86270",
+    "src/trading_bot/market_data/minute_collector.py": "35ab5837643be6c6a32a81cc074f4808e50f5e6973d78769525c0eaf5854beea",
+    "src/trading_bot/paper/broker.py": "321db84ce7a7753a7fc3ce5dc4c762d5d6649cf4f7bef5513d4a1824f9e8b143",
+    "src/trading_bot/research/families/ema_crossover_family.py": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+    "src/trading_bot/risk/manager.py": "110ed942b227760d4c308adfdec1d1505ab6c087e1db976cba527c959301c495",
+    "src/trading_bot/vision/clock.py": "5c39bc4fbd1b3eaacf806108ab2a6e290d6ee835f8cddee33e7bd0a5bfc7dfc3",
+    "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1",
+    "src/trading_bot/vision/lane.py": "99ff8c9a3c863d1ee7ef308703f324c49f3ada2460a096f7b63290df914b23bc",
+    "src/trading_bot/vision/ledger.py": "bbdfd19b0b67b1f1d256536b5409782aff450114aaad54152beb18055dff1af4",
+    "src/trading_bot/vision/prospective.py": "7186757f1368f39795e1401a6a4573a22b0fad5d2e04346d7e8594c233faf7d2",
+    "src/trading_bot/vision/provider.py": "ad39e47e944fdbcf278674c2f9644fba61c6c6425dbb653fdeccb021c086c70e",
+    "src/trading_bot/vision/quotes.py": "5ec0766e068ec1c49762555529e548dc82e27abf8fe0c92fb224d85072d3c086",
+    "src/trading_bot/vision/settings.py": "a9f25bb24abd0f55d8a152e0fa5200883a8c7b6649b72752052336a491a90831",
+    "src/trading_bot/vision/signal_sources.py": "92b5b8227af15d74eafacdf8dc610961764a86f5f9086272139c8a31dd22be2a"
+  },
+  "schema_version": "PROSPECTIVE_PAPER_SESSION_V1",
+  "signal_source": "legacy_parity",
+  "source": "binance_spot_rest_1m",
+  "started_at_utc": "2026-10-25T13:14:32Z",
+  "strategy_id": null,
+  "subbar_entries": "PAPER_ONLY"
+}

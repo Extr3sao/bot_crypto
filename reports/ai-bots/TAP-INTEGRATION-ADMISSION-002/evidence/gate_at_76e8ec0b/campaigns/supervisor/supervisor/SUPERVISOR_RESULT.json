@@ -1,0 +1,242 @@
+{
+  "action": "STOP_COMPLETED",
+  "attempts": [
+    {
+      "action": "START",
+      "attempt": 1,
+      "clean": false,
+      "continued": true,
+      "exit_code": 1,
+      "locks_after": 4,
+      "new_cycles": [
+        1
+      ],
+      "pid": 28680,
+      "progress": true,
+      "resumed_flag": false,
+      "rows_after": 4,
+      "rows_before": 0,
+      "start_kind": "SESSION_START",
+      "start_seq": 1,
+      "stream_readable": true
+    },
+    {
+      "action": "RESUME",
+      "attempt": 2,
+      "clean": true,
+      "continued": true,
+      "exit_code": 0,
+      "locks_after": 0,
+      "new_cycles": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "pid": 10748,
+      "progress": true,
+      "resumed_flag": true,
+      "rows_after": 13,
+      "rows_before": 4,
+      "start_kind": "SESSION_START",
+      "start_seq": 5,
+      "stream_readable": true
+    }
+  ],
+  "elapsed_s": 307.687,
+  "exit_code": 0,
+  "final_state": "RECOVERED",
+  "final_status": {
+    "checked_at_utc": "2026-10-26T09:38:27Z",
+    "fencing": {
+      "fence_files": [
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0001/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0002/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0003/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0004/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0005/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 3,
+          "path": "market-1m/BTCUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 3,
+          "path": "market-1m/ETHUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 3,
+          "path": "market-1m/SOLUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 3,
+          "path": "STREAM.jsonl.lock.fence"
+        }
+      ],
+      "max_fence_in_reclaims": 2,
+      "stream_fence": 3
+    },
+    "last_attempt": {
+      "aborted": false,
+      "exit_code": 0,
+      "refused": false
+    },
+    "ledger": {
+      "chain_ok": true,
+      "chain_reason": "INTACT",
+      "cycle_directories": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "cycle_ledgers": {
+        "cycle-0001": {
+          "lines": 7,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0002": {
+          "lines": 10,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0003": {
+          "lines": 15,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0004": {
+          "lines": 19,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0005": {
+          "lines": 22,
+          "ok": true,
+          "reason": "INTACT"
+        }
+      },
+      "cycle_ledgers_ok": true,
+      "cycles": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "head_sha256": "5d7392a58d1e5234dafc9eacca33351f1b3a72bb0381dc03916e4d3b34a259bc",
+      "interrupted_cycles": [],
+      "kinds": {
+        "CYCLE": 5,
+        "DELAY_MEASURED": 2,
+        "LOCK_RECLAIMED": 1,
+        "SESSION_END": 1,
+        "SESSION_PROVENANCE": 2,
+        "SESSION_START": 2
+      },
+      "last_cycle": 5,
+      "rows": 13,
+      "seq_continuous": true
+    },
+    "locks": {
+      "abandoned_paths": [],
+      "active": [],
+      "all": [],
+      "awaiting_recovery": []
+    },
+    "out_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\supervisor\\session",
+    "owner": {
+      "acquired_at_utc": null,
+      "fence": null,
+      "host": null,
+      "live": false,
+      "pid": null,
+      "process_start_ms": null
+    },
+    "read_only": true,
+    "recoveries": {
+      "count": 1,
+      "last": {
+        "cycle": null,
+        "locks": [
+          {
+            "fence": 2,
+            "lock": "BTCUSDT.jsonl.lock",
+            "pid": 51168,
+            "process_start_ms": 1793007199646,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 2,
+            "lock": "ETHUSDT.jsonl.lock",
+            "pid": 51168,
+            "process_start_ms": 1793007199646,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 2,
+            "lock": "SOLUSDT.jsonl.lock",
+            "pid": 51168,
+            "process_start_ms": 1793007199646,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 2,
+            "lock": "STREAM.jsonl.lock",
+            "pid": 51168,
+            "process_start_ms": 1793007199646,
+            "reason": "OWNER_PROCESS_DEAD"
+          }
+        ],
+        "scope": "session",
+        "seq": 7
+      },
+      "last_fence": 2,
+      "last_reason": "OWNER_PROCESS_DEAD",
+      "scopes": [
+        "session"
+      ]
+    },
+    "schema_version": "TAP_PAPER_SESSION_STATUS_V1",
+    "session": {
+      "ended_at_utc": null,
+      "pinned_identity": "c2c2fb1c061d9ecee1fdcf8a17b4b58fbba8113c29b22f47ec91a1a0b3761813",
+      "resumed": true,
+      "resumed_starts": 1,
+      "run_id": "run-c2c2fb1c061d9ecee1fd",
+      "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+      "runtime_stable": true,
+      "session_id": "sess-a6f89e388e3a96aa94c5",
+      "started_at_utc": "2026-10-26T09:34:21Z",
+      "starts": 2
+    },
+    "state": "RECOVERED",
+    "why": []
+  },
+  "finished_at_utc": "2026-10-26T09:38:27Z",
+  "live_orders": 0,
+  "locks": [],
+  "mode": "PAPER",
+  "reason": "CLEAN_END",
+  "restarts": 1,
+  "schema_version": "TAP_PAPER_SUPERVISOR_V1",
+  "session": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\supervisor\\session",
+  "started_at_utc": "2026-10-26T09:33:19Z",
+  "state_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\supervisor\\supervisor"
+}

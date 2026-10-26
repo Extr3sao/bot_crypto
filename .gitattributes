@@ -1,0 +1,30 @@
+# The RFC-049 audits hash these trees byte for byte (frozen specifications, vendor
+# snapshots, retrieved primary-source evidence).  Git's automatic end-of-line
+# normalisation would rewrite those bytes on checkout and silently break every
+# recorded digest, so the trees are stored exactly as they are on disk.
+data/rfc049/** -text
+
+# The cost-barrier CI evidence bundle is digest-pinned: the copy of the gitignored
+# market-horizon input must arrive in a clean checkout with exactly the bytes the
+# published explorer recorded for it, so git must not normalise them on the way in
+# or out.  Same reason as the RFC-049 trees above, same treatment.
+data/recovery/wp7/evidence/** -text
+
+# The WP-8 input-authority bundle is digest-pinned for the same reason as the
+# cost-barrier one: every external input the ACTIVE recovery lane needs must arrive
+# in a clean checkout with exactly the bytes its published artefact recorded, so git
+# must not normalise them on the way in or out.
+data/recovery/wp8/evidence/** -text
+
+# The RFC-048 raw payloads are digest-pinned too: PROVENANCE.json records the sha256 and the
+# byte count of each download, and those bytes had CRLF endings.  Normalising them on checkout
+# shortened every file and broke the independent verifier's bracket_provenance check (two red
+# tests on a clean tree), so the tree is stored exactly as retrieved.
+data/rfc048/raw/** -text
+
+# The audit evidence is digest-pinned the same way: every manifest in
+# reports/ai-bots/*/evidence was computed over the bytes as written (LF), and a client with
+# core.autocrlf=true would rewrite them on checkout and invalidate every recorded sha256 --
+# including the gate's 260-file manifest and the 525 hashes of the delivered gate evidence.
+# -text makes the checkout reproduce the blobs instead of the client's line-ending preference.
+reports/ai-bots/*/evidence/** -text

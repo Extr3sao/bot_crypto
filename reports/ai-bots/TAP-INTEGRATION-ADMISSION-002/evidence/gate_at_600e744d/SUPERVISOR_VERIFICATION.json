@@ -1,0 +1,382 @@
+{
+  "adversarial": [
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "only the numbering betrays it: the chain verifies",
+      "detail": "duplicated the cycle at row 4 and re-chained every hash",
+      "detected": true,
+      "false_checks": [
+        "cycle_gaps_are_interrupted",
+        "cycle_numbers_unique"
+      ],
+      "invalid": false,
+      "mutation": "duplicated_cycle_with_a_valid_chain",
+      "target_check": "cycle_numbers_unique"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "a decision with no continuation row is a recovery that never happened",
+      "detail": "removed the resumed SESSION_START at row 5",
+      "detected": true,
+      "false_checks": [
+        "every_resume_backed_by_a_reclaim",
+        "every_resume_child_is_recorded",
+        "resume_decisions_match_resumed_starts"
+      ],
+      "invalid": false,
+      "mutation": "resume_start_removed",
+      "target_check": "resume_decisions_match_resumed_starts"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "a resume the runtime never authorised is a takeover, not a recovery",
+      "detail": "removed the LOCK_RECLAIMED at row 7",
+      "detected": true,
+      "false_checks": [
+        "every_resume_backed_by_a_reclaim",
+        "reclaim_fences_advance"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_row_removed",
+      "target_check": "every_resume_backed_by_a_reclaim"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "a takeover whose fence did not move did not dispossess the old owner",
+      "detail": "reset the fence of the last reclaim (row 7) to 0",
+      "detected": true,
+      "false_checks": [
+        "reclaim_fences_advance"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_fence_does_not_advance",
+      "target_check": "reclaim_fences_advance"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "two owners of one session is the state the coordination lock forbids",
+      "detail": "appended a second ACQUIRED row for a pid that never existed",
+      "detected": true,
+      "false_checks": [
+        "one_supervisor_acquired"
+      ],
+      "invalid": false,
+      "mutation": "two_supervisors_both_acquired",
+      "target_check": "one_supervisor_acquired"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "a crash reported as success is the one lie the supervisor exists to prevent",
+      "detail": "marked the killed child 36112 as a clean exit",
+      "detected": true,
+      "false_checks": [
+        "killed_children_did_not_exit_zero",
+        "zero_exit_is_terminal"
+      ],
+      "invalid": false,
+      "mutation": "killed_child_presented_as_clean",
+      "target_check": "killed_children_did_not_exit_zero"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "a leftover lock must fail the campaign however healthy the stream looks",
+      "detail": "planted a residual lock owned by this live process",
+      "detected": true,
+      "false_checks": [
+        "no_lock_remaining_now"
+      ],
+      "invalid": false,
+      "mutation": "residual_lock_presented_as_recovered",
+      "target_check": "no_lock_remaining_now"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "the PAPER claim is a property of the evidence, not of the report",
+      "detail": "set live_orders = 1 on one cycle and re-chained",
+      "detected": true,
+      "false_checks": [
+        "no_live_orders"
+      ],
+      "invalid": false,
+      "mutation": "live_order_written_into_the_stream",
+      "target_check": "no_live_orders"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "a broken chain presented as a recovery must not pass",
+      "detail": "claimed the corrupt scenario ended cleanly",
+      "detected": true,
+      "false_checks": [
+        "corrupt_evidence_was_refused"
+      ],
+      "invalid": false,
+      "mutation": "corrupt_evidence_reported_as_recovered",
+      "target_check": "corrupt_evidence_was_refused"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "a supervisor that spends more than its budget is the loop it must not be",
+      "detail": "claimed two restarts under a one-restart budget",
+      "detected": true,
+      "false_checks": [
+        "budget_was_exhausted_not_exceeded"
+      ],
+      "invalid": false,
+      "mutation": "budget_overspent",
+      "target_check": "budget_was_exhausted_not_exceeded"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "a recovery that happened without a decision was not supervised",
+      "detail": "removed one RESUME decision from the journal",
+      "detected": true,
+      "false_checks": [
+        "resume_decisions_match_resumed_starts",
+        "supervisor_result_counts_its_restarts"
+      ],
+      "invalid": false,
+      "mutation": "resume_without_a_decision",
+      "target_check": "resume_decisions_match_resumed_starts"
+    },
+    {
+      "applicable": true,
+      "changed_the_scenario": true,
+      "description": "starting a process is not a recovery; the check must demand the row",
+      "detail": "declared a clean exit whose verified attempt has no progress",
+      "detected": true,
+      "false_checks": [
+        "killed_children_did_not_exit_zero",
+        "no_clean_exit_without_evidence",
+        "zero_exit_is_terminal"
+      ],
+      "invalid": false,
+      "mutation": "clean_exit_without_evidence_reported_as_success",
+      "target_check": "no_clean_exit_without_evidence"
+    }
+  ],
+  "applicable_mutations": 12,
+  "artifacts": {
+    "scenarios/SCENARIOS.json": "14a5472a70d7e80d8cb43f3e783f2db48f0f2b2046f2256275c4a95a2638411d",
+    "session/RUN_META.json": "3707eb2af45bfc35506817c541c9d059024e70a711a658b996b11730d6f4f32c",
+    "session/STREAM.jsonl": "0b34c981cfa5c79d18aec831037b451f7a35ebcab6bd57fbcdb9f4f94eb7e0a3",
+    "session/STREAM.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/cycles/cycle-0001/ledger.jsonl": "b5f11df42eeb2ea8de4b52f0eff09f1cc32e52a66adbdc9a216ebd4f930f15d1",
+    "session/cycles/cycle-0001/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0002/ledger.jsonl": "f7f75c0170d0a0f699f90bd65ff61ce5630a41c9483c4319c6d6d7a9feec9be1",
+    "session/cycles/cycle-0002/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0003/ledger.jsonl": "99202333857afac48316d70ae7439c22b16dd1203c2df82d0cc199bfcb359a09",
+    "session/cycles/cycle-0003/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0004/ledger.jsonl": "4bf139912c3bfc2f07da9f44025e45bcbe19da439cd228b2385d1cbdb94791a5",
+    "session/cycles/cycle-0004/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0005/ledger.jsonl": "f93182cd622e3471eb4cddd158451f9d9bab5a686541bbb7cf0e4d69690dacac",
+    "session/cycles/cycle-0005/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/market-1m/BTCUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/market-1m/ETHUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/market-1m/SOLUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "supervisor/SUPERVISOR.jsonl": "8f99196651f8ca1f28adc974134072182bcd6ec84ba53c5b4435d366f3832dd8",
+    "supervisor/SUPERVISOR_RESULT.json": "9aa82dc2e4530a50fb06500d8292949eb412d6f874f6e4297428758bf3dc8b8e"
+  },
+  "builder": "scripts/paper_supervisor_campaign.py",
+  "campaign": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_600e744d\\campaigns\\supervisor",
+  "false_success": 0,
+  "invalid_mutations": [],
+  "judgement": {
+    "checks": {
+      "attempts_continue_the_stream": true,
+      "budget_was_exhausted_not_exceeded": true,
+      "corrupt_evidence_was_refused": true,
+      "cycle_gaps_are_interrupted": true,
+      "cycle_ledgers_intact": true,
+      "cycle_numbers_increasing": true,
+      "cycle_numbers_unique": true,
+      "every_resume_backed_by_a_reclaim": true,
+      "every_resume_child_is_recorded": true,
+      "every_resume_decision_saw_only_abandoned_locks": true,
+      "final_state_not_failed": true,
+      "killed_children_did_not_exit_zero": true,
+      "loser_refused_without_spawning": true,
+      "no_clean_exit_without_evidence": true,
+      "no_live_orders": true,
+      "no_lock_remaining_now": true,
+      "no_supervisor_decision_acted_on_failed": true,
+      "one_run_id_and_pin": true,
+      "one_supervisor_acquired": true,
+      "only_one_supervisor_spawned": true,
+      "protected_paths_untouched": true,
+      "reclaim_fences_advance": true,
+      "restarts_within_budget": true,
+      "resume_decisions_match_resumed_starts": true,
+      "resume_flags_are_false_then_true": true,
+      "rows_never_shrank": true,
+      "runtime_bytes_stable": true,
+      "seq_continuous": true,
+      "starts_carry_their_own_identity": true,
+      "stream_chain_intact": true,
+      "supervisor_finished_completed": true,
+      "supervisor_result_counts_its_restarts": true,
+      "zero_exit_is_terminal": true
+    },
+    "counts": {
+      "cycles": 5,
+      "reclaim_rows": 1,
+      "resumed_starts": 1,
+      "rows": 13,
+      "starts": 2
+    },
+    "cycles": {
+      "directories": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "interrupted": [],
+      "ledgers": {
+        "cycle-0001": {
+          "lines": 7,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0002": {
+          "lines": 10,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0003": {
+          "lines": 17,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0004": {
+          "lines": 20,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0005": {
+          "lines": 27,
+          "ok": true,
+          "reason": "INTACT"
+        }
+      },
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "facts": {
+      "budget_action": "STOP_BUDGET",
+      "budget_attempts": 2,
+      "budget_restarts": 1,
+      "corrupt_action": "STOP_FAILED",
+      "crashed_children": 1,
+      "cycles": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "exits": [
+        1,
+        0
+      ],
+      "fences": {
+        "BTCUSDT.jsonl.lock": [
+          2
+        ],
+        "ETHUSDT.jsonl.lock": [
+          2
+        ],
+        "SOLUSDT.jsonl.lock": [
+          2
+        ],
+        "STREAM.jsonl.lock": [
+          2
+        ]
+      },
+      "final_locks": [],
+      "head": "47f2a7d2a540f7faeef1c98162fba4d3769a77781d831310ea9966bc2f2be76c",
+      "journal_actions": [
+        "START",
+        "OBSERVE",
+        "RESUME",
+        "STOP_COMPLETED"
+      ],
+      "journal_events": [
+        "ACQUIRED",
+        "REFUSED",
+        "STOP",
+        "DECISION",
+        "SPAWNED",
+        "CHILD_EXIT",
+        "DECISION",
+        "DECISION",
+        "BACKOFF",
+        "SPAWNED",
+        "CHILD_EXIT",
+        "DECISION",
+        "STOP"
+      ],
+      "reclaims": 1,
+      "result_action": "STOP_COMPLETED",
+      "resumed_starts": 1,
+      "rows": 13,
+      "scenarios_present": true,
+      "spawned_pids": [
+        36112,
+        47660
+      ],
+      "starts": 2
+    },
+    "journal": {
+      "acquired": 1,
+      "events": 13,
+      "exits": 2,
+      "refused": 1,
+      "resumes": 1,
+      "spawned": 2
+    },
+    "not_applicable_checks": [],
+    "resume_windows": [
+      {
+        "backed": true,
+        "reclaims": [
+          {
+            "locks": [
+              {
+                "fence": 2,
+                "lock": "STREAM.jsonl.lock",
+                "pid": 22768,
+                "reason": "OWNER_PROCESS_DEAD"
+              }
+            ],
+            "seq": null
+          }
+        ],
+        "start_seq": 5
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "not_applicable_mutations": [],
+  "schema_version": "TAP_PAPER_SUPERVISOR_VERIFICATION_V1",
+  "undetected_mutations": [],
+  "verdict": "PASS",
+  "verifier": "scripts/paper_supervisor_verify.py",
+  "verifier_commit": "600e744ddf13172efe10b6eb4c57434f6a3e7dec"
+}

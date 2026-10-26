@@ -1,0 +1,101 @@
+cost-barrier evidence bundle: VERIFIED (verify)
+  head 63950a7295d7659fffe894e49d6fa5624d1280a2
+  [PASS] evidence:copy_matches_the_recorded_digest - copy 2437f446051d97ec... vs recorded 2437f446051d97ec...
+  [PASS] evidence:the_artefact_pin_is_unchanged_since_capture - recorded 2437f446051d97ec... vs published 2437f446051d97ec...
+  [PASS] evidence:the_copy_reproduces_the_published_pin - EXACT for the copy against pin 2437f446051d97ec...
+  [PASS] evidence:captured_against_the_published_artefact_revision - captured for payload 0ab1ac23dc1471ac... vs published 0ab1ac23dc1471ac...
+  [PASS] evidence:producer_digests_match_the_manifest - 4/4 producer(s) match (4 exact, 0 line-ending-only)
+  [PASS] evidence:the_checker_is_not_pinned_by_the_bundle - scripts/cost_barrier_gate.py is excluded by design; the checker cannot vouch for itself
+  placement: {'target': 'reports/strategy-baseline/COST_BARRIER.json', 'materialized': False}
+{
+  "artifact": "COST_BARRIER_EVIDENCE_BUNDLE",
+  "work_package": "WP-7B materialization + WP-7E producer pins",
+  "checked_at_utc": "2026-10-26T13:04:32Z",
+  "head": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+  "action": "verify",
+  "status": "VERIFIED",
+  "checks": [
+    {
+      "check": "evidence:copy_matches_the_recorded_digest",
+      "result": "PASS",
+      "detail": "copy 2437f446051d97ec... vs recorded 2437f446051d97ec..."
+    },
+    {
+      "check": "evidence:the_artefact_pin_is_unchanged_since_capture",
+      "result": "PASS",
+      "detail": "recorded 2437f446051d97ec... vs published 2437f446051d97ec..."
+    },
+    {
+      "check": "evidence:the_copy_reproduces_the_published_pin",
+      "result": "PASS",
+      "detail": "EXACT for the copy against pin 2437f446051d97ec..."
+    },
+    {
+      "check": "evidence:captured_against_the_published_artefact_revision",
+      "result": "PASS",
+      "detail": "captured for payload 0ab1ac23dc1471ac... vs published 0ab1ac23dc1471ac..."
+    },
+    {
+      "check": "evidence:producer_digests_match_the_manifest",
+      "result": "PASS",
+      "detail": "4/4 producer(s) match (4 exact, 0 line-ending-only)"
+    },
+    {
+      "check": "evidence:the_checker_is_not_pinned_by_the_bundle",
+      "result": "PASS",
+      "detail": "scripts/cost_barrier_gate.py is excluded by design; the checker cannot vouch for itself"
+    }
+  ],
+  "checks_total": 6,
+  "checks_failed": 0,
+  "input": {
+    "evidence_path": "data/recovery/wp7/evidence/COST_BARRIER.json",
+    "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+    "bytes": 3822,
+    "pin_authority": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+    "pin_status": "EXACT",
+    "recorded_sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+    "captured_commit": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e"
+  },
+  "producers": [
+    {
+      "path": "scripts/active_economic_audit.py",
+      "present": true,
+      "recorded": "73434e88fe837a657301c915fdd6f970dcd4b5b2651f56d995fb547519988cf0",
+      "recorded_lf": "73434e88fe837a657301c915fdd6f970dcd4b5b2651f56d995fb547519988cf0",
+      "current": "73434e88fe837a657301c915fdd6f970dcd4b5b2651f56d995fb547519988cf0",
+      "pin_status": "EXACT"
+    },
+    {
+      "path": "scripts/cost_barrier.py",
+      "present": true,
+      "recorded": "2c9ed4e053f49fe26cf8c37b31bf6fb471e0f0ccab4b510a56406e250fd1c3b8",
+      "recorded_lf": "2c9ed4e053f49fe26cf8c37b31bf6fb471e0f0ccab4b510a56406e250fd1c3b8",
+      "current": "2c9ed4e053f49fe26cf8c37b31bf6fb471e0f0ccab4b510a56406e250fd1c3b8",
+      "pin_status": "EXACT"
+    },
+    {
+      "path": "scripts/cost_barrier_explorer.py",
+      "present": true,
+      "recorded": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "recorded_lf": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "current": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "pin_status": "EXACT"
+    },
+    {
+      "path": "scripts/cost_barrier_verify.py",
+      "present": true,
+      "recorded": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "recorded_lf": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "current": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "pin_status": "EXACT"
+    }
+  ],
+  "placement": {
+    "target": "reports/strategy-baseline/COST_BARRIER.json",
+    "materialized": false
+  },
+  "failures": [],
+  "advisories": [],
+  "exit_code": 0
+}

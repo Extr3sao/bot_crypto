@@ -1,0 +1,434 @@
+{
+  "blockers": [
+    {
+      "blocker": "G1 unsigned weekly loss veto",
+      "id": "B1",
+      "minimal_action": "sign the roll or revert it",
+      "owner": "risk-manager",
+      "state": "OPEN"
+    },
+    {
+      "blocker": "workflow never executed on GitHub",
+      "id": "B3",
+      "minimal_action": "executed: 4 workflows, 4 failure, causes recorded in github_actions",
+      "owner": "-",
+      "state": "CLOSED"
+    },
+    {
+      "blocker": "risk policy blocks weekend entries",
+      "id": "B7",
+      "minimal_action": "decide whether a 24/7 asset inherits the equity calendar; not changed here",
+      "owner": "risk-manager",
+      "state": "OPEN"
+    },
+    {
+      "blocker": "the PAPER session does not attribute strategy_id (null)",
+      "id": "B10",
+      "minimal_action": "propagate the strategy from the signal to the summary and the ledger",
+      "owner": "strategy-engineer",
+      "state": "OPEN"
+    },
+    {
+      "blocker": "the gate cannot certify on a hosted runner: no market feed, so C1 dies at 420s and C3 degrades to one iteration",
+      "id": "B11",
+      "minimal_action": "self-hosted runner with data, or a deterministic replay feed; no signals or fills may be fabricated",
+      "owner": "observability-engineer / backtest-engineer",
+      "state": "OPEN"
+    },
+    {
+      "blocker": "CI Baseline has never been green (12/12 failures since 2026-07-10); its green baseline was measured on a 239-file tree 263 commits behind",
+      "id": "B12",
+      "minimal_action": "decide which tree is main, then reformat and type the real tree in a separate PR",
+      "owner": "context-engineer",
+      "state": "OPEN"
+    },
+    {
+      "blocker": "cost-barrier producer digests were pinned over CRLF bytes: 2 contract tests fail on Linux",
+      "id": "B13",
+      "minimal_action": "pin the bytes (-text) or make the digest EOL-insensitive, as RFC-048 already required",
+      "owner": "backtest-engineer",
+      "state": "OPEN"
+    },
+    {
+      "blocker": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json is stale: a clean rebuild yields another payload_sha256",
+      "id": "B14",
+      "minimal_action": "regenerate it in a clean checkout and version the result",
+      "owner": "backtest-engineer",
+      "state": "OPEN"
+    }
+  ],
+  "branch": "admission/integration-002",
+  "builder_is_verifier": false,
+  "commits_and_branches": {
+    "branch_python_files": 894,
+    "fix_commit": {
+      "commit": "76e8ec0b",
+      "found_by": "the first real GitHub Actions run of the integration gate",
+      "what": "the lock campaign can no longer exit 0 after a crash site never ran"
+    },
+    "head": {
+      "ahead_of_local_main": 17,
+      "ahead_of_origin_main": 280,
+      "behind_main": 0,
+      "branch": "admission/integration-002",
+      "commit": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
+      "merge_commits": 0,
+      "pull_request": {
+        "changed_files": 2782,
+        "commits": 279,
+        "mergeable": true,
+        "mergeable_state": "unstable",
+        "number": 18,
+        "state": "open"
+      },
+      "pushed": true
+    },
+    "main": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+    "main_touched": false,
+    "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+    "origin_main_behind_local_main": 263,
+    "origin_main_python_files": 239
+  },
+  "evidence": {
+    "gate_evidence": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/gate_at_76e8ec0b",
+    "paper_session": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/paper_session_long",
+    "paper_session_short": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/paper_session",
+    "reproduce": [
+      "python reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/tools/admission_verify.py --out reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/ADMISSION_VERIFICATION.json",
+      "python reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/tools/strategy_economics.py"
+    ],
+    "route_manifest": "reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/ROUTE_MANIFEST.json",
+    "strategy_economics": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/STRATEGY_ECONOMICS.json",
+    "verification": {
+      "claims": 15,
+      "fail": 0,
+      "false_success": 0,
+      "pass": 15,
+      "path": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/ADMISSION_VERIFICATION.json",
+      "sha256": "b0014e1e1a7bb719ff26af8b8697805799b1a41e18b3a54ee8c9b0c17d8d2fb3",
+      "verdict": "PASS"
+    },
+    "verifier": {
+      "path": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/tools/admission_verify.py",
+      "self_controls": {
+        "S1": "PASS",
+        "S2": "PASS",
+        "S3": "PASS",
+        "S4": "PASS",
+        "S5": "PASS"
+      },
+      "sha256": "d02c6f87931f651557da73e12dd4fe2d6aaacfcce7718e9b07f4cbaa08c44e0c"
+    }
+  },
+  "false_success": 0,
+  "g1": {
+    "blocking_signature": "risk-manager",
+    "evidence": [
+      "reports/ai-bots/TAP-INTEGRATION-GATE-001/FINAL_REPORT.md:58",
+      "reports/ai-bots/TAP-INTEGRATION-GATE-001/RUN_REPORT.md:129",
+      "reports/ai-bots/TAP-INTEGRATION-GATE-001/RUN_REPORT.md:146"
+    ],
+    "minimal_action": "risk-manager signs the roll, or it is reverted; 002 then moves from NOT_READY to READY",
+    "owner": "risk-manager",
+    "status": "OPEN",
+    "subject": "weekly loss veto rolled to UTC Monday 00:00"
+  },
+  "generated_at_utc": "2026-10-26T13:05:00Z",
+  "github_actions": {
+    "branch_tip_at_the_time": "3c967185",
+    "honest_summary": "the gate refuses to certify; it did not produce a false PASS. The only false success was the lock campaign's exit code, now closed.",
+    "merge_commit_tested": "1b42bca32afcd29d7fbb502989178bb54d5f52db",
+    "runs": [
+      {
+        "conclusion": "failure",
+        "details": {
+          "C1_SUPERVISOR_CAMPAIGN": "FAIL at 420.9s (the campaign's own --wait-cycle-timeout-s)",
+          "C3_LOCK_CAMPAIGN": "exit 0 with iterations=1, cycles=[], locks=0 (false success, fixed in 76e8ec0b)",
+          "J2_LOCK_CONTRACT": "32 checks, 9 mutations, 8 undetected on the empty campaign",
+          "J5_CAMPAIGN_SHAPE": "iterations=1 races=0 sites=['None']",
+          "review_gate": "FileNotFoundError on iteration-03/RECOVERY.json: the mutation had no subject"
+        },
+        "failed_steps": [
+          "Gate (both campaigns, both verifiers, independent audit)",
+          "Independent review"
+        ],
+        "gate_report": {
+          "BLOCKED": 0,
+          "FAIL": 9,
+          "NOT_TESTED": 2,
+          "PASS": 4,
+          "false_success": 0,
+          "manifest_files": 44,
+          "steps": 15,
+          "verdict": "FAIL"
+        },
+        "root_cause": "no market feed on the runner: '[wp04] BLOCKED - no cycle could be executed on the live feed'",
+        "run_id": 40219499778,
+        "workflow": "Integration gate"
+      },
+      {
+        "conclusion": "failure",
+        "failed_tests": [
+          "tests/unit/research/test_active_recovery_wp.py::test_audit_is_deterministic_and_committed",
+          "tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical",
+          "tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit"
+        ],
+        "note": "the same workflow passes on fix/tdm14a (runs 40294382261, 40295127315), so it is this artefact, not the workflow",
+        "root_cause": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json carries payload_sha256 c6ea3438... but rebuilding it on a clean Linux checkout yields 023b66ff...",
+        "run_id": 40219499708,
+        "workflow": "recovery-determinism"
+      },
+      {
+        "advisory_from_the_checker": "line-ending-only difference, accepted: scripts/cost_barrier.py (EOL_ONLY)",
+        "conclusion": "failure",
+        "failed_steps": [
+          "Certification record (exit 4)",
+          "Keep the evidence (no .ci/)"
+        ],
+        "root_cause": "2 contract tests fail: producer sha256 values were pinned over CRLF bytes; git rewrites them to LF on Linux",
+        "run_id": 40219499649,
+        "workflow": "Cost-barrier drift gate"
+      },
+      {
+        "conclusion": "failure",
+        "failed_steps": [
+          "Ruff format --check (484 files)",
+          "Mypy strict (343 errors in 50 files)",
+          "pip-audit (new advisories in pinned deps)",
+          "Smoke PR-pipeline: microsoft/powershell action not found"
+        ],
+        "inheritance_proof": {
+          "base_e67194e7_mypy_errors": "297 in 38 files",
+          "base_e67194e7_ruff_reformat": 444,
+          "ci_baseline_runs_green": 0,
+          "ci_baseline_runs_on_main_since_20260710": 12,
+          "origin_main_ruff_reformat": 0
+        },
+        "run_id": 40219499648,
+        "workflow": "CI Baseline"
+      }
+    ],
+    "second_round": {
+      "branch_tip": "266761bf",
+      "conclusion": "the false success is closed on the runner; the gate still cannot certify without a market feed",
+      "merge_commit_tested": "c1cecb72",
+      "runs": [
+        {
+          "conclusion": "failure",
+          "gate_report": {
+            "BLOCKED": 0,
+            "FAIL": 9,
+            "NOT_TESTED": 3,
+            "PASS": 3,
+            "false_success": 0,
+            "steps": 15,
+            "verdict": "FAIL"
+          },
+          "key_evidence": "C3_LOCK_CAMPAIGN now FAILs with iteration-01:NO_CYCLE_BEFORE_CRASH and incomplete:1/6 crash sites instead of exiting 0 with an empty campaign",
+          "run_id": 40308569940,
+          "workflow": "Integration gate"
+        },
+        {
+          "conclusion": "failure",
+          "run_id": 40308570056,
+          "workflow": "recovery-determinism"
+        },
+        {
+          "conclusion": "failure",
+          "run_id": 40308570059,
+          "workflow": "Cost-barrier drift gate"
+        },
+        {
+          "conclusion": "failure",
+          "run_id": 40308569933,
+          "workflow": "CI Baseline"
+        }
+      ]
+    },
+    "status": "EXECUTED_FAILED",
+    "trigger": "pull_request -> refs/pull/18/merge",
+    "workflow_registered": true
+  },
+  "integration_gate": {
+    "continue_on_error": false,
+    "duration_s": 1336.6,
+    "evidence": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/gate_at_76e8ec0b/GATE_REPORT.json",
+    "false_success": 0,
+    "independent_recheck": {
+      "claims": 15,
+      "fail": 0,
+      "false_success": 0,
+      "head": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
+      "pass": 15,
+      "result": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/ADMISSION_VERIFICATION.json",
+      "result_sha256": "b0014e1e1a7bb719ff26af8b8697805799b1a41e18b3a54ee8c9b0c17d8d2fb3",
+      "verdict": "PASS",
+      "verifier": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/tools/admission_verify.py",
+      "verifier_sha256": "d02c6f87931f651557da73e12dd4fe2d6aaacfcce7718e9b07f4cbaa08c44e0c"
+    },
+    "manifest_files": 258,
+    "report_commit": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
+    "status": "PASS",
+    "steps": 15,
+    "steps_fail": 0,
+    "steps_not_tested": 0,
+    "steps_pass": 15
+  },
+  "lane_necessity": {
+    "conclusion": "the 301 commits are not a requirement; the 84-route closure is, and it is already migrated",
+    "groups": {
+      "slice": 47,
+      "verification-tests": 37
+    },
+    "method": "import closure, not ancestry",
+    "routes_by_state": {
+      "DIFFERS": 13,
+      "IDENTICAL": 4,
+      "MISSING": 67
+    },
+    "routes_migrated": 84,
+    "runtime_modules": 338,
+    "source": "reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/ROUTE_MANIFEST.json",
+    "trading_bot_imports": 2435,
+    "unresolved_imports": 0
+  },
+  "limits": [
+    "the gate PASS is a Windows result: on ubuntu-latest the campaigns find no market feed and cannot run (B11)",
+    "the full pytest tests/unit suite was not run in this worktree; the documented subset was",
+    "branch protection state could not be read (no gh, no token, API 401) and is reported as blocked, not as compliant",
+    "the PAPER session opened 2 positions but closed none, so the full trade cycle in live conditions is still unproven",
+    "origin/main is 263 commits behind local main and carries 239 .py files, so any remote CI reading describes an older tree",
+    "this report does not declare any strategy profitable: the evidence is negative"
+  ],
+  "next_operational_step": {
+    "alternative_if_governance_first": "ask the repository administrator for the branch-protection toggle and the G1 signature",
+    "command": "python scripts/tap_integration_gate.py run --out /tmp/gate --label local:$(git rev-parse --short HEAD)",
+    "effect": "re-derives the 15 steps on the machine that runs it",
+    "priority": "B13/B14 (reproducibility) before B11 (a runner that can actually certify)",
+    "requires": "a market feed for the campaigns, and a clean tree"
+  },
+  "paper_admission": {
+    "closed_trades": 0,
+    "costs_total_usdt": 1.0,
+    "cycles_blocked": 0,
+    "cycles_executed": 7,
+    "data_delay_ms": 4199,
+    "data_delay_source": "MEASURED_AT_SESSION_START",
+    "decisions": 45,
+    "drawdown_pct": 0.0141,
+    "entrypoint": "scripts/def_run_019_prospective_run.py",
+    "fills": 2,
+    "final_equity_usdt": 9998.77851885,
+    "live_enabled": false,
+    "live_orders": 0,
+    "locks_left_behind": 0,
+    "market_data": "public Binance 1m klines, measured delivery latency",
+    "mode": "PAPER",
+    "owner": "quant-researcher / strategy-engineer",
+    "risk_approvals": 9,
+    "schema": "DEF_RUN_019_LIVE_META_V1",
+    "session_commit": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
+    "status": "NO_GO",
+    "strategies_admitted": 0,
+    "strategies_total": 24,
+    "strategy_id": null,
+    "strategy_states": [
+      "COST_KILLED",
+      "NO_GROSS_EDGE"
+    ],
+    "stream_chain_valid": true,
+    "stream_rows": 11,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT"
+    ],
+    "timeframe": "1m",
+    "weekend_run": {
+      "cycles_executed": 6,
+      "fills": 0,
+      "reason": "WEEKEND_BLOCK: policy sets weekend_trading=false",
+      "session_commit": "9d622bb5"
+    },
+    "why_not_go": "the PAPER lane fills on live data, but 0 of 24 strategies are admitted and no trade has been closed end to end"
+  },
+  "report": {
+    "path": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/FINAL_REPORT.md",
+    "sha256": "9eda512528e9721b38301ff6109bdbcf8a7bb77539ba2ed2cfd12496a0513a13"
+  },
+  "required_check": {
+    "gate_reports_required_check_false": true,
+    "gh_cli": "not installed",
+    "governance": "GOVERNANCE_BLOCKED",
+    "minimal_action": "repository administrator enables 'Integration gate (campaigns on this commit)' under Settings -> Branches -> Branch protection for main",
+    "owner": "repository administrator",
+    "protection_api_http": 401,
+    "protection_api_message": "Requires authentication",
+    "self_declared_voluntary": true,
+    "status": "NOT_ENFORCED",
+    "verification_after_action": "gh api repos/Extr3sao/bot_crypto/branches/main/protection --jq '.required_status_checks.contexts'"
+  },
+  "schema": "TAP_INTEGRATION_ADMISSION_REPORT_V1",
+  "status_evidence": {
+    "GOVERNANCE_STATUS": {
+      "g1": "OPEN_SIGNOFF",
+      "required_check": "NOT_ENFORCED (branch protection unreadable: no gh, API 401)"
+    },
+    "INTEGRATION_STATUS": {
+      "local": "gate PASS 15/15 at 76e8ec0b (false_success 0, 258-file manifest); independent verifier PASS 15/15",
+      "runner": "4 workflows triggered by PR #18, all completed/failure; root cause per workflow in github_actions",
+      "why_not_go": "a runner without a market feed cannot produce a cycle, so the gate cannot certify there"
+    },
+    "PAPER_RUNTIME_STATUS": {
+      "missing": "no trade closed end to end in a live session; strategy_id still null",
+      "proven": "7-cycle live session, 2 PAPER fills opened, 0 live orders, reconciliation complete"
+    },
+    "PROFITABILITY_EVIDENCE_STATUS": {
+      "best_gross_bps": 8.912,
+      "cells_clearing_either_floor": 0,
+      "cheapest_observed_floor_bps": 12.177,
+      "runtime_floor_bps": 23.354
+    },
+    "STRATEGY_ADMISSION_STATUS": {
+      "admitted": 0,
+      "total": 24
+    }
+  },
+  "statuses": {
+    "GOVERNANCE_STATUS": "BLOCKED",
+    "INTEGRATION_STATUS": "PARTIAL_GO_LOCAL_NO_GO_RUNNER",
+    "PAPER_RUNTIME_STATUS": "PARTIAL",
+    "PROFITABILITY_EVIDENCE_STATUS": "NEGATIVE",
+    "STRATEGY_ADMISSION_STATUS": "NO_GO"
+  },
+  "strategy_admission": {
+    "COST_KILLED": 7,
+    "NO_GROSS_EDGE": 17,
+    "best_cell": "volatility@30m",
+    "best_gross_bps": 8.912,
+    "best_net_usd": -24.62,
+    "best_profit_factor": 0.9402,
+    "cells": 24,
+    "cells_publishing_drawdown": 0,
+    "cells_with_negative_net": 24,
+    "cells_with_profit_factor_below_one": 24,
+    "classification_recomputed": true,
+    "sign_flip_across_partitions": 17,
+    "source": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/STRATEGY_ECONOMICS.json"
+  },
+  "task": "TAP-INTEGRATION-ADMISSION-002",
+  "tests": {
+    "commit": "76e8ec0b",
+    "full_suite_run": false,
+    "result": "320 passed, 0 failed, exit 0, 240.39s",
+    "runner_side": "CI Baseline tests-and-coverage was cancelled by fail-fast after its siblings failed",
+    "subset": "pytest tests/unit/paper tests/unit/risk tests/unit/ops/... tests/unit/vision/... (see FINAL_REPORT.md 1.7)"
+  },
+  "verdicts": {
+    "g1": "OPEN",
+    "github_actions": "EXECUTED_FAILED",
+    "integration_gate": "PASS",
+    "paper_admission": "NO_GO",
+    "required_check": "NOT_ENFORCED"
+  },
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002"
+}

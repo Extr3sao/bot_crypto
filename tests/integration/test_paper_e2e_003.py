@@ -96,7 +96,7 @@ def _engine(settings, broker: PaperBroker) -> PaperCycleEngine:
                 "regimes": [],
                 "direction": "BOTH",
                 "enabled": True,
-                "status": "CONFIRMED",
+                "status": "PAPER_ACTIVE",
             }
         },
         # THE RUNTIME-AUTHORITATIVE IMPLEMENTATION — not a stub.

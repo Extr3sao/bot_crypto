@@ -1,0 +1,36 @@
+{
+  "children_exit_codes": [
+    0,
+    0
+  ],
+  "outcomes": [
+    {
+      "code": "LOCK_HELD",
+      "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\lock\\session\\STREAM.jsonl.lock changed while the takeover was being prepared: it is now HELD (LIVE_OWNER); nothing was overwritten",
+      "outcome": "REFUSED",
+      "pid": 19860
+    },
+    {
+      "acquired_at_utc": "2026-10-25T17:45:20Z",
+      "fence": 14,
+      "held_s": 4.0,
+      "outcome": "RECLAIMED",
+      "pid": 29872,
+      "previous_owner": {
+        "acquired_at_utc": "2026-10-25T17:44:19Z",
+        "fence": 13,
+        "host": "DESKTOP-4CHO695",
+        "path": "STREAM.jsonl.lock",
+        "pid": 28036,
+        "process_start_ms": 1792950255479,
+        "purpose": "ledger:STREAM.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "42482c8d92864c2a982a4ae9df0edd8b"
+      },
+      "reason": "OWNER_PROCESS_DEAD",
+      "released": true
+    }
+  ],
+  "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\lock\\session\\STREAM.jsonl.lock",
+  "racers": 2
+}

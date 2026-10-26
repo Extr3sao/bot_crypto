@@ -1,0 +1,149 @@
+{
+  "artifact": "COST_BARRIER_CERTIFICATION",
+  "work_package": "WP-7F certification gate for the cost-barrier lane",
+  "generated_at_utc": "2026-10-26T12:54:19Z",
+  "candidate": {
+    "head": "7a6260ad60ef6f86d4d09416142dda251e701c12",
+    "branch": "fix/ci-repro-003",
+    "dirty_watched_paths": [],
+    "environment": {
+      "python": "3.11.15",
+      "implementation": "CPython",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "executable": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\.venv\\Scripts\\python.exe"
+    }
+  },
+  "requirements": {
+    "1_contracts_and_tests": true,
+    "2_input_integrity": "VERIFIED",
+    "3_full_reproduction": "FULL_REPRODUCTION_PASS",
+    "4_independent_verification": {
+      "attested": true,
+      "checks_failed": 0,
+      "controls_missed": 0,
+      "false_success": 0
+    },
+    "5_adversarial_controls": {
+      "status": "EVALUATED",
+      "substrate_present": true,
+      "attacks_total": 17,
+      "attacks_evaded": 0,
+      "legs_failed": []
+    },
+    "6_identifiable_evidence": "5a79ebe30355e469085081fcdf9ed259481bdbd556cfe0d878c5805dc62b7aa8",
+    "7_no_hidden_errors": true
+  },
+  "steps": {
+    "contract_tests": {
+      "step": "contract tests",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_cost_barrier_explorer.py tests/unit/research/test_cost_barrier_gate.py tests/unit/research/test_cost_barrier_adversarial.py tests/unit/research/test_cost_barrier_ci_parity.py",
+      "exit_code": 0,
+      "passed": true,
+      "stdout_tail": "........................................................................ [ 75%]\n.......................                                                  [100%]\n95 passed in 97.09s (0:01:37)",
+      "stderr_tail": ""
+    },
+    "materialize_inputs": {
+      "step": "materialize the declared inputs",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\scripts\\cost_barrier_evidence.py --materialize",
+      "exit_code": 0,
+      "passed": true,
+      "stdout_tail": "..\n  [PASS] evidence:producer_digests_match_the_manifest - 4/4 producer(s) match (4 exact, 0 line-ending-only)\n  [PASS] evidence:the_checker_is_not_pinned_by_the_bundle - scripts/cost_barrier_gate.py is excluded by design; the checker cannot vouch for itself\n  [PASS] materialize:existing_input_left_untouched - the existing input is byte-equivalent; nothing was written\n  placement: {'target': 'reports/strategy-baseline/COST_BARRIER.json', 'materialized': False, 'action': 'already_present', 'target_sha256': '2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4', 'same_content': True}",
+      "stderr_tail": ""
+    },
+    "input_integrity": {
+      "step": "input integrity (evidence bundle)",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\scripts\\cost_barrier_evidence.py --report C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\ci\\cert_fourth\\integrity.json",
+      "exit_code": 0,
+      "passed": true,
+      "stdout_tail": " [PASS] evidence:the_copy_reproduces_the_published_pin - EXACT for the copy against pin 2437f446051d97ec...\n  [PASS] evidence:captured_against_the_published_artefact_revision - captured for payload 0ab1ac23dc1471ac... vs published 0ab1ac23dc1471ac...\n  [PASS] evidence:producer_digests_match_the_manifest - 4/4 producer(s) match (4 exact, 0 line-ending-only)\n  [PASS] evidence:the_checker_is_not_pinned_by_the_bundle - scripts/cost_barrier_gate.py is excluded by design; the checker cannot vouch for itself\n  placement: {'target': 'reports/strategy-baseline/COST_BARRIER.json', 'materialized': False}",
+      "stderr_tail": ""
+    },
+    "full_reproduction": {
+      "step": "full reproduction",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\scripts\\cost_barrier_gate.py --json --report C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\ci\\cert_fourth\\gate_report.json",
+      "exit_code": 0,
+      "passed": true,
+      "stdout_tail": "ULL_REPRODUCTION_PASS\",\n  \"certification\": {\n    \"status\": \"FULL_REPRODUCTION_PASS\",\n    \"requires\": \"FULL_REPRODUCTION_PASS\",\n    \"satisfies_full_certification\": true,\n    \"is_partial\": false,\n    \"partial_result_may_certify_economic_results\": false,\n    \"partial_result_may_promote_strategies\": false,\n    \"note\": \"a check-only run re-verifies the published numbers but never re-runs the builder; it is useful evidence on a clean checkout and is never a substitute for a full reproduction\"\n  },\n  \"exit_code\": 0,\n  \"gate_sha256\": \"8707fb90d042886ef27ee2c5e774a43f0f5b1d59dd5e023b0a7fb23f5a1d8725\"\n}",
+      "stderr_tail": ""
+    },
+    "adversarial": {
+      "step": "adversarial suite",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\scripts\\cost_barrier_adversarial.py --out C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\ci\\cert_fourth\\adversarial.json",
+      "exit_code": 0,
+      "passed": true,
+      "stdout_tail": "attacks detected 17/17, escaped 0, legs failed 0",
+      "stderr_tail": ""
+    }
+  },
+  "decision": {
+    "status": "CERTIFIED",
+    "satisfies_full_certification": true,
+    "reasons": [],
+    "gate_status": "FULL_REPRODUCTION_PASS",
+    "authorizes_promotion": false,
+    "authorizes_live_trading": false
+  },
+  "status": "CERTIFIED",
+  "exit_code": 0,
+  "evidence_digests": {
+    "data/recovery/COST_BARRIER_EXPLORER.json": "2960eb48cd2db11a9e29c27f3fd12e08ddcbdf07e13f391d5a712fb66a578381",
+    "data/recovery/COST_BARRIER_VERIFICATION.json": "c99fdba0e0689ea3f8bfc46f6c2af791dfb054a918703ee55efe2f06abfdb8b4",
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.json": "0d1f930cd7407121be03251e271c9e8f7bff0ea259fd16b2cdcd74e00c16659e",
+    "data/recovery/wp7/evidence/COST_BARRIER.json": "1547cea438d2fb90d8556870c30dcbd911b5a841283ce982b423d04fbcc53640",
+    "data/recovery/wp7/evidence/INPUT_EVIDENCE.json": "27dd174791a114518b53c7f7961c529ea1bddab6bfccfcc58495fd58f91b3d07",
+    "data/recovery/wp7/evidence/PRODUCER_PINS.json": "39649af680bc2ba7147d61ab0cf967010a34ff696d339028e0bfd93fa9cb130c",
+    "scripts/cost_barrier_gate.py": "8707fb90d042886ef27ee2c5e774a43f0f5b1d59dd5e023b0a7fb23f5a1d8725",
+    "scripts/cost_barrier_evidence.py": "6ab4cc400f9d45a88f3bfe0167a5c535317da45e31e42cdd88d595a9f403d411",
+    "scripts/cost_barrier_adversarial.py": "c56c2049d97aef9def479f926b64fc72da3dec2821f20e24a6b3896175bc2439",
+    "scripts/cost_barrier_explorer.py": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+    "scripts/cost_barrier_verify.py": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+    ".github/workflows/cost-barrier-gate.yml": "5b9dd4bb5ab2fae56bc6146811ea37a74ad8cb703840a1b86a66cdd6f854aec5"
+  },
+  "evidence_digest_convention": "sha256 over the artefact's content with line endings normalised to LF: a checkout rewrites line endings without touching content, so the same commit must fingerprint the same on a runner as on the machine that produced the record",
+  "evidence_fingerprint": "5a79ebe30355e469085081fcdf9ed259481bdbd556cfe0d878c5805dc62b7aa8",
+  "supersession": {
+    "previous_fingerprint": "492146e91c0720291474bae2bf3f02122727480a2f3860c37a8d659416e13241",
+    "previous_candidate_head": "4ec7a7cd81b1ce8a9828490f752f55addc1819e1",
+    "previous_status": "CERTIFIED",
+    "previous_evidence_digests_sha256": "d3a9272f328b5d78c72f5f92b25dd69f5835603cc2b542d8e8965110291f6b7f",
+    "reason": "RFC-TAP-CI-003: the workflows now upload their hidden .ci evidence, so the fingerprinted workflow bytes changed",
+    "how": "the record file is replaced, but the previous fingerprint, candidate head and a digest of its evidence table are kept here, so a reader can see that the certification was re-issued and what it replaced",
+    "superseded_chain": {
+      "previous_fingerprint": "0cfdb13e9800a1450d7cb3736b644b862662b857f0416c12433f33e3e2499b0d",
+      "previous_candidate_head": "e07ce6cc3c002a16dae60fc249ff680d135e8ea7",
+      "previous_status": "CERTIFIED",
+      "previous_evidence_digests_sha256": "1aef413ebbf9f4922fa935e94422078e2524a6c209b55e3ec2147539d7af4312",
+      "reason": "RFC-TAP-CI-003: the audit was regenerated (stale entrypoint digest) and its check is now read-only, so the explorer, its verification and the producer pins were re-issued in the same commit",
+      "how": "the record file is replaced, but the previous fingerprint, candidate head and a digest of its evidence table are kept here, so a reader can see that the certification was re-issued and what it replaced",
+      "superseded_chain": {
+        "previous_fingerprint": "bd6072667ef95b3e0cde1ed4976c67dbd33072ae64cbf820ed471c54d22b4967",
+        "previous_candidate_head": "081ee7a53ede9d007e35567ff3798c2325ef6660",
+        "previous_status": "CERTIFIED",
+        "previous_evidence_digests_sha256": "e9e8a7a59911285ab07a671047ad3acc586ea40c75a13e776b201c0887b27e35",
+        "reason": "WP-8 closed a reproducibility defect in this lane's pins: a byte pin over the audit could only be satisfied on the machine that wrote it, so the explorer now publishes a state pin and the gate judges a state-pinned input on its state. The producer digests were re-captured in the same commit",
+        "how": "the record file is replaced, but the previous fingerprint, candidate head and a digest of its evidence table are kept here, so a reader can see that the certification was re-issued and what it replaced",
+        "superseded_chain": null
+      }
+    }
+  },
+  "adversarial_summary": {
+    "status": "EVALUATED",
+    "substrate_present": true,
+    "attacks_total": 17,
+    "attacks_detected": 17,
+    "attacks_evaded": 0,
+    "escapes": []
+  },
+  "advisories": [],
+  "claims": {
+    "promotion_claimed": false,
+    "rentable_claimed": false,
+    "certified_claimed": false,
+    "production_ready_claimed": false,
+    "authorization_state": "NOT_AUTHORIZED",
+    "trades_authorized": 0,
+    "false_success": 0
+  },
+  "scope": "certification that the published cost-barrier artefacts reproduce from their declared inputs on this candidate, and that the gate detects the tampering in the adversarial contract. It is not a claim of profitability, and it authorizes nothing: no promotion, no paper or live execution, no capital, no order path",
+  "record_path": "data\\recovery\\wp7\\COST_BARRIER_CERTIFICATION.json"
+}

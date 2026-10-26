@@ -1,0 +1,13 @@
+{
+  "key": "fred_page_WTREGEN.html",
+  "url": "https://fred.stlouisfed.org/series/WTREGEN",
+  "retrieved_at_utc": "2026-10-10T12:58:24Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 79961,
+  "sha256": "c9821f735b78079f749dd4611950994e1c44c41386f4b9b67d0da79a7801d6e9",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}
