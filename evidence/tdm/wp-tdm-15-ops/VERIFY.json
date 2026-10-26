@@ -1,0 +1,278 @@
+{
+  "schema_version": "wp-tdm-015-ops-verify-v1",
+  "generated_at_utc": "2026-10-26T12:37:25Z",
+  "run_id": "tdm15-ops-01",
+  "commit": null,
+  "ok": true,
+  "failed": [],
+  "counts": {
+    "checks": 27,
+    "passed": 27,
+    "failed": 0
+  },
+  "windows": [
+    {
+      "window_id": "20261026T115147Z",
+      "journal_lines": 8
+    },
+    {
+      "window_id": "20261026T115503Z",
+      "journal_lines": 0
+    }
+  ],
+  "paper": {
+    "state": "STOPPED",
+    "provider": "ccxt",
+    "environment": "ccxt:binance",
+    "orders_created": 0
+  },
+  "signals": {
+    "rows": 33,
+    "unique": 33,
+    "stages": {
+      "CANDIDATE": 21,
+      "SHADOW": 2,
+      "REJECTED": 10
+    }
+  },
+  "analysis": {
+    "rows": 33,
+    "statuses": {
+      "NOT_CONFIGURED": 33
+    },
+    "analysed": 0,
+    "covered": 33,
+    "ai_verdict": "AI_BLOCKED"
+  },
+  "capture": {
+    "status": "CONTROLLED_STOP",
+    "continuity": "INCOMPLETE_DATA",
+    "gaps": 110,
+    "gaps_by_class": {
+      "RECOVERED": 22,
+      "PARTIAL": 0,
+      "RECOVERABLE": 0,
+      "UNRECOVERABLE": 88
+    },
+    "segments": 78,
+    "bytes": 94968711
+  },
+  "lab": {
+    "final_state": "STOPPED",
+    "stop_reason": "STOP file",
+    "stop_report": {
+      "schema_version": "lab-stop-report-v1",
+      "at_ms": 1793016758143,
+      "asked_to_finalise": [
+        "analyst",
+        "collector",
+        "paper",
+        "retention",
+        "strategy_lab"
+      ],
+      "escalated": [],
+      "failed_children": [],
+      "exit_codes": {
+        "paper": 0,
+        "collector": 0,
+        "retention": 0,
+        "strategy_lab": 0,
+        "analyst": 0
+      },
+      "verdict": "CLEAN",
+      "note": "a child that exits non-zero, or that has to be killed because it did not finalise, is a failure even though it was stopped on purpose (§2, §57)"
+    },
+    "archived_windows": 2
+  },
+  "dashboard": {
+    "url": "http://127.0.0.1:8793",
+    "endpoints": {
+      "/healthz": {
+        "status": 200,
+        "bytes": 52,
+        "sha256": "129ae7d34808a45ec543d9e998f96ac47fc3719f8f7807b923950723c99d053d"
+      },
+      "/api/status": {
+        "status": 200,
+        "bytes": 200886,
+        "sha256": "0cc7cbbaf78b6a5abdbb8151f89d1ab4978a963c76991e234880b37589266b07",
+        "system_state": "STOPPED",
+        "running": false,
+        "run_id": "tdm15-ops-01"
+      },
+      "/api/signals?limit=5": {
+        "status": 200,
+        "bytes": 22064,
+        "sha256": "67b1bb598e71a72f9a7901121de28db3237e8afa671312d38935dffc2002fab1"
+      },
+      "/api/analysis": {
+        "status": 200,
+        "bytes": 35605,
+        "sha256": "6d3db52b571b9ac8219fc152a2d6e01a604d65fd95aea41a42f56d35bab71503",
+        "store": null
+      }
+    }
+  },
+  "checks": [
+    {
+      "check": "window_index_matches_directories",
+      "ok": true,
+      "detail": "index lists 2 window(s), 2 directory/directories exist",
+      "index": [
+        "20261026T115147Z",
+        "20261026T115503Z"
+      ],
+      "directories": [
+        "20261026T115147Z",
+        "20261026T115503Z"
+      ]
+    },
+    {
+      "check": "window_20261026T115147Z_digests",
+      "ok": true,
+      "detail": "9 archived file(s) re-hashed, 0 mismatch(es)",
+      "mismatched": []
+    },
+    {
+      "check": "window_20261026T115147Z_journal_not_duplicated",
+      "ok": true,
+      "detail": "8 cycle row(s), duplicated cycle numbers: none",
+      "journal_lines": 8
+    },
+    {
+      "check": "window_20261026T115147Z_paper_provenance",
+      "ok": true,
+      "detail": "archived PAPER descriptor carries provider/assets/timeframe",
+      "provider": "ccxt",
+      "environment": "ccxt:binance"
+    },
+    {
+      "check": "window_20261026T115503Z_digests",
+      "ok": true,
+      "detail": "11 archived file(s) re-hashed, 0 mismatch(es)",
+      "mismatched": []
+    },
+    {
+      "check": "window_20261026T115503Z_journal_not_duplicated",
+      "ok": true,
+      "detail": "0 cycle row(s), duplicated cycle numbers: none",
+      "journal_lines": 0
+    },
+    {
+      "check": "window_20261026T115503Z_paper_provenance",
+      "ok": true,
+      "detail": "archived PAPER descriptor carries provider/assets/timeframe",
+      "provider": "ccxt",
+      "environment": "ccxt:binance"
+    },
+    {
+      "check": "paper_descriptor_present",
+      "ok": true,
+      "detail": "PAPER_RUN.json exists"
+    },
+    {
+      "check": "paper_descriptor_mode_is_paper",
+      "ok": true,
+      "detail": "mode='paper'"
+    },
+    {
+      "check": "closed_descriptor_keeps_provenance",
+      "ok": true,
+      "detail": "a closed run still names its provider, environment, universe and timeframe",
+      "missing": []
+    },
+    {
+      "check": "signal_ids_are_unique",
+      "ok": true,
+      "detail": "33 signal row(s), 33 unique id(s)",
+      "duplicates": []
+    },
+    {
+      "check": "no_live_stage",
+      "ok": true,
+      "detail": "stages={'CANDIDATE': 21, 'SHADOW': 2, 'REJECTED': 10}; LIVE rows must be zero because no live path exists"
+    },
+    {
+      "check": "stage_matches_order",
+      "ok": true,
+      "detail": "no SHADOW row claims an order and no PAPER row lacks one",
+      "offenders": []
+    },
+    {
+      "check": "no_look_ahead",
+      "ok": true,
+      "detail": "0 signal(s) decided before their bar closed (must be 0)"
+    },
+    {
+      "check": "analysis_rows_point_at_real_signals",
+      "ok": true,
+      "detail": "33 analysis row(s), 0 reference a signal that does not exist",
+      "offenders": []
+    },
+    {
+      "check": "analysed_rows_carry_evidence",
+      "ok": true,
+      "detail": "0 ANALYZED row(s); each must carry model, claim, latency and tokens",
+      "incomplete": []
+    },
+    {
+      "check": "not_configured_is_not_a_synthesis",
+      "ok": true,
+      "detail": "every NOT_CONFIGURED row says PROVIDER_NOT_CONFIGURED and claims nothing",
+      "offenders": []
+    },
+    {
+      "check": "analysis_coverage",
+      "ok": true,
+      "detail": "33/33 signals have an analysis row (100.0%)"
+    },
+    {
+      "check": "capture_gaps_are_classified",
+      "ok": true,
+      "detail": "110 gap(s) classified into {'RECOVERED': 22, 'PARTIAL': 0, 'RECOVERABLE': 0, 'UNRECOVERABLE': 88}",
+      "total": 110
+    },
+    {
+      "check": "continuity_matches_loss",
+      "ok": true,
+      "detail": "continuity='INCOMPLETE_DATA' with 88 unrecoverable gap(s)"
+    },
+    {
+      "check": "stream_loss_is_a_subset_of_stream_gaps",
+      "ok": true,
+      "detail": "42 stream(s); unrecovered loss exceeds total gap time on: none",
+      "offenders": []
+    },
+    {
+      "check": "final_state_agrees_with_stop_verdict",
+      "ok": true,
+      "detail": "final_state='STOPPED' with stop verdict 'CLEAN'"
+    },
+    {
+      "check": "clean_stop_is_not_degraded",
+      "ok": true,
+      "detail": "final_state='STOPPED' (a clean stop must not report an operational fault)"
+    },
+    {
+      "check": "windows_record_a_verdict",
+      "ok": true,
+      "detail": "2 archived window(s) each carry a stop verdict"
+    },
+    {
+      "check": "dashboard_serves_read_only_views",
+      "ok": true,
+      "detail": "4/4 endpoint(s) returned 200"
+    },
+    {
+      "check": "dashboard_state_is_a_known_state",
+      "ok": true,
+      "detail": "/api/status system.state='STOPPED'"
+    },
+    {
+      "check": "zero_orders_live_and_paper",
+      "ok": true,
+      "detail": "orders_created=0, LIVE signals=0 (no strategy is admitted, so this is the expected number, not a success claim)"
+    }
+  ],
+  "note": "every check is recomputed from the artefacts of the run, not read from the evidence report; a disagreement here means the artefacts are what to believe"
+}

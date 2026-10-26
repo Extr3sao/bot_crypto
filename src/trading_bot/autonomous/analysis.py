@@ -293,6 +293,8 @@ class AnalysisStore:
             if record.status == AnalysisStatus.ANALYZED
         }
 
+
+
     def calls_since(self, since_ms: int) -> int:
         """Provider calls actually made since a timestamp (the durable budget)."""
         count = 0
@@ -684,11 +686,52 @@ def provider_from_env() -> LLMProvider | None:
     )
 
 
+#: How long a FAILED row is left alone before the signal is retried. A failed
+#: row is not rewritten on retry (its analysis id is deterministic), so the
+#: ledger cannot count attempts; a cooldown is the observable bound instead.
+FAILED_RETRY_COOLDOWN_MS = 300_000
+
+
 def pending_signals(
-    events: Iterable[SignalEvent], store: AnalysisStore
+    events: Iterable[SignalEvent],
+    store: AnalysisStore,
+    *,
+    provider_configured: bool = True,
+    retry_cooldown_ms: int = FAILED_RETRY_COOLDOWN_MS,
+    now_ms: int | None = None,
 ) -> list[SignalEvent]:
-    """Signals with no ANALYZED row, oldest first (the order they were decided)."""
-    done = store.analysed_signal_ids()
-    pending = [event for event in events if event.signal_id not in done]
-    pending.sort(key=lambda event: event.decision_time_ms)
+    """Signals still owed an analysis, never-examined first, then oldest.
+
+    D-07: only an ANALYZED row used to count as "done", so with no provider the
+    same oldest handful of NOT_CONFIGURED rows were re-selected on every pass and
+    the rest of the stream never received a row at all (6 of 21 signals covered,
+    the other 15 invisible). A missing key does not appear by looking again, so a
+    current NOT_CONFIGURED row is *covered* while no provider is configured; the
+    moment one is configured those rows are stale and are retried, because that
+    is exactly the situation the operator expects to be picked up.
+
+    A FAILED row is retried after ``retry_cooldown_ms`` rather than on the next
+    pass: a provider that is down must not consume every pass (and every call in
+    the hourly budget) re-asking about the same signal. Sorting a signal that
+    already has a row *after* every signal that has none is what makes coverage
+    advance instead of the oldest row being examined again and again.
+    """
+    latest = store.latest_by_signal()
+    now = int(time.time() * 1000) if now_ms is None else now_ms
+    pending: list[SignalEvent] = []
+    for event in events:
+        record = latest.get(event.signal_id)
+        if record is not None:
+            status = record.status
+            if status == AnalysisStatus.ANALYZED.value:
+                continue
+            if status == AnalysisStatus.NOT_CONFIGURED.value and not provider_configured:
+                continue
+            if (
+                status == AnalysisStatus.FAILED.value
+                and now - int(record.analysis_time_ms or 0) < max(0, retry_cooldown_ms)
+            ):
+                continue
+        pending.append(event)
+    pending.sort(key=lambda event: (event.signal_id in latest, event.decision_time_ms))
     return pending

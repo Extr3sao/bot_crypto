@@ -33,7 +33,7 @@ import hashlib
 import json
 import os
 from bisect import bisect_left
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import asdict, dataclass, field, replace
 from datetime import UTC, datetime
 from pathlib import Path
@@ -71,7 +71,9 @@ __all__ = [
     "SegmentWriter",
     "StreamManifest",
     "StreamStats",
+    "classify_gaps",
     "format_utc",
+    "gap_class",
     "is_compressed_segment",
     "iter_segment_records",
     "iter_segment_rows",
@@ -269,6 +271,67 @@ class GapRecord:
 
 
 # ------------------------------------------------------------------- fingerprints
+#: The event type whose holes the public index can walk forward. Every other
+#: stream is websocket-only, so a hole in it is lost for good.
+BACKFILLABLE_EVENT_TYPE: Final[str] = "agg_trade"
+
+
+def gap_class(gap: GapRecord) -> str:
+    """D-10 — what can still be done about this hole, in one word.
+
+    ``RECOVERED`` and ``PARTIAL`` are outcomes the backfill already produced.
+    ``RECOVERABLE`` is a hole the provider's trade index can still be walked
+    through (aggregate trades, not yet resolved). ``UNRECOVERABLE`` is everything
+    else — including a trade hole whose backfill ran and came back empty — and it
+    is a claim about the *source*, not about our effort.
+    """
+    if gap.recovered:
+        return "RECOVERED"
+    if gap.recovered_events > 0:
+        return "PARTIAL"
+    if gap.event_type == BACKFILLABLE_EVENT_TYPE and gap.detail is None:
+        return "RECOVERABLE"
+    return "UNRECOVERABLE"
+
+
+def classify_gaps(gaps: Sequence[GapRecord]) -> dict[str, Any]:
+    """Group a run's holes by what can be done about them (D-10).
+
+    A count alone (``gaps: 34``) cannot be acted on: an operator needs to know how
+    much of the loss is still recoverable, how much is gone, and why. This is the
+    same policy the collector applies, read back from the records rather than
+    re-decided in a report.
+    """
+    by_class: dict[str, int] = {"RECOVERED": 0, "PARTIAL": 0, "RECOVERABLE": 0, "UNRECOVERABLE": 0}
+    seconds_by_class: dict[str, float] = {key: 0.0 for key in by_class}
+    by_reason: dict[str, int] = {}
+    by_event_type: dict[str, int] = {}
+    lost_ids: list[str] = []
+    for gap in gaps:
+        label = gap_class(gap)
+        by_class[label] = by_class.get(label, 0) + 1
+        if gap.data_lost:
+            seconds_by_class[label] = seconds_by_class.get(label, 0.0) + gap.duration_ms / 1000.0
+        by_reason[gap.reason] = by_reason.get(gap.reason, 0) + 1
+        by_event_type[gap.event_type] = by_event_type.get(gap.event_type, 0) + 1
+        if label == "UNRECOVERABLE" and len(lost_ids) < 50:
+            lost_ids.append(gap.gap_id)
+    return {
+        "total": len(gaps),
+        "by_class": by_class,
+        "lost_seconds_by_class": {key: round(value, 3) for key, value in seconds_by_class.items()},
+        "by_reason": dict(sorted(by_reason.items())),
+        "by_event_type": dict(sorted(by_event_type.items())),
+        "unrecoverable_gap_ids": lost_ids,
+        "unrecoverable_gap_ids_truncated": max(0, by_class.get("UNRECOVERABLE", 0) - len(lost_ids)),
+        "policy": (
+            f"a {BACKFILLABLE_EVENT_TYPE} hole is recoverable while its backfill has "
+            "not been attempted; every other stream is websocket-only and a hole in "
+            "it is unrecoverable"
+        ),
+    }
+
+
 @dataclass(frozen=True, slots=True)
 class SegmentFingerprint:
     """§23 — the identity of one partition of the dataset."""
@@ -921,6 +984,11 @@ class RunManifest:
         payload = asdict(self)
         # Gaps carry a derived ``duration_ms`` that ``asdict`` cannot see.
         payload["gaps"] = [gap.as_dict() for gap in self.gaps]
+        # D-10 — the manifest a resumed capture leaves behind classifies its own
+        # holes instead of only counting them. Derived here, on the read side, so
+        # the capture entry point whose bytes produced the certified dataset does
+        # not have to change to gain a diagnosis (see CAPTURE_CRITICAL_PATHS).
+        payload["gaps_classification"] = classify_gaps(self.gaps)
         payload["exit_code"] = self.outcome().exit_code
         return payload
 

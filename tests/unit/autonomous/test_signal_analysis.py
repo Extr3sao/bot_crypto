@@ -25,6 +25,7 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / "src"))
 
 from trading_bot.autonomous.analysis import (  # noqa: E402
+    FAILED_RETRY_COOLDOWN_MS,
     PROMPT_VERSION,
     AnalysisErrorCode,
     AnalysisRecord,
@@ -336,6 +337,57 @@ def test_pending_signals_are_oldest_first(tmp_path: Path) -> None:
     assert [item.decision_id for item in pending_signals(events, store)] == ["dec-0", "dec-2"]
 
 
+def test_a_bounded_pass_no_longer_starves_the_rest_of_the_stream(tmp_path: Path) -> None:
+    """D-07 reproducer: 21 signals, 5 per pass, no provider → all 21 get a row.
+
+    Before the fix the pass re-selected the same five NOT_CONFIGURED rows every
+    time and the remaining sixteen were never even looked at.
+    """
+    sidecar = _load_sidecar()
+    run_dir = _run_with_signals(tmp_path, count=21)
+    args = sidecar.parse_args(
+        [
+            "--run-root",
+            str(tmp_path / "autonomous-paper"),
+            "--run-id",
+            run_dir.name,
+            "--limit-per-pass",
+            "5",
+            "--once",
+        ]
+    )
+    examined = 0
+    for _ in range(5):
+        summary = sidecar.run_pass(args, run_dir, None)
+        examined += summary["examined"]
+    assert examined == 21
+    rows = (run_dir / "analysis.jsonl").read_text(encoding="utf-8").splitlines()
+    assert len(rows) == 21
+    assert len({json.loads(row)["signal_id"] for row in rows}) == 21
+
+
+def test_a_failed_row_is_retried_after_a_cooldown_and_never_ahead_of_new_work(
+    tmp_path: Path,
+) -> None:
+    store = AnalysisStore(tmp_path)
+    events = [event(0)]
+    failing = analyst(store, StubProvider(text="not json at all"))
+    record = failing.analyze(event(0))
+    assert record.status == AnalysisStatus.FAILED.value
+    # Not retried on the next pass: a provider that is down must not spend the
+    # whole budget re-asking about the same signal.
+    assert pending_signals(events, store, now_ms=record.analysis_time_ms + 1) == []
+    # A newer signal is never starved by an older one that cannot succeed.
+    newer = [event(0), event(1)]
+    assert [item.decision_id for item in pending_signals(newer, store, now_ms=0)] == ["dec-1"]
+    # Once the cooldown is over the failure is retried, behind any untouched work.
+    later = record.analysis_time_ms + FAILED_RETRY_COOLDOWN_MS + 1
+    assert [item.decision_id for item in pending_signals(newer, store, now_ms=later)] == [
+        "dec-1",
+        "dec-0",
+    ]
+
+
 # --------------------------------------------------------------------------- #
 # the sidecar script
 
@@ -387,16 +439,21 @@ def test_sidecar_marks_not_configured_and_keeps_running(tmp_path: Path) -> None:
     summary = sidecar.run_pass(args, run_dir, None)
     assert summary["provider_configured"] is False
     assert summary["statuses"] == {"NOT_CONFIGURED": 2}
-    # The signal stays pending (so configuring a key later still analyses the
-    # backlog) but the second pass appends nothing: the id is the identity.
+    # D-07: while no key exists those rows are the answer, so a second pass does
+    # not re-examine them — a missing key does not appear by looking again, and
+    # re-selecting the same oldest rows forever is what starved the rest of the
+    # stream (6 of 21 signals covered, 15 with no row at all).
     again = sidecar.run_pass(args, run_dir, None)
-    assert again["examined"] == 2
-    assert again["pending_before"] == 2
+    assert again["examined"] == 0
+    assert again["pending_before"] == 0
     rows = (run_dir / "analysis.jsonl").read_text(encoding="utf-8").splitlines()
     assert len(rows) == 2
-    # Once a provider exists, the same backlog is analysed for real.
+    # Once a provider exists, the NOT_CONFIGURED rows are stale and the backlog
+    # is analysed for real: covered-by-configuration is not covered-forever.
     third = sidecar.run_pass(args, run_dir, StubProvider())
     assert third["statuses"] == {"ANALYZED": 2}
+    fourth = sidecar.run_pass(args, run_dir, StubProvider())
+    assert fourth["examined"] == 0
 
 
 def test_sidecar_limit_bounds_one_pass(tmp_path: Path) -> None:

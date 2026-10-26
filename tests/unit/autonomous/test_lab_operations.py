@@ -404,6 +404,146 @@ def test_one_command_writes_the_stop_file(
     assert "stop requested at" in stop_file.read_text(encoding="utf-8")
 
 
+# ------------------------------------------------------ restart windows (D-09)
+
+
+def _closed_window(lab_dir: Path, paper_dir: Path, *, cycles: int = 4) -> None:
+    """A finished window, written exactly as the launcher and PAPER write it."""
+    lab_dir.mkdir(parents=True, exist_ok=True)
+    paper_dir.mkdir(parents=True, exist_ok=True)
+    (lab_dir / "LAB_RUN_REPORT.json").write_text(
+        json.dumps(
+            {
+                "run_id": lab_dir.name,
+                "ended_at_ms": 1_793_000_000_000,
+                "duration_seconds": 1800.0,
+                "final_state": "STOPPED",
+                "stop_reason": "STOP file",
+                "stop_report": {"verdict": "CLEAN"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (lab_dir / "LAB_RUN_REPORT.md").write_text("# report\n", encoding="utf-8")
+    (lab_dir / "LAB_RUN_SNAPSHOT.json").write_text("{}\n", encoding="utf-8")
+    (lab_dir / "SYSTEM_HEARTBEAT.json").write_text(
+        json.dumps({"state": "STOPPED", "processes": {}}), encoding="utf-8"
+    )
+    (paper_dir / "heartbeat.jsonl").write_text(
+        "".join(json.dumps({"cycle": index + 1}) + "\n" for index in range(cycles)),
+        encoding="utf-8",
+    )
+    (paper_dir / "heartbeat.json").write_text(json.dumps({"cycle": cycles}), encoding="utf-8")
+    (paper_dir / "PAPER_RUN.json").write_text(
+        json.dumps({"run_id": lab_dir.name, "provider": "ccxt", "state": "STOPPED"}),
+        encoding="utf-8",
+    )
+    (paper_dir / "AI_ANALYST_HEARTBEAT.json").write_text("{}\n", encoding="utf-8")
+    (paper_dir / "RUN_REPORT.json").write_text(
+        json.dumps({"run_id": lab_dir.name, "cycles": cycles}), encoding="utf-8"
+    )
+    (paper_dir / "RUN_REPORT.md").write_text("# run\n", encoding="utf-8")
+
+
+def test_a_restart_archives_the_window_it_is_about_to_overwrite(
+    tmp_path: Path, lab_launcher: Any
+) -> None:
+    """D-09 — restart reused the run id and fused two windows into one journal."""
+    lab_dir = tmp_path / "paper-lab" / "lab-restart"
+    paper_dir = tmp_path / "autonomous-paper" / "lab-restart"
+    _closed_window(lab_dir, paper_dir)
+    journal_before = (paper_dir / "heartbeat.jsonl").read_text(encoding="utf-8")
+
+    archived = lab_launcher.archive_previous_window(
+        lab_run_dir=lab_dir, paper_run_dir=paper_dir
+    )
+
+    assert archived is not None
+    window_dir = Path(archived["path"])
+    # The window is named after when it ended, not after when it was archived.
+    assert window_dir.parent == lab_dir / "windows"
+    assert window_dir.name == time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(1_793_000_000))
+    # The previous window's journal is preserved *whole*, and is no longer the
+    # file the new window will append its own cycle 1 to.
+    assert (window_dir / "heartbeat.jsonl").read_text(encoding="utf-8") == journal_before
+    assert not (paper_dir / "heartbeat.jsonl").exists()
+    # The reports moved rather than being overwritten.
+    assert (window_dir / "LAB_RUN_REPORT.json").exists()
+    assert not (lab_dir / "LAB_RUN_REPORT.json").exists()
+    # Provenance is copied, not moved: a refused relaunch cannot delete it.
+    assert (window_dir / "PAPER_RUN.json").exists()
+    assert (paper_dir / "PAPER_RUN.json").exists()
+
+    manifest = json.loads((window_dir / "WINDOW_MANIFEST.json").read_text(encoding="utf-8"))
+    assert manifest["previous_stop_verdict"] == "CLEAN"
+    assert manifest["previous_final_state"] == "STOPPED"
+    assert manifest["reason"] == "restart"
+    actions = {entry["name"]: entry["action"] for entry in manifest["files"]}
+    assert actions["heartbeat.jsonl"] == "move"
+    assert actions["PAPER_RUN.json"] == "copy"
+    # The per-run summary is copied too: the next window's finalise rewrites it.
+    assert actions["RUN_REPORT.json"] == "copy"
+    assert (paper_dir / "RUN_REPORT.json").exists()
+    assert json.loads((window_dir / "RUN_REPORT.json").read_text(encoding="utf-8"))["cycles"] == 4
+    # Every archived file's digest is recorded, so the archive is checkable.
+    import hashlib
+
+    for entry in manifest["files"]:
+        digest = hashlib.sha256((window_dir / entry["name"]).read_bytes()).hexdigest()
+        assert digest == entry["sha256"], entry["name"]
+
+    index = lab_launcher.read_window_index(lab_dir)
+    assert [entry["window_id"] for entry in index] == [window_dir.name]
+    assert index[0]["files"] == len(manifest["files"])
+
+
+def test_two_restarts_archive_two_windows_without_colliding(
+    tmp_path: Path, lab_launcher: Any
+) -> None:
+    lab_dir = tmp_path / "paper-lab" / "lab-restart"
+    paper_dir = tmp_path / "autonomous-paper" / "lab-restart"
+    _closed_window(lab_dir, paper_dir, cycles=2)
+    first = lab_launcher.archive_previous_window(
+        lab_run_dir=lab_dir, paper_run_dir=paper_dir
+    )
+    _closed_window(lab_dir, paper_dir, cycles=3)
+    second = lab_launcher.archive_previous_window(
+        lab_run_dir=lab_dir, paper_run_dir=paper_dir
+    )
+    assert first is not None and second is not None
+    assert first["path"] != second["path"]
+    assert len(lab_launcher.read_window_index(lab_dir)) == 2
+    # Each window kept its own cycle count: this is the thing the defect lost.
+    first_journal = (Path(first["path"]) / "heartbeat.jsonl").read_text(encoding="utf-8")
+    second_journal = (Path(second["path"]) / "heartbeat.jsonl").read_text(encoding="utf-8")
+    assert len(first_journal.splitlines()) == 2
+    assert len(second_journal.splitlines()) == 3
+
+
+def test_archiving_nothing_creates_nothing(tmp_path: Path, lab_launcher: Any) -> None:
+    lab_dir = tmp_path / "paper-lab" / "empty"
+    paper_dir = tmp_path / "autonomous-paper" / "empty"
+    assert (
+        lab_launcher.archive_previous_window(lab_run_dir=lab_dir, paper_run_dir=paper_dir)
+        is None
+    )
+    assert not (lab_dir / "windows").exists()
+
+
+def test_the_restart_waits_for_the_report_writer_not_just_the_children(
+    tmp_path: Path, lab_launcher: Any
+) -> None:
+    """D-09 — archiving while the supervisor still writes would race its report."""
+    import os
+
+    # Our own pid is alive, so the wait times out rather than lying.
+    assert lab_launcher.wait_for_supervisor_exit({"supervisor_pid": os.getpid()}, timeout=0.2) is False
+    # A pid that does not exist is settled immediately.
+    assert lab_launcher.wait_for_supervisor_exit({"supervisor_pid": 999_999_999}, timeout=5.0) is True
+    # An older heartbeat has no pid: nothing is invented, nothing blocks forever.
+    assert lab_launcher.wait_for_supervisor_exit({}, timeout=5.0) is False
+
+
 # ------------------------------------------------- system daily report (§15, §47)
 
 

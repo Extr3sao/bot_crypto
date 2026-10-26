@@ -38,7 +38,9 @@ from trading_bot.research.forward.storage import (
     RunManifest,
     SegmentWriter,
     StorageError,
+    classify_gaps,
     fingerprint_segment,
+    gap_class,
     iter_segment_records,
     load_manifest,
     load_resume_state,
@@ -406,6 +408,9 @@ def test_run_manifest_serialises_gap_durations(tmp_path: Path) -> None:
     )
     payload = manifest.as_dict()
     assert payload["gaps"][0]["duration_ms"] == 30
+    # D-10: the manifest classifies its holes, not just counts them.
+    assert payload["gaps_classification"]["total"] == 1
+    assert payload["gaps_classification"]["by_class"]["RECOVERED"] == 1
     assert payload["continuity"] == CONTINUITY_INCOMPLETE
     assert payload["contract_version"] == "v"
     path = manifest.save(tmp_path)
@@ -437,6 +442,73 @@ def test_global_streams_are_kept_in_a_sentinel_symbol_directory(tmp_path: Path) 
 def test_continuity_labels_are_the_only_two_allowed() -> None:
     assert CONTINUITY_CONTINUOUS == "CONTINUOUS_DATA"
     assert CONTINUITY_INCOMPLETE == "INCOMPLETE_DATA"
+
+
+# ---------------------------------------------------- gap classification (D-10)
+
+
+def _gap(
+    *,
+    event_type: str = "agg_trade",
+    recovered: bool = False,
+    recovered_events: int = 0,
+    detail: str | None = None,
+    reason: str = "COLLECTOR_RESTART",
+    gap_id: str = "run:gap:000001",
+) -> GapRecord:
+    return GapRecord(
+        market="spot",
+        symbol="BTCUSDT",
+        event_type=event_type,
+        start_ms=1_000,
+        end_ms=61_000,
+        reason=reason,
+        recovered=recovered,
+        data_lost=not recovered,
+        recovered_events=recovered_events,
+        gap_id=gap_id,
+        detail=detail,
+    )
+
+
+def test_a_gap_is_classified_by_what_can_still_be_done_about_it() -> None:
+    """D-10 — "34 gaps" is a score; this is a diagnosis."""
+    # Still open on a stream the public index can walk: recoverable.
+    assert gap_class(_gap()) == "RECOVERABLE"
+    # The backfill ran and closed it.
+    assert gap_class(_gap(recovered=True)) == "RECOVERED"
+    # It closed part of it.
+    assert gap_class(_gap(recovered_events=12)) == "PARTIAL"
+    # The backfill ran and came back empty: the hole is real.
+    assert gap_class(_gap(detail="index had no window")) == "UNRECOVERABLE"
+    # A websocket-only stream has no public index to walk.
+    assert gap_class(_gap(event_type="depth_diff")) == "UNRECOVERABLE"
+
+
+def test_classification_counts_seconds_reasons_and_the_lost_ids() -> None:
+    gaps = [
+        _gap(gap_id="g1"),
+        _gap(gap_id="g2", event_type="depth_diff", reason="WS_DISCONNECT"),
+        _gap(gap_id="g3", recovered=True, recovered_events=10),
+        _gap(gap_id="g4", recovered_events=4),
+    ]
+    payload = classify_gaps(gaps)
+    assert payload["total"] == 4
+    assert payload["by_class"] == {
+        "RECOVERED": 1,
+        "PARTIAL": 1,
+        "RECOVERABLE": 1,
+        "UNRECOVERABLE": 1,
+    }
+    # A recovered gap contributes no lost seconds; the rest are 60 s each.
+    assert payload["lost_seconds_by_class"]["RECOVERED"] == 0.0
+    assert payload["lost_seconds_by_class"]["RECOVERABLE"] == 60.0
+    assert payload["lost_seconds_by_class"]["UNRECOVERABLE"] == 60.0
+    assert payload["by_reason"] == {"COLLECTOR_RESTART": 3, "WS_DISCONNECT": 1}
+    assert payload["by_event_type"] == {"agg_trade": 3, "depth_diff": 1}
+    assert payload["unrecoverable_gap_ids"] == ["g2"]
+    assert "backfill" in payload["policy"]
+    assert classify_gaps([])["total"] == 0
 
 
 def test_a_compressed_open_segment_is_still_readable(tmp_path: Path) -> None:

@@ -1,0 +1,14 @@
+{
+  "analysis.json": {
+    "bytes": 35605,
+    "sha256": "edfcb1009948b683cd1dc867bdb4119b9b10dcf91d46f0b9fcc4af12f90bbdc9"
+  },
+  "signals.html": {
+    "bytes": 110296,
+    "sha256": "e224e04465e8bd0864b21f471e0b0b757680398a11fba9ff7e0e667b739dca96"
+  },
+  "status.html": {
+    "bytes": 200884,
+    "sha256": "9e9f09a7b2e5a15feb50c166844a4a88920e14ade949adafcf82eb60b873ede9"
+  }
+}

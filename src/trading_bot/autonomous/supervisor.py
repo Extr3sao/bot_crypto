@@ -74,11 +74,18 @@ class ProcessState(StrEnum):
 
 
 class SystemState(StrEnum):
-    """§31 — the combined verdict, derived from the children, never asserted."""
+    """§31 — the combined verdict, derived from the children, never asserted.
+
+    ``STOPPED`` exists because a stop that was asked for and completed cleanly is
+    not a fault (D-08): after ``stop_all`` every critical child is *correctly* not
+    running, and calling that ``DEGRADED`` reported a fault that never happened on
+    every clean shutdown.
+    """
 
     HEALTHY = "HEALTHY"
     DEGRADED = "DEGRADED"
     FAILED = "FAILED"
+    STOPPED = "STOPPED"
 
 
 def disk_free_bytes(path: Path | str = ".") -> int:
@@ -655,6 +662,15 @@ class Supervisor:
         ]
         if critical_failed:
             return SystemState.FAILED
+        # D-08 — a completed stop is a state, not degradation. The verdict has to
+        # come from the stop report, so a stop that had to escalate stays FAILED
+        # and nothing is papered over; only a CLEAN stop retires the DEGRADED
+        # reading that the stopped children would otherwise produce.
+        if self.last_stop_report is not None:
+            if self.last_stop_report.get("verdict") == "FAILED":
+                return SystemState.FAILED
+            if not any(runtime.is_alive for runtime in self.processes):
+                return SystemState.STOPPED
         critical_not_running = [
             runtime
             for runtime in self.processes
@@ -685,6 +701,10 @@ class Supervisor:
         payload: dict[str, Any] = {
             "schema_version": "system-heartbeat-v1",
             "timestamp_ms": int(time.time() * 1000),
+            # Who wrote this heartbeat: a restart has to be able to wait for the
+            # previous supervisor to finish writing its report instead of racing
+            # it (D-09).
+            "supervisor_pid": os.getpid(),
             "uptime_seconds": round((time.time() - self.started_at_ms / 1000), 3),
             "state": state.value,
             "processes": {runtime.spec.name: runtime.to_dict() for runtime in self.processes},

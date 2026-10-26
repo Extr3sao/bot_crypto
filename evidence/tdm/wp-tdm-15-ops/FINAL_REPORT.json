@@ -1,0 +1,443 @@
+{
+  "schema_version": "wp-tdm-015-ops-final-v1",
+  "work_package": "WP-TDM-015-OPS",
+  "generated_at_utc": "2026-10-26T12:36:38Z",
+  "verdict": "PARTIAL",
+  "verdict_reason": "signals, PAPER runtime, restart and dashboard are operating on real market data; AI inference is BLOCKED (no provider credential on this host) and PAPER orders stay blocked by admission, so the work package is not a PASS",
+  "run_id": "tdm15-ops-01",
+  "base_commit": "c30a826b",
+  "head_commit": "c30a826bbdd7ee15eb9eb9ad3cf34554e706844c",
+  "branch": "feat/tdm-015-ops",
+  "no_live_orders": true,
+  "execution": {
+    "final_state": "STOPPED",
+    "stop_reason": "STOP file",
+    "stop_verdict": "CLEAN",
+    "duration_seconds_last_window": 898.091,
+    "windows": [
+      {
+        "window_id": "20261026T115147Z",
+        "final_state": "STOPPED",
+        "stop_verdict": "CLEAN",
+        "duration_seconds": 2362.981,
+        "paper_cycles": 8,
+        "digests_ok": true,
+        "journal_lines": 8
+      },
+      {
+        "window_id": "20261026T115503Z",
+        "final_state": "STOPPED",
+        "stop_verdict": "CLEAN",
+        "duration_seconds": 192.029,
+        "paper_cycles": 0,
+        "digests_ok": true,
+        "journal_lines": null
+      },
+      {
+        "window_id": "current (closed, not yet archived)",
+        "final_state": "STOPPED",
+        "stop_verdict": "CLEAN",
+        "duration_seconds": 898.091,
+        "paper_cycles": 3,
+        "digests_ok": null,
+        "journal_lines": null,
+        "note": "the third window is the live record: its report is LAB_RUN_REPORT.json; it is archived the next time the lab restarts"
+      }
+    ],
+    "processes": {
+      "paper": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit_code": 0,
+        "forced_stop": false
+      },
+      "collector": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit_code": 0,
+        "forced_stop": false
+      },
+      "retention": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit_code": 0,
+        "forced_stop": false
+      },
+      "strategy_lab": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit_code": 0,
+        "forced_stop": false
+      },
+      "analyst": {
+        "state": "STOPPED",
+        "restarts": 0,
+        "exit_code": 0,
+        "forced_stop": false
+      }
+    },
+    "disk": {
+      "free_gb": 21.417,
+      "level": "NORMAL",
+      "estimated_hours_remaining": 10.78
+    },
+    "total_window_seconds": 3453.101
+  },
+  "paper": {
+    "provider": "ccxt",
+    "environment": "ccxt:binance",
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "timeframe": "5m",
+    "totals": {
+      "asset_cycle_evaluations": 9,
+      "paper_trades": 0,
+      "shadow_trades": 1,
+      "no_trades": 8,
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "traces_persisted": 9,
+      "outcomes_resolved": 7,
+      "outcomes_pending": 5,
+      "performance_updates": 7,
+      "no_trade_NO_TRADE_STRATEGIC": 8,
+      "no_trade_NO_TRADE_RISK": 0,
+      "no_trade_NO_TRADE_DATA": 0,
+      "no_trade_NO_TRADE_CONFLICT": 0,
+      "risk_APPROVED": 8,
+      "risk_VETOED": 0,
+      "risk_NOT_APPLICABLE": 1,
+      "risk_NOT_EVALUATED": 0
+    },
+    "paper_candidates": [],
+    "orders_created": 0,
+    "paper_trades": 0
+  },
+  "signals": {
+    "rows": 33,
+    "unique": 33,
+    "stages": {
+      "CANDIDATE": 21,
+      "SHADOW": 2,
+      "REJECTED": 10
+    },
+    "by_symbol": {
+      "BTC/USDT": {
+        "CANDIDATE": 9,
+        "REJECTED": 2
+      },
+      "ETH/USDT": {
+        "CANDIDATE": 5,
+        "REJECTED": 5,
+        "SHADOW": 1
+      },
+      "SOL/USDT": {
+        "CANDIDATE": 7,
+        "SHADOW": 1,
+        "REJECTED": 3
+      }
+    },
+    "last": [
+      {
+        "signal_id": "c12e12407ce6ec1e00068efce4ec7727",
+        "symbol": "BTC/USDT",
+        "stage": "CANDIDATE",
+        "kind": "ALPHA",
+        "strategy_id": "ema_crossover@5m",
+        "bar_close_time_utc": "2026-10-26T12:05:07.624Z",
+        "decision_time_utc": "2026-10-26T12:05:07.624Z",
+        "net_edge_bps": -27.35181454,
+        "reason": "gross_edge_not_positive:-4.5600bps"
+      },
+      {
+        "signal_id": "e84393ba3663ac00a4bb97ac2544ec26",
+        "symbol": "ETH/USDT",
+        "stage": "REJECTED",
+        "kind": "NO_ALPHA",
+        "strategy_id": null,
+        "bar_close_time_utc": "2026-10-26T12:05:07.624Z",
+        "decision_time_utc": "2026-10-26T12:05:07.624Z",
+        "net_edge_bps": null,
+        "reason": "no_candidate_emitted_an_alpha"
+      },
+      {
+        "signal_id": "93fc890030b239a896158d0faf6a7b48",
+        "symbol": "SOL/USDT",
+        "stage": "CANDIDATE",
+        "kind": "ALPHA",
+        "strategy_id": "ema_crossover@5m",
+        "bar_close_time_utc": "2026-10-26T12:05:07.624Z",
+        "decision_time_utc": "2026-10-26T12:05:07.624Z",
+        "net_edge_bps": -28.33477295,
+        "reason": "gross_edge_not_positive:-4.5600bps"
+      },
+      {
+        "signal_id": "55cd14993234e94e11068fb93098464c",
+        "symbol": "BTC/USDT",
+        "stage": "CANDIDATE",
+        "kind": "ALPHA",
+        "strategy_id": "ema_crossover@5m",
+        "bar_close_time_utc": "2026-10-26T12:10:07.479Z",
+        "decision_time_utc": "2026-10-26T12:10:07.479Z",
+        "net_edge_bps": -27.35181457,
+        "reason": "gross_edge_not_positive:-4.5600bps"
+      },
+      {
+        "signal_id": "ea3e7e9229ff620b00b481b48e83ee1c",
+        "symbol": "ETH/USDT",
+        "stage": "CANDIDATE",
+        "kind": "ALPHA",
+        "strategy_id": "ema_crossover@5m",
+        "bar_close_time_utc": "2026-10-26T12:10:07.479Z",
+        "decision_time_utc": "2026-10-26T12:10:07.479Z",
+        "net_edge_bps": -27.39348778,
+        "reason": "gross_edge_not_positive:-4.5600bps"
+      },
+      {
+        "signal_id": "94c2ff375d11e4411ae5854c5d076a9b",
+        "symbol": "SOL/USDT",
+        "stage": "CANDIDATE",
+        "kind": "ALPHA",
+        "strategy_id": "ema_crossover@5m",
+        "bar_close_time_utc": "2026-10-26T12:10:07.479Z",
+        "decision_time_utc": "2026-10-26T12:10:07.479Z",
+        "net_edge_bps": -28.33438564,
+        "reason": "gross_edge_not_positive:-4.5600bps"
+      }
+    ]
+  },
+  "analysis": {
+    "rows": 33,
+    "statuses": {
+      "NOT_CONFIGURED": 33
+    },
+    "signals_covered": 33,
+    "signals_analysed": 0,
+    "provider_configured": false,
+    "ai_verdict": "AI_BLOCKED",
+    "blocked_reason": "SIGNAL_ANALYST_API_KEY is not configured on this host; the sidecar recorded NOT_CONFIGURED / PROVIDER_NOT_CONFIGURED for every signal instead of inventing one"
+  },
+  "capture": {
+    "state_gaps": 110,
+    "state_events": 763318,
+    "manifest_present": true,
+    "continuity": "INCOMPLETE_DATA",
+    "status": "CONTROLLED_STOP",
+    "stop_reason": "stop file",
+    "gaps": 110,
+    "gaps_by_class": {
+      "RECOVERED": 22,
+      "PARTIAL": 0,
+      "RECOVERABLE": 0,
+      "UNRECOVERABLE": 88
+    },
+    "gaps_by_reason": {
+      "AGG_TRADE_ID_JUMP": 10,
+      "COLLECTOR_RESTART": 18,
+      "DEPTH_SEQUENCE_BREAK": 10,
+      "WS_DISCONNECT": 72
+    },
+    "lost_seconds_by_class": {
+      "RECOVERED": 0.0,
+      "PARTIAL": 0.0,
+      "RECOVERABLE": 0.0,
+      "UNRECOVERABLE": 2602.236
+    },
+    "streams": 42,
+    "segments": 78,
+    "bytes": 94968711,
+    "disk_bytes_per_hour": 382009854.63,
+    "duration_seconds": 894.97
+  },
+  "dashboard": {
+    "url": "http://127.0.0.1:8793",
+    "served": true,
+    "endpoints": [
+      {
+        "url": "http://127.0.0.1:8793/",
+        "status": 200,
+        "bytes": 124361,
+        "sha256": "ddd7c75988b5b89cd4884a6ca0d3b5740dc2cd3c0f44b5ff121cd4a3955590b0"
+      },
+      {
+        "url": "http://127.0.0.1:8793/healthz",
+        "status": 200,
+        "bytes": 52,
+        "sha256": "129ae7d34808a45ec543d9e998f96ac47fc3719f8f7807b923950723c99d053d"
+      },
+      {
+        "url": "http://127.0.0.1:8793/api/status",
+        "status": 200,
+        "bytes": 200816,
+        "sha256": "44f9b1cb72afeb537010b7a09322fffc8bab30b91d4f8201a0b5938fc83a6369"
+      },
+      {
+        "url": "http://127.0.0.1:8793/api/signals?limit=5",
+        "status": 200,
+        "bytes": 22064,
+        "sha256": "f30d5f8daf76dd822ea6486c590a219e7d087aedcec0c5d1934f10a01e370cdb"
+      },
+      {
+        "url": "http://127.0.0.1:8793/api/analysis",
+        "status": 200,
+        "bytes": 35605,
+        "sha256": "1e3afb0eca6254f792d2b735a1b9861cf530812ed7e3936795f2d6e03876bded"
+      }
+    ],
+    "artifacts": "evidence/tdm/wp-tdm-15-ops/dashboard/ (SHA256SUMS.json included)"
+  },
+  "defects": [
+    {
+      "id": "D-06",
+      "status": "FIXED",
+      "claim": "closing PAPER_RUN.json merges over the launch payload",
+      "test": "tests/unit/autonomous/test_run_descriptor_provenance.py"
+    },
+    {
+      "id": "D-07",
+      "status": "FIXED",
+      "claim": "a missing key stops a signal from being re-examined; coverage progresses",
+      "test": "tests/unit/autonomous/test_signal_analysis.py"
+    },
+    {
+      "id": "D-08",
+      "status": "FIXED",
+      "claim": "a clean stop reports STOPPED, an escalated one still reports FAILED",
+      "test": "tests/unit/autonomous/test_supervisor.py"
+    },
+    {
+      "id": "D-09",
+      "status": "FIXED",
+      "claim": "--restart archives the closed window before the new one writes",
+      "test": "tests/unit/autonomous/test_lab_operations.py"
+    },
+    {
+      "id": "D-10",
+      "status": "FIXED",
+      "claim": "the manifest classifies its gaps by what can still be done about them",
+      "test": "tests/unit/forward/test_forward_contract_storage.py"
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "ACC-01",
+      "claim": "market data and signals running for real",
+      "verdict": "PASS",
+      "detail": "33 signals from 33 decisions; provider 'ccxt' via 'ccxt:binance'"
+    },
+    {
+      "id": "ACC-02",
+      "claim": "AI inference confirmed by a real call",
+      "verdict": "BLOCKED",
+      "detail": "no provider credential exists on this host: every row is NOT_CONFIGURED (PROVIDER_NOT_CONFIGURED). No mock was substituted and no analysis was invented; AI_BLOCKED is the honest verdict"
+    },
+    {
+      "id": "ACC-03",
+      "claim": "dashboard shows the signals and their analyses",
+      "verdict": "PASS",
+      "detail": "read-only dashboard served 5 endpoints; digests recorded"
+    },
+    {
+      "id": "ACC-04",
+      "claim": "PAPER healthy although no strategy is admitted",
+      "verdict": "PASS",
+      "detail": "system state 'STOPPED'; paper candidates []; orders_created 0"
+    },
+    {
+      "id": "ACC-05",
+      "claim": "restart without duplication or evidence loss",
+      "verdict": "PASS",
+      "detail": "2 window(s) archived, digests recomputed"
+    },
+    {
+      "id": "ACC-06",
+      "claim": "zero live orders and zero false successes",
+      "verdict": "PASS",
+      "detail": "orders_created=0, paper_trades=0, LIVE signals 0, signal rows unreadable 0, analysis rows unreadable 0"
+    },
+    {
+      "id": "ACC-07",
+      "claim": "unresolved defects stated explicitly",
+      "verdict": "PASS",
+      "detail": "the defect table keeps its own status column; AI_BLOCKED and the 72 h question are listed as open rather than folded into a pass"
+    }
+  ],
+  "open_items": [
+    {
+      "id": "AI_BLOCKED",
+      "detail": "SIGNAL_ANALYST_API_KEY absent; 33 NOT_CONFIGURED rows, 0 ANALYZED, 0 claims"
+    },
+    {
+      "id": "PAPER_ORDER",
+      "detail": "admission admits 0 of 24 strategies; no order lifecycle could be credited"
+    },
+    {
+      "id": "SOAK_72H",
+      "detail": "not attempted; no 24x7 or PAPER_RUNTIME_VALIDATED claim is made"
+    },
+    {
+      "id": "CAPTURE_CONTINUITY",
+      "detail": "110 gaps (22 recovered / 88 unrecoverable); continuity INCOMPLETE_DATA"
+    },
+    {
+      "id": "RESUMED_MANIFEST_SPAN",
+      "detail": "a resumed capture manifest covers its own session (895 s), not the three windows"
+    }
+  ],
+  "verification": {
+    "independent_verifier": "scripts/wp15ops_verify.py",
+    "ok": true,
+    "checks": 27,
+    "passed": 27,
+    "failed": []
+  },
+  "tests": {
+    "full_suite": "87 failed, 3427 passed, 31 skipped, 78 warnings, 14 errors in 876.43s (0:14:36)",
+    "baseline_slice": "86 failed, 420 passed, 13 skipped, 14 errors in 433.10s (0:07:13)",
+    "head_slice": "86 failed, 420 passed, 13 skipped, 14 errors in 464.09s (0:07:44)",
+    "regressions": [],
+    "verdict": "NO_REGRESSIONS",
+    "new_cases": 19
+  },
+  "evidence_refs": [
+    {
+      "path": "reports\\paper-lab\\tdm15-ops-01\\LAB_PLAN.json",
+      "exists": true,
+      "bytes": 11178,
+      "sha256": "4683e057e6aca0be0aaf68d97d705a6048d97919f778ae3e5415e951d5be49d0"
+    },
+    {
+      "path": "reports\\autonomous-paper\\tdm15-ops-01\\PAPER_RUN.json",
+      "exists": true,
+      "bytes": 2292,
+      "sha256": "f0d1f2263d258d7f23ce190af6079bca9d64f64c45d957364781c4cd2ba373c9"
+    },
+    {
+      "path": "reports\\autonomous-paper\\tdm15-ops-01\\signals.jsonl",
+      "exists": true,
+      "bytes": 84075,
+      "sha256": "be147a5fade347ce42e107474e4b31ff0e6d40835c9382cc2e4fd6e9d75c1471"
+    },
+    {
+      "path": "reports\\autonomous-paper\\tdm15-ops-01\\analysis.jsonl",
+      "exists": true,
+      "bytes": 28173,
+      "sha256": "169e5c11938067eb931cfa9da50832fa59881ba5bc2b4b333051d08bee7e1721"
+    },
+    {
+      "path": "reports\\microstructure-forward-lab\\manifest\\tdm15-ops-01.json",
+      "exists": true,
+      "bytes": 198240,
+      "sha256": "ae92ba386c9072ee69248772d5c70f7bdbb38157ae46547615c2092085238163"
+    },
+    {
+      "path": "reports\\microstructure-forward-lab\\state\\tdm15-ops-01.json",
+      "exists": true,
+      "bytes": 488,
+      "sha256": "c1a1009d8ef6da175b3b433e6e29f131a923ad224a973f95d55eda71e20ddbb9"
+    }
+  ]
+}

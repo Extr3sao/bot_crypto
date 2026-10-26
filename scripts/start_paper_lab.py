@@ -36,7 +36,10 @@ preflight refused; nothing was started.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
+import shutil
 import subprocess
 import sys
 import time
@@ -695,6 +698,200 @@ def wait_for_stop(run_dir: Path, *, timeout: float) -> dict[str, Any]:
     return last
 
 
+def wait_for_supervisor_exit(heartbeat: dict[str, Any], *, timeout: float = 60.0) -> bool:
+    """Wait until the *report writer* is gone, not just its children.
+
+    D-09: the children finishing is not the previous window being finished with —
+    the supervisor writes `LAB_RUN_REPORT.json` after them, and archiving while it
+    is still writing would race the writer. The heartbeat publishes its own pid for
+    exactly this. An older heartbeat has no pid: then there is nothing to wait for
+    and the caller archives what it finds, rather than inventing a wait it cannot
+    observe.
+    """
+    from trading_bot.autonomous.observability import process_alive
+
+    pid = heartbeat.get("supervisor_pid")
+    if not isinstance(pid, int) or pid <= 0:
+        return False
+    deadline = time.monotonic() + max(0.0, timeout)
+    while time.monotonic() < deadline:
+        if process_alive(pid) is not True:
+            return True
+        time.sleep(0.5)
+    return False
+
+
+#: The files a window leaves behind, by who wrote them.
+WINDOW_LAB_FILES = (
+    "LAB_RUN_REPORT.json",
+    "LAB_RUN_REPORT.md",
+    "LAB_RUN_SNAPSHOT.json",
+    "SYSTEM_HEARTBEAT.json",
+    "STRATEGY_LAB_REPORT.json",
+    "STRATEGY_LAB_REPORT.md",
+)
+WINDOW_PAPER_FILES = (
+    "heartbeat.jsonl",
+    "heartbeat.json",
+    "PAPER_RUN.json",
+    "AI_ANALYST_HEARTBEAT.json",
+    # The per-run summary is rewritten by the next window's finalise, so the
+    # closed window's copy is what keeps it: cycle detail survives in the
+    # append-only traces either way, but a report that existed should not vanish.
+    "RUN_REPORT.json",
+    "RUN_REPORT.md",
+    "PAPER_DAILY_REPORT.json",
+    "PAPER_DAILY_REPORT.md",
+)
+#: Copied, never moved: the new window overwrites them, and a refused launch must
+#: not be able to delete the previous window's provenance.
+WINDOW_PAPER_COPIES = (
+    "PAPER_RUN.json",
+    "AI_ANALYST_HEARTBEAT.json",
+    "RUN_REPORT.json",
+    "RUN_REPORT.md",
+    "PAPER_DAILY_REPORT.json",
+    "PAPER_DAILY_REPORT.md",
+)
+WINDOWS_DIRNAME = "windows"
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _window_id(lab_run_dir: Path) -> str:
+    """A stable name for the window being closed, and one that cannot collide."""
+    ended_ms: int | None = None
+    try:
+        report = json.loads((lab_run_dir / "LAB_RUN_REPORT.json").read_text(encoding="utf-8"))
+        ended = report.get("ended_at_ms")
+        ended_ms = int(ended) if isinstance(ended, int) else None
+    except (OSError, ValueError, TypeError):
+        ended_ms = None
+    stamp = (
+        time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(ended_ms / 1000))
+        if ended_ms
+        else time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    )
+    base = f"{stamp}"
+    candidate = base
+    suffix = 1
+    while (lab_run_dir / WINDOWS_DIRNAME / candidate).exists():
+        suffix += 1
+        candidate = f"{base}-{suffix}"
+    return candidate
+
+
+def read_window_index(lab_run_dir: Path) -> list[dict[str, Any]]:
+    """The windows this run id has already closed, newest last."""
+    path = lab_run_dir / WINDOWS_DIRNAME / "INDEX.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    windows = payload.get("windows") if isinstance(payload, dict) else None
+    return [entry for entry in windows or [] if isinstance(entry, dict)]
+
+
+def archive_previous_window(
+    *,
+    lab_run_dir: Path,
+    paper_run_dir: Path,
+    reason: str = "restart",
+) -> dict[str, Any] | None:
+    """Archive the window a restart is about to overwrite (D-09).
+
+    A restart reuses the run id, so the files that describe the finished window
+    are the same files the new one writes: `LAB_RUN_REPORT.json` was overwritten
+    and `heartbeat.jsonl` was appended to with cycle numbers starting again at 1,
+    which fused two windows into one unreadable journal. Nothing is deleted here:
+    the window's reports move into `windows/<window_id>/`, the PAPER journal moves
+    with them, and a manifest records every file's sha256 so the archive can be
+    checked later without trusting this function.
+    """
+    lab_files = [(lab_run_dir / name, "move") for name in WINDOW_LAB_FILES]
+    paper_files = [
+        (
+            paper_run_dir / name,
+            "copy" if name in WINDOW_PAPER_COPIES else "move",
+        )
+        for name in WINDOW_PAPER_FILES
+    ]
+    present = [(path, action) for path, action in lab_files + paper_files if path.is_file()]
+    if not present:
+        return None
+    window_id = _window_id(lab_run_dir)
+    target = lab_run_dir / WINDOWS_DIRNAME / window_id
+    target.mkdir(parents=True, exist_ok=True)
+    entries: list[dict[str, Any]] = []
+    for path, action in present:
+        archived = target / path.name
+        entries.append(
+            {
+                "name": path.name,
+                "source": str(path),
+                "action": action,
+                "bytes": path.stat().st_size,
+                "sha256": _sha256(path),
+            }
+        )
+        if action == "move":
+            shutil.move(str(path), str(archived))
+        else:
+            shutil.copy2(str(path), str(archived))
+    previous: dict[str, Any] = {}
+    try:
+        previous = json.loads((target / "LAB_RUN_REPORT.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        previous = {}
+    manifest = {
+        "schema_version": "lab-window-v1",
+        "window_id": window_id,
+        "reason": reason,
+        "archived_at_ms": int(time.time() * 1000),
+        "lab_run_dir": str(lab_run_dir),
+        "paper_run_dir": str(paper_run_dir),
+        "previous_final_state": previous.get("final_state"),
+        "previous_stop_reason": previous.get("stop_reason"),
+        "previous_stop_verdict": (previous.get("stop_report") or {}).get("verdict"),
+        "previous_duration_seconds": previous.get("duration_seconds"),
+        "files": entries,
+        "note": (
+            "a restart reuses the run id, so the closed window is preserved here "
+            "instead of being overwritten; nothing was deleted"
+        ),
+    }
+    manifest_path = target / "WINDOW_MANIFEST.json"
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    index_path = lab_run_dir / WINDOWS_DIRNAME / "INDEX.json"
+    index = {"schema_version": "lab-windows-v1", "windows": read_window_index(lab_run_dir)}
+    index["windows"].append(
+        {
+            "window_id": window_id,
+            "archived_at_ms": manifest["archived_at_ms"],
+            "reason": reason,
+            "manifest": str(manifest_path.relative_to(lab_run_dir)),
+            "final_state": manifest["previous_final_state"],
+            "stop_reason": manifest["previous_stop_reason"],
+            "stop_verdict": manifest["previous_stop_verdict"],
+            "files": len(entries),
+        }
+    )
+    tmp = index_path.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    os.replace(tmp, index_path)
+    manifest["path"] = str(target)
+    manifest["manifest_path"] = str(manifest_path)
+    return manifest
+
+
 def main() -> int:
     args = parse_args()
     if args.data_root:
@@ -712,7 +909,24 @@ def main() -> int:
         stop_lab(target)
         heartbeat = wait_for_stop(target, timeout=args.stop_grace_seconds + 60.0)
         print(f"[lab] previous run settled: {heartbeat.get('state') or 'no heartbeat'}")
+        settled = wait_for_supervisor_exit(heartbeat)
+        print(
+            "[lab] previous supervisor exited"
+            if settled
+            else "[lab] previous supervisor pid unknown or still present; archiving anyway"
+        )
         args.run_id = target.name
+        archived = archive_previous_window(
+            lab_run_dir=target,
+            paper_run_dir=(REPO_ROOT / args.paper_root).resolve() / target.name,
+        )
+        if archived is None:
+            print(f"[lab] nothing to archive under {target} (no previous window files)")
+        else:
+            print(
+                f"[lab] previous window archived: {archived['path']} "
+                f"({len(archived['files'])} files)"
+            )
     if args.stop:
         target = (
             Path(args.stop)
@@ -766,6 +980,15 @@ def main() -> int:
         "collector_resume": collector_resumes(
             (REPO_ROOT / args.forward_root).resolve(), run_id
         ),
+        "windows": {
+            "archive_dir": str(run_dir / WINDOWS_DIRNAME),
+            "previous": read_window_index(run_dir),
+            "rule": (
+                "a restart archives the closed window (reports, snapshot, system "
+                "heartbeat and the PAPER journal) under windows/<window_id>/ "
+                "before the new window writes anything"
+            ),
+        },
         "graceful_stop": {
             "stop_grace_seconds": args.stop_grace_seconds,
             "stop_files": {name: str(path) for name, path in stop_files.items()},
@@ -929,6 +1152,7 @@ def main() -> int:
             "data_root_is_forward_root": True,
         },
         "plan": plan,
+        "previous_windows": read_window_index(run_dir),
     }
     report_path = run_dir / "LAB_RUN_REPORT.json"
     report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

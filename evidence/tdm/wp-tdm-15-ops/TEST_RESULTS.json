@@ -1,0 +1,100 @@
+{
+  "schema_version": "wp-tdm-015-ops-tests-v1",
+  "generated_at_utc": "2026-10-26T12:35:16Z",
+  "head": {
+    "commit": "c30a826bbdd7ee15eb9eb9ad3cf34554e706844c",
+    "branch": "feat/tdm-015-ops",
+    "full_suite": {
+      "summary": "87 failed, 3427 passed, 31 skipped, 78 warnings, 14 errors in 876.43s (0:14:36)",
+      "counts": {
+        "failed": 87,
+        "passed": 3427,
+        "skipped": 31,
+        "warnings": 78,
+        "errors": 14
+      },
+      "log": "logs/pytest-full.log"
+    }
+  },
+  "baseline": {
+    "worktree": "../ff-wt-tdm15base",
+    "commit": "c30a826bbdd7ee15eb9eb9ad3cf34554e706844c",
+    "method": "the 24 test files that fail on the head were re-run unchanged at the parent commit, so the comparison is node-for-node rather than count-for-count",
+    "slice_of_failing_files": {
+      "summary": "86 failed, 420 passed, 13 skipped, 14 errors in 433.10s (0:07:13)",
+      "counts": {
+        "failed": 86,
+        "passed": 420,
+        "skipped": 13,
+        "errors": 14
+      },
+      "log": "../ff-wt-tdm15ops/logs/pytest-baseline-files.log"
+    }
+  },
+  "head_same_slice": {
+    "summary": "86 failed, 420 passed, 13 skipped, 14 errors in 464.09s (0:07:44)",
+    "counts": {
+      "failed": 86,
+      "passed": 420,
+      "skipped": 13,
+      "errors": 14
+    },
+    "log": "logs/pytest-head-files.log"
+  },
+  "node_comparison": {
+    "common_failing_or_erroring": 100,
+    "regressions": [],
+    "fixed_since_baseline": [],
+    "verdict": "NO_REGRESSIONS"
+  },
+  "full_suite_minus_slice": {
+    "nodes_only_in_the_full_run": [
+      "tests/unit/observability/test_dashboard_server.py::test_runtime_artifacts_are_untouched_by_serving"
+    ],
+    "explanation": "the extra node is test_runtime_artifacts_are_untouched_by_serving, which digests the repository and asserts serving changes nothing; the capture the lab was writing during the full run rewrote one segment file mid-test. Re-run after the lab stopped: 1 passed. The failure is this session writing while its own suite ran, not a code regression",
+    "reproduced_alone_after_the_lab_stopped": "1 passed in 4.80s"
+  },
+  "new_tests": {
+    "count": 19,
+    "method": "pytest --collect-only on the six touched test files at the head (110) minus the four that exist at the parent (91), plus the two new files counted separately",
+    "files": [
+      {
+        "path": "tests/unit/autonomous/test_run_descriptor_provenance.py",
+        "cases": 4,
+        "defect": "D-06"
+      },
+      {
+        "path": "tests/unit/autonomous/test_service_secret_store.py",
+        "cases": 5,
+        "defect": "OPS credential store"
+      },
+      {
+        "path": "tests/unit/autonomous/test_signal_analysis.py",
+        "added": 3,
+        "defect": "D-07"
+      },
+      {
+        "path": "tests/unit/autonomous/test_supervisor.py",
+        "added": 2,
+        "defect": "D-08"
+      },
+      {
+        "path": "tests/unit/autonomous/test_lab_operations.py",
+        "added": 4,
+        "defect": "D-09"
+      },
+      {
+        "path": "tests/unit/forward/test_forward_contract_storage.py",
+        "added": 2,
+        "defect": "D-10"
+      }
+    ],
+    "all_passed": true
+  },
+  "affected_suites_after_the_fixes": {
+    "command": "pytest tests/unit/autonomous tests/unit/forward tests/unit/observability",
+    "before_the_collector_revert": "587 passed / 1 failed: the certified-capture guard, because collector.py had been edited for D-10",
+    "resolution": "D-10 was moved to the read side (RunManifest.as_dict) instead of the collector, so collector.py is byte-identical to the certified commit and the guard passes without being relaxed"
+  },
+  "exit_status": "non-zero: the suite is not green, and this report says which failures are pre-existing"
+}

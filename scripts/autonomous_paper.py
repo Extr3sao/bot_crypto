@@ -263,14 +263,49 @@ def build_scanner_factory(settings: Settings, provider: str) -> Any:
     return factory, source
 
 
+DESCRIPTOR_NAME = "PAPER_RUN.json"
+DESCRIPTOR_SCHEMA = "paper-run-descriptor-v2"
+
+
 def write_run_descriptor(run_dir: Path, payload: dict[str, Any]) -> Path:
     """The supervisor's view of a live run: pid, mode, candidates, commit."""
     run_dir.mkdir(parents=True, exist_ok=True)
-    path = run_dir / "PAPER_RUN.json"
+    path = run_dir / DESCRIPTOR_NAME
     tmp = path.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    body = {"schema_version": DESCRIPTOR_SCHEMA, **payload}
+    tmp.write_text(json.dumps(body, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     os.replace(tmp, path)
     return path
+
+
+def read_run_descriptor(run_dir: Path) -> dict[str, Any]:
+    """The descriptor as it currently stands, or ``{}`` when it is unreadable."""
+    try:
+        payload = json.loads((Path(run_dir) / DESCRIPTOR_NAME).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def close_run_descriptor(run_dir: Path, payload: dict[str, Any]) -> Path:
+    """Close the descriptor by *merging* over it, never by replacing it.
+
+    D-06: the shutdown rewrite used to write a fresh object over the launch one,
+    which deleted the provenance the launch had recorded (provider,
+    environment, assets, timeframe, the universe preflight and the registry
+    counts). The verifier then read ``provider: null`` and could not tell a
+    REAL-ccxt signal from a FAKE one, so the check it exists for was silently
+    skipped. Every launch key survives here unless the shutdown payload names
+    the same key on purpose; the run's own result is added, not substituted.
+    """
+    launch = read_run_descriptor(run_dir)
+    merged: dict[str, Any] = {
+        **launch,
+        **payload,
+        "launch_descriptor_preserved": bool(launch),
+        "launch_keys": sorted(key for key in launch if key not in payload),
+    }
+    return write_run_descriptor(run_dir, merged)
 
 
 async def main() -> int:
@@ -607,12 +642,18 @@ async def main() -> int:
             file=sys.stderr,
         )
     durable_write(
-        lambda: write_run_descriptor(
+        lambda: close_run_descriptor(
             run_dir,
             {
                 "run_id": run_id,
                 "pid": os.getpid(),
                 "state": "STOPPED",
+                # D-06 — provenance is written at launch *and* at close: the two
+                # payloads are merged, so a closed run still says which provider,
+                # which environment and which universe produced it.
+                "environment": environment,
+                "mode": settings.runtime.mode.value,
+                "closed_at_ms": int(time.time() * 1000),
                 # The provider is provenance, not startup chatter: the final rewrite
                 # used to drop it, and the independent verifier then had no way to
                 # tell a REAL signal from a FAKE one and silently skipped the check.

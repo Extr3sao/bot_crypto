@@ -214,9 +214,17 @@ def test_restart_on_exit_false_means_started_once(tmp_path: Path) -> None:
 def test_the_system_heartbeat_combines_children_disk_and_memory(tmp_path: Path) -> None:
     child_heartbeat = tmp_path / "heartbeat.json"
     child_heartbeat.write_text(json.dumps({"cycles_completed": 7}), encoding="utf-8")
+    stop_file = tmp_path / "STOP"
     supervisor = Supervisor.build(
         tmp_path,
-        [_spec("paper", RUNNING_CHILD)],
+        [
+            _spec(
+                "paper",
+                GRACEFUL_CHILD,
+                stop_file=stop_file,
+                args=(str(stop_file), str(tmp_path / "sealed.txt")),
+            )
+        ],
         heartbeat_seconds=0.05,
         child_heartbeats={"paper": child_heartbeat},
     )
@@ -230,9 +238,59 @@ def test_the_system_heartbeat_combines_children_disk_and_memory(tmp_path: Path) 
         assert payload["children"]["paper"]["cycles_completed"] == 7
         assert payload["processes"]["paper"]["state"] == ProcessState.RUNNING.value
     finally:
-        supervisor.stop_all()
+        supervisor.stop_all(grace_seconds=10.0)
         payload = json.loads(supervisor.write_heartbeat().read_text(encoding="utf-8"))
-        assert payload["state"] == SystemState.DEGRADED.value  # stopped, so not healthy
+        # D-08: a stop that was asked for and completed is its own state. Calling
+        # it DEGRADED reported a fault on every clean shutdown, because a stopped
+        # critical child is *correctly* not running.
+        assert supervisor.last_stop_report["verdict"] == "CLEAN"
+        assert payload["state"] == SystemState.STOPPED.value
+
+
+def test_a_clean_stop_reports_stopped_and_a_forced_one_reports_failed(tmp_path: Path) -> None:
+    """D-08 — the verdict comes from the stop report, never from the child count."""
+    stop_file = tmp_path / "clean" / "STOP"
+    clean = Supervisor.build(
+        tmp_path / "clean",
+        [
+            _spec(
+                "paper",
+                GRACEFUL_CHILD,
+                stop_file=stop_file,
+                args=(str(stop_file), str(tmp_path / "clean" / "sealed.txt")),
+            )
+        ],
+    )
+    clean.start_all()
+    clean.stop_all(timeout=5.0, grace_seconds=10.0)
+    assert clean.last_stop_report is not None
+    assert clean.last_stop_report["verdict"] == "CLEAN"
+    assert clean.system_state() is SystemState.STOPPED
+    assert clean.status()["stop_report"]["verdict"] == "CLEAN"
+
+    forced = Supervisor.build(
+        tmp_path / "forced",
+        [_spec("paper", DEAF_CHILD, stop_file=tmp_path / "forced" / "STOP")],
+    )
+    forced.start_all()
+    forced.stop_all(timeout=1.0, grace_seconds=0.2)
+    assert forced.last_stop_report is not None
+    assert forced.last_stop_report["verdict"] == "FAILED"
+    # Nothing is papered over: an escalated stop is still a failure.
+    assert forced.system_state() is SystemState.FAILED
+
+
+def test_the_heartbeat_names_the_writer_so_a_restart_can_wait_for_it(tmp_path: Path) -> None:
+    """D-09 — the pid of the report writer, not just its children's pids."""
+    import os
+
+    supervisor = _supervisor(tmp_path, [_spec("paper", RUNNING_CHILD)])
+    try:
+        supervisor.start_all()
+        payload = json.loads(supervisor.write_heartbeat().read_text(encoding="utf-8"))
+        assert payload["supervisor_pid"] == os.getpid()
+    finally:
+        supervisor.stop_all()
 
 
 def test_an_unreadable_child_heartbeat_does_not_break_the_supervisor(tmp_path: Path) -> None:
