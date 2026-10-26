@@ -1,0 +1,74 @@
+{
+  "artifact": "EXP-MAKER-LINE-001 · pre-registration",
+  "schema_version": "exp-maker-line-001-preregistration-v1",
+  "registered_by": "WP-TDM-016",
+  "registered_at_utc": "2026-10-26",
+  "supersedes": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/NEXT_EXPERIMENT.md",
+  "document": "evidence/tdm/wp-tdm-16-paper-admission/NEXT_EXPERIMENT.md",
+  "question": "Is the measured maker execution cost (adverse selection + missed fills) below 4.912 bps for volatility@30m at 200 USD on deep USD-M perpetuals?",
+  "threshold": {
+    "breakeven_execution_cost_bps": 4.912,
+    "derivation": "best measured gross 8.912 bps - known maker fees 4.000 bps RT",
+    "assumed_today_bps": 5.25,
+    "assumed_components": {
+      "adverse_selection_bps": 1.0,
+      "missed_fill_penalty_bps": 0.25,
+      "fill_probability_inflation_bps": 4.0
+    },
+    "source": "data/recovery/COST_BARRIER_EXPLORER.json · cells[volatility@30m] + venue_grid[BINANCE_USDM_PERP_MAKER]"
+  },
+  "hypotheses": {
+    "H1": "measured execution cost < 4.912 bps and net > 0 with bootstrap 95% CI lower bound > 0",
+    "H0": "measured execution cost >= 4.912 bps, or adverse selection consumes the gross",
+    "prediction_declared_before_data": "H0",
+    "prediction_evidence": "EXP-003M: +2.057 bps adverse selection per tape fill, gross ceiling covers 0.356x the fee floor, 0/24 queue-by-latency points net positive"
+  },
+  "population": {
+    "cells": ["volatility@30m", "volatility@1h"],
+    "controls": ["mean_reversion@30m", "trend@30m"],
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "period": "W1-W7 2026-03-01..2026-09-24",
+    "holdout": "2026-08-06..2026-08-20 closed"
+  },
+  "gates": {
+    "G1_gross_reproduction": "within +/-0.5 bps of the published gross",
+    "G2_sample": ">= 100 trades per cell, >= 30 in OOS",
+    "G3_execution_cost": "< 4.912 bps measured",
+    "G4_net": "net bps/trade > 0 and bootstrap block CI95 lower > 0",
+    "G5_two_x_cost": "profit factor > 0.9 at 2x measured cost",
+    "G6_drawdown": "max drawdown <= 10% of simulated initial equity",
+    "G7_window_dominance": "no window contributes > 60% of positive net",
+    "G8_fill_rate": "published as context; a net that only improves by filling less is FILL_SELECTED and not promoted",
+    "G9_evidence_class": "MEASURED_FROM_OBSERVED_TAPE; without an L2 book the tail is swept, so the maximum verdict is CANDIDATE_FOR_PREREGISTRATION"
+  },
+  "kill_switch": "measured execution cost >= 4.912 bps closes the intraday OHLCV lane for 5m/15m/30m/1h permanently",
+  "forbidden": [
+    "parameter re-tuning",
+    "threshold search",
+    "new indicators",
+    "opening the holdout",
+    "editing the admission ledger",
+    "changing admission criteria",
+    "live orders"
+  ],
+  "deliverables": [
+    "PREREGISTRATION.md",
+    "RUN_REPORT.json",
+    "RUN_REPORT.md",
+    "FILL_MODEL.json",
+    "ECONOMICS.json",
+    "INDEPENDENT_VERIFICATION.json",
+    "FINAL_REPORT.md"
+  ],
+  "verification_minimum": {
+    "mutations": 8,
+    "false_success_allowed": 0
+  },
+  "cost": {
+    "network": "public aggTrades + bookTicker (~GB)",
+    "credentials": 0,
+    "orders": 0,
+    "cpu_hours": 1
+  },
+  "what_it_unlocks": "if G1-G7 pass, the artifact feeds scripts/build_strategy_admission.py and the paper admission is decided by the existing criteria; then a 72 h PAPER run with real market data"
+}

@@ -1,0 +1,443 @@
+{
+  "artifact": "WP-TDM-016 · independent verification",
+  "schema_version": "wp-tdm-16-verify-v1",
+  "verifier": "scripts/tdm16_verify.py",
+  "independence": "imports none of the builders; reads the artifacts and the raw research inputs and recomputes every claim with its own code",
+  "artifacts": {
+    "evidence/tdm/wp-tdm-16-paper-admission/ADMISSION_AUDIT.json": {
+      "sha256": "4200dcfdebb3639bfc25f02cd1ccf3239d723f571bea8c17c7410f29e9349b65"
+    },
+    "evidence/tdm/wp-tdm-16-paper-admission/PAPER_CYCLE_EVIDENCE.json": {
+      "sha256": "4eec11f043c38c53b92dadf687ae2cdfc81eec683bad9d4aa1d9dc93ff495dcc"
+    },
+    "evidence/tdm/wp-tdm-16-paper-admission/ECONOMIC_DECISION.json": {
+      "sha256": "09017f4a589797ad21318c67acd2ceff8157e235a3c36421fde393bfe09f3174"
+    },
+    "evidence/tdm/wp-tdm-16-paper-admission/NEXT_EXPERIMENT.json": {
+      "sha256": "59788945c954ba5e304f59773f51b2cd6d1a5f69c20528ee23b4cd1bf0985803"
+    },
+    "evidence/tdm/wp-tdm-16-paper-admission/TEST_RESULTS.json": {
+      "sha256": "cf3d0c638c18918cc66f9afdc293ca85695057b7f0109c5365de23ef66e1cb97"
+    }
+  },
+  "checks": [
+    {
+      "id": "V01",
+      "description": "the ledger enumerates 24 strategies",
+      "passed": true,
+      "observed": 24
+    },
+    {
+      "id": "V02",
+      "description": "no strategy is admitted for PAPER",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "V03",
+      "description": "the ledger's recorded source hashes still match the files on disk",
+      "passed": true,
+      "observed": {
+        "recorded": {
+          "docs/STRATEGY_DISCOVERY_V3_RESULTS.json": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0",
+          "docs/STRATEGY_ADMISSION_MATRIX.json": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81"
+        },
+        "actual": {
+          "docs/STRATEGY_DISCOVERY_V3_RESULTS.json": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0",
+          "docs/STRATEGY_ADMISSION_MATRIX.json": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81"
+        }
+      }
+    },
+    {
+      "id": "V04",
+      "description": "the pre-registered matrix lists no paper candidates",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "V05",
+      "description": "the published rule reproduces every ledger status and admitted flag",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "V06",
+      "description": "the explorer publishes one cell per ledger strategy",
+      "passed": true,
+      "observed": {
+        "cells": 24,
+        "ledger": 24
+      }
+    },
+    {
+      "id": "V07",
+      "description": "the audit's best cell and gross match the explorer",
+      "passed": true,
+      "observed": {
+        "explorer": [
+          "volatility@30m",
+          8.912
+        ],
+        "audit": {
+          "max_gross_bps": 8.912,
+          "max_gross_bps_ledger_rounded": 8.91,
+          "max_gross_cell": "volatility@30m",
+          "cheapest_measured_rt_bps": 12.176776695296637,
+          "assumed_futures_maker_rt_bps": 9.25,
+          "cheapest_any_assumed_rt_bps": 1.25,
+          "distance_to_measured_bps": -3.264777,
+          "distance_to_assumed_futures_maker_bps": -0.338,
+          "cells_clearing_measured": [],
+          "cells_clearing_assumed_futures_maker": [],
+          "cells_clearing_any_assumed": [
+            "mean_reversion@15m",
+            "mean_reversion@30m",
+            "mean_reversion@5m",
+            "trend@15m",
+            "trend@30m",
+            "volatility@1h",
+            "volatility@30m"
+          ]
+        }
+      }
+    },
+    {
+      "id": "V08",
+      "description": "the audit's cost lines match the explorer frontier",
+      "passed": true,
+      "observed": {
+        "measured": 12.176776695296637,
+        "assumed_futures_maker": 9.25
+      }
+    },
+    {
+      "id": "V09",
+      "description": "no cell clears the cheapest measured cost line (recomputed)",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "V10",
+      "description": "no cell clears the assumed futures-maker line (recomputed)",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "V11",
+      "description": "the audit population counts are the ones the artifacts imply",
+      "passed": true,
+      "observed": {
+        "audit": [
+          24,
+          7,
+          17,
+          18
+        ],
+        "recomputed": [
+          24,
+          7,
+          17,
+          18
+        ]
+      }
+    },
+    {
+      "id": "V12",
+      "description": "every per-strategy arithmetic bound equals gross minus the published cost line",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "V13",
+      "description": "each rejection cause follows from the cell's own gross",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "V14",
+      "description": "the audit's own check tallies are honest",
+      "passed": true,
+      "observed": {
+        "declared": [
+          14,
+          0
+        ],
+        "recomputed": [
+          14,
+          0
+        ]
+      }
+    },
+    {
+      "id": "V15",
+      "description": "ledger/explorer gross divergences change neither sign nor cost side",
+      "passed": true,
+      "observed": [
+        [
+          "breakout@5m",
+          -0.026,
+          "ARTIFACT_DIVERGENCE_IMMATERIAL"
+        ],
+        [
+          "trend@5m",
+          -0.0052,
+          "ARTIFACT_DIVERGENCE_IMMATERIAL"
+        ],
+        [
+          "volatility@5m",
+          0.0054,
+          "ARTIFACT_DIVERGENCE_IMMATERIAL"
+        ]
+      ]
+    },
+    {
+      "id": "V16",
+      "description": "the cycle evidence is labelled TEST_ONLY, artifact and every trace",
+      "passed": true,
+      "observed": {
+        "artifact": "TEST_ONLY",
+        "traces": [
+          "TEST_ONLY",
+          "TEST_ONLY",
+          "TEST_ONLY"
+        ]
+      }
+    },
+    {
+      "id": "V17",
+      "description": "all TEST_ONLY integration tests ran and passed",
+      "passed": true,
+      "observed": [
+        [
+          "test_order_fill_pnl_and_reconciliation_are_one_consistent_cycle",
+          "passed"
+        ],
+        [
+          "test_the_cost_line_of_the_cycle_is_measured_from_the_fees_paid",
+          "passed"
+        ],
+        [
+          "test_a_refused_order_leaves_no_trace_and_reconciles_consistent",
+          "passed"
+        ]
+      ]
+    },
+    {
+      "id": "V18",
+      "description": "the evidence run exited 0 and its own checks are all green",
+      "passed": true,
+      "observed": {
+        "exit": 0,
+        "failed": 0,
+        "verified": true
+      }
+    },
+    {
+      "id": "V19",
+      "description": "the cycle's net PnL is gross minus the commissions it paid",
+      "passed": true,
+      "observed": 0.0
+    },
+    {
+      "id": "V20",
+      "description": "one order, one fill, one close, and equity equals initial plus net PnL",
+      "passed": true,
+      "observed": {
+        "orders_created": 1,
+        "fills_opened": 1,
+        "fills_closed": 1,
+        "equity_after": 10008.89901009899,
+        "net_pnl_usd": 8.899010098990153
+      }
+    },
+    {
+      "id": "V21",
+      "description": "the restart reconciles RECOVERED and the same intent places no second order",
+      "passed": true,
+      "observed": {
+        "status": "RECOVERED",
+        "duplicate_orders": 0
+      }
+    },
+    {
+      "id": "V22",
+      "description": "the cost-line fixture closed two round trips, one per exit kind, with fees paid",
+      "passed": true,
+      "observed": {
+        "round_trips": 2,
+        "exits": [
+          "stop_loss",
+          "take_profit"
+        ],
+        "fees": 2.0
+      }
+    },
+    {
+      "id": "V23",
+      "description": "a refused order leaves zero orders and reconciles CONSISTENT",
+      "passed": true,
+      "observed": {
+        "equity": 10000.0,
+        "label": "TEST_ONLY",
+        "name": "fail_closed",
+        "orders_created": 0,
+        "reconciliation_status": "CONSISTENT"
+      }
+    },
+    {
+      "id": "V24",
+      "description": "the decision is ECONOMIC_BLOCKED with zero admitted strategies",
+      "passed": true,
+      "observed": {
+        "decision": "ECONOMIC_BLOCKED",
+        "admitted": 0
+      }
+    },
+    {
+      "id": "V25",
+      "description": "no PAPER order was placed against real market data, and no LIVE order exists",
+      "passed": true,
+      "observed": {
+        "attempted": false,
+        "orders": 0,
+        "live_orders": 0,
+        "reason": "the PAPER_ORDER layer is BLOCKED by the empty admission ledger. Placing a PAPER order anyway would be forcing a trade through a control that exists to stop exactly that, so no order is placed and the layer keeps reporting BLOCKED.",
+        "what_still_runs": "INGEST, SIGNALS and SHADOW: read-only market data, the decision projection and observations. They were exercised in WP-TDM-015-OPS and are independent of admission."
+      }
+    },
+    {
+      "id": "V26",
+      "description": "the breakeven execution budget is recomputed from the explorer's own components",
+      "passed": true,
+      "observed": {
+        "recomputed": 4.912,
+        "decision": 4.912
+      }
+    },
+    {
+      "id": "V27",
+      "description": "the pre-registered experiment uses the same threshold, gates and kill switch",
+      "passed": true,
+      "observed": {
+        "threshold": 4.912,
+        "gates": 9,
+        "kill_switch": true
+      }
+    },
+    {
+      "id": "V28",
+      "description": "FINAL_REPORT.json repeats the verified numbers, not its own",
+      "passed": true,
+      "observed": {
+        "admitted": 0,
+        "decision": "ECONOMIC_BLOCKED",
+        "threshold": 4.912,
+        "tests": 3,
+        "checks_failed": 0
+      }
+    },
+    {
+      "id": "V29",
+      "description": "no credential and no live-order marker appears in the artifacts",
+      "passed": true,
+      "observed": []
+    }
+  ],
+  "checks_total": 29,
+  "checks_failed": 0,
+  "mutations": [
+    {
+      "mutation": "inflate_best_gross",
+      "detected": true,
+      "caught_by": [
+        "V07"
+      ]
+    },
+    {
+      "mutation": "promote_ledger_status",
+      "detected": true,
+      "caught_by": [
+        "V02",
+        "V05"
+      ]
+    },
+    {
+      "mutation": "drop_explorer_cell",
+      "detected": true,
+      "caught_by": [
+        "V06",
+        "V12"
+      ]
+    },
+    {
+      "mutation": "lower_measured_line",
+      "detected": true,
+      "caught_by": [
+        "V08",
+        "V09",
+        "V12"
+      ]
+    },
+    {
+      "mutation": "shift_threshold",
+      "detected": true,
+      "caught_by": [
+        "V27"
+      ]
+    },
+    {
+      "mutation": "fail_a_test",
+      "detected": true,
+      "caught_by": [
+        "V17"
+      ]
+    },
+    {
+      "mutation": "alter_cycle_net",
+      "detected": true,
+      "caught_by": [
+        "V19",
+        "V20"
+      ]
+    },
+    {
+      "mutation": "flip_decision",
+      "detected": true,
+      "caught_by": [
+        "V24",
+        "V28"
+      ]
+    },
+    {
+      "mutation": "overstate_population",
+      "detected": true,
+      "caught_by": [
+        "V11"
+      ]
+    },
+    {
+      "mutation": "erase_divergence_warning",
+      "detected": true,
+      "caught_by": [
+        "V15"
+      ]
+    },
+    {
+      "mutation": "report_drift",
+      "detected": true,
+      "caught_by": [
+        "V28"
+      ]
+    },
+    {
+      "mutation": "hide_failed_check",
+      "detected": true,
+      "caught_by": [
+        "V18"
+      ]
+    }
+  ],
+  "mutations_total": 12,
+  "false_success": 0,
+  "status": "VERIFIED"
+}

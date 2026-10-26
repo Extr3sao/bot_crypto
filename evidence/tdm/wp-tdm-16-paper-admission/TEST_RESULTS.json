@@ -1,0 +1,117 @@
+{
+  "artifact": "WP-TDM-016 · test results",
+  "schema_version": "wp-tdm-16-test-results-v1",
+  "python": "3.11.15",
+  "executable": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe",
+  "suites": [
+    {
+      "suite": "wp016_paper_cycle",
+      "target": "tests/integration/test_wp016_paper_order_cycle.py",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/integration/test_wp016_paper_order_cycle.py -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_wp016_paper_cycle_fvvj43dd\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 2.85,
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        "...                                                                      [100%]",
+        "3 passed in 1.83s"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "suite": "paper",
+      "target": "tests/unit/paper",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/unit/paper -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_paper_zxe6_i28\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 2.41,
+      "tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        ".........................................................                [100%]",
+        "57 passed in 1.62s"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "suite": "risk",
+      "target": "tests/unit/risk",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/unit/risk -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_risk_loairubc\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 11.2,
+      "tests": 119,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        "........................................................................ [ 60%]",
+        "...............................................                          [100%]",
+        "119 passed in 10.14s"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "suite": "autonomous",
+      "target": "tests/unit/autonomous",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/unit/autonomous -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_autonomous_tsfjc_kw\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 27.22,
+      "tests": 341,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        "........................................................................ [ 84%]",
+        ".....................................................                    [100%]",
+        "341 passed in 26.11s"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "suite": "integration",
+      "target": "tests/integration",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/integration -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_integration_16e288h5\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 4.66,
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        "...........................                                              [100%]",
+        "27 passed in 3.80s"
+      ],
+      "stderr_tail": []
+    }
+  ],
+  "totals": {
+    "tests": 547,
+    "failures": 0,
+    "errors": 0,
+    "exit_codes": {
+      "wp016_paper_cycle": 0,
+      "paper": 0,
+      "risk": 0,
+      "autonomous": 0,
+      "integration": 0
+    }
+  },
+  "regression_surface": {
+    "modified_tracked_files": [],
+    "untracked_files": [
+      "evidence/tdm/wp-tdm-16-paper-admission/",
+      "scripts/tdm16_admission_audit.py",
+      "scripts/tdm16_decision.py",
+      "scripts/tdm16_paper_evidence.py",
+      "scripts/tdm16_report.py",
+      "scripts/tdm16_tests.py",
+      "scripts/tdm16_verify.py",
+      "tests/integration/test_wp016_paper_order_cycle.py"
+    ],
+    "note": "no tracked file is modified: the change adds new scripts, one new test module and the evidence directory, so the suites above are the reachable surface and the parent commit runs them unchanged"
+  },
+  "all_green": true
+}

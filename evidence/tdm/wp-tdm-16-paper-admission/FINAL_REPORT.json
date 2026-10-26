@@ -1,0 +1,134 @@
+{
+  "artifact": "WP-TDM-016-PAPER-ADMISSION · final report",
+  "schema_version": "wp-tdm-16-final-report-v1",
+  "work_package": "WP-TDM-016 (A: admission audit, B: PAPER cycle, C: decision)",
+  "branch": "feat/tdm-016-paper-admission",
+  "base_commit": "c9623fd31d37e37aacd977b823b65013c90f7ac1",
+  "source_tree_commit": "d35721ad13f4345a5701897b92b76db59bbaf721",
+  "source_tree_note": "the reports describe this tree; they are committed as the next commit on the branch, so this hash names the parent, not the commit that carries them",
+  "decision": "ECONOMIC_BLOCKED",
+  "admitted": 0,
+  "strategies_audited": 24,
+  "best_cell": "volatility@30m",
+  "best_gross_bps": 8.912,
+  "cheapest_measured_rt_bps": 12.176776695296637,
+  "assumed_futures_maker_rt_bps": 9.25,
+  "breakeven_execution_cost_bps": 4.912,
+  "paper_orders_real_market": 0,
+  "live_orders": 0,
+  "tests_total": 3,
+  "tests_passed": 3,
+  "suites": {
+    "tests": 547,
+    "failures": 0,
+    "errors": 0,
+    "all_green": true
+  },
+  "verify_checks_total": 29,
+  "verify_checks_failed": 0,
+  "verify_status": "VERIFIED",
+  "false_success": 0,
+  "mutations_total": 12,
+  "audit_checks": {
+    "total": 14,
+    "failed": 0
+  },
+  "cycle_checks": {
+    "total": 10,
+    "failed": 0
+  },
+  "population": {
+    "strategies": 24,
+    "admitted": 0,
+    "gross_positive": 7,
+    "gross_negative": 17,
+    "ledger_sample_unproven": 18,
+    "status_rule_disagreements": 0,
+    "gross_mismatch_vs_explorer": 3,
+    "gross_artifact_divergences_immaterial": 3,
+    "gross_artifact_divergences_material": 0,
+    "gross_mismatch_vs_measurement": 0,
+    "clearing_cheapest_measured": 0,
+    "clearing_assumed_futures_maker": 0,
+    "clearing_cheapest_any_assumed": 7
+  },
+  "frontier": {
+    "max_gross_bps": 8.912,
+    "max_gross_bps_ledger_rounded": 8.91,
+    "max_gross_cell": "volatility@30m",
+    "cheapest_measured_rt_bps": 12.176776695296637,
+    "assumed_futures_maker_rt_bps": 9.25,
+    "cheapest_any_assumed_rt_bps": 1.25,
+    "distance_to_measured_bps": -3.264777,
+    "distance_to_assumed_futures_maker_bps": -0.338,
+    "cells_clearing_measured": [],
+    "cells_clearing_assumed_futures_maker": [],
+    "cells_clearing_any_assumed": [
+      "mean_reversion@15m",
+      "mean_reversion@30m",
+      "mean_reversion@5m",
+      "trend@15m",
+      "trend@30m",
+      "volatility@1h",
+      "volatility@30m"
+    ]
+  },
+  "blockers": [
+    {
+      "id": "ECONOMIC_BLOCKED",
+      "detail": "volatility@30m earns 8.912 bps gross. Fees are 4.000 bps RT (known). The maker line therefore breaks even only if measured execution cost stays below 4.912 bps; the model currently assumes 5.250 bps for it, which is why the line reads 9.250 bps and kills the cell.",
+      "closes_when": "EXP-MAKER-LINE-001 measures a maker execution cost below 4.912 bps and the pre-registered criteria c1..c9 pass on the resulting numbers"
+    },
+    {
+      "id": "PAPER_ORDER_BLOCKED",
+      "detail": "the admission ledger admits 0 of 24, so the PAPER_ORDER layer reports BLOCKED",
+      "closes_when": "the authorised pipeline admits a strategy from measured evidence"
+    },
+    {
+      "id": "AI_BLOCKED",
+      "detail": "unchanged from WP-TDM-015-OPS: no analyst provider key is configured",
+      "closes_when": "a key is stored outside the repo (--store-secret) and the analyst retries"
+    }
+  ],
+  "next_experiment": {
+    "id": "EXP-MAKER-LINE-001",
+    "document": "evidence/tdm/wp-tdm-16-paper-admission/NEXT_EXPERIMENT.md",
+    "threshold_bps": 4.912,
+    "prediction_declared": "H0",
+    "kill_switch": "measured execution cost >= 4.912 bps closes the intraday OHLCV lane for 5m/15m/30m/1h permanently"
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "0 of 24 strategies is admitted, and the audit reproduces every ledger status from the published rule",
+      "evidence": "ADMISSION_AUDIT.json · population, checks A01-A08"
+    },
+    {
+      "id": "C2",
+      "claim": "no cell clears the cheapest measured cost line, nor the cheapest assumed futures-maker line: best gross 8.912 bps against 12.177 / 9.250 bps",
+      "evidence": "ADMISSION_AUDIT.json · frontier, net_upper_bound_* per row"
+    },
+    {
+      "id": "C3",
+      "claim": "the PAPER order/fill/PnL/reconciliation cycle works end to end and survives a restart",
+      "evidence": "PAPER_CYCLE_EVIDENCE.json · 3 TEST_ONLY tests, checks B01-B10"
+    },
+    {
+      "id": "C4",
+      "claim": "no PAPER order was placed against real market data and no LIVE order exists",
+      "evidence": "ECONOMIC_DECISION.json · paper_run_with_real_market_data"
+    },
+    {
+      "id": "C5",
+      "claim": "the next experiment has one pre-registered numeric threshold and a kill switch",
+      "evidence": "NEXT_EXPERIMENT.md/.json · threshold, gates G1-G9"
+    }
+  ],
+  "limitations": [
+    "no strategy has demonstrated a positive net edge: the verdict is ECONOMIC_BLOCKED, not a validation",
+    "the WP-016B cycle uses deterministic fixtures labelled TEST_ONLY; it proves mechanics, not returns",
+    "the maker execution cost remains assumed (5.25 bps); measuring it is the next experiment, not this one",
+    "the pre-registered c6 (drawdown) and c8 (window dominance) are still null in every audited cell",
+    "the 72 h PAPER run with real market data was not attempted, because admission is empty"
+  ]
+}

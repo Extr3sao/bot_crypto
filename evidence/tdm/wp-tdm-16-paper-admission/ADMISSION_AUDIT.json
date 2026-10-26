@@ -1,0 +1,1552 @@
+{
+  "artifact": "WP-TDM-016-A · PAPER admission audit (24 strategies)",
+  "schema_version": "wp-tdm-16-admission-audit-v1",
+  "generated_by": "scripts/tdm16_admission_audit.py",
+  "sources": {
+    "ledger": {
+      "path": "config/strategy_admission.json",
+      "sha256": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76"
+    },
+    "cost_barrier_explorer": {
+      "path": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "sha256": "b8573725b6dda49e0c6f9a905b86d2b1e34bb3bab6b2ef9a779412d529efa3e7"
+    },
+    "admission_matrix": {
+      "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
+      "sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81"
+    },
+    "discovery_results": {
+      "path": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "sha256": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0"
+    }
+  },
+  "ledger_provenance": [
+    {
+      "path": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "recorded_sha256": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0",
+      "recomputed_sha256": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0",
+      "matches": true
+    },
+    {
+      "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
+      "recorded_sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81",
+      "recomputed_sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81",
+      "matches": true
+    }
+  ],
+  "admission_rule": "PAPER_CANDIDATE := family in matrix.paper_candidates AND gross_bps > 0 (scripts/build_strategy_admission.py)",
+  "matrix_paper_candidates": [],
+  "family_criteria": {
+    "breakout": {
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "net_base": -1427.46,
+      "pf_base": 0.6612,
+      "pf_2x": 0.4801,
+      "oos_net": -138.81,
+      "oos_pf": 0.6673,
+      "trades_base": 2276
+    },
+    "ema_crossover": {
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "net_base": -1266.16,
+      "pf_base": 0.5017,
+      "pf_2x": 0.3422,
+      "oos_net": -144.38,
+      "oos_pf": 0.4723,
+      "trades_base": 1561
+    },
+    "mean_reversion": {
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "net_base": -1514.34,
+      "pf_base": 0.6746,
+      "pf_2x": 0.4685,
+      "oos_net": -169.88,
+      "oos_pf": 0.6964,
+      "trades_base": 2861
+    },
+    "momentum": {
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "net_base": -1679.33,
+      "pf_base": 0.6462,
+      "pf_2x": 0.4729,
+      "oos_net": -205.41,
+      "oos_pf": 0.6315,
+      "trades_base": 2436
+    },
+    "trend": {
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "net_base": -876.83,
+      "pf_base": 0.7226,
+      "pf_2x": 0.5589,
+      "oos_net": -17.35,
+      "oos_pf": 0.94,
+      "trades_base": 1288
+    },
+    "volatility": {
+      "status": "REJECT",
+      "checks": {
+        "c1_sample": true,
+        "c2_net_positive": false,
+        "c3_pf_gt1": false,
+        "c4_oos_positive": false,
+        "c5_dev_consistent": false,
+        "c6_dd": null,
+        "c7_survives_2x": false,
+        "c8_no_window_dominance": null
+      },
+      "failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "net_base": -428.79,
+      "pf_base": 0.6175,
+      "pf_2x": 0.4587,
+      "oos_net": -52.11,
+      "oos_pf": 0.5958,
+      "trades_base": 519
+    }
+  },
+  "cost_plane": {
+    "cheapest_measured": {
+      "scenario_id": "BINANCE_USDM_PERP_TAKER",
+      "venue": "Binance",
+      "order_mode": "taker",
+      "round_trip_bps": 12.176776695296637,
+      "knowledge_class": "ESTIMATED",
+      "rests_on_assumed_component": false
+    },
+    "cheapest_any": {
+      "scenario_id": "MEXC_SPOT_TAKER",
+      "venue": "MEXC",
+      "order_mode": "maker",
+      "round_trip_bps": 1.25,
+      "knowledge_class": "ASSUMED",
+      "rests_on_assumed_component": true
+    },
+    "assumed_futures_maker": {
+      "scenario_id": "BINANCE_USDM_PERP_MAKER",
+      "round_trip_bps": 9.25,
+      "knowledge_class": "ASSUMED",
+      "rests_on_assumed_component": true,
+      "liquidity_regime": "deep",
+      "size_usd": 200.0
+    },
+    "runtime_admission_rt_bps_values": [
+      23.353553
+    ]
+  },
+  "population": {
+    "strategies": 24,
+    "admitted": 0,
+    "gross_positive": 7,
+    "gross_negative": 17,
+    "ledger_sample_unproven": 18,
+    "status_rule_disagreements": 0,
+    "gross_mismatch_vs_explorer": 3,
+    "gross_artifact_divergences_immaterial": 3,
+    "gross_artifact_divergences_material": 0,
+    "gross_mismatch_vs_measurement": 0,
+    "clearing_cheapest_measured": 0,
+    "clearing_assumed_futures_maker": 0,
+    "clearing_cheapest_any_assumed": 7
+  },
+  "frontier": {
+    "max_gross_bps": 8.912,
+    "max_gross_bps_ledger_rounded": 8.91,
+    "max_gross_cell": "volatility@30m",
+    "cheapest_measured_rt_bps": 12.176776695296637,
+    "assumed_futures_maker_rt_bps": 9.25,
+    "cheapest_any_assumed_rt_bps": 1.25,
+    "distance_to_measured_bps": -3.264777,
+    "distance_to_assumed_futures_maker_bps": -0.338,
+    "cells_clearing_measured": [],
+    "cells_clearing_assumed_futures_maker": [],
+    "cells_clearing_any_assumed": [
+      "mean_reversion@15m",
+      "mean_reversion@30m",
+      "mean_reversion@5m",
+      "trend@15m",
+      "trend@30m",
+      "volatility@1h",
+      "volatility@30m"
+    ]
+  },
+  "strategies": [
+    {
+      "strategy_id": "breakout@15m",
+      "family": "breakout",
+      "timeframe": "15m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -1.82,
+      "gross_bps_explorer": -1.822,
+      "gross_delta_vs_explorer_bps": 0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -1.822,
+      "gross_bps_measurement": -1.82,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.15m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 2042,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -13.998777,
+      "net_upper_bound_assumed_futures_maker_bps": -11.072,
+      "net_upper_bound_assumed_any_bps": -3.072,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "breakout@1h",
+      "family": "breakout",
+      "timeframe": "1h",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -0.22,
+      "gross_bps_explorer": -0.222,
+      "gross_delta_vs_explorer_bps": 0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -0.222,
+      "gross_bps_measurement": -0.22,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.1h",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 710,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -12.398777,
+      "net_upper_bound_assumed_futures_maker_bps": -9.472,
+      "net_upper_bound_assumed_any_bps": -1.472,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "breakout@30m",
+      "family": "breakout",
+      "timeframe": "30m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -1.79,
+      "gross_bps_explorer": -1.792,
+      "gross_delta_vs_explorer_bps": 0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -1.792,
+      "gross_bps_measurement": -1.79,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.30m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 1281,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -13.968777,
+      "net_upper_bound_assumed_futures_maker_bps": -11.042,
+      "net_upper_bound_assumed_any_bps": -3.042,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "breakout@5m",
+      "family": "breakout",
+      "timeframe": "5m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -0.11,
+      "gross_bps_explorer": -0.084,
+      "gross_delta_vs_explorer_bps": -0.026,
+      "gross_matches_explorer": false,
+      "gross_delta_class_vs_explorer": "ARTIFACT_DIVERGENCE_IMMATERIAL",
+      "gross_bps_best_estimate": -0.084,
+      "gross_bps_measurement": -0.11,
+      "gross_measurement_source": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 2426,
+      "sample_sufficient_in_ledger": true,
+      "explorer_trades": 2426,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -12.260777,
+      "net_upper_bound_assumed_futures_maker_bps": -9.334,
+      "net_upper_bound_assumed_any_bps": -1.334,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "ema_crossover@15m",
+      "family": "ema_crossover",
+      "timeframe": "15m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -1.12,
+      "gross_bps_explorer": -1.122,
+      "gross_delta_vs_explorer_bps": 0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -1.122,
+      "gross_bps_measurement": -1.12,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.15m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 2913,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -13.298777,
+      "net_upper_bound_assumed_futures_maker_bps": -10.372,
+      "net_upper_bound_assumed_any_bps": -2.372,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "ema_crossover@1h",
+      "family": "ema_crossover",
+      "timeframe": "1h",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -0.96,
+      "gross_bps_explorer": -0.964,
+      "gross_delta_vs_explorer_bps": 0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -0.964,
+      "gross_bps_measurement": -0.96,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.1h",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 2620,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -13.140777,
+      "net_upper_bound_assumed_futures_maker_bps": -10.214,
+      "net_upper_bound_assumed_any_bps": -2.214,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "ema_crossover@30m",
+      "family": "ema_crossover",
+      "timeframe": "30m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -0.73,
+      "gross_bps_explorer": -0.726,
+      "gross_delta_vs_explorer_bps": -0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -0.726,
+      "gross_bps_measurement": -0.73,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.30m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 3214,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -12.902777,
+      "net_upper_bound_assumed_futures_maker_bps": -9.976,
+      "net_upper_bound_assumed_any_bps": -1.976,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "ema_crossover@5m",
+      "family": "ema_crossover",
+      "timeframe": "5m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -4.56,
+      "gross_bps_explorer": -4.5608,
+      "gross_delta_vs_explorer_bps": 0.0008,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -4.5608,
+      "gross_bps_measurement": -4.56,
+      "gross_measurement_source": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 1725,
+      "sample_sufficient_in_ledger": true,
+      "explorer_trades": 1725,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -16.737577,
+      "net_upper_bound_assumed_futures_maker_bps": -13.8108,
+      "net_upper_bound_assumed_any_bps": -5.8108,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "mean_reversion@15m",
+      "family": "mean_reversion",
+      "timeframe": "15m",
+      "ledger_status": "COST_KILLED",
+      "ledger_admitted": false,
+      "status_recomputed": "COST_KILLED_CRITERIA",
+      "status_rule_agrees": true,
+      "gross_bps": 2.71,
+      "gross_bps_explorer": 2.714,
+      "gross_delta_vs_explorer_bps": -0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": 2.714,
+      "gross_bps_measurement": 2.71,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.15m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 1579,
+      "rejection_causes": [
+        "GROSS_BELOW_CHEAPEST_MEASURED_LINE",
+        "FAMILY_NOT_IN_MATRIX_PAPER_CANDIDATES",
+        "NO_NET_OOS_DRAWDOWN_MEASURED_ON_THIS_TIMEFRAME",
+        "FAMILY_CRITERIA_FAILED_AT_5M",
+        "SAMPLE_UNPROVEN_IN_LEDGER"
+      ],
+      "net_upper_bound_measured_bps": -9.462777,
+      "net_upper_bound_assumed_futures_maker_bps": -6.536,
+      "net_upper_bound_assumed_any_bps": 1.464,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": true,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "mean_reversion@1h",
+      "family": "mean_reversion",
+      "timeframe": "1h",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -2.23,
+      "gross_bps_explorer": -2.226,
+      "gross_delta_vs_explorer_bps": -0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -2.226,
+      "gross_bps_measurement": -2.23,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.1h",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 448,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -14.402777,
+      "net_upper_bound_assumed_futures_maker_bps": -11.476,
+      "net_upper_bound_assumed_any_bps": -3.476,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "mean_reversion@30m",
+      "family": "mean_reversion",
+      "timeframe": "30m",
+      "ledger_status": "COST_KILLED",
+      "ledger_admitted": false,
+      "status_recomputed": "COST_KILLED_CRITERIA",
+      "status_rule_agrees": true,
+      "gross_bps": 5.47,
+      "gross_bps_explorer": 5.472,
+      "gross_delta_vs_explorer_bps": -0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": 5.472,
+      "gross_bps_measurement": 5.47,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.30m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 934,
+      "rejection_causes": [
+        "GROSS_BELOW_CHEAPEST_MEASURED_LINE",
+        "FAMILY_NOT_IN_MATRIX_PAPER_CANDIDATES",
+        "NO_NET_OOS_DRAWDOWN_MEASURED_ON_THIS_TIMEFRAME",
+        "FAMILY_CRITERIA_FAILED_AT_5M",
+        "SAMPLE_UNPROVEN_IN_LEDGER"
+      ],
+      "net_upper_bound_measured_bps": -6.704777,
+      "net_upper_bound_assumed_futures_maker_bps": -3.778,
+      "net_upper_bound_assumed_any_bps": 4.222,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": true,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "mean_reversion@5m",
+      "family": "mean_reversion",
+      "timeframe": "5m",
+      "ledger_status": "COST_KILLED",
+      "ledger_admitted": false,
+      "status_recomputed": "COST_KILLED_CRITERIA",
+      "status_rule_agrees": true,
+      "gross_bps": 1.49,
+      "gross_bps_explorer": 1.4854,
+      "gross_delta_vs_explorer_bps": 0.0046,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": 1.4854,
+      "gross_bps_measurement": 1.49,
+      "gross_measurement_source": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 3190,
+      "sample_sufficient_in_ledger": true,
+      "explorer_trades": 3190,
+      "rejection_causes": [
+        "GROSS_BELOW_CHEAPEST_MEASURED_LINE",
+        "FAMILY_NOT_IN_MATRIX_PAPER_CANDIDATES",
+        "PREREGISTERED_CRITERIA_FAILED"
+      ],
+      "net_upper_bound_measured_bps": -10.691377,
+      "net_upper_bound_assumed_futures_maker_bps": -7.7646,
+      "net_upper_bound_assumed_any_bps": 0.2354,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": true,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "momentum@15m",
+      "family": "momentum",
+      "timeframe": "15m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -3.97,
+      "gross_bps_explorer": -3.972,
+      "gross_delta_vs_explorer_bps": 0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -3.972,
+      "gross_bps_measurement": -3.97,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.15m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 3003,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -16.148777,
+      "net_upper_bound_assumed_futures_maker_bps": -13.222,
+      "net_upper_bound_assumed_any_bps": -5.222,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "momentum@1h",
+      "family": "momentum",
+      "timeframe": "1h",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -2.33,
+      "gross_bps_explorer": -2.334,
+      "gross_delta_vs_explorer_bps": 0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -2.334,
+      "gross_bps_measurement": -2.33,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.1h",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 2304,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -14.510777,
+      "net_upper_bound_assumed_futures_maker_bps": -11.584,
+      "net_upper_bound_assumed_any_bps": -3.584,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "momentum@30m",
+      "family": "momentum",
+      "timeframe": "30m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -2.61,
+      "gross_bps_explorer": -2.612,
+      "gross_delta_vs_explorer_bps": 0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -2.612,
+      "gross_bps_measurement": -2.61,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.30m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 2957,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -14.788777,
+      "net_upper_bound_assumed_futures_maker_bps": -11.862,
+      "net_upper_bound_assumed_any_bps": -3.862,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "momentum@5m",
+      "family": "momentum",
+      "timeframe": "5m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -1.88,
+      "gross_bps_explorer": -1.8835,
+      "gross_delta_vs_explorer_bps": 0.0035,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -1.8835,
+      "gross_bps_measurement": -1.88,
+      "gross_measurement_source": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 2526,
+      "sample_sufficient_in_ledger": true,
+      "explorer_trades": 2526,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -14.060277,
+      "net_upper_bound_assumed_futures_maker_bps": -11.1335,
+      "net_upper_bound_assumed_any_bps": -3.1335,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "trend@15m",
+      "family": "trend",
+      "timeframe": "15m",
+      "ledger_status": "COST_KILLED",
+      "ledger_admitted": false,
+      "status_recomputed": "COST_KILLED_CRITERIA",
+      "status_rule_agrees": true,
+      "gross_bps": 1.28,
+      "gross_bps_explorer": 1.284,
+      "gross_delta_vs_explorer_bps": -0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": 1.284,
+      "gross_bps_measurement": 1.28,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.15m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 1616,
+      "rejection_causes": [
+        "GROSS_BELOW_CHEAPEST_MEASURED_LINE",
+        "FAMILY_NOT_IN_MATRIX_PAPER_CANDIDATES",
+        "NO_NET_OOS_DRAWDOWN_MEASURED_ON_THIS_TIMEFRAME",
+        "FAMILY_CRITERIA_FAILED_AT_5M",
+        "SAMPLE_UNPROVEN_IN_LEDGER"
+      ],
+      "net_upper_bound_measured_bps": -10.892777,
+      "net_upper_bound_assumed_futures_maker_bps": -7.966,
+      "net_upper_bound_assumed_any_bps": 0.034,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": true,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "trend@1h",
+      "family": "trend",
+      "timeframe": "1h",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -1.25,
+      "gross_bps_explorer": -1.252,
+      "gross_delta_vs_explorer_bps": 0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -1.252,
+      "gross_bps_measurement": -1.25,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.1h",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 1405,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -13.428777,
+      "net_upper_bound_assumed_futures_maker_bps": -10.502,
+      "net_upper_bound_assumed_any_bps": -2.502,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "trend@30m",
+      "family": "trend",
+      "timeframe": "30m",
+      "ledger_status": "COST_KILLED",
+      "ledger_admitted": false,
+      "status_recomputed": "COST_KILLED_CRITERIA",
+      "status_rule_agrees": true,
+      "gross_bps": 2.21,
+      "gross_bps_explorer": 2.206,
+      "gross_delta_vs_explorer_bps": 0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": 2.206,
+      "gross_bps_measurement": 2.21,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.30m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 1562,
+      "rejection_causes": [
+        "GROSS_BELOW_CHEAPEST_MEASURED_LINE",
+        "FAMILY_NOT_IN_MATRIX_PAPER_CANDIDATES",
+        "NO_NET_OOS_DRAWDOWN_MEASURED_ON_THIS_TIMEFRAME",
+        "FAMILY_CRITERIA_FAILED_AT_5M",
+        "SAMPLE_UNPROVEN_IN_LEDGER"
+      ],
+      "net_upper_bound_measured_bps": -9.970777,
+      "net_upper_bound_assumed_futures_maker_bps": -7.044,
+      "net_upper_bound_assumed_any_bps": 0.956,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": true,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "trend@5m",
+      "family": "trend",
+      "timeframe": "5m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -1.65,
+      "gross_bps_explorer": -1.6448,
+      "gross_delta_vs_explorer_bps": -0.0052,
+      "gross_matches_explorer": false,
+      "gross_delta_class_vs_explorer": "ARTIFACT_DIVERGENCE_IMMATERIAL",
+      "gross_bps_best_estimate": -1.6448,
+      "gross_bps_measurement": -1.65,
+      "gross_measurement_source": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 1291,
+      "sample_sufficient_in_ledger": true,
+      "explorer_trades": 1291,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -13.821577,
+      "net_upper_bound_assumed_futures_maker_bps": -10.8948,
+      "net_upper_bound_assumed_any_bps": -2.8948,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "volatility@15m",
+      "family": "volatility",
+      "timeframe": "15m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -7.06,
+      "gross_bps_explorer": -7.064,
+      "gross_delta_vs_explorer_bps": 0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": -7.064,
+      "gross_bps_measurement": -7.06,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.15m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 277,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -19.240777,
+      "net_upper_bound_assumed_futures_maker_bps": -16.314,
+      "net_upper_bound_assumed_any_bps": -8.314,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "volatility@1h",
+      "family": "volatility",
+      "timeframe": "1h",
+      "ledger_status": "COST_KILLED",
+      "ledger_admitted": false,
+      "status_recomputed": "COST_KILLED_CRITERIA",
+      "status_rule_agrees": true,
+      "gross_bps": 6.28,
+      "gross_bps_explorer": 6.276,
+      "gross_delta_vs_explorer_bps": 0.004,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": 6.276,
+      "gross_bps_measurement": 6.28,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.1h",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 96,
+      "rejection_causes": [
+        "GROSS_BELOW_CHEAPEST_MEASURED_LINE",
+        "FAMILY_NOT_IN_MATRIX_PAPER_CANDIDATES",
+        "NO_NET_OOS_DRAWDOWN_MEASURED_ON_THIS_TIMEFRAME",
+        "FAMILY_CRITERIA_FAILED_AT_5M",
+        "SAMPLE_UNPROVEN_IN_LEDGER"
+      ],
+      "net_upper_bound_measured_bps": -5.900777,
+      "net_upper_bound_assumed_futures_maker_bps": -2.974,
+      "net_upper_bound_assumed_any_bps": 5.026,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": true,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "volatility@30m",
+      "family": "volatility",
+      "timeframe": "30m",
+      "ledger_status": "COST_KILLED",
+      "ledger_admitted": false,
+      "status_recomputed": "COST_KILLED_CRITERIA",
+      "status_rule_agrees": true,
+      "gross_bps": 8.91,
+      "gross_bps_explorer": 8.912,
+      "gross_delta_vs_explorer_bps": -0.002,
+      "gross_matches_explorer": true,
+      "gross_delta_class_vs_explorer": "AGREES",
+      "gross_bps_best_estimate": 8.912,
+      "gross_bps_measurement": 8.91,
+      "gross_measurement_source": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.30m",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 0,
+      "sample_sufficient_in_ledger": false,
+      "explorer_trades": 194,
+      "rejection_causes": [
+        "GROSS_BELOW_CHEAPEST_MEASURED_LINE",
+        "FAMILY_NOT_IN_MATRIX_PAPER_CANDIDATES",
+        "NO_NET_OOS_DRAWDOWN_MEASURED_ON_THIS_TIMEFRAME",
+        "FAMILY_CRITERIA_FAILED_AT_5M",
+        "SAMPLE_UNPROVEN_IN_LEDGER"
+      ],
+      "net_upper_bound_measured_bps": -3.264777,
+      "net_upper_bound_assumed_futures_maker_bps": -0.338,
+      "net_upper_bound_assumed_any_bps": 7.662,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": true,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    },
+    {
+      "strategy_id": "volatility@5m",
+      "family": "volatility",
+      "timeframe": "5m",
+      "ledger_status": "NO_GROSS_EDGE",
+      "ledger_admitted": false,
+      "status_recomputed": "NO_GROSS_EDGE",
+      "status_rule_agrees": true,
+      "gross_bps": -4.73,
+      "gross_bps_explorer": -4.7354,
+      "gross_delta_vs_explorer_bps": 0.0054,
+      "gross_matches_explorer": false,
+      "gross_delta_class_vs_explorer": "ARTIFACT_DIVERGENCE_IMMATERIAL",
+      "gross_bps_best_estimate": -4.7354,
+      "gross_bps_measurement": -4.73,
+      "gross_measurement_source": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "gross_delta_vs_measurement_bps": 0.0,
+      "gross_matches_measurement": true,
+      "sample_trades": 520,
+      "sample_sufficient_in_ledger": true,
+      "explorer_trades": 520,
+      "rejection_causes": [
+        "NO_GROSS_EDGE"
+      ],
+      "net_upper_bound_measured_bps": -16.912177,
+      "net_upper_bound_assumed_futures_maker_bps": -13.9854,
+      "net_upper_bound_assumed_any_bps": -5.9854,
+      "clears_cheapest_measured": false,
+      "clears_assumed_futures_maker": false,
+      "clears_cheapest_any_assumed": false,
+      "criteria_failed": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c5_dev_consistent",
+        "c7_survives_2x"
+      ],
+      "criteria_unknown": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "num_runtime_orders_this_cell_could_place": 0
+    }
+  ],
+  "gross_divergences": [
+    {
+      "strategy_id": "breakout@5m",
+      "ledger_bps": -0.11,
+      "explorer_bps": -0.084,
+      "delta_bps": -0.026,
+      "class": "ARTIFACT_DIVERGENCE_IMMATERIAL",
+      "changes_sign": false,
+      "changes_cost_side": false
+    },
+    {
+      "strategy_id": "trend@5m",
+      "ledger_bps": -1.65,
+      "explorer_bps": -1.6448,
+      "delta_bps": -0.0052,
+      "class": "ARTIFACT_DIVERGENCE_IMMATERIAL",
+      "changes_sign": false,
+      "changes_cost_side": false
+    },
+    {
+      "strategy_id": "volatility@5m",
+      "ledger_bps": -4.73,
+      "explorer_bps": -4.7354,
+      "delta_bps": 0.0054,
+      "class": "ARTIFACT_DIVERGENCE_IMMATERIAL",
+      "changes_sign": false,
+      "changes_cost_side": false
+    }
+  ],
+  "verdict": {
+    "admitted_for_paper": 0,
+    "admitted_ids": [],
+    "economic_status": "ECONOMIC_BLOCKED",
+    "decisive_reason": "max measured gross edge 8.912 bps/trade is below the cheapest measured round trip 12.177 bps, and below the cheapest assumed futures-maker line 9.250 bps: every cell is negative even with zero slippage and a perfect fill",
+    "what_changes_the_verdict": "a measured round-trip line below the gross of at least one cell, i.e. a maker fill rate measured from the tape (EXP-COST-LINE-001)"
+  },
+  "checks": [
+    {
+      "id": "A01",
+      "description": "the ledger enumerates 24 strategies",
+      "passed": true,
+      "observed": 24
+    },
+    {
+      "id": "A02",
+      "description": "none of the 24 is admitted for paper",
+      "passed": true,
+      "observed": 0
+    },
+    {
+      "id": "A03",
+      "description": "the matrix lists no paper candidates (the gate the rule needs)",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "A04",
+      "description": "every ledger status is reproduced by the published rule",
+      "passed": true,
+      "observed": 0
+    },
+    {
+      "id": "A05",
+      "description": "the ledger's recorded source hashes still match the files on disk",
+      "passed": true,
+      "observed": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "A06",
+      "description": "every ledger gross edge matches the explorer cell, or diverges only by an amount that changes neither the sign of the edge nor which side of the cost line the cell sits on",
+      "passed": true,
+      "observed": {
+        "immaterial": 3,
+        "material": 0,
+        "deltas_bps": [
+          -0.026,
+          -0.0052,
+          0.0054
+        ]
+      }
+    },
+    {
+      "id": "A07",
+      "description": "every ledger gross edge matches its measurement artifact",
+      "passed": true,
+      "observed": 0
+    },
+    {
+      "id": "A08",
+      "description": "7 cells have positive gross and 17 do not (sanity of the split)",
+      "passed": true,
+      "observed": {
+        "positive": 7,
+        "negative": 17
+      }
+    },
+    {
+      "id": "A09",
+      "description": "no cell clears the cheapest measured cost line",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "A10",
+      "description": "no cell clears the cheapest assumed futures-maker line",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "id": "A11",
+      "description": "the only line that would clear cells is an assumed, fill-unmodelled one",
+      "passed": true,
+      "observed": {
+        "scenario_id": "MEXC_SPOT_TAKER",
+        "venue": "MEXC",
+        "order_mode": "maker",
+        "round_trip_bps": 1.25,
+        "knowledge_class": "ASSUMED",
+        "rests_on_assumed_component": true
+      }
+    },
+    {
+      "id": "A12",
+      "description": "18 of 24 ledger entries declare an unproven sample (provenance gap, not a data gap)",
+      "passed": true,
+      "observed": 18
+    },
+    {
+      "id": "A13",
+      "description": "c6 (drawdown) and c8 (window dominance) are unmeasured in every 5m family",
+      "passed": true,
+      "observed": {
+        "breakout": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "ema_crossover": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "mean_reversion": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "momentum": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "trend": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "volatility": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ]
+      }
+    },
+    {
+      "id": "A14",
+      "description": "the verdict is ECONOMIC_BLOCKED because no strategy is admitted",
+      "passed": true,
+      "observed": "ECONOMIC_BLOCKED"
+    }
+  ],
+  "checks_total": 14,
+  "checks_failed": 0
+}

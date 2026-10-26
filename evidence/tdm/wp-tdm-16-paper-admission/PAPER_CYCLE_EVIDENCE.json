@@ -1,0 +1,188 @@
+{
+  "artifact": "WP-TDM-016-B · PAPER order/fill/PnL/reconciliation cycle",
+  "schema_version": "wp-tdm-16-paper-cycle-evidence-v1",
+  "label": "TEST_ONLY",
+  "scope": {
+    "what_this_proves": "the mechanical cycle: an approved PAPER order becomes one fill, closes once, books net PnL after both commissions, survives a restart with the same equity identity and refuses a duplicate intent",
+    "what_this_does_not_prove": "profitability. Prices are deterministic fixtures, not market data; no exchange is contacted, no credential is read, LIVE is unreachable, and no number here is a track record",
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm16adm\\tests\\integration\\test_wp016_paper_order_cycle.py -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_traces_g8yvh920\\junit.xml",
+    "pytest_exit_code": 0,
+    "wall_clock_s": 2.189
+  },
+  "invoked": {
+    "module": "tests/integration/test_wp016_paper_order_cycle.py",
+    "sha256": "37557d2f3cdd7848480f9f2eea336400be19a47a6711c13aca121fd79facace0",
+    "exercised_sources": {
+      "src/trading_bot/paper/broker.py": "e43ba7d57cc378da8379d0e942776b323e613041dacaa6287946c0f81ecaf759",
+      "src/trading_bot/paper/paper_cycle.py": "5c001915ce7ee191024bf68445c41bcebf16da36d459006786012b28cdeb50f9",
+      "src/trading_bot/paper/paper_runtime_state.py": "9f762caf10cfa2581a67e2604829494fe1aabd7a6756f9e2a70ed35edbfd3743",
+      "src/trading_bot/paper/paper_state_store.py": "e20f50c82da84fa506d6c8f05645cadfcc16c5ec02509894aa73158cc9b3d67e",
+      "src/trading_bot/paper/reconciliation_v4.py": "e61e582384d79ede240fdc64c113cbba46acc76b1e9164c1a42abfce39d558ac",
+      "src/trading_bot/risk/manager.py": "32f81b9a477d3c4e6f02621d7196dd056e0ea8c07153d45abdd03d7d1a6dcf80"
+    }
+  },
+  "tests": [
+    {
+      "nodeid": "tests.integration.test_wp016_paper_order_cycle::test_order_fill_pnl_and_reconciliation_are_one_consistent_cycle",
+      "name": "test_order_fill_pnl_and_reconciliation_are_one_consistent_cycle",
+      "outcome": "passed",
+      "duration_s": 0.019
+    },
+    {
+      "nodeid": "tests.integration.test_wp016_paper_order_cycle::test_the_cost_line_of_the_cycle_is_measured_from_the_fees_paid",
+      "name": "test_the_cost_line_of_the_cycle_is_measured_from_the_fees_paid",
+      "outcome": "passed",
+      "duration_s": 0.006
+    },
+    {
+      "nodeid": "tests.integration.test_wp016_paper_order_cycle::test_a_refused_order_leaves_no_trace_and_reconciles_consistent",
+      "name": "test_a_refused_order_leaves_no_trace_and_reconciles_consistent",
+      "outcome": "passed",
+      "duration_s": 0.005
+    }
+  ],
+  "traces": {
+    "cost_line": {
+      "equity_identity_error": 0.0,
+      "exit_reasons": [
+        "stop_loss",
+        "take_profit"
+      ],
+      "fees_usd": 2.0,
+      "label": "TEST_ONLY",
+      "name": "cost_line",
+      "net_pnl_usd": -7.237476252374719,
+      "round_trip_cost_bps_floor": 10.0,
+      "round_trips": 2
+    },
+    "cycle": {
+      "cloids": [
+        "PAPER-02dfd081f36684079657443a226ff10e"
+      ],
+      "duplicate_orders_after_restart": 0,
+      "entry_price": 199.51995,
+      "equity_after": 10008.89901009899,
+      "equity_identity_error": 0.0,
+      "exit_price": 201.495,
+      "exit_reason": "take_profit",
+      "fees_usd": 1.0,
+      "fills_closed": 1,
+      "fills_opened": 1,
+      "gross_bps": 98.99010098990152,
+      "gross_pnl_usd": 9.899010098990153,
+      "label": "TEST_ONLY",
+      "name": "cycle",
+      "net_bps": 88.99010098990153,
+      "net_pnl_usd": 8.899010098990153,
+      "notional_usdt": 1000.0,
+      "orders_created": 1,
+      "reconciliation_status": "RECOVERED",
+      "restored_equity": 10008.89901009899
+    },
+    "fail_closed": {
+      "equity": 10000.0,
+      "label": "TEST_ONLY",
+      "name": "fail_closed",
+      "orders_created": 0,
+      "reconciliation_status": "CONSISTENT"
+    }
+  },
+  "checks": [
+    {
+      "id": "B01",
+      "description": "every TEST_ONLY integration test passed",
+      "passed": true,
+      "observed": {
+        "tests": 3,
+        "failed": []
+      }
+    },
+    {
+      "id": "B02",
+      "description": "the cycle emitted a trace labelled TEST_ONLY",
+      "passed": true,
+      "observed": {
+        "cycle": "TEST_ONLY",
+        "cost_line": "TEST_ONLY"
+      }
+    },
+    {
+      "id": "B03",
+      "description": "one approved order produced exactly one fill and one closed trade",
+      "passed": true,
+      "observed": {
+        "orders": 1,
+        "opened": 1,
+        "closed": 1
+      }
+    },
+    {
+      "id": "B04",
+      "description": "net PnL equals gross PnL minus both commissions",
+      "passed": true,
+      "observed": 0.0
+    },
+    {
+      "id": "B05",
+      "description": "the cost line is subtracted, not assumed: gross bps minus net bps equals the round-trip commissions of the cycle",
+      "passed": true,
+      "observed": {
+        "gross_minus_net_bps": 9.999999999999986,
+        "expected_round_trip_bps": 10.0
+      }
+    },
+    {
+      "id": "B06",
+      "description": "equity identity holds after close and after restart",
+      "passed": true,
+      "observed": {
+        "cycle": 0.0,
+        "cost_line": 0.0
+      }
+    },
+    {
+      "id": "B07",
+      "description": "startup reconciliation of a real book reports RECOVERED",
+      "passed": true,
+      "observed": "RECOVERED"
+    },
+    {
+      "id": "B08",
+      "description": "the same intent after a restart places no second order",
+      "passed": true,
+      "observed": 0
+    },
+    {
+      "id": "B09",
+      "description": "a refused order leaves zero orders, zero positions and a CONSISTENT empty store",
+      "passed": true,
+      "observed": {
+        "equity": 10000.0,
+        "label": "TEST_ONLY",
+        "name": "fail_closed",
+        "orders_created": 0,
+        "reconciliation_status": "CONSISTENT"
+      }
+    },
+    {
+      "id": "B10",
+      "description": "two round trips were closed with both exit kinds exercised",
+      "passed": true,
+      "observed": {
+        "round_trips": 2,
+        "exits": [
+          "stop_loss",
+          "take_profit"
+        ]
+      }
+    }
+  ],
+  "checks_total": 10,
+  "checks_failed": 0,
+  "stdout_tail": [
+    "...                                                                      [100%]",
+    "3 passed in 1.43s"
+  ],
+  "stderr_tail": [],
+  "verified": true
+}

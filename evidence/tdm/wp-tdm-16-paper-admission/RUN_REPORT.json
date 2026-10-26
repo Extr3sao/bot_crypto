@@ -1,0 +1,158 @@
+{
+  "artifact": "WP-TDM-016 · run report",
+  "schema_version": "wp-tdm-16-run-report-v1",
+  "branch": "feat/tdm-016-paper-admission",
+  "source_tree_commit": "d35721ad13f4345a5701897b92b76db59bbaf721",
+  "python": "3.11.15",
+  "steps": [
+    {
+      "command": "python scripts/tdm16_admission_audit.py",
+      "exit_code": 0,
+      "produces": "ADMISSION_AUDIT.json/.md (14/14 checks, 24 estrategias)"
+    },
+    {
+      "command": "python scripts/tdm16_paper_evidence.py",
+      "exit_code": 0,
+      "produces": "PAPER_CYCLE_EVIDENCE.json (3 tests, 10/10 checks)"
+    },
+    {
+      "command": "python scripts/tdm16_decision.py",
+      "exit_code": 0,
+      "produces": "ECONOMIC_DECISION.json (veredicto y umbral derivados)"
+    },
+    {
+      "command": "python scripts/tdm16_tests.py",
+      "exit_code": 0,
+      "produces": "TEST_RESULTS.json (547 tests, 0 fallos)"
+    },
+    {
+      "command": "python scripts/tdm16_verify.py",
+      "exit_code": 0,
+      "produces": "VERIFY.json (checks independientes + mutaciones)"
+    },
+    {
+      "command": "python scripts/tdm16_report.py",
+      "exit_code": 0,
+      "produces": "RUN_REPORT.md/.json, FINAL_REPORT.md/.json"
+    }
+  ],
+  "suites": [
+    {
+      "suite": "wp016_paper_cycle",
+      "target": "tests/integration/test_wp016_paper_order_cycle.py",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/integration/test_wp016_paper_order_cycle.py -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_wp016_paper_cycle_fvvj43dd\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 2.85,
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        "...                                                                      [100%]",
+        "3 passed in 1.83s"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "suite": "paper",
+      "target": "tests/unit/paper",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/unit/paper -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_paper_zxe6_i28\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 2.41,
+      "tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        ".........................................................                [100%]",
+        "57 passed in 1.62s"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "suite": "risk",
+      "target": "tests/unit/risk",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/unit/risk -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_risk_loairubc\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 11.2,
+      "tests": 119,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        "........................................................................ [ 60%]",
+        "...............................................                          [100%]",
+        "119 passed in 10.14s"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "suite": "autonomous",
+      "target": "tests/unit/autonomous",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/unit/autonomous -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_autonomous_tsfjc_kw\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 27.22,
+      "tests": 341,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        "........................................................................ [ 84%]",
+        ".....................................................                    [100%]",
+        "341 passed in 26.11s"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "suite": "integration",
+      "target": "tests/integration",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm15ops\\.venv\\Scripts\\python.exe -m pytest tests/integration -q -p no:cacheprovider --junitxml=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp016_integration_16e288h5\\junit.xml",
+      "exit_code": 0,
+      "duration_s": 4.66,
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_tail": [
+        "...........................                                              [100%]",
+        "27 passed in 3.80s"
+      ],
+      "stderr_tail": []
+    }
+  ],
+  "totals": {
+    "tests": 547,
+    "failures": 0,
+    "errors": 0,
+    "exit_codes": {
+      "wp016_paper_cycle": 0,
+      "paper": 0,
+      "risk": 0,
+      "autonomous": 0,
+      "integration": 0
+    }
+  },
+  "artifacts": {
+    "audit": {
+      "path": "evidence/tdm/wp-tdm-16-paper-admission/ADMISSION_AUDIT.json",
+      "exists": true
+    },
+    "cycle": {
+      "path": "evidence/tdm/wp-tdm-16-paper-admission/PAPER_CYCLE_EVIDENCE.json",
+      "exists": true
+    },
+    "decision": {
+      "path": "evidence/tdm/wp-tdm-16-paper-admission/ECONOMIC_DECISION.json",
+      "exists": true
+    },
+    "next": {
+      "path": "evidence/tdm/wp-tdm-16-paper-admission/NEXT_EXPERIMENT.json",
+      "exists": true
+    },
+    "tests": {
+      "path": "evidence/tdm/wp-tdm-16-paper-admission/TEST_RESULTS.json",
+      "exists": true
+    }
+  },
+  "no_paper_run_reason": "El ledger de admisión admite 0 de 24 estrategias y la capa `PAPER_ORDER` está `BLOCKED`. Colocar una orden PAPER de todos modos sería forzar una operación a través del control que existe precisamente para impedirlo, así que no se coloca ninguna: el run con datos reales queda para el experimento siguiente, y no se declara rentabilidad de lo que no se ha ejecutado."
+}
