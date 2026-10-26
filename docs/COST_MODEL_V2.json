@@ -1,0 +1,86 @@
+{
+  "generated_by": "scripts/microstructure_admission.py",
+  "venue": "Binance",
+  "product": "Spot",
+  "sandbox": true,
+  "previous_model": {
+    "name": "CURRENT_PROJECT_COST_MODEL",
+    "round_trip_bps": 12.0
+  },
+  "status": "OPTIMISTIC",
+  "admission_model": "REALISTIC_RETAIL_COST_MODEL",
+  "admission_safety_multiple": 1.5,
+  "admission_required_edge_bps": 35.25,
+  "scenarios": [
+    {
+      "scenario": "CURRENT_PROJECT_COST_MODEL",
+      "fee_bps_per_side": 5.0,
+      "spread_bps": 0.0,
+      "slippage_bps_per_side": 1.0,
+      "impact_bps_per_side": 0.0,
+      "adverse_selection_bps_per_side": 0.0,
+      "funding_bps_per_day": 0.0,
+      "round_trip_bps": 12.0,
+      "min_gross_edge_bps": 12.0,
+      "required_edge_bps_1p5x": 18.0,
+      "is_maker": false,
+      "evidence": "scripts/multi_family_backtest.py: FEES=0.0005, SLIP=0.0001 -> 12 bps RT"
+    },
+    {
+      "scenario": "REALISTIC_RETAIL_COST_MODEL",
+      "fee_bps_per_side": 10.0,
+      "spread_bps": 1.0,
+      "slippage_bps_per_side": 1.0,
+      "impact_bps_per_side": 0.25,
+      "adverse_selection_bps_per_side": 0.0,
+      "funding_bps_per_day": 0.0,
+      "round_trip_bps": 23.5,
+      "min_gross_edge_bps": 23.5,
+      "required_edge_bps_1p5x": 35.25,
+      "is_maker": false,
+      "evidence": "Binance Spot VIP0 taker 10 bps/side; observed majors spread ~0.2-1 bp"
+    },
+    {
+      "scenario": "REALISTIC_RETAIL_BNB_COST_MODEL",
+      "fee_bps_per_side": 7.5,
+      "spread_bps": 1.0,
+      "slippage_bps_per_side": 1.0,
+      "impact_bps_per_side": 0.25,
+      "adverse_selection_bps_per_side": 0.0,
+      "funding_bps_per_day": 0.0,
+      "round_trip_bps": 18.5,
+      "min_gross_edge_bps": 18.5,
+      "required_edge_bps_1p5x": 27.75,
+      "is_maker": false,
+      "evidence": "Binance Spot VIP0 with BNB 25% off -> 7.5 bps/side (not a baseline)"
+    },
+    {
+      "scenario": "REALISTIC_MAKER_COST_MODEL",
+      "fee_bps_per_side": 10.0,
+      "spread_bps": 0.0,
+      "slippage_bps_per_side": 0.0,
+      "impact_bps_per_side": 0.0,
+      "adverse_selection_bps_per_side": 0.5,
+      "funding_bps_per_day": 0.0,
+      "round_trip_bps": 21.0,
+      "min_gross_edge_bps": 21.0,
+      "required_edge_bps_1p5x": 31.5,
+      "is_maker": true,
+      "evidence": "Binance Spot VIP0 maker 10 bps/side; no rebate baseline assumed"
+    },
+    {
+      "scenario": "STRESS_COST_MODEL",
+      "fee_bps_per_side": 10.0,
+      "spread_bps": 2.0,
+      "slippage_bps_per_side": 3.0,
+      "impact_bps_per_side": 1.0,
+      "adverse_selection_bps_per_side": 0.0,
+      "funding_bps_per_day": 0.0,
+      "round_trip_bps": 30.0,
+      "min_gross_edge_bps": 30.0,
+      "required_edge_bps_1p5x": 45.0,
+      "is_maker": false,
+      "evidence": "2x realistic slippage + widened spread; model-error envelope"
+    }
+  ]
+}

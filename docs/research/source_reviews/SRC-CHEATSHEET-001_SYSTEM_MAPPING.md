@@ -1,0 +1,13 @@
+# SOURCE-TO-SYSTEM MAPPING — SRC-CHEATSHEET-001
+
+Runtime status is intentionally `UNKNOWN`: architecture/RFC documentation does not prove implementation or reachability.
+
+| CLAIM_ID | SOURCE_LOCATION | SOURCE_CLAIM | PROJECT_INTERPRETATION | PROJECT_COMPONENT | RUNTIME_STATUS | CURRENT_CAPABILITY | GAP | SPEC | EXPERIMENT | ACTION |
+|---|---|---|---|---|---|---|---|---|---|---|
+| CLAIM-E1-001 | p.1, panel 1 | Visual pattern “Esfuerzo agotado” shows a 1-minute support reversal with two labeled entry alternatives E-1/E-2. | preserve source claim; test/translate only through explicit spec | DISCOVERY_PLANE | UNKNOWN | UNKNOWN | runtime audit required | see registries | see experiment registry | DEFER |
+| CLAIM-E1-002 | p.1, panel 2 | Visual pattern “Continuación por fallo” shows a 1-minute bearish continuation around resistance with E-1/E-2 alternatives. | preserve source claim; test/translate only through explicit spec | DISCOVERY_PLANE | UNKNOWN | UNKNOWN | runtime audit required | see registries | see experiment registry | DEFER |
+| CLAIM-E1-003 | p.1, panel 3 | Visual pattern “Nivel espontáneo” shows a 1-minute bullish reversal near support with E-1/E-2 alternatives. | preserve source claim; test/translate only through explicit spec | DISCOVERY_PLANE | UNKNOWN | UNKNOWN | runtime audit required | see registries | see experiment registry | DEFER |
+| CLAIM-E1-004 | p.1, panel 4 | Visual pattern “Clásica en retroceso” shows a 1-minute bullish retracement entry around support with E-1/E-2 alternatives. | preserve source claim; test/translate only through explicit spec | DISCOVERY_PLANE | UNKNOWN | UNKNOWN | runtime audit required | see registries | see experiment registry | DEFER |
+| CLAIM-E1-005 | p.1, panel 5 | Visual pattern “Variante en retroceso” shows a 1-minute bearish retracement around resistance with E-1/E-2 alternatives. | preserve source claim; test/translate only through explicit spec | DISCOVERY_PLANE | UNKNOWN | UNKNOWN | runtime audit required | see registries | see experiment registry | DEFER |
+| CLAIM-E1-006 | p.1, panel 6 | Visual pattern “Rechazo o giro” shows a 1-minute support rejection/reversal with E-1/E-2 alternatives. | preserve source claim; test/translate only through explicit spec | DISCOVERY_PLANE | UNKNOWN | UNKNOWN | runtime audit required | see registries | see experiment registry | DEFER |
+| CLAIM-E1-007 | p.1, panel 7 | Visual pattern “R y R rápida” shows a 2-minute resistance-related sequence with E-1/E-2 alternatives. | preserve source claim; test/translate only through explicit spec | DISCOVERY_PLANE | UNKNOWN | UNKNOWN | runtime audit required | see registries | see experiment registry | DEFER |

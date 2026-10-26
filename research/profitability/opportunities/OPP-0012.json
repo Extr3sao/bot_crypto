@@ -1,0 +1,80 @@
+{
+  "opportunity_id": "OPP-0012",
+  "title": "Crypto and Stock Momentum (QuantConnect Quant League 2024-Q4)",
+  "source_ids": [
+    "S2-06",
+    "S2-05",
+    "S2-40"
+  ],
+  "economic_hypothesis": "no measurable claim is published with the entry",
+  "market": "crypto (BTC, ETH) and US large-cap equities, long only",
+  "assets": "'selected stocks among the top 1000 companies ... based on best-fitted market structure' — a self-selected universe, not a rule",
+  "timeframe": "daily decisions executed at the end of the day",
+  "entry_rules": "price > 100-day EMA and 10-day RSI > 50 and both Supertrend indicators flipped bullish and price > 20% below the weekly TWAP for BTC/ETH (4% for stocks)",
+  "exit_rules": "no stop is stated; no target is stated; trades are executed at the end of any day on which the conditions are met; exit on the Supertrend bend ('confirming the bend of the trend at the exit')",
+  "risk_rules": "not stated; not stated; the equity sleeve implies market hours",
+  "parameters": "EMA100, RSI10 > 50, Supertrend 10-day with multipliers 2.5 and 3, weekly TWAP with 20%/4% thresholds",
+  "claimed_period": "not stated",
+  "claimed_metrics": "the page exposes an 'Update Backtest' widget; no numbers were readable",
+  "transaction_cost_model": "none stated",
+  "required_data": "QuantConnect market data (platform)",
+  "external_code": "cloneable inside QuantConnect",
+  "external_results": "the entry's own write-up (rules stated in prose), no readable results",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the entry is marked 'pending review' and carried no readable metrics when it was fetched",
+    "half of the universe (US equities) cannot be traded by this project's crypto runtime",
+    "an explicit EMA100 + RSI + dual Supertrend + TWAP stack on a self-selected universe is a candidate for overfitting rather than a published result",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (none stated)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "assets",
+    "exit_stop",
+    "exit_target",
+    "sizing_rule",
+    "execution_assumption",
+    "session_rules",
+    "warmup",
+    "transaction_costs",
+    "original_period",
+    "original_metrics",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_ESTABLISHED: no turnover or return is published, so no comparison with the 23.791 bps round trip is possible",
+  "evidence_quality": "E1 — the entry's own write-up (rules stated in prose), no readable results",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "HIGH",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_2_RESEARCH_HYPOTHESIS",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 5,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 1,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 1,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 18,
+  "rank": "RESEARCH_HYPOTHESIS_P1",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "10/21",
+  "gaps_to_p0": [
+    "no published result, period or trade count",
+    "the asset universe is self-selected rather than specified",
+    "no sizing, stop or cost model",
+    "the stock sleeve is outside this project's crypto universe"
+  ],
+  "rejection_reason_codes": [
+    "RULES_INCOMPLETE_MATERIAL_FIELDS",
+    "NO_CANONICAL_PERIOD_OR_RESULTS",
+    "INSTRUMENT_OR_UNIVERSE_MISMATCH"
+  ]
+}

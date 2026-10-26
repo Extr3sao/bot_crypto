@@ -1,0 +1,213 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "phase": "WP-13B replay",
+  "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm13-clean",
+  "target_commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+  "started_at": "2026-10-25T13:57:19Z",
+  "environment": {
+    "python": "3.11.15",
+    "python_executable": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.venv/Scripts/python.exe",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "attempt_note": "attempt 2: clone re-checked out with core.autocrlf=false so working-tree bytes match the TDM-12 checkout; review and cell metrics reused, registry regenerated from scratch",
+  "phases": [
+    {
+      "phase": "review",
+      "status": "REUSED",
+      "attempts": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "timed_out": false,
+          "duration_seconds": 0.0,
+          "log": "(reused .tdm12/review.json from the first attempt)",
+          "command": "reused"
+        }
+      ]
+    },
+    {
+      "phase": "inventory",
+      "status": "PASS",
+      "attempts": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "timed_out": false,
+          "duration_seconds": 1.7,
+          "log": ".tdm13\\logs\\inventory.attempt1.log",
+          "command": "python.exe scripts/tdm12_inventory.py --reuse"
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "artifact": "review.json",
+      "field": "trades",
+      "source": "ledger.derived_trades",
+      "committed": 115,
+      "replayed": 115,
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "gross_mean",
+      "source": "ledger.gross_mean",
+      "committed": -12.577,
+      "replayed": -12.577,
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "net_mean",
+      "source": "ledger.net_mean",
+      "committed": -36.3676,
+      "replayed": -36.3676,
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "day_clustered_ci95_gross",
+      "source": "dependence.day_clustered_ci95_gross",
+      "committed": {
+        "lo": -23.2174,
+        "hi": -3.101,
+        "se": 5.2335,
+        "day_clusters": 26
+      },
+      "replayed": {
+        "lo": -23.2174,
+        "hi": -3.101,
+        "se": 5.2335,
+        "day_clusters": 26
+      },
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "net_upper_bound_by_method",
+      "source": "dependence.net_upper_bound_by_method",
+      "committed": {
+        "1d": -26.8916,
+        "2d": -26.695,
+        "5d": -29.4407,
+        "10d": -31.5307
+      },
+      "replayed": {
+        "1d": -26.8916,
+        "2d": -26.695,
+        "5d": -29.4407,
+        "10d": -31.5307
+      },
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "per_asset",
+      "source": "dependence.per_asset",
+      "committed": {
+        "BTC": {
+          "trades": 36,
+          "gross_mean": -8.1873,
+          "share": 0.313
+        },
+        "ETH": {
+          "trades": 35,
+          "gross_mean": -19.2816,
+          "share": 0.304
+        },
+        "SOL": {
+          "trades": 44,
+          "gross_mean": -10.8353,
+          "share": 0.383
+        }
+      },
+      "replayed": {
+        "BTC": {
+          "trades": 36,
+          "gross_mean": -8.1873,
+          "share": 0.313
+        },
+        "ETH": {
+          "trades": 35,
+          "gross_mean": -19.2816,
+          "share": 0.304
+        },
+        "SOL": {
+          "trades": 44,
+          "gross_mean": -10.8353,
+          "share": 0.383
+        }
+      },
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "lookahead_advantage_bps",
+      "source": "controls.lookahead_advantage_bps",
+      "committed": 29.6308,
+      "replayed": 29.6308,
+      "match": true
+    },
+    {
+      "artifact": "review.json",
+      "field": "independence_status",
+      "source": "independence.status",
+      "committed": "INDEPENDENCE_NOT_DEMONSTRATED",
+      "replayed": "INDEPENDENCE_NOT_DEMONSTRATED",
+      "match": true
+    },
+    {
+      "artifact": "CANDIDATE_REGISTRY.json",
+      "field": "<whole document, ephemeral keys removed>",
+      "ephemeral_keys_removed": [
+        "generated_at_ms",
+        "generated_at_utc",
+        "elapsed_s",
+        "run_id",
+        "preflight",
+        "verified_at",
+        "cell metrics ready in"
+      ],
+      "difference_count": 0,
+      "differences": [],
+      "match": true
+    },
+    {
+      "artifact": "DATA_WINDOW_REGISTRY.json",
+      "field": "<whole document, ephemeral keys removed>",
+      "ephemeral_keys_removed": [
+        "generated_at_ms",
+        "generated_at_utc",
+        "elapsed_s",
+        "run_id",
+        "preflight",
+        "verified_at",
+        "cell metrics ready in"
+      ],
+      "difference_count": 0,
+      "differences": [],
+      "match": true
+    }
+  ],
+  "differences": [],
+  "status": "PASS",
+  "clone_state": {
+    "head": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+    "head_matches_target": true,
+    "tracked_dirty": [],
+    "tracked_dirty_count": 0
+  },
+  "inputs": {
+    "files": 26,
+    "matching": 26,
+    "failures": []
+  },
+  "artifacts_removed_before_replay": [
+    "CANDIDATE_REGISTRY.json",
+    "DATA_WINDOW_REGISTRY.json"
+  ],
+  "incomplete_reason": [],
+  "finished_at": "2026-10-25T13:57:21Z",
+  "duration_seconds": 1.7
+}

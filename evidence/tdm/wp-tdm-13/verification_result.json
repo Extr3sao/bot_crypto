@@ -1,0 +1,81 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "target_commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+  "baseline_commit_expected": "504256ec8934b97a6d405c202604ecac81a02346",
+  "run_id": "tdm13-d7819188",
+  "verifier_id": "tdm13-independent-verifier/1 (separate code path, no builder imports)",
+  "input_state": "AVAILABLE",
+  "git_integrity": "PASS",
+  "claims_consistency": "PASS",
+  "replay": "PASS",
+  "negative_controls": "PASS",
+  "result": "VERIFIED_REPRODUCIBLE",
+  "result_reasons": [],
+  "failures": [],
+  "independence": {
+    "code_path": "INDEPENDENT_DERIVATION",
+    "identity": "NOT_DEMONSTRATED: the same operator wrote TDM-12 and this verifier; the documentation is explicit rather than claiming a second identity"
+  },
+  "evidence_refs": [
+    "evidence/tdm/wp-tdm-13/GIT_AND_CLAIMS_AUDIT.json",
+    "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json",
+    "evidence/tdm/wp-tdm-13/DATASET_RESTORE.md",
+    "evidence/tdm/wp-tdm-13/REPLAY_REPORT.json",
+    "evidence/tdm/wp-tdm-13/NEGATIVE_CONTROLS.json",
+    "evidence/tdm/wp-tdm-13/RUN_REPORT.md",
+    "evidence/tdm/wp-tdm-13/RUN_REPORT.json"
+  ],
+  "commands": [
+    {
+      "command": "-m ruff check scripts/tdm13_independent_verify.py scripts/tdm13_inputs.py scripts/tdm13_replay.py scripts/tdm13_negative_controls.py scripts/tdm13_report.py tests/unit/research/test_tdm13_independent_verify.py",
+      "duration_seconds": 0.2,
+      "exit_code": 0,
+      "step": "ruff check"
+    },
+    {
+      "command": "-m ruff format --check scripts/tdm13_independent_verify.py scripts/tdm13_inputs.py scripts/tdm13_replay.py scripts/tdm13_negative_controls.py scripts/tdm13_report.py tests/unit/research/test_tdm13_independent_verify.py",
+      "duration_seconds": 0.2,
+      "exit_code": 0,
+      "step": "ruff format --check"
+    },
+    {
+      "command": "-m pytest tests/unit/research/test_tdm13_independent_verify.py -q",
+      "duration_seconds": 1.5,
+      "exit_code": 0,
+      "step": "pytest"
+    },
+    {
+      "command": "scripts/tdm13_inputs.py verify",
+      "duration_seconds": 3.0,
+      "exit_code": 0,
+      "step": "inputs verify"
+    },
+    {
+      "command": "scripts/tdm13_independent_verify.py audit-git",
+      "duration_seconds": 2.6,
+      "exit_code": 0,
+      "step": "audit-git"
+    },
+    {
+      "command": "scripts/tdm13_independent_verify.py audit-claims",
+      "duration_seconds": 0.6,
+      "exit_code": 0,
+      "step": "audit-claims"
+    },
+    {
+      "command": "scripts/tdm13_negative_controls.py",
+      "duration_seconds": 31.9,
+      "exit_code": 0,
+      "step": "negative controls"
+    },
+    {
+      "command": "scripts/tdm13_independent_verify.py verify",
+      "duration_seconds": 0.2,
+      "exit_code": 0,
+      "step": "verify"
+    }
+  ],
+  "duration_seconds": 40.2,
+  "paper_orders": 0,
+  "live_orders": 0
+}

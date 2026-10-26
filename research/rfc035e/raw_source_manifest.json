@@ -1,0 +1,37 @@
+{
+  "manifest_version": "RFC035E_RAW_SOURCE_MANIFEST_V1",
+  "retrieved_at_utc": "2026-10-07T22:07:29Z",
+  "offline_rederivation": false,
+  "sources": [
+    {
+      "source_id": "RF-01",
+      "provider": "Farside Investors (farside.co.uk)",
+      "url": "https://farside.co.uk/bitcoin-etf-flow-all-data/",
+      "object": "raw html of the all-data flow page",
+      "path": "data\\rfc035e\\raw\\farside_btc_etf_flow_all_data.html",
+      "sha256": "2e532435486112465a5ba09b3203585219343bcd5b6c8531e6a46ca339bae588",
+      "bytes": 823991,
+      "schema": "html table, US$m",
+      "timezone": "flow_date is the US cash session date",
+      "coverage": "2024-01-11..2026-10-07",
+      "rows": 703,
+      "blank_cells": 905,
+      "transformations": "none applied at fetch time; parsing happens in the derived layer"
+    },
+    {
+      "source_id": "RF-02",
+      "provider": "Binance public REST",
+      "url": "api/v3/klines BTCUSDT 1d",
+      "object": "daily kline array",
+      "path": "data\\rfc035e\\raw\\binance_btcusdt_1d_klines.json",
+      "sha256": "47b9e0c96f8588e792d062f77339f858a8a350328c1e18ff7df6fa58e5582531",
+      "bytes": 195214,
+      "schema": "Binance kline: [openTime, o, h, l, close, volume, closeTime, ...]",
+      "timezone": "UTC (openTime)",
+      "coverage": "2024-01-11..2026-10-07",
+      "rows": 1042,
+      "blank_cells": 0,
+      "transformations": "none applied at fetch time"
+    }
+  ]
+}

@@ -1,0 +1,232 @@
+[
+  {
+    "entry_sunday": "2019-01-06",
+    "entry_ms": 1546819200000,
+    "entry_price": 3987.62,
+    "exit_sunday": "2019-02-10",
+    "exit_ms": 1549843200000,
+    "exit_price": 3679.75,
+    "hold_days": 35,
+    "gross_ret": -0.07720645397505277
+  },
+  {
+    "entry_sunday": "2019-03-17",
+    "entry_ms": 1552867200000,
+    "entry_price": 3981.85,
+    "exit_sunday": "2019-06-02",
+    "exit_ms": 1559520000000,
+    "exit_price": 8726.0,
+    "hold_days": 77,
+    "gross_ret": 1.1914436756783906
+  },
+  {
+    "entry_sunday": "2019-06-09",
+    "entry_ms": 1560124800000,
+    "entry_price": 7627.57,
+    "exit_sunday": "2019-08-04",
+    "exit_ms": 1564963200000,
+    "exit_price": 10929.99,
+    "hold_days": 56,
+    "gross_ret": 0.4329583340434766
+  },
+  {
+    "entry_sunday": "2020-01-05",
+    "entry_ms": 1578268800000,
+    "entry_price": 7357.64,
+    "exit_sunday": "2020-02-09",
+    "exit_ms": 1581292800000,
+    "exit_price": 10151.72,
+    "hold_days": 35,
+    "gross_ret": 0.37975220315209746
+  },
+  {
+    "entry_sunday": "2020-04-05",
+    "entry_ms": 1586131200000,
+    "entry_price": 6772.78,
+    "exit_sunday": "2020-06-07",
+    "exit_ms": 1591574400000,
+    "exit_price": 9746.99,
+    "hold_days": 63,
+    "gross_ret": 0.4391416818499936
+  },
+  {
+    "entry_sunday": "2020-08-02",
+    "entry_ms": 1596412800000,
+    "entry_price": 11071.36,
+    "exit_sunday": "2020-10-18",
+    "exit_ms": 1603065600000,
+    "exit_price": 11503.14,
+    "hold_days": 77,
+    "gross_ret": 0.038999725417654174
+  },
+  {
+    "entry_sunday": "2020-12-06",
+    "entry_ms": 1607299200000,
+    "entry_price": 19358.67,
+    "exit_sunday": "2020-12-13",
+    "exit_ms": 1607904000000,
+    "exit_price": 19174.99,
+    "hold_days": 7,
+    "gross_ret": -0.009488255133229484
+  },
+  {
+    "entry_sunday": "2021-01-10",
+    "entry_ms": 1610323200000,
+    "entry_price": 38150.02,
+    "exit_sunday": "2021-04-04",
+    "exit_ms": 1617580800000,
+    "exit_price": 58202.01,
+    "hold_days": 84,
+    "gross_ret": 0.525608898763356
+  },
+  {
+    "entry_sunday": "2021-04-11",
+    "entry_ms": 1618185600000,
+    "entry_price": 59998.8,
+    "exit_sunday": "2021-05-23",
+    "exit_ms": 1621814400000,
+    "exit_price": 34681.44,
+    "hold_days": 42,
+    "gross_ret": -0.4219644392887858
+  },
+  {
+    "entry_sunday": "2021-05-30",
+    "entry_ms": 1622419200000,
+    "entry_price": 35641.26,
+    "exit_sunday": "2021-06-06",
+    "exit_ms": 1623024000000,
+    "exit_price": 35796.31,
+    "hold_days": 7,
+    "gross_ret": 0.004350295135469251
+  },
+  {
+    "entry_sunday": "2021-11-28",
+    "entry_ms": 1638144000000,
+    "entry_price": 57274.89,
+    "exit_sunday": "2021-12-05",
+    "exit_ms": 1638748800000,
+    "exit_price": 49396.32,
+    "hold_days": 7,
+    "gross_ret": -0.13755713891375432
+  },
+  {
+    "entry_sunday": "2023-01-29",
+    "entry_ms": 1675036800000,
+    "entry_price": 23743.37,
+    "exit_sunday": "2023-02-26",
+    "exit_ms": 1677456000000,
+    "exit_price": 23554.85,
+    "hold_days": 28,
+    "gross_ret": -0.0079399006964892
+  },
+  {
+    "entry_sunday": "2023-04-16",
+    "entry_ms": 1681689600000,
+    "entry_price": 30304.66,
+    "exit_sunday": "2023-07-23",
+    "exit_ms": 1690156800000,
+    "exit_price": 30083.75,
+    "hold_days": 98,
+    "gross_ret": -0.007289637963270312
+  },
+  {
+    "entry_sunday": "2023-08-27",
+    "entry_ms": 1693180800000,
+    "entry_price": 26101.78,
+    "exit_sunday": "2024-05-26",
+    "exit_ms": 1716768000000,
+    "exit_price": 68507.67,
+    "hold_days": 273,
+    "gross_ret": 1.6246359443685452
+  },
+  {
+    "entry_sunday": "2024-08-11",
+    "entry_ms": 1723420800000,
+    "entry_price": 58712.59,
+    "exit_sunday": "2024-09-15",
+    "exit_ms": 1726444800000,
+    "exit_price": 59132.0,
+    "hold_days": 35,
+    "gross_ret": 0.007143442317908422
+  },
+  {
+    "entry_sunday": "2024-11-10",
+    "entry_ms": 1731283200000,
+    "entry_price": 80370.01,
+    "exit_sunday": "2025-01-19",
+    "exit_ms": 1737331200000,
+    "exit_price": 101331.57,
+    "hold_days": 70,
+    "gross_ret": 0.2608132063191235
+  },
+  {
+    "entry_sunday": "2025-01-26",
+    "entry_ms": 1737936000000,
+    "entry_price": 102620.01,
+    "exit_sunday": "2025-03-09",
+    "exit_ms": 1741564800000,
+    "exit_price": 80734.48,
+    "hold_days": 42,
+    "gross_ret": -0.21326766582852608
+  },
+  {
+    "entry_sunday": "2025-03-30",
+    "entry_ms": 1743379200000,
+    "entry_price": 82390.0,
+    "exit_sunday": "2025-04-13",
+    "exit_ms": 1744588800000,
+    "exit_price": 83760.0,
+    "hold_days": 14,
+    "gross_ret": 0.016628231581502506
+  },
+  {
+    "entry_sunday": "2025-05-04",
+    "entry_ms": 1746403200000,
+    "entry_price": 94277.61,
+    "exit_sunday": "2025-06-01",
+    "exit_ms": 1748822400000,
+    "exit_price": 105642.93,
+    "hold_days": 28,
+    "gross_ret": 0.12055163468823604
+  },
+  {
+    "entry_sunday": "2025-06-08",
+    "entry_ms": 1749427200000,
+    "entry_price": 105734.01,
+    "exit_sunday": "2025-06-22",
+    "exit_ms": 1750636800000,
+    "exit_price": 100963.87,
+    "hold_days": 14,
+    "gross_ret": -0.04511452842845931
+  },
+  {
+    "entry_sunday": "2025-07-20",
+    "entry_ms": 1753056000000,
+    "entry_price": 117265.11,
+    "exit_sunday": "2025-11-02",
+    "exit_ms": 1762128000000,
+    "exit_price": 110540.69,
+    "hold_days": 105,
+    "gross_ret": -0.0573437401798369
+  },
+  {
+    "entry_sunday": "2026-03-15",
+    "entry_ms": 1773619200000,
+    "entry_price": 72815.25,
+    "exit_sunday": "2026-03-29",
+    "exit_ms": 1774828800000,
+    "exit_price": 66010.93,
+    "hold_days": 14,
+    "gross_ret": -0.09344635910746724
+  },
+  {
+    "entry_sunday": "2026-08-30",
+    "entry_ms": 1788134400000,
+    "entry_price": 77682.0,
+    "exit_sunday": "2026-09-27",
+    "exit_ms": 1790553600000,
+    "exit_price": 84472.01,
+    "hold_days": 28,
+    "gross_ret": 0.08740776499060265
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-05T23:11:22Z",
+  "source_commit": "1216c0caeba97f4b733581f0db1ab3a058099fb9",
+  "decision_id": "BUSINESS-FREEZE-2026-001",
+  "rfc": "RFC-041",
+  "reference_initial_capital_usdt": 200.0,
+  "live_capital_authorized": 0,
+  "platform_status": "RESEARCH_CAPABLE",
+  "profitability_status": "NO_BUSINESS_VALIDATED_EDGE",
+  "research_status": "PAUSED",
+  "paper_status": "NOT_AUTHORIZED",
+  "live_status": "NOT_AUTHORIZED",
+  "alpha_research_freeze": "ACTIVE",
+  "phase_status": {
+    "PHASE_1_INTERNAL_CRYPTO_ALPHA": "CLOSED",
+    "PHASE_2A_INSTITUTIONAL_MULTI_ASSET": "ARCHIVED_NOT_PRODUCT_FIT",
+    "PHASE_2B_SMALL_CAPITAL": "PAUSED"
+  },
+  "kpi": {
+    "HISTORICAL_NET_EDGE_COUNT": 5,
+    "EXECUTABLE_VALIDATED_EDGE_COUNT": 3,
+    "BUSINESS_VALIDATED_EDGE_COUNT": 0,
+    "ROBUST_BUSINESS_EDGE_COUNT": 0,
+    "PAPER_CANDIDATE_COUNT": 0,
+    "FORWARD_PROFITABLE_COUNT": 0,
+    "LIVE_PROFITABLE_COUNT": 0
+  },
+  "primary_kpi": "BUSINESS_VALIDATED_EDGE_COUNT",
+  "active_candidates": 0,
+  "candidate_statuses": {
+    "EXT-TSMOM-001": "INVALIDATED_TRADABILITY",
+    "EXT-TSMOM-002": "REJECTED_HISTORICAL_PLAUSIBILITY",
+    "EXT-TSMOM-003": "REJECTED_VALIDATION",
+    "EXT-XMOM-001": "REJECTED_ROBUSTNESS",
+    "MF-TREND-001": "RESEARCH_ASSET",
+    "SC-TREND-001": "VALIDATED_DEFENSIVE",
+    "SC-DUALMOM-002": "REJECTED_BUSINESS_EDGE",
+    "SC-CANDIDATE-003": "NOT_AUTHORIZED"
+  },
+  "current_decision": "WAIT_FOR_REENTRY_QUALIFIED_BUSINESS_OPPORTUNITY",
+  "next_alpha_rfc_allowed": false,
+  "capital_principle": "STRATEGY MUST FIT CAPITAL"
+}

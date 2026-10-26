@@ -1,0 +1,691 @@
+{
+  "run_id": "forward-1790610007-9d07f3df",
+  "commit": "7fb9429e765dbf0d520e6a58df3dabacc05dbbde",
+  "capture_started_at": "2026-09-28T15:40:07.810000+00:00",
+  "capture_ended_at": "2026-09-28T16:43:11.151000+00:00",
+  "source": "https://api.binance.com/api/v3/klines (public, 1m)",
+  "method": "sum of captured aggTrade quantity per completed minute against the venue's own 1m kline volume for the same minute; buckets overlapping an unrecovered hole are excluded and listed",
+  "buckets_compared": 75,
+  "buckets_excluded": 0,
+  "exclusions": [],
+  "worst_ratio_deviation": 0.0,
+  "median_ratio": 1.0,
+  "buckets": [
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610060000,
+      "trades": 577,
+      "capture_volume": "5.10447000",
+      "kline_volume": "5.10447000",
+      "ratio": "1.0",
+      "kline_close": "83286.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610120000,
+      "trades": 674,
+      "capture_volume": "6.26485000",
+      "kline_volume": "6.26485000",
+      "ratio": "1.0",
+      "kline_close": "83248.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610180000,
+      "trades": 614,
+      "capture_volume": "5.24136000",
+      "kline_volume": "5.24136000",
+      "ratio": "1.0",
+      "kline_close": "83202.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610240000,
+      "trades": 613,
+      "capture_volume": "18.48843000",
+      "kline_volume": "18.48843000",
+      "ratio": "1.0",
+      "kline_close": "83211.33000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610300000,
+      "trades": 545,
+      "capture_volume": "4.33858000",
+      "kline_volume": "4.33858000",
+      "ratio": "1.0",
+      "kline_close": "83253.99000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610360000,
+      "trades": 1341,
+      "capture_volume": "18.49314000",
+      "kline_volume": "18.49314000",
+      "ratio": "1.0",
+      "kline_close": "83264.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610420000,
+      "trades": 507,
+      "capture_volume": "5.21636000",
+      "kline_volume": "5.21636000",
+      "ratio": "1.0",
+      "kline_close": "83292.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610480000,
+      "trades": 701,
+      "capture_volume": "23.39931000",
+      "kline_volume": "23.39931000",
+      "ratio": "1.0",
+      "kline_close": "83248.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610540000,
+      "trades": 612,
+      "capture_volume": "4.58473000",
+      "kline_volume": "4.58473000",
+      "ratio": "1.0",
+      "kline_close": "83284.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610600000,
+      "trades": 765,
+      "capture_volume": "8.03252000",
+      "kline_volume": "8.03252000",
+      "ratio": "1.0",
+      "kline_close": "83314.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610660000,
+      "trades": 766,
+      "capture_volume": "6.51937000",
+      "kline_volume": "6.51937000",
+      "ratio": "1.0",
+      "kline_close": "83258.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610720000,
+      "trades": 866,
+      "capture_volume": "9.65435000",
+      "kline_volume": "9.65435000",
+      "ratio": "1.0",
+      "kline_close": "83254.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610780000,
+      "trades": 436,
+      "capture_volume": "11.10893000",
+      "kline_volume": "11.10893000",
+      "ratio": "1.0",
+      "kline_close": "83276.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610840000,
+      "trades": 847,
+      "capture_volume": "31.84874000",
+      "kline_volume": "31.84874000",
+      "ratio": "1.0",
+      "kline_close": "83341.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610900000,
+      "trades": 773,
+      "capture_volume": "19.69029000",
+      "kline_volume": "19.69029000",
+      "ratio": "1.0",
+      "kline_close": "83344.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790610960000,
+      "trades": 774,
+      "capture_volume": "15.02219000",
+      "kline_volume": "15.02219000",
+      "ratio": "1.0",
+      "kline_close": "83347.96000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611020000,
+      "trades": 680,
+      "capture_volume": "11.35730000",
+      "kline_volume": "11.35730000",
+      "ratio": "1.0",
+      "kline_close": "83350.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611080000,
+      "trades": 457,
+      "capture_volume": "5.54949000",
+      "kline_volume": "5.54949000",
+      "ratio": "1.0",
+      "kline_close": "83377.23000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611140000,
+      "trades": 626,
+      "capture_volume": "9.98474000",
+      "kline_volume": "9.98474000",
+      "ratio": "1.0",
+      "kline_close": "83370.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611200000,
+      "trades": 723,
+      "capture_volume": "11.99594000",
+      "kline_volume": "11.99594000",
+      "ratio": "1.0",
+      "kline_close": "83375.57000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611260000,
+      "trades": 1222,
+      "capture_volume": "16.34643000",
+      "kline_volume": "16.34643000",
+      "ratio": "1.0",
+      "kline_close": "83378.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611320000,
+      "trades": 872,
+      "capture_volume": "21.74933000",
+      "kline_volume": "21.74933000",
+      "ratio": "1.0",
+      "kline_close": "83306.00000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611380000,
+      "trades": 745,
+      "capture_volume": "8.66529000",
+      "kline_volume": "8.66529000",
+      "ratio": "1.0",
+      "kline_close": "83260.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611440000,
+      "trades": 870,
+      "capture_volume": "7.19524000",
+      "kline_volume": "7.19524000",
+      "ratio": "1.0",
+      "kline_close": "83298.01000000"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "open_time_ms": 1790611500000,
+      "trades": 623,
+      "capture_volume": "8.73297000",
+      "kline_volume": "8.73297000",
+      "ratio": "1.0",
+      "kline_close": "83278.01000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610060000,
+      "trades": 641,
+      "capture_volume": "195.33470000",
+      "kline_volume": "195.33470000",
+      "ratio": "1.0",
+      "kline_close": "2677.94000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610120000,
+      "trades": 539,
+      "capture_volume": "120.97260000",
+      "kline_volume": "120.97260000",
+      "ratio": "1.0",
+      "kline_close": "2676.28000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610180000,
+      "trades": 465,
+      "capture_volume": "232.71190000",
+      "kline_volume": "232.71190000",
+      "ratio": "1.0",
+      "kline_close": "2674.93000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610240000,
+      "trades": 568,
+      "capture_volume": "407.74080000",
+      "kline_volume": "407.74080000",
+      "ratio": "1.0",
+      "kline_close": "2674.73000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610300000,
+      "trades": 581,
+      "capture_volume": "262.79270000",
+      "kline_volume": "262.79270000",
+      "ratio": "1.0",
+      "kline_close": "2676.35000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610360000,
+      "trades": 921,
+      "capture_volume": "128.27540000",
+      "kline_volume": "128.27540000",
+      "ratio": "1.0",
+      "kline_close": "2675.57000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610420000,
+      "trades": 273,
+      "capture_volume": "53.62610000",
+      "kline_volume": "53.62610000",
+      "ratio": "1.0",
+      "kline_close": "2676.55000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610480000,
+      "trades": 546,
+      "capture_volume": "97.09540000",
+      "kline_volume": "97.09540000",
+      "ratio": "1.0",
+      "kline_close": "2675.01000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610540000,
+      "trades": 688,
+      "capture_volume": "277.00590000",
+      "kline_volume": "277.00590000",
+      "ratio": "1.0",
+      "kline_close": "2675.45000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610600000,
+      "trades": 618,
+      "capture_volume": "146.21200000",
+      "kline_volume": "146.21200000",
+      "ratio": "1.0",
+      "kline_close": "2677.78000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610660000,
+      "trades": 517,
+      "capture_volume": "184.38100000",
+      "kline_volume": "184.38100000",
+      "ratio": "1.0",
+      "kline_close": "2676.06000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610720000,
+      "trades": 572,
+      "capture_volume": "139.71470000",
+      "kline_volume": "139.71470000",
+      "ratio": "1.0",
+      "kline_close": "2676.11000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610780000,
+      "trades": 367,
+      "capture_volume": "163.43990000",
+      "kline_volume": "163.43990000",
+      "ratio": "1.0",
+      "kline_close": "2676.73000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610840000,
+      "trades": 587,
+      "capture_volume": "221.05700000",
+      "kline_volume": "221.05700000",
+      "ratio": "1.0",
+      "kline_close": "2679.91000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610900000,
+      "trades": 504,
+      "capture_volume": "161.49820000",
+      "kline_volume": "161.49820000",
+      "ratio": "1.0",
+      "kline_close": "2678.82000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790610960000,
+      "trades": 352,
+      "capture_volume": "80.23440000",
+      "kline_volume": "80.23440000",
+      "ratio": "1.0",
+      "kline_close": "2678.12000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611020000,
+      "trades": 503,
+      "capture_volume": "130.81930000",
+      "kline_volume": "130.81930000",
+      "ratio": "1.0",
+      "kline_close": "2677.65000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611080000,
+      "trades": 282,
+      "capture_volume": "60.27390000",
+      "kline_volume": "60.27390000",
+      "ratio": "1.0",
+      "kline_close": "2678.55000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611140000,
+      "trades": 380,
+      "capture_volume": "121.43210000",
+      "kline_volume": "121.43210000",
+      "ratio": "1.0",
+      "kline_close": "2677.95000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611200000,
+      "trades": 647,
+      "capture_volume": "203.92300000",
+      "kline_volume": "203.92300000",
+      "ratio": "1.0",
+      "kline_close": "2676.74000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611260000,
+      "trades": 769,
+      "capture_volume": "113.34800000",
+      "kline_volume": "113.34800000",
+      "ratio": "1.0",
+      "kline_close": "2676.44000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611320000,
+      "trades": 524,
+      "capture_volume": "143.30080000",
+      "kline_volume": "143.30080000",
+      "ratio": "1.0",
+      "kline_close": "2673.25000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611380000,
+      "trades": 513,
+      "capture_volume": "116.34370000",
+      "kline_volume": "116.34370000",
+      "ratio": "1.0",
+      "kline_close": "2671.94000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611440000,
+      "trades": 596,
+      "capture_volume": "146.62970000",
+      "kline_volume": "146.62970000",
+      "ratio": "1.0",
+      "kline_close": "2673.63000000"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "open_time_ms": 1790611500000,
+      "trades": 693,
+      "capture_volume": "643.71020000",
+      "kline_volume": "643.71020000",
+      "ratio": "1.0",
+      "kline_close": "2672.48000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610060000,
+      "trades": 87,
+      "capture_volume": "510.27100000",
+      "kline_volume": "510.27100000",
+      "ratio": "1.0",
+      "kline_close": "118.60000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610120000,
+      "trades": 92,
+      "capture_volume": "739.79100000",
+      "kline_volume": "739.79100000",
+      "ratio": "1.0",
+      "kline_close": "118.51000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610180000,
+      "trades": 80,
+      "capture_volume": "1031.21300000",
+      "kline_volume": "1031.21300000",
+      "ratio": "1.0",
+      "kline_close": "118.41000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610240000,
+      "trades": 147,
+      "capture_volume": "3933.77500000",
+      "kline_volume": "3933.77500000",
+      "ratio": "1.0",
+      "kline_close": "118.35000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610300000,
+      "trades": 195,
+      "capture_volume": "2931.17500000",
+      "kline_volume": "2931.17500000",
+      "ratio": "1.0",
+      "kline_close": "118.49000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610360000,
+      "trades": 180,
+      "capture_volume": "898.42700000",
+      "kline_volume": "898.42700000",
+      "ratio": "1.0",
+      "kline_close": "118.47000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610420000,
+      "trades": 106,
+      "capture_volume": "1041.95600000",
+      "kline_volume": "1041.95600000",
+      "ratio": "1.0",
+      "kline_close": "118.56000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610480000,
+      "trades": 122,
+      "capture_volume": "650.66300000",
+      "kline_volume": "650.66300000",
+      "ratio": "1.0",
+      "kline_close": "118.43000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610540000,
+      "trades": 110,
+      "capture_volume": "635.69200000",
+      "kline_volume": "635.69200000",
+      "ratio": "1.0",
+      "kline_close": "118.56000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610600000,
+      "trades": 145,
+      "capture_volume": "2523.06900000",
+      "kline_volume": "2523.06900000",
+      "ratio": "1.0",
+      "kline_close": "118.65000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610660000,
+      "trades": 132,
+      "capture_volume": "1220.97300000",
+      "kline_volume": "1220.97300000",
+      "ratio": "1.0",
+      "kline_close": "118.47000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610720000,
+      "trades": 123,
+      "capture_volume": "1025.25800000",
+      "kline_volume": "1025.25800000",
+      "ratio": "1.0",
+      "kline_close": "118.48000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610780000,
+      "trades": 87,
+      "capture_volume": "610.47800000",
+      "kline_volume": "610.47800000",
+      "ratio": "1.0",
+      "kline_close": "118.53000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610840000,
+      "trades": 133,
+      "capture_volume": "5504.61900000",
+      "kline_volume": "5504.61900000",
+      "ratio": "1.0",
+      "kline_close": "118.76000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610900000,
+      "trades": 152,
+      "capture_volume": "1072.42500000",
+      "kline_volume": "1072.42500000",
+      "ratio": "1.0",
+      "kline_close": "118.76000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790610960000,
+      "trades": 111,
+      "capture_volume": "701.90100000",
+      "kline_volume": "701.90100000",
+      "ratio": "1.0",
+      "kline_close": "118.72000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611020000,
+      "trades": 123,
+      "capture_volume": "1317.01400000",
+      "kline_volume": "1317.01400000",
+      "ratio": "1.0",
+      "kline_close": "118.69000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611080000,
+      "trades": 58,
+      "capture_volume": "413.47700000",
+      "kline_volume": "413.47700000",
+      "ratio": "1.0",
+      "kline_close": "118.73000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611140000,
+      "trades": 91,
+      "capture_volume": "1053.91300000",
+      "kline_volume": "1053.91300000",
+      "ratio": "1.0",
+      "kline_close": "118.71000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611200000,
+      "trades": 174,
+      "capture_volume": "1639.68200000",
+      "kline_volume": "1639.68200000",
+      "ratio": "1.0",
+      "kline_close": "118.71000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611260000,
+      "trades": 213,
+      "capture_volume": "2801.43600000",
+      "kline_volume": "2801.43600000",
+      "ratio": "1.0",
+      "kline_close": "118.66000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611320000,
+      "trades": 151,
+      "capture_volume": "2248.47300000",
+      "kline_volume": "2248.47300000",
+      "ratio": "1.0",
+      "kline_close": "118.40000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611380000,
+      "trades": 136,
+      "capture_volume": "728.78800000",
+      "kline_volume": "728.78800000",
+      "ratio": "1.0",
+      "kline_close": "118.31000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611440000,
+      "trades": 127,
+      "capture_volume": "1224.22200000",
+      "kline_volume": "1224.22200000",
+      "ratio": "1.0",
+      "kline_close": "118.48000000"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "open_time_ms": 1790611500000,
+      "trades": 112,
+      "capture_volume": "656.45800000",
+      "kline_volume": "656.45800000",
+      "ratio": "1.0",
+      "kline_close": "118.43000000"
+    }
+  ],
+  "note": "agreement means the persisted trades are the venue's trades for that minute; it is a data-quality check and carries no information about edge or returns"
+}

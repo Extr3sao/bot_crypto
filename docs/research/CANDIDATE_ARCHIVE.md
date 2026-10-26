@@ -1,0 +1,123 @@
+# CANDIDATE ARCHIVE (RFC-041)
+
+```json
+{
+  "rfc": "RFC-041",
+  "generated_at": "2026-10-05T23:11:22Z",
+  "source_commit": "1216c0caeba97f4b733581f0db1ab3a058099fb9",
+  "candidates": [
+    {
+      "candidate_id": "EXT-TSMOM-001",
+      "family": "time-series momentum / trend",
+      "instrument": "30 USDT spot pairs",
+      "capital_fit": "PASS",
+      "best_result": "discovery +118.15 bps / validation +51.33 bps net",
+      "failure_gate": "G_TRADABILITY",
+      "final_status": "INVALIDATED_TRADABILITY",
+      "evidence_level": "HISTORICAL_NET_EDGE",
+      "disposition_class": "CLOSED_INVALIDATED",
+      "product_fit_200": "IRRELEVANT_NOT_TRADABLE",
+      "evidence_retained": true,
+      "reentry_condition": "NONE (never reopen)"
+    },
+    {
+      "candidate_id": "EXT-TSMOM-002",
+      "family": "executable TSMOM (long/cash + T+1)",
+      "instrument": "30 USDT spot pairs",
+      "capital_fit": "PASS",
+      "best_result": "executable mean net +636.74 bps/month discovery, median 0.0, recent -109.83",
+      "failure_gate": "G_REM_1_VALIDATION",
+      "final_status": "REJECTED_HISTORICAL_PLAUSIBILITY",
+      "evidence_level": "STATISTICAL_HISTORICAL_EFFECT",
+      "disposition_class": "CLOSED_REJECTED",
+      "product_fit_200": "IRRELEVANT_NO_EDGE",
+      "evidence_retained": true,
+      "reentry_condition": "NEW EXTERNAL EVIDENCE (RFC-041 trigger A) only"
+    },
+    {
+      "candidate_id": "EXT-TSMOM-003",
+      "family": "executable futures TSMOM (long/short perp)",
+      "instrument": "115 USDT-M perpetual futures",
+      "capital_fit": "PASS",
+      "best_result": "discovery +447.98 bps/month; validation -563.80 bps/month",
+      "failure_gate": "G_PERP_2_VALIDATION",
+      "final_status": "REJECTED_VALIDATION",
+      "evidence_level": "STATISTICAL_HISTORICAL_EFFECT",
+      "disposition_class": "CLOSED_REJECTED",
+      "product_fit_200": "IRRELEVANT_VALIDATION_FAIL",
+      "evidence_retained": true,
+      "reentry_condition": "NEW EXTERNAL EVIDENCE (trigger A) only"
+    },
+    {
+      "candidate_id": "EXT-XMOM-001",
+      "family": "cross-sectional momentum",
+      "instrument": "30 USDT spot pairs",
+      "capital_fit": "PASS",
+      "best_result": "discovery +96.42 bps / validation +14.99 bps net",
+      "failure_gate": "G_ROBUSTNESS",
+      "final_status": "REJECTED_ROBUSTNESS",
+      "evidence_level": "HISTORICAL_NET_EDGE",
+      "disposition_class": "CLOSED_REJECTED",
+      "product_fit_200": "IRRELEVANT_ROBUSTNESS_FAIL",
+      "evidence_retained": true,
+      "reentry_condition": "NEW EXTERNAL EVIDENCE (trigger A) only"
+    },
+    {
+      "candidate_id": "MF-TREND-001",
+      "family": "diversified managed-futures trend",
+      "instrument": "26 individual futures contract chains",
+      "capital_fit": "FAIL_FOR_200",
+      "best_result": "historical discovery +17.88M / validation +12.70M at $10M; net Sharpe 1.14",
+      "failure_gate": "PRODUCT_FIT_200 + MODERN_VALIDATION_DATA_BLOCKED",
+      "final_status": "RESEARCH_ASSET",
+      "evidence_level": "EXECUTABLE_VALIDATED_EDGE",
+      "disposition_class": "NOT_CURRENT_PRODUCT",
+      "product_fit_200": "FAIL",
+      "evidence_retained": true,
+      "reentry_condition": "MATERIAL CAPITAL CHANGE (trigger C) or an economically equivalent small-capital implementation"
+    },
+    {
+      "candidate_id": "SC-TREND-001",
+      "family": "multi-asset absolute momentum (ETF)",
+      "instrument": "6 US ETFs (SPY/EFA/IEF/VNQ/GLD/DBC)",
+      "capital_fit": "PASS_AT_200",
+      "best_result": "discovery +81.02 USDT / validation +36.00 USDT net; validation Sharpe 0.52",
+      "failure_gate": "G_BUSINESS_EDGE (risk-adjusted < passive)",
+      "final_status": "VALIDATED_DEFENSIVE",
+      "evidence_level": "EXECUTABLE_VALIDATED_EDGE",
+      "disposition_class": "FUTURE_DEFENSIVE_OVERLAY_CANDIDATE",
+      "product_fit_200": "PASS",
+      "evidence_retained": true,
+      "reentry_condition": "only as a defensive overlay once a profit engine exists (never a primary strategy)"
+    },
+    {
+      "candidate_id": "SC-DUALMOM-002",
+      "family": "dual momentum / GEM (ETF)",
+      "instrument": "EU-retail UCITS ETFs (EUR)",
+      "capital_fit": "PASS_AT_200",
+      "best_result": "discovery +145.84 EUR / validation +106.93 EUR net; validation Sharpe 0.73",
+      "failure_gate": "G_BUSINESS_EDGE (CAGR & Sharpe < risk-matched passive; excess < 0)",
+      "final_status": "REJECTED_BUSINESS_EDGE",
+      "evidence_level": "EXECUTABLE_VALIDATED_EDGE",
+      "disposition_class": "CLOSED_REJECTED",
+      "product_fit_200": "PASS",
+      "evidence_retained": true,
+      "reentry_condition": "NEW EXTERNAL EVIDENCE or NEW STRUCTURAL EDGE (triggers A/B) only"
+    },
+    {
+      "candidate_id": "SC-CANDIDATE-003",
+      "family": "(would-be small-capital candidate)",
+      "instrument": "n/a",
+      "capital_fit": "n/a",
+      "best_result": "none (never created)",
+      "failure_gate": "NOT_AUTHORIZED",
+      "final_status": "NOT_AUTHORIZED",
+      "evidence_level": "NO_EDGE",
+      "disposition_class": "NOT_CREATED",
+      "product_fit_200": "NO_EVIDENCE",
+      "evidence_retained": false,
+      "reentry_condition": "requires a PASS on G_BUSINESS_REENTRY first"
+    }
+  ]
+}
+```

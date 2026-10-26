@@ -1,0 +1,55 @@
+{
+  "artifact": "tdm12-data-window-registry-v1",
+  "generated_at_ms": 1792933698454,
+  "append_only": true,
+  "windows": [
+    {
+      "name": "TDM08_W1_W7",
+      "range_utc": [
+        "2026-03-01T00:00:00Z",
+        "2026-09-24T00:00:00Z"
+      ],
+      "used_for": "strategy discovery and admission ledger construction",
+      "label": "SELECTION_EXPOSED",
+      "reusable_as_confirmatory": false,
+      "evidence": "config/strategy_admission.json::_period"
+    },
+    {
+      "name": "TDM10_DEV",
+      "range_utc": [
+        "2026-06-25T00:00:00Z",
+        "2026-09-25T00:00:00Z"
+      ],
+      "used_for": "TDM-10 development/stability, TDM-11 power analysis and retrospective evaluation",
+      "label": "DEVELOPMENT",
+      "reusable_as_confirmatory": false,
+      "files": 12,
+      "hash_status": "24/24 verified (12 DEV + 12 HOLD)",
+      "evidence": "evidence/tdm/wp-tdm-11/DATASET_PROVENANCE.json"
+    },
+    {
+      "name": "TDM08_HOLD",
+      "range_utc": [
+        "2026-09-25T00:00:00Z",
+        "2026-10-24T15:50:00Z"
+      ],
+      "used_for": "TDM-08 verdict window, TDM-10 verdict window, TDM-11 selection window",
+      "label": "SELECTION_EXPOSED",
+      "reusable_as_confirmatory": false,
+      "evidence": "evidence/tdm/wp-tdm-11/DATASET_PROVENANCE.json"
+    },
+    {
+      "name": "TDM11_CONFIRMATORY",
+      "range_utc": [
+        "2026-10-24T16:00:00Z",
+        null
+      ],
+      "used_for": "never opened; preregistered for TDM11-H1 only",
+      "label": "FUTURE_CONFIRMATORY_SEALED",
+      "reusable_as_confirmatory": true,
+      "bars_read": 0,
+      "evidence": "evidence/tdm/wp-tdm-11/DATASET_PROVENANCE.json"
+    }
+  ],
+  "note": "no window in this registry may be relabelled confirmatory after being used to compare candidates"
+}
