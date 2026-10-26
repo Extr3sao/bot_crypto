@@ -1,0 +1,22 @@
+[lab] restart requested for C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02
+[lab] previous run settled: DEGRADED
+[lab] run id      : paper-lab-rfc008-live-02
+[lab] run dir     : C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02
+[lab] free disk   : 21.332 GB
+[lab] duration    : 2.0 h
+[lab] stop with   : Ctrl-C, or write STOP into C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02
+[lab] graceful    : 120s to finalise before a kill
+[lab] capabilities: {"LIVE": {"state": "DISABLED", "reason": "no live path exists: every child is read-only market data or PAPER"}, "INGEST": {"state": "ENABLED", "reason": "read-only market data via the configured provider"}, "SIGNALS": {"state": "ENABLED", "reason": "projection of the persisted decision traces; independent of admission, so REJECTED/NO_ALPHA rows are produced with 0 admitted strategies"}, "SHADOW": {"state": "ENABLED", "reason": "SHADOW records an observation and can never create an order"}, "PAPER_ORDER": {"state": "BLOCKED", "reason": "the admission ledger admits none of its 24 strategies for paper (gate not met)"}, "ANALYST": {"state": "ENABLED", "reason": "read-only sidecar; records NOT_CONFIGURED when no provider key is present"}}
+[lab]   paper         critical=True :: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\scripts\autonomous_paper.py --continuous ...
+[lab]   collector     critical=True :: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\scripts\forward_collector.py --mode ...
+[lab]   retention     critical=False :: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\scripts\forward_retention.py --root ...
+[lab]   strategy_lab  critical=False :: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\scripts\paper_lab_research.py --run-root ...
+[lab]   analyst       critical=False :: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\scripts\ai_signal_analyst.py --run-root ...
+[system] paper=True forward_data=True strategy_lab=True supervisor=True
+[system] report: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02\SYSTEM_DAILY_REPORT.json
+[system] report: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02\SYSTEM_DAILY_REPORT.md
+[lab] final state : DEGRADED
+[lab] report      : C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02\LAB_RUN_REPORT.json
+[lab] report      : C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02\LAB_RUN_REPORT.md
+[lab] snapshot    : C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02\LAB_RUN_SNAPSHOT.json
+[lab] stop verdict: CLEAN 

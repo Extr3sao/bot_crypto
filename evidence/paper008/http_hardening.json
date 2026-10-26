@@ -1,0 +1,9 @@
+{
+  "POST": 405,
+  "PUT": 405,
+  "DELETE": 405,
+  "PATCH": 405,
+  "unknown": 404,
+  "bind": "127.0.0.1 only (netstat)",
+  "checked_at_utc": "2026-10-26T12:56:16Z"
+}

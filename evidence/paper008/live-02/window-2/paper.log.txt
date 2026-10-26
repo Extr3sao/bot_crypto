@@ -1,0 +1,120 @@
+[run] daily report: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\autonomous-paper\paper-lab-rfc008-live-02\PAPER_DAILY_REPORT.json
+[admission] ledger=C:/Users/GVLLFR0035/Downloads/ff-wt-paper008/config/strategy_admission.json
+[admission] strategies=['breakout@15m', 'breakout@1h', 'breakout@30m', 'breakout@5m', 'ema_crossover@15m', 'ema_crossover@1h', 'ema_crossover@30m', 'ema_crossover@5m', 'mean_reversion@15m', 'mean_reversion@1h', 'mean_reversion@30m', 'mean_reversion@5m', 'momentum@15m', 'momentum@1h', 'momentum@30m', 'momentum@5m', 'trend@15m', 'trend@1h', 'trend@30m', 'trend@5m', 'volatility@15m', 'volatility@1h', 'volatility@30m', 'volatility@5m']
+[admission] paper candidates=NONE
+[registry] COST_KILLED=7 NO_GROSS_EDGE=17
+[registry] paper-executable on 5m: NONE
+[registry]   refused breakout@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused ema_crossover@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused mean_reversion@5m: COST_KILLED — status COST_KILLED does not authorise PAPER
+[registry]   refused momentum@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused trend@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused volatility@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[preflight] market data provider=ccxt venue=binance mode=MAINNET signal_source=REAL
+[preflight] universe: {"configured": ["BTC", "ETH", "SOL"], "asset_agent_supported": ["BTC", "ETH", "SOL"], "strategy_supported": ["BTC", "ETH", "SOL"], "provider_supported": null, "effective": ["BTC", "ETH", "SOL"], "unsupported": {}, "strategy_universe_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json", "provider_verified": false, "ok": true, "blocking_reason": null}
+2026-10-26 13:46:07 [info     ] reconcile.recovered            closed_trades=0 equity=10000.0 intents=0 open_positions=0
+[startup] reconciliation=RECOVERED
+[run] paper-lab-rfc008-live-02 goal=CONTINUOUS interval=60.0s assets=['BTC', 'ETH', 'SOL'] timeframe=5m config=config/realdata
+[run] agents=['data-integrity', 'cost-economics', 'evidence-provenance', 'regime-alignment', 'risk-adversary']
+[run] cadence=bar-close timeframe=5m settlement=5.0s
+2026-10-26 13:50:06 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=f56c1e9c11374449a4ac81d09c115870
+2026-10-26 13:50:07 [info     ] scanner.pair.processed         active=True rank_score=0.9999792641265786 rejection_reason=None scan_iteration_id=f56c1e9c11374449a4ac81d09c115870 symbol=BTC/USDT
+2026-10-26 13:50:08 [info     ] scanner.pair.processed         active=True rank_score=0.999283374503485 rejection_reason=None scan_iteration_id=f56c1e9c11374449a4ac81d09c115870 symbol=ETH/USDT
+2026-10-26 13:50:09 [info     ] scanner.pair.processed         active=True rank_score=0.9836127361814546 rejection_reason=None scan_iteration_id=f56c1e9c11374449a4ac81d09c115870 symbol=SOL/USDT
+2026-10-26 13:50:09 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2762 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=f56c1e9c11374449a4ac81d09c115870 scanner_errors=0
+2026-10-26 13:50:10 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=ETH/USDT
+2026-10-26 13:50:10 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=SOL/USDT
+2026-10-26 13:50:10 [info     ] autonomous.outcome.resolved    decision_id=783fc77f412c4f2e-BTC mode=SHADOW_TRADE net_bps=-26.5269 sample_size=1
+2026-10-26 13:50:10 [info     ] autonomous.outcome.resolved    decision_id=783fc77f412c4f2e-ETH mode=NO_TRADE net_bps=-23.4788 sample_size=4
+2026-10-26 13:50:10 [info     ] autonomous.outcome.resolved    decision_id=783fc77f412c4f2e-SOL mode=NO_TRADE net_bps=-16.8851 sample_size=4
+2026-10-26 13:50:10 [info     ] autonomous.signals.projected   appended=3 conflicts=0 duplicates=15
+[cycle 1] decisions=3 no_trade=3 shadow=0 paper=0 failures=0 strategies=18
+2026-10-26 13:55:07 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=fc0ebe8566cc4c30ac09b78e5370e2eb
+2026-10-26 13:55:08 [info     ] scanner.pair.processed         active=True rank_score=0.9999792647070307 rejection_reason=None scan_iteration_id=fc0ebe8566cc4c30ac09b78e5370e2eb symbol=BTC/USDT
+2026-10-26 13:55:09 [info     ] scanner.pair.processed         active=True rank_score=0.9992834977347951 rejection_reason=None scan_iteration_id=fc0ebe8566cc4c30ac09b78e5370e2eb symbol=ETH/USDT
+2026-10-26 13:55:09 [info     ] scanner.pair.processed         active=True rank_score=0.9836111247684987 rejection_reason=None scan_iteration_id=fc0ebe8566cc4c30ac09b78e5370e2eb symbol=SOL/USDT
+2026-10-26 13:55:09 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2554 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=fc0ebe8566cc4c30ac09b78e5370e2eb scanner_errors=0
+2026-10-26 13:55:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=BTC/USDT
+2026-10-26 13:55:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=ETH/USDT
+2026-10-26 13:55:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=SOL/USDT
+2026-10-26 13:55:11 [info     ] autonomous.outcome.resolved    decision_id=c937f33d9379405f-ETH mode=NO_TRADE net_bps=-26.1863 sample_size=5
+2026-10-26 13:55:11 [info     ] autonomous.outcome.resolved    decision_id=c937f33d9379405f-SOL mode=NO_TRADE net_bps=-9.9982 sample_size=5
+2026-10-26 13:55:11 [info     ] autonomous.signals.projected   appended=3 conflicts=0 duplicates=0
+[cycle 2] decisions=3 no_trade=3 shadow=0 paper=0 failures=0 strategies=18
+2026-10-26 14:00:07 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=dcbd51402ef8424abfbfadea66a2beb9
+2026-10-26 14:00:08 [info     ] scanner.pair.processed         active=True rank_score=0.9999792517358572 rejection_reason=None scan_iteration_id=dcbd51402ef8424abfbfadea66a2beb9 symbol=BTC/USDT
+2026-10-26 14:00:09 [info     ] scanner.pair.processed         active=True rank_score=0.9992828996669239 rejection_reason=None scan_iteration_id=dcbd51402ef8424abfbfadea66a2beb9 symbol=ETH/USDT
+2026-10-26 14:00:10 [info     ] scanner.pair.processed         active=True rank_score=0.983604675946435 rejection_reason=None scan_iteration_id=dcbd51402ef8424abfbfadea66a2beb9 symbol=SOL/USDT
+2026-10-26 14:00:10 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2994 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=dcbd51402ef8424abfbfadea66a2beb9 scanner_errors=0
+2026-10-26 14:00:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=BTC/USDT
+2026-10-26 14:00:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=ETH/USDT
+2026-10-26 14:00:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=SOL/USDT
+2026-10-26 14:00:11 [info     ] autonomous.outcome.resolved    decision_id=9d5b3d659534432d-ETH mode=NO_TRADE net_bps=-18.1886 sample_size=6
+2026-10-26 14:00:11 [info     ] autonomous.outcome.resolved    decision_id=9d5b3d659534432d-SOL mode=NO_TRADE net_bps=-26.7245 sample_size=6
+2026-10-26 14:00:11 [info     ] autonomous.signals.projected   appended=3 conflicts=0 duplicates=0
+[cycle 3] decisions=3 no_trade=3 shadow=0 paper=0 failures=0 strategies=18
+2026-10-26 14:05:07 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=ab9b0cc4e41242e29ddd35b02138089d
+2026-10-26 14:05:08 [info     ] scanner.pair.processed         active=True rank_score=0.9999792108449315 rejection_reason=None scan_iteration_id=ab9b0cc4e41242e29ddd35b02138089d symbol=BTC/USDT
+2026-10-26 14:05:09 [info     ] scanner.pair.processed         active=True rank_score=0.9992810529410889 rejection_reason=None scan_iteration_id=ab9b0cc4e41242e29ddd35b02138089d symbol=ETH/USDT
+2026-10-26 14:05:10 [info     ] scanner.pair.processed         active=True rank_score=0.9835529020904177 rejection_reason=None scan_iteration_id=ab9b0cc4e41242e29ddd35b02138089d symbol=SOL/USDT
+2026-10-26 14:05:10 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2860 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=ab9b0cc4e41242e29ddd35b02138089d scanner_errors=0
+2026-10-26 14:05:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=BTC/USDT
+2026-10-26 14:05:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=ETH/USDT
+2026-10-26 14:05:11 [info     ] autonomous.outcome.resolved    decision_id=f96a471277354e2e-BTC mode=NO_TRADE net_bps=-49.5418 sample_size=3
+2026-10-26 14:05:11 [info     ] autonomous.outcome.resolved    decision_id=f96a471277354e2e-ETH mode=NO_TRADE net_bps=15.6234 sample_size=7
+2026-10-26 14:05:11 [info     ] autonomous.outcome.resolved    decision_id=f96a471277354e2e-SOL mode=NO_TRADE net_bps=-64.0648 sample_size=7
+2026-10-26 14:05:11 [info     ] autonomous.signals.projected   appended=3 conflicts=0 duplicates=0
+[cycle 4] decisions=3 no_trade=3 shadow=0 paper=0 failures=0 strategies=18
+2026-10-26 14:10:07 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=c9e500fece404b3491543584bbfd243b
+2026-10-26 14:10:08 [info     ] scanner.pair.processed         active=True rank_score=0.9999792061892139 rejection_reason=None scan_iteration_id=c9e500fece404b3491543584bbfd243b symbol=BTC/USDT
+2026-10-26 14:10:09 [info     ] scanner.pair.processed         active=True rank_score=0.9992808668143609 rejection_reason=None scan_iteration_id=c9e500fece404b3491543584bbfd243b symbol=ETH/USDT
+2026-10-26 14:10:10 [info     ] scanner.pair.processed         active=True rank_score=0.9835447828734016 rejection_reason=None scan_iteration_id=c9e500fece404b3491543584bbfd243b symbol=SOL/USDT
+2026-10-26 14:10:10 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2667 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=c9e500fece404b3491543584bbfd243b scanner_errors=0
+2026-10-26 14:10:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=BTC/USDT
+2026-10-26 14:10:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=ETH/USDT
+2026-10-26 14:10:11 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=SOL/USDT
+2026-10-26 14:10:11 [info     ] autonomous.outcome.resolved    decision_id=0e4f41ee603a4a68-BTC mode=NO_TRADE net_bps=-3.3975 sample_size=4
+2026-10-26 14:10:11 [info     ] autonomous.outcome.resolved    decision_id=0e4f41ee603a4a68-ETH mode=NO_TRADE net_bps=0.9186 sample_size=8
+2026-10-26 14:10:11 [info     ] autonomous.outcome.resolved    decision_id=0e4f41ee603a4a68-SOL mode=NO_TRADE net_bps=-52.3064 sample_size=8
+2026-10-26 14:10:11 [info     ] autonomous.signals.projected   appended=3 conflicts=0 duplicates=0
+[cycle 5] decisions=3 no_trade=3 shadow=0 paper=0 failures=0 strategies=18
+2026-10-26 14:15:07 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=93ccc53ec8674001b64550c55850e46f
+2026-10-26 14:15:08 [info     ] scanner.pair.processed         active=True rank_score=0.9999792113635453 rejection_reason=None scan_iteration_id=93ccc53ec8674001b64550c55850e46f symbol=BTC/USDT
+2026-10-26 14:15:08 [info     ] scanner.pair.processed         active=True rank_score=0.9992810188251011 rejection_reason=None scan_iteration_id=93ccc53ec8674001b64550c55850e46f symbol=ETH/USDT
+2026-10-26 14:15:09 [info     ] scanner.pair.processed         active=True rank_score=0.9835545249724689 rejection_reason=None scan_iteration_id=93ccc53ec8674001b64550c55850e46f symbol=SOL/USDT
+2026-10-26 14:15:09 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2638 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=93ccc53ec8674001b64550c55850e46f scanner_errors=0
+2026-10-26 14:15:10 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=BTC/USDT
+2026-10-26 14:15:10 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=ETH/USDT
+2026-10-26 14:15:10 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=sell symbol=SOL/USDT
+2026-10-26 14:15:10 [info     ] autonomous.outcome.resolved    decision_id=b576ddb3ab0c48dc-BTC mode=NO_TRADE net_bps=-22.5748 sample_size=1
+2026-10-26 14:15:10 [info     ] autonomous.outcome.resolved    decision_id=b576ddb3ab0c48dc-ETH mode=NO_TRADE net_bps=-22.7043 sample_size=1
+2026-10-26 14:15:10 [info     ] autonomous.signals.projected   appended=3 conflicts=0 duplicates=0
+[cycle 6] decisions=3 no_trade=3 shadow=0 paper=0 failures=0 strategies=18
+2026-10-26 14:18:32 [info     ] paper_state.saved              open_positions=0 path=C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02\paper_state.json sent_intents=0
+[run] paper state saved to C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\paper-lab\paper-lab-rfc008-live-02\paper_state.json
+{
+  "asset_cycle_evaluations": 18,
+  "paper_trades": 0,
+  "shadow_trades": 0,
+  "no_trades": 18,
+  "runtime_failures": 0,
+  "orders_created": 0,
+  "traces_persisted": 18,
+  "outcomes_resolved": 15,
+  "outcomes_pending": 6,
+  "performance_updates": 15,
+  "no_trade_NO_TRADE_STRATEGIC": 18,
+  "no_trade_NO_TRADE_RISK": 0,
+  "no_trade_NO_TRADE_DATA": 0,
+  "no_trade_NO_TRADE_CONFLICT": 0,
+  "risk_APPROVED": 16,
+  "risk_VETOED": 0,
+  "risk_NOT_APPLICABLE": 2,
+  "risk_NOT_EVALUATED": 0
+}
+[run] stop reason: STOP file
+[run] report: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\autonomous-paper\paper-lab-rfc008-live-02\RUN_REPORT.md
+[run] report: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\autonomous-paper\paper-lab-rfc008-live-02\RUN_REPORT.json
+[run] traces: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\autonomous-paper\paper-lab-rfc008-live-02\traces.jsonl
+[run] heartbeat: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\autonomous-paper\paper-lab-rfc008-live-02\heartbeat.json (6 beats)
+[run] daily report: C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\autonomous-paper\paper-lab-rfc008-live-02\PAPER_DAILY_REPORT.json

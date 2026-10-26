@@ -1,0 +1,93 @@
+{
+  "run_id": "paper-lab-rfc008-live-02",
+  "pid": 33348,
+  "mode": "paper",
+  "continuous": true,
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "timeframe": "5m",
+  "provider": "ccxt",
+  "environment": "ccxt:binance:binance-public-rest",
+  "market_data": "MAINNET",
+  "market_data_sandbox": false,
+  "data_transport": "binance-public-rest",
+  "signal_source": "REAL",
+  "paper_candidates": [],
+  "registry_counts": {
+    "RESEARCH_REQUIRED": 0,
+    "PAPER_CANDIDATE": 0,
+    "PAPER_ACTIVE": 0,
+    "PAPER_RETIRED": 0,
+    "REJECTED": 0,
+    "RESEARCH_CANDIDATE": 0,
+    "COST_KILLED": 7,
+    "NO_GROSS_EDGE": 17,
+    "UNKNOWN": 0
+  },
+  "universe_preflight": {
+    "configured": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "asset_agent_supported": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "strategy_supported": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "provider_supported": null,
+    "effective": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "unsupported": {},
+    "strategy_universe_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+    "provider_verified": false,
+    "ok": true,
+    "blocking_reason": null
+  },
+  "stop_signals_installed": [
+    "SIGINT",
+    "SIGTERM",
+    "SIGBREAK"
+  ],
+  "started_at_ms": 1793018767023,
+  "state": "STOPPED",
+  "stop_reason": "STOP file",
+  "cycles": 6,
+  "cadence": "bar-close",
+  "bar_close_settlement_seconds": 5.0,
+  "skipped_duplicate_cycles": 0,
+  "totals": {
+    "asset_cycle_evaluations": 18,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "no_trades": 18,
+    "runtime_failures": 0,
+    "orders_created": 0,
+    "traces_persisted": 18,
+    "outcomes_resolved": 15,
+    "outcomes_pending": 6,
+    "performance_updates": 15,
+    "no_trade_NO_TRADE_STRATEGIC": 18,
+    "no_trade_NO_TRADE_RISK": 0,
+    "no_trade_NO_TRADE_DATA": 0,
+    "no_trade_NO_TRADE_CONFLICT": 0,
+    "risk_APPROVED": 16,
+    "risk_VETOED": 0,
+    "risk_NOT_APPLICABLE": 2,
+    "risk_NOT_EVALUATED": 0
+  },
+  "storage_failures": 0,
+  "storage_errors": [],
+  "ended_at_ms": 1793020712450
+}
