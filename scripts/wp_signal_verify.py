@@ -402,6 +402,14 @@ def main(argv: list[str] | None = None) -> int:
     out = Path(args.out) if args.out else run_dir / "SIGNAL_VERIFY.json"
     if not out.is_absolute():
         out = REPO_ROOT / out
+    # ``--out`` is where the report goes, so a directory that already exists means
+    # "write it in here" rather than a path to open.  Opening a directory raised
+    # PermissionError with a traceback, which reads like a bug in the verifier
+    # instead of an answer about usage.
+    if out.is_dir():
+        out = out / "SIGNAL_VERIFY.json"
+    else:
+        out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print(f"[verify] run {payload['run_id']} :: {'PASS' if payload['ok'] else 'FAIL'}")

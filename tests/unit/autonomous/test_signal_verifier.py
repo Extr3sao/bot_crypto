@@ -89,6 +89,47 @@ def test_a_real_run_passes_every_check(tmp_path: Path, verifier: Any) -> None:
     assert "signals.source_matches_the_provider" in names
 
 
+def test_out_may_be_a_directory(tmp_path: Path, verifier: Any) -> None:
+    """``--out`` names where the report goes, so a directory receives it inside.
+
+    Passing a directory used to raise PermissionError from deep inside pathlib,
+    which reads like a broken verifier rather than an answer about usage.
+    """
+    run_dir = _run(tmp_path)
+    out_dir = tmp_path / "verify-out"
+    out_dir.mkdir()
+    code = verifier.main(
+        [
+            "--run-root",
+            str(tmp_path / "autonomous-paper"),
+            "--run-id",
+            run_dir.name,
+            "--out",
+            str(out_dir),
+        ]
+    )
+    report = json.loads((out_dir / "SIGNAL_VERIFY.json").read_text(encoding="utf-8"))
+    assert code == verifier.EXIT_PASS, report["failed"]
+    assert report["ok"] is True
+
+
+def test_out_creates_its_missing_parents(tmp_path: Path, verifier: Any) -> None:
+    run_dir = _run(tmp_path)
+    out = tmp_path / "deep" / "nested" / "verify.json"
+    code = verifier.main(
+        [
+            "--run-root",
+            str(tmp_path / "autonomous-paper"),
+            "--run-id",
+            run_dir.name,
+            "--out",
+            str(out),
+        ]
+    )
+    assert code == verifier.EXIT_PASS
+    assert out.exists()
+
+
 def test_an_orphan_signal_fails(tmp_path: Path, verifier: Any) -> None:
     run_dir = _run(tmp_path)
     _rewrite(run_dir / "signals.jsonl", lambda rows: [*rows, {**rows[0], "decision_id": "no-such"}])

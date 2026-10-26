@@ -1,0 +1,168 @@
+{
+  "schema_version": "wp-signal-verify-v1",
+  "generated_at_ms": 1793011699671,
+  "generated_at_utc": "2026-10-26T10:48:19Z",
+  "run_id": "wp-signal-live-01",
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp-signal-live-01",
+  "dashboard_url": "http://127.0.0.1:8792",
+  "ok": true,
+  "checks": [
+    {
+      "name": "run.descriptor_present",
+      "ok": true,
+      "detail": "PAPER_RUN.json present"
+    },
+    {
+      "name": "traces.file_parses",
+      "ok": true,
+      "detail": "0 malformed line(s)"
+    },
+    {
+      "name": "traces.present",
+      "ok": true,
+      "detail": "138 trace(s)"
+    },
+    {
+      "name": "traces.hash_chain_intact",
+      "ok": true,
+      "detail": "0 trace(s) with a bad hash"
+    },
+    {
+      "name": "signals.file_parses",
+      "ok": true,
+      "detail": "0 malformed line(s)"
+    },
+    {
+      "name": "signals.present",
+      "ok": true,
+      "detail": "138 row(s) in signals.jsonl"
+    },
+    {
+      "name": "signals.ids_unique",
+      "ok": true,
+      "detail": "0 duplicate id(s)"
+    },
+    {
+      "name": "signals.sequence_monotonic",
+      "ok": true,
+      "detail": "138 rows, max sequence 138"
+    },
+    {
+      "name": "signals.every_row_maps_to_a_trace",
+      "ok": true,
+      "detail": "0 orphan row(s)"
+    },
+    {
+      "name": "signals.trace_hash_recomputes",
+      "ok": true,
+      "detail": "0 row(s) with a bad hash pin"
+    },
+    {
+      "name": "signals.times_match_the_trace",
+      "ok": true,
+      "detail": "0 mismatch(es)"
+    },
+    {
+      "name": "signals.no_look_ahead",
+      "ok": true,
+      "detail": "0 future bar(s)"
+    },
+    {
+      "name": "signals.stage_matches_the_decision",
+      "ok": true,
+      "detail": "0 row(s)"
+    },
+    {
+      "name": "signals.no_fabricated_edge",
+      "ok": true,
+      "detail": "0 row(s)"
+    },
+    {
+      "name": "signals.numbers_match_the_trace",
+      "ok": true,
+      "detail": "0 row(s) disagree with their proposal"
+    },
+    {
+      "name": "signals.source_matches_the_provider",
+      "ok": true,
+      "detail": "expected REAL for provider 'ccxt'"
+    },
+    {
+      "name": "analysis.file_parses",
+      "ok": true,
+      "detail": "0 malformed line(s)"
+    },
+    {
+      "name": "analysis.references_existing_signals",
+      "ok": true,
+      "detail": "0 orphan analysis row(s)"
+    },
+    {
+      "name": "analysis.ids_unique",
+      "ok": true,
+      "detail": "0 duplicate id(s)"
+    },
+    {
+      "name": "analysis.claims_present",
+      "ok": true,
+      "detail": "0 claim-less ANALYZED row(s)"
+    },
+    {
+      "name": "analysis.not_configured_is_honest",
+      "ok": true,
+      "detail": "0 row(s) mislabel a missing provider"
+    },
+    {
+      "name": "dashboard/api/signals",
+      "ok": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "dashboard/api/analysis",
+      "ok": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "dashboard/api/status",
+      "ok": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "dashboard.signals_read_only",
+      "ok": true,
+      "detail": "read_only=True"
+    },
+    {
+      "name": "dashboard.signals_match_the_file",
+      "ok": true,
+      "detail": "served 50 of 138 row(s)"
+    },
+    {
+      "name": "dashboard.newest_signal_matches",
+      "ok": true,
+      "detail": "the first served row is the newest persisted row"
+    },
+    {
+      "name": "dashboard.analysis_has_no_authority",
+      "ok": true,
+      "detail": "authority_over_orders=False"
+    },
+    {
+      "name": "dashboard.refuses_mutation",
+      "ok": true,
+      "detail": "POST returned 405"
+    }
+  ],
+  "failed": [],
+  "counts": {
+    "provider": "ccxt",
+    "traces": 138,
+    "signal_rows": 138,
+    "trace_linked": 138,
+    "analysis_rows": 5,
+    "analysis_by_status": {
+      "NOT_CONFIGURED": 5
+    }
+  },
+  "verifier_imports_producer": false
+}
