@@ -1,0 +1,365 @@
+{
+  "schema_version": "paper-analysis-view-v1",
+  "generated_at_ms": 1793018490726,
+  "generated_at_utc": "2026-10-26T12:41:30Z",
+  "read_only": true,
+  "authority_over_orders": false,
+  "run_id": "run",
+  "available": true,
+  "state": "LIVE",
+  "signals_total": 9,
+  "coverage": {
+    "signals": 9,
+    "covered": 9,
+    "analysed": 9,
+    "not_configured": 0,
+    "failed": 0,
+    "pending": 0,
+    "uncovered": 0,
+    "by_status": {
+      "ANALYZED": 9
+    },
+    "coverage_pct": 100.0
+  },
+  "records": [
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "29d9cb768f756e03e602ebb2479dee3f",
+      "signal_id": "7e9aaf790b1da780edca8031a3e3234a",
+      "run_id": "2e63277103714e5e",
+      "decision_id": "2e63277103714e5e-ETH",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018198966,
+      "analysis_time_utc": "2026-10-26T12:36:38.966Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 15,
+      "cost_usd": null,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "a9f9b645d9b01738b3bda21d621cdc0c0f9df2e7c1cfb9cb8a37e29841d9e811",
+      "error_code": null,
+      "error_message": null
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "3e7199f2ce1f609735f28ad0113ee030",
+      "signal_id": "3296f1291e6d3817e41afbb4bb071ada",
+      "run_id": "2e63277103714e5e",
+      "decision_id": "2e63277103714e5e-SOL",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018198966,
+      "analysis_time_utc": "2026-10-26T12:36:38.966Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 0,
+      "cost_usd": null,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "a17db46b01e8fb2907fa0d1f08b3f7bbfb984fc95955f4a3dd0a900b1ea5b9fd",
+      "error_code": null,
+      "error_message": null
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "37637cd5e3b6a2a20e58461fc1c104bf",
+      "signal_id": "0e7a5a61a8f9c11fa7bc0dd26a9812f1",
+      "run_id": "2e63277103714e5e",
+      "decision_id": "2e63277103714e5e-BTC",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018198956,
+      "analysis_time_utc": "2026-10-26T12:36:38.956Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 0,
+      "cost_usd": null,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "a5fda68eeea4b17d82ede47334ffc394d47fb13a3098250a8558780d7bf2e91a",
+      "error_code": null,
+      "error_message": null
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "19432e29b934a037a70033e4d631307d",
+      "signal_id": "bf6c6da28ba259adb6d946655369ce4c",
+      "run_id": "41bbe580cd4c442c",
+      "decision_id": "41bbe580cd4c442c-SOL",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018198952,
+      "analysis_time_utc": "2026-10-26T12:36:38.952Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 16,
+      "cost_usd": null,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "81c20bafab23f0e2e79e6b21408d3f5388e614e4f8a4ad7f96bd7422fe214c41",
+      "error_code": null,
+      "error_message": null
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "6726e5a512ef5d4352b7f6550cc83755",
+      "signal_id": "ec22738eca2e49738be6863f804bb8e2",
+      "run_id": "41bbe580cd4c442c",
+      "decision_id": "41bbe580cd4c442c-ETH",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018162443,
+      "analysis_time_utc": "2026-10-26T12:36:02.443Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 0,
+      "cost_usd": 0.0001536,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "1de29e39215febe8f1c074263b465dff01cb11d3f7a62d81b7959fa8808a09d8",
+      "error_code": null,
+      "error_message": null
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "8e7ffb57ac2d0732e3322efb3dc2080a",
+      "signal_id": "89af99276a164c8ed0cff465341175a2",
+      "run_id": "41bbe580cd4c442c",
+      "decision_id": "41bbe580cd4c442c-BTC",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018162436,
+      "analysis_time_utc": "2026-10-26T12:36:02.436Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 15,
+      "cost_usd": 0.0001536,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "914826f7270d91561f2dc578d5f9222e227029a4b910b6cc3b7dedb5f702ba08",
+      "error_code": null,
+      "error_message": null
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "36968b2682f378106d101e2c7dd10eb6",
+      "signal_id": "0b253832a417be1ddf4b6fac9dc8003e",
+      "run_id": "8cc705157fdc44a1",
+      "decision_id": "8cc705157fdc44a1-SOL",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018162432,
+      "analysis_time_utc": "2026-10-26T12:36:02.432Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 0,
+      "cost_usd": 0.0001536,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "217c4c6812eff9975316eff86ae60d607e1eec3c40205507d98ec44baa6d4469",
+      "error_code": null,
+      "error_message": null
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "dc0c0829b714163b072043f11217bf15",
+      "signal_id": "67fbd4d4ffeb852515662e331d394533",
+      "run_id": "8cc705157fdc44a1",
+      "decision_id": "8cc705157fdc44a1-ETH",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018162426,
+      "analysis_time_utc": "2026-10-26T12:36:02.426Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 30,
+      "cost_usd": 0.0001536,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "346703f39828cb3bc29fe7d1e701967f833523d9a0587978fd24f957b8a732b4",
+      "error_code": null,
+      "error_message": null
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "0d2c742c3ddf7a144ac6f12dd4397cb7",
+      "signal_id": "11a6d1fa175ef37c3e807481c43c3ab2",
+      "run_id": "8cc705157fdc44a1",
+      "decision_id": "8cc705157fdc44a1-BTC",
+      "status": "ANALYZED",
+      "model": "stub-analyst-1",
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793018162396,
+      "analysis_time_utc": "2026-10-26T12:36:02.396Z",
+      "claim": "Contract stub: the recorded net edge is negative after costs, so the signal does not look economically justified.",
+      "supporting_evidence": [
+        "net_edge_bps is negative in the signal row"
+      ],
+      "counter_evidence": [
+        "no realised outcome exists for this signal yet"
+      ],
+      "uncertainties": [
+        "the stub does not read market context"
+      ],
+      "regime_assessment": null,
+      "risk_observations": [
+        "analysis is read-only and has no authority over orders"
+      ],
+      "latency_ms": 0,
+      "cost_usd": 0.0001536,
+      "tokens_in": 640,
+      "tokens_out": 96,
+      "evidence_digest": "3be2cbf3f9770403988440a7a68bdd63d17bdecefda96109670f453e2d36fd8e",
+      "error_code": null,
+      "error_message": null
+    }
+  ],
+  "page": {
+    "limit": 50,
+    "returned": 9
+  },
+  "heartbeat": {
+    "schema_version": "ai-analyst-pass-v1",
+    "run_id": "run",
+    "run_dir": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\rfc008-ai-contract\\run",
+    "passed_at_ms": 1793018392777,
+    "passed_at_utc": "2026-10-26T12:39:52Z",
+    "provider_configured": true,
+    "provider": "openai-compatible",
+    "model": "stub-analyst-1",
+    "prompt_version": "signal-analyst-v1",
+    "stream_present": true,
+    "signals_seen": 9,
+    "pending_before": 0,
+    "examined": 0,
+    "statuses": {},
+    "last_error": null,
+    "budget": {
+      "per_hour": 60,
+      "max_per_run": 500
+    },
+    "read_only": true,
+    "authority_over_orders": false,
+    "store": {
+      "records": 13,
+      "signals_covered": 9,
+      "by_status": {
+        "ANALYZED": 9
+      },
+      "cost_usd_total": 0.000768
+    }
+  },
+  "provider_configured": true,
+  "economics": {
+    "cost_usd_total": 0.000768,
+    "cost_usd_per_analysis": 8.5e-05,
+    "latency_ms_p95": 30,
+    "latency_ms_max": 30
+  }
+}

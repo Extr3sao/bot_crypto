@@ -46,16 +46,41 @@ del checkout sucio.
 | Capacidad | Estado | Evidencia |
 | --- | --- | --- |
 | `INGEST` datos públicos | **VERIFIED** | ciclo real `paper-lab-rfc008-probe`, BTC/ETH/SOL 5m, 120 barras por activo, `fetch_ohlcv_ok` |
-| `SIGNALS` proyección de trazas | **VERIFIED** | 6 filas (`_sequence` 1–6) desde 6 trazas, hash de traza recomputado, 0 duplicados |
-| `SHADOW` | **IMPLEMENTED, sin observaciones** | 0 `shadow_trades`: ninguna propuesta superó el coste; no se fabricó una |
+| `SIGNALS` proyección de trazas | **VERIFIED** | 18 filas (`_sequence` 1–18) desde 18 trazas, hash recomputado, 0 duplicados, `source=REAL` en el 100 % |
+| `SHADOW` | **VERIFIED en ventana real** | `paper-lab-rfc008-live-02` produjo una fila `stage=SHADOW` (`mean_reversion@5m`, SHORT, `order_created=false`); los outcomes SHADOW quedan separados de los NO_TRADE |
 | `PAPER_ORDER` | **BLOCKED** | 0/24 admitidas; `capabilities.PAPER_ORDER.state=BLOCKED` en `LAB_PLAN.json` |
 | `LIVE` | **DISABLED** | no existe ruta LIVE; hijos = datos read-only + `PaperBroker` |
-| `IA` | **BLOCKED_NOT_CONFIGURED** | sin `SIGNAL_ANALYST_API_KEY`; el sidecar debe registrar `NOT_CONFIGURED` |
+| `IA` | **BLOCKED_NOT_CONFIGURED** (contrato verificado) | sin `SIGNAL_ANALYST_API_KEY`; 18/18 señales con `NOT_CONFIGURED`. El camino HTTP real se probó con un stub local: 9 `ANALYZED`, claims, coste y latencia (`evidence/paper008/ai_contract/`) — **no** es evidencia de modelo real |
 | Datos REAL | **FIXED** | el perfil `config/realdata` leía Binance **testnet** y publicaba `source=REAL`; ver D-01 |
-| Dashboard HTTP | **VERIFIED en WP-008B** | `/healthz`, `/api/status`, `/api/signals`, `/api/analysis` 200; `POST` 405 |
-| Verificador independiente | **VERIFIED en WP-008D** | `wp_signal_verify.py` sobre ficheros + HTTP |
+| Dashboard HTTP | **VERIFIED en WP-008B** | `/healthz` 0,098 s, `/api/status` 0,130 s, `/api/signals` 0,090 s, `/api/analysis` 0,066 s; `POST` 405 |
+| Verificador independiente | **VERIFIED en WP-008D** | `wp_signal_verify.py` sobre ficheros + HTTP: 18/18 filas, 0 huérfanas, 0 hashes malos, 0 look-ahead |
 
 ## 4. Defectos encontrados y corregidos
+
+### D-02 — `GET /healthz` podía quedarse sin respuesta (bloqueante de operación)
+
+El panel comprobaba cada hijo con `tasklist /FO CSV /NH`. En este host esa
+llamada midió **10,2 s para 557 procesos**, y una vez se quedó colgada más allá de
+su propio timeout: el dashboard aceptaba la conexión y nunca respondía.
+
+Corrección: una sola consulta Win32 acotada (`OpenProcess` +
+`QueryFullProcessImageNameW`), sin subproceso. Medición posterior en el mismo
+host: `/healthz` **0,098 s**, `/api/status` **0,130 s**.
+
+### D-03 — El sidecar sin clave re-examinaba siempre las mismas señales
+
+Con `--limit-per-pass 5`, los cinco registros más antiguos se marcaban
+`NOT_CONFIGURED` en cada pasada y las señales nuevas nunca se cubrían: observado
+`coverage 8/12` mientras el stream crecía. `NOT_CONFIGURED` pasa a ser terminal
+mientras no haya proveedor; al aparecer la clave, todo el backlog vuelve a ser
+elegible (probado).
+
+### D-04 — Un reinicio dejaba el laboratorio en `DEGRADED` para siempre
+
+Tras matar el sidecar una vez y verlo volver en 5 s, el sistema seguía publicado
+como `DEGRADED` 40 minutos después. Se conserva la ventana de recuperación de
+5 minutos y el contador `restarts` como historia; pasado ese plazo el estado
+vuelve a `HEALTHY`.
 
 ### D-01 — `source=REAL` sobre datos de testnet (bloqueante)
 

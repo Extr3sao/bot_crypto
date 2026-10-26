@@ -263,6 +263,24 @@ def test_page_embeds_the_signal_board(tmp_path: Path, run_dir: Path) -> None:
     assert "/api/signals" in page
 
 
+def test_the_page_refreshes_the_health_cards_and_not_only_the_table(
+    tmp_path: Path, run_dir: Path
+) -> None:
+    """RFC-PAPER-008: a console that only refreshes the table lies about health.
+
+    Observed on 2026-10-26: after ``--restart`` the page kept publishing the old
+    DEGRADED state and the old uptime until a manual reload, because only
+    ``/signals`` was re-fetched. The whole page now refreshes on a bounded timer,
+    and never while a filter input has focus (that input's value is unsaved).
+    """
+    args = _args(tmp_path, run_dir)
+    page = DASH.render_page(DASH.status_payload(args))
+    assert "STATUS_REFRESH_MS" in page
+    assert "window.location.reload()" in page
+    assert "document.visibilityState === 'visible'" in page
+    assert "INPUT', 'SELECT', 'TEXTAREA" in page
+
+
 def test_the_page_honours_the_filter_it_was_asked_for(tmp_path: Path, run_dir: Path) -> None:
     """A submit that changes the URL must change the board on the same response.
 

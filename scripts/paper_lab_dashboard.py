@@ -948,6 +948,17 @@ async function refresh() {{
   setTimeout(refresh, {int(dashboard.get('auto_refresh_seconds') or 15) * 1000});
 }}
 setTimeout(refresh, {int(dashboard.get('auto_refresh_seconds') or 15) * 1000});
+// The cards come from /api/status. Refreshing only the table left the health
+// panel frozen at the state it was born with: after a supervisor restart the
+// console still advertised the previous DEGRADED state and stale uptime. A
+// full reload is bounded and skipped while the operator is typing in a filter
+// (the query string already survives a reload).
+const STATUS_REFRESH_MS = 60000;
+setInterval(function () {{
+  const el = document.activeElement;
+  const editing = el && ['INPUT', 'SELECT', 'TEXTAREA'].indexOf(el.tagName) >= 0;
+  if (!editing && document.visibilityState === 'visible') window.location.reload();
+}}, STATUS_REFRESH_MS);
 </script>
 </body></html>
 """

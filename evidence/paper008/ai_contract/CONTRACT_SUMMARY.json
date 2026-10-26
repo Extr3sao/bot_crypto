@@ -1,0 +1,41 @@
+{
+  "note": "CONTRACT ONLY: these rows came from a local OpenAI-compatible stub, not a model. They prove the HTTP plumbing, parsing, cost and dashboard; they are NOT AI_LIVE evidence.",
+  "stub": {
+    "model": "stub-analyst-1",
+    "prompt_version": "signal-analyst-v1",
+    "base_url": "http://127.0.0.1:8999/v1"
+  },
+  "rows": 13,
+  "statuses": [
+    "ANALYZED",
+    "FAILED"
+  ],
+  "analysed": 9,
+  "models": [
+    "stub-analyst-1"
+  ],
+  "has_claims": true,
+  "cost_usd_total": 0.000768,
+  "latency_ms": [
+    0,
+    15,
+    16,
+    30
+  ],
+  "read_only": true,
+  "final_status_by_signal": {
+    "11a6d1fa175ef37c3e807481c43c3ab2": "ANALYZED",
+    "67fbd4d4ffeb852515662e331d394533": "ANALYZED",
+    "0b253832a417be1ddf4b6fac9dc8003e": "ANALYZED",
+    "89af99276a164c8ed0cff465341175a2": "ANALYZED",
+    "ec22738eca2e49738be6863f804bb8e2": "ANALYZED",
+    "bf6c6da28ba259adb6d946655369ce4c": "ANALYZED",
+    "0e7a5a61a8f9c11fa7bc0dd26a9812f1": "ANALYZED",
+    "7e9aaf790b1da780edca8031a3e3234a": "ANALYZED",
+    "3296f1291e6d3817e41afbb4bb071ada": "ANALYZED"
+  },
+  "final_statuses": [
+    "ANALYZED"
+  ],
+  "recovery_note": "4 rows were FAILED while the stub was stopped and were superseded by ANALYZED rows after it returned; the FAILED rows are kept, not deleted."
+}
