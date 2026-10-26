@@ -1,0 +1,259 @@
+{
+  "artifact": "tdm14a-post-commit-closure-v1",
+  "run_id": "tdm14a-closure-1",
+  "head": "f8ae02435eacab0571bb4095234d71c9723b84a8",
+  "head_committed_at": "2026-10-25T20:09:24+01:00",
+  "files_checked": 24,
+  "files_matching_head": 24,
+  "failures": [],
+  "self_excluded": [
+    "evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json"
+  ],
+  "self_exclusion_reason": "a file cannot contain its own digest; this report is committed immediately after it is written, so the next closure covers it",
+  "uncommitted_evidence_changes": [],
+  "method": "git hash-object --path=<relpath> per file, compared with rev-parse HEAD:<path>; a stale artefact, an uncommitted edit or an untracked file cannot pass, and a CRLF checkout of an LF blob is not mistaken for a modification",
+  "raw_bytes_note": "sha256_worktree is what a reader hashing the file sees; it differs from sha256_head_blob when the checkout applies line-ending conversion",
+  "rows": [
+    {
+      "path": "evidence/tdm/wp-tdm-14a/BASELINE_REPORT.json",
+      "bytes_on_disk": 15021,
+      "sha256_worktree": "ef5df1b224ecb14955766b2bcfdc141b85d12a92d287196f27a6b112b3e80724",
+      "sha256_head_blob": "b117a6530b4ab8060a23b539694f703b125c4e25008d4ac8b7496880f9679d7d",
+      "worktree_identity": "d344746dfc0f1ac63ebb18ef021180fff79dbfe4",
+      "head_blob_oid": "d344746dfc0f1ac63ebb18ef021180fff79dbfe4",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/BASELINE_REPORT.md",
+      "bytes_on_disk": 7245,
+      "sha256_worktree": "d2d27798778deb3327528a3dc426e61930310c3e5f5296c3f4e73b275987c2c7",
+      "sha256_head_blob": "851280896d5fa4e46aa5cb8fff89687dfea466d2639e334b2318d2fbe090a079",
+      "worktree_identity": "4023d8e53c3a0b9fd49cb6f6e82c2667921163cd",
+      "head_blob_oid": "4023d8e53c3a0b9fd49cb6f6e82c2667921163cd",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
+      "bytes_on_disk": 23451,
+      "sha256_worktree": "458d0d936bde84a7387ee26193a288fa938f9a4c9a590960606804a7f29aad0e",
+      "sha256_head_blob": "e96e8f422640b21809f8adc47149b918bf20aa0f79b29ae37cc643cfab1cbdc9",
+      "worktree_identity": "40ae50e74551ba4a9b914b06bccb1838d9f1817f",
+      "head_blob_oid": "40ae50e74551ba4a9b914b06bccb1838d9f1817f",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/FINGERPRINT_SCHEME_V2.md",
+      "bytes_on_disk": 6622,
+      "sha256_worktree": "6d4267c988df4b74b96c7f6edb635d3fe5f3b8bfcc2d3c75ed8fc36c51cf9a77",
+      "sha256_head_blob": "6d4267c988df4b74b96c7f6edb635d3fe5f3b8bfcc2d3c75ed8fc36c51cf9a77",
+      "worktree_identity": "627af6fb79f94004c8b0ead6f9f450b9bf2eadc8",
+      "head_blob_oid": "627af6fb79f94004c8b0ead6f9f450b9bf2eadc8",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json",
+      "bytes_on_disk": 13352,
+      "sha256_worktree": "beeaa8dbb16bcd0923d38c193bfa999646d347010c6c127d45f97134e8ccd20e",
+      "sha256_head_blob": "3e9d6b662ac91c6e90c43164e278bad3631716153d3fffc9c107cdda5392f942",
+      "worktree_identity": "6ff3d5ba572a6a47de716b998630057ee73c4c0d",
+      "head_blob_oid": "6ff3d5ba572a6a47de716b998630057ee73c4c0d",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/LOG_MANIFEST.json",
+      "bytes_on_disk": 3107,
+      "sha256_worktree": "bb69a16875eabcb81598d3d03b0087d7af825d1b2f914efd16bff24a0061f48f",
+      "sha256_head_blob": "d0d792f18e0e6b45aa943baf5eaf427f15eac2f9c6305840239980a68047e864",
+      "worktree_identity": "ae9d76d43b6060b239587b4174d4791b7d6f08d0",
+      "head_blob_oid": "ae9d76d43b6060b239587b4174d4791b7d6f08d0",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/NEGATIVE_CONTROLS.json",
+      "bytes_on_disk": 12468,
+      "sha256_worktree": "e3396f4bff5ddd7894f2bb699c93acad1f9bd8d5ea2cf0fc989ba628168dcc2a",
+      "sha256_head_blob": "a32bd7831ffdcc97e9b23fc941faa467bd462c2020beb26c41ee9ae3e4d35fe9",
+      "worktree_identity": "560c7b4a5ca9d0b7e9d47e3e37e53302a4430327",
+      "head_blob_oid": "560c7b4a5ca9d0b7e9d47e3e37e53302a4430327",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/OUTPUT_MANIFEST.json",
+      "bytes_on_disk": 7324,
+      "sha256_worktree": "aa7f09142134e484358928a4e18228672402ef8de5a226e2cfa0cb53d9fcbe25",
+      "sha256_head_blob": "e27c76a53ff942238b704dc449bb3e863a573d3edcaa5852ead1c5f9dd0d03ab",
+      "worktree_identity": "a242880e44a3e5fe3f37074fd508837e75662a4c",
+      "head_blob_oid": "a242880e44a3e5fe3f37074fd508837e75662a4c",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.json",
+      "bytes_on_disk": 15248,
+      "sha256_worktree": "ba5131ec5c7dbcd4c950989592f2f8da145f0b5bd39b630f8cf5e8d8749a02b4",
+      "sha256_head_blob": "f7f8fdee022dc8c5f679fd7acbf0beb438e14d9f54162a1bc4b8dfd7a0e6b389",
+      "worktree_identity": "e4439185e422ca23542d6a98a6a3424cf494a486",
+      "head_blob_oid": "e4439185e422ca23542d6a98a6a3424cf494a486",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.md",
+      "bytes_on_disk": 3512,
+      "sha256_worktree": "670e30b986fbe7f1e809e68d838b668fb231437ee9b62fb75c25d5744ae6d751",
+      "sha256_head_blob": "fd35baaeb232b3783d4a5802aeec4d04077ccdac33d1ffc66f1a901d34be5b53",
+      "worktree_identity": "2fe5cd9e7030731318929b00f883c50a9d3baa51",
+      "head_blob_oid": "2fe5cd9e7030731318929b00f883c50a9d3baa51",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/crlf/inventory.log.txt",
+      "bytes_on_disk": 363,
+      "sha256_worktree": "965cf567c277240b1ab7ed48dbd5a5c359141a3a2a26da40ef2ea34360a2b11a",
+      "sha256_head_blob": "8cff3502acdc85b68a606ea0c0d7695af28064cdfecd70ac37388c265e13689a",
+      "worktree_identity": "b802c07507944b6a43d32912db9155d93570c306",
+      "head_blob_oid": "b802c07507944b6a43d32912db9155d93570c306",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/crlf/review.log.txt",
+      "bytes_on_disk": 246,
+      "sha256_worktree": "b27b76f245c8acc7e30f21710633aab0f475c82baa30ed4ea46666ca96da1f36",
+      "sha256_head_blob": "1d8d438ef5e3f238f09f0d59bbe87939c9ee1de0da23b45dfeedb39c04f4b946",
+      "worktree_identity": "ffab80db36f0eadf733741c49ab806d96aa854ac",
+      "head_blob_oid": "ffab80db36f0eadf733741c49ab806d96aa854ac",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/lf/inventory.log.txt",
+      "bytes_on_disk": 363,
+      "sha256_worktree": "076b33b2056eebd467a059efe3137728bbeb3548a653af2dc7f55ebb013b1b72",
+      "sha256_head_blob": "fbcaec8245b4ad3df9fcdab33ddd3812bd5aa5141ac52dcbb38852f89f763c8d",
+      "worktree_identity": "473f8e8b9fddc1defd11f4d0a7a1ca65835e2e17",
+      "head_blob_oid": "473f8e8b9fddc1defd11f4d0a7a1ca65835e2e17",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/lf/review.log.txt",
+      "bytes_on_disk": 246,
+      "sha256_worktree": "5f70d0b172426c6300bf14d08b7d59ef8894d165eced675dca66507ddba9e989",
+      "sha256_head_blob": "ad43b01cf9d2d21a4b1494d2d42dcea9bb4503b26accb55e162f2927f891436e",
+      "worktree_identity": "1f9a00cfe6182fb43e91f1094acabfb90b1485fa",
+      "head_blob_oid": "1f9a00cfe6182fb43e91f1094acabfb90b1485fa",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-base.log.txt",
+      "bytes_on_disk": 174888,
+      "sha256_worktree": "e137eb91aa998ef1d28d0832b80b434bd01e8369768984fdbaae5312bf438952",
+      "sha256_head_blob": "b956bb2bc065d1d6c0797b4fde01af95ee1887413dd2f9b2b07e596061828750",
+      "worktree_identity": "250483383e7071966f2f5b22a18d3708f3f59e38",
+      "head_blob_oid": "250483383e7071966f2f5b22a18d3708f3f59e38",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-head-crlf.log.txt",
+      "bytes_on_disk": 175007,
+      "sha256_worktree": "541fd88488f593338e1e7318f7a37203eab4fde661ed3f3848c3e4aba9ee0ce8",
+      "sha256_head_blob": "22161d77d8205cb6e5c03b9fd16c3c9900a371a699fdd484f2989d754906d2e1",
+      "worktree_identity": "309b9d2e7da9681d5b7f442a46a08fd9d08e698e",
+      "head_blob_oid": "309b9d2e7da9681d5b7f442a46a08fd9d08e698e",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-head-lf.log.txt",
+      "bytes_on_disk": 188027,
+      "sha256_worktree": "9436a79d17029fba7a9eb2179c84dd4bb9efad2d6320a76a35320a76e78ee34e",
+      "sha256_head_blob": "756c82e12415cd9394bd35dfb107699addc9889faacbcf9bea3425fb439d6ec5",
+      "worktree_identity": "22ce12f5b3454d120c17aedde843939f3b8af509",
+      "head_blob_oid": "22ce12f5b3454d120c17aedde843939f3b8af509",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run_crlf.json",
+      "bytes_on_disk": 16672,
+      "sha256_worktree": "9c1c081e1f311b6db092449fbfc9534c1427b41d087b1e494e2534a46c9d8993",
+      "sha256_head_blob": "8898c660f23b56772ed53915841202a951679b6e05a176c1d268eba1e70a8141",
+      "worktree_identity": "6a8fa82240713cfee3c92ef320f0530ad53ca17e",
+      "head_blob_oid": "6a8fa82240713cfee3c92ef320f0530ad53ca17e",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/run_lf.json",
+      "bytes_on_disk": 16426,
+      "sha256_worktree": "e177bdef0b19ab2329eaf40928f4ea26e302831a27a70bc9d66f2718b7a29592",
+      "sha256_head_blob": "51a45b69468865366c530edc331e098b9e1660db7459034e767aad2f4788c580",
+      "worktree_identity": "5a21e0dbef6d46f60590bb7b7004fc1cd8813c15",
+      "head_blob_oid": "5a21e0dbef6d46f60590bb7b7004fc1cd8813c15",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/RUN_REPORT.json",
+      "bytes_on_disk": 44636,
+      "sha256_worktree": "a9e5bcf60033d3e3c9bd4e0364ec76e494a6c582b7eb64749b997f3d4d96b8b2",
+      "sha256_head_blob": "40cb2a345b941d4659d8958d290cd3628ece2835b4891f4717b514f8abff97d3",
+      "worktree_identity": "1721d08434262e45d860f3c5befe47e989b29a68",
+      "head_blob_oid": "1721d08434262e45d860f3c5befe47e989b29a68",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/RUN_REPORT.md",
+      "bytes_on_disk": 3980,
+      "sha256_worktree": "01e73236bd9fd153a1f73bf9068bcb1384deb31adbe410d25e4706aff52f1dcf",
+      "sha256_head_blob": "2732c185ec2af88c59abc90986401b5956c72f25e6ce08396e84422e0e395cc6",
+      "worktree_identity": "b70c5f00476a9e4b1091bf481466f186108642f1",
+      "head_blob_oid": "b70c5f00476a9e4b1091bf481466f186108642f1",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/TEST_RESULTS.json",
+      "bytes_on_disk": 38069,
+      "sha256_worktree": "881696de73d24737143488bd6c35b35bbba3d5807a0c2194878b6eb3f1b94b4f",
+      "sha256_head_blob": "4157be32691abc38717c8b9b93f979bae5c9eec3b59047fbfb7ccb9f2bd4d22a",
+      "worktree_identity": "90232872e13e313262f1d8197f1d88e060bf8533",
+      "head_blob_oid": "90232872e13e313262f1d8197f1d88e060bf8533",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/v1_compat.json",
+      "bytes_on_disk": 1230,
+      "sha256_worktree": "e83e068795012a4454fa00b455b354ec7566e6a3c8000451b8ca4a26fc0d33fc",
+      "sha256_head_blob": "7f1506ebd465d9b8fb2f2cb075b3fb0aa67ecb68e7fd389f29f5e268e1babf9d",
+      "worktree_identity": "f1df2ace0cf7dc287e3bda2aa0a2cbb91bd93d27",
+      "head_blob_oid": "f1df2ace0cf7dc287e3bda2aa0a2cbb91bd93d27",
+      "tracked_at_head": true,
+      "match": true
+    },
+    {
+      "path": "evidence/tdm/wp-tdm-14a/verification_result.json",
+      "bytes_on_disk": 20080,
+      "sha256_worktree": "5c8743e64ae21e1eaa7afe9b1d7d9c2702a4abc7c38467ce287de296c6ca3a9f",
+      "sha256_head_blob": "b85e566473342001f1e97c8447ad1b4b904fd7e438d2d3d5e4b95185d91f6b10",
+      "worktree_identity": "7c73eae42e526021f6656a75dbdc82aaaf1c277f",
+      "head_blob_oid": "7c73eae42e526021f6656a75dbdc82aaaf1c277f",
+      "tracked_at_head": true,
+      "match": true
+    }
+  ],
+  "status": "PASS"
+}
