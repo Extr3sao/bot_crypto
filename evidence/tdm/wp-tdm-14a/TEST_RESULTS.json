@@ -36,13 +36,14 @@
     ]
   },
   "verifier_defect_fixed_in_wp14d": {
-    "id": "D-02",
+    "id": "D-06",
     "title": "check_git_hygiene sliced porcelain lines at column 3 while the git() helper strips the whole stdout",
     "effect": "the first dirty path lost one character (evidence/... became vidence/...), so it never matched the SELF_OUTPUTS exclusion list and an uncommitted artefact could be reported as outside_self_outputs, or a self output could masquerade as foreign; the ACC-12 clean-tree test was therefore not trustworthy for the first line of every status block",
     "detected_by": "re-running the verifier after the evidence commit: ACC-12 reported 'vidence/tdm/wp-tdm-14a/EOL_COMPARISON.json' as an uncommitted foreign change",
     "fix": "porcelain_path() reads from column 2 and trims, so both spellings parse; regression tests pin the shifted-line case and the exclusion behaviour",
     "second_fix": "verdict() returned VERIFIED_PORTABLE_FULL_REPLAY for an empty check list; an empty list is now BLOCKED",
-    "status": "FIXED_AND_TESTED"
+    "status": "FIXED_AND_TESTED",
+    "id_note": "D-02 in this package is the hardcoded source_commit in tdm12_inventory.py; this one is D-06 so that the two documents cannot be confused"
   },
   "directory_run": {
     "passed": 1768,

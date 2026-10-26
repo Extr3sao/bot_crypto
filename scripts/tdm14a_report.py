@@ -456,6 +456,15 @@ def build_run_report(
                 "hash-object --path plus diff-index --cached.",
             },
             {
+                "id": "D-06",
+                "state": "FIXED, FOUND BY THE CLOSURE",
+                "detail": "the verifier's ACC-12 sliced porcelain status lines at column 3 while its "
+                "git() helper strips the whole stdout, so the first dirty path lost a character and "
+                "never matched the self-output list. A custody check that misreads its own input is "
+                "worse than none; fixed, with seven tests. verdict() also promoted an empty check "
+                "list to success and now returns BLOCKED.",
+            },
+            {
                 "id": "D-05",
                 "state": "OPEN, REPORTED",
                 "detail": "identity fields outside the registry (triage.json admission_ledger.sha256, "

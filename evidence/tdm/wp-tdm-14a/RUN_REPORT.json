@@ -2,11 +2,13 @@
   "artifact": "tdm14a-run-report-v1",
   "rfc": "RFC-TDM-014A",
   "work_package": "WP-14A..WP-14D",
-  "generated_at_utc": "2026-10-26T08:46:24Z",
+  "generated_at_utc": "2026-10-26T08:47:51Z",
   "baseline_commit": "04fb8bc8a0900c278cd72c5e3478a45b66fcbc03",
   "branch": "fix/tdm14a",
-  "head": "a806a7bf6866c38a03c6545e04f0512e3a016952",
+  "head": "83d1abececb57ce60934c54092f1c00b598b1bb5",
   "commits": [
+    "83d1abec Close the evidence tree against HEAD",
+    "3aed6995 Publish the pass, not a report about the pass",
     "a806a7bf Publish the regenerated deliverables and the closing report",
     "d7185a21 Render the closing report from the verdict instead of writing it by hand",
     "409050c3 Close the second evidence commit against its own blobs",
@@ -104,13 +106,14 @@
       ]
     },
     "verifier_defect_fixed_in_wp14d": {
-      "id": "D-02",
+      "id": "D-06",
       "title": "check_git_hygiene sliced porcelain lines at column 3 while the git() helper strips the whole stdout",
       "effect": "the first dirty path lost one character (evidence/... became vidence/...), so it never matched the SELF_OUTPUTS exclusion list and an uncommitted artefact could be reported as outside_self_outputs, or a self output could masquerade as foreign; the ACC-12 clean-tree test was therefore not trustworthy for the first line of every status block",
       "detected_by": "re-running the verifier after the evidence commit: ACC-12 reported 'vidence/tdm/wp-tdm-14a/EOL_COMPARISON.json' as an uncommitted foreign change",
       "fix": "porcelain_path() reads from column 2 and trims, so both spellings parse; regression tests pin the shifted-line case and the exclusion behaviour",
       "second_fix": "verdict() returned VERIFIED_PORTABLE_FULL_REPLAY for an empty check list; an empty list is now BLOCKED",
-      "status": "FIXED_AND_TESTED"
+      "status": "FIXED_AND_TESTED",
+      "id_note": "D-02 in this package is the hardcoded source_commit in tdm12_inventory.py; this one is D-06 so that the two documents cannot be confused"
     },
     "directory_run": {
       "passed": 1768,
@@ -552,6 +555,11 @@
       "id": "D-04",
       "state": "FIXED IN THIS WORK, FOUND BY THE TESTS",
       "detail": "the first v2 preflight used git status as its cleanliness oracle; on a CRLF checkout status reports ' M path' for content identical to the blob, which would have refused the only transformation the RFC tolerates. Replaced with content hash-object --path plus diff-index --cached."
+    },
+    {
+      "id": "D-06",
+      "state": "FIXED, FOUND BY THE CLOSURE",
+      "detail": "the verifier's ACC-12 sliced porcelain status lines at column 3 while its git() helper strips the whole stdout, so the first dirty path lost a character and never matched the self-output list. A custody check that misreads its own input is worse than none; fixed, with seven tests. verdict() also promoted an empty check list to success and now returns BLOCKED."
     },
     {
       "id": "D-05",

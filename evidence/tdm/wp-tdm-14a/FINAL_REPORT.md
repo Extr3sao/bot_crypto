@@ -1,7 +1,7 @@
 # FINAL_REPORT — RFC-TDM-014A
 
 **Veredicto:** `VERIFIED_PORTABLE_FULL_REPLAY`
-**Baseline:** `04fb8bc8a0900c278cd72c5e3478a45b66fcbc03` · **Árbol cubierto por el cierre:** `49c8969617e0effee3872b006efe45dc7fb266eb`
+**Baseline:** `04fb8bc8a0900c278cd72c5e3478a45b66fcbc03` · **Árbol cubierto por el cierre:** `3aed6995fee7a1cedd293149c46152d3f52a9161`
 **Decisión económica (heredada, no reevaluada):** NO_ELIGIBLE_CANDIDATE / REJECTED_ALPHA (inherited from TDM-11/12/13, untouched)
 
 ## Qué se ha demostrado
@@ -38,6 +38,8 @@
 
 ## Commits de la rama
 
+- `83d1abec Close the evidence tree against HEAD`
+- `3aed6995 Publish the pass, not a report about the pass`
 - `a806a7bf Publish the regenerated deliverables and the closing report`
 - `d7185a21 Render the closing report from the verdict instead of writing it by hand`
 - `409050c3 Close the second evidence commit against its own blobs`
@@ -63,14 +65,15 @@
 | `D-02` | DOCUMENTED, NOT REWRITTEN | tdm12_inventory.py hardcoded source_commit='504256ec' as a literal, so no TDM-12 artefact recorded the commit it actually ran at. v2 derives it from git HEAD; v1 keeps the literal only to reproduce the published artefact. |
 | `D-03` | FIXED | the sealed TDM-13 input bundle had no -text attribute, so a CRLF checkout delivered 189575 bytes instead of 189574 and the replay could not start. Fixed in .gitattributes, which is why the CRLF run now reaches the pipeline. |
 | `D-04` | FIXED IN THIS WORK, FOUND BY THE TESTS | the first v2 preflight used git status as its cleanliness oracle; on a CRLF checkout status reports ' M path' for content identical to the blob, which would have refused the only transformation the RFC tolerates. Replaced with content hash-object --path plus diff-index --cached. |
+| `D-06` | FIXED, FOUND BY THE CLOSURE | the verifier's ACC-12 sliced porcelain status lines at column 3 while its git() helper strips the whole stdout, so the first dirty path lost a character and never matched the self-output list. A custody check that misreads its own input is worse than none; fixed, with seven tests. verdict() also promoted an empty check list to success and now returns BLOCKED. |
 | `D-05` | OPEN, REPORTED | identity fields outside the registry (triage.json admission_ledger.sha256, runtime_entrypoints sha256) still hash working-tree bytes, so those scratch values remain EOL-sensitive. They are not published contracts and do not enter any ACC. |
 
 ## Cadena de custodia
 
 Por construcción el informe de cierre se commitea *después* del árbol que verifica, así que HEAD puede estar exactamente un commit por delante: el diff entre ambos es solo `POST_COMMIT_CLOSURE.json`.
 
-- ficheros comprobados contra el HEAD del cierre: 25
-- coincidentes: 25
+- ficheros comprobados contra el HEAD del cierre: 27
+- coincidentes: 27
 - excluido por construcción: `['evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json']`
 - estado del cierre: `PASS`
 
