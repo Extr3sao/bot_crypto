@@ -153,8 +153,8 @@ Verificación `git rev-list --branches --not --remotes=origin --count` tras la p
 | Métrica | Inicial | Final |
 |---|---|---|
 | Commits locales inalcanzables desde cualquier `origin/*` | 226 | **0** |
-| Ramas locales sin remoto | 17 | **0** (35/35 con remoto) |
-| Ramas con `SHA local == SHA remoto` | 18 | **35** |
+| Ramas locales sin remoto | 17 | **0** (36/36 con remoto) |
+| Ramas con `SHA local == SHA remoto` | 18 | **36** |
 | Ramas divergentes / sobrescritas | — | **0** (todas `ahead=0 behind=0`, `main` solo adelantada) |
 | Stashes | 0 | 0 (no había nada en stash) |
 | Commits huérfanos recuperables (reflog) | **40** (se re-miraron con `git reflog --all`) | **40 preservados y publicados** como tags `sync/orphan-<sha12>` |
@@ -285,7 +285,8 @@ commit se publicaron en ramas `sync/uncommitted-*` y sus SHA constan en el manif
 `docs/roadmap/` proyecta el estado en **xlsx + json + csv** (76 tareas, IDs estables `TAP-001..076`).
 Actualización de corte: **v1.6 → v1.7** en la rama `project/roadmap-trading-agentic` (PR #15):
 
-- `TAP-072` (auditoría de sincronización): 35/35 ramas publicadas, 0 commits sin publicar, 31 PR draft.
+- `TAP-072` (auditoría de sincronización): 35/35 ramas publicadas a la hora del corte; hoy **36/36**
+  (se añadió `feat/wp-signal-001-003`, de un agente paralelo), 0 commits sin publicar, 31 PR draft.
 - `TAP-073` (gates): re-medición 2026-10-26 — ruff 130 / format 444 / mypy 297 (idénticos a v1.6),
   pytest `79 failed / 3274 passed / 34 skipped / 14 errors`; 19/20 ficheros coinciden con la baseline.
 - `TAP-075` (PRs de trazabilidad): de 17 PR (#19-#35) a **31 PR draft (#19-#35 y #36-#49)**.
@@ -301,7 +302,7 @@ Se conservan los estados `VERIFICADO_FOCAL`; **nada se convierte en `CERTIFIED`*
 PARTIAL_SYNC
 ```
 
-`SYNC_COMPLETE` en cuanto a **publicación**: 0 commits locales sin publicar, 35/35 ramas verificadas en
+`SYNC_COMPLETE` en cuanto a **publicación**: 0 commits locales sin publicar, 36/36 ramas verificadas en
 remoto, 0 datos perdidos, 0 secretos publicados, worktrees intactos.
 
 `MAIN_INTEGRATED = false`, `RUNTIME_CERTIFIED = false`, `PROFITABLE = false`:

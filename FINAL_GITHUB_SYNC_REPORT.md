@@ -133,11 +133,12 @@ Total de PR abiertos: **38** (7 ready, 31 draft).
 | Roadmap | v1.6 local | **v1.7 publicado** (`b95c3119`) |
 | Reportes de sincronización | solo en local | **publicados** (`c74c87f4`, PR #19) |
 
-**Exclusión identificada (no es fallo de la sincronización):** `feat/wp-signal-001-003` lleva 2 commits
-locales sin publicar (`9cc34c02`, `2ea36cf1`) porque otra rama de trabajo está en **desarrollo activo**
-(4 ficheros modificados sin commit en el mismo worktree); publicarlos podría impedir su
-`git commit --amend`. Excluidos a propósito y trazados aquí. Sus 40 commits huérfanos del reflog sí
-quedaron publicados como tags `sync/orphan-*` (40/40 verificados con `git ls-remote --tags`).
+**Verificación de cierre (2026-10-26):** `git rev-list --branches --not --remotes=origin --count = **0**`.
+También los commits de la rama en desarrollo `feat/wp-signal-001-003` (`9cc34c02`, `2ea36cf1`) quedaron
+publicados en el barrido final, cuando su agente los cerró: **ningún commit local queda sin publicar**.
+`main` es la única rama adelantada (263 commits) y **no se empuja a propósito** — su integración es el PR
+#18. Los 40 commits huérfanos del reflog sí quedaron publicados como tags `sync/orphan-*` (40/40
+verificados con `git ls-remote --tags`).
 
 ---
 
