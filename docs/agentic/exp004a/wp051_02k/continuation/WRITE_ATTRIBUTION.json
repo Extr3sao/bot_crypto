@@ -1,0 +1,162 @@
+{
+  "caveat": "write counters are per process and cumulative; a large writer is not necessarily the one that lowered free space, so drops and writes are reported side by side. Deferred allocation (paging, compression, delayed writes) can move the volume after the write.",
+  "dropped_bytes": 5367025664,
+  "free_first": 17988726784,
+  "free_last": 14355828736,
+  "generated_at_utc": "2026-10-23T18:32:36Z",
+  "interval_seconds": 5.0,
+  "intervals": [
+    {
+      "at_utc": "2026-10-23T18:30:36Z",
+      "drop_bytes": 62550016,
+      "written_bytes": 93226548
+    },
+    {
+      "at_utc": "2026-10-23T18:30:43Z",
+      "drop_bytes": 59117568,
+      "written_bytes": 97161496
+    },
+    {
+      "at_utc": "2026-10-23T18:30:50Z",
+      "drop_bytes": 44097536,
+      "written_bytes": 65416249
+    },
+    {
+      "at_utc": "2026-10-23T18:30:58Z",
+      "drop_bytes": 60436480,
+      "written_bytes": 79663834
+    },
+    {
+      "at_utc": "2026-10-23T18:31:05Z",
+      "drop_bytes": 71200768,
+      "written_bytes": 92589392
+    },
+    {
+      "at_utc": "2026-10-23T18:31:12Z",
+      "drop_bytes": 57020416,
+      "written_bytes": 85901666
+    },
+    {
+      "at_utc": "2026-10-23T18:31:19Z",
+      "drop_bytes": 37294080,
+      "written_bytes": 78272504
+    },
+    {
+      "at_utc": "2026-10-23T18:31:26Z",
+      "drop_bytes": -78200832,
+      "written_bytes": 25764421
+    },
+    {
+      "at_utc": "2026-10-23T18:31:33Z",
+      "drop_bytes": 184229888,
+      "written_bytes": 187594539
+    },
+    {
+      "at_utc": "2026-10-23T18:31:41Z",
+      "drop_bytes": 792190976,
+      "written_bytes": 786951523
+    },
+    {
+      "at_utc": "2026-10-23T18:31:48Z",
+      "drop_bytes": 1582374912,
+      "written_bytes": 1330325712
+    },
+    {
+      "at_utc": "2026-10-23T18:31:55Z",
+      "drop_bytes": 700268544,
+      "written_bytes": 502451546
+    },
+    {
+      "at_utc": "2026-10-23T18:32:02Z",
+      "drop_bytes": 717500416,
+      "written_bytes": 493144576
+    },
+    {
+      "at_utc": "2026-10-23T18:32:09Z",
+      "drop_bytes": 345366528,
+      "written_bytes": 250084207
+    },
+    {
+      "at_utc": "2026-10-23T18:32:16Z",
+      "drop_bytes": 653377536,
+      "written_bytes": 333063502
+    },
+    {
+      "at_utc": "2026-10-23T18:32:23Z",
+      "drop_bytes": -1655926784,
+      "written_bytes": 167249326
+    }
+  ],
+  "samples": 17,
+  "schema_version": "EXP004A_WP051_02K_CONTINUATION_V1",
+  "seconds": 120,
+  "share_explained_percent": 86.99,
+  "tree_growth_bytes": {
+    "C:\\Users\\GVLLFR0035\\.cache": 0,
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Microsoft": 1896,
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp": -101226691,
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright": 0,
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data": 0
+  },
+  "trees_watched": [
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp",
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright",
+    "C:\\Users\\GVLLFR0035\\.cache",
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Microsoft"
+  ],
+  "writers": [
+    {
+      "intervals": 16,
+      "name": "SearchIndexer.exe",
+      "written_bytes": 4564247216
+    },
+    {
+      "intervals": 11,
+      "name": "bun.exe",
+      "written_bytes": 69020876
+    },
+    {
+      "intervals": 39,
+      "name": "chrome.exe",
+      "written_bytes": 14888653
+    },
+    {
+      "intervals": 13,
+      "name": "msedge.exe",
+      "written_bytes": 11752769
+    },
+    {
+      "intervals": 14,
+      "name": "System",
+      "written_bytes": 5214208
+    },
+    {
+      "intervals": 11,
+      "name": "ChatGPT.exe",
+      "written_bytes": 2406531
+    },
+    {
+      "intervals": 12,
+      "name": "Discord.exe",
+      "written_bytes": 533097
+    },
+    {
+      "intervals": 1,
+      "name": "Registry",
+      "written_bytes": 356352
+    },
+    {
+      "intervals": 7,
+      "name": "claude.exe",
+      "written_bytes": 273073
+    },
+    {
+      "intervals": 2,
+      "name": "python.exe",
+      "written_bytes": 129144
+    }
+  ],
+  "written_bytes": 4668861041
+}

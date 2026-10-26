@@ -1,0 +1,243 @@
+{
+  "accounting": {
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+      "BTC/USDT": 80813.06,
+      "ETH/USDT": 2357.18,
+      "SOL/USDT": 101.89
+    },
+    "meanings": {
+      "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
+      "costs_total_usdt": "costs_usdt + entry_commissions_accrued_open_usdt",
+      "costs_usdt": "realised cost of closed trades only: execution + entry + exit commissions. Unchanged since 003B; it does NOT include open positions.",
+      "entry_commissions_accrued_open_usdt": "entry commissions of positions still open: charged at close by the broker, but already owed and already withheld from marked equity",
+      "entry_commissions_realised_usdt": "entry commissions inside closed trades",
+      "execution_costs_realised_usdt": "spread/impact cost embedded in closed-trade fills",
+      "exit_commissions_realised_usdt": "exit commissions inside closed trades",
+      "marked_equity_usdt": "initial equity + pnl_total_usdt",
+      "pnl_realised_usdt": "net PnL of closed trades (same value as net_realised_usdt)",
+      "pnl_total_usdt": "pnl_realised_usdt + pnl_unrealised_usdt",
+      "pnl_unrealised_usdt": "open positions marked at the last observable close, net of accrued entry commissions"
+    },
+    "schema_version": "paper-accounting/2"
+  },
+  "book_id": "paper-prospective-003g",
+  "calls": 35,
+  "closed_trades": 0,
+  "costs_realised_usdt": 0,
+  "costs_total_usdt": 0.0,
+  "costs_usdt": 0,
+  "counters": {
+    "action:LONG": 9,
+    "action:NO_TRADE": 17,
+    "action:SHORT": 9,
+    "dropped:MODEL_NO_TRADE": 17,
+    "gate:WEEKEND_BLOCK": 16,
+    "guard:RUN_ENDED_WITH_ORDER_PENDING": 2,
+    "opinion:deferred": 16,
+    "opinion:generated": 18,
+    "requote:WAITING_FOR_QUOTE": 16
+  },
+  "decision_points": 3,
+  "drawdown_pct": 0.0,
+  "drawdown_status": "MEASURED",
+  "drawdown_usdt": 0.0,
+  "entry_commissions_accrued_open_usdt": 0.0,
+  "entry_commissions_realised_usdt": 0,
+  "equity_points": 141,
+  "estimated_spend_usd": 0.0,
+  "execution": {
+    "bar_interval_ms": 60000,
+    "data_gap_policy": "fail_closed_unless_independent_coverage",
+    "entry_bar_range_policy": "full_bar_from_its_open",
+    "entry_quote_sources": {},
+    "exit_ts_resolutions": [
+      "OPEN_GAP",
+      "BAR_WINDOW",
+      "QUOTE"
+    ],
+    "expired_opinions": 0,
+    "fills": 0,
+    "gap_exits": 0,
+    "gap_policy": "open_on_gap",
+    "max_opinion_age_ms": 60000,
+    "open_phase_order": "gap_close>mark>entries>intrabar",
+    "opinions": {
+      "blocked_by_risk": 0,
+      "closed_by_intent": 0,
+      "deferrals_per_opinion": {
+        "12": 1,
+        "14": 1,
+        "2": 1,
+        "22": 1,
+        "24": 1,
+        "32": 1,
+        "34": 1,
+        "4": 1,
+        "42": 1,
+        "44": 1,
+        "52": 1,
+        "54": 1,
+        "62": 1,
+        "64": 1,
+        "72": 1,
+        "74": 1
+      },
+      "deferred_slots": 16,
+      "executed_openings": 0,
+      "expired": 0,
+      "gated": 16,
+      "generated": 18,
+      "lifecycle": {
+        "duplicate_terminals": [],
+        "generated": 18,
+        "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+        "ledger_lines": 86,
+        "ok": true,
+        "orphan_terminals": [],
+        "rejected_by_code": {
+          "RUN_ENDED_WITH_ORDER_PENDING": 2
+        },
+        "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+        "session_continuity": "NONE",
+        "source": "ledger_bytes",
+        "terminal_classes": {
+          "BLOCKED_BY_RISK": 0,
+          "CLOSED": 0,
+          "FILLED": 0,
+          "GATED": 16,
+          "REJECTED": 2
+        },
+        "unrecorded": []
+      },
+      "pending_at_end": 2,
+      "rejected": {
+        "RUN_ENDED_WITH_ORDER_PENDING": 2
+      },
+      "superseded": 0,
+      "terminal_classes": {
+        "BLOCKED_BY_RISK": 0,
+        "CLOSED": 0,
+        "FILLED": 0,
+        "GATED": 16,
+        "REJECTED": 2
+      }
+    },
+    "quote_lag_ms": {
+      "max": null,
+      "median": null,
+      "min": null
+    },
+    "quote_source": "bar_open",
+    "stage_latency_ms": {
+      "data_to_decision": {
+        "max": null,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "samples": 0
+      },
+      "decision_to_quote": {
+        "max": null,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "samples": 0
+      },
+      "decision_to_received": {
+        "max": null,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "samples": 0
+      },
+      "received_to_quote": {
+        "max": null,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "samples": 0
+      }
+    },
+    "stale_valuation_vetoes": 0,
+    "stop_coverage": "entry_at_open_full_bar",
+    "sub_bar_fills": 0,
+    "subbar_entries": true,
+    "waiting_events": 16
+  },
+  "execution_costs_realised_usdt": 0,
+  "exit_commissions_realised_usdt": 0,
+  "fills": 0,
+  "final_equity_usdt": 10000.0,
+  "gross_realised_usdt": 0,
+  "marked_equity_usdt": 10000.0,
+  "net_realised_usdt": 0,
+  "open_positions_at_end": {},
+  "opinion_accounting": {
+    "adds_up": true,
+    "counter_disagreements": [],
+    "deferred_slots": 16,
+    "duplicate_terminals": [],
+    "generated": 18,
+    "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+    "ledger_lines": 86,
+    "orphan_terminals": [],
+    "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+    "session_continuity": "NONE",
+    "source": "ledger_bytes",
+    "terminal": 18,
+    "terminal_classes": {
+      "BLOCKED_BY_RISK": 0,
+      "CLOSED": 0,
+      "FILLED": 0,
+      "GATED": 16,
+      "REJECTED": 2
+    },
+    "unrecorded": []
+  },
+  "pnl_realised_usdt": 0,
+  "pnl_total_usdt": 0.0,
+  "pnl_unrealised_usdt": 0.0,
+  "provider": "paper-script",
+  "reconciliation": {
+    "accounting_schema_version": "paper-accounting/2",
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.0,
+    "curve_end_equity_usdt": 10000.0,
+    "entry_commission_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.0,
+    "execution_cost_usdt": 0,
+    "exit_commission_usdt": 0,
+    "final_equity_usdt": 10000.0,
+    "identities": {
+      "cash_rebuilds_from_realised_pnl": true,
+      "curve_ends_at_final_equity": true,
+      "every_close_after_its_entry_quote": true,
+      "every_fill_pays_at_or_after_its_answer": true,
+      "marked_equity_rebuilds_from_open_position": true,
+      "net_pnl_nets_every_named_cost": true,
+      "open_positions_are_disjoint_from_closed_trades": true,
+      "opinion_lifecycle_adds_up": true,
+      "realised_costs_equal_closed_trade_legs": true,
+      "risk_equity_matches_marked_equity": true,
+      "total_costs_equal_realised_plus_accrued": true,
+      "total_pnl_moves_the_marked_book": true
+    },
+    "initial_equity_usdt": 10000.0,
+    "marked_equity_usdt": 10000.0,
+    "marks_complete_at_end": true,
+    "net_realised_usdt": 0,
+    "open_gap_exits": 0,
+    "open_position_ids_at_end": [],
+    "open_positions_at_end": 0,
+    "pnl_total_usdt": 0.0,
+    "reference_gross_usdt": 0,
+    "risk_equity_usdt": 10000.0,
+    "tolerance_usdt": 1e-06,
+    "unrealised_pnl_gross_usdt": 0.0,
+    "unrealised_pnl_net_usdt": 0.0
+  },
+  "risk_equity_usdt": 10000.0,
+  "stop_reason": null,
+  "trades": []
+}

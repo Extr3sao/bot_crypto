@@ -1,0 +1,36 @@
+{
+  "children_exit_codes": [
+    0,
+    0
+  ],
+  "outcomes": [
+    {
+      "code": "LOCK_HELD",
+      "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock\\session\\STREAM.jsonl.lock changed while the takeover was being prepared: it is now HELD (LIVE_OWNER); nothing was overwritten",
+      "outcome": "REFUSED",
+      "pid": 31276
+    },
+    {
+      "acquired_at_utc": "2026-10-25T13:26:26Z",
+      "fence": 14,
+      "held_s": 4.0,
+      "outcome": "RECLAIMED",
+      "pid": 17532,
+      "previous_owner": {
+        "acquired_at_utc": "2026-10-25T13:25:25Z",
+        "fence": 13,
+        "host": "DESKTOP-4CHO695",
+        "path": "STREAM.jsonl.lock",
+        "pid": 43752,
+        "process_start_ms": 1792934720613,
+        "purpose": "ledger:STREAM.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "f1b0982569564d7d87423509a8f2d13b"
+      },
+      "reason": "OWNER_PROCESS_DEAD",
+      "released": true
+    }
+  ],
+  "path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock\\session\\STREAM.jsonl.lock",
+  "racers": 2
+}

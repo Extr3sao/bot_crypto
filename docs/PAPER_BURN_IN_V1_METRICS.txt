@@ -1,0 +1,23 @@
+
+PAPER-BURN-IN-V1 metrics (events=420)
+START=2026-09-25T09:18:01.183000+00:00
+END=2026-09-25T09:57:42.987000+00:00
+UPTIME_MIN=39.7  (0.66 h)
+CYCLES_ATTEMPTED=420  CYCLES_COMPLETED=420  CYCLES_FAILED=0
+HEALTH={'HEALTHY': 420}
+MARKET_DATA_FAILURES(scanner_errors)=0
+DECISION_CYCLES_WITH_ORDERS=2  ZERO_NEW_ORDER_CYCLES=418
+RISK_APPROVALS=6  RISK_VETOES=1156
+EXECUTION_INTENTS(orders_created_total)=4  DUPLICATES_SUPPRESSED=98
+TRADES=3 (positions opened; still open at end)
+REALIZED_PNL=3.53 USDT (all positions open -> realized 0.0, INSUFFICIENT_SAMPLE)
+MAX_DRAWDOWN_PEAK=0.00 USDT (equity basis, open positions not marked)
+LATENCY_MS min/med/p95/max=2131/3932/5210/7079
+STATE_FILE_BYTES first=1181 last=1509 (bounded, no growth)
+TOP_REJECTIONS:
+    764  risk:Daily trade limit reached (20)
+    392  risk:Max open positions reached (3)
+     98  idempotency:duplicate_intent
+      2  broker:broker_returned_no_fill
+DEGRADED_CYCLES=0 []
+

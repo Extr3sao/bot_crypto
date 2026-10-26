@@ -1,0 +1,6 @@
+[wp04] root=C:\Users\GVLLFR0035\Downloads\ff-wt-gate001 commit=9a420ff18179 out=C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\campaigns\lock\session
+[wp04] bootstrap complete
+[wp04] measured 3 live delivery latencies
+2026-10-25 14:18:11 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 14:18:12 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+[wp04] cycle 4 bar 2026-10-25T13:17:00Z fills=0 closed=0

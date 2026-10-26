@@ -1,0 +1,196 @@
+{
+  "generated_at_utc": "2026-10-24T07:19:52+00:00",
+  "repo": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k",
+  "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
+  "acceptance": "1h accepted only when the corpus digest equals FROZEN_SHARD_SHA256; 15m only when the shard bytes hash to the sha256 published before this recovery",
+  "results": [
+    {
+      "timeframe": "1h",
+      "asset": "BTC",
+      "requests": 63,
+      "bars": 62724,
+      "first_ts": 1546300800000,
+      "last_ts": 1772319600000,
+      "last_ts_is_frozen_end": true,
+      "corpus_digest": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+      "frozen_prefix16": "f4d16c3664c142d1",
+      "digest_matches_frozen": true,
+      "files": {
+        "2019": {
+          "file": "BTCUSDT_2019.json",
+          "bytes": 989902,
+          "bars": 8732,
+          "sha256": "946d740d5e8b40bfa253c6ffc6e521b78c0dddd702692673aa06d3a5314de9b5"
+        },
+        "2020": {
+          "file": "BTCUSDT_2020.json",
+          "bytes": 1004906,
+          "bars": 8766,
+          "sha256": "359ff3513778c162b23166960c0916565ff0f038b643b23b07de4d68dab88875"
+        },
+        "2021": {
+          "file": "BTCUSDT_2021.json",
+          "bytes": 1019339,
+          "bars": 8747,
+          "sha256": "b985451d17b6035c81b838755f88b2cb47ec8734ac5919b78ca0b08082125def"
+        },
+        "2022": {
+          "file": "BTCUSDT_2022.json",
+          "bytes": 1017919,
+          "bars": 8760,
+          "sha256": "4e9d7f77f9bcf531c68a31eb6c44f53dc128baa22be3927f8117fc0712010445"
+        },
+        "2023": {
+          "file": "BTCUSDT_2023.json",
+          "bytes": 1014506,
+          "bars": 8759,
+          "sha256": "f96a0e3f0412cbe4840e5a42153ec6f7f32cf685e01cd40f2ee52f6a949077fe"
+        },
+        "2024": {
+          "file": "BTCUSDT_2024.json",
+          "bytes": 1012715,
+          "bars": 8784,
+          "sha256": "8596e13b902fc53fa79dbf04daedd941988fed849dcc26f250dca355bbf1eaa9"
+        },
+        "2025": {
+          "file": "BTCUSDT_2025.json",
+          "bytes": 1029688,
+          "bars": 8760,
+          "sha256": "e452d76f74910e7905ac7655252642f9ae7c64c42ab320bac07b1acfc193c41b"
+        },
+        "2026": {
+          "file": "BTCUSDT_2026.json",
+          "bytes": 163207,
+          "bars": 1416,
+          "sha256": "b9beff1b0c083297029af917ff5bba83099530c283ff3bd6941c08cfe7fc3236"
+        }
+      },
+      "written_to": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\reports\\alpha-expansion-v1\\data"
+    },
+    {
+      "timeframe": "1h",
+      "asset": "ETH",
+      "requests": 63,
+      "bars": 62724,
+      "first_ts": 1546300800000,
+      "last_ts": 1772319600000,
+      "last_ts_is_frozen_end": true,
+      "corpus_digest": "365046d4738aa7b1dee89a8fc2a544cdfa80b1b6d64ee66a207f504de85afab9",
+      "frozen_prefix16": "365046d4738aa7b1",
+      "digest_matches_frozen": true,
+      "files": {
+        "2019": {
+          "file": "ETHUSDT_2019.json",
+          "bytes": 950448,
+          "bars": 8732,
+          "sha256": "6cd04b81dfff2e5636c72439465473618255a0456df31eba234b824d5459713d"
+        },
+        "2020": {
+          "file": "ETHUSDT_2020.json",
+          "bytes": 957157,
+          "bars": 8766,
+          "sha256": "c1e64b6e40ccdab0955e97de9cd93ee8d679247ad873a94dfacd3491573b73c7"
+        },
+        "2021": {
+          "file": "ETHUSDT_2021.json",
+          "bytes": 985846,
+          "bars": 8747,
+          "sha256": "111347358a455cbf163ab268238e9638f47508e7d63ecda55e820f7f23e250f4"
+        },
+        "2022": {
+          "file": "ETHUSDT_2022.json",
+          "bytes": 981976,
+          "bars": 8760,
+          "sha256": "25fb24fa9988761a5a94223cc4b0a15af063190548ef880e6d87274c42471d7f"
+        },
+        "2023": {
+          "file": "ETHUSDT_2023.json",
+          "bytes": 978974,
+          "bars": 8759,
+          "sha256": "149ac097ee475b81f716dfa091452b5b8111d16427b5431ffa182a5184125d70"
+        },
+        "2024": {
+          "file": "ETHUSDT_2024.json",
+          "bytes": 979567,
+          "bars": 8784,
+          "sha256": "0a563ecc01e89a9abc9f670a097793c9d2bda10f67deae1bf6c0b1b455370ecd"
+        },
+        "2025": {
+          "file": "ETHUSDT_2025.json",
+          "bytes": 980057,
+          "bars": 8760,
+          "sha256": "63c97ede498fdf27500f4b34bad12a4942368056f0b819bbe12e5269ff8ea073"
+        },
+        "2026": {
+          "file": "ETHUSDT_2026.json",
+          "bytes": 158546,
+          "bars": 1416,
+          "sha256": "9bf01bbd60bdca97020499ac74fee7f83fcaac6619c90a0cf37190a799a2995d"
+        }
+      },
+      "written_to": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\reports\\alpha-expansion-v1\\data"
+    },
+    {
+      "timeframe": "1h",
+      "asset": "SOL",
+      "requests": 49,
+      "bars": 48646,
+      "first_ts": 1597125600000,
+      "last_ts": 1772319600000,
+      "last_ts_is_frozen_end": true,
+      "corpus_digest": "847d8eb45eafebd80825f3146c47e3ef34c829516ea5f8501664655f04ff1613",
+      "frozen_prefix16": "847d8eb45eafebd8",
+      "digest_matches_frozen": true,
+      "files": {
+        "2020": {
+          "file": "SOLUSDT_2020.json",
+          "bytes": 362508,
+          "bars": 3420,
+          "sha256": "b8ccf615b9ddb5f75805f0f8b89b42fa42eae430b967e1409f080e7840534d89"
+        },
+        "2021": {
+          "file": "SOLUSDT_2021.json",
+          "bytes": 941344,
+          "bars": 8747,
+          "sha256": "b1e962caff254657adf54a30205a19b689c56ed0b13a5faf275cc6f3e07eb0bf"
+        },
+        "2022": {
+          "file": "SOLUSDT_2022.json",
+          "bytes": 908101,
+          "bars": 8760,
+          "sha256": "39b14e77e914c83124d79511b748f2d346045a1a4f0dce32c1990eac615f7b55"
+        },
+        "2023": {
+          "file": "SOLUSDT_2023.json",
+          "bytes": 903737,
+          "bars": 8759,
+          "sha256": "edd5fa55da50d478bbd3ef54d3a5db2eb919b27ced40b8e7ca9d97f5a3d53a0b"
+        },
+        "2024": {
+          "file": "SOLUSDT_2024.json",
+          "bytes": 943374,
+          "bars": 8784,
+          "sha256": "f1c68533ff3fd0b6ed2efecb0c9e2d89b274497c34be04d09f7d9742f9f49d65"
+        },
+        "2025": {
+          "file": "SOLUSDT_2025.json",
+          "bytes": 946454,
+          "bars": 8760,
+          "sha256": "93e6bd38253327c79e81befb443ae5cbaee9fc715e94a317ef383c80ae288839"
+        },
+        "2026": {
+          "file": "SOLUSDT_2026.json",
+          "bytes": 150369,
+          "bars": 1416,
+          "sha256": "8416595c7b42adcd6019fd5cf028d340eaf1640c8e96d7f3a123fff49ef21577"
+        }
+      },
+      "written_to": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\reports\\alpha-expansion-v1\\data"
+    }
+  ],
+  "supported": [
+    "1h:BTC",
+    "1h:ETH",
+    "1h:SOL"
+  ]
+}

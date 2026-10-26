@@ -1,0 +1,11 @@
+{
+  "acquired_at_utc": "2026-10-25T16:48:32Z",
+  "fence": 3,
+  "host": "DESKTOP-4CHO695",
+  "path": "BTCUSDT.jsonl.lock",
+  "pid": 42328,
+  "process_start_ms": 1792946910188,
+  "purpose": "minutes:BTCUSDT.jsonl",
+  "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+  "token": "0f2c23efd4fc4d4cb4b2347dfcd2c24b"
+}

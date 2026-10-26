@@ -1,0 +1,135 @@
+{
+  "claims": {
+    "A1": {
+      "claim": "the audited branch is the one on disk, main is an ancestor only through the delivery, and no merge commit was added",
+      "detail": "branch=admission/integration-002 head=9d622bb5fb0a main=e67194e79a42 origin/main=5e6f9632e8d9 ahead=14 behind=0 merges=0",
+      "id": "A1",
+      "method": "git rev-parse / merge-base / rev-list on the worktree",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A10": {
+      "claim": "the long PAPER session ran six cycles on live data, reached the risk gate, sent no live order, and every absent fill is accounted for by a recorded gate",
+      "detail": "cycles=6 decisions=30 approved=16 fills=0 gated=8 rejected=8 reasons=['RUN_ENDED_WITH_ORDER_PENDING', 'WEEKEND_BLOCK'] live_orders=0 equity=10000.0",
+      "id": "A10",
+      "method": "re-count the cycle ledgers, compare the summary against them, and require a named reason for each missing fill",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A2": {
+      "claim": "the GATE-001 manifests still describe the files on disk",
+      "detail": "525 recorded hashes recomputed",
+      "id": "A2",
+      "method": "recompute sha256 for every recorded path in both manifests",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A3": {
+      "claim": "the gate's report is a passing run of this code and verify re-derives it",
+      "detail": "steps=15 verify_exit=0 delivery=680c34df49b9 manifest_files=258",
+      "id": "A3",
+      "method": "read GATE_REPORT.json, then run the gate's verify as a subprocess",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A4": {
+      "claim": "the PAPER session executed cycles, recovered, left no lock and sent no live order",
+      "detail": "cycles=[1, 2] rows=6 exit=0 closed_trades=0/0 live_orders=[0] locks=0 mode=PAPER",
+      "id": "A4",
+      "method": "re-hash session/STREAM.jsonl, recount rows, scan live_orders and *.lock",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A5": {
+      "claim": "the admission ledger admits no strategy for PAPER execution",
+      "detail": "24 strategies; statuses=['COST_KILLED', 'NO_GROSS_EDGE']; admitted=0",
+      "id": "A5",
+      "method": "read the strategy table and count admitted entries",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A6": {
+      "claim": "the integration check rejects tampered evidence and accepts the delivered evidence",
+      "detail": "valid_verify=0 tampered_verify=1 tampered_review=1",
+      "id": "A6",
+      "method": "run the gate's verify and the reviewer on the delivered evidence, then on a tampered copy",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A7": {
+      "claim": "every trading_bot import in src/ and scripts/ resolves on this branch",
+      "detail": "338 modules, 2435 trading_bot imports, 0 unresolved",
+      "id": "A7",
+      "method": "parse every module, resolve each import against the files on disk",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A8": {
+      "claim": "the PAPER session's recorded runtime is HEAD's runtime, and the delta since it ran is reports only",
+      "detail": "session_commit=55f991b710ab head=9d622bb5fb0a runtime_modules=14 drifted=0 delta_files=294 executable_delta=0",
+      "id": "A8",
+      "method": "sha256 `git show HEAD:<module>` for every module SESSION_START recorded, then classify `git diff --name-only <session commit> HEAD`",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A9": {
+      "claim": "the gate was recomputed at 600e744d, passed every step, changed no risk policy, and its recomputation still hashes",
+      "detail": "commit=9d622bb5fb0a steps=15/15 manifest=260 rehashed=260 delta_files=0 invariants=g1=OPEN_SIGNOFF,admission=NO_GO",
+      "id": "A9",
+      "method": "read GATE_REPORT.json and its invariants, re-hash EVIDENCE_MANIFEST.json, classify the delta from the certified commit to HEAD",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S1": {
+      "claim": "the session check is not blind: a broken chain must fail A4",
+      "detail": "tampered session judged FAIL (cycles=[1] rows=5 exit=0 closed_trades=0/0 live_orders=[0] locks=0 mode=PAPER)",
+      "id": "S1",
+      "method": "rewrite one stream row in a temporary copy and re-evaluate A4",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S2": {
+      "claim": "the admission check is not blind: one admitted strategy must fail A5",
+      "detail": "tampered ledger judged FAIL (24 strategies; statuses=['ADMITTED_PAPER', 'COST_KILLED', 'NO_GROSS_EDGE']; admitted=1)",
+      "id": "S2",
+      "method": "add an ADMITTED row in a temporary copy of the ledger and re-evaluate A5",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S3": {
+      "claim": "the continuity check is not blind: a drifted runtime hash and an executable delta must both fail A8",
+      "detail": "drifted=FAIL (session_commit=55f991b710ab head=9d622bb5fb0a runtime_modules=14 drift) delta=FAIL (session_commit=e67194e79a42 head=9d622bb5fb0a runtime_modules=14 drift)",
+      "id": "S3",
+      "method": "write two mutated copies of the session's metadata and re-evaluate A8 against each",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S4": {
+      "claim": "the recomputation check is not blind: one edited hash in its manifest must fail A9",
+      "detail": "tampered file=CAMPAIGN_AUDIT.json judged=FAIL problems=[\"1 manifest hash(es) disagree: ['CAMPAIGN_AUDIT.json']\"]",
+      "id": "S4",
+      "method": "write a copy of the manifest with one digest replaced and re-evaluate A9 against it",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S5": {
+      "claim": "the long-session check is not blind: a summary claiming a fill with no FILL row must fail",
+      "detail": "tampered fills judged=FAIL problems=['summary fills 1 != 0 FILL row(s)']",
+      "id": "S5",
+      "method": "copy the session, raise its fill count, and re-evaluate A10 against the copy",
+      "problems": [],
+      "status": "PASS"
+    }
+  },
+  "false_success": 0,
+  "head": "9d622bb5fb0ac53479b96ea5cd256e64e4e2dd52",
+  "repo": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002",
+  "schema": "TAP_INTEGRATION_ADMISSION_VERIFICATION_V1",
+  "summary": {
+    "claims": 15,
+    "fail": 0,
+    "pass": 15,
+    "unknown": 0
+  },
+  "verdict": "PASS"
+}

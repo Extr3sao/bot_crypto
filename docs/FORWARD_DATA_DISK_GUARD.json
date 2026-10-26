@@ -1,0 +1,81 @@
+{
+  "bounded_duration_note": {
+    "bounded_duration_seconds": 90.135,
+    "detail": "with --duration the process stays alive until the duration expires, but the socket receive loops poll the same stop flag, so no further row is written after the trip. The recommended continuous invocation still omits --duration: there is no reason to hold the process open after the guard has fired.",
+    "intake_halted_by_the_transport_loops": true,
+    "open_defect": false,
+    "rows_written_after_trip_ms": 26,
+    "tripped": true
+  },
+  "bounded_run": {
+    "command": "-u C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\forward_collector.py --mode run --out C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-diskguard\\bounded --symbols BTCUSDT --markets spot --streams agg_trade,book_ticker --rotation-seconds 60 --heartbeat-seconds 2 --checkpoint-seconds 60 --max-total-bytes 200000 --duration 90.0",
+    "commit": "7fb9429e765dbf0d520e6a58df3dabacc05dbbde",
+    "continuity": "CONTINUOUS_DATA",
+    "disk_limit_events": [
+      {
+        "at_ms": 1790614807418,
+        "bytes": 275897,
+        "limit": 200000
+      }
+    ],
+    "duration_seconds": 90.135,
+    "elapsed_seconds": 91.459,
+    "ended_at": "2026-09-28T17:00:57.501000+00:00",
+    "events": 0,
+    "exit_code": 0,
+    "manifest_finalised": true,
+    "max_receive_time_ms": 1790614807444,
+    "max_total_bytes": 200000,
+    "overshoot_bytes": 76127,
+    "partial_tails": 0,
+    "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-diskguard\\bounded",
+    "rows_after_trip_ms": 26,
+    "run_id": "forward-1790614767-e2f66f28",
+    "segments": 6,
+    "segments_sealed": true,
+    "stderr_tail": "forward collector: run_id=forward-1790614767-e2f66f28 root=C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-diskguard\\bounded symbols=['BTCUSDT'] markets=['spot']\n  endpoints: spot=https://api.binance.com perp=https://fapi.binance.com\n  capture: duration=90.0s rotation=60s heartbeat=2.0s checkpoint=60.0s\nmanifest -> C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-diskguard\\bounded\\manifest\\forward-1790614767-e2f66f28.json",
+    "stopped_on_disk_budget": true,
+    "stored_bytes": 276127
+  },
+  "budget_bytes": 200000,
+  "clean_exit": true,
+  "commit": "7fb9429e765dbf0d520e6a58df3dabacc05dbbde",
+  "intake_stopped_within_ms": 0,
+  "kind": "FORWARD_DATA_DISK_GUARD",
+  "manifest_finalised": true,
+  "method": "the real collector run against the public venue with a 200 kB byte budget: small enough to trip in seconds, large enough to exercise rotation, compression and sealing",
+  "partial_tails": 0,
+  "result": "PASS: guard tripped, intake stopped, writer flushed and sealed, manifest finalised, exit 0",
+  "segments_sealed": true,
+  "tripped": true,
+  "unbounded_run": {
+    "command": "-u C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\forward_collector.py --mode run --out C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-diskguard\\unbounded --symbols BTCUSDT --markets spot --streams agg_trade,book_ticker --rotation-seconds 60 --heartbeat-seconds 2 --checkpoint-seconds 60 --max-total-bytes 200000",
+    "commit": "7fb9429e765dbf0d520e6a58df3dabacc05dbbde",
+    "continuity": "CONTINUOUS_DATA",
+    "disk_limit_events": [
+      {
+        "at_ms": 1790614765877,
+        "bytes": 200126,
+        "limit": 200000
+      }
+    ],
+    "duration_seconds": 30.218,
+    "elapsed_seconds": 31.577,
+    "ended_at": "2026-09-28T16:59:25.997000+00:00",
+    "events": 0,
+    "exit_code": 0,
+    "manifest_finalised": true,
+    "max_receive_time_ms": 1790614765877,
+    "max_total_bytes": 200000,
+    "overshoot_bytes": 297,
+    "partial_tails": 0,
+    "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-diskguard\\unbounded",
+    "rows_after_trip_ms": 0,
+    "run_id": "forward-1790614735-0bf877c3",
+    "segments": 6,
+    "segments_sealed": true,
+    "stderr_tail": "forward collector: run_id=forward-1790614735-0bf877c3 root=C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-diskguard\\unbounded symbols=['BTCUSDT'] markets=['spot']\n  endpoints: spot=https://api.binance.com perp=https://fapi.binance.com\n  capture: duration=Nones rotation=60s heartbeat=2.0s checkpoint=60.0s\nmanifest -> C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward-diskguard\\unbounded\\manifest\\forward-1790614735-0bf877c3.json",
+    "stopped_on_disk_budget": true,
+    "stored_bytes": 200297
+  }
+}

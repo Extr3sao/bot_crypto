@@ -1,0 +1,11 @@
+{
+  "acquired_at_utc": "2026-10-25T13:14:34Z",
+  "fence": 3,
+  "host": "DESKTOP-4CHO695",
+  "path": "SOLUSDT.jsonl.lock",
+  "pid": 37476,
+  "process_start_ms": 1792934069867,
+  "purpose": "minutes:SOLUSDT.jsonl",
+  "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+  "token": "413ab4ed6ffb4143b57dfde62596f77e"
+}

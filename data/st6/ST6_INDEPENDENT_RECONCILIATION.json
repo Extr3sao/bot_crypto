@@ -1,0 +1,2779 @@
+{
+  "artifact": "ST6_INDEPENDENT_RECONCILIATION",
+  "disagreements": [],
+  "false_success": 0,
+  "generated_at_utc": "2026-10-09T16:34:43Z",
+  "period": {
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "started_at_utc": "2026-10-08T16:21:20Z"
+  },
+  "reading": "every declared slot is reconciled across the scheduler's own record, the repository's own logs and the raw bytes; a slot whose absence of a window cannot be explained by the external record is carried as UNKNOWN rather than as proven unattended, and a raw hash that does not reproduce is a finding",
+  "slots": [
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "no external record covers this slot: the operational channel of this host has never recorded, and the witness was not sampling when the slot ran",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced window 20261008T162202Z: it is not a loss, so the loss vocabulary has no class for it",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": null,
+        "run_events": 96,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 96
+      },
+      "C_raw_evidence": {
+        "raw_path": "data\\st6\\raw\\20261008T162202Z.json.gz",
+        "recorded_in_ledger": "e720f19ded6541b2b292940297d0b317328b0ad1ce1c2589de2ecda5e84da4e7",
+        "reproduces": true,
+        "uncompressed_sha256": "e720f19ded6541b2b292940297d0b317328b0ad1ce1c2589de2ecda5e84da4e7",
+        "window_id": "20261008T162202Z"
+      },
+      "slot_end_utc": "2026-10-08T20:00:00Z",
+      "slot_id": "2026-10-08#4",
+      "slot_start_utc": "2026-10-08T16:00:00Z",
+      "state": "COLLECTED",
+      "verdict": "WINDOW_AND_BYTES_VERIFIED"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "no external record covers this slot: the operational channel of this host has never recorded, and the witness was not sampling when the slot ran",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced window 20261008T200323Z: it is not a loss, so the loss vocabulary has no class for it",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": null,
+        "run_events": 56,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 52
+      },
+      "C_raw_evidence": {
+        "raw_path": "data\\st6\\raw\\20261008T200323Z.json.gz",
+        "recorded_in_ledger": "1340ee196977b3d16ce3958e85ef422edd8cf072ca31b91f70562c2b5ed41fd3",
+        "reproduces": true,
+        "uncompressed_sha256": "1340ee196977b3d16ce3958e85ef422edd8cf072ca31b91f70562c2b5ed41fd3",
+        "window_id": "20261008T200323Z"
+      },
+      "slot_end_utc": "2026-10-09T00:00:00Z",
+      "slot_id": "2026-10-08#5",
+      "slot_start_utc": "2026-10-08T20:00:00Z",
+      "state": "COLLECTED",
+      "verdict": "WINDOW_AND_BYTES_VERIFIED"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "no external record covers this slot: the operational channel of this host has never recorded, and the witness was not sampling when the slot ran",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced window 20261009T000323Z: it is not a loss, so the loss vocabulary has no class for it",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": null,
+        "run_events": 16,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 16
+      },
+      "C_raw_evidence": {
+        "raw_path": "data\\st6\\raw\\20261009T000323Z.json.gz",
+        "recorded_in_ledger": "3981f9320c75cf337d23aa90d8758b10326875aa88cbda3ad61118305b6d0a01",
+        "reproduces": true,
+        "uncompressed_sha256": "3981f9320c75cf337d23aa90d8758b10326875aa88cbda3ad61118305b6d0a01",
+        "window_id": "20261009T000323Z"
+      },
+      "slot_end_utc": "2026-10-09T04:00:00Z",
+      "slot_id": "2026-10-09#0",
+      "slot_start_utc": "2026-10-09T00:00:00Z",
+      "state": "COLLECTED",
+      "verdict": "WINDOW_AND_BYTES_VERIFIED"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "no external record covers this slot: the operational channel of this host has never recorded, and the witness was not sampling when the slot ran",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced window 20261009T040323Z: it is not a loss, so the loss vocabulary has no class for it",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": null,
+        "run_events": 45,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 38
+      },
+      "C_raw_evidence": {
+        "raw_path": "data\\st6\\raw\\20261009T040323Z.json.gz",
+        "recorded_in_ledger": "6b3df34ea893f1956271b3585ce4a2955999c4822521467eabf8ad3117d1a855",
+        "reproduces": true,
+        "uncompressed_sha256": "6b3df34ea893f1956271b3585ce4a2955999c4822521467eabf8ad3117d1a855",
+        "window_id": "20261009T040323Z"
+      },
+      "slot_end_utc": "2026-10-09T08:00:00Z",
+      "slot_id": "2026-10-09#1",
+      "slot_start_utc": "2026-10-09T04:00:00Z",
+      "state": "COLLECTED",
+      "verdict": "WINDOW_AND_BYTES_VERIFIED"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "no external record covers this slot: the operational channel of this host has never recorded, and the witness was not sampling when the slot ran",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced window 20261009T080052Z: it is not a loss, so the loss vocabulary has no class for it",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": null,
+        "run_events": 25,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 22
+      },
+      "C_raw_evidence": {
+        "raw_path": "data\\st6\\raw\\20261009T080052Z.json.gz",
+        "recorded_in_ledger": "ca7fd981bf09f49f52cbd0cee0339145dd11c95499ceab06a0bd3f84be1a0a60",
+        "reproduces": true,
+        "uncompressed_sha256": "ca7fd981bf09f49f52cbd0cee0339145dd11c95499ceab06a0bd3f84be1a0a60",
+        "window_id": "20261009T080052Z"
+      },
+      "slot_end_utc": "2026-10-09T12:00:00Z",
+      "slot_id": "2026-10-09#2",
+      "slot_start_utc": "2026-10-09T08:00:00Z",
+      "state": "COLLECTED",
+      "verdict": "WINDOW_AND_BYTES_VERIFIED"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the witness saw part of the slot but not all of it, so a trigger could have run between two samples unseen: attendance inside the slot is UNKNOWN from the external record",
+        "samples_in_slot": 147,
+        "scheduler_instants_named": [
+          "2026-10-09T14:33:01Z",
+          "2026-10-09T14:48:01Z",
+          "2026-10-09T14:57:05Z",
+          "2026-10-09T14:58:07Z",
+          "2026-10-09T15:03:01Z"
+        ],
+        "status": "EXTERNAL_COVERAGE_PARTIAL",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced window 20261009T120323Z: it is not a loss, so the loss vocabulary has no class for it",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": null,
+        "run_events": 55,
+        "run_ids_caused_by_this_verifier": [
+          "20261009T145706Z-3513414c",
+          "20261009T145716Z-dc27068e",
+          "20261009T145725Z-3b03160e",
+          "20261009T145736Z-011eb53e",
+          "20261009T145737Z-70a88707",
+          "20261009T145808Z-1af1fb69",
+          "20261009T145817Z-9e118205",
+          "20261009T145827Z-39fd6e24",
+          "20261009T145838Z-c968d08a",
+          "20261009T145840Z-8b28f78c"
+        ],
+        "scheduled_events": 46
+      },
+      "C_raw_evidence": {
+        "raw_path": "data\\st6\\raw\\20261009T120323Z.json.gz",
+        "recorded_in_ledger": "52fb6fa6dda8f6f513fef791a26cebb1a6fc2269755c92e4edf020194fc0d2b5",
+        "reproduces": true,
+        "uncompressed_sha256": "52fb6fa6dda8f6f513fef791a26cebb1a6fc2269755c92e4edf020194fc0d2b5",
+        "window_id": "20261009T120323Z"
+      },
+      "slot_end_utc": "2026-10-09T16:00:00Z",
+      "slot_id": "2026-10-09#3",
+      "slot_start_utc": "2026-10-09T12:00:00Z",
+      "state": "COLLECTED",
+      "verdict": "WINDOW_AND_BYTES_VERIFIED"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the witness saw part of the slot but not all of it, so a trigger could have run between two samples unseen: attendance inside the slot is UNKNOWN from the external record",
+        "samples_in_slot": 5,
+        "scheduler_instants_named": [
+          "2026-10-09T16:03:01Z",
+          "2026-10-09T16:18:01Z",
+          "2026-10-09T16:24:37Z",
+          "2026-10-09T16:27:33Z"
+        ],
+        "status": "EXTERNAL_COVERAGE_PARTIAL",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced window 20261009T160324Z: it is not a loss, so the loss vocabulary has no class for it",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": null,
+        "run_events": 80,
+        "run_ids_caused_by_this_verifier": [
+          "20261009T160433Z-cb717a7d",
+          "20261009T160442Z-4ce757f5",
+          "20261009T160452Z-0180d5fe",
+          "20261009T160502Z-9eee3915",
+          "20261009T160503Z-8f97983a",
+          "20261009T161548Z-1840664d",
+          "20261009T161602Z-4012f801",
+          "20261009T161612Z-f298191f",
+          "20261009T161622Z-63fd198e",
+          "20261009T161624Z-6d0a912d",
+          "20261009T162047Z-e8a5b214",
+          "20261009T162101Z-89bcd5ce",
+          "20261009T162110Z-eaf26946",
+          "20261009T162123Z-6b682d49",
+          "20261009T162125Z-615be300",
+          "20261009T162208Z-82583714",
+          "20261009T162217Z-cd90245b",
+          "20261009T162229Z-37dc5546",
+          "20261009T162240Z-1d417a9a",
+          "20261009T162241Z-9e913d97",
+          "20261009T162437Z-b58ae9dd",
+          "20261009T162447Z-7899fa97",
+          "20261009T162457Z-fa0664e1",
+          "20261009T162511Z-3388c5b5",
+          "20261009T162512Z-1cd05429",
+          "20261009T162734Z-f6cdf061",
+          "20261009T162744Z-f6e638e7",
+          "20261009T162754Z-8285d8a5",
+          "20261009T162806Z-fbfaebe1",
+          "20261009T162807Z-4c9dcbf3",
+          "20261009T163157Z-c7965dd9",
+          "20261009T163207Z-086c5ccc",
+          "20261009T163217Z-017af667",
+          "20261009T163228Z-e31af066",
+          "20261009T163230Z-41c07e00",
+          "20261009T163444Z-c3c22301",
+          "20261009T163453Z-61399657",
+          "20261009T163504Z-b6f8d8e3",
+          "20261009T163515Z-c1aa84dc",
+          "20261009T163516Z-3d86c11f"
+        ],
+        "scheduled_events": 54
+      },
+      "C_raw_evidence": {
+        "raw_path": "data\\st6\\raw\\20261009T160324Z.json.gz",
+        "recorded_in_ledger": "4394eae495246217895655dac144d715c6d7f238901cf98dfb5b54936dccb33e",
+        "reproduces": true,
+        "uncompressed_sha256": "4394eae495246217895655dac144d715c6d7f238901cf98dfb5b54936dccb33e",
+        "window_id": "20261009T160324Z"
+      },
+      "slot_end_utc": "2026-10-09T20:00:00Z",
+      "slot_id": "2026-10-09#4",
+      "slot_start_utc": "2026-10-09T16:00:00Z",
+      "state": "COLLECTED",
+      "verdict": "WINDOW_AND_BYTES_VERIFIED"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-10T00:00:00Z",
+      "slot_id": "2026-10-09#5",
+      "slot_start_utc": "2026-10-09T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-10T04:00:00Z",
+      "slot_id": "2026-10-10#0",
+      "slot_start_utc": "2026-10-10T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-10T08:00:00Z",
+      "slot_id": "2026-10-10#1",
+      "slot_start_utc": "2026-10-10T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-10T12:00:00Z",
+      "slot_id": "2026-10-10#2",
+      "slot_start_utc": "2026-10-10T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-10T16:00:00Z",
+      "slot_id": "2026-10-10#3",
+      "slot_start_utc": "2026-10-10T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-10T20:00:00Z",
+      "slot_id": "2026-10-10#4",
+      "slot_start_utc": "2026-10-10T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-11T00:00:00Z",
+      "slot_id": "2026-10-10#5",
+      "slot_start_utc": "2026-10-10T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-11T04:00:00Z",
+      "slot_id": "2026-10-11#0",
+      "slot_start_utc": "2026-10-11T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-11T08:00:00Z",
+      "slot_id": "2026-10-11#1",
+      "slot_start_utc": "2026-10-11T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-11T12:00:00Z",
+      "slot_id": "2026-10-11#2",
+      "slot_start_utc": "2026-10-11T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-11T16:00:00Z",
+      "slot_id": "2026-10-11#3",
+      "slot_start_utc": "2026-10-11T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-11T20:00:00Z",
+      "slot_id": "2026-10-11#4",
+      "slot_start_utc": "2026-10-11T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-12T00:00:00Z",
+      "slot_id": "2026-10-11#5",
+      "slot_start_utc": "2026-10-11T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-12T04:00:00Z",
+      "slot_id": "2026-10-12#0",
+      "slot_start_utc": "2026-10-12T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-12T08:00:00Z",
+      "slot_id": "2026-10-12#1",
+      "slot_start_utc": "2026-10-12T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-12T12:00:00Z",
+      "slot_id": "2026-10-12#2",
+      "slot_start_utc": "2026-10-12T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-12T16:00:00Z",
+      "slot_id": "2026-10-12#3",
+      "slot_start_utc": "2026-10-12T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-12T20:00:00Z",
+      "slot_id": "2026-10-12#4",
+      "slot_start_utc": "2026-10-12T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-13T00:00:00Z",
+      "slot_id": "2026-10-12#5",
+      "slot_start_utc": "2026-10-12T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-13T04:00:00Z",
+      "slot_id": "2026-10-13#0",
+      "slot_start_utc": "2026-10-13T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-13T08:00:00Z",
+      "slot_id": "2026-10-13#1",
+      "slot_start_utc": "2026-10-13T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-13T12:00:00Z",
+      "slot_id": "2026-10-13#2",
+      "slot_start_utc": "2026-10-13T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-13T16:00:00Z",
+      "slot_id": "2026-10-13#3",
+      "slot_start_utc": "2026-10-13T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-13T20:00:00Z",
+      "slot_id": "2026-10-13#4",
+      "slot_start_utc": "2026-10-13T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-14T00:00:00Z",
+      "slot_id": "2026-10-13#5",
+      "slot_start_utc": "2026-10-13T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-14T04:00:00Z",
+      "slot_id": "2026-10-14#0",
+      "slot_start_utc": "2026-10-14T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-14T08:00:00Z",
+      "slot_id": "2026-10-14#1",
+      "slot_start_utc": "2026-10-14T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-14T12:00:00Z",
+      "slot_id": "2026-10-14#2",
+      "slot_start_utc": "2026-10-14T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-14T16:00:00Z",
+      "slot_id": "2026-10-14#3",
+      "slot_start_utc": "2026-10-14T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-14T20:00:00Z",
+      "slot_id": "2026-10-14#4",
+      "slot_start_utc": "2026-10-14T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-15T00:00:00Z",
+      "slot_id": "2026-10-14#5",
+      "slot_start_utc": "2026-10-14T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-15T04:00:00Z",
+      "slot_id": "2026-10-15#0",
+      "slot_start_utc": "2026-10-15T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-15T08:00:00Z",
+      "slot_id": "2026-10-15#1",
+      "slot_start_utc": "2026-10-15T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-15T12:00:00Z",
+      "slot_id": "2026-10-15#2",
+      "slot_start_utc": "2026-10-15T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-15T16:00:00Z",
+      "slot_id": "2026-10-15#3",
+      "slot_start_utc": "2026-10-15T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-15T20:00:00Z",
+      "slot_id": "2026-10-15#4",
+      "slot_start_utc": "2026-10-15T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-16T00:00:00Z",
+      "slot_id": "2026-10-15#5",
+      "slot_start_utc": "2026-10-15T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-16T04:00:00Z",
+      "slot_id": "2026-10-16#0",
+      "slot_start_utc": "2026-10-16T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-16T08:00:00Z",
+      "slot_id": "2026-10-16#1",
+      "slot_start_utc": "2026-10-16T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-16T12:00:00Z",
+      "slot_id": "2026-10-16#2",
+      "slot_start_utc": "2026-10-16T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-16T16:00:00Z",
+      "slot_id": "2026-10-16#3",
+      "slot_start_utc": "2026-10-16T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-16T20:00:00Z",
+      "slot_id": "2026-10-16#4",
+      "slot_start_utc": "2026-10-16T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-17T00:00:00Z",
+      "slot_id": "2026-10-16#5",
+      "slot_start_utc": "2026-10-16T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-17T04:00:00Z",
+      "slot_id": "2026-10-17#0",
+      "slot_start_utc": "2026-10-17T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-17T08:00:00Z",
+      "slot_id": "2026-10-17#1",
+      "slot_start_utc": "2026-10-17T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-17T12:00:00Z",
+      "slot_id": "2026-10-17#2",
+      "slot_start_utc": "2026-10-17T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-17T16:00:00Z",
+      "slot_id": "2026-10-17#3",
+      "slot_start_utc": "2026-10-17T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-17T20:00:00Z",
+      "slot_id": "2026-10-17#4",
+      "slot_start_utc": "2026-10-17T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-18T00:00:00Z",
+      "slot_id": "2026-10-17#5",
+      "slot_start_utc": "2026-10-17T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-18T04:00:00Z",
+      "slot_id": "2026-10-18#0",
+      "slot_start_utc": "2026-10-18T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-18T08:00:00Z",
+      "slot_id": "2026-10-18#1",
+      "slot_start_utc": "2026-10-18T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-18T12:00:00Z",
+      "slot_id": "2026-10-18#2",
+      "slot_start_utc": "2026-10-18T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-18T16:00:00Z",
+      "slot_id": "2026-10-18#3",
+      "slot_start_utc": "2026-10-18T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-18T20:00:00Z",
+      "slot_id": "2026-10-18#4",
+      "slot_start_utc": "2026-10-18T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-19T00:00:00Z",
+      "slot_id": "2026-10-18#5",
+      "slot_start_utc": "2026-10-18T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-19T04:00:00Z",
+      "slot_id": "2026-10-19#0",
+      "slot_start_utc": "2026-10-19T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-19T08:00:00Z",
+      "slot_id": "2026-10-19#1",
+      "slot_start_utc": "2026-10-19T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-19T12:00:00Z",
+      "slot_id": "2026-10-19#2",
+      "slot_start_utc": "2026-10-19T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-19T16:00:00Z",
+      "slot_id": "2026-10-19#3",
+      "slot_start_utc": "2026-10-19T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-19T20:00:00Z",
+      "slot_id": "2026-10-19#4",
+      "slot_start_utc": "2026-10-19T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-20T00:00:00Z",
+      "slot_id": "2026-10-19#5",
+      "slot_start_utc": "2026-10-19T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-20T04:00:00Z",
+      "slot_id": "2026-10-20#0",
+      "slot_start_utc": "2026-10-20T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-20T08:00:00Z",
+      "slot_id": "2026-10-20#1",
+      "slot_start_utc": "2026-10-20T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-20T12:00:00Z",
+      "slot_id": "2026-10-20#2",
+      "slot_start_utc": "2026-10-20T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-20T16:00:00Z",
+      "slot_id": "2026-10-20#3",
+      "slot_start_utc": "2026-10-20T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-20T20:00:00Z",
+      "slot_id": "2026-10-20#4",
+      "slot_start_utc": "2026-10-20T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-21T00:00:00Z",
+      "slot_id": "2026-10-20#5",
+      "slot_start_utc": "2026-10-20T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-21T04:00:00Z",
+      "slot_id": "2026-10-21#0",
+      "slot_start_utc": "2026-10-21T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-21T08:00:00Z",
+      "slot_id": "2026-10-21#1",
+      "slot_start_utc": "2026-10-21T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-21T12:00:00Z",
+      "slot_id": "2026-10-21#2",
+      "slot_start_utc": "2026-10-21T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-21T16:00:00Z",
+      "slot_id": "2026-10-21#3",
+      "slot_start_utc": "2026-10-21T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-21T20:00:00Z",
+      "slot_id": "2026-10-21#4",
+      "slot_start_utc": "2026-10-21T16:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-22T00:00:00Z",
+      "slot_id": "2026-10-21#5",
+      "slot_start_utc": "2026-10-21T20:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-22T04:00:00Z",
+      "slot_id": "2026-10-22#0",
+      "slot_start_utc": "2026-10-22T00:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-22T08:00:00Z",
+      "slot_id": "2026-10-22#1",
+      "slot_start_utc": "2026-10-22T04:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-22T12:00:00Z",
+      "slot_id": "2026-10-22#2",
+      "slot_start_utc": "2026-10-22T08:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    },
+    {
+      "A_external": {
+        "per_run_evidence": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "reading": "the slot has not begun: nothing can be said about its attendance yet, and the entry is a declaration of what is expected rather than a record of what happened",
+        "samples_in_slot": 0,
+        "scheduler_instants_named": [],
+        "status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+        "system_restart_inside_slot": false
+      },
+      "B_internal": {
+        "agrees": true,
+        "attendance_reading": "the slot produced no window: the loss vocabulary applies",
+        "ledger_classification": null,
+        "missed_record": false,
+        "re_derived_classification": "ATTENDANCE_UNKNOWN",
+        "run_events": 0,
+        "run_ids_caused_by_this_verifier": [],
+        "scheduled_events": 0
+      },
+      "C_raw_evidence": {
+        "raw_path": null,
+        "recorded_in_ledger": null,
+        "reproduces": null,
+        "uncompressed_sha256": null,
+        "window_id": null
+      },
+      "slot_end_utc": "2026-10-22T16:00:00Z",
+      "slot_id": "2026-10-22#3",
+      "slot_start_utc": "2026-10-22T12:00:00Z",
+      "state": "PENDING",
+      "verdict": "AHEAD"
+    }
+  ],
+  "sources": {
+    "A_external": "the Task Scheduler's own reporting, sampled by scripts/st6_scheduler_witness.py",
+    "B_internal": "the run log, the missed log and the slot ledger",
+    "C_raw": "the raw window bytes on disk, re-hashed here",
+    "per_run_external_status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+    "witness_samples": 152
+  },
+  "states": {
+    "COLLECTED": 7,
+    "LOST_NO_WINDOW": 0,
+    "PENDING": 77,
+    "UNACCOUNTED": 0
+  },
+  "status": "PASS",
+  "verifier": "scripts/st6_scheduler_verify.py"
+}

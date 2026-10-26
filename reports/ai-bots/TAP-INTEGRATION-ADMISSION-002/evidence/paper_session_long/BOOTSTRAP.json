@@ -1,0 +1,24 @@
+{
+  "server_time_ms": 1792948791386,
+  "skew_ms": -347,
+  "symbols": {
+    "BTCUSDT": {
+      "appended": 124,
+      "duplicates": 0,
+      "first_open_ms": 1792941300000,
+      "forming_ignored": 1,
+      "last_open_ms": 1792948680000,
+      "minutes": 124,
+      "settle_deferred": 0
+    },
+    "ETHUSDT": {
+      "appended": 124,
+      "duplicates": 0,
+      "first_open_ms": 1792941300000,
+      "forming_ignored": 1,
+      "last_open_ms": 1792948680000,
+      "minutes": 124,
+      "settle_deferred": 0
+    }
+  }
+}

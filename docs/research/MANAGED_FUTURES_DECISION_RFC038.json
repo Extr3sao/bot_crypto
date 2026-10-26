@@ -1,0 +1,54 @@
+{
+  "kpi": {
+    "HISTORICAL_EXECUTABLE_VALIDATED_EDGE_COUNT": 1,
+    "MODERN_VALIDATED_EDGE_COUNT": 0,
+    "HISTORICAL_ROBUST_EDGE_COUNT": 1,
+    "PAPER_CANDIDATE_COUNT": 0,
+    "FORWARD_PROFITABLE_COUNT": 0,
+    "LIVE_PROFITABLE_COUNT": 0,
+    "MODERN_DATA_STATUS": "PAID_CANDIDATE"
+  },
+  "gates": {
+    "G_CAP_RECON": "PASS",
+    "G_NULL_VALIDITY": "PASS",
+    "G_ADVERSARIAL": "PASS"
+  },
+  "path": "A",
+  "capital_classification": "RFC037_CAPITAL_DEFECT",
+  "minimum_viable_capital": 25000000.0,
+  "minimum_preferred_capital": 50000000.0,
+  "decision": {
+    "eligible": [
+      "Databento",
+      "CME DataMine",
+      "Portara / CQG DataFactory",
+      "Algoseek",
+      "FirstRate Data"
+    ],
+    "ranked": [
+      "Databento",
+      "CME DataMine",
+      "Portara / CQG DataFactory",
+      "Algoseek",
+      "FirstRate Data",
+      "TurtleTrader (RFC-036 source)",
+      "Nasdaq Data Link (CHRIS)"
+    ],
+    "best_provider": "Databento",
+    "best_dataset": "GLBX.MDP3 (CME Globex MDP 3.0)",
+    "best_price": "usage-based (metered by uncompressed bytes) or subscription (Standard $179-$199/month, 15+ yr history); full-history firm licence advertised at ~$4,500/month",
+    "classification": "BUY_CANDIDATE",
+    "rule": "among eligible datasets (individual contracts + term structure + P1&P2 MEDIUM+ + live), pick highest DATA_RESEARCH_VALUE; tie-break public price then API. BUY_CANDIDATE never purchases -- it needs human approval."
+  },
+  "status": {
+    "MF-TREND-001": "MODERN_VALIDATION_DATA_BLOCKED",
+    "why_not_rejected_modern_transport": "G_REFUTE_2 was never run, so no modern transport evidence exists; rejection would require economic evidence, not an untested gate.",
+    "historical_executable_validation": "PASS",
+    "historical_robustness": "PASS",
+    "modern_data": "BLOCKED (free block resolved to a paid candidate, \u00a727)",
+    "modern_edge": "BLOCKED",
+    "paper_candidate": "NO",
+    "P2": "AUTHORIZED_WAITING",
+    "CANDIDATE_ID": "MF-TREND-001"
+  }
+}

@@ -1,0 +1,1459 @@
+{
+  "counts": {
+    "DIFFERS": 13,
+    "IDENTICAL": 4,
+    "MISSING": 67,
+    "group_slice": 47,
+    "group_verification-tests": 37,
+    "total": 84
+  },
+  "excluded_tests": {
+    "tests/unit/ops/test_windowless.py": "loads scripts/cap004_supervisor.py and scripts/ops_background_audit.py, both outside the slice; migrating a 1 704-line supervisor to run a test is not a test route",
+    "tests/unit/research/test_prospective_admission.py": "imports trading_bot.research.prospective.* (outside the slice)",
+    "tests/unit/vision/test_compare.py": "imports trading_bot.vision.compare (outside the slice)",
+    "tests/unit/vision/test_def_run_017_economics.py": "imports trading_bot.vision.economic_audit (outside the slice)"
+  },
+  "lane": "codepaper/supervisor-001",
+  "lane_tip": "3b758e22f0c9835646c9eba9db6634757970b126",
+  "main": "main",
+  "main_tip": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "merge_base": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "note": "2 config files are invisible to the import graph; 1 lock/1 dependency file; 1 ignore policy",
+  "post_migration_edits": {
+    ".gitignore": "narrowed: main's reports/* stays in force and only this delivery's directory is re-included, instead of the lane's ~250 lines of report subtrees",
+    "scripts/paper_supervisor_verify.py": "G2: a check whose evidence is absent is now NOT_APPLICABLE, not FAIL; a mutation that cannot run is not counted as invalid or detected; the verifier judges a real campaign without fabricating scenarios/SCENARIOS.json",
+    "tests/unit/vision/test_def_run_016_integrity.py": "one test loads scripts/def_run_016_verify.py, outside the slice: skipped with the reason instead of failing; the other 20 tests in the file run unchanged",
+    "uv.lock": "regenerated from pyproject.toml: the lane's lock is byte-identical to main's and omits matplotlib, which is the B3 defect"
+  },
+  "routes": [
+    {
+      "dest_sha256": "242acd2670fe991a102d494c7ab6cf0f76dd6b0d4813c0a686605990aa2bbaf3",
+      "group": "slice",
+      "lane_blob": "575245a2a49e69cd329193ea4c98caddc243157d",
+      "lane_sha256": "242acd2670fe991a102d494c7ab6cf0f76dd6b0d4813c0a686605990aa2bbaf3",
+      "main_blob": "e929998fab2f4248a566ff6063b2548f16f05b2d",
+      "origin_commit": {
+        "date": "2026-10-17T21:45:22+02:00",
+        "sha": "9cf91f628443edd4407b54688f8ead95df5c1806",
+        "subject": "Let a vision model decide on a chart without letting it touch the risk policy."
+      },
+      "path": "pyproject.toml",
+      "reason": "vision/chart.py imports matplotlib, declared nowhere in main",
+      "resolution": "additive: one dependency line added to a list main already owns",
+      "state": "DIFFERS",
+      "step": "1-dependency"
+    },
+    {
+      "dest_sha256": "35f5f17228debdda28279d9017cb2aea45765f0b61a9e1d42ef279e9c8a8f28c",
+      "group": "slice",
+      "lane_blob": "08c5fa9e2f1976124d566091b857e2d4cc0cade1",
+      "lane_sha256": "5508a885c5437b84fb11b07681e3126bb0709593775d2f656e4826f38fe4138b",
+      "main_blob": "08c5fa9e2f1976124d566091b857e2d4cc0cade1",
+      "origin_commit": {
+        "date": "2026-09-28T17:32:24+02:00",
+        "sha": "a10173dc5e585bbdb9daa14129c460e7bf17d560",
+        "subject": "feat(forward): WebSocket-first forward microstructure collector with verified recovery"
+      },
+      "path": "uv.lock",
+      "reason": "lock must agree with pyproject; byte-identical in main, so the omission is a lock defect",
+      "resolution": "regenerated from pyproject, not copied from the lane (the lane lock omits matplotlib too)",
+      "state": "IDENTICAL",
+      "step": "1-dependency"
+    },
+    {
+      "dest_sha256": "91a5411d70b82f79f960a15cc422d1b850ecbc99e93276560fa821afabf351dd",
+      "group": "slice",
+      "lane_blob": "2c28c8079c4d8c80958b2a127eee06db88af1ad8",
+      "lane_sha256": "91a5411d70b82f79f960a15cc422d1b850ecbc99e93276560fa821afabf351dd",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T20:44:37+02:00",
+        "sha": "fe9b5e2623b0d023833249e9687b753eaacd27d4",
+        "subject": "Start automated children without a console window"
+      },
+      "path": "src/trading_bot/ops/__init__.py",
+      "reason": "package root imported by every ops module",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "3-ops"
+    },
+    {
+      "dest_sha256": "3d9de058d413062f4fd283f0e9c1bd5be56582daa0fc048fc5bc91ca62ad3470",
+      "group": "slice",
+      "lane_blob": "dd3eb9890372ff7fc07866702f2b1a8906463821",
+      "lane_sha256": "3d9de058d413062f4fd283f0e9c1bd5be56582daa0fc048fc5bc91ca62ad3470",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T20:49:08+02:00",
+        "sha": "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+        "subject": "Let a supervisor recover a crashed PAPER session, or stop by name."
+      },
+      "path": "src/trading_bot/ops/paper_supervisor.py",
+      "reason": "the supervisor loop itself",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "3-ops"
+    },
+    {
+      "dest_sha256": "983d7fb93669e94ccb422491054f1023fb63ee91d9d6a11b28b5488e98027073",
+      "group": "slice",
+      "lane_blob": "7e2700c6ccef1cf5f11d56613eab596c3f02e811",
+      "lane_sha256": "983d7fb93669e94ccb422491054f1023fb63ee91d9d6a11b28b5488e98027073",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T20:49:08+02:00",
+        "sha": "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+        "subject": "Let a supervisor recover a crashed PAPER session, or stop by name."
+      },
+      "path": "src/trading_bot/ops/session_status.py",
+      "reason": "status document read by supervisor and status CLI",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "3-ops"
+    },
+    {
+      "dest_sha256": "04f135b3d45c26750430d832ae9447c5e6977e9b334a460dda386504336408d0",
+      "group": "slice",
+      "lane_blob": "9ccf0be51b6ad319cba68dd51bc1a79c1abdebe3",
+      "lane_sha256": "04f135b3d45c26750430d832ae9447c5e6977e9b334a460dda386504336408d0",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T10:07:29+02:00",
+        "sha": "b21a6e3b48797eec55e7a1fdec27effc094a459a",
+        "subject": "Reclaim a crashed writer's lock only when its owner is proved gone"
+      },
+      "path": "src/trading_bot/ops/single_writer.py",
+      "reason": "single-writer lock guard for the stream",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "3-ops"
+    },
+    {
+      "dest_sha256": "6c82ae8a53a5ca40fea13d58e4890c306c1b526da2740bfeb72d1d088d7586e5",
+      "group": "slice",
+      "lane_blob": "525210325220d525702a158defe00510a1a993ab",
+      "lane_sha256": "6c82ae8a53a5ca40fea13d58e4890c306c1b526da2740bfeb72d1d088d7586e5",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T20:44:37+02:00",
+        "sha": "fe9b5e2623b0d023833249e9687b753eaacd27d4",
+        "subject": "Start automated children without a console window"
+      },
+      "path": "src/trading_bot/ops/windowless.py",
+      "reason": "windowless launcher used by the supervisor",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "3-ops"
+    },
+    {
+      "dest_sha256": "e912b496f6417af88487ae21d592cd7683ace6775ddf6bc3bda893d7e6882241",
+      "group": "slice",
+      "lane_blob": "fbe1844047c7757059b60cb2f75724d867704ba2",
+      "lane_sha256": "e912b496f6417af88487ae21d592cd7683ace6775ddf6bc3bda893d7e6882241",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T22:48:19+02:00",
+        "sha": "520a6df970a6a77d641ae2967c4cec7cecbc231f",
+        "subject": "Fix the chart's ink and refuse opinions the runtime cannot execute."
+      },
+      "path": "src/trading_bot/vision/chart.py",
+      "reason": "renders the chart the model sees (matplotlib)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "5c39bc4fbd1b3eaacf806108ab2a6e290d6ee835f8cddee33e7bd0a5bfc7dfc3",
+      "group": "slice",
+      "lane_blob": "0346094fa711cbc890115b9541189e4e9686b2aa",
+      "lane_sha256": "5c39bc4fbd1b3eaacf806108ab2a6e290d6ee835f8cddee33e7bd0a5bfc7dfc3",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T13:51:07+02:00",
+        "sha": "2557a9f229f22e1f3c60e921e5b10dc83867bb94",
+        "subject": "Timestamp the vision decision when the bar closed, not when it opened"
+      },
+      "path": "src/trading_bot/vision/clock.py",
+      "reason": "causal clock of the session",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "b13e3aa8e376d68c92c70e3c65b6cbb0dc3292778dcf75aa809c962625d6c757",
+      "group": "slice",
+      "lane_blob": "537f764f794d57965ac277c302511b49838a8cf3",
+      "lane_sha256": "b13e3aa8e376d68c92c70e3c65b6cbb0dc3292778dcf75aa809c962625d6c757",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T22:48:19+02:00",
+        "sha": "520a6df970a6a77d641ae2967c4cec7cecbc231f",
+        "subject": "Fix the chart's ink and refuse opinions the runtime cannot execute."
+      },
+      "path": "src/trading_bot/vision/contract.py",
+      "reason": "session contract / stop reasons",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1",
+      "group": "slice",
+      "lane_blob": "04ef7ba23a98eab86d32726acfcda6610da6d187",
+      "lane_sha256": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-19T12:02:54+02:00",
+        "sha": "5fd791d877af78f855bf0c75e3358344b8a5a8f1",
+        "subject": "Publish the AI-bots PAPER chain with an auditable ledger and clock"
+      },
+      "path": "src/trading_bot/vision/execution.py",
+      "reason": "paper execution of the lane's decisions",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "6e632375385dda9a22b35c18707bea7a7e2748563393d3a631adb416d52b7ace",
+      "group": "slice",
+      "lane_blob": "242c94d53b65c8c536dc017dd0e329e099d23c1b",
+      "lane_sha256": "6e632375385dda9a22b35c18707bea7a7e2748563393d3a631adb416d52b7ace",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T13:51:07+02:00",
+        "sha": "2557a9f229f22e1f3c60e921e5b10dc83867bb94",
+        "subject": "Timestamp the vision decision when the bar closed, not when it opened"
+      },
+      "path": "src/trading_bot/vision/guards.py",
+      "reason": "runtime guards for the session",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "99ff8c9a3c863d1ee7ef308703f324c49f3ada2460a096f7b63290df914b23bc",
+      "group": "slice",
+      "lane_blob": "4a2a40b91f8107f7ae3c0128094b72f4ea0105b1",
+      "lane_sha256": "99ff8c9a3c863d1ee7ef308703f324c49f3ada2460a096f7b63290df914b23bc",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T22:41:54+02:00",
+        "sha": "b852939f78042a8769eb7d0496669900c4229500",
+        "subject": "Record the running commit in the RUN header before the first decision"
+      },
+      "path": "src/trading_bot/vision/lane.py",
+      "reason": "the lane itself; imports most of vision and research",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "bbdfd19b0b67b1f1d256536b5409782aff450114aaad54152beb18055dff1af4",
+      "group": "slice",
+      "lane_blob": "94fe138c45bdbd1bbf30bc56ef95100f55df1736",
+      "lane_sha256": "bbdfd19b0b67b1f1d256536b5409782aff450114aaad54152beb18055dff1af4",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T10:07:29+02:00",
+        "sha": "b21a6e3b48797eec55e7a1fdec27effc094a459a",
+        "subject": "Reclaim a crashed writer's lock only when its owner is proved gone"
+      },
+      "path": "src/trading_bot/vision/ledger.py",
+      "reason": "append-only decision ledger",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "41f2a7fd342cfcd7f757e63201e6abfeef5f6ee070c80849e2e1f74aabd640be",
+      "group": "slice",
+      "lane_blob": "32fb80d409f56768531182c7f158acff791aea9d",
+      "lane_sha256": "41f2a7fd342cfcd7f757e63201e6abfeef5f6ee070c80849e2e1f74aabd640be",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T21:45:22+02:00",
+        "sha": "9cf91f628443edd4407b54688f8ead95df5c1806",
+        "subject": "Let a vision model decide on a chart without letting it touch the risk policy."
+      },
+      "path": "src/trading_bot/vision/prompt.py",
+      "reason": "prompt assembly for the multimodal step",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "7186757f1368f39795e1401a6a4573a22b0fad5d2e04346d7e8594c233faf7d2",
+      "group": "slice",
+      "lane_blob": "df59584089936847caedd14ef1784f44fcf1948d",
+      "lane_sha256": "7186757f1368f39795e1401a6a4573a22b0fad5d2e04346d7e8594c233faf7d2",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T10:07:29+02:00",
+        "sha": "b21a6e3b48797eec55e7a1fdec27effc094a459a",
+        "subject": "Reclaim a crashed writer's lock only when its owner is proved gone"
+      },
+      "path": "src/trading_bot/vision/prospective.py",
+      "reason": "prospective session runner (default child of the supervisor)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "17903c4116861bf01df27d72fef83895146835e3544dbd2d49c33c83cc542272",
+      "group": "slice",
+      "lane_blob": "d04ee47d2ba244ded7cd9fb18dc1fc478892ecae",
+      "lane_sha256": "17903c4116861bf01df27d72fef83895146835e3544dbd2d49c33c83cc542272",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T12:40:10+02:00",
+        "sha": "d9b46b72aa7c829aa74a84f146e93343f989103d",
+        "subject": "Keep the resume lineage so a second recovery replays the same origin"
+      },
+      "path": "src/trading_bot/vision/provenance.py",
+      "reason": "code/data provenance recorded in the stream",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "ad39e47e944fdbcf278674c2f9644fba61c6c6425dbb653fdeccb021c086c70e",
+      "group": "slice",
+      "lane_blob": "742835472155c399bff7525a087eabb8affc031b",
+      "lane_sha256": "ad39e47e944fdbcf278674c2f9644fba61c6c6425dbb653fdeccb021c086c70e",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T22:48:19+02:00",
+        "sha": "520a6df970a6a77d641ae2967c4cec7cecbc231f",
+        "subject": "Fix the chart's ink and refuse opinions the runtime cannot execute."
+      },
+      "path": "src/trading_bot/vision/provider.py",
+      "reason": "model provider abstraction",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "5ec0766e068ec1c49762555529e548dc82e27abf8fe0c92fb224d85072d3c086",
+      "group": "slice",
+      "lane_blob": "07f8dadda55d921d3d7b3ceccaaded12ca357c75",
+      "lane_sha256": "5ec0766e068ec1c49762555529e548dc82e27abf8fe0c92fb224d85072d3c086",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-19T12:02:54+02:00",
+        "sha": "5fd791d877af78f855bf0c75e3358344b8a5a8f1",
+        "subject": "Publish the AI-bots PAPER chain with an auditable ledger and clock"
+      },
+      "path": "src/trading_bot/vision/quotes.py",
+      "reason": "minute quote feed",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "a9f25bb24abd0f55d8a152e0fa5200883a8c7b6649b72752052336a491a90831",
+      "group": "slice",
+      "lane_blob": "3900f38b98e2e2d4550866c463f6c13ae406e879",
+      "lane_sha256": "a9f25bb24abd0f55d8a152e0fa5200883a8c7b6649b72752052336a491a90831",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T16:17:20+02:00",
+        "sha": "96957a2be068322459849855735d5ca368519040",
+        "subject": "Fill at a quote that exists after the answer, and check the bar you enter on"
+      },
+      "path": "src/trading_bot/vision/settings.py",
+      "reason": "vision settings loaded from config/vision.yaml",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "92b5b8227af15d74eafacdf8dc610961764a86f5f9086272139c8a31dd22be2a",
+      "group": "slice",
+      "lane_blob": "a2b60c3f8287c3d54fa64ca2e5d05a79ac0ef2d0",
+      "lane_sha256": "92b5b8227af15d74eafacdf8dc610961764a86f5f9086272139c8a31dd22be2a",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-20T14:04:09+02:00",
+        "sha": "b0e15497d967ff1c1d3015203ffb7cbfcf0a70a0",
+        "subject": "Admit every existing AlphaFamily to the paper lane and prove the cost barrier"
+      },
+      "path": "src/trading_bot/vision/signal_sources.py",
+      "reason": "signal families evaluated by the lane",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "35ab5837643be6c6a32a81cc074f4808e50f5e6973d78769525c0eaf5854beea",
+      "group": "slice",
+      "lane_blob": "026fade02539009b4a97f2341b615c9bb3288282",
+      "lane_sha256": "35ab5837643be6c6a32a81cc074f4808e50f5e6973d78769525c0eaf5854beea",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T10:07:29+02:00",
+        "sha": "b21a6e3b48797eec55e7a1fdec27effc094a459a",
+        "subject": "Reclaim a crashed writer's lock only when its owner is proved gone"
+      },
+      "path": "src/trading_bot/market_data/minute_collector.py",
+      "reason": "minute bars/quote collection behind vision/quotes.py",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "4-vision"
+    },
+    {
+      "dest_sha256": "b91426057084d83799f92cf87c057dffd95959089d30e0e91b7ac5273e0c0750",
+      "group": "slice",
+      "lane_blob": "7f905b0437f34f43d7cb3ff67aa224f4147aa104",
+      "lane_sha256": "b91426057084d83799f92cf87c057dffd95959089d30e0e91b7ac5273e0c0750",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T09:35:06+02:00",
+        "sha": "133b8168f1c38e53abe3fb81c25e1491aaa934b1",
+        "subject": "Fill every exit at the bar after the close that decided it"
+      },
+      "path": "src/trading_bot/research/economic_recovery/alpha15.py",
+      "reason": "alpha15 signal evaluated by the lane",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "5-economics"
+    },
+    {
+      "dest_sha256": "4bcd833a675f0899b3802a2863d06d65bf74d7fc96491219b03b8f9229a1beef",
+      "group": "slice",
+      "lane_blob": "d6bc41897537af9466b20f27b8539243f3279aff",
+      "lane_sha256": "4bcd833a675f0899b3802a2863d06d65bf74d7fc96491219b03b8f9229a1beef",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-16T14:46:45+02:00",
+        "sha": "3e27ca855a2fa778e0b63361783b71fa76c850c9",
+        "subject": "Rebuild the cost contradiction from its source and audit the real trade path. [RFC-EDGE-014]"
+      },
+      "path": "src/trading_bot/research/economic_recovery/contracts.py",
+      "reason": "typed contracts of the economic audit",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "5-economics"
+    },
+    {
+      "dest_sha256": "fc64ae5cd0a4678266518b3a9a1ec2689112d721febbf8ae9263403908ab28d2",
+      "group": "slice",
+      "lane_blob": "e2cdf9ace9ffe46903c2b59b97633d01568b2a04",
+      "lane_sha256": "fc64ae5cd0a4678266518b3a9a1ec2689112d721febbf8ae9263403908ab28d2",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-16T14:46:45+02:00",
+        "sha": "3e27ca855a2fa778e0b63361783b71fa76c850c9",
+        "subject": "Rebuild the cost contradiction from its source and audit the real trade path. [RFC-EDGE-014]"
+      },
+      "path": "src/trading_bot/research/economic_recovery/costs.py",
+      "reason": "cost model; hidden from the graph until relative imports were fixed",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "5-economics"
+    },
+    {
+      "dest_sha256": "fe1fa7945405970486c6cd62028b4a6c034f14214d3474181628f0f1e99384f2",
+      "group": "slice",
+      "lane_blob": "13f13decf3fc835f216a830aa01b1ae18c20884d",
+      "lane_sha256": "fe1fa7945405970486c6cd62028b4a6c034f14214d3474181628f0f1e99384f2",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-16T14:46:45+02:00",
+        "sha": "3e27ca855a2fa778e0b63361783b71fa76c850c9",
+        "subject": "Rebuild the cost contradiction from its source and audit the real trade path. [RFC-EDGE-014]"
+      },
+      "path": "src/trading_bot/research/economic_recovery/evidence.py",
+      "reason": "evidence writer for the economic audit",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "5-economics"
+    },
+    {
+      "dest_sha256": "1cbb2d9a42ab0b323b38149b2d1c0a8533c78b713f996c7746f071ae5613f362",
+      "group": "slice",
+      "lane_blob": "9127854eefc83f9fc74182f88a1ca4c65279fd92",
+      "lane_sha256": "1cbb2d9a42ab0b323b38149b2d1c0a8533c78b713f996c7746f071ae5613f362",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-16T23:28:38+02:00",
+        "sha": "dbddc585e4fe78d17a971edf7b2e31c959cef910",
+        "subject": "Answer the recovery brief with executed evidence, and reconcile the paper arm's ledger. [RFC-EDGE-014R]"
+      },
+      "path": "src/trading_bot/research/economic_recovery/experiments.py",
+      "reason": "experiment registry used by the audit",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "5-economics"
+    },
+    {
+      "dest_sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "group": "slice",
+      "lane_blob": "6d79973968740dbb4711ca72a06e4b1780971429",
+      "lane_sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T13:02:05+02:00",
+        "sha": "6f04e59b2c44fe1064a315c9217aa905e1ec60f7",
+        "subject": "Fill every exit at the bar after the close that decided it, not before."
+      },
+      "path": "src/trading_bot/research/economic_recovery/pit15.py",
+      "reason": "point-in-time 15m series",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "5-economics"
+    },
+    {
+      "dest_sha256": "33ab3642ce71d2237364e77be73443b6f4cd916e93f48a06a862a7dacb9ed451",
+      "group": "slice",
+      "lane_blob": "6e1a8b731e18897307893ece3eaeaf99b90fdaa0",
+      "lane_sha256": "33ab3642ce71d2237364e77be73443b6f4cd916e93f48a06a862a7dacb9ed451",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T18:33:02+02:00",
+        "sha": "05b977e757eb4e98ddfc6cb2f124156ee7d0dae0",
+        "subject": "Measure drawdown from the equity curve instead of publishing a peak level."
+      },
+      "path": "src/trading_bot/research/equity_drawdown.py",
+      "reason": "drawdown accounting imported by the lane",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "5-economics"
+    },
+    {
+      "dest_sha256": "ea9fe7501365395811f25944104c038081621caa27a081555bf01e8ef613b367",
+      "group": "slice",
+      "lane_blob": "6b4a3368d97a1635f761cdf474604683f47d6330",
+      "lane_sha256": "ea9fe7501365395811f25944104c038081621caa27a081555bf01e8ef613b367",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T13:53:06+02:00",
+        "sha": "5b86b656f9a5015c19e55b49b3f16456bec66b8e",
+        "subject": "Charge the venue cost inside the paper book, and stop the holdout from destroying itself."
+      },
+      "path": "src/trading_bot/risk/defensive_blocks.py",
+      "reason": "defensive blocks referenced by risk/manager.py",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "5-economics"
+    },
+    {
+      "dest_sha256": "5d7c59cd779c7e91bb9e36094870a5df10945131c4ae91dec277eeb8f8d27251",
+      "group": "slice",
+      "lane_blob": "92ecc7903633bb84d9eea109ef41773a6410fff7",
+      "lane_sha256": "5d7c59cd779c7e91bb9e36094870a5df10945131c4ae91dec277eeb8f8d27251",
+      "main_blob": "e5ce2c1ed2cb301e4eef855868cc32fe09d60d2d",
+      "origin_commit": {
+        "date": "2026-10-17T13:53:06+02:00",
+        "sha": "5b86b656f9a5015c19e55b49b3f16456bec66b8e",
+        "subject": "Charge the venue cost inside the paper book, and stop the holdout from destroying itself."
+      },
+      "path": "scripts/start_paper_trading.py",
+      "reason": "existing entry point now builds the supervised session",
+      "resolution": "5 added lines; main's CLI contract untouched",
+      "state": "DIFFERS",
+      "step": "6-modified"
+    },
+    {
+      "dest_sha256": "d76a279849587f610657e93ecbce14d413c8c313fc28dec1ef948561c28aab3f",
+      "group": "slice",
+      "lane_blob": "7f5925d3439d7166f8abff1535bf89cfcae21e72",
+      "lane_sha256": "d76a279849587f610657e93ecbce14d413c8c313fc28dec1ef948561c28aab3f",
+      "main_blob": "90483d6ef9077b009327fc52bb97bbbcb100d3f1",
+      "origin_commit": {
+        "date": "2026-10-12T12:43:30+02:00",
+        "sha": "1bf9f79483a788f6a3f4a1444610dd28dd777c02",
+        "subject": "Report an inactive asset as a universe no-decision, not a data error. [WP-EDGE-00b]"
+      },
+      "path": "src/trading_bot/autonomous/contracts.py",
+      "reason": "contract fields the supervised session writes",
+      "resolution": "additive fields; no main behaviour removed",
+      "state": "DIFFERS",
+      "step": "6-modified"
+    },
+    {
+      "dest_sha256": "321db84ce7a7753a7fc3ce5dc4c762d5d6649cf4f7bef5513d4a1824f9e8b143",
+      "group": "slice",
+      "lane_blob": "7d4514b41c2340a981a7a28696c9d9fcdbf6db54",
+      "lane_sha256": "321db84ce7a7753a7fc3ce5dc4c762d5d6649cf4f7bef5513d4a1824f9e8b143",
+      "main_blob": "e84e485a41665a612d7c5eaca5b9073137212212",
+      "origin_commit": {
+        "date": "2026-10-21T14:20:51+02:00",
+        "sha": "65b4845878a0cf7f82806df8e2381b358b9c2462",
+        "subject": "Record what the paper execution boundary actually does"
+      },
+      "path": "src/trading_bot/paper/broker.py",
+      "reason": "venue cost inside the paper book",
+      "resolution": "resolved individually: lane version is mergebase + lane changes, main has not touched the file",
+      "state": "DIFFERS",
+      "step": "6-modified"
+    },
+    {
+      "dest_sha256": "2f7007796e487688f7460b600e864d576e146e24d2518041b1a2011268c58987",
+      "group": "slice",
+      "lane_blob": "997aaec72e799edb9507aa3b7c1523c7bb3d8ada",
+      "lane_sha256": "2f7007796e487688f7460b600e864d576e146e24d2518041b1a2011268c58987",
+      "main_blob": "24650b436c2436481d96ea93f8ee22ab16013750",
+      "origin_commit": {
+        "date": "2026-10-17T14:18:08+02:00",
+        "sha": "ffd510589d94fa19ce589831f4943e3e704b66bf",
+        "subject": "Publish WP-EDGE-017: append-only capture, a measured collector rate, and net-risk replay."
+      },
+      "path": "src/trading_bot/paper/harness.py",
+      "reason": "harness drives the supervised cycle",
+      "resolution": "resolved individually, as above",
+      "state": "DIFFERS",
+      "step": "6-modified"
+    },
+    {
+      "dest_sha256": "07f29ef65861326984f493373506397c090ec110848b8b9b9d2704f65ce3eb5b",
+      "group": "slice",
+      "lane_blob": "516cee173673be1c276d756f7c7007f9619708fa",
+      "lane_sha256": "07f29ef65861326984f493373506397c090ec110848b8b9b9d2704f65ce3eb5b",
+      "main_blob": "7346392c30c26be8e0cbf414db472397acf1858b",
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "src/trading_bot/paper/paper_cycle.py",
+      "reason": "one paper cycle with the supervised contract",
+      "resolution": "resolved individually, as above",
+      "state": "DIFFERS",
+      "step": "6-modified"
+    },
+    {
+      "dest_sha256": "ad10f2bf7f44b7eff73ec72ab56be05d81dce84927fbd4f0f60957c403671c89",
+      "group": "slice",
+      "lane_blob": "550c667c07050c4400691d073de326839a1350c9",
+      "lane_sha256": "ad10f2bf7f44b7eff73ec72ab56be05d81dce84927fbd4f0f60957c403671c89",
+      "main_blob": "4c6b8d5679e34423d07e2e457c8bdcda39cc2bdf",
+      "origin_commit": {
+        "date": "2026-10-17T18:28:58+02:00",
+        "sha": "9dbbbaeeddeffbcaa8a0bfdca05ddaf632e9ad6d",
+        "subject": "Roll the weekly loss window at Monday 00:00 UTC instead of never."
+      },
+      "path": "src/trading_bot/paper/reconciliation_v4.py",
+      "reason": "reconciliation delta returned to the harness",
+      "resolution": "resolved individually, as above",
+      "state": "DIFFERS",
+      "step": "6-modified"
+    },
+    {
+      "dest_sha256": "110ed942b227760d4c308adfdec1d1505ab6c087e1db976cba527c959301c495",
+      "group": "slice",
+      "lane_blob": "95d888a034735fcd245488dc79b025db2da7d346",
+      "lane_sha256": "110ed942b227760d4c308adfdec1d1505ab6c087e1db976cba527c959301c495",
+      "main_blob": "8a3ea26512ccd35f1ce10f712ecb2ee977af6e71",
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "src/trading_bot/risk/manager.py",
+      "reason": "stop resolution + weekly window + defensive blocks",
+      "resolution": "G1: migrated as-is, then judged by contract tests; no threshold, sizing or leverage was edited",
+      "state": "DIFFERS",
+      "step": "6-modified"
+    },
+    {
+      "dest_sha256": "0a53609ffdcb7328b5cebde5ef26deb677a0e17e7a0cccbb9ba8552fb2db1f80",
+      "group": "slice",
+      "lane_blob": "17607c65cc5b2e3aeb983932c4c302f26f1f3def",
+      "lane_sha256": "0a53609ffdcb7328b5cebde5ef26deb677a0e17e7a0cccbb9ba8552fb2db1f80",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-22T15:44:39+02:00",
+        "sha": "4773f9ec4f318e22d682ed3c89efccd52d4727dc",
+        "subject": "Run the session and measure it, instead of describing it"
+      },
+      "path": "scripts/def_run_019_prospective_run.py",
+      "reason": "child process the supervisor launches by default",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "16d8e0679603dc4339fd665b6423c28a8be8dbc3af98b3d125e304661f7f6c76",
+      "group": "slice",
+      "lane_blob": "795d63c71c42bb097e8f35352c827cd0dcf2c389",
+      "lane_sha256": "16d8e0679603dc4339fd665b6423c28a8be8dbc3af98b3d125e304661f7f6c76",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T13:06:29+02:00",
+        "sha": "98bcefe72b9304eb8afe463237a34f633ff5378c",
+        "subject": "Let the linter see the campaign instead of exceptions for it"
+      },
+      "path": "scripts/paper_lock_campaign.py",
+      "reason": "l  ock campaign producer (crash/recovery evidence)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "20304e19763813e770eb96f8cc329fa30014366e7f500b2b4fb883d06a8a1607",
+      "group": "slice",
+      "lane_blob": "241adc55e57ab56c2e5351da3a34e958f03b2c5c",
+      "lane_sha256": "20304e19763813e770eb96f8cc329fa30014366e7f500b2b4fb883d06a8a1607",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T13:06:29+02:00",
+        "sha": "98bcefe72b9304eb8afe463237a34f633ff5378c",
+        "subject": "Let the linter see the campaign instead of exceptions for it"
+      },
+      "path": "scripts/paper_lock_campaign_verify.py",
+      "reason": "campaign verifier (fixture-only today: G2)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "b0b75c8f495143a831a31341840a11f0abd55b453263f1f8fb9fe867b35e2199",
+      "group": "slice",
+      "lane_blob": "24f3e12b0f4621ac79f631ff421a5bfc9cdb1686",
+      "lane_sha256": "b0b75c8f495143a831a31341840a11f0abd55b453263f1f8fb9fe867b35e2199",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T12:28:58+02:00",
+        "sha": "ce02a8100c06ebf3b66947826b665b36e52f3624",
+        "subject": "Prove repeated crash/recover cycles instead of a single one"
+      },
+      "path": "scripts/paper_session_status.py",
+      "reason": "status CLI over ops/session_status.py",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "c54c04843b7294f263c9c9da6f7cd4f6256e2c9a1f4bf634af53930db0fcdd97",
+      "group": "slice",
+      "lane_blob": "0e95a8834e869f650f8256f8aff449307fb44121",
+      "lane_sha256": "c54c04843b7294f263c9c9da6f7cd4f6256e2c9a1f4bf634af53930db0fcdd97",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T20:56:48+02:00",
+        "sha": "3b758e22f0c9835646c9eba9db6634757970b126",
+        "subject": "Say what --once actually caps instead of promising a single action."
+      },
+      "path": "scripts/paper_supervisor.py",
+      "reason": "supervisor CLI",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "efc6c9d8ff137ff89c9f048092c6d7ad5cf77f989412c04a90a316618042a46e",
+      "group": "slice",
+      "lane_blob": "a2654d2b4c9bb86b583028840c9ecc1d65a0f569",
+      "lane_sha256": "efc6c9d8ff137ff89c9f048092c6d7ad5cf77f989412c04a90a316618042a46e",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T20:53:13+02:00",
+        "sha": "cc4f15f6d7d5b47978ba7bd090a525e50a68a143",
+        "subject": "Write the final episode's evidence instead of only its summary."
+      },
+      "path": "scripts/paper_supervisor_campaign.py",
+      "reason": "multi-cycle campaign producer",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "3ce89ea787ba6820b2dfc1af857001c92c4af59e6a9e9b5fcd1edae9cc725cc9",
+      "group": "slice",
+      "lane_blob": "9d07a762cdcbe708080606b369a14703da0ba6ed",
+      "lane_sha256": "bde10bb8a22000f90478996c1b85b7469afdce1ec782f30908393c211ce6ca56",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T20:49:08+02:00",
+        "sha": "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+        "subject": "Let a supervisor recover a crashed PAPER session, or stop by name."
+      },
+      "path": "scripts/paper_supervisor_verify.py",
+      "reason": "campaign verifier (crashes on real input: G2)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "9056ebd601f17ddadd3ff01b60fc99397af1a73808a0bef164a6d295db891d07",
+      "group": "slice",
+      "lane_blob": "56805b2626a3dbeb3ab27a492db7ff7d3e1fa788",
+      "lane_sha256": "9056ebd601f17ddadd3ff01b60fc99397af1a73808a0bef164a6d295db891d07",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T22:48:19+02:00",
+        "sha": "520a6df970a6a77d641ae2967c4cec7cecbc231f",
+        "subject": "Fix the chart's ink and refuse opinions the runtime cannot execute."
+      },
+      "path": "config/vision.yaml",
+      "reason": "invisible to any import graph and required: without it the session runs 0 cycles",
+      "resolution": "additive: new file, nothing in main reads it until the lane does",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "a8a2d8789d3896149bcebe84a128eb367eb0082a14e1915378d505384ac1dcd3",
+      "group": "slice",
+      "lane_blob": "300e3bde9d8c9b8bd82186fcd2e118940abb1691",
+      "lane_sha256": "a8a2d8789d3896149bcebe84a128eb367eb0082a14e1915378d505384ac1dcd3",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T09:19:24+02:00",
+        "sha": "b4ff58892263b44de122b8fe6b08239ffb831032",
+        "subject": "Freeze the WP-EDGE-015 protocol before its data, and stop trusting the builder's own arithmetic."
+      },
+      "path": "config/strategy_candidates_edge15.json",
+      "reason": "candidate table read by the lane's signal sources",
+      "resolution": "additive: new file",
+      "state": "MISSING",
+      "step": "7-scripts"
+    },
+    {
+      "dest_sha256": "f762ee207623772d93dc3089ed9323c827ba9550e2086b1c65d240ef728ba250",
+      "group": "slice",
+      "lane_blob": "45cee19a2ec35bb76308d71a0c5f44430c99120a",
+      "lane_sha256": "f2c7e159be431734f8c329711f223ec2e577bf9e0042f3ac009f7e77df7ff5b1",
+      "main_blob": "b9b4fe72abad7aeee0726c72f90c53fced31c705",
+      "origin_commit": {
+        "date": "2026-10-21T09:26:40+02:00",
+        "sha": "4ea93d815ed6e3573239ae34bd7782cff4efe9c0",
+        "subject": "Freeze the independent-signal protocol before a single comparison runs"
+      },
+      "path": ".gitignore",
+      "reason": "reports/* is ignored in main, so no evidence can be committed at all",
+      "resolution": "narrowed on purpose: only this delivery's directory is re-included, not the lane's 250 lines of report subtrees",
+      "state": "DIFFERS",
+      "step": "7-bis"
+    },
+    {
+      "dest_sha256": "2d4bdd6bbccd29c33eaea2e86ea38c97605dfd9260da35e4266b59bce349689d",
+      "group": "verification-tests",
+      "lane_blob": "09e345c0fffcc5229aa0e3e20fa882682c002f9c",
+      "lane_sha256": "2d4bdd6bbccd29c33eaea2e86ea38c97605dfd9260da35e4266b59bce349689d",
+      "main_blob": "a3d09c7c886ebbcc71e0379131499d1b03b206f0",
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/paper/test_paper_cycle.py",
+      "reason": "existing test updated by the lane: broker-stage rejection became a position skip",
+      "resolution": "",
+      "state": "DIFFERS",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "a44938f55d6660c4819ddb66e82375fb258526afb4d51ba4dd2d4c4e951eb4e4",
+      "group": "verification-tests",
+      "lane_blob": "effc20086ea08eb15852396cc877b98d60ad7b91",
+      "lane_sha256": "a44938f55d6660c4819ddb66e82375fb258526afb4d51ba4dd2d4c4e951eb4e4",
+      "main_blob": "460f4a37ad8c120cbead0e1b81787ead1ae52419",
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/paper/test_paper_recovery.py",
+      "reason": "existing test updated by the lane: the signals now declare the stops the broker requires",
+      "resolution": "",
+      "state": "DIFFERS",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "e1ff11fe513f66178fa2ad51b36fa4f00b45370ef7a4c187c07a87021874b272",
+      "group": "verification-tests",
+      "lane_blob": "3b7ea052c63bd2ddca505a4e9cda1fbadcf87022",
+      "lane_sha256": "e1ff11fe513f66178fa2ad51b36fa4f00b45370ef7a4c187c07a87021874b272",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T13:06:29+02:00",
+        "sha": "98bcefe72b9304eb8afe463237a34f633ff5378c",
+        "subject": "Let the linter see the campaign instead of exceptions for it"
+      },
+      "path": "tests/unit/ops/test_paper_lock_campaign.py",
+      "reason": "campaign producer under test",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "8f42c37eeedf356c30837b6ac9038d4bee65da5607a8f7f39b4b983e41feae57",
+      "group": "verification-tests",
+      "lane_blob": "2b0171657d83cb99fc1f7ef36c5133b45aa9f112",
+      "lane_sha256": "8f42c37eeedf356c30837b6ac9038d4bee65da5607a8f7f39b4b983e41feae57",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T20:49:08+02:00",
+        "sha": "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+        "subject": "Let a supervisor recover a crashed PAPER session, or stop by name."
+      },
+      "path": "tests/unit/ops/test_paper_supervisor.py",
+      "reason": "supervisor loop under test",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "a3a11f5361cdba6ad03d8c21a18c55f86197c2e32cbf2f70df4c4a00a0c2e1c0",
+      "group": "verification-tests",
+      "lane_blob": "a5dc86ab9b54ab6af27e11cd3aee264db754a9c4",
+      "lane_sha256": "a3a11f5361cdba6ad03d8c21a18c55f86197c2e32cbf2f70df4c4a00a0c2e1c0",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T20:49:08+02:00",
+        "sha": "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+        "subject": "Let a supervisor recover a crashed PAPER session, or stop by name."
+      },
+      "path": "tests/unit/ops/test_paper_supervisor_verifier.py",
+      "reason": "campaign verifier under test (G2 surface)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "12183b8945ea37df304c54d1d9044b57d5ff4543576e51c13caee98ef2d70ba8",
+      "group": "verification-tests",
+      "lane_blob": "7193e387e1621c506ef013c855d1683ab93b0a5f",
+      "lane_sha256": "12183b8945ea37df304c54d1d9044b57d5ff4543576e51c13caee98ef2d70ba8",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T20:49:08+02:00",
+        "sha": "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+        "subject": "Let a supervisor recover a crashed PAPER session, or stop by name."
+      },
+      "path": "tests/unit/ops/test_session_status.py",
+      "reason": "status document under test",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "8354342c37619d5355948f3a06071bf498287059c58797a0d08aa05e5b9a2626",
+      "group": "verification-tests",
+      "lane_blob": "633f710e52914f7b1c0e4bf02531addf62f20430",
+      "lane_sha256": "8354342c37619d5355948f3a06071bf498287059c58797a0d08aa05e5b9a2626",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T11:00:20+02:00",
+        "sha": "01d0a46849b96e2df2f7b3dd7f32a52fe0543ea8",
+        "subject": "Prove fencing across processes, not only inside one"
+      },
+      "path": "tests/unit/ops/test_single_writer_lock.py",
+      "reason": "lock guard under test (B1 surface)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "2861c87b509a15790467fbc608b447b89b843adc2f7b33897cac3a74f1847fe7",
+      "group": "verification-tests",
+      "lane_blob": "81e37952eda1ba896d0a728197db32c7b7a9982a",
+      "lane_sha256": "2861c87b509a15790467fbc608b447b89b843adc2f7b33897cac3a74f1847fe7",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/vision/test_accounting_integrity.py",
+      "reason": "vision accounting",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "29251492029d8645c2c98e55ea5a102780f9f622a0c2d56c45b4311d9f9869e6",
+      "group": "verification-tests",
+      "lane_blob": "204ca1049e9039b76d6e4ef08ac70658989e09cd",
+      "lane_sha256": "29251492029d8645c2c98e55ea5a102780f9f622a0c2d56c45b4311d9f9869e6",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T16:17:20+02:00",
+        "sha": "96957a2be068322459849855735d5ca368519040",
+        "subject": "Fill at a quote that exists after the answer, and check the bar you enter on"
+      },
+      "path": "tests/unit/vision/test_causal_clock.py",
+      "reason": "causal clock",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "60c476bafc2e88a955e3954fd38447232b04e26b6d21e4a1d650788ba2dd56b7",
+      "group": "verification-tests",
+      "lane_blob": "45a99ca084b200cc51918012eef7e11379f31105",
+      "lane_sha256": "60c476bafc2e88a955e3954fd38447232b04e26b6d21e4a1d650788ba2dd56b7",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T19:34:34+02:00",
+        "sha": "86d4f1269dd3f64793c60aa1903e78c07ed6d516",
+        "subject": "Settle an open-gap stop before the same open approves new risk"
+      },
+      "path": "tests/unit/vision/test_causal_execution.py",
+      "reason": "causal execution",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "bf2cb82a3dc7da524d32777227c8455bdb06d98172645d813109c9e178670886",
+      "group": "verification-tests",
+      "lane_blob": "1fc1d58b6806ef53f3e315f6eab89376c1e63e12",
+      "lane_sha256": "bf2cb82a3dc7da524d32777227c8455bdb06d98172645d813109c9e178670886",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T21:45:22+02:00",
+        "sha": "9cf91f628443edd4407b54688f8ead95df5c1806",
+        "subject": "Let a vision model decide on a chart without letting it touch the risk policy."
+      },
+      "path": "tests/unit/vision/test_chart_determinism.py",
+      "reason": "chart rendering (matplotlib)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "492821b1ed286ad7d08aed51b3099e5a898e5ca014f9d2c71ce683b25170eb54",
+      "group": "verification-tests",
+      "lane_blob": "7016a3ff4a304f4643ae57a67a933a679fda43a8",
+      "lane_sha256": "492821b1ed286ad7d08aed51b3099e5a898e5ca014f9d2c71ce683b25170eb54",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/vision/test_closed_trade_cycle.py",
+      "reason": "closed-trade cycle",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "d3bf83a1752b87d90c34ef9fef69f4d1a6e84078aef0859500db5deb83bd855a",
+      "group": "verification-tests",
+      "lane_blob": "b1d0b4d73d4a24a2ad51f05ed2de7aa0a943bea5",
+      "lane_sha256": "d3bf83a1752b87d90c34ef9fef69f4d1a6e84078aef0859500db5deb83bd855a",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T22:48:19+02:00",
+        "sha": "520a6df970a6a77d641ae2967c4cec7cecbc231f",
+        "subject": "Fix the chart's ink and refuse opinions the runtime cannot execute."
+      },
+      "path": "tests/unit/vision/test_contract.py",
+      "reason": "session contract",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "7183b24503a767f1cac1e3178864cb83be3c6dd886f67104e511aaff410c0cd5",
+      "group": "verification-tests",
+      "lane_blob": "49d231a0de17ee63347ec761e06155b2c67993fe",
+      "lane_sha256": "7183b24503a767f1cac1e3178864cb83be3c6dd886f67104e511aaff410c0cd5",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/vision/test_def_run_014_lane_contract.py",
+      "reason": "stop contract end to end",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "d98b8a85410647afec226a03b2978a351723d1e9348aa6958f002d96edc42715",
+      "group": "verification-tests",
+      "lane_blob": "10af31ad6891fbae7235359ddc55c8e3d1ecdc2d",
+      "lane_sha256": "886505df16c690e53019c677a8dde643ee595444bddd6ec2e9a2e22d94c991ee",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/vision/test_def_run_016_integrity.py",
+      "reason": "minute-feed integrity",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "5f91877425f14f06c24e6641c1ce67b9d9ebc03fa3343f0f66831f6c10eaf486",
+      "group": "verification-tests",
+      "lane_blob": "443411205f0ea434b8dfb01dbaa2040339646130",
+      "lane_sha256": "5f91877425f14f06c24e6641c1ce67b9d9ebc03fa3343f0f66831f6c10eaf486",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "reason": "opinion lifecycle",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "501d352719889b4ee694991b4a443cc2274edabbe3b719a0eff0a2c5ca50d617",
+      "group": "verification-tests",
+      "lane_blob": "1948cd6017d11505499a7ae3455e906123e452ab",
+      "lane_sha256": "501d352719889b4ee694991b4a443cc2274edabbe3b719a0eff0a2c5ca50d617",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T19:34:34+02:00",
+        "sha": "86d4f1269dd3f64793c60aa1903e78c07ed6d516",
+        "subject": "Settle an open-gap stop before the same open approves new risk"
+      },
+      "path": "tests/unit/vision/test_guards_and_controls.py",
+      "reason": "runtime guards",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "5de6e8c9f466b6820700df3d8589b6363b0c6b52c959f43cd1563a4ff9c6a107",
+      "group": "verification-tests",
+      "lane_blob": "fc8e3f7396212d00978ac00d4f59d8607c524f69",
+      "lane_sha256": "5de6e8c9f466b6820700df3d8589b6363b0c6b52c959f43cd1563a4ff9c6a107",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T00:22:56+02:00",
+        "sha": "e4db7da3c8f57341c359ba627d5f6d1fae999e72",
+        "subject": "Fail closed on a foreign image hash and on an answer that arrives too late"
+      },
+      "path": "tests/unit/vision/test_integrity_and_latency.py",
+      "reason": "integrity and latency",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "ff54a2b1486b83d13bc96182bfe55043f077ec767fb628645554286d2c25fa09",
+      "group": "verification-tests",
+      "lane_blob": "4119b354ab796200901c1e5d2ad62fabf418407f",
+      "lane_sha256": "ff54a2b1486b83d13bc96182bfe55043f077ec767fb628645554286d2c25fa09",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/vision/test_lane_vertical.py",
+      "reason": "lane vertical",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "da3dcb9401890a77208970ec979054d52c06234100ed590c557270ef60892d02",
+      "group": "verification-tests",
+      "lane_blob": "16f71c826525143812218f86def3d523edd9ead6",
+      "lane_sha256": "da3dcb9401890a77208970ec979054d52c06234100ed590c557270ef60892d02",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T21:45:22+02:00",
+        "sha": "9cf91f628443edd4407b54688f8ead95df5c1806",
+        "subject": "Let a vision model decide on a chart without letting it touch the risk policy."
+      },
+      "path": "tests/unit/vision/test_ledger.py",
+      "reason": "decision ledger",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "f21d4e174e069b3aef1c0809c8c72d8a9ba4a43bf0ded5edf25c309b82ca6a8a",
+      "group": "verification-tests",
+      "lane_blob": "b99c974a7a84562d292cc9336b3bbd1c7fee9675",
+      "lane_sha256": "f21d4e174e069b3aef1c0809c8c72d8a9ba4a43bf0ded5edf25c309b82ca6a8a",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T09:54:09+02:00",
+        "sha": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "subject": "Make an opinion that cannot be accounted for stop the run"
+      },
+      "path": "tests/unit/vision/test_minute_quote_feed.py",
+      "reason": "minute quote feed",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "9a510eb601c3f5abaf8ec669fe268e1c760deea034fd9c98493ceab0f48964dc",
+      "group": "verification-tests",
+      "lane_blob": "b8cb2c90044063a214c0c55cbb17ec4af30646a9",
+      "lane_sha256": "9a510eb601c3f5abaf8ec669fe268e1c760deea034fd9c98493ceab0f48964dc",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-18T19:34:34+02:00",
+        "sha": "86d4f1269dd3f64793c60aa1903e78c07ed6d516",
+        "subject": "Settle an open-gap stop before the same open approves new risk"
+      },
+      "path": "tests/unit/vision/test_open_phase_causality.py",
+      "reason": "open-phase causality",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "3345b4fda38fc7363e7c2ad09b100447532e34a71efd20016db09f10dab8be4c",
+      "group": "verification-tests",
+      "lane_blob": "38448660255d4720ed2adeedd568d2d4c8a910fe",
+      "lane_sha256": "3345b4fda38fc7363e7c2ad09b100447532e34a71efd20016db09f10dab8be4c",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T08:15:13+02:00",
+        "sha": "3897fb1e3062a6a36939745275448341557238ad",
+        "subject": "End a session that never warmed up with zero cycles, not an exception"
+      },
+      "path": "tests/unit/vision/test_prospective_session.py",
+      "reason": "prospective session",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "549eca8ec6aedcf68d89d1866c97df5dfb85a900cf20816d0cac93181d790c2a",
+      "group": "verification-tests",
+      "lane_blob": "bd5e1289c0ca1f0d1e8b48cacc21cda990ec1744",
+      "lane_sha256": "549eca8ec6aedcf68d89d1866c97df5dfb85a900cf20816d0cac93181d790c2a",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T22:48:19+02:00",
+        "sha": "520a6df970a6a77d641ae2967c4cec7cecbc231f",
+        "subject": "Fix the chart's ink and refuse opinions the runtime cannot execute."
+      },
+      "path": "tests/unit/vision/test_provider.py",
+      "reason": "model provider",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "c98266642d1563ccb7320b097e177984c6aac223d7ce42597b0d42bf2a0cc9f5",
+      "group": "verification-tests",
+      "lane_blob": "3f7406d3c6ec187d025b919af717395226bbd68f",
+      "lane_sha256": "c98266642d1563ccb7320b097e177984c6aac223d7ce42597b0d42bf2a0cc9f5",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-21T22:41:54+02:00",
+        "sha": "b852939f78042a8769eb7d0496669900c4229500",
+        "subject": "Record the running commit in the RUN header before the first decision"
+      },
+      "path": "tests/unit/vision/test_run_code_provenance.py",
+      "reason": "code provenance",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "db5fae399ade803861ddc3e3af8e0c77a9d2bfbd870b3f2ba353a015e1a63efb",
+      "group": "verification-tests",
+      "lane_blob": "1ceae576d96e7d388b69f6e7d04838fc185ed8fd",
+      "lane_sha256": "db5fae399ade803861ddc3e3af8e0c77a9d2bfbd870b3f2ba353a015e1a63efb",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T10:45:28+02:00",
+        "sha": "1705b6bef3b99fa0cc4683d21ab2cb8ce7ac2dff",
+        "subject": "Prove the cycle-ledger lock is reclaimed, not just the stream lock"
+      },
+      "path": "tests/unit/vision/test_session_lock_recovery.py",
+      "reason": "session lock recovery (B1 surface)",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "27e155e8effd457cc2a0322d55236f8cfc81d66dffd70634d559cd4946694bda",
+      "group": "verification-tests",
+      "lane_blob": "e9b80123d898af502682150d25ba0099358b7093",
+      "lane_sha256": "27e155e8effd457cc2a0322d55236f8cfc81d66dffd70634d559cd4946694bda",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-23T12:40:10+02:00",
+        "sha": "d9b46b72aa7c829aa74a84f146e93343f989103d",
+        "subject": "Keep the resume lineage so a second recovery replays the same origin"
+      },
+      "path": "tests/unit/vision/test_session_provenance.py",
+      "reason": "session provenance",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "95fb3f14c8694513383b35d9134e8d9d44c9cc440697e12334eaee97c7d23982",
+      "group": "verification-tests",
+      "lane_blob": "94d449bf5f861e8e03a387d2b29ee8f8c3e9fd7e",
+      "lane_sha256": "95fb3f14c8694513383b35d9134e8d9d44c9cc440697e12334eaee97c7d23982",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-20T14:04:09+02:00",
+        "sha": "b0e15497d967ff1c1d3015203ffb7cbfcf0a70a0",
+        "subject": "Admit every existing AlphaFamily to the paper lane and prove the cost barrier"
+      },
+      "path": "tests/unit/vision/test_signal_source_families.py",
+      "reason": "signal families",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "4a35fbccf1246b575b36556de73958cb1154472d61b8774c74fd676bbb3d25a5",
+      "group": "verification-tests",
+      "lane_blob": "caf489a917c843f703fd8fdce6ef1ef291d11fac",
+      "lane_sha256": "4a35fbccf1246b575b36556de73958cb1154472d61b8774c74fd676bbb3d25a5",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-20T11:42:07+02:00",
+        "sha": "52c52aaa3ee8a25ca99fbb1f6beaf42ada4ff64c",
+        "subject": "Give the PAPER runtime a real, opt-in signal source it can execute"
+      },
+      "path": "tests/unit/vision/test_signal_sources.py",
+      "reason": "signal sources",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "18c48fadfbd45256e15a1ace4f7b08a9856b17696fc49efbf9bac90d01b18db8",
+      "group": "verification-tests",
+      "lane_blob": "7665e319a8b59d44f28cc1760c533ceae1feb090",
+      "lane_sha256": "18c48fadfbd45256e15a1ace4f7b08a9856b17696fc49efbf9bac90d01b18db8",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-19T12:02:54+02:00",
+        "sha": "5fd791d877af78f855bf0c75e3358344b8a5a8f1",
+        "subject": "Publish the AI-bots PAPER chain with an auditable ledger and clock"
+      },
+      "path": "tests/unit/vision/test_subbar_execution.py",
+      "reason": "sub-bar execution",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "1f6ce1ab5e83f81a9d52c723e47540790f2816659367af9036989959051cafb2",
+      "group": "verification-tests",
+      "lane_blob": "4863dea14cf10db0fa7d58e39621b6d0b0a35dc3",
+      "lane_sha256": "1f6ce1ab5e83f81a9d52c723e47540790f2816659367af9036989959051cafb2",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T22:48:19+02:00",
+        "sha": "520a6df970a6a77d641ae2967c4cec7cecbc231f",
+        "subject": "Fix the chart's ink and refuse opinions the runtime cannot execute."
+      },
+      "path": "tests/unit/vision/test_visual_defects.py",
+      "reason": "visual defect catalogue",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "6e406edb63886df90f6c8acace8fc8a6f7beef38ac4c16e701f5f3ef83a655de",
+      "group": "verification-tests",
+      "lane_blob": "ff669008a685d071c8cfac6876880a0a9632e25c",
+      "lane_sha256": "6e406edb63886df90f6c8acace8fc8a6f7beef38ac4c16e701f5f3ef83a655de",
+      "main_blob": null,
+      "origin_commit": {
+        "date": "2026-10-17T09:19:24+02:00",
+        "sha": "b4ff58892263b44de122b8fe6b08239ffb831032",
+        "subject": "Freeze the WP-EDGE-015 protocol before its data, and stop trusting the builder's own arithmetic."
+      },
+      "path": "tests/unit/research/test_alpha15_causality.py",
+      "reason": "alpha15 causality",
+      "resolution": "",
+      "state": "MISSING",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "cc5aff585fe9e10ff5a1d293eebc977a87d793626d2afedac275702f07873ebd",
+      "group": "verification-tests",
+      "lane_blob": "cb62744d0b4e52a4653a81c808e00edaeb68b654",
+      "lane_sha256": "cc5aff585fe9e10ff5a1d293eebc977a87d793626d2afedac275702f07873ebd",
+      "main_blob": "cb62744d0b4e52a4653a81c808e00edaeb68b654",
+      "origin_commit": {
+        "date": "2026-10-08T07:11:07+02:00",
+        "sha": "fc78ce32bea49f5144493201d17f4886e2f370fe",
+        "subject": "feat(research): watch campaign health and surface recovery signals (CAP-004D)"
+      },
+      "path": "tests/unit/research/test_campaign_health.py",
+      "reason": "campaign health",
+      "resolution": "",
+      "state": "IDENTICAL",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "d8772a902684bf3bb40349c5166e4e203c2633aa42fb04936f9b810d1a384090",
+      "group": "verification-tests",
+      "lane_blob": "70d4075b575baf48667b4647bea6606ca2a5c919",
+      "lane_sha256": "d8772a902684bf3bb40349c5166e4e203c2633aa42fb04936f9b810d1a384090",
+      "main_blob": "524d237f62f1a67306c63f738cfaf8136a59c547",
+      "origin_commit": {
+        "date": "2026-10-13T17:11:05+02:00",
+        "sha": "5b1e77163f359a048cc73ae4d6f33ae46b4ecfc8",
+        "subject": "Say a pid cannot be probed instead of crashing the lease. [WP-EDGE-04]"
+      },
+      "path": "tests/unit/research/test_campaign_runtime.py",
+      "reason": "campaign runtime",
+      "resolution": "",
+      "state": "DIFFERS",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "087ad6e5184e4199f9cb18adf1ed2c44f2046ec071c9c2eb1edab0fcd7058411",
+      "group": "verification-tests",
+      "lane_blob": "ecec10bc7f6d1251c3a3f01bb28a8bb357ed9e93",
+      "lane_sha256": "087ad6e5184e4199f9cb18adf1ed2c44f2046ec071c9c2eb1edab0fcd7058411",
+      "main_blob": "ecec10bc7f6d1251c3a3f01bb28a8bb357ed9e93",
+      "origin_commit": {
+        "date": "2026-10-07T20:46:22+02:00",
+        "sha": "7e21f7ca6dbf8816d83f2f8ab15aeb09310b878c",
+        "subject": "fix(research): bound CAP-004 evidence storage and keep the real settlement (CAP-004C)"
+      },
+      "path": "tests/unit/research/test_campaign_storage.py",
+      "reason": "campaign storage",
+      "resolution": "",
+      "state": "IDENTICAL",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "de4ec92d5da87ee2f8d927a5ce95fb9bff507a9975ac830a2ea54d6ee71e2188",
+      "group": "verification-tests",
+      "lane_blob": "9136cd9d7af48e201d7ce34fdbc5dcc1978562d0",
+      "lane_sha256": "de4ec92d5da87ee2f8d927a5ce95fb9bff507a9975ac830a2ea54d6ee71e2188",
+      "main_blob": "e2d6cf646366015dde57d971ae08e9e5738f3387",
+      "origin_commit": {
+        "date": "2026-10-18T20:44:37+02:00",
+        "sha": "fe9b5e2623b0d023833249e9687b753eaacd27d4",
+        "subject": "Start automated children without a console window"
+      },
+      "path": "tests/unit/research/test_campaign_supervisor.py",
+      "reason": "campaign supervisor",
+      "resolution": "",
+      "state": "DIFFERS",
+      "step": "8-tests"
+    },
+    {
+      "dest_sha256": "53fff205ebfbf84c7fda9d8a5cbf5ead0c4e56544b61f683e67ec692e308eb99",
+      "group": "verification-tests",
+      "lane_blob": "05b85724a61bf59d0d6a6b78444ae234ddec366e",
+      "lane_sha256": "53fff205ebfbf84c7fda9d8a5cbf5ead0c4e56544b61f683e67ec692e308eb99",
+      "main_blob": "05b85724a61bf59d0d6a6b78444ae234ddec366e",
+      "origin_commit": {
+        "date": "2026-10-08T14:21:10+02:00",
+        "sha": "78bfb871ec62c9f9bc6a2181e28ccc307d5f1b83",
+        "subject": "feat(research): activate RFC-046 for offline controlled discovery (ADR-0024)"
+      },
+      "path": "tests/unit/research/test_rfc046_activation_and_campaign.py",
+      "reason": "activation and campaign",
+      "resolution": "",
+      "state": "IDENTICAL",
+      "step": "8-tests"
+    }
+  ],
+  "schema_version": "TAP_SUPERVISOR_INTEGRATION_ROUTE_MANIFEST_V1"
+}

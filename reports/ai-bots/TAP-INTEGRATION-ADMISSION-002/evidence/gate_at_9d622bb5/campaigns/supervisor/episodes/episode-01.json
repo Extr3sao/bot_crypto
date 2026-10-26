@@ -1,0 +1,155 @@
+{
+  "after": {
+    "chain": {
+      "head_sha256": "cd142235e9b4c19f764cd68fc74e9306636a8fb0d11f0f7ec1aeb8caf7216706",
+      "kinds": {
+        "CYCLE": 5,
+        "DELAY_MEASURED": 2,
+        "LOCK_RECLAIMED": 1,
+        "SESSION_END": 1,
+        "SESSION_PROVENANCE": 2,
+        "SESSION_START": 2
+      },
+      "lines": 13,
+      "ok": true,
+      "reason": "INTACT"
+    },
+    "cycles": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "locks": [],
+    "rows": 13,
+    "state": "RECOVERED"
+  },
+  "before": {
+    "cycles": [
+      1
+    ],
+    "fence": 1,
+    "lock_owner_pid": 2748,
+    "owner_pid": 3108,
+    "rows": 4,
+    "state": "RUNNING"
+  },
+  "crash": {
+    "abandoned": true,
+    "chain": {
+      "head_sha256": "258558b4d49233caf07852b599cc6b74acdafd8d0387a1accb2601d8c411eac1",
+      "kinds": {
+        "CYCLE": 1,
+        "DELAY_MEASURED": 1,
+        "SESSION_PROVENANCE": 1,
+        "SESSION_START": 1
+      },
+      "lines": 4,
+      "ok": true,
+      "reason": "INTACT"
+    },
+    "cycles": [
+      1
+    ],
+    "locks": [
+      {
+        "fence": 1,
+        "path": "market-1m/BTCUSDT.jsonl.lock",
+        "pid": 2748,
+        "process_start_ms": 1792949312398,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-25T17:28:34Z",
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "path": "BTCUSDT.jsonl.lock",
+          "pid": 2748,
+          "process_start_ms": 1792949312398,
+          "purpose": "minutes:BTCUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "9e1f19b0fa4d4494864b2eb0378b9fef"
+        },
+        "state": "ABANDONED",
+        "token": "9e1f19b0fa4d4494864b2eb0378b9fef"
+      },
+      {
+        "fence": 1,
+        "path": "market-1m/ETHUSDT.jsonl.lock",
+        "pid": 2748,
+        "process_start_ms": 1792949312398,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-25T17:28:34Z",
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "path": "ETHUSDT.jsonl.lock",
+          "pid": 2748,
+          "process_start_ms": 1792949312398,
+          "purpose": "minutes:ETHUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "2c54b290435c42cfae0ca8d2b0b661f1"
+        },
+        "state": "ABANDONED",
+        "token": "2c54b290435c42cfae0ca8d2b0b661f1"
+      },
+      {
+        "fence": 1,
+        "path": "market-1m/SOLUSDT.jsonl.lock",
+        "pid": 2748,
+        "process_start_ms": 1792949312398,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-25T17:28:34Z",
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "path": "SOLUSDT.jsonl.lock",
+          "pid": 2748,
+          "process_start_ms": 1792949312398,
+          "purpose": "minutes:SOLUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "047484109fa74f22b47a18b854ab6c4b"
+        },
+        "state": "ABANDONED",
+        "token": "047484109fa74f22b47a18b854ab6c4b"
+      },
+      {
+        "fence": 1,
+        "path": "STREAM.jsonl.lock",
+        "pid": 2748,
+        "process_start_ms": 1792949312398,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-25T17:28:34Z",
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "path": "STREAM.jsonl.lock",
+          "pid": 2748,
+          "process_start_ms": 1792949312398,
+          "purpose": "ledger:STREAM.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "e5468cd45565429186d3beb1b7c3dd7f"
+        },
+        "state": "ABANDONED",
+        "token": "e5468cd45565429186d3beb1b7c3dd7f"
+      }
+    ],
+    "rows": 4,
+    "state": "RECOVERING"
+  },
+  "episode": 1,
+  "killed": {
+    "alive_after": false,
+    "detail": "CORRECTO: el proceso con PID 43364 (proceso secundario de PID 3108)\nha sido terminado.\nCORRECTO: el proceso con PID 2748 (proceso secundario de PID 3108)\nha sido terminado.\nCORRECTO: el proceso con PID 3108 (proceso secundario de PID 37512)\nha sido terminado.",
+    "pid": 3108,
+    "taskkill_exit": 0
+  },
+  "live_probe": {
+    "bytes": 306,
+    "code": "LOCK_HELD",
+    "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\supervisor\\session\\STREAM.jsonl.lock is held by live pid 2748; a second writer would interleave prev_sha256 and the chain would stop verifying",
+    "outcome": "REFUSED",
+    "unchanged": true
+  },
+  "started_at_utc": "2026-10-25T17:28:32Z"
+}

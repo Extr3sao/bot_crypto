@@ -1,0 +1,210 @@
+{
+  "schema_version": "TAP_INTEGRATION_GATE_RUN_REPORT_V1",
+  "task": "TAP-INTEGRATION-GATE-001",
+  "verdict": "IMPLEMENTED_VERIFIED",
+  "candidate_commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+  "branch": {
+    "name": "gate/integration-001",
+    "worktree": "C:/Users/GVLLFR0035/Downloads/ff-wt-gate001",
+    "base": "integ/supervisor-002@7d18140c",
+    "main": "e67194e7",
+    "main_unchanged": true,
+    "lane": "codepaper/supervisor-001@3b758e22",
+    "lane_merged": false,
+    "merge_commits": 0
+  },
+  "commits": [
+    {
+      "sha": "591fbe6b",
+      "subject": "Make the two campaigns one gate that refuses anything but this commit"
+    },
+    {
+      "sha": "9a420ff1",
+      "subject": "Write the scenario record where its verifier reads it"
+    },
+    {
+      "sha": "DELIVERY",
+      "subject": "Deliver the gate's evidence, its review and its baseline"
+    }
+  ],
+  "gate": {
+    "command": "python scripts/tap_integration_gate.py run --out <evidence>",
+    "verdict": "PASS",
+    "certifies": true,
+    "steps": 15,
+    "steps_passed": 15,
+    "steps_failed": 0,
+    "steps_blocked": 0,
+    "steps_not_tested": 0,
+    "false_success": 0,
+    "manifest_files": 258,
+    "duration_s": 1290.8,
+    "tree_clean_before": true,
+    "tree_clean_after": true,
+    "observed_commits": ["9a420ff18179c1f196221495aba5fdd2a81f5073"],
+    "evidence": "evidence/GATE_REPORT.json",
+    "manifest": "evidence/EVIDENCE_MANIFEST.json"
+  },
+  "campaigns": {
+    "supervisor": {
+      "producer": "scripts/paper_supervisor_campaign.py",
+      "crashes_requested": 1,
+      "episodes": 1,
+      "cycles": [1, 2, 3, 4, 5],
+      "rows": 13,
+      "starts": 2,
+      "reclaims": 1,
+      "final_state": "RECOVERED",
+      "final_action": "STOP_COMPLETED",
+      "scenarios": ["budget", "corrupt"],
+      "locks": 0,
+      "live_orders": 0,
+      "duration_s": 266.9,
+      "scenarios_duration_s": 13.6,
+      "exit": 0
+    },
+    "lock": {
+      "producer": "scripts/paper_lock_campaign.py",
+      "modes": [
+        "after_cycle",
+        "after_cycle",
+        "before_cycle",
+        "after_cycle",
+        "after_cycle",
+        "after_cycle"
+      ],
+      "race_iterations": [2, 5],
+      "iterations": 6,
+      "cycles": 17,
+      "rows": 64,
+      "starts": 12,
+      "reclaim_rows": 6,
+      "reclaim_fences": [2, 5, 8, 11, 14, 17],
+      "races_with_one_winner": 2,
+      "locks": 0,
+      "live_orders": 0,
+      "duration_s": 999.8,
+      "exit": 0
+    }
+  },
+  "verifiers": {
+    "supervisor": {
+      "tool": "scripts/paper_supervisor_verify.py",
+      "verdict": "PASS",
+      "checks": 33,
+      "not_applicable_checks": [],
+      "mutations": 12,
+      "undetected": 0,
+      "invalid": 0,
+      "false_success": 0,
+      "verifier_commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+      "duration_s": 5.6,
+      "exit": 0
+    },
+    "lock": {
+      "tool": "scripts/paper_lock_campaign_verify.py",
+      "verdict": "PASS",
+      "checks": 32,
+      "mutations": 9,
+      "undetected": 0,
+      "invalid": 0,
+      "false_success": 0,
+      "verifier_commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+      "duration_s": 4.4,
+      "exit": 0
+    }
+  },
+  "audit": {
+    "tool": "scripts/tap_gate_campaign_audit.py",
+    "verdict": "PASS",
+    "claims": {
+      "C1": "PASS",
+      "L1": "PASS",
+      "S1": "PASS",
+      "S2": "PASS",
+      "V1": "PASS"
+    },
+    "false_success": 0,
+    "duration_s": 0.6,
+    "evidence": "evidence/CAMPAIGN_AUDIT.json"
+  },
+  "review": {
+    "tool": "reports/ai-bots/TAP-INTEGRATION-GATE-001/tools/review_gate.py",
+    "verdict": "PASS",
+    "checks": 9,
+    "checks_passed": 9,
+    "controls": 8,
+    "controls_rejected": 8,
+    "false_success": 0,
+    "duration_s": 8.16,
+    "evidence": "REVIEW.json"
+  },
+  "negative_controls": [
+    {"id": "N0_LEGACY_EVIDENCE", "expectation": "refuse the 002 delivery's evidence", "observed": "exit 1, GATE_REPORT.json missing", "passed": true},
+    {"id": "N1_STALE_COMMIT", "expectation": "refuse evidence carrying another commit", "observed": "exit 1, COMMIT_MISMATCH", "passed": true},
+    {"id": "N2_HEAD_MOVED", "expectation": "catch a commit that moves mid-command", "observed": "exit 1, HEAD moved", "passed": true},
+    {"id": "N3_ABSENT_RECOVERY", "expectation": "fail a campaign missing one RECOVERY.json", "observed": "exit 1, RECOVERY.json", "passed": true},
+    {"id": "N4_MUTATED_EVIDENCE", "expectation": "refuse edited evidence without a manifest update", "observed": "exit 1, MANIFEST_MISMATCH", "passed": true},
+    {"id": "N5_PARTIAL_CAMPAIGN", "expectation": "fail five iterations declared complete", "observed": "exit 1, contract is 6", "passed": true},
+    {"id": "N6_WEAKENED_REPORT", "expectation": "refuse a smaller report with the same PASS verdict", "observed": "exit 1, STEP_DISAGREEMENT", "passed": true},
+    {"id": "N7_SINGLE_VERIFIER_FAILURE", "expectation": "sink the verdict on one failing verifier", "observed": "exit 1, VERDICT", "passed": true}
+  ],
+  "rework": [
+    {
+      "run": "001",
+      "window_utc": "12:35:20Z..12:43:36Z",
+      "outcome": "ABORTED",
+      "cause": "scenarios written to the campaign root instead of <campaign>/scenarios, leaving two supervisor checks not applicable behind exit 0",
+      "fix": "9a420ff1"
+    },
+    {
+      "run": "002",
+      "window_utc": "12:44:00Z..13:08:32Z",
+      "outcome": "REJECTED_BY_REVIEW",
+      "cause": "runner logs written inside the evidence directory and appended to after the manifest was computed",
+      "evidence": "REVIEW.json R2_MANIFEST: changed=['GATE_STDOUT.log','RUN_STARTED.txt'], extra=['REVIEW_STDOUT.log']",
+      "fix": "run 003 keeps every log outside the evidence directory"
+    }
+  ],
+  "reproducibility": {
+    "runs": ["002", "003"],
+    "lock_iterations": [6, 6],
+    "lock_cycles": [17, 17],
+    "lock_rows": [64, 64],
+    "lock_fences": [[2, 5, 8, 11, 14, 17], [2, 5, 8, 11, 14, 17]],
+    "supervisor_cycles": [5, 5],
+    "supervisor_rows": [13, 13],
+    "supervisor_campaign_s": [317.5, 266.9]
+  },
+  "blockers": {
+    "required_check": {
+      "status": "GOVERNANCE_BLOCKED",
+      "reason": "gh CLI not installed and no API token: branch protection of Extr3sao/bot_crypto cannot be read or changed from this environment",
+      "imposed": false
+    },
+    "G1": {
+      "status": "OPEN_SIGNOFF",
+      "reason": "the weekly loss veto now rolls at UTC Monday 00:00; the risk-manager must sign the loosening",
+      "changed_by_this_delivery": false
+    },
+    "github_runner": {
+      "status": "NOT_EXECUTED",
+      "reason": "no GitHub Actions runner was available; the workflow is wired and statically checked, not run"
+    }
+  },
+  "not_tested": [
+    "the workflow on a GitHub runner (ubuntu-latest)",
+    "full pytest tests/unit (subsets alone take 27+ minutes on this host)",
+    "authenticated ccxt path",
+    "profitability of anything"
+  ],
+  "invariants": {
+    "paper_admission": "NO_GO",
+    "live_orders": 0,
+    "false_success": 0,
+    "builder_differs_from_verifier": true,
+    "risk_policy_changed": false,
+    "admission_ledger_changed": false,
+    "lane_merged": false
+  }
+}

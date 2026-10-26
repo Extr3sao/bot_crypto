@@ -1,0 +1,22 @@
+RFC-048 provenance drift on main e67194e7
+recorded PROVENANCE.json vs sha256 of the committed raw file
+
+source            recorded_sha256      file_sha256 recorded_bytes file_bytes match
+depth            786c6b99e82b167c 979c9fff0006600a           9920       9112 MISMATCH
+esma_statement   a15c6ee3095a3343 a15c6ee3095a3343          60166      60166 OK
+exchange_info    ea25e393baac13a1 ceb70da7f3661f3d        1961235    1881990 MISMATCH
+funding_rate     ba6f9f9c7bb50c3e 4cab9b070c9621b8          33816      32415 MISMATCH
+klines_5m        22b37f53db1265be 3d529db560a21143         216842     202841 MISMATCH
+leverage_brackets 07c298cd32e3f98b f38d9df89565a66d           4248       4123 MISMATCH
+premium_index    6eebda570e4a0251 fa7abe17d11e886c            273        264 MISMATCH
+
+mismatched sources: 6/7
+
+re-derivation check (scripts/rfc048_derive_instruments.py):
+  brackets content identical to INSTRUMENTS.json: 12/12 brackets, 0 value differences
+  INSTRUMENTS.json differing leaves after re-derivation: 3 (source_hash, source_hash_brackets x2)
+  recorded bracket hash becomes f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d
+  recorded bytes become 4123
+
+consequence: futures_verification.bracket_provenance fails for every decision;
+  test_futures_independent_verifier.py: 2 failed on main, 2 failed on this branch

@@ -1,0 +1,127 @@
+{
+  "rfc": "RFC-036",
+  "title": "MANAGED FUTURES TREND FAITHFUL REPRODUCTION (P1)",
+  "candidate": "MF-TREND-001",
+  "primary_reproduction_source": "S001",
+  "corroborating_sources": [
+    "S002",
+    "S029",
+    "S003"
+  ],
+  "reproduction_fidelity": "CLOSE",
+  "p2_status": "AUTHORIZED_WAITING",
+  "data": {
+    "provider": "TurtleTrader free historical futures archive",
+    "grain": "one text file per individual contract (Date,OHLC,Volume,OpenInterest)",
+    "individual_contracts": true,
+    "expiry_identifiable": true,
+    "roll_observable": true,
+    "pit_feasible": true,
+    "paid_data_used": false,
+    "markets": 26,
+    "asset_classes": 6,
+    "asset_class_markets": {
+      "EQUITY_INDEX": [
+        "sp"
+      ],
+      "GOVERNMENT_BOND_RATES": [
+        "ed",
+        "us"
+      ],
+      "FX": [
+        "ad",
+        "bp",
+        "cd",
+        "dx",
+        "jy",
+        "sf"
+      ],
+      "ENERGY": [
+        "cl",
+        "ho"
+      ],
+      "METALS": [
+        "gc",
+        "hg",
+        "pa",
+        "pl",
+        "si"
+      ],
+      "AGRICULTURE": [
+        "c",
+        "fc",
+        "jo",
+        "kc",
+        "lh",
+        "o",
+        "pb",
+        "s",
+        "sb",
+        "w"
+      ]
+    },
+    "sample": "individual contracts ~1959-2000; strategy window 1985-01-01..2000-03-31"
+  },
+  "strategy": {
+    "signal": "sign(trailing 252-day excess return)",
+    "vol_lookback_days": 60,
+    "target_position_vol": 0.4,
+    "target_portfolio_vol": 0.15,
+    "rebalance": "monthly",
+    "execution": "signal through prior month-end (T); execute at the first trading day of the next month close (>= T+1)",
+    "roll_policy": "PIT_VOLUME_FRONT_MONTHLY_V1",
+    "cost_model": "MANAGED_FUTURES_COST_MODEL_V1 (frozen hash before discovery)"
+  },
+  "splits": {
+    "DISCOVERY": [
+      "1985-01-01",
+      "1993-12-31"
+    ],
+    "VALIDATION": [
+      "1994-01-01",
+      "2000-03-31"
+    ],
+    "HOLDOUT": "FUTURE_ONLY"
+  },
+  "gates": {
+    "G_MF_DATA": "PASS",
+    "G_MF_REPRO": "PASS",
+    "G_MF_1_DISCOVERY": "PASS",
+    "G_MF_2_VALIDATION": "PASS",
+    "G_MF_3_ROBUSTNESS": "PASS",
+    "G_MF_4_HOLDOUT": "NOT_RUN_FUTURE_ONLY"
+  },
+  "results": {
+    "discovery_net_currency": 17877400.24,
+    "discovery_net_annualised_pct": 18.78,
+    "discovery_sharpe_net": 1.1,
+    "validation_net_currency": 12701700.27,
+    "validation_net_annualised_pct": 19.78,
+    "validation_sharpe_net": 1.14,
+    "validation_max_dd_frac": 0.25,
+    "headline_capital": 10000000.0,
+    "gross_exposure": "~6-7x notional, vol-targeted to ~15-17% annualised"
+  },
+  "independent_verification": "PASS",
+  "false_success": 0,
+  "p2_data_reuse": "HIGH",
+  "project_kpi": {
+    "executable_validated_edges": "1 / 1",
+    "robust_edges": "0 / 1",
+    "paper_candidates": "0 / 1",
+    "forward_profitable": 0,
+    "live_profitable": 0
+  },
+  "next": "PAPER_CANDIDATE_CERTIFICATION",
+  "limitations": [
+    "CLOSE (not EXACT) fidelity: shorter, differently-sourced sample than the source",
+    "sample ends ~2000; no genuinely pristine historical holdout (HOLDOUT = FUTURE_ONLY)",
+    "equity-index sleeve is a single market (sp); archive lacks a second liquid equity index",
+    "discrete integer contracts need a larger research capital to avoid zeroing high-notional markets",
+    "free-archive licence is unclear; used for research only"
+  ],
+  "superseded_by": "RFC-041",
+  "superseded_decision_id": "BUSINESS-FREEZE-2026-001",
+  "superseded_stale_claim": "next = PAPER_CANDIDATE_CERTIFICATION",
+  "superseded_note": "RFC-041 marks this claim SUPERSEDED; history retained, canonical state updated in docs/research/ECONOMIC_STATE.json."
+}

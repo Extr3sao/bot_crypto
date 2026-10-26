@@ -1,0 +1,6 @@
+{
+  "code": "LOCK_HELD",
+  "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock\\session\\STREAM.jsonl.lock is held by live pid 45648; a second writer would interleave prev_sha256 and the chain would stop verifying",
+  "outcome": "REFUSED",
+  "pid": 47236
+}
