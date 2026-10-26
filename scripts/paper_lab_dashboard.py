@@ -28,9 +28,11 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs, urlparse
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
@@ -39,11 +41,23 @@ from trading_bot.autonomous.observability import (  # noqa: E402
     allow_tolerant_console_output,
     build_status,
 )
+from trading_bot.autonomous.signals import (  # noqa: E402
+    DEFAULT_PAGE_LIMIT,
+    MAX_PAGE_LIMIT,
+    SignalLedger,
+)
 from trading_bot.autonomous.supervisor import DiskThresholds  # noqa: E402
 
 REPO = REPO_ROOT
 LOOPBACK_HOSTS = {"127.0.0.1", "::1", "localhost"}
 DEFAULT_PORT = 8787
+SIGNALS_VIEW_SCHEMA = "paper-signals-view-v1"
+
+#: The run directory a signal belongs to is the PAPER child's, not the lab's: the
+#: lab supervises, the PAPER runtime decides. Both are named by the same run id.
+SIGNAL_FILE = "signals.jsonl"
+ANALYSIS_FILE = "analysis.jsonl"
+OUTCOME_FILE = "outcomes.jsonl"
 
 #: The page states the controls it deliberately does not have.
 CONTROL_POLICY: dict[str, Any] = {
@@ -99,7 +113,319 @@ def status_payload(args: argparse.Namespace) -> dict[str, Any]:
         "auto_refresh_seconds": args.refresh_seconds,
         "live_control": False,
     }
+    # The page and /api/status both carry the signal view, computed once here so
+    # the two cannot show different numbers in the same refresh.
+    payload["signals_view"] = signals_payload(args, {}, status=payload)
     return payload
+
+
+def _read_jsonl(path: Path) -> list[dict[str, Any]]:
+    """Tolerant JSONL read: a torn line costs that line, never the page."""
+    if not path.exists():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        if not line.strip():
+            continue
+        try:
+            payload = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(payload, dict):
+            rows.append(payload)
+    return rows
+
+
+def resolve_signal_run_dir(args: argparse.Namespace, status: dict[str, Any]) -> Path | None:
+    """Which PAPER run the signal stream is read from.
+
+    The lab's run id *is* the PAPER child's run id, so a lab run resolves directly.
+    Without one, the newest PAPER run directory is used — a stream that exists but
+    is no longer supervised is still worth reading, and is reported as DOWN rather
+    than hidden.
+    """
+    run_id = status.get("run_id") or args.run_id
+    paper_root = REPO / args.paper_root
+    if run_id:
+        candidate = paper_root / str(run_id)
+        if candidate.exists():
+            return candidate
+    if not paper_root.exists():
+        return None
+    runs = [path for path in paper_root.iterdir() if path.is_dir()]
+    if not runs:
+        return None
+    return max(runs, key=lambda path: path.stat().st_mtime)
+
+
+def _outcome_index(run_dir: Path) -> dict[str, dict[str, Any]]:
+    """Each decision's realised hypothetical outcome, keyed by decision id.
+
+    Read from the outcomes ledger rather than merged into the signal rows: the
+    signal stream is append-only, and an outcome that arrives later must not
+    rewrite a row that was already published.
+    """
+    index: dict[str, dict[str, Any]] = {}
+    for row in _read_jsonl(run_dir / OUTCOME_FILE):
+        decision_id = row.get("decision_id")
+        if not decision_id:
+            continue
+        index[str(decision_id)] = {
+            "mode": row.get("mode"),
+            "horizon_minutes": row.get("horizon_minutes"),
+            "net_hypothetical_bps": row.get("net_hypothetical_bps"),
+            "gross_hypothetical_bps": row.get("gross_hypothetical_bps"),
+            "outcome_time_ms": row.get("outcome_time_ms"),
+            "evaluated_at_ms": row.get("created_at_ms"),
+        }
+    return index
+
+
+def _analysis_index(run_dir: Path) -> dict[str, dict[str, Any]]:
+    """Latest analysis per signal (WP-SIGNAL-002 writes this file)."""
+    index: dict[str, dict[str, Any]] = {}
+    for row in _read_jsonl(run_dir / ANALYSIS_FILE):
+        signal_id = row.get("signal_id")
+        if signal_id:
+            index[str(signal_id)] = row
+    return index
+
+
+def _signal_state(events: list[dict[str, Any]], status: dict[str, Any]) -> tuple[str, str]:
+    """LIVE / STALE / DOWN / ABSENT, decided from evidence rather than optimism."""
+    if not events:
+        return "ABSENT", "no signal events have been written for this run yet"
+    newest_ms = max(int(event.get("decision_time_ms") or 0) for event in events)
+    age_seconds = max(0.0, time.time() - newest_ms / 1000.0)
+    system = status.get("system") or {}
+    if not system.get("running"):
+        return "DOWN", "the lab is not running; the stream is the last one written"
+    if system.get("heartbeat_is_stale"):
+        return "STALE", "the supervisor heartbeat is stale"
+    timeframe = next((e.get("timeframe") for e in reversed(events) if e.get("timeframe")), None)
+    bar_seconds = 300.0
+    if timeframe:
+        try:
+            minutes = int(str(timeframe).rstrip("m")) if str(timeframe).endswith("m") else None
+            bar_seconds = float(minutes) * 60.0 if minutes else bar_seconds
+        except ValueError:
+            bar_seconds = 300.0
+    if age_seconds > bar_seconds * 3:
+        return "STALE", f"the newest signal is {age_seconds / 60:.1f} min old"
+    return "LIVE", f"the newest signal is {age_seconds:.0f}s old"
+
+
+def signals_payload(
+    args: argparse.Namespace,
+    query: dict[str, list[str]] | None = None,
+    *,
+    status: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Read-only projection of the signal stream, bounded and filterable.
+
+    Nothing here writes, takes a lock or starts anything: the page can only ever
+    read what the runtime already persisted.
+    """
+    query = query or {}
+
+    def one(key: str) -> str | None:
+        values = query.get(key) or []
+        value = values[0] if values else None
+        return value or None
+
+    def number(key: str, default: int | None = None) -> int | None:
+        raw = one(key)
+        if raw is None:
+            return default
+        try:
+            return int(raw)
+        except ValueError:
+            return default
+
+    status = status if status is not None else status_payload(args)
+    run_dir = resolve_signal_run_dir(args, status)
+    payload: dict[str, Any] = {
+        "schema_version": SIGNALS_VIEW_SCHEMA,
+        "generated_at_ms": int(time.time() * 1000),
+        "generated_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "read_only": True,
+        "run_id": None if run_dir is None else run_dir.name,
+        "run_dir": None if run_dir is None else str(run_dir),
+        "available": False,
+        "state": "ABSENT",
+        "state_reason": "no PAPER run directory was found",
+        "events": [],
+        "page": {"limit": DEFAULT_PAGE_LIMIT, "returned": 0, "total_matched": 0, "next_cursor": None},
+        "stats": {"by_stage": {}, "by_kind": {}, "by_symbol": {}, "records": 0},
+        "filters": {},
+        "limit_bounds": {"default": DEFAULT_PAGE_LIMIT, "max": MAX_PAGE_LIMIT},
+        "retention": None,
+    }
+    if run_dir is None or not (run_dir / SIGNAL_FILE).exists():
+        return payload
+
+    ledger = SignalLedger(run_dir)
+    page = ledger.read(
+        limit=number("limit", DEFAULT_PAGE_LIMIT) or DEFAULT_PAGE_LIMIT,
+        cursor=number("cursor"),
+        symbol=one("symbol"),
+        strategy=one("strategy"),
+        timeframe=one("timeframe"),
+        stage=one("stage"),
+        kind=one("kind"),
+    )
+    outcomes = _outcome_index(run_dir)
+    analyses = _analysis_index(run_dir)
+    events: list[dict[str, Any]] = []
+    for event in page.events:
+        row = event.to_dict()
+        row["outcome"] = outcomes.get(event.decision_id)
+        analysis = analyses.get(event.signal_id)
+        row["analysis"] = None if analysis is None else {
+            "status": analysis.get("status"),
+            "claim": analysis.get("claim"),
+            "regime_assessment": analysis.get("regime_assessment"),
+            "analysis_time_utc": analysis.get("analysis_time_utc"),
+            "model": analysis.get("model"),
+            "latency_ms": analysis.get("latency_ms"),
+            "cost_usd": analysis.get("cost_usd"),
+            "error": analysis.get("error"),
+            "analysis_id": analysis.get("analysis_id"),
+        }
+        events.append(row)
+
+    all_rows = [row for row in ledger.iter_rows()]
+    by_stage: dict[str, int] = {}
+    by_kind: dict[str, int] = {}
+    by_symbol: dict[str, int] = {}
+    for row in all_rows:
+        by_stage[str(row.get("stage"))] = by_stage.get(str(row.get("stage")), 0) + 1
+        by_kind[str(row.get("kind"))] = by_kind.get(str(row.get("kind")), 0) + 1
+        by_symbol[str(row.get("symbol"))] = by_symbol.get(str(row.get("symbol")), 0) + 1
+
+    state, reason = _signal_state(all_rows, status)
+    integrity = ledger.verify()
+    payload.update(
+        {
+            "available": True,
+            "state": state,
+            "state_reason": reason,
+            "events": events,
+            "page": {
+                "limit": page.limit,
+                "returned": page.returned,
+                "total_matched": page.total_matched,
+                "next_cursor": page.next_cursor,
+            },
+            "stats": {
+                "by_stage": by_stage,
+                "by_kind": by_kind,
+                "by_symbol": by_symbol,
+                "records": len(all_rows),
+            },
+            "filters": page.filters,
+            "integrity": {
+                "ok": integrity["ok"],
+                "duplicates": len(integrity["duplicates"]),
+                "malformed": integrity["malformed"],
+                "pit_violations": len(integrity["pit_violations"]),
+            },
+            "retention": integrity["retention"],
+        }
+    )
+    return payload
+
+
+def _bps(value: Any) -> str:
+    if value is None:
+        return "—"
+    try:
+        return f"{float(value):+.2f}"
+    except (TypeError, ValueError):
+        return "—"
+
+
+def render_signals_section(payload: dict[str, Any]) -> str:
+    """The chronological signal board: what fired, what did not, and why."""
+    state = str(payload.get("state") or "ABSENT")
+    tone = {"LIVE": "ok", "STALE": "warn", "DOWN": "bad", "ABSENT": "warn"}.get(state, "")
+    stats = payload.get("stats") or {}
+    filters = payload.get("filters") or {}
+    page = payload.get("page") or {}
+    rows_html: list[str] = []
+    for event in payload.get("events") or []:
+        analysis = event.get("analysis") or {}
+        outcome = event.get("outcome") or {}
+        ai = (
+            f"{_escape(analysis.get('status') or '—')}"
+            f"<div class='small'>{_escape(analysis.get('claim') or '')}</div>"
+            if analysis
+            else "<span class='small'>no analysis</span>"
+        )
+        evidence = json.dumps(event.get("evidence_refs") or [], ensure_ascii=True)
+        candidates = json.dumps(event.get("candidates") or [], ensure_ascii=True)
+        outcomes = json.dumps(outcome, ensure_ascii=True) if outcome else "no outcome yet"
+        rows_html.append(
+            "<tr>"
+            f"<td class='small'>{_escape(event.get('decision_time_utc') or '—')}</td>"
+            f"<td>{_escape(event.get('symbol'))}</td>"
+            f"<td>{_escape(event.get('strategy_id') or '—')}"
+            f"<div class='small'>{_escape(event.get('strategy_version') or '')}</div></td>"
+            f"<td><b>{_escape(event.get('stage'))}</b><div class='small'>{_escape(event.get('kind'))}</div></td>"
+            f"<td>{_escape(event.get('direction') or '—')}</td>"
+            f"<td class='num'>{_bps(event.get('gross_edge_bps'))}</td>"
+            f"<td class='num'>{_bps(event.get('estimated_cost_bps'))}</td>"
+            f"<td class='num'>{_bps(event.get('net_edge_bps'))}</td>"
+            f"<td class='small'>{_escape(event.get('risk_state') or '—')}</td>"
+            f"<td class='small'>{_escape(event.get('data_quality'))}</td>"
+            f"<td class='small'>{_escape(event.get('reason'))}"
+            f"<details><summary>evidence</summary><pre class='small'>{_escape(evidence)}</pre>"
+            f"<pre class='small'>{_escape(candidates)}</pre>"
+            f"<pre class='small'>{_escape(outcomes)}</pre></details></td>"
+            f"<td class='small'>{ai}</td>"
+            "</tr>"
+        )
+    table = (
+        "<table><tr><th>decision (UTC)</th><th>symbol</th><th>strategy</th><th>stage</th>"
+        "<th>dir</th><th>gross bps</th><th>cost bps</th><th>net bps</th><th>risk</th>"
+        "<th>data</th><th>motivo / evidencia</th><th>IA</th></tr>"
+        + ("".join(rows_html) or "<tr><td colspan='12'>no signal events in this page</td></tr>")
+        + "</table>"
+    )
+    options = "".join(
+        f"<option value='{_escape(key)}'>{_escape(key)} ({_escape(count)} )</option>"
+        for key, count in sorted((stats.get("by_stage") or {}).items())
+    )
+    cursor = page.get("next_cursor")
+    query = "&".join(
+        f"{key}={_escape(value)}"
+        for key, value in {
+            "symbol": filters.get("symbol"),
+            "strategy": filters.get("strategy"),
+            "stage": filters.get("stage"),
+            "limit": page.get("limit"),
+        }.items()
+        if value
+    )
+    next_link = (
+        f"<a href='/?{query}&cursor={cursor}#signals' style='color:#7fb2ff'>older →</a>"
+        if cursor
+        else ""
+    )
+    return f"""<div id="signals" class="panel">
+<h2 style="font-size:13px;letter-spacing:.08em;color:#8b93a1;margin:0 0 6px">SIGNALS — {_escape(payload.get('run_id') or 'no run')}</h2>
+<div class="banner {tone}">{_escape(state)} — {_escape(payload.get('state_reason'))}</div>
+<div class="small">events {_escape(stats.get('records'))} · stage {_escape(stats.get('by_stage'))} · kind {_escape(stats.get('by_kind'))} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> {next_link}</div>
+<form method="get" action="/#signals" class="filters">
+ <input name="symbol" placeholder="BTC/USDT" value="{_escape(filters.get('symbol') or '')}">
+ <input name="strategy" placeholder="strategy_id" value="{_escape(filters.get('strategy') or '')}">
+ <select name="stage"><option value="">all stages</option>{options}</select>
+ <input name="limit" type="number" min="1" max="{MAX_PAGE_LIMIT}" value="{int(page.get('limit') or DEFAULT_PAGE_LIMIT)}">
+ <button type="submit">filter</button>
+ <a href="/#signals" style="color:#7fb2ff">reset</a>
+</form>
+{table}
+</div>"""
 
 
 def _card(title: str, rows: list[tuple[str, Any]], *, tone: str = "") -> str:
@@ -155,6 +481,7 @@ def render_page(payload: dict[str, Any]) -> str:
     errors = payload.get("errors") or []
     controls = payload.get("controls") or {}
     dashboard = payload.get("dashboard") or {}
+    signals = payload.get("signals_view") or {}
 
     state = system.get("state") or "UNKNOWN"
     tone = "ok" if state in ("HEALTHY",) and not system.get("heartbeat_is_stale") else (
@@ -314,6 +641,13 @@ table {{ width:100%; border-collapse:collapse; margin-top:14px; }}
 th, td {{ text-align:left; padding:6px 8px; border-bottom:1px solid #232833; }}
 th {{ color:#8b93a1; font-weight:400; }}
 .small {{ color:#8b93a1; }}
+.panel {{ background:#12161d; border:1px solid #232833; border-radius:8px; padding:12px; margin-top:18px; }}
+.filters {{ display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }}
+.filters input, .filters select, .filters button {{ background:#1b1f27; color:#e6e8eb; border:1px solid #2b3240; border-radius:5px; padding:5px 8px; font:inherit; }}
+.filters button {{ cursor:pointer; }}
+td.num {{ text-align:right; }}
+details summary {{ cursor:pointer; color:#7fb2ff; }}
+pre {{ white-space:pre-wrap; word-break:break-word; margin:4px 0; }}
 footer {{ margin-top:20px; color:#8b93a1; }}
 code {{ background:#1b1f27; padding:2px 6px; border-radius:4px; }}
 </style></head>
@@ -328,6 +662,7 @@ code {{ background:#1b1f27; padding:2px 6px; border-radius:4px; }}
 <h2 style="font-size:13px;letter-spacing:.08em;color:#8b93a1;margin-top:22px">CHILD PROCESSES</h2>
 <table><tr><th>process</th><th>state</th><th>pid</th><th>alive</th><th>uptime</th><th>restarts</th><th>exit</th><th>last error</th></tr>
 {children or "<tr><td colspan='8'>no children reported</td></tr>"}</table>
+{render_signals_section(signals)}
 <div class="grid" style="margin-top:14px">
 {_card("STOP REPORT", [("verdict", stop_report.get("verdict")), ("escalated", stop_report.get("escalated")), ("failed children", stop_report.get("failed_children")), ("exit codes", stop_report.get("exit_codes"))])}
 {_card("RUN REPORT", [("final state", run_report.get("final_state")), ("stop reason", run_report.get("stop_reason")), ("duration", run_report.get("duration_seconds"))])}
@@ -337,11 +672,18 @@ code {{ background:#1b1f27; padding:2px 6px; border-radius:4px; }}
 <footer>No LIVE control is presented because no LIVE path exists: every plane is PAPER or read-only market data.
 Controls are commands, not endpoints — <code>{_escape(controls.get('why'))}</code></footer>
 <script>
-async function refresh() {{
+async function refreshSignals() {{
+  const target = document.getElementById('signals');
+  if (!target) return;
+  // The section is rendered by the server, so the browser and a refresh can
+  // never disagree about how a row is formatted.
   try {{
-    const response = await fetch('/api/status', {{cache: 'no-store'}});
-    if (response.ok) {{ /* full re-render keeps one source of truth */ }}
-  }} catch (error) {{ /* a dashboard that cannot reach itself shows the last page */ }}
+    const response = await fetch('/signals' + window.location.search, {{cache: 'no-store'}});
+    if (response.ok) target.outerHTML = await response.text();
+  }} catch (error) {{ /* keep the last good table */ }}
+}}
+async function refresh() {{
+  await refreshSignals();
   setTimeout(refresh, {int(dashboard.get('auto_refresh_seconds') or 15) * 1000});
 }}
 setTimeout(refresh, {int(dashboard.get('auto_refresh_seconds') or 15) * 1000});
@@ -377,10 +719,24 @@ def make_handler(args: argparse.Namespace) -> type[BaseHTTPRequestHandler]:
             self.wfile.write(body)
 
         def do_GET(self) -> None:
-            path = self.path.split("?", 1)[0]
+            parsed = urlparse(self.path)
+            path = parsed.path
+            query = parse_qs(parsed.query, keep_blank_values=False)
             if path in ("/", "/index.html"):
                 payload = status_payload(args)
                 self._send(200, render_page(payload).encode("utf-8"), "text/html; charset=utf-8")
+                return
+            if path == "/signals":
+                section = render_signals_section(signals_payload(args, query))
+                self._send(200, section.encode("utf-8"), "text/html; charset=utf-8")
+                return
+            if path == "/api/signals":
+                payload = signals_payload(args, query)
+                self._send(
+                    200,
+                    (json.dumps(payload, indent=2, ensure_ascii=False) + "\n").encode("utf-8"),
+                    "application/json; charset=utf-8",
+                )
                 return
             if path == "/api/status":
                 payload = status_payload(args)
