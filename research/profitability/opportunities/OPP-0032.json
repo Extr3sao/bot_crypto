@@ -1,0 +1,56 @@
+{
+  "opportunity_id": "OPP-0032",
+  "title": "Adaptive States for Crypto (QuantConnect Quant League 2025-Q2)",
+  "source_ids": [
+    "S3-11"
+  ],
+  "economic_hypothesis": "an adaptive three-state crypto system with a public backtest chart",
+  "market": "crypto on QuantConnect",
+  "assets": "the entry's crypto universe",
+  "timeframe": "intraday",
+  "entry_rules": "three-state (Normal/Reversed/NotReliable) switching on a measured prediction accuracy, positioned at 98% of capital",
+  "exit_rules": "0.5% take-profit, a time limit and signal reversals",
+  "risk_rules": "fixed thresholds; the parameters that drive the states are not published",
+  "parameters": "thresholds from baseline_model_params.json and baseline_threshold_array.json (not shared)",
+  "claimed_period": "the 2025-Q2 Quant League backtest window",
+  "claimed_metrics": "a public backtest chart; no cost-adjusted figure",
+  "transaction_cost_model": "declared absent by the author as a limitation",
+  "required_data": "QuantConnect crypto data plus the withheld model parameters",
+  "external_code": "partial — the state parameters live in private object storage",
+  "external_results": "the entry's public backtest chart only",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the state parameters live in unshared files, no costs are modelled, and the turnover measured by the author's own reviewers is expected to be fatal",
+    "reviewed in RFC-035S3; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "the state parameters are withheld, so the states cannot be reproduced",
+    "about 3,500% turnover is reported by a commenter against no cost modelling"
+  ],
+  "replication_difficulty": "the state parameters live in unshared files, no costs are modelled, and the turnover measured by the author's own reviewers is expected to be fatal",
+  "evidence_quality": "E1",
+  "selection_bias_risk": "MEDIUM",
+  "overfitting_risk": "HIGH",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_3_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 2,
+    "CODE_AVAILABILITY": 2,
+    "DATA_REPRODUCIBILITY": 0,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 0,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 1,
+    "INDEPENDENT_VALIDATION": 0,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 6,
+  "rank": "REJECT",
+  "rfc": "RFC-035S3",
+  "candidate_ref": "reports/rfc035/search_round_3/FINAL_REPORT.json",
+  "round_3_reason": "the state parameters live in unshared files, no costs are modelled, and the turnover measured by the author's own reviewers is expected to be fatal",
+  "candidate_id": "QC-01"
+}

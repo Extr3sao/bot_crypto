@@ -1,0 +1,75 @@
+{
+  "experiment_id": "EXP-ARP-020",
+  "strategy_id": "H-VOLMAN-ALLOC-001",
+  "arm": "PROJECT_DERIVED_VARIANT",
+  "source_faithful": false,
+  "source_attribution": "NONE — new project hypothesis",
+  "mechanism_family": "volatility regime allocation / volatility-managed exposure",
+  "lineage": "NEW. Not a variant of EXP-ARP-008: there is no directional signal at all. Exposure is a deterministic function of realized volatility only.",
+  "mechanism_statement": "Hold a fixed BTC/ETH/SOL equal-weight basket continuously, scaled by a target-volatility overlay (target_vol / realized_vol, capped to [0,1]). The mechanism is risk scaling, not return prediction.",
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+  "timeframe": "1d",
+  "rules": {
+    "signal": "none (no direction prediction)",
+    "exposure": "w_t = min(1, target_vol / realized_vol_t) with realized_vol_t = 20-day population stdev of basket daily log returns",
+    "rebalance": "weekly at UTC close; act next open",
+    "stop": "none",
+    "position": "long-only basket weight w_t; fixed base notional 500 USD; no compounding"
+  },
+  "parameters": {
+    "lookback_days": 20,
+    "target_vol_annual": 0.5,
+    "max_hold_days": 7
+  },
+  "cost_model": {
+    "version": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "source": "live CostEngine (never hardcoded)",
+    "stress_multiples": [0.5, 1.0, 1.25, 1.5, 2.0]
+  },
+  "data": {
+    "corpus": "reports/alpha-diversified-v1/data (130 native 1d USDT markets)",
+    "universe_version": "ARP-006-UNIVERSE-v1",
+    "survivorship_limitation": "SURVIVORSHIP_DATA_LIMITATION"
+  },
+  "splits": {
+    "DEV": ["2019-01-01", "2024-01-01"],
+    "VALIDATION": ["2024-01-01", "2025-07-01"],
+    "OOS_LOCK": ["2026-03-01", "2027-03-01"],
+    "oos_opened": false,
+    "oos_status": "FORWARD_PAPER_ONLY_NOT_AVAILABLE"
+  },
+  "spec_contract": {
+    "experiment_id": "EXP-ARP-020",
+    "strategy_id": "H-VOLMAN-ALLOC-001",
+    "timeframe": "1d",
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "lookback_days": 20,
+    "max_hold_days": 7,
+    "entry_rule": "continuous long basket; exposure w=min(1, target_vol/realized_vol), weekly",
+    "exit_rule": "continuous; no directional exit; weight may fall to 0 only if realized_vol explodes",
+    "dataset_fingerprint": "abc847bd4e367e2c885d5b320fedbbba7e9a435ae24ca52ef4243018313f2014"
+  },
+  "implementation_config": {
+    "lookback_days": 20,
+    "max_hold_days": 7,
+    "dataset_fingerprint": "abc847bd4e367e2c885d5b320fedbbba7e9a435ae24ca52ef4243018313f2014",
+    "entry_rule": "continuous long basket; exposure w=min(1, target_vol/realized_vol), weekly",
+    "exit_rule": "continuous; no directional exit; weight may fall to 0 only if realized_vol explodes",
+    "disposition": "NOT_IMPLEMENTED — pre-registration only; no DEV execution in ARP-008"
+  },
+  "kill_criteria": [
+    "DEV gross expectancy <= 0 -> REJECT_NO_EDGE",
+    "DEV gross expectancy <= cost bps -> REJECT_COSTS",
+    "DEV trades < 20 -> REJECT_INSUFFICIENT_SAMPLE",
+    "single trade > 50% of positive DEV net -> REJECT_FRAGILE",
+    "any look-ahead -> REJECT_PIT",
+    "VALIDATION net <= 0 -> REJECT_VALIDATION"
+  ],
+  "gates": {
+    "promotion": "positive net DEV AND positive net VALIDATION AND cost PASS AND robustness PASS AND PIT PASS AND contract PASS AND sample sufficient AND concentration acceptable AND builder != verifier"
+  },
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "frozen_before_results": true,
+  "oos_locked": true
+}

@@ -1,0 +1,264 @@
+{
+  "blockers": [
+    "CAPACITY_INSUFFICIENT",
+    "CAMPAIGN_STORE_ABSENT",
+    "EXPERIMENT_ARTIFACTS_ABSENT"
+  ],
+  "budget": {
+    "basis": "02J p90 drawdown 12.467 GiB + 2 GiB protection floor + 0.0972 GiB campaign growth over the 90-day window; frozen because the store that produced it is absent in this tree",
+    "recomputable": false,
+    "required_bytes": 15637975925,
+    "required_gib": 14.564,
+    "source": "FROZEN_02J_P90",
+    "why_not_recomputed": "no readings at C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl (store absent or empty); the figure is carried, not reduced"
+  },
+  "capacity": {
+    "after": {
+      "free_bytes": 20825403392,
+      "free_gib": 19.3952,
+      "instruments_agree": true,
+      "margin_gib": 4.8312,
+      "required_gib": 14.564,
+      "total_bytes": 255041990656,
+      "verdict": "PASS"
+    },
+    "before": {
+      "free_bytes": 19656876032,
+      "free_gib": 18.3069,
+      "instruments_agree": true,
+      "margin_gib": 3.7429,
+      "required_gib": 14.564,
+      "total_bytes": 255041990656,
+      "verdict": "PASS"
+    },
+    "now": {
+      "free_bytes": 15114952704,
+      "free_gib": 14.0769,
+      "instruments_agree": true,
+      "margin_gib": -0.4871,
+      "required_gib": 14.564,
+      "total_bytes": 255041990656,
+      "verdict": "INSUFFICIENT"
+    },
+    "now_measured_at_utc": "2026-10-23T19:13:32Z",
+    "verdict": "INSUFFICIENT"
+  },
+  "cleanup": {
+    "manifest_entries": 724,
+    "targets": [
+      {
+        "deleted_bytes": 736117959,
+        "deleted_files": 602,
+        "deleted_gib": 0.6856,
+        "dry_run": false,
+        "key": "playwright-obsolete",
+        "manifest": "docs/agentic/exp004a/wp051_02k/continuation/CLEANUP_PLAYWRIGHT_OBSOLETE.jsonl",
+        "planned_bytes": 736117959,
+        "planned_files": 602,
+        "pruned_directories": 18,
+        "root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright",
+        "skipped": [],
+        "skipped_count": 0,
+        "volume_after": {
+          "at_utc": "2026-10-23T18:35:58Z",
+          "free_bytes": 20383739904,
+          "free_bytes_kernel32": 20383739904,
+          "free_gib": 18.9838,
+          "instruments_agree": true,
+          "path": "C:/",
+          "total_bytes": 255041990656,
+          "used_bytes": 234658250752,
+          "used_percent": 92.01
+        },
+        "volume_before": {
+          "at_utc": "2026-10-23T18:35:50Z",
+          "free_bytes": 19648995328,
+          "free_bytes_kernel32": 19648995328,
+          "free_gib": 18.2996,
+          "instruments_agree": true,
+          "path": "C:/",
+          "total_bytes": 255041990656,
+          "used_bytes": 235392995328,
+          "used_percent": 92.3
+        },
+        "volume_delta_bytes": 734744576
+      },
+      {
+        "deleted_bytes": 257425155,
+        "deleted_files": 115,
+        "deleted_gib": 0.2397,
+        "dry_run": false,
+        "key": "temp-stale",
+        "manifest": "docs/agentic/exp004a/wp051_02k/continuation/CLEANUP_TEMP_STALE.jsonl",
+        "planned_bytes": 307756803,
+        "planned_files": 122,
+        "pruned_directories": 18,
+        "root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp",
+        "skipped": [
+          {
+            "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\04e393c1-9229-4017-bd16-9173649ecd6a.tmp",
+            "why": "locked or refused: PermissionError"
+          },
+          {
+            "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\cf0d54cf-2417-4cc6-bc0d-6af9d410c1a2.tmp",
+            "why": "locked or refused: PermissionError"
+          },
+          {
+            "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\FXSAPIDebugLogFile.txt",
+            "why": "locked or refused: PermissionError"
+          },
+          {
+            "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\mat-debug-22936.log",
+            "why": "locked or refused: PermissionError"
+          },
+          {
+            "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\Diagnostics\\WINWORD\\Primary1792088467850173100_E218808A-3D0B-4B66-B3FA-6172A6D31E9A.log",
+            "why": "locked or refused: PermissionError"
+          },
+          {
+            "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\Diagnostics\\WINWORD\\Additional\\Additional1792087854706028800_E218808A-3D0B-4B66-B3FA-6172A6D31E9A.log",
+            "why": "locked or refused: PermissionError"
+          },
+          {
+            "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\Diagnostics\\WINWORD\\Additional\\Additional1792087854708440500_E218808A-3D0B-4B66-B3FA-6172A6D31E9A.log",
+            "why": "locked or refused: PermissionError"
+          }
+        ],
+        "skipped_count": 7,
+        "volume_after": {
+          "at_utc": "2026-10-23T18:35:59Z",
+          "free_bytes": 20639940608,
+          "free_bytes_kernel32": 20639940608,
+          "free_gib": 19.2224,
+          "instruments_agree": true,
+          "path": "C:/",
+          "total_bytes": 255041990656,
+          "used_bytes": 234402050048,
+          "used_percent": 91.91
+        },
+        "volume_before": {
+          "at_utc": "2026-10-23T18:35:58Z",
+          "free_bytes": 20383739904,
+          "free_bytes_kernel32": 20383739904,
+          "free_gib": 18.9838,
+          "instruments_agree": true,
+          "path": "C:/",
+          "total_bytes": 255041990656,
+          "used_bytes": 234658250752,
+          "used_percent": 92.01
+        },
+        "volume_delta_bytes": 256200704
+      }
+    ],
+    "total_deleted_bytes": 993543114,
+    "total_deleted_gib": 0.9253,
+    "volume_delta_bytes": 1168527360
+  },
+  "generated_at_utc": "2026-10-23T19:13:41Z",
+  "guard": {
+    "note": "the guard shipped with the 02J/02K worktree, which is not in this tree; nothing here claims the campaign is protected while both the guard and the store it guards are absent",
+    "process_running": [],
+    "script": "scripts/edge04_watchdog.py",
+    "script_present": false,
+    "state": "ABSENT_IN_THIS_TREE",
+    "store_present": false
+  },
+  "integrity": {
+    "checks": [
+      {
+        "changed": [],
+        "detail": "14 files hashed either side; 0 differ",
+        "id": "EXPERIMENT_FILES_IDENTICAL",
+        "status": "PASS"
+      },
+      {
+        "changed": [],
+        "detail": "12 files recovered from 9983b050; 0 differ from their blob",
+        "id": "RECOVERED_RECORD_MATCHES_COMMIT",
+        "status": "PASS"
+      },
+      {
+        "absent": [
+          "capture_runner",
+          "contract",
+          "observer_watchdog",
+          "store"
+        ],
+        "detail": "absent from this checkout: capture_runner, contract, observer_watchdog, store; the record was recovered from Git, the live artefacts were not",
+        "id": "LIVE_EXPERIMENT_PRESENT",
+        "status": "FAIL"
+      },
+      {
+        "detail": "campaign store absent at C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04: continuity cannot be certified from this tree",
+        "id": "STORE_PRESENT",
+        "status": "FAIL"
+      }
+    ],
+    "verdict": "FAIL"
+  },
+  "observed_growth": {
+    "caveat": "write counters are per process and cumulative; a large writer is not necessarily the one that lowered free space, so drops and writes are reported side by side. Deferred allocation (paging, compression, delayed writes) can move the volume after the write.",
+    "dropped_bytes": 5367025664,
+    "seconds": 120,
+    "share_explained_percent": 86.99,
+    "writers": [
+      {
+        "intervals": 16,
+        "name": "SearchIndexer.exe",
+        "written_bytes": 4564247216
+      },
+      {
+        "intervals": 11,
+        "name": "bun.exe",
+        "written_bytes": 69020876
+      },
+      {
+        "intervals": 39,
+        "name": "chrome.exe",
+        "written_bytes": 14888653
+      },
+      {
+        "intervals": 13,
+        "name": "msedge.exe",
+        "written_bytes": 11752769
+      },
+      {
+        "intervals": 14,
+        "name": "System",
+        "written_bytes": 5214208
+      },
+      {
+        "intervals": 11,
+        "name": "ChatGPT.exe",
+        "written_bytes": 2406531
+      }
+    ]
+  },
+  "package": "WP-051-02K",
+  "refused": [
+    {
+      "bytes": 2149074132,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\hermes",
+      "why": "el propietario no autorizó este árbol"
+    },
+    {
+      "bytes": 82,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_004g",
+      "why": "el propietario no autorizó este worktree"
+    },
+    {
+      "bytes": 1394267913,
+      "path": "C:\\Users\\GVLLFR0035\\.cache\\codex-runtimes",
+      "why": "runtime of a tool that is running (codex-computer-use-swift.exe#28092, codex-windows-sandbox-service.exe#38040, codex.exe#14028): regenerable, but not provably unused, so not deleted"
+    }
+  ],
+  "schema_version": "EXP004A_WP051_02K_CONTINUATION_V1",
+  "tree": {
+    "branch": "main",
+    "dirty_paths": 18,
+    "head": "e2b714261349d507e68c7bf8f05b5d75834496ce",
+    "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+  },
+  "verdict": "BLOCKED",
+  "verdict_note": "capacity PASS requires the measured free space to reach the frozen budget with both instruments agreeing; the campaign itself stays BLOCKED for any blocker that the volume cannot answer"
+}

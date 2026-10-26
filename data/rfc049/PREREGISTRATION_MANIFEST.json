@@ -1,0 +1,171 @@
+{
+  "artifact": "RFC049_PREREGISTRATION_MANIFEST",
+  "campaign": "RFC-049 DISCOVERY 2",
+  "phase": "A",
+  "freeze_timestamp_utc": "2026-10-10T11:26:20Z",
+  "sealed_oos_start_utc": "2026-10-11T00:00:00Z",
+  "code_commit": "cba8a337e802e66941a7ba72af71c499322bd2fa",
+  "spec_hashes": {
+    "H-049-001": {
+      "status": "SPEC_FROZEN",
+      "spec_file": "data/rfc049/specs/H-049-001.json",
+      "spec_file_sha256": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
+      "spec_canonical_sha256": "8efafe60c217ad9950f8dc85c4a6ea68730cc95613ab377db764720c79d56cec"
+    },
+    "H-049-002": {
+      "status": "SPEC_FROZEN",
+      "spec_file": "data/rfc049/specs/H-049-002.json",
+      "spec_file_sha256": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0",
+      "spec_canonical_sha256": "d2a2a9891df9bc439120b5e6794bf00ebcffcc6ce88e6241bca7f6c98c02e02c"
+    },
+    "H-049-003": {
+      "status": "RESEARCH_CANDIDATE",
+      "spec_file": "data/rfc049/specs/H-049-003.json",
+      "spec_file_sha256": "c77aa9a8c7aa897c2d504ed940c012cd3100a47490ee2ca6b37f08a5a79e26e9",
+      "spec_canonical_sha256": "4e32cc3d17518629059aaa6c55ba526a8d620817708ed06364e8674353fa47f6"
+    }
+  },
+  "dataset_hashes": {
+    "price_series": {
+      "data/raw/alpha001/BTC-USDT_1d.json": {
+        "sha256": "558fb9a07d2baa6a5e68b9eaed031adb750774542bfdc4c27c3b6a4f6260ebd1",
+        "bytes": 227920
+      },
+      "data/raw/alpha001/ETH-USDT_1d.json": {
+        "sha256": "840396f1adf31bef0a533ec3f56b52517c9facd9c23f0dbd7d448be9a113d745",
+        "bytes": 213474
+      }
+    },
+    "signal_series": {
+      "defillama_stablecoin_supply_all.json": {
+        "sha256": "b8250250e0cabc5d0eda669b6b0f064e4aed1521bc6be67ef0edb03d048336e9",
+        "url": "https://stablecoins.llama.fi/stablecoincharts/all"
+      },
+      "blockchain_info_hashrate_8y.json": {
+        "sha256": "ede914a9089311a2fc82b181dd9f508ab510c6952dca7da3736ad0caaa929882",
+        "url": "https://api.blockchain.info/charts/hash-rate?timespan=8years&format=json&sampled=false"
+      },
+      "blockchain_info_miners_revenue_all.json": {
+        "sha256": "c62f0a94a622dd35da8e40cc009484b42bf2a00088ddc4ab66f4a7d7b9ad273f",
+        "url": "https://api.blockchain.info/charts/miners-revenue?timespan=all&format=json"
+      },
+      "fred_WALCL.csv": {
+        "sha256": "c6519d91e9d8546ce63f6a8ea20b82c1a7ddd0d6bd3a1146e448d574cc4d2c1c",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=WALCL"
+      },
+      "fred_RRPONTSYD.csv": {
+        "sha256": "1bea66a24c8bae36df0661efc96e1ff7d0388625d6f0dbf3b79d20fdbf5c3d68",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=RRPONTSYD"
+      },
+      "fred_WTREGEN.csv": {
+        "sha256": "1efab94a7a507516f319cb152b4336427424590ed58ea34580cdc54366a7036e",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=WTREGEN"
+      },
+      "fred_DFII10.csv": {
+        "sha256": "0277781c1336527c38275803bfedc0b7f1c264740b9406981edda0d2796ab6ee",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10"
+      },
+      "fred_DTWEXBGS.csv": {
+        "sha256": "75edd28ba1eceade938fa6621edfebc4d4e9cbcc846c6f07be27f8aef0ead321",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS"
+      },
+      "fred_DFF.csv": {
+        "sha256": "a93504210b53532fda653a7ee8d543b00b1780c83f2131e35bb94827a973c2df",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFF"
+      }
+    }
+  },
+  "cost_model_hash": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+  "risk_policy_hash": "78abe86b49cac924707efb9dd7aab93768da1cc25d5e5863bdb7bf692efbe20f",
+  "risk_policy_files": [
+    "src/trading_bot/risk/futures/engine.py",
+    "src/trading_bot/risk/futures/margin.py"
+  ],
+  "frozen_parameters": {
+    "H-049-001": {
+      "parameters": {
+        "growth_window_days": 30,
+        "reference_median_window_days": 365,
+        "decision_weekday": "Sunday",
+        "decision_time_utc": "23:00:00",
+        "execution_lag": "next daily bar open",
+        "parameter_searches": 0
+      },
+      "entry_rule": "Let D_t be the total circulating value in USD of all USD-pegged stablecoins as published by the frozen vendor series (SRC-049-001), on the daily grid. Let r30_t = D_t / D_{t-30} - 1 (30-day net growth). Let B_t be the median of the previous 365 daily values of r30 ending at t-1 (strictly causal; B_t uses no value dated t or later). At each weekly decision instant, using the most recent daily observation t* whose availability time is <= Saturday 23:59:00 UTC, if r30_{t*} > B_{t*} the strategy is LONG; otherwise FLAT. A LONG state is opened at the next bar open after a transition from FLAT.",
+      "exit_rule": "The position is closed at the next bar open after the weekly state becomes FLAT (r30 <= B). The runtime risk engine may close the position independently and unconditionally; the strategy has no discretionary stop, no target and no time stop beyond the state flip."
+    },
+    "H-049-002": {
+      "parameters": {
+        "liquidity_change_window_weeks": 4,
+        "decision_weekday": "Sunday",
+        "decision_time_utc": "23:00:00",
+        "execution_lag": "next daily bar open",
+        "parameter_searches": 0
+      },
+      "entry_rule": "Let NL_t = WALCL_t - RRP_t - TGA_t where WALCL_t is the Federal Reserve total assets (Wednesday level), RRP_t is the overnight reverse repo amount and TGA_t is the Treasury General Account (Wednesday level), all in USD billions, aligned to the weekly Wednesday grid using each series' most recent observation on or before that Wednesday. At each weekly decision instant, use the most recent complete Wednesday snapshot whose inputs were all published on or before Saturday 23:59:00 UTC (declared release lags: WALCL and TGA at least 1 day after the Wednesday reference; RRP at least 1 business day). If NL_w - NL_{w-4} > 0 the strategy is LONG; otherwise FLAT. A LONG state is opened at the next bar open after a transition from FLAT.",
+      "exit_rule": "The position is closed at the next bar open after the weekly state becomes FLAT (4-week net-liquidity change <= 0). The runtime risk engine may close the position independently and unconditionally; the strategy has no discretionary stop, no target and no time stop beyond the state flip."
+    }
+  },
+  "thresholds": {
+    "H-049-001": {
+      "thresholds": {
+        "net_expectancy_positive": true,
+        "net_profit_factor_min": 1.1,
+        "net_pnl_oos_positive": true,
+        "lcb_95_net_expectancy_positive": true,
+        "cost_stress_1_5x_net_positive": true,
+        "positive_in_every_partition": [
+          "development",
+          "validation",
+          "sealed_oos"
+        ],
+        "max_drawdown_le": 0.25,
+        "single_trade_share_of_positive_net_le": 0.4,
+        "minimum_oos_round_trips_or_months": "20 round trips or 24 months, whichever comes first",
+        "incremental_over_buy_and_hold_positive": true,
+        "incremental_over_200d_trend_baseline_positive": true
+      },
+      "cost_bps_200_usdt": 23.353553391,
+      "cost_bps_1000_usdt": 23.790569415,
+      "stress_bps_1_5x_200_usdt": 35.030330087,
+      "estimated_annual_cost_drag_pct_at_top_turnover": 4.6707,
+      "sealed_oos_start_utc": "2026-10-11T00:00:00Z"
+    },
+    "H-049-002": {
+      "thresholds": {
+        "net_expectancy_positive": true,
+        "net_profit_factor_min": 1.1,
+        "net_pnl_oos_positive": true,
+        "lcb_95_net_expectancy_positive": true,
+        "cost_stress_1_5x_net_positive": true,
+        "positive_in_every_partition": [
+          "development",
+          "validation",
+          "sealed_oos"
+        ],
+        "max_drawdown_le": 0.25,
+        "single_trade_share_of_positive_net_le": 0.4,
+        "minimum_oos_round_trips_or_months": "20 round trips or 24 months, whichever comes first",
+        "incremental_over_buy_and_hold_positive": true,
+        "incremental_over_200d_trend_baseline_positive": true
+      },
+      "cost_bps_200_usdt": 23.353553391,
+      "cost_bps_1000_usdt": 23.790569415,
+      "stress_bps_1_5x_200_usdt": 35.030330087,
+      "estimated_annual_cost_drag_pct_at_top_turnover": 6.0719,
+      "sealed_oos_start_utc": "2026-10-11T00:00:00Z"
+    }
+  },
+  "partition_policy": {
+    "development": "per spec; RESEARCH_EXPOSED and declared",
+    "validation": "per spec; RESEARCH_EXPOSED and declared, degraded evidential status",
+    "sealed_oos": "forward observations strictly after freeze_timestamp_utc; opened once, after 20 closed round trips or 24 months, whichever comes first; fewer than 20 trips at 24 months => INSUFFICIENT_OOS_SAMPLE"
+  },
+  "gate": {
+    "authorized": false,
+    "reason": "NEXT_CAMPAIGN = NOT_AUTHORIZED; WP-049-06..10 remain blocked",
+    "authorization_required_from": "the operator, via a governance decision that changes NEXT_CAMPAIGN"
+  },
+  "no_tuning_rule": "after this manifest is written, no parameter, threshold, source, partition or rule may change without a new hypothesis and a new experimental budget",
+  "note": "written before any economic computation; contains no result"
+}

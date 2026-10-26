@@ -1,0 +1,105 @@
+{
+  "hypothesis_id": "TDM11-H1",
+  "rule": {
+    "family": "momentum",
+    "timeframe": "5m",
+    "direction": "SHORT",
+    "regime_filter": "regime_trend == 'down' (trailing 200-bar z < -1.5)",
+    "entry": "open of bar i+1 after a decision at the close of bar i",
+    "exit": "close of bar i+1+6 (30 min)",
+    "position": "one at a time, sequential, no pyramiding",
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ]
+  },
+  "cost_bps": 23.7906,
+  "dev": {
+    "label": "DEV primary (SHORT + trend=down)",
+    "trades": 115,
+    "days": 89.57,
+    "trades_per_day": 1.284,
+    "gross_bps_mean": -12.577,
+    "gross_bps_median": -18.8223,
+    "gross_bps_sd": 56.5026,
+    "se_iid_bps": 5.2689,
+    "se_block_bps": 5.2949,
+    "autocorr_inflation": 1.0049,
+    "ci95_low_iid": -21.2435,
+    "ci95_low_block": -21.2863,
+    "net_bps_mean": -36.3676,
+    "net_ci95_low_block": -45.0769
+  },
+  "dev_comparators": [
+    {
+      "label": "DEV comparator (both directions + trend=down)",
+      "trades": 138,
+      "days": 89.66,
+      "trades_per_day": 1.539,
+      "gross_bps_mean": -12.3667,
+      "gross_bps_median": -15.9505,
+      "gross_bps_sd": 55.7364,
+      "se_iid_bps": 4.7446,
+      "se_block_bps": 5.0182,
+      "autocorr_inflation": 1.0577,
+      "ci95_low_iid": -20.1709,
+      "ci95_low_block": -20.6209,
+      "net_bps_mean": -36.1573,
+      "net_ci95_low_block": -44.4115
+    },
+    {
+      "label": "DEV comparator (SHORT, no regime filter)",
+      "trades": 1621,
+      "days": 91.57,
+      "trades_per_day": 17.702,
+      "gross_bps_mean": -5.4002,
+      "gross_bps_median": -8.0211,
+      "gross_bps_sd": 49.2365,
+      "se_iid_bps": 1.2229,
+      "se_block_bps": 1.6037,
+      "autocorr_inflation": 1.3113,
+      "ci95_low_iid": -7.4117,
+      "ci95_low_block": -8.038,
+      "net_bps_mean": -29.1908,
+      "net_ci95_low_block": -31.8286
+    }
+  ],
+  "hold_selection_evidence": {
+    "label": "HOLD selection evidence (exposed)",
+    "trades": 68,
+    "days": 26.4,
+    "trades_per_day": 2.576,
+    "gross_bps_mean": 13.292,
+    "gross_bps_median": 4.1471,
+    "gross_bps_sd": 62.9167,
+    "se_iid_bps": 7.6298,
+    "se_block_bps": 9.6849,
+    "autocorr_inflation": 1.2694,
+    "ci95_low_iid": 0.7421,
+    "ci95_low_block": -2.6383,
+    "net_bps_mean": -10.4986,
+    "net_ci95_low_block": -26.4289
+  },
+  "power": {
+    "sd_bps": 56.5026,
+    "block_inflation": 1.0049,
+    "required_n_at_cost_effect": 36,
+    "required_n_at_observed_dev_effect": 127,
+    "required_n_at_10bps": 200,
+    "required_n_at_15bps": 89,
+    "required_days_at_cost_effect": 28.0,
+    "required_days_at_observed_effect": 98.9,
+    "expected_trades_per_day": 1.284,
+    "detectable_effect_at_n_1000": 4.46,
+    "formula": "n = ((z_0.95 + z_0.80) * sd_block / effect)^2, one-sided alpha=0.05, power=0.80"
+  },
+  "availability": {
+    "last_exposed_bar_ms": 1792857524550,
+    "elapsed_since_exposed_days": 0.85,
+    "expected_trades_available_now": 1.09,
+    "required_trades": 36,
+    "shortfall_trades": 34.91
+  },
+  "generated_at_ms": 1792930575656
+}

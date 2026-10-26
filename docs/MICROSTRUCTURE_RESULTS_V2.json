@@ -1,0 +1,2140 @@
+{
+  "model": "MICROSTRUCTURE_RESULTS_V2",
+  "generated_by": "scripts/microstructure_edge_v2.py",
+  "hypotheses_doc": "docs/MICROSTRUCTURE_HYPOTHESES_V2.md",
+  "dataset": {
+    "aggTrades": {
+      "source_id": "SRC-04",
+      "dir": "reports/microstructure-v1/aggtrades",
+      "days_per_split": {
+        "DEV": 8,
+        "VAL": 4,
+        "OOS": 2
+      },
+      "panel_slices_by_day": {
+        "2026-03-12": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1773273900001,
+          "last_decision_time_ms": 1773360000001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-03-24": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1774310700001,
+          "last_decision_time_ms": 1774396800001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-04-12": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1775952300001,
+          "last_decision_time_ms": 1776038400001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-04-24": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1776989100001,
+          "last_decision_time_ms": 1777075200001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-05-12": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1778544300001,
+          "last_decision_time_ms": 1778630400001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-05-24": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1779581100001,
+          "last_decision_time_ms": 1779667200001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-06-12": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1781222700001,
+          "last_decision_time_ms": 1781308800001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-06-24": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1782259500001,
+          "last_decision_time_ms": 1782345600001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-07-12": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1783814700001,
+          "last_decision_time_ms": 1783900800001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-07-24": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1784851500001,
+          "last_decision_time_ms": 1784937600001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-08-12": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1786493100001,
+          "last_decision_time_ms": 1786579200001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-08-24": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1787529900001,
+          "last_decision_time_ms": 1787616000001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-09-12": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1789171500001,
+          "last_decision_time_ms": 1789257600001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        },
+        "2026-09-24": {
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ],
+          "slices": 288,
+          "first_decision_time_ms": 1790208300001,
+          "last_decision_time_ms": 1790294400001,
+          "max_gap_ms": 300000,
+          "duplicate_timestamps": 0
+        }
+      },
+      "total_panel_slices": 4032,
+      "declared_limitation": "14 discontinuous days (12th and 24th of each month, 2026-03..09); rolling statistics are computed within a day"
+    },
+    "klines": {
+      "BTC": {
+        "asset": "BTC",
+        "bars": 59905,
+        "first_open_ms": 1772323200000,
+        "last_open_ms": 1790294400000,
+        "realized_vol_bps_5m": 12.689546,
+        "realized_vol_bps_5m_by_split": {
+          "DEV": 13.831444,
+          "VAL": 10.671852,
+          "OOS": 11.348157
+        },
+        "source": "reports/microstructure-v1/data/KLINES_BTCUSDT_5m.json"
+      },
+      "ETH": {
+        "asset": "ETH",
+        "bars": 59905,
+        "first_open_ms": 1772323200000,
+        "last_open_ms": 1790294400000,
+        "realized_vol_bps_5m": 16.712061,
+        "realized_vol_bps_5m_by_split": {
+          "DEV": 17.903691,
+          "VAL": 14.585971,
+          "OOS": 15.535288
+        },
+        "source": "reports/microstructure-v1/data/KLINES_ETHUSDT_5m.json"
+      },
+      "SOL": {
+        "asset": "SOL",
+        "bars": 59905,
+        "first_open_ms": 1772323200000,
+        "last_open_ms": 1790294400000,
+        "realized_vol_bps_5m": 18.884085,
+        "realized_vol_bps_5m_by_split": {
+          "DEV": 20.000434,
+          "VAL": 16.698057,
+          "OOS": 18.351934
+        },
+        "source": "reports/microstructure-v1/data/KLINES_SOLUSDT_5m.json"
+      }
+    },
+    "open_interest": {
+      "BTC": {
+        "points": 8928,
+        "declared_limitation": "Binance retains ~30 days of 5m open interest"
+      },
+      "ETH": {
+        "points": 8928,
+        "declared_limitation": "Binance retains ~30 days of 5m open interest"
+      },
+      "SOL": {
+        "points": 8928,
+        "declared_limitation": "Binance retains ~30 days of 5m open interest"
+      }
+    },
+    "forward_capture": {
+      "files": [
+        "reports/microstructure-v2/forward/forward_1790595680.jsonl"
+      ],
+      "records": 11346,
+      "by_kind": {
+        "bookTicker": 111,
+        "depth": 111,
+        "aggTrade": 11100,
+        "premiumIndex": 24
+      },
+      "coverage": {
+        "first_receive_time": 1790595680347,
+        "last_receive_time": 1790595782748,
+        "duration_s": 102.401
+      },
+      "symbols": {
+        "BTCUSDT": {
+          "observations": 37,
+          "mean_spread_bps": 0.001204,
+          "median_spread_bps": 0.001204,
+          "p95_spread_bps": 0.001204,
+          "max_spread_bps": 0.001204
+        },
+        "ETHUSDT": {
+          "observations": 37,
+          "mean_spread_bps": 0.037479,
+          "median_spread_bps": 0.03748,
+          "p95_spread_bps": 0.037486,
+          "max_spread_bps": 0.037486
+        },
+        "SOLUSDT": {
+          "observations": 37,
+          "mean_spread_bps": 0.842171,
+          "median_spread_bps": 0.842141,
+          "p95_spread_bps": 0.842495,
+          "max_spread_bps": 0.842495
+        }
+      }
+    },
+    "aggregation_crosscheck_vs_klines": {
+      "BTCUSDT": {
+        "bars_compared": 288,
+        "mean_ratio": 1.0,
+        "min_ratio": 1.0,
+        "max_ratio": 1.0
+      },
+      "ETHUSDT": {
+        "bars_compared": 288,
+        "mean_ratio": 1.0,
+        "min_ratio": 1.0,
+        "max_ratio": 1.0
+      },
+      "SOLUSDT": {
+        "bars_compared": 288,
+        "mean_ratio": 1.0,
+        "min_ratio": 1.0,
+        "max_ratio": 1.0
+      }
+    },
+    "temporal_integrity": {
+      "decision_clock": "bar close (open_time + 5m + 1ms)",
+      "feature_rule": "available_at(feature) <= decision_time",
+      "lead_lag_rule": "available_at(source, i-lag) <= decision_time(target, i)",
+      "future_leaks_detected": 0
+    }
+  },
+  "cost_model": "EXECUTION_COST_MODEL_V4",
+  "results": [
+    {
+      "candidate_id": "M-02-BTC",
+      "hypothesis": "M-02_FLOW_IMPULSE",
+      "scope": "BTCUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": 1.0,
+      "cost_bps": 23.5,
+      "cost_source": "EXECUTION_COST_MODEL_V4/BTCUSDT",
+      "gross_mean_bps_dev": 1.3992,
+      "net_mean_bps_dev": -22.1008,
+      "overall": {
+        "n": 137,
+        "mean_bps": -23.0064,
+        "total_bps": -3151.87,
+        "win_rate": 0.2993,
+        "pf": 0.2884,
+        "sharpe_per_trade": -0.4245,
+        "max_dd_bps": 3176.54
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 77,
+          "mean_bps": 1.3992,
+          "total_bps": 107.74,
+          "win_rate": 0.5455,
+          "pf": 1.0719,
+          "sharpe_per_trade": 0.0246,
+          "max_dd_bps": 566.23
+        },
+        "VAL": {
+          "n": 47,
+          "mean_bps": -2.663,
+          "total_bps": -125.16,
+          "win_rate": 0.4894,
+          "pf": 0.8525,
+          "sharpe_per_trade": -0.0512,
+          "max_dd_bps": 341.99
+        },
+        "OOS": {
+          "n": 13,
+          "mean_bps": 6.5424,
+          "total_bps": 85.05,
+          "win_rate": 0.4615,
+          "pf": 1.5746,
+          "sharpe_per_trade": 0.1511,
+          "max_dd_bps": 85.74
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 77,
+          "mean_bps": -22.1008,
+          "total_bps": -1701.76,
+          "win_rate": 0.3506,
+          "pf": 0.3167,
+          "sharpe_per_trade": -0.3879,
+          "max_dd_bps": 1807.82
+        },
+        "VAL": {
+          "n": 47,
+          "mean_bps": -26.163,
+          "total_bps": -1229.66,
+          "win_rate": 0.2128,
+          "pf": 0.228,
+          "sharpe_per_trade": -0.5034,
+          "max_dd_bps": 1229.66
+        },
+        "OOS": {
+          "n": 13,
+          "mean_bps": -16.9576,
+          "total_bps": -220.45,
+          "win_rate": 0.3077,
+          "pf": 0.3629,
+          "sharpe_per_trade": -0.3916,
+          "max_dd_bps": 220.45
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": -1,
+        "OOS": 1
+      },
+      "sign_flip_across_splits": true,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 1.3992 bps < cost 23.5000 bps",
+      "information_content": {
+        "n": 137,
+        "ic_spearman": 0.047921,
+        "top_bottom_bps": 0.6172,
+        "monotone_score": -0.1,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 27,
+            "mean_forward_bps": 0.9164,
+            "x_min": -3.108125,
+            "x_max": -2.358956
+          },
+          {
+            "bucket": 1,
+            "n": 27,
+            "mean_forward_bps": 6.2823,
+            "x_min": -2.334319,
+            "x_max": -2.143113
+          },
+          {
+            "bucket": 2,
+            "n": 27,
+            "mean_forward_bps": -7.4761,
+            "x_min": -2.132732,
+            "x_max": -2.020491
+          },
+          {
+            "bucket": 3,
+            "n": 27,
+            "mean_forward_bps": -4.4208,
+            "x_min": -2.019919,
+            "x_max": 2.197721
+          },
+          {
+            "bucket": 4,
+            "n": 29,
+            "mean_forward_bps": 1.5336,
+            "x_min": 2.198654,
+            "x_max": 3.2108
+          }
+        ],
+        "status": "HAS_INFORMATION"
+      },
+      "day_level_stability": {
+        "days_contributing": 14,
+        "days_with_positive_gross": 8,
+        "per_day_gross_mean_bps": {
+          "2026-03-12": 10.4884,
+          "2026-03-24": -20.2408,
+          "2026-04-12": -17.2529,
+          "2026-04-24": 2.6014,
+          "2026-05-12": -12.9053,
+          "2026-05-24": 19.3673,
+          "2026-06-12": 21.1918,
+          "2026-06-24": 20.1435,
+          "2026-07-12": 0.4804,
+          "2026-07-24": 9.8494,
+          "2026-08-12": -7.9156,
+          "2026-08-24": -20.3836,
+          "2026-09-12": -4.8815,
+          "2026-09-24": 16.3343
+        },
+        "note": "descriptive; the pre-registered gate is the split ladder, not this"
+      },
+      "rule": "|z(\u0394flow,20)| >= 2.0, horizon 5 bars",
+      "context_horizons": {
+        "1": {
+          "n": 140,
+          "gross_mean_bps": 0.3538
+        },
+        "15": {
+          "n": 131,
+          "gross_mean_bps": -5.1352
+        }
+      },
+      "rule_evaluated": true
+    },
+    {
+      "candidate_id": "M-02-ETH",
+      "hypothesis": "M-02_FLOW_IMPULSE",
+      "scope": "ETHUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": -1.0,
+      "cost_bps": 23.7608,
+      "cost_source": "EXECUTION_COST_MODEL_V4/ETHUSDT",
+      "gross_mean_bps_dev": 6.4267,
+      "net_mean_bps_dev": -17.3341,
+      "overall": {
+        "n": 168,
+        "mean_bps": -21.9746,
+        "total_bps": -3691.73,
+        "win_rate": 0.3036,
+        "pf": 0.4641,
+        "sharpe_per_trade": -0.2454,
+        "max_dd_bps": 3876.3
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 93,
+          "mean_bps": 6.4267,
+          "total_bps": 597.68,
+          "win_rate": 0.5269,
+          "pf": 1.2368,
+          "sharpe_per_trade": 0.0663,
+          "max_dd_bps": 666.88
+        },
+        "VAL": {
+          "n": 49,
+          "mean_bps": -7.2936,
+          "total_bps": -357.39,
+          "win_rate": 0.5102,
+          "pf": 0.7441,
+          "sharpe_per_trade": -0.0897,
+          "max_dd_bps": 822.67
+        },
+        "OOS": {
+          "n": 26,
+          "mean_bps": 2.2994,
+          "total_bps": 59.78,
+          "win_rate": 0.5769,
+          "pf": 1.0965,
+          "sharpe_per_trade": 0.031,
+          "max_dd_bps": 432.14
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 93,
+          "mean_bps": -17.3341,
+          "total_bps": -1612.07,
+          "win_rate": 0.3226,
+          "pf": 0.5742,
+          "sharpe_per_trade": -0.1788,
+          "max_dd_bps": 1653.56
+        },
+        "VAL": {
+          "n": 49,
+          "mean_bps": -31.0544,
+          "total_bps": -1521.66,
+          "win_rate": 0.2449,
+          "pf": 0.2815,
+          "sharpe_per_trade": -0.382,
+          "max_dd_bps": 1891.9
+        },
+        "OOS": {
+          "n": 26,
+          "mean_bps": -21.4614,
+          "total_bps": -558.0,
+          "win_rate": 0.3462,
+          "pf": 0.4337,
+          "sharpe_per_trade": -0.289,
+          "max_dd_bps": 742.57
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": -1,
+        "OOS": 1
+      },
+      "sign_flip_across_splits": true,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 6.4267 bps < cost 23.7608 bps",
+      "information_content": {
+        "n": 168,
+        "ic_spearman": -0.014102,
+        "top_bottom_bps": 8.075,
+        "monotone_score": 0.1,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 33,
+            "mean_forward_bps": 1.4212,
+            "x_min": -3.250187,
+            "x_max": -2.295174
+          },
+          {
+            "bucket": 1,
+            "n": 33,
+            "mean_forward_bps": 1.7528,
+            "x_min": -2.28554,
+            "x_max": -2.106208
+          },
+          {
+            "bucket": 2,
+            "n": 33,
+            "mean_forward_bps": -0.8455,
+            "x_min": -2.104058,
+            "x_max": 2.071401
+          },
+          {
+            "bucket": 3,
+            "n": 33,
+            "mean_forward_bps": -0.8985,
+            "x_min": 2.09513,
+            "x_max": 2.292842
+          },
+          {
+            "bucket": 4,
+            "n": 36,
+            "mean_forward_bps": 9.4963,
+            "x_min": 2.302781,
+            "x_max": 3.121987
+          }
+        ],
+        "status": "HAS_INFORMATION"
+      },
+      "day_level_stability": {
+        "days_contributing": 14,
+        "days_with_positive_gross": 9,
+        "per_day_gross_mean_bps": {
+          "2026-03-12": -19.6254,
+          "2026-03-24": 13.7959,
+          "2026-04-12": 18.389,
+          "2026-04-24": -5.8654,
+          "2026-05-12": 18.4446,
+          "2026-05-24": 0.5709,
+          "2026-06-12": 43.5582,
+          "2026-06-24": -25.7883,
+          "2026-07-12": -23.4368,
+          "2026-07-24": -11.5312,
+          "2026-08-12": 8.5904,
+          "2026-08-24": 3.1233,
+          "2026-09-12": 1.7525,
+          "2026-09-24": 2.7682
+        },
+        "note": "descriptive; the pre-registered gate is the split ladder, not this"
+      },
+      "rule": "|z(\u0394flow,20)| >= 2.0, horizon 5 bars",
+      "context_horizons": {
+        "1": {
+          "n": 170,
+          "gross_mean_bps": -2.2034
+        },
+        "15": {
+          "n": 159,
+          "gross_mean_bps": 1.5379
+        }
+      },
+      "rule_evaluated": true
+    },
+    {
+      "candidate_id": "M-02-SOL",
+      "hypothesis": "M-02_FLOW_IMPULSE",
+      "scope": "SOLUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": -1.0,
+      "cost_bps": 24.6867,
+      "cost_source": "EXECUTION_COST_MODEL_V4/SOLUSDT",
+      "gross_mean_bps_dev": 5.1185,
+      "net_mean_bps_dev": -19.5682,
+      "overall": {
+        "n": 131,
+        "mean_bps": -17.728,
+        "total_bps": -2322.37,
+        "win_rate": 0.3664,
+        "pf": 0.5499,
+        "sharpe_per_trade": -0.2182,
+        "max_dd_bps": 2891.81
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 83,
+          "mean_bps": 5.1185,
+          "total_bps": 424.84,
+          "win_rate": 0.494,
+          "pf": 1.2075,
+          "sharpe_per_trade": 0.067,
+          "max_dd_bps": 574.22
+        },
+        "VAL": {
+          "n": 33,
+          "mean_bps": 7.293,
+          "total_bps": 240.67,
+          "win_rate": 0.5455,
+          "pf": 1.2292,
+          "sharpe_per_trade": 0.0746,
+          "max_dd_bps": 510.26
+        },
+        "OOS": {
+          "n": 15,
+          "mean_bps": 16.4057,
+          "total_bps": 246.09,
+          "win_rate": 0.6667,
+          "pf": 1.8916,
+          "sharpe_per_trade": 0.2525,
+          "max_dd_bps": 167.7
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 83,
+          "mean_bps": -19.5682,
+          "total_bps": -1624.16,
+          "win_rate": 0.3494,
+          "pf": 0.4972,
+          "sharpe_per_trade": -0.2562,
+          "max_dd_bps": 2165.21
+        },
+        "VAL": {
+          "n": 33,
+          "mean_bps": -17.3937,
+          "total_bps": -573.99,
+          "win_rate": 0.3939,
+          "pf": 0.6143,
+          "sharpe_per_trade": -0.1778,
+          "max_dd_bps": 985.66
+        },
+        "OOS": {
+          "n": 15,
+          "mean_bps": -8.281,
+          "total_bps": -124.21,
+          "win_rate": 0.4,
+          "pf": 0.7186,
+          "sharpe_per_trade": -0.1275,
+          "max_dd_bps": 315.81
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": 1,
+        "OOS": 1
+      },
+      "sign_flip_across_splits": false,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 5.1185 bps < cost 24.6867 bps",
+      "information_content": {
+        "n": 131,
+        "ic_spearman": -0.112924,
+        "top_bottom_bps": -2.7611,
+        "monotone_score": -0.5,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 26,
+            "mean_forward_bps": 8.1747,
+            "x_min": -2.976104,
+            "x_max": -2.305889
+          },
+          {
+            "bucket": 1,
+            "n": 26,
+            "mean_forward_bps": 11.1041,
+            "x_min": -2.289575,
+            "x_max": -2.114776
+          },
+          {
+            "bucket": 2,
+            "n": 26,
+            "mean_forward_bps": -1.1708,
+            "x_min": -2.09923,
+            "x_max": 2.047121
+          },
+          {
+            "bucket": 3,
+            "n": 26,
+            "mean_forward_bps": 1.9415,
+            "x_min": 2.048683,
+            "x_max": 2.262621
+          },
+          {
+            "bucket": 4,
+            "n": 27,
+            "mean_forward_bps": 5.4136,
+            "x_min": 2.322312,
+            "x_max": 2.952866
+          }
+        ],
+        "status": "HAS_INFORMATION"
+      },
+      "day_level_stability": {
+        "days_contributing": 14,
+        "days_with_positive_gross": 6,
+        "per_day_gross_mean_bps": {
+          "2026-03-12": 49.6405,
+          "2026-03-24": -9.9864,
+          "2026-04-12": -2.92,
+          "2026-04-24": -6.6399,
+          "2026-05-12": -4.8757,
+          "2026-05-24": -8.1747,
+          "2026-06-12": 7.5216,
+          "2026-06-24": -10.2415,
+          "2026-07-12": 48.1098,
+          "2026-07-24": -3.2728,
+          "2026-08-12": -14.1969,
+          "2026-08-24": 5.5539,
+          "2026-09-12": 15.0983,
+          "2026-09-24": 16.6068
+        },
+        "note": "descriptive; the pre-registered gate is the split ladder, not this"
+      },
+      "rule": "|z(\u0394flow,20)| >= 2.0, horizon 5 bars",
+      "context_horizons": {
+        "1": {
+          "n": 136,
+          "gross_mean_bps": -7.0704
+        },
+        "15": {
+          "n": 127,
+          "gross_mean_bps": -5.4477
+        }
+      },
+      "rule_evaluated": true
+    },
+    {
+      "candidate_id": "M-07-BTC",
+      "hypothesis": "M-07_OI_PRICE_STATES",
+      "scope": "BTCUSDT",
+      "horizon_bars": 15,
+      "horizon_minutes": 75,
+      "direction_frozen_from_dev": 0.0,
+      "cost_bps": 23.5,
+      "cost_source": "EXECUTION_COST_MODEL_V4/BTCUSDT",
+      "gross_mean_bps_dev": 0.0,
+      "net_mean_bps_dev": 0.0,
+      "overall": {
+        "n": 0
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 0
+        },
+        "VAL": {
+          "n": 0
+        },
+        "OOS": {
+          "n": 0
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 0
+        },
+        "VAL": {
+          "n": 0
+        },
+        "OOS": {
+          "n": 0
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 0,
+        "VAL": 0,
+        "OOS": 0
+      },
+      "sign_flip_across_splits": false,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": false,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "LIMITED_HISTORY",
+      "classification_reason": "open interest exists only for the OOS days, so no quadrant can be selected on DEV; the measured distribution is reported but no tradeable rule is evaluated or promoted",
+      "information_content": {
+        "n": 0,
+        "ic_spearman": null,
+        "top_bottom_bps": null,
+        "monotone_score": null,
+        "status": "INSUFFICIENT_DATA"
+      },
+      "rule": "quadrant chosen on DEV only (largest |DEV mean|), direction frozen from DEV; horizon 15 bars",
+      "chosen_state": null,
+      "state_distribution_primary_horizon": {
+        "PRICE_UP_OI_UP": {
+          "n": 130,
+          "mean_bps": 0.3911,
+          "median_bps": -0.035,
+          "stdev_bps": 29.8667,
+          "share_positive": 0.4923
+        },
+        "PRICE_UP_OI_DOWN": {
+          "n": 140,
+          "mean_bps": -4.2743,
+          "median_bps": -2.3212,
+          "stdev_bps": 35.2292,
+          "share_positive": 0.4
+        },
+        "PRICE_DOWN_OI_UP": {
+          "n": 127,
+          "mean_bps": 6.2749,
+          "median_bps": 3.0678,
+          "stdev_bps": 26.8633,
+          "share_positive": 0.5906
+        },
+        "PRICE_DOWN_OI_DOWN": {
+          "n": 141,
+          "mean_bps": -1.9217,
+          "median_bps": 0.513,
+          "stdev_bps": 36.7496,
+          "share_positive": 0.5035
+        }
+      },
+      "state_distribution_by_split": {
+        "PRICE_UP_OI_UP": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": 0.3911
+        },
+        "PRICE_UP_OI_DOWN": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": -4.2743
+        },
+        "PRICE_DOWN_OI_UP": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": 6.2749
+        },
+        "PRICE_DOWN_OI_DOWN": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": -1.9217
+        }
+      },
+      "oi_points_available": 8928,
+      "oi_missing_bars": 3444,
+      "unchanged_excluded": 7,
+      "limited_history": true,
+      "states_with_observations": 4,
+      "dev_cell_available": false,
+      "rule_evaluated": false
+    },
+    {
+      "candidate_id": "M-07-ETH",
+      "hypothesis": "M-07_OI_PRICE_STATES",
+      "scope": "ETHUSDT",
+      "horizon_bars": 15,
+      "horizon_minutes": 75,
+      "direction_frozen_from_dev": 0.0,
+      "cost_bps": 23.7608,
+      "cost_source": "EXECUTION_COST_MODEL_V4/ETHUSDT",
+      "gross_mean_bps_dev": 0.0,
+      "net_mean_bps_dev": 0.0,
+      "overall": {
+        "n": 0
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 0
+        },
+        "VAL": {
+          "n": 0
+        },
+        "OOS": {
+          "n": 0
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 0
+        },
+        "VAL": {
+          "n": 0
+        },
+        "OOS": {
+          "n": 0
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 0,
+        "VAL": 0,
+        "OOS": 0
+      },
+      "sign_flip_across_splits": false,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": false,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "LIMITED_HISTORY",
+      "classification_reason": "open interest exists only for the OOS days, so no quadrant can be selected on DEV; the measured distribution is reported but no tradeable rule is evaluated or promoted",
+      "information_content": {
+        "n": 0,
+        "ic_spearman": null,
+        "top_bottom_bps": null,
+        "monotone_score": null,
+        "status": "INSUFFICIENT_DATA"
+      },
+      "rule": "quadrant chosen on DEV only (largest |DEV mean|), direction frozen from DEV; horizon 15 bars",
+      "chosen_state": null,
+      "state_distribution_primary_horizon": {
+        "PRICE_UP_OI_UP": {
+          "n": 126,
+          "mean_bps": -1.2407,
+          "median_bps": -2.1073,
+          "stdev_bps": 45.4118,
+          "share_positive": 0.4683
+        },
+        "PRICE_UP_OI_DOWN": {
+          "n": 133,
+          "mean_bps": 2.1128,
+          "median_bps": -1.5847,
+          "stdev_bps": 38.0566,
+          "share_positive": 0.4812
+        },
+        "PRICE_DOWN_OI_UP": {
+          "n": 142,
+          "mean_bps": 5.1284,
+          "median_bps": 3.6181,
+          "stdev_bps": 36.3023,
+          "share_positive": 0.5704
+        },
+        "PRICE_DOWN_OI_DOWN": {
+          "n": 137,
+          "mean_bps": -0.6909,
+          "median_bps": 0.7161,
+          "stdev_bps": 43.2597,
+          "share_positive": 0.5401
+        }
+      },
+      "state_distribution_by_split": {
+        "PRICE_UP_OI_UP": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": -1.2407
+        },
+        "PRICE_UP_OI_DOWN": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": 2.1128
+        },
+        "PRICE_DOWN_OI_UP": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": 5.1284
+        },
+        "PRICE_DOWN_OI_DOWN": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": -0.6909
+        }
+      },
+      "oi_points_available": 8928,
+      "oi_missing_bars": 3444,
+      "unchanged_excluded": 6,
+      "limited_history": true,
+      "states_with_observations": 4,
+      "dev_cell_available": false,
+      "rule_evaluated": false
+    },
+    {
+      "candidate_id": "M-07-SOL",
+      "hypothesis": "M-07_OI_PRICE_STATES",
+      "scope": "SOLUSDT",
+      "horizon_bars": 15,
+      "horizon_minutes": 75,
+      "direction_frozen_from_dev": 0.0,
+      "cost_bps": 24.6867,
+      "cost_source": "EXECUTION_COST_MODEL_V4/SOLUSDT",
+      "gross_mean_bps_dev": 0.0,
+      "net_mean_bps_dev": 0.0,
+      "overall": {
+        "n": 0
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 0
+        },
+        "VAL": {
+          "n": 0
+        },
+        "OOS": {
+          "n": 0
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 0
+        },
+        "VAL": {
+          "n": 0
+        },
+        "OOS": {
+          "n": 0
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 0,
+        "VAL": 0,
+        "OOS": 0
+      },
+      "sign_flip_across_splits": false,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": false,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "LIMITED_HISTORY",
+      "classification_reason": "open interest exists only for the OOS days, so no quadrant can be selected on DEV; the measured distribution is reported but no tradeable rule is evaluated or promoted",
+      "information_content": {
+        "n": 0,
+        "ic_spearman": null,
+        "top_bottom_bps": null,
+        "monotone_score": null,
+        "status": "INSUFFICIENT_DATA"
+      },
+      "rule": "quadrant chosen on DEV only (largest |DEV mean|), direction frozen from DEV; horizon 15 bars",
+      "chosen_state": null,
+      "state_distribution_primary_horizon": {
+        "PRICE_UP_OI_UP": {
+          "n": 154,
+          "mean_bps": 5.339,
+          "median_bps": 1.9602,
+          "stdev_bps": 57.3337,
+          "share_positive": 0.513
+        },
+        "PRICE_UP_OI_DOWN": {
+          "n": 115,
+          "mean_bps": 0.0112,
+          "median_bps": -2.9493,
+          "stdev_bps": 45.6771,
+          "share_positive": 0.4087
+        },
+        "PRICE_DOWN_OI_UP": {
+          "n": 133,
+          "mean_bps": 5.1174,
+          "median_bps": 5.8824,
+          "stdev_bps": 50.6109,
+          "share_positive": 0.5564
+        },
+        "PRICE_DOWN_OI_DOWN": {
+          "n": 121,
+          "mean_bps": 0.5436,
+          "median_bps": 2.9577,
+          "stdev_bps": 49.5057,
+          "share_positive": 0.5372
+        }
+      },
+      "state_distribution_by_split": {
+        "PRICE_UP_OI_UP": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": 5.339
+        },
+        "PRICE_UP_OI_DOWN": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": 0.0112
+        },
+        "PRICE_DOWN_OI_UP": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": 5.1174
+        },
+        "PRICE_DOWN_OI_DOWN": {
+          "DEV": null,
+          "VAL": null,
+          "OOS": 0.5436
+        }
+      },
+      "oi_points_available": 8928,
+      "oi_missing_bars": 3444,
+      "unchanged_excluded": 24,
+      "limited_history": true,
+      "states_with_observations": 4,
+      "dev_cell_available": false,
+      "rule_evaluated": false
+    },
+    {
+      "candidate_id": "M-09-BTC_to_ETH",
+      "hypothesis": "M-09_FLOW_LEAD_LAG",
+      "scope": "ETHUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": 1.0,
+      "cost_bps": 23.7608,
+      "cost_source": "EXECUTION_COST_MODEL_V4/ETHUSDT",
+      "gross_mean_bps_dev": 0.6059,
+      "net_mean_bps_dev": -23.1549,
+      "overall": {
+        "n": 3948,
+        "mean_bps": -23.3565,
+        "total_bps": -92211.51,
+        "win_rate": 0.0198,
+        "pf": 0.013,
+        "sharpe_per_trade": -2.3011,
+        "max_dd_bps": 92211.51
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 2256,
+          "mean_bps": 0.6059,
+          "total_bps": 1366.96,
+          "win_rate": 0.5093,
+          "pf": 1.2056,
+          "sharpe_per_trade": 0.0533,
+          "max_dd_bps": 635.25
+        },
+        "VAL": {
+          "n": 1128,
+          "mean_bps": 0.4163,
+          "total_bps": 469.54,
+          "win_rate": 0.5124,
+          "pf": 1.1781,
+          "sharpe_per_trade": 0.0486,
+          "max_dd_bps": 221.91
+        },
+        "OOS": {
+          "n": 564,
+          "mean_bps": -0.4262,
+          "total_bps": -240.37,
+          "win_rate": 0.4645,
+          "pf": 0.8311,
+          "sharpe_per_trade": -0.0564,
+          "max_dd_bps": 396.46
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 2256,
+          "mean_bps": -23.1549,
+          "total_bps": -52237.41,
+          "win_rate": 0.0266,
+          "pf": 0.0183,
+          "sharpe_per_trade": -2.0376,
+          "max_dd_bps": 52237.41
+        },
+        "VAL": {
+          "n": 1128,
+          "mean_bps": -23.3445,
+          "total_bps": -26332.64,
+          "win_rate": 0.0133,
+          "pf": 0.0083,
+          "sharpe_per_trade": -2.7265,
+          "max_dd_bps": 26332.64
+        },
+        "OOS": {
+          "n": 564,
+          "mean_bps": -24.187,
+          "total_bps": -13641.47,
+          "win_rate": 0.0053,
+          "pf": 0.0018,
+          "sharpe_per_trade": -3.1998,
+          "max_dd_bps": 13641.47
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": 1,
+        "OOS": -1
+      },
+      "sign_flip_across_splits": true,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 0.6059 bps < cost 23.7608 bps",
+      "information_content": {
+        "n": 3948,
+        "ic_spearman": 0.02701,
+        "top_bottom_bps": 3.6692,
+        "monotone_score": 1.0,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 789,
+            "mean_forward_bps": -2.5764,
+            "x_min": -0.901756,
+            "x_max": -0.318592
+          },
+          {
+            "bucket": 1,
+            "n": 789,
+            "mean_forward_bps": -2.1068,
+            "x_min": -0.317676,
+            "x_max": -0.102521
+          },
+          {
+            "bucket": 2,
+            "n": 789,
+            "mean_forward_bps": -1.3998,
+            "x_min": -0.102504,
+            "x_max": 0.092938
+          },
+          {
+            "bucket": 3,
+            "n": 789,
+            "mean_forward_bps": 0.167,
+            "x_min": 0.093045,
+            "x_max": 0.298768
+          },
+          {
+            "bucket": 4,
+            "n": 792,
+            "mean_forward_bps": 1.0928,
+            "x_min": 0.299542,
+            "x_max": 0.935489
+          }
+        ],
+        "status": "HAS_INFORMATION"
+      },
+      "rule": "BTC flow at bar i-1 -> ETHUSDT entry at the close of bar i; horizon 5 bars",
+      "source_symbol": "BTCUSDT",
+      "lag_bars": 1,
+      "pit_rule": "available_at(BTC, i-lag) <= decision_time(target, i)",
+      "context_horizons": {
+        "1": {
+          "n": 4004,
+          "gross_mean_bps": 0.2222
+        },
+        "15": {
+          "n": 3808,
+          "gross_mean_bps": 0.0986
+        }
+      },
+      "rule_evaluated": true
+    },
+    {
+      "candidate_id": "M-09-BTC_to_SOL",
+      "hypothesis": "M-09_FLOW_LEAD_LAG",
+      "scope": "SOLUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": 1.0,
+      "cost_bps": 24.6867,
+      "cost_source": "EXECUTION_COST_MODEL_V4/SOLUSDT",
+      "gross_mean_bps_dev": 0.5178,
+      "net_mean_bps_dev": -24.1689,
+      "overall": {
+        "n": 3948,
+        "mean_bps": -24.3083,
+        "total_bps": -95969.09,
+        "win_rate": 0.0266,
+        "pf": 0.0146,
+        "sharpe_per_trade": -2.1151,
+        "max_dd_bps": 95969.09
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 2256,
+          "mean_bps": 0.5178,
+          "total_bps": 1168.27,
+          "win_rate": 0.5013,
+          "pf": 1.1493,
+          "sharpe_per_trade": 0.0415,
+          "max_dd_bps": 1030.19
+        },
+        "VAL": {
+          "n": 1128,
+          "mean_bps": 0.5235,
+          "total_bps": 590.56,
+          "win_rate": 0.4876,
+          "pf": 1.1881,
+          "sharpe_per_trade": 0.051,
+          "max_dd_bps": 276.59
+        },
+        "OOS": {
+          "n": 564,
+          "mean_bps": -0.4695,
+          "total_bps": -264.82,
+          "win_rate": 0.4787,
+          "pf": 0.8489,
+          "sharpe_per_trade": -0.0494,
+          "max_dd_bps": 566.77
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 2256,
+          "mean_bps": -24.1689,
+          "total_bps": -54524.93,
+          "win_rate": 0.0328,
+          "pf": 0.0186,
+          "sharpe_per_trade": -1.9377,
+          "max_dd_bps": 54524.93
+        },
+        "VAL": {
+          "n": 1128,
+          "mean_bps": -24.1632,
+          "total_bps": -27256.04,
+          "win_rate": 0.023,
+          "pf": 0.012,
+          "sharpe_per_trade": -2.3528,
+          "max_dd_bps": 27260.52
+        },
+        "OOS": {
+          "n": 564,
+          "mean_bps": -25.1562,
+          "total_bps": -14188.12,
+          "win_rate": 0.0089,
+          "pf": 0.0038,
+          "sharpe_per_trade": -2.644,
+          "max_dd_bps": 14188.12
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": 1,
+        "OOS": -1
+      },
+      "sign_flip_across_splits": true,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 0.5178 bps < cost 24.6867 bps",
+      "information_content": {
+        "n": 3948,
+        "ic_spearman": 0.024735,
+        "top_bottom_bps": 3.1179,
+        "monotone_score": 0.9,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 789,
+            "mean_forward_bps": -2.749,
+            "x_min": -0.901756,
+            "x_max": -0.318592
+          },
+          {
+            "bucket": 1,
+            "n": 789,
+            "mean_forward_bps": -2.5454,
+            "x_min": -0.317676,
+            "x_max": -0.102521
+          },
+          {
+            "bucket": 2,
+            "n": 789,
+            "mean_forward_bps": -0.6675,
+            "x_min": -0.102504,
+            "x_max": 0.092938
+          },
+          {
+            "bucket": 3,
+            "n": 789,
+            "mean_forward_bps": 0.5881,
+            "x_min": 0.093045,
+            "x_max": 0.298768
+          },
+          {
+            "bucket": 4,
+            "n": 792,
+            "mean_forward_bps": 0.369,
+            "x_min": 0.299542,
+            "x_max": 0.935489
+          }
+        ],
+        "status": "HAS_INFORMATION"
+      },
+      "rule": "BTC flow at bar i-1 -> SOLUSDT entry at the close of bar i; horizon 5 bars",
+      "source_symbol": "BTCUSDT",
+      "lag_bars": 1,
+      "pit_rule": "available_at(BTC, i-lag) <= decision_time(target, i)",
+      "context_horizons": {
+        "1": {
+          "n": 4004,
+          "gross_mean_bps": 0.1562
+        },
+        "15": {
+          "n": 3808,
+          "gross_mean_bps": 0.2477
+        }
+      },
+      "rule_evaluated": true
+    },
+    {
+      "candidate_id": "M-10-BTC",
+      "hypothesis": "M-10_CROSS_SECTIONAL_FLOW",
+      "scope": "BTCUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": -1.0,
+      "cost_bps": 23.5,
+      "cost_source": "EXECUTION_COST_MODEL_V4/BTCUSDT",
+      "gross_mean_bps_dev": 0.0076,
+      "net_mean_bps_dev": -23.4924,
+      "overall": {
+        "n": 3962,
+        "mean_bps": -23.5407,
+        "total_bps": -93268.43,
+        "win_rate": 0.0038,
+        "pf": 0.0009,
+        "sharpe_per_trade": -4.8102,
+        "max_dd_bps": 93268.43
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 2264,
+          "mean_bps": 0.0076,
+          "total_bps": 17.23,
+          "win_rate": 0.5088,
+          "pf": 1.0049,
+          "sharpe_per_trade": 0.0014,
+          "max_dd_bps": 352.46
+        },
+        "VAL": {
+          "n": 1132,
+          "mean_bps": -0.2672,
+          "total_bps": -302.51,
+          "win_rate": 0.477,
+          "pf": 0.8091,
+          "sharpe_per_trade": -0.0626,
+          "max_dd_bps": 379.03
+        },
+        "OOS": {
+          "n": 566,
+          "mean_bps": 0.2188,
+          "total_bps": 123.85,
+          "win_rate": 0.53,
+          "pf": 1.2252,
+          "sharpe_per_trade": 0.0556,
+          "max_dd_bps": 80.41
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 2264,
+          "mean_bps": -23.4924,
+          "total_bps": -53186.77,
+          "win_rate": 0.004,
+          "pf": 0.0015,
+          "sharpe_per_trade": -4.3716,
+          "max_dd_bps": 53186.77
+        },
+        "VAL": {
+          "n": 1132,
+          "mean_bps": -23.7672,
+          "total_bps": -26904.51,
+          "win_rate": 0.0027,
+          "pf": 0.0001,
+          "sharpe_per_trade": -5.5665,
+          "max_dd_bps": 26904.51
+        },
+        "OOS": {
+          "n": 566,
+          "mean_bps": -23.2812,
+          "total_bps": -13177.15,
+          "win_rate": 0.0053,
+          "pf": 0.0003,
+          "sharpe_per_trade": -5.9129,
+          "max_dd_bps": 13177.15
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": -1,
+        "OOS": 1
+      },
+      "sign_flip_across_splits": true,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 0.0076 bps < cost 23.5000 bps",
+      "information_content": {
+        "n": 3962,
+        "ic_spearman": 0.010068,
+        "top_bottom_bps": 0.3498,
+        "monotone_score": 0.7,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 792,
+            "mean_forward_bps": -1.6755,
+            "x_min": -0.823573,
+            "x_max": -0.182732
+          },
+          {
+            "bucket": 1,
+            "n": 792,
+            "mean_forward_bps": -1.6426,
+            "x_min": -0.182498,
+            "x_max": -0.059504
+          },
+          {
+            "bucket": 2,
+            "n": 792,
+            "mean_forward_bps": -0.1629,
+            "x_min": -0.059487,
+            "x_max": 0.053646
+          },
+          {
+            "bucket": 3,
+            "n": 792,
+            "mean_forward_bps": -0.047,
+            "x_min": 0.053729,
+            "x_max": 0.18489
+          },
+          {
+            "bucket": 4,
+            "n": 794,
+            "mean_forward_bps": -1.3257,
+            "x_min": 0.185048,
+            "x_max": 0.940763
+          }
+        ],
+        "status": "HAS_INFORMATION"
+      },
+      "rule": "flow(BTCUSDT) - mean(flow of BTC/ETH/SOL); entry at the close of bar i; horizon 5 bars",
+      "context_horizons": {
+        "1": {
+          "n": 4018,
+          "gross_mean_bps": -0.0397
+        },
+        "15": {
+          "n": 3822,
+          "gross_mean_bps": 0.0961
+        }
+      },
+      "rule_evaluated": true
+    },
+    {
+      "candidate_id": "M-10-ETH",
+      "hypothesis": "M-10_CROSS_SECTIONAL_FLOW",
+      "scope": "ETHUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": -1.0,
+      "cost_bps": 23.7608,
+      "cost_source": "EXECUTION_COST_MODEL_V4/ETHUSDT",
+      "gross_mean_bps_dev": 0.2825,
+      "net_mean_bps_dev": -23.4783,
+      "overall": {
+        "n": 3962,
+        "mean_bps": -23.5342,
+        "total_bps": -93242.63,
+        "win_rate": 0.0056,
+        "pf": 0.0045,
+        "sharpe_per_trade": -3.6003,
+        "max_dd_bps": 93242.63
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 2264,
+          "mean_bps": 0.2825,
+          "total_bps": 639.56,
+          "win_rate": 0.5027,
+          "pf": 1.164,
+          "sharpe_per_trade": 0.0385,
+          "max_dd_bps": 291.14
+        },
+        "VAL": {
+          "n": 1132,
+          "mean_bps": 0.1236,
+          "total_bps": 139.96,
+          "win_rate": 0.5141,
+          "pf": 1.0859,
+          "sharpe_per_trade": 0.0226,
+          "max_dd_bps": 201.1
+        },
+        "OOS": {
+          "n": 566,
+          "mean_bps": 0.2087,
+          "total_bps": 118.14,
+          "win_rate": 0.5459,
+          "pf": 1.158,
+          "sharpe_per_trade": 0.0422,
+          "max_dd_bps": 75.13
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 2264,
+          "mean_bps": -23.4783,
+          "total_bps": -53154.89,
+          "win_rate": 0.0075,
+          "pf": 0.0067,
+          "sharpe_per_trade": -3.2035,
+          "max_dd_bps": 53154.89
+        },
+        "VAL": {
+          "n": 1132,
+          "mean_bps": -23.6372,
+          "total_bps": -26757.26,
+          "win_rate": 0.0044,
+          "pf": 0.0024,
+          "sharpe_per_trade": -4.3225,
+          "max_dd_bps": 26757.26
+        },
+        "OOS": {
+          "n": 566,
+          "mean_bps": -23.5521,
+          "total_bps": -13330.47,
+          "win_rate": 0.0,
+          "pf": 0.0,
+          "sharpe_per_trade": -4.7667,
+          "max_dd_bps": 13330.47
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": 1,
+        "OOS": 1
+      },
+      "sign_flip_across_splits": false,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 0.2825 bps < cost 23.7608 bps",
+      "information_content": {
+        "n": 3962,
+        "ic_spearman": -0.027519,
+        "top_bottom_bps": -2.4866,
+        "monotone_score": -0.9,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 792,
+            "mean_forward_bps": 0.9633,
+            "x_min": -1.019922,
+            "x_max": -0.180129
+          },
+          {
+            "bucket": 1,
+            "n": 792,
+            "mean_forward_bps": 0.1964,
+            "x_min": -0.180104,
+            "x_max": -0.061263
+          },
+          {
+            "bucket": 2,
+            "n": 792,
+            "mean_forward_bps": -0.9468,
+            "x_min": -0.060922,
+            "x_max": 0.042262
+          },
+          {
+            "bucket": 3,
+            "n": 792,
+            "mean_forward_bps": -3.5195,
+            "x_min": 0.042266,
+            "x_max": 0.156745
+          },
+          {
+            "bucket": 4,
+            "n": 794,
+            "mean_forward_bps": -1.5233,
+            "x_min": 0.156763,
+            "x_max": 0.973345
+          }
+        ],
+        "status": "HAS_INFORMATION"
+      },
+      "rule": "flow(ETHUSDT) - mean(flow of BTC/ETH/SOL); entry at the close of bar i; horizon 5 bars",
+      "context_horizons": {
+        "1": {
+          "n": 4018,
+          "gross_mean_bps": 0.0298
+        },
+        "15": {
+          "n": 3822,
+          "gross_mean_bps": -0.6878
+        }
+      },
+      "rule_evaluated": true
+    },
+    {
+      "candidate_id": "M-10-SOL",
+      "hypothesis": "M-10_CROSS_SECTIONAL_FLOW",
+      "scope": "SOLUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": 1.0,
+      "cost_bps": 24.6867,
+      "cost_source": "EXECUTION_COST_MODEL_V4/SOLUSDT",
+      "gross_mean_bps_dev": 0.0832,
+      "net_mean_bps_dev": -24.6035,
+      "overall": {
+        "n": 3962,
+        "mean_bps": -24.5912,
+        "total_bps": -97430.36,
+        "win_rate": 0.0091,
+        "pf": 0.0047,
+        "sharpe_per_trade": -3.3803,
+        "max_dd_bps": 97430.36
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 2264,
+          "mean_bps": 0.0832,
+          "total_bps": 188.47,
+          "win_rate": 0.4876,
+          "pf": 1.0375,
+          "sharpe_per_trade": 0.0102,
+          "max_dd_bps": 286.53
+        },
+        "VAL": {
+          "n": 1132,
+          "mean_bps": -0.2209,
+          "total_bps": -250.04,
+          "win_rate": 0.4408,
+          "pf": 0.8842,
+          "sharpe_per_trade": -0.0383,
+          "max_dd_bps": 353.5
+        },
+        "OOS": {
+          "n": 566,
+          "mean_bps": 0.7772,
+          "total_bps": 439.92,
+          "win_rate": 0.5283,
+          "pf": 1.5588,
+          "sharpe_per_trade": 0.125,
+          "max_dd_bps": 60.44
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 2264,
+          "mean_bps": -24.6035,
+          "total_bps": -55702.22,
+          "win_rate": 0.0102,
+          "pf": 0.0068,
+          "sharpe_per_trade": -3.0249,
+          "max_dd_bps": 55702.22
+        },
+        "VAL": {
+          "n": 1132,
+          "mean_bps": -24.9076,
+          "total_bps": -28195.38,
+          "win_rate": 0.0053,
+          "pf": 0.0007,
+          "sharpe_per_trade": -4.3196,
+          "max_dd_bps": 28195.38
+        },
+        "OOS": {
+          "n": 566,
+          "mean_bps": -23.9095,
+          "total_bps": -13532.75,
+          "win_rate": 0.0124,
+          "pf": 0.0037,
+          "sharpe_per_trade": -3.8441,
+          "max_dd_bps": 13532.75
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": -1,
+        "OOS": 1
+      },
+      "sign_flip_across_splits": true,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "NO_INFORMATION",
+      "classification_reason": "rank correlation below the pre-registered threshold",
+      "information_content": {
+        "n": 3962,
+        "ic_spearman": -0.004312,
+        "top_bottom_bps": 2.5739,
+        "monotone_score": 0.1,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 792,
+            "mean_forward_bps": -3.0552,
+            "x_min": -0.807465,
+            "x_max": -0.166585
+          },
+          {
+            "bucket": 1,
+            "n": 792,
+            "mean_forward_bps": 0.5674,
+            "x_min": -0.166418,
+            "x_max": -0.043522
+          },
+          {
+            "bucket": 2,
+            "n": 792,
+            "mean_forward_bps": -0.21,
+            "x_min": -0.043413,
+            "x_max": 0.06649
+          },
+          {
+            "bucket": 3,
+            "n": 792,
+            "mean_forward_bps": -1.8744,
+            "x_min": 0.066544,
+            "x_max": 0.189196
+          },
+          {
+            "bucket": 4,
+            "n": 794,
+            "mean_forward_bps": -0.4813,
+            "x_min": 0.189223,
+            "x_max": 0.77054
+          }
+        ],
+        "status": "NO_INFORMATION"
+      },
+      "rule": "flow(SOLUSDT) - mean(flow of BTC/ETH/SOL); entry at the close of bar i; horizon 5 bars",
+      "context_horizons": {
+        "1": {
+          "n": 4018,
+          "gross_mean_bps": -0.0053
+        },
+        "15": {
+          "n": 3822,
+          "gross_mean_bps": 0.4908
+        }
+      },
+      "rule_evaluated": true
+    },
+    {
+      "candidate_id": "M-10-PANEL-DISPERSION",
+      "hypothesis": "M-10_CROSS_SECTIONAL_FLOW",
+      "scope": "BTCUSDT+ETHUSDT+SOLUSDT",
+      "horizon_bars": 5,
+      "horizon_minutes": 25,
+      "direction_frozen_from_dev": -1.0,
+      "cost_bps": 23.9825,
+      "cost_source": "mean of the three EXECUTION_COST_MODEL_V4 per-asset costs",
+      "gross_mean_bps_dev": 0.4056,
+      "net_mean_bps_dev": -23.5769,
+      "overall": {
+        "n": 3962,
+        "mean_bps": -23.7817,
+        "total_bps": -94223.03,
+        "win_rate": 0.0038,
+        "pf": 0.0027,
+        "sharpe_per_trade": -3.9776,
+        "max_dd_bps": 94223.03
+      },
+      "splits_gross": {
+        "DEV": {
+          "n": 2264,
+          "mean_bps": 0.4056,
+          "total_bps": 918.34,
+          "win_rate": 0.5393,
+          "pf": 1.2227,
+          "sharpe_per_trade": 0.0603,
+          "max_dd_bps": 318.27
+        },
+        "VAL": {
+          "n": 1132,
+          "mean_bps": -0.1599,
+          "total_bps": -180.95,
+          "win_rate": 0.4912,
+          "pf": 0.9052,
+          "sharpe_per_trade": -0.033,
+          "max_dd_bps": 255.93
+        },
+        "OOS": {
+          "n": 566,
+          "mean_bps": 0.1029,
+          "total_bps": 58.25,
+          "win_rate": 0.5071,
+          "pf": 1.0723,
+          "sharpe_per_trade": 0.0219,
+          "max_dd_bps": 169.87
+        }
+      },
+      "splits_net": {
+        "DEV": {
+          "n": 2264,
+          "mean_bps": -23.5769,
+          "total_bps": -53378.04,
+          "win_rate": 0.0062,
+          "pf": 0.0047,
+          "sharpe_per_trade": -3.5067,
+          "max_dd_bps": 53378.04
+        },
+        "VAL": {
+          "n": 1132,
+          "mean_bps": -24.1424,
+          "total_bps": -27329.14,
+          "win_rate": 0.0,
+          "pf": 0.0,
+          "sharpe_per_trade": -4.9852,
+          "max_dd_bps": 27329.14
+        },
+        "OOS": {
+          "n": 566,
+          "mean_bps": -23.8796,
+          "total_bps": -13515.85,
+          "win_rate": 0.0018,
+          "pf": 0.0001,
+          "sharpe_per_trade": -5.0841,
+          "max_dd_bps": 13515.85
+        }
+      },
+      "gross_sign_by_split": {
+        "DEV": 1,
+        "VAL": -1,
+        "OOS": 1
+      },
+      "sign_flip_across_splits": true,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "NO_INFORMATION",
+      "classification_reason": "rank correlation below the pre-registered threshold",
+      "information_content": {
+        "n": 3962,
+        "ic_spearman": -0.003346,
+        "top_bottom_bps": -0.9077,
+        "monotone_score": -0.3,
+        "buckets": [
+          {
+            "bucket": 0,
+            "n": 792,
+            "mean_forward_bps": -1.0031,
+            "x_min": 0.004659,
+            "x_max": 0.095715
+          },
+          {
+            "bucket": 1,
+            "n": 792,
+            "mean_forward_bps": -0.8452,
+            "x_min": 0.095875,
+            "x_max": 0.147191
+          },
+          {
+            "bucket": 2,
+            "n": 792,
+            "mean_forward_bps": -1.0186,
+            "x_min": 0.147194,
+            "x_max": 0.203699
+          },
+          {
+            "bucket": 3,
+            "n": 792,
+            "mean_forward_bps": -0.1326,
+            "x_min": 0.20372,
+            "x_max": 0.27723
+          },
+          {
+            "bucket": 4,
+            "n": 794,
+            "mean_forward_bps": -1.9108,
+            "x_min": 0.277234,
+            "x_max": 0.722833
+          }
+        ],
+        "status": "NO_INFORMATION"
+      },
+      "rule": "cross-sectional flow dispersion -> equal-weighted panel return; horizon 5 bars",
+      "cost_is_panel_average": true,
+      "rule_evaluated": true
+    }
+  ],
+  "summary": {
+    "candidates": 12,
+    "classification_counts": {
+      "COST_KILLED": 7,
+      "LIMITED_HISTORY": 3,
+      "NO_INFORMATION": 2
+    },
+    "paper_candidates": 0,
+    "note": "RESEARCH_CANDIDATE is the strongest pre-registered outcome and is still not a paper candidate: it would require independent verification on the final HEAD first."
+  }
+}

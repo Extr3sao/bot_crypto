@@ -1,0 +1,54 @@
+{
+  "status": "MEASURED",
+  "measured_at_utc": "2026-10-08T01:00:00Z",
+  "environment": "project virtualenv, Python 3.11.15, shared checkout",
+  "pytest": {
+    "command": ".venv/Scripts/python.exe -m pytest -q",
+    "result": "2860 passed",
+    "passed": 2860,
+    "failed": 0,
+    "exit_code": 0,
+    "seconds": 218.98
+  },
+  "ruff_repo": {
+    "command": ".venv/Scripts/python.exe -m ruff check .",
+    "result": "All checks passed",
+    "exit_code": 0
+  },
+  "mypy_repo": {
+    "command": ".venv/Scripts/python.exe -m mypy . --exclude reports",
+    "result": "72 errors in 3 files (checked 705 source files)",
+    "exit_code": 1,
+    "failing_files": [
+      "scripts/cap004d_health_check.py",
+      "scripts/cap004d_verify.py",
+      "scripts/rfc035e_fetch.py"
+    ],
+    "note": "none of the three files belongs to RFC-035S3; cap004d_* is another thread's in-flight CAP-004D work and rfc035e_fetch.py is a round-2 fetch helper"
+  },
+  "ruff_round3": {
+    "command": ".venv/Scripts/python.exe -m ruff check scripts/rfc035s3_closure.py scripts/rfc035s3_verify.py tests/unit/research/test_rfc035s3_strategy_closure.py",
+    "result": "All checks passed",
+    "exit_code": 0
+  },
+  "mypy_round3": {
+    "command": ".venv/Scripts/python.exe -m mypy scripts/rfc035s3_closure.py scripts/rfc035s3_verify.py",
+    "result": "Success: no issues found in 2 source files",
+    "exit_code": 0
+  },
+  "rfc035_tests": {
+    "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_rfc035s3_strategy_closure.py tests/unit/research/test_rfc035_opportunity_registry.py tests/unit/research/test_rfc035_strategy_admission.py tests/unit/research/test_rfc035e_effect_reproduction.py tests/unit/research/test_rfc035s2_strategy_search.py -q",
+    "result": "97 passed",
+    "exit_code": 0
+  },
+  "round3_verifier": {
+    "command": ".venv/Scripts/python.exe scripts/rfc035s3_verify.py",
+    "result": "PASS 350/350, 0 mismatches, FALSE_SUCCESS = 0",
+    "exit_code": 0
+  },
+  "isolated_reproduction": {
+    "command": "git worktree add --detach ../bot-freebuff-rfc035s3-lab 7e21f7ca6dbf8816d83f2f8ab15aeb09310b878c",
+    "result": "PASS in the isolated worktree: discovery 652/652, rfc035e 107/107, rfc035s2 886/886, all 0 mismatches",
+    "invariant": "PASS with zero mismatches at the baseline commit"
+  }
+}

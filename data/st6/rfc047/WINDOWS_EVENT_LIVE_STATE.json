@@ -1,0 +1,1141 @@
+{
+  "artifact": "RFC047_WINDOWS_EVENT_LIVE_STATE",
+  "attempts": [
+    {
+      "attempted_at_utc": "2026-10-09T19:31:37Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 1385085,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 1874,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 1874,
+          "records_present": 2274,
+          "records_seen": 1874,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "UNPARSEABLE"
+          },
+          "watermark_before": 839,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:31:51Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:34:35Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:45:37Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:47:56Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:49:23Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:53:18Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:53:28Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:53:38Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:55:20Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:55:45Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:55:54Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:57:06Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:57:20Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:57:30Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:58:09Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:58:19Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:58:47Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:59:15Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    },
+    {
+      "attempted_at_utc": "2026-10-09T19:59:57Z",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Maintenance",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": true,
+          "exit_code": 0,
+          "oldest_record_number": 440,
+          "pending_records_estimate": 0,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": 2274,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "NO_RECORDS_MATCHING_THE_TASK",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": 2713,
+          "watermark_candidate": 2713
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "bytes_read": 0,
+          "channel": "Microsoft-Windows-TaskScheduler/Operational",
+          "config_parsed": true,
+          "duplicates_already_stored": 0,
+          "enabled": false,
+          "exit_code": 0,
+          "oldest_record_number": null,
+          "pending_records_estimate": null,
+          "records_added": 0,
+          "records_not_belonging_to_the_task": 0,
+          "records_present": null,
+          "records_seen": 0,
+          "refusals": [],
+          "status": "CHANNEL_DISABLED_NO_RECORDS",
+          "stderr": "",
+          "time_basis": {
+            "host_offset_minutes": 120,
+            "status": "NO_RECORD_TO_CHECK"
+          },
+          "watermark_before": null,
+          "watermark_candidate": null
+        }
+      },
+      "host_offset_minutes": 120,
+      "records_added": 0,
+      "records_total": 0,
+      "status": "CHANNEL_DISABLED_NO_RECORDS",
+      "store_bytes": 0
+    }
+  ],
+  "growth": {
+    "bound": "one record per (channel, EventRecordID), deduplicated on write; the store is never an export of the whole log and never grows by a re-read",
+    "bytes": 0,
+    "bytes_per_record": null,
+    "records": 0
+  },
+  "last_attempt_at_utc": "2026-10-09T19:59:57Z",
+  "last_attempt_status": "CHANNEL_DISABLED_NO_RECORDS",
+  "purpose": "the mutable side of the evidence: how far the read has advanced, what each attempt saw, and what it could not read — kept apart from the immutable store of records",
+  "records_stored": 0,
+  "store_bytes": 0,
+  "version": "RFC047_WIN_EVENT_STORE_V1",
+  "watermark_semantics": "the highest EventRecordID examined per channel: every record at or below it was either stored in the immutable store or counted as not belonging to the monitored task.  It is advanced only after the store has been replaced and never past a fragment that could not be read, so a crash or a bad read can leave it behind but never ahead",
+  "watermarks": {
+    "Microsoft-Windows-TaskScheduler/Maintenance": 2713
+  }
+}

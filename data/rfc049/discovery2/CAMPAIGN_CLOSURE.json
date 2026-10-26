@@ -1,0 +1,175 @@
+{
+  "artifact": "RFC049_DISCOVERY2_CAMPAIGN_CLOSURE",
+  "generated_at_utc": "2026-10-10T18:43:52Z",
+  "head": "2d113a0ae82f38123eabe0385ab47bb7991b15ad",
+  "branch": "main",
+  "adr": "ADR-0026 (tasks/decisions.md)",
+  "decided_by": "operator (owner)",
+  "decision_instrument": "operator instruction 'Record the governance closure of RFC-049 Discovery 2 and resolve whether to cancel the now-moot sealed OOS opening instead of spending the single inspection' (received 2026-10-10). The instruction is the authority: docs/governance/RFC049_DISCOVERY_ADMISSION.md section 7 grants the operator 'authorize the campaign, amend governance, promote to paper'.",
+  "closure_kind": "GOVERNANCE_CLOSURE_OF_A_TERMINAL_STOP",
+  "campaign": {
+    "id": "RFC-049 DISCOVERY 2",
+    "authorization": "ADR-0025 + data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json (scope OFFLINE_DEV_VAL_ONLY)",
+    "executed_phase": "B — DEV/VAL economic experiments, robustness battery, filter ablation, ACTIVE audit, independent verification",
+    "terminal_state": "DISCOVERY_CAMPAIGN_FAILED",
+    "terminal_state_basis": "DISCOVERY_STOP_RULES.md ST-2: 'no candidate satisfies PROFITABILITY_GATE_V1, including PG-6 and PG-7' -> DISCOVERY_CAMPAIGN_FAILED. Both admitted candidates were closed at the DEV/VAL stage with registered failed criteria, so no candidate can reach the gate.",
+    "stop_rule_fired": "ST-2 (mechanical, evaluated on artefacts: ECONOMIC_RESULTS.json failed_criteria for both candidates)",
+    "stop_rules_that_did_not_fire": ["ST-1 (budget cap: data/rfc049/HYPOTHESIS_REGISTRY.json allows a maximum of 3 admitted hypotheses; 2 were admitted and tested and 0 were refilled, so the cap was not the reason for stopping)", "ST-3 (robustness: no predeclared robustness criterion failed as a hard stop; the flags were recorded as flags)", "ST-4", "ST-5", "ST-6", "ST-7 (PIT violations 0)", "ST-8 (OOS never inspected)", "ST-9", "ST-10", "ST-11", "ST-12 (see defects: registered and none invalidates a published measurement)"],
+    "subsequent_state": "The campaign is over and there is no 'paused and quietly continued' state (DISCOVERY_STOP_RULES.md section 1). Further work on these hypotheses requires a NEW explicit authorization, a new hypothesis budget and a new freeze."
+  },
+  "mandatory_stop_artifacts": {
+    "campaign_state_terminal": "DISCOVERY_CAMPAIGN_FAILED",
+    "hypotheses_attempted": {
+      "sourced_and_screened_in_wp_049_02": 9,
+      "admitted_and_frozen": ["H-049-001", "H-049-002"],
+      "deferred": 1,
+      "rejected_before_admission": 6,
+      "refilled_or_replaced": 0,
+      "labelling_note": "the 6 pre-admission rejections and the 1 deferral consumed no experimental budget; 2 candidates were carried into Phase B and 0 were replaced afterwards"
+    },
+    "candidates_attempted": 2,
+    "trials_counted": {
+      "economic_candidates": 2,
+      "diagnostic_ablation_arms": 4,
+      "diagnostic_hypothesis_record": "E-049-ABL-001 (created separately; DIAGNOSTIC_NOT_ADMITTED, adopts nothing)",
+      "parameter_searches": 0,
+      "hypothesis_refills": 0,
+      "attempts_discarded": 0,
+      "reconstructable": true,
+      "note": "every trial, including the 4 ablation arms and the negative DEV/VAL result, is written up; PG-10's multiple-testing correction stays valid (ST-10 not fired)"
+    },
+    "rejection_reason_per_candidate_with_gate_id": {
+      "H-049-001": {
+        "verdict": "CANDIDATE_REJECTED",
+        "closed_at_stage": "DEV/VAL",
+        "policy": "RFC049_DISCOVERY_ADMISSION section 6 — a candidate that fails any stage is closed at that stage",
+        "failed_criteria": [
+          {"criterion": "lcb_95_net_expectancy_positive", "partition": "validation", "frozen_threshold_key": "lcb_95_net_expectancy_positive", "observed": -619.9},
+          {"criterion": "max_drawdown_le_0.25", "partition": "development", "frozen_threshold_key": "max_drawdown_le", "observed": 0.514},
+          {"criterion": "max_drawdown_le_0.25", "partition": "validation", "frozen_threshold_key": "max_drawdown_le", "observed": 0.279},
+          {"criterion": "single_trade_share_le_0.4", "partition": "validation", "frozen_threshold_key": "single_trade_share_of_positive_net_le"},
+          {"criterion": "incremental_over_buy_and_hold_positive", "partition": "validation", "frozen_threshold_key": "incremental_over_buy_and_hold_positive", "observed_bps": -9788.0},
+          {"criterion": "incremental_over_200d_trend_baseline_positive", "partition": "validation", "frozen_threshold_key": "incremental_over_200d_trend_baseline_positive", "observed_bps": -761.0}
+        ],
+        "robustness_flags_not_criteria": ["PARTIAL_SIGN_STABILITY:development", "SIGN_UNSTABLE:validation"]
+      },
+      "H-049-002": {
+        "verdict": "CANDIDATE_REJECTED",
+        "closed_at_stage": "DEV/VAL",
+        "policy": "RFC049_DISCOVERY_ADMISSION section 6",
+        "failed_criteria": [
+          {"criterion": "lcb_95_net_expectancy_positive", "partition": "validation", "frozen_threshold_key": "lcb_95_net_expectancy_positive", "observed": -293.6},
+          {"criterion": "max_drawdown_le_0.25", "partition": "validation", "frozen_threshold_key": "max_drawdown_le", "observed": 0.352},
+          {"criterion": "single_trade_share_le_0.4", "partition": "development", "frozen_threshold_key": "single_trade_share_of_positive_net_le"},
+          {"criterion": "incremental_over_buy_and_hold_positive", "partition": "validation", "frozen_threshold_key": "incremental_over_buy_and_hold_positive", "observed_bps": -9281.0},
+          {"criterion": "incremental_over_200d_trend_baseline_positive", "partition": "validation", "frozen_threshold_key": "incremental_over_200d_trend_baseline_positive", "observed_bps": -254.0}
+        ],
+        "robustness_flags_not_criteria": ["PARTIAL_SIGN_STABILITY:validation"]
+      }
+    },
+    "negative_result": {
+      "written_up_in": "data/rfc049/discovery2/FINAL_REPORT.md (sections 5-8) and data/rfc049/discovery2/RUN_REPORT.{md,json}",
+      "substance": "both candidates produced a large net result on the 2019-2023 development partition (H-049-001 +39,427 bps / 14 trips, compounded +1035%, LCB +659 bps; H-049-002 +40,176 bps / 26 trips, compounded +1286%, LCB +380 bps) and decayed to non-confirmatory in 2024-2026: raw sums stay positive (+624 / +1,632 bps) while the LCBs are negative (-620 / -294 bps), drawdowns breach the 25% limit (27.9% / 35.2%) and both lose to buy-and-hold (-9,788 / -9,281 bps) and to the 200-day trend baseline (-761 / -254 bps); the ETH replication turns negative in validation for both. Technical validity was never the problem: PIT violations 0, counts reproduced exactly (14/9/23 and 26/22/48), independent verification PASS 37/37 with 8/8 controls and FALSE_SUCCESS 0.",
+      "written_as_carefully_as_a_pass": true
+    },
+    "defects_registered": [
+      {"id": "RFC049B-DEF-01", "severity": "documentation", "status": "open (provenance wording; the frozen rule is not edited)", "pit_impact": "none"},
+      {"id": "RFC049B-DEF-02", "severity": "contract-interpretation", "status": "resolved by the recorded reading effective_start = max(declared start, first price bar + warmup); applied in every count", "pit_impact": "none"},
+      {"id": "RFC049B-DEF-03", "severity": "units", "status": "open (Phase B ingests the frozen snapshot only)", "pit_impact": "none"},
+      {"id": "RFC049B-DEF-04", "severity": "data-revision", "status": "open, bounded and immaterial", "pit_impact": "bounded"},
+      {"id": "RFC049B-DEF-05", "severity": "source-direction", "status": "open (source-claim defect, recorded; no rule changed)", "pit_impact": "none"},
+      {"id": "RFC049B-DEF-06", "severity": "citation", "status": "open (registry citation error)", "pit_impact": "none"},
+      {"id": "RFC049B-DEF-07", "severity": "vendor-semantics", "status": "open (vendor payload has no publication timestamp; the 2026-10-10 row is never consumed)", "pit_impact": "none at this cadence"},
+      {"id": "RFC049B-DEF-08", "severity": "signal-attribution", "status": "open (the frozen H-049-001 field is a USD valuation, so a depeg moves the signal)", "pit_impact": "none for the recorded result; relevant to any future re-specification"},
+      {"id": "RFC049B-DEF-09", "severity": "power", "status": "confirmed by this phase and kept: the 20-trip floor is unreachable inside the 24-month sealed window at the measured turnover", "pit_impact": "none (no threshold moved)"},
+      {"id": "RFC049C-DEF-01", "severity": "bookkeeping", "status": "corrected in this phase by the verifier re-run (two stale FINAL_ADMISSION_REPORT hashes in RFC-049B's committed verifier artefact)", "pit_impact": "none"}
+    ],
+    "superseded_measurements_retained": [
+      {"measurement": "data/rfc049/ECONOMIC_RESULTS.json (status NOT_RUN), data/rfc049/ROBUSTNESS_REPORT.json (NOT_RUN)", "note": "Phase A contracts retained untouched; superseded by the Phase B results in data/rfc049/discovery2/, and the Phase B numbers in turn are RESEARCH_EXPOSED and non-confirmatory"},
+      {"measurement": "data/rfc049/admission/INDEPENDENT_VERIFICATION.json", "note": "retained, with its RFC049C-DEF-01 correction applied by the verifier's own re-run; no other frozen artefact was rewritten"}
+    ]
+  },
+  "sealed_oos_resolution": {
+    "decision": "CANCELLED_NOT_OPENED",
+    "decided_by": "operator (owner) via ADR-0026",
+    "gate_as_frozen": "data/rfc049/PREREGISTRATION_MANIFEST.json#partition_policy.sealed_oos = 'forward observations strictly after freeze_timestamp_utc; opened once, after 20 closed round trips or 24 months, whichever comes first; fewer than 20 trips at 24 months => INSUFFICIENT_OOS_SAMPLE'; freeze_timestamp_utc = 2026-10-10T11:26:20Z; sealed_oos_start_utc = 2026-10-11T00:00:00Z",
+    "why_the_opening_is_moot": [
+      "Both candidates are closed at the DEV/VAL stage; RFC049_DISCOVERY_ADMISSION section 6 closes a candidate that fails a stage, and a closed candidate cannot be promoted. An OOS reading therefore cannot produce a PASS and cannot change any promotion decision: its decision value is zero.",
+      "The gate itself is unreachable inside its own window on this dataset: at the measured turnover H-049-001 expects 5.9 round trips in 24 months (81.0 months to 20) and H-049-002 12.4 (38.8 months to 20), so the mechanical outcome would be INSUFFICIENT_OOS_SAMPLE regardless of the returns.",
+      "Opening it anyway would consume the single licensed inspection of uncontaminated forward data for no decision, and ST-8 forbids inspecting OOS more than once per candidate: the information would be spent and unavailable to any later, better-posed hypothesis."
+    ],
+    "what_this_decision_is_not": [
+      "not a REJECT on power: the floor of 20 round trips is untouched and the label the gate would have produced remains INSUFFICIENT_OOS_SAMPLE",
+      "not an inspection: the sealed window is not read, and OOS_OPENED remains false",
+      "not a re-tune, a threshold change, a candidate reopened, or a new budget",
+      "not an assertion that the hypotheses were disproved forward: they are closed on their computable criteria, and the forward question stays unanswered"
+    ],
+    "options_considered": [
+      {"option": "open the window at the gate anyway and record the forward reading", "outcome": "REJECTED — it would spend the only uncontaminated sample on a candidate that can no longer be promoted, and would create a reading with no decision attached (the unrecorded-trial hazard of ST-10)"},
+      {"option": "leave the gate armed and let it fire at the 24-month point (2028-10-10)", "outcome": "REJECTED — it would keep two closed candidates alive as tracking objects for 24 months, scheduled to produce a single non-promotable reading; the same irreversible consumption, only later"},
+      {"option": "retire the opening with the closed candidates (chosen)", "outcome": "the single inspection is voided unused; nothing is read, nothing is spent, and the state stays auditable"}
+    ],
+    "effect_on_the_frozen_declaration": "the frozen declaration in PREREGISTRATION_MANIFEST.json is NOT edited (it is a Phase A record and is hash-protected). This closure record and ADR-0026 are the forward-looking authority and supersede it: the declared opening will not be exercised. No reader may cite the manifest's gate text as evidence that an opening is still pending.",
+    "effect_on_future_campaigns": "a future campaign receives its OWN freeze timestamp and its own sealed window starting strictly after it. It may not claim the 2026-10-11 window as its first inspection: that window was defined for H-049-001/H-049-002 and is retired with them. Nothing prevents a new, separately authorized hypothesis from sealing its own forward window.",
+    "inspection_accounting": {"licensed_inspections_for_this_campaign": 1, "inspections_used": 0, "inspections_retired_unused": 1, "inspections_transferred": 0, "sealed_window_read": false, "sealed_window_deleted": false},
+    "reversal": "only by a new ADR that explicitly reverses ADR-0026. A reversal could re-arm the gate as a data-collection schedule but could not resurrect H-049-001/H-049-002: a terminated candidate is closed, and any restatement of its rules is a new hypothesis with a new id, a new budget and a new freeze."
+  },
+  "prohibitions_honoured": {
+    "TUNE_UNTIL_PASS": false,
+    "thresholds_changed_after_results": 0,
+    "parameters_searched": 0,
+    "candidates_reopened": 0,
+    "candidates_replaced_by_close_variants": 0,
+    "filters_added_to_rescue_a_losing_period": 0,
+    "cost_model_lowered": false,
+    "oos_window_changed": false,
+    "historical_artifacts_rewritten": false,
+    "trials_discarded": 0
+  },
+  "governance_flags_after_closure": {
+    "RFC_049_DISCOVERY2": "CLOSED",
+    "HYPOTHESIS_001": "CLOSED_REJECTED_DEV_VAL",
+    "HYPOTHESIS_002": "CLOSED_REJECTED_DEV_VAL",
+    "HYPOTHESIS_BUDGET": "EXHAUSTED_NO_REFILL",
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "NEXT_CAMPAIGN_NOTE": "the ADR-0025 authorization was consumed by the executed DEV/VAL scope; it does not extend to new hypotheses, new candidates or new campaigns",
+    "SEALED_OOS": "CANCELLED_NOT_OPENED",
+    "OOS_OPENED": false,
+    "PAPER_PROMOTION": "NOT_AUTHORIZED",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false,
+    "FALSE_SUCCESS": 0,
+    "RISK_ENGINE": "DETERMINISTIC",
+    "DEFAULT_ROUTE": "wait for qualified external evidence (the pre-existing default); do not reopen the closed families and do not refill the hypothesis budget"
+  },
+  "what_would_reopen_the_question": {
+    "note": "no new hypothesis, candidate or budget is created or proposed by this closure",
+    "entry_condition_for_any_future_internal_campaign": "a mechanism whose turnover-adjusted gross edge is expected to clear the frozen 23.353553391 bps per round trip at its own cadence, registered as a new hypothesis with a new id, a new experimental budget and an explicit operator authorization",
+    "evidence_against_the_closed_families": "the 24-strategy admission ledger reports 0 admitted for paper and a best gross edge of 8.91 bps/trade against the 23.353553391 bps round-trip cost floor; the liquidity lines decayed into the trend proxy they were meant to augment"
+  },
+  "checks": [
+    {"check": "closure:terminal_state_is_DISCOVERY_CAMPAIGN_FAILED", "result": "PASS", "detail": "ST-2 evaluated on ECONOMIC_RESULTS.json: both candidates carry failed criteria"},
+    {"check": "closure:both_candidates_closed_with_registered_criteria", "result": "PASS", "detail": "H-049-001 6 criteria, H-049-002 5 criteria, each traceable to a frozen threshold key"},
+    {"check": "closure:sealed_oos_not_opened", "result": "PASS", "detail": "OOS_OPENED=false; ECONOMIC_RESULTS.result_scope.sealed_oos_opened=false; no artifact introduces a forward observation"},
+    {"check": "closure:no_frozen_artifact_rewritten", "result": "PASS", "detail": "PREREGISTRATION_MANIFEST.json, DATA_EXPOSURE_AUDIT.json, ECONOMIC_RESULTS.json (NOT_RUN), specs/ unchanged; only the verifier's own artifact was re-stamped in the prior phase"},
+    {"check": "closure:no_threshold_or_cost_change", "result": "PASS", "detail": "frozen thresholds and COST_MODEL_V3 identical to the freeze-time hashes"},
+    {"check": "closure:no_new_authorization_created", "result": "PASS", "detail": "NEXT_CAMPAIGN returns to NOT_AUTHORIZED; no budget, candidate or hypothesis is created here"}
+  ],
+  "checks_total": 6,
+  "checks_failed": 0,
+  "evidence_index": [
+    "data/rfc049/discovery2/FINAL_REPORT.md",
+    "data/rfc049/discovery2/RUN_REPORT.{md,json}",
+    "data/rfc049/discovery2/ECONOMIC_RESULTS.json",
+    "data/rfc049/discovery2/DISCOVERY2_STATISTICAL_ELIGIBILITY.json",
+    "data/rfc049/discovery2/INDEPENDENT_VERIFICATION.json",
+    "data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json",
+    "data/rfc049/admission/ADMISSION_AUDIT.json (defects RFC049B-DEF-01..09)",
+    "data/rfc049/PREREGISTRATION_MANIFEST.json (frozen gate and thresholds; not modified)",
+    "docs/governance/DISCOVERY_STOP_RULES.md (ST-1..ST-12, sections 1-5)",
+    "docs/governance/RFC049_DISCOVERY_ADMISSION.md (section 6 candidate closure, section 7 operator authority)",
+    "docs/rfc/RFC-049_PROFITABILITY_DISCOVERY_2.md (section 6 OOS integrity)",
+    "tasks/decisions.md (ADR-0025, ADR-0026)"
+  ]
+}

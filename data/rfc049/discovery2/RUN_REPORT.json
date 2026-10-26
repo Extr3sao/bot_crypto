@@ -1,0 +1,155 @@
+{
+  "artifact": "RFC049_DISCOVERY2_RUN_REPORT",
+  "generated_at_utc": "2026-10-10T17:05:00Z",
+  "phase": "B — DISCOVERY 2 / DEV-VAL (authorized offline scope only)",
+  "head_start": "2d113a0ae82f38123eabe0385ab47bb7991b15ad",
+  "branch": "main",
+  "mode": "OFFLINE RESEARCH — read-only frozen inputs; no keys, no orders, no capital, no process started",
+  "authorization": {
+    "adr": "ADR-0025 (tasks/decisions.md)",
+    "artifact": "data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json",
+    "scope": "OFFLINE_DEV_VAL_ONLY",
+    "next_campaign": "AUTHORIZED",
+    "next_campaign_previous": "NOT_AUTHORIZED",
+    "additional_unsatisfied_authorizations": "NONE for the authorized scope"
+  },
+  "steps": [
+    {
+      "step": "baseline: independent re-run of the RFC-049B verifier (rfc049b_verify.py)",
+      "command": ".venv/Scripts/python.exe scripts/rfc049b_verify.py",
+      "exit_code": 0,
+      "result": "PASS — 66 checks, 0 failed, 12 negative controls, 0 missed, FALSE_SUCCESS = 0",
+      "side_effect": "rewrote only its own artifact data/rfc049/admission/INDEPENDENT_VERIFICATION.json, correcting two stale FINAL_ADMISSION_REPORT hashes recorded at commit time (RFC049C-DEF-01); no frozen evidence touched"
+    },
+    {
+      "step": "DEV/VAL engine (builder) over the frozen inputs, both candidates, BTC + ETH",
+      "command": ".venv/Scripts/python.exe scripts/rfc049c_engine.py --trades",
+      "exit_code": 0,
+      "result": "28 checks, 0 failed — spec/dataset/vendor hashes verified; grid 406 instants reproduced; cost 23.353553391 / 35.030330086 bps re-derived; RFC-049B counts reproduced exactly (14/9/23 and 26/22/48); PIT violations 0"
+    },
+    {
+      "step": "independent verifier (builder != verifier)",
+      "command": ".venv/Scripts/python.exe scripts/rfc049c_verify.py",
+      "exit_code": 0,
+      "result": "PASS — 37 checks, 0 failed; 8 negative controls all DETECTED; FALSE_SUCCESS = 0"
+    },
+    {
+      "step": "filter ablation (diagnostic, four arms)",
+      "command": ".venv/Scripts/python.exe scripts/rfc049c_ablation.py",
+      "exit_code": 0,
+      "result": "base arm reproduces the engine's trend comparator exactly; adoption NOT_ADOPTED"
+    },
+    {
+      "step": "ACTIVE pipeline audit (read-only)",
+      "command": ".venv/Scripts/python.exe scripts/rfc049c_active_audit.py",
+      "exit_code": 0,
+      "result": "5 checks, 0 failed — 24 strategies, 0 admitted; paper executions 0; 3-ops/day NOT_ACHIEVABLE_FROM_CURRENT_ADMITTED_PIPELINE"
+    },
+    {
+      "step": "unit and regression tests",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research -q",
+      "exit_code": 0,
+      "result": "1703 passed (includes the 15 new RFC-049C contract tests and the unchanged RFC-049A/049B suites)"
+    }
+  ],
+  "results": {
+    "criterion": "frozen acceptance thresholds evaluated on the computable RESEARCH_EXPOSED partitions; sealed OOS closed",
+    "round_trip_cost_bps": 23.353553391,
+    "H-049-001": {
+      "verdict": "CANDIDATE_REJECTED",
+      "failed_criteria": [
+        "lcb_95_net_expectancy_positive:validation",
+        "max_drawdown_le_0.25:development",
+        "max_drawdown_le_0.25:validation",
+        "single_trade_share_le_0.4:validation",
+        "incremental_over_buy_and_hold_positive:validation",
+        "incremental_over_200d_trend_baseline_positive:validation"
+      ],
+      "robustness_flags": ["PARTIAL_SIGN_STABILITY:development", "SIGN_UNSTABLE:validation"],
+      "BTCUSDT": {
+        "development": {"round_trips": 14, "net_sum_bps": 39427.5, "net_compounded": 10.3535, "lcb_bps": 659.0, "max_drawdown": 0.514, "stress_1_5x_sum_bps": 39264.0},
+        "validation": {"round_trips": 9, "net_sum_bps": 623.5, "net_compounded": -0.0113, "lcb_bps": -619.9, "max_drawdown": 0.279, "stress_1_5x_sum_bps": 518.4}
+      },
+      "ETHUSDT_replication": {
+        "development": {"round_trips": 14, "net_sum_bps": 40189.3, "net_compounded": 14.6091},
+        "validation": {"round_trips": 9, "net_sum_bps": -2409.6, "net_compounded": -0.3507}
+      }
+    },
+    "H-049-002": {
+      "verdict": "CANDIDATE_REJECTED",
+      "failed_criteria": [
+        "lcb_95_net_expectancy_positive:validation",
+        "max_drawdown_le_0.25:validation",
+        "single_trade_share_le_0.4:development",
+        "incremental_over_buy_and_hold_positive:validation",
+        "incremental_over_200d_trend_baseline_positive:validation"
+      ],
+      "robustness_flags": ["PARTIAL_SIGN_STABILITY:validation"],
+      "BTCUSDT": {
+        "development": {"round_trips": 26, "net_sum_bps": 40175.6, "net_compounded": 12.8608, "lcb_bps": 380.3, "max_drawdown": 0.144, "stress_1_5x_sum_bps": 39872.0},
+        "validation": {"round_trips": 22, "net_sum_bps": 1632.4, "net_compounded": 0.0394, "lcb_bps": -293.6, "max_drawdown": 0.352, "stress_1_5x_sum_bps": 1375.5}
+      },
+      "ETHUSDT_replication": {
+        "development": {"round_trips": 26, "net_sum_bps": 47827.7, "net_compounded": 17.0565},
+        "validation": {"round_trips": 22, "net_sum_bps": -1968.9, "net_compounded": -0.3613}
+      }
+    },
+    "multiple_testing": {
+      "development": {"raw": {"H-049-001": 0.0111, "H-049-002": 0.0014}, "bh": {"H-049-001": 0.0111, "H-049-002": 0.0028}, "holm": {"H-049-001": 0.0111, "H-049-002": 0.0028}},
+      "validation": {"raw": {"H-049-001": 0.4447, "H-049-002": 0.3852}, "bh": {"H-049-001": 0.4447, "H-049-002": 0.4447}, "holm": {"H-049-001": 0.7704, "H-049-002": 0.7704}}
+    },
+    "interpretation": "both candidates show a large, real net result on the 2019-2023 development partition and decay to raw-positive but non-confirmatory results in 2024-2026; on the validation partition the bootstrap LCB is negative, the drawdown exceeds the frozen limit, and neither candidate beats buy-and-hold or the 200-day trend baseline; the ETH replication turns negative in validation. The DEV/VAL stage therefore closes both candidates per policy section 6."
+  },
+  "eligibility": {
+    "H-049-001": {"round_trips_per_month": 0.247, "expected_in_24_months": 5.9, "months_to_20": 81.0, "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION"},
+    "H-049-002": {"round_trips_per_month": 0.515, "expected_in_24_months": 12.4, "months_to_20": 38.8, "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION"},
+    "promotion": "stopped for both: the sealed OOS gate cannot be satisfied within the frozen 24-month window at the measured turnover, and both candidates are additionally rejected on the computable criteria"
+  },
+  "active_pipeline": {
+    "operations_per_day": 0,
+    "target_assessment": "NOT_ACHIEVABLE_FROM_CURRENT_ADMITTED_PIPELINE",
+    "blocker": "no admitted strategy; best measured family gross edge 8.91 bps/trade < 23.353553391 bps round trip"
+  },
+  "controls_not_executed": [
+    {"control": "sealed forward OOS opening", "reason": "closed by contract: opens only after 20 closed round trips or 24 months from the freeze timestamp; with both candidates rejected at DEV/VAL the opening is moot — resolved after this run by ADR-0026 as CANCELLED_NOT_OPENED (see campaign_closure_after_run)"},
+    {"control": "paper promotion gate", "reason": "separate gate, never authorized for this campaign"},
+    {"control": "live trading", "reason": "DISABLED; never in scope"},
+    {"control": "macro primary-source refetch", "reason": "performed by RFC-049B and unchanged; Phase B consumes the frozen hashed snapshots"}
+  ],
+  "defects": [
+    {
+      "id": "RFC049C-DEF-01",
+      "summary": "RFC-049B's committed INDEPENDENT_VERIFICATION.json recorded two stale FINAL_ADMISSION_REPORT hashes (recorded before the verifier's own stamp rewrote the files)",
+      "status": "corrected by the verifier re-run in this phase; the report files themselves were and are correct (their HEAD blob hashes match their recorded post-stamp content)",
+      "impact": "bookkeeping only; no economic or PIT consequence"
+    }
+  ],
+  "assumptions_recorded": [
+    "macro availability is modelled as the declared minimum lag (reference Wednesday + 1 day = Thursday 00:00 UTC); the real H.4.1/DTS releases are later in the day, and the decision cutoff (Sunday 23:00) is ~3.5 days later, so the model cannot create look-ahead at this cadence; RFC-049B's primary-source verification covers the actual release timing",
+    "the stationary-bootstrap block length is expressed in days and mapped to the trip grid (7 / measured spacing → 1 observation for these multi-week rules); the sensitivity at 2 and 3 trips is reported and does not flip any LCB sign"
+  ],
+  "false_success": 0,
+  "governance_after_run": {
+    "NEXT_CAMPAIGN": "AUTHORIZED (offline DEV/VAL scope)",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false,
+    "SEALED_OOS_OPENED": false
+  },
+  "campaign_closure_after_run": {
+    "artifact": "data/rfc049/discovery2/CAMPAIGN_CLOSURE.{md,json}",
+    "adr": "ADR-0026 (tasks/decisions.md)",
+    "terminal_state": "DISCOVERY_CAMPAIGN_FAILED (ST-2: no candidate satisfies PROFITABILITY_GATE_V1)",
+    "sealed_oos": "CANCELLED_NOT_OPENED — the window is never read and the single licensed inspection is retired unused; this forward pointer resolves the 'moot; left to an explicit governance decision' entry under controls_not_executed without altering the run it describes",
+    "next_campaign_after_closure": "NOT_AUTHORIZED",
+    "hypothesis_budget_after_closure": "EXHAUSTED_NO_REFILL",
+    "run_record_unchanged_by_closure": true
+  },
+  "success_labels": {
+    "IMPLEMENTED": "engine, verifier, ablation, active audit, tests",
+    "TESTED": "1703 unit tests passed including 15 new contract tests",
+    "EXECUTED": "DEV/VAL experiments, robustness battery, ablation, audit (all offline)",
+    "VERIFIED": "independent verifier PASS 37/37, 8/8 controls, FALSE_SUCCESS 0",
+    "CERTIFIED": "nothing — certification requires the sealed OOS and is not available"
+  }
+}

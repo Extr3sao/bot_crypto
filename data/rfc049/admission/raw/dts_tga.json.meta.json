@@ -1,0 +1,13 @@
+{
+  "key": "dts_tga.json",
+  "url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/dts/operating_cash_balance?filter=record_date:gte:2026-09-01&fields=record_date,account_type,open_today_bal,close_today_bal&page[size]=100&sort=record_date",
+  "retrieved_at_utc": "2026-10-10T12:58:33Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "application/json",
+  "bytes": 14383,
+  "sha256": "6175152c0f7dc0e3102bf64845c17cbf55dd348e33a4bce4e960540fc3e78d11",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

@@ -1,0 +1,158 @@
+{
+  "generated_at_ms": 1792931190498,
+  "checks": [
+    {
+      "id": "V1",
+      "check": "preregistration hash still equals the frozen value",
+      "passed": true,
+      "observed": {
+        "sha256": "ef68b4c3b5204353",
+        "frozen_ms": 1792928992489
+      }
+    },
+    {
+      "id": "V2",
+      "check": "every published artifact matches its recorded SHA-256",
+      "passed": true,
+      "observed": {
+        "checked": 10,
+        "mismatches": []
+      }
+    },
+    {
+      "id": "V3",
+      "check": "24 sealed datasets hash, count, order and uniqueness",
+      "passed": true,
+      "observed": {
+        "files": 24,
+        "problems": []
+      }
+    },
+    {
+      "id": "V4",
+      "check": "no confirmatory bar (>= cutoff) was read by this WP",
+      "passed": true,
+      "observed": {
+        "max_bar_ms": 1792857000000,
+        "cutoff_ms": 1792857600000,
+        "offenders": []
+      }
+    },
+    {
+      "id": "V5",
+      "check": "every ledger row is causal, SHORT, regime-down, non-overlapping and correctly priced",
+      "passed": true,
+      "observed": {
+        "rows": 115,
+        "problems": [],
+        "problem_count": 0
+      }
+    },
+    {
+      "id": "V6",
+      "check": "ledger statistics recomputed from the CSV match the published ones",
+      "passed": true,
+      "observed": {
+        "n": 115,
+        "mean": -12.577,
+        "sd": 56.5026,
+        "pf": 0.1892,
+        "max_dd": -4287.05,
+        "cumulative_net": -4182.27,
+        "declared": {
+          "trades": 115,
+          "gross_mean": -12.577,
+          "gross_sd": 56.5026
+        }
+      }
+    },
+    {
+      "id": "V7",
+      "check": "gross 95% upper bound stays below zero under analytic t and jackknife",
+      "passed": true,
+      "observed": {
+        "analytic_upper": -2.2499,
+        "jackknife_upper": -2.2499,
+        "net_analytic_upper": -26.0405
+      }
+    },
+    {
+      "id": "V8",
+      "check": "primary total = sum of components; futures maker reproduces 9.25; funding is not charged; primary venue is spot",
+      "passed": true,
+      "observed": {
+        "round_trip": 23.7906,
+        "component_sum": 23.7906,
+        "fees": 20.0,
+        "borrow_components": [],
+        "funding_charged_by_default": false,
+        "funding_source": "n/a (spot: no funding)",
+        "perp_maker_bps": 9.25,
+        "product": "Spot",
+        "scenario_totals": {
+          "BINANCE_SPOT_STANDARD_TAKER": 23.7906,
+          "BINANCE_SPOT_STANDARD_MAKER": 41.25,
+          "BINANCE_SPOT_BNB_TAKER": 18.7906,
+          "BINANCE_SPOT_BNB_MAKER": 31.25,
+          "BINANCE_USDM_PERP_TAKER": 13.7906,
+          "BINANCE_USDM_PERP_MAKER": 9.25,
+          "BYBIT_SPOT_TAKER": 23.7906,
+          "OKX_SPOT_TAKER": 23.7906,
+          "MEXC_SPOT_TAKER": 17.7906,
+          "KRAKENPRO_SPOT_TAKER": 83.7906
+        }
+      }
+    },
+    {
+      "id": "V9",
+      "check": "preregistered minimum sample reproduces from its own dispersion",
+      "passed": true,
+      "observed": {
+        "recomputed": 36,
+        "recorded": 36
+      }
+    },
+    {
+      "id": "V10",
+      "check": "availability gate declares AWAITING_NEW_DATA with no confirmatory access",
+      "passed": true,
+      "observed": {
+        "confirmatory_window_opened": false,
+        "confirmatory_bars_read": 0,
+        "dataset_id": null,
+        "result": "AWAITING_NEW_DATA",
+        "reason_code": "NO_CONFIRMATORY_SAMPLE",
+        "detail": "the admissible window starts at 2026-10-24T16:00Z; as of the run the expected yield is far below the preregistered minimum, and no confirmatory bar was fetched or read"
+      }
+    },
+    {
+      "id": "V11",
+      "check": "adversarial controls re-run green in a fresh process",
+      "passed": true,
+      "observed": {
+        "exit": 0,
+        "tail": "11/11 controls passed",
+        "elapsed_s": 29.6
+      }
+    },
+    {
+      "id": "V12",
+      "check": "re-running the evaluation reproduces the ledger byte for byte",
+      "passed": true,
+      "observed": {
+        "ledger_sha256": "28d76c0b78a93711",
+        "exit": 0
+      }
+    }
+  ],
+  "checks_total": 12,
+  "checks_passed": 12,
+  "all_passed": true,
+  "verifier_role": "independent implementation, same operator",
+  "independence": {
+    "implementation_independent": true,
+    "operator_independent": false,
+    "state": "INDEPENDENCE_NOT_DEMONSTRATED",
+    "note": "builder and verifier are the same agent; the statistics were recomputed with a different estimator (analytic t + jackknife instead of stationary bootstrap) and the ledger was re-derived from raw bars, but role separation is not demonstrated and this certificate must not be read as third-party review"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "hypothesis_id": "TDM11-H1",
+  "preregistration_path": "evidence/tdm/wp-tdm-11/PREREGISTRATION.md",
+  "preregistration_sha256": "ef68b4c3b520435391420b0e3ed11d7224790015bcb347c4973fc86b7c53f949",
+  "bytes": 9827,
+  "frozen_at_utc": "2026-10-25T11:49:52.489671+00:00",
+  "frozen_at_ms": 1792928992489,
+  "commit": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "confirmatory_window_opened": false,
+  "confirmatory_start_ms": 1792857600000,
+  "statement": "Frozen before any bar with open_time >= 2026-10-24T16:00:00Z was read."
+}

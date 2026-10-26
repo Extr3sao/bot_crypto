@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "regime_def": "vol100 vs trailing-720 median (PIT)",
+    "cells": 12,
+    "gate": "ZERO gross>12bps DEV n>=30 & ZERO VAL gross>0"
+  },
+  "trend_15m": {
+    "skipped_rows": 200,
+    "HIGH": {
+      "DEV": {
+        "n": 3049,
+        "gross_bps": -4.08
+      },
+      "VAL": {
+        "n": 977,
+        "gross": 481.91
+      },
+      "OOS": {
+        "n": 548,
+        "gross_bps": 3.22
+      },
+      "gate_pass": false
+    },
+    "LOW": {
+      "DEV": {
+        "n": 1211,
+        "gross_bps": -6.7
+      },
+      "VAL": {
+        "n": 296,
+        "gross": -164.51
+      },
+      "OOS": {
+        "n": 136,
+        "gross_bps": -9.06
+      },
+      "gate_pass": false
+    }
+  },
+  "trend_30m": {
+    "skipped_rows": 358,
+    "HIGH": {
+      "DEV": {
+        "n": 2402,
+        "gross_bps": -9.6
+      },
+      "VAL": {
+        "n": 955,
+        "gross": 590.76
+      },
+      "OOS": {
+        "n": 522,
+        "gross_bps": 1.5
+      },
+      "gate_pass": false
+    },
+    "LOW": {
+      "DEV": {
+        "n": 1598,
+        "gross_bps": 0.54
+      },
+      "VAL": {
+        "n": 266,
+        "gross": -80.14
+      },
+      "OOS": {
+        "n": 119,
+        "gross_bps": -25.39
+      },
+      "gate_pass": false
+    }
+  },
+  "mean_reversion_15m": {
+    "skipped_rows": 49,
+    "HIGH": {
+      "DEV": {
+        "n": 2033,
+        "gross_bps": 6.14
+      },
+      "VAL": {
+        "n": 796,
+        "gross": -94.37
+      },
+      "OOS": {
+        "n": 452,
+        "gross_bps": 3.87
+      },
+      "gate_pass": false
+    },
+    "LOW": {
+      "DEV": {
+        "n": 1774,
+        "gross_bps": -9.05
+      },
+      "VAL": {
+        "n": 885,
+        "gross": 26.71
+      },
+      "OOS": {
+        "n": 294,
+        "gross_bps": 0.45
+      },
+      "gate_pass": false
+    }
+  },
+  "mean_reversion_30m": {
+    "skipped_rows": 70,
+    "HIGH": {
+      "DEV": {
+        "n": 1118,
+        "gross_bps": 7.89
+      },
+      "VAL": {
+        "n": 614,
+        "gross": 227.56
+      },
+      "OOS": {
+        "n": 326,
+        "gross_bps": -1.09
+      },
+      "gate_pass": false
+    },
+    "LOW": {
+      "DEV": {
+        "n": 1064,
+        "gross_bps": 4.07
+      },
+      "VAL": {
+        "n": 413,
+        "gross": -120.51
+      },
+      "OOS": {
+        "n": 134,
+        "gross_bps": -19.88
+      },
+      "gate_pass": false
+    }
+  },
+  "volatility_15m": {
+    "skipped_rows": 7,
+    "HIGH": {
+      "DEV": {
+        "n": 234,
+        "gross_bps": -20.27
+      },
+      "VAL": {
+        "n": 144,
+        "gross": 5.7
+      },
+      "OOS": {
+        "n": 84,
+        "gross_bps": -25.17
+      },
+      "gate_pass": false
+    },
+    "LOW": {
+      "DEV": {
+        "n": 383,
+        "gross_bps": -13.06
+      },
+      "VAL": {
+        "n": 176,
+        "gross": -108.38
+      },
+      "OOS": {
+        "n": 80,
+        "gross_bps": 17.99
+      },
+      "gate_pass": false
+    }
+  },
+  "volatility_30m": {
+    "skipped_rows": 4,
+    "HIGH": {
+      "DEV": {
+        "n": 205,
+        "gross_bps": 7.44
+      },
+      "VAL": {
+        "n": 108,
+        "gross": -58.84
+      },
+      "OOS": {
+        "n": 88,
+        "gross_bps": -5.79
+      },
+      "gate_pass": false
+    },
+    "LOW": {
+      "DEV": {
+        "n": 224,
+        "gross_bps": 25.49
+      },
+      "VAL": {
+        "n": 100,
+        "gross": -107.82
+      },
+      "OOS": {
+        "n": 48,
+        "gross_bps": 17.27
+      },
+      "gate_pass": false
+    }
+  },
+  "passing_cells": []
+}

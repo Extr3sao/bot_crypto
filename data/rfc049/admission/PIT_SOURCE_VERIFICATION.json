@@ -1,0 +1,254 @@
+{
+  "artifact": "RFC049B_PIT_SOURCE_VERIFICATION",
+  "generated_at_utc": "2026-10-10T13:15:30Z",
+  "classification_vocabulary": {
+    "PIT_VERIFIED": "primary-source evidence fixes both the value identity and an availability time on or before the decision instant, with no measured restatement affecting a decision",
+    "PIT_CONSERVATIVE_PROXY": "availability is a declared convention or the series shows measured backfill, so the value used is conservative rather than provable",
+    "PIT_UNKNOWN": "no availability information exists",
+    "PIT_FAILED": "a decision demonstrably consumed a value published after its instant"
+  },
+  "inputs": {
+    "defillama_stablecoin": {
+      "values_are_primary": true,
+      "vendor_publication_timestamp": false,
+      "declared_convention": "value dated day t treated as available 00:00 UTC of day t+1",
+      "measured_revision_exposure": {
+        "settled_days_revised": 0,
+        "days_compared": 3238
+      },
+      "classification": "PIT_CONSERVATIVE_PROXY",
+      "why": "the payload carries no publication timestamp, so decision-time availability is a declared convention rather than a vendor fact; the convention is one full day of conservatism and no settled history moved in the observed re-fetch window"
+    },
+    "WALCL": {
+      "publication_evidence": "H.4.1 release page dated with an explicit Release Date for the week ending the reference Wednesday",
+      "reference_to_release_lag_days_min": 1,
+      "measured_revision_exposure": {
+        "2019-03-07": {
+          "column": "WALCL_20190307",
+          "vintage_rows": 847,
+          "vintage_first": "2002-12-18",
+          "vintage_last": "2019-03-06",
+          "common_dates": 847,
+          "changed_values": 0,
+          "changed_by_exact_1000_factor": 0,
+          "changed_examples": [],
+          "blank_to_value": 0,
+          "value_to_other_value": 0
+        },
+        "2023-03-15": {
+          "column": "WALCL_20230315",
+          "vintage_rows": 1056,
+          "vintage_first": "2002-12-18",
+          "vintage_last": "2023-03-08",
+          "common_dates": 1056,
+          "changed_values": 0,
+          "changed_by_exact_1000_factor": 0,
+          "changed_examples": [],
+          "blank_to_value": 0,
+          "value_to_other_value": 0
+        }
+      },
+      "classification": "PIT_VERIFIED",
+      "why": "primary-source release date verified and the 2019-03-07 ALFRED vintage reproduces today's values exactly, so no restatement affects a decision"
+    },
+    "WTREGEN": {
+      "publication_evidence": "H.4.1 release page: the week-average Treasury General Account figure published with the same statement as WALCL",
+      "reference_to_release_lag_days_min": 1,
+      "series_definition_change": {
+        "2019-03-07": {
+          "column": "WTREGEN_20190307",
+          "vintage_rows": 1731,
+          "vintage_first": "1986-01-08",
+          "vintage_last": "2019-03-06",
+          "common_dates": 847,
+          "changed_values": 847,
+          "changed_by_exact_1000_factor": 400,
+          "changed_examples": [
+            {
+              "date": "2002-12-18",
+              "then": 5.959,
+              "now": 5959.0
+            },
+            {
+              "date": "2002-12-25",
+              "then": 4.678,
+              "now": 4678.0
+            },
+            {
+              "date": "2003-01-01",
+              "then": 5.016,
+              "now": 5016.0
+            },
+            {
+              "date": "2003-01-08",
+              "then": 4.829,
+              "now": 4829.0
+            },
+            {
+              "date": "2003-01-15",
+              "then": 5.244,
+              "now": 5244.0
+            },
+            {
+              "date": "2003-01-22",
+              "then": 6.133,
+              "now": 6133.0
+            }
+          ],
+          "blank_to_value": 0,
+          "value_to_other_value": 847
+        },
+        "2023-03-15": {
+          "column": "WTREGEN_20230315",
+          "vintage_rows": 1940,
+          "vintage_first": "1986-01-08",
+          "vintage_last": "2023-03-08",
+          "common_dates": 1056,
+          "changed_values": 1056,
+          "changed_by_exact_1000_factor": 400,
+          "changed_examples": [
+            {
+              "date": "2002-12-18",
+              "then": 5.959,
+              "now": 5959.0
+            },
+            {
+              "date": "2002-12-25",
+              "then": 4.678,
+              "now": 4678.0
+            },
+            {
+              "date": "2003-01-01",
+              "then": 5.016,
+              "now": 5016.0
+            },
+            {
+              "date": "2003-01-08",
+              "then": 4.829,
+              "now": 4829.0
+            },
+            {
+              "date": "2003-01-15",
+              "then": 5.244,
+              "now": 5244.0
+            },
+            {
+              "date": "2003-01-22",
+              "then": 6.133,
+              "now": 6133.0
+            }
+          ],
+          "blank_to_value": 0,
+          "value_to_other_value": 1056
+        }
+      },
+      "classification": "PIT_VERIFIED",
+      "why": "availability is primary-source verified and conservative; the frozen contract already declares millions and a 2002 start, which is the current series definition"
+    },
+    "RRPONTSYD": {
+      "publication_evidence": "NY Fed operation API exposes the operation result with a same-business-day releaseTime and lastUpdated timestamp; values match the frozen series exactly",
+      "reference_to_release_lag_days_min": 0,
+      "measured_revision_exposure": {
+        "2019-03-07": {
+          "column": "RRPONTSYD_20190307",
+          "vintage_rows": 319,
+          "vintage_first": "2017-12-18",
+          "vintage_last": "2019-03-07",
+          "common_dates": 319,
+          "changed_values": 0,
+          "changed_by_exact_1000_factor": 0,
+          "changed_examples": [],
+          "blank_to_value": 0,
+          "value_to_other_value": 0
+        },
+        "2023-03-15": {
+          "column": "RRPONTSYD_20230315",
+          "vintage_rows": 5244,
+          "vintage_first": "2003-02-07",
+          "vintage_last": "2023-03-15",
+          "common_dates": 5244,
+          "changed_values": 4,
+          "changed_by_exact_1000_factor": 0,
+          "changed_examples": [
+            {
+              "date": "2020-04-09",
+              "then": null,
+              "now": 5.525
+            },
+            {
+              "date": "2020-07-02",
+              "then": null,
+              "now": 0.0
+            },
+            {
+              "date": "2020-11-18",
+              "then": 0.0,
+              "now": 0.103
+            },
+            {
+              "date": "2021-04-01",
+              "then": null,
+              "now": 9.575
+            }
+          ],
+          "blank_to_value": 3,
+          "value_to_other_value": 1
+        }
+      },
+      "wednesday_grid_points_affected": [
+        "2020-11-18"
+      ],
+      "classification": "PIT_CONSERVATIVE_PROXY",
+      "why": "same-day publication is verified, but the series is demonstrably backfilled on rare dates, so a re-run over the current vintage can differ from what a live reader saw; the exposure is measured, bounded and immaterial in magnitude"
+    }
+  },
+  "decision_time_rules": {
+    "decision_instant": "weekly Sunday 23:00:00 UTC",
+    "margin_before_decision": "1 hour",
+    "stablecoin_cutoff": "most recent daily value dated at or before Sunday-2 (one day of availability lag)",
+    "macro_cutoff": "most recent complete Wednesday snapshot, whose H.4.1 inputs publish the following Thursday",
+    "execution": "first daily bar open strictly after the decision instant (Monday 00:00 UTC)"
+  },
+  "data_time_le_decision_time_violations": {
+    "H-049-001": [],
+    "H-049-002": []
+  },
+  "not_yet_decidable_decisions": {
+    "H-049-001": [
+      {
+        "decision": "2018-12-30",
+        "t_star": "2018-12-28"
+      }
+    ],
+    "H-049-002": [],
+    "rule": "a decision with no usable value is FLAT; that is fail-closed behaviour, not look-ahead"
+  },
+  "incremental_reconstruction": {
+    "sampled_decisions": 40,
+    "mismatches": [],
+    "method": "the decision is recomputed from a feed truncated at the decision instant and compared with the full-history value; equality means the signal is a function of past data only"
+  },
+  "def_htf_pit_001_assessment": {
+    "defect": "DEF-HTF-PIT-001",
+    "applies_here": false,
+    "reason": "both frozen rules consume completed daily values and closed weekly references; no higher-timeframe bar is read while still forming, and execution is deferred to the next bar open"
+  },
+  "higher_timeframe_check": {
+    "timeframes_used": [
+      "1d closed bars",
+      "weekly Wednesday reference dates"
+    ],
+    "incomplete_bar_consumed": false,
+    "look_ahead_found": false
+  },
+  "composite_classification": {
+    "H-049-001": "PIT_CONSERVATIVE_PROXY",
+    "H-049-002": "PIT_VERIFIED",
+    "note": "the weaker of a hypothesis's inputs decides its composite class"
+  },
+  "residual_risks": [
+    "the stablecoin series has no vendor publication timestamp: the t+1 convention is the mitigation, and the sealed-period collector must read the settled value and retain the retrieval record",
+    "the RRP series is backfilled on rare dates; the affected Wednesday grid points are listed explicitly",
+    "neither the vendor nor FRED is contractually obliged to keep history immutable; the retained hashes make any later change detectable rather than invisible"
+  ]
+}
