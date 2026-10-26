@@ -1,6 +1,6 @@
 {
   "report": "LOCAL_GITHUB_SYNC_AUDIT",
-  "generated_at": "2026-10-26T09:05:24+00:00",
+  "generated_at": "2026-10-26T09:20:14+00:00",
   "repository": "Extr3sao/bot_crypto",
   "local_checkout": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
   "origin": [
@@ -26,7 +26,7 @@
   },
   "final_inventory": {
     "local_branches": 36,
-    "commits_not_reachable_from_any_origin_ref": 1,
+    "commits_not_reachable_from_any_origin_ref": 0,
     "stashes": 0,
     "backup_sha256_manifest": "sync-backup-20261025/SHA256SUMS.txt"
   },
@@ -194,18 +194,18 @@
     },
     {
       "branch": "feat/wp-signal-001-003",
-      "local_head": "9cc34c0275e70b8355398397ff1baabf23473ef1",
-      "remote_head": "98371acfdcd31b74da1b0a13afbace137995fba5",
-      "ahead_of_origin_main": 282,
-      "ahead": 1,
+      "local_head": "3be8e5bd36cab4f6fc532a0b891147b1f21efe08",
+      "remote_head": "3be8e5bd36cab4f6fc532a0b891147b1f21efe08",
+      "ahead_of_origin_main": 286,
+      "ahead": 0,
       "behind": 0,
       "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
-      "dirty": 1197,
-      "untracked": 1195,
+      "dirty": 1194,
+      "untracked": 1194,
       "runtime_reachable": "NOT_VERIFIED",
       "tests": "NOT_RUN",
       "evidence": "-",
-      "sync_status": "UNPUBLISHED",
+      "sync_status": "ALREADY_PUBLISHED",
       "target_pr": "-",
       "note": ""
     },
@@ -619,9 +619,9 @@
     },
     {
       "branch": "sync/uncommitted-main-20261025",
-      "local_head": "5b63f265b761b1ce288cfdcb728d7baf4ab55294",
-      "remote_head": "5b63f265b761b1ce288cfdcb728d7baf4ab55294",
-      "ahead_of_origin_main": 271,
+      "local_head": "7a58be1cb069a466dee7bac0afb798467f4c9759",
+      "remote_head": "7a58be1cb069a466dee7bac0afb798467f4c9759",
+      "ahead_of_origin_main": 273,
       "ahead": 0,
       "behind": 0,
       "worktree": null,
