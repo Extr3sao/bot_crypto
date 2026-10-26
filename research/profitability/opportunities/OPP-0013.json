@@ -1,0 +1,78 @@
+{
+  "opportunity_id": "OPP-0013",
+  "title": "Bitcoin MAX/Min breakout — Quantpedia's 2024 revisit (buy at the 10-day maximum)",
+  "source_ids": [
+    "S2-10",
+    "S2-11"
+  ],
+  "economic_hypothesis": "the article states both legs were effective in sample; out of sample the MAX leg 'remains alive and well' while buying at the MIN 'has not performed well'",
+  "market": "BTC daily spot, long only",
+  "assets": "BTC",
+  "timeframe": "daily",
+  "entry_rules": "buy when the price prints the maximum of the previous x days (MAX); the MIN leg buys at the x-day minimum",
+  "exit_rules": "no stop is stated; no target is stated; the article measures forward returns; no holding period or exit date is stated; no exit signal is stated",
+  "risk_rules": "not stated; daily bars (0:00 prices), no session constraint",
+  "parameters": "x ∈ {10, 20, 30, 40, 50}; 10 is nominated as the most effective, i.e. the parameter comes from a five-point sweep",
+  "claimed_period": "in-sample 2015-11-11..2024-08-20; the article's own out-of-sample 2022-02-04..2024-08-20",
+  "claimed_metrics": "the tables and graphs were not captured numerically at this read level",
+  "transaction_cost_model": "no fee or slippage is mentioned",
+  "required_data": "Gemini daily BTC prices at 0:00, published on the article's data page",
+  "external_code": "no code is published",
+  "external_results": "a research house's own study with an explicit out-of-sample section, no code and no numeric capture",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the out-of-sample test was run by the same author as the in-sample study",
+    "the MIN leg did not survive out of sample, which is the direction the article had previously recommended as a combination",
+    "no position rule means the published result cannot be turned into trades without our own choices",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (no fee or slippage is mentioned)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "sizing_rule",
+    "execution_assumption",
+    "transaction_costs",
+    "original_metrics",
+    "implementation_source"
+  ],
+  "replication_difficulty": "PLAUSIBLE_BUT_UNVERIFIED: a daily breakout that exits on a signal could turn over slowly enough to clear the 23.791 bps round trip, but the source states neither an exit nor a trade count",
+  "evidence_quality": "E1 — a research house's own study with an explicit out-of-sample section, no code and no numeric capture",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "MEDIUM",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "MEDIUM",
+  "status": "ROUND_2_RESEARCH_HYPOTHESIS",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 6,
+    "CODE_AVAILABILITY": 1,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 1,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 3,
+    "INDEPENDENT_VALIDATION": 1,
+    "IMPLEMENTATION_FIDELITY": 2
+  },
+  "evidence_score_total": 20,
+  "rank": "RESEARCH_HYPOTHESIS_P1",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "12/21",
+  "gaps_to_p0": [
+    "exit, sizing and execution assumptions are absent, so the object is not yet a strategy",
+    "the lookback is the best of five tested values",
+    "no cost model",
+    "no code, so the signal computation would be re-implemented by us"
+  ],
+  "rejection_reason_codes": [
+    "RULES_INCOMPLETE_MATERIAL_FIELDS",
+    "NO_CODE",
+    "OVERFIT_RISK_PARAMETER_SEARCH",
+    "COST_FLOOR_HEADROOM_NOT_ESTABLISHED"
+  ]
+}

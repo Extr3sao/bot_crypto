@@ -1,0 +1,36 @@
+{
+  "phase": "STRATEGY-DISCOVERY-V3",
+  "date": "2026-09-26",
+  "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md (pre-registered c1ffbaa, unchanged)",
+  "chain": "HYPOTHESIS -> GROSS EDGE -> COST SURVIVAL -> VALIDATION -> OOS -> ROBUSTNESS -> ADMISSION -> PAPER",
+  "candidates": [
+    {"id": "D-01_timeframe_horizon", "status": "REJECT", "filter_failed": "FILTER_2_COST_SURVIVAL",
+     "assets": ["BTC", "ETH", "SOL"], "timeframes": ["15m", "30m", "1h"],
+     "best_gross_bps": 8.91, "barrier_bps": 12.0,
+     "evidence": "TIMEFRAME_AUDIT.json; gross>0 cells: trend 15m/30m, mean_reversion 15m/30m, volatility 30m/1h"},
+    {"id": "D-02_vol_z_rev", "status": "REJECT", "filter_failed": "FILTER_1_GROSS",
+     "assets": ["BTC", "ETH", "SOL"], "timeframes": ["15m"], "trades": 31,
+     "gross_usd": -13.16, "zero_cost_gross_usd": -11.51},
+    {"id": "D-03_squeeze_breakout", "status": "INTESTABLE", "filter_failed": null,
+     "assets": ["BTC", "ETH", "SOL"], "timeframes": ["30m"], "signals": 0,
+     "note": "pre-registered spec produced zero signals; re-specification postponed to a future pre-registered phase"},
+    {"id": "D-04_rel_momo", "status": "REJECT", "filter_failed": "FILTER_1_GROSS",
+     "assets": ["BTC", "ETH", "SOL"], "timeframes": ["1h"], "trades": 186,
+     "gross_usd": -28.74, "zero_cost_gross_usd": -12.12},
+    {"id": "D-05_regime_pit", "status": "REJECT", "filter_failed": "FILTER_3_VALIDATION",
+     "assets": ["BTC", "ETH", "SOL"], "timeframes": ["15m", "30m"], "cells": 12, "cells_passing": 0,
+     "failure_mode": "REGIME_FRAGILE: DEV and VAL signs disagree in 11/12 cells; best DEV cell flips sign in VAL"}
+  ],
+  "reference_reclassifications": [
+    {"id": "mean_reversion_5m", "status": "REJECT", "filter_failed": "FILTER_2_COST_SURVIVAL",
+     "classification": "COST_KILLED", "zero_cost_gross_bps_per_trade": 1.49,
+     "zero_cost_gross_usd": 236.92, "zero_cost_pf": 1.0568, "trades": 3190,
+     "note": "only real gross edge found in the whole universe; 8x under the 12bps BASE barrier; still fails net>0 BASE (-619.04). Not a PAPER_CANDIDATE. Viable only as hypothesis if execution costs drop to ~3bps RT (maker/rebate)."}
+  ],
+  "exit_research": {"id": "D-06_exit_research", "status": "GATE_NOT_ACTIVATED",
+                    "reason": "MFE ~ MAE in all evaluated cells (no directional excursion to harvest)"},
+  "paper_candidates": [],
+  "zero_cost_usage": "diagnostic only (separation of signal edge vs cost drag); never admission",
+  "multiple_comparisons": {"registered_experiments": 24, "marginal_promotions": 0},
+  "final_status": "STRATEGY_DISCOVERY_V3_NO_EDGE_FOUND"
+}

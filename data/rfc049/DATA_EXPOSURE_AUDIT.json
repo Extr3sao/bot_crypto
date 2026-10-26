@@ -1,0 +1,128 @@
+{
+  "artifact": "RFC049_DATA_EXPOSURE_AUDIT",
+  "generated_at_utc": "2026-10-10T11:26:20Z",
+  "policy": {
+    "classes": [
+      "RESEARCH_EXPOSED",
+      "VALIDATION_CONTROLLED",
+      "SEALED_OOS"
+    ],
+    "rule": "a period viewed by any prior campaign is RESEARCH_EXPOSED for hypothesis selection, however convenient its boundaries look; it cannot be relabelled 'unseen OOS' from a split alone",
+    "sealed_definition": "history collected before the spec freeze cannot be sealed: the frozen use it or not, it was seen. The only genuinely sealed sample available to this campaign is forward data accrued after the freeze timestamp",
+    "freeze_timestamp_utc": "2026-10-10T11:26:20Z"
+  },
+  "campaign_windows_observed": [
+    {
+      "campaign": "RFC-046",
+      "windows": {
+        "development": "2024-10-01..2025-07-01",
+        "validation": "2025-07-01..2026-01-01",
+        "final_oos": "2026-01-01..2026-10-01 (opened once, consumed)"
+      },
+      "class": "RESEARCH_EXPOSED",
+      "evidence": "data/rfc046/RUN_REPORT.json"
+    },
+    {
+      "campaign": "RFC-035E (ETF flows)",
+      "windows": {
+        "source_period": "2024-01-11..2024-10-11",
+        "updated_oos": "2024-10-12..2026-10-07"
+      },
+      "class": "RESEARCH_EXPOSED",
+      "evidence": "research/profitability/opportunities/OPP-0001.md"
+    },
+    {
+      "campaign": "ALPHA-001",
+      "windows": {
+        "panel": "daily 2013..2026",
+        "holdout": "never read (holdout_read=false)"
+      },
+      "class": "RESEARCH_EXPOSED (panel); the reserved slice is uncounted because its boundaries are recorded in untracked reports",
+      "evidence": "docs/research/alpha002/ALPHA001_CLOSURE.json"
+    },
+    {
+      "campaign": "ALPHA-002",
+      "windows": {
+        "capture": "derivatives series from 2026-10-07 (30-day vendor retention)",
+        "holdout": "never read; capture blocked until 30 days accrue"
+      },
+      "class": "RESEARCH_EXPOSED",
+      "evidence": "docs/research/alpha003/ALPHA002_CLOSURE.json"
+    },
+    {
+      "campaign": "ALPHA-003",
+      "windows": {
+        "intraday span": "2026-08-31..2026-10-10",
+        "holdout": "locked during development (final fifth reserved)"
+      },
+      "class": "RESEARCH_EXPOSED",
+      "evidence": "docs/research/alpha003/ALPHA003_CLOSURE.json"
+    }
+  ],
+  "datasets": [
+    {
+      "path": "data/raw/alpha001",
+      "content": "daily spot OHLC (21 majors) + BTC 4h",
+      "class": "RESEARCH_EXPOSED",
+      "used_by": "ALPHA-001, ALPHA-003, RFC-046 (price leg of all admitted hypotheses)"
+    },
+    {
+      "path": "data/raw/alpha002",
+      "content": "5m/15m/1h price for the 4-symbol universe; full funding history; 30-day OI and long-short series",
+      "class": "RESEARCH_EXPOSED",
+      "used_by": "ALPHA-002/003 context; funding series relevant to closed carry and funding lines"
+    },
+    {
+      "path": "data/raw/alpha003",
+      "content": "intraday price capture for the 4-symbol universe",
+      "class": "RESEARCH_EXPOSED",
+      "used_by": "ALPHA-003"
+    },
+    {
+      "path": "data/rfc035e",
+      "content": "Farside BTC ETF daily flows + BTC 1d klines",
+      "class": "RESEARCH_EXPOSED",
+      "used_by": "RFC-035E (closed line)"
+    },
+    {
+      "path": "data/rfc048/raw",
+      "content": "futures contract spec, funding history, 5m klines, depth snapshot",
+      "class": "RESEARCH_EXPOSED",
+      "used_by": "RFC-048/048V"
+    },
+    {
+      "path": "data/rfc049/vendor",
+      "content": "stablecoin supply, hashrate/miner revenue, FRED macro series",
+      "class": "RESEARCH_EXPOSED_AT_PHASE_A",
+      "used_by": "retrieved and coverage-audited during Phase A for feasibility; therefore not sealable; the decisive test for H-049-001/002 is sealed forward data"
+    }
+  ],
+  "vendor_series_classes": {
+    "defillama_stablecoin_supply_all.json": "value dated day t treated as available 00:00 UTC of day t+1",
+    "blockchain_info_hashrate_8y.json": "value dated day t treated as available 00:00 UTC of day t+1",
+    "blockchain_info_miners_revenue_all.json": "non-traded comparator only",
+    "fred_WALCL.csv": "H.4.1 Thursday release >= 1 day after the Wednesday reference date",
+    "fred_RRPONTSYD.csv": "next business day",
+    "fred_WTREGEN.csv": "Daily Treasury Statement next business day",
+    "fred_DFII10.csv": "non-traded comparator only",
+    "fred_DTWEXBGS.csv": "non-traded comparator only",
+    "fred_DFF.csv": "non-traded comparator only"
+  },
+  "declared_partition_policy": {
+    "development": "per spec (historical, exposed, declared)",
+    "validation": "per spec (historical, exposed, declared, degraded status)",
+    "sealed_oos": "forward-only observations after the freeze timestamp; single opening; recorded with verifier identity and hashes per RFC-049 §10"
+  },
+  "conclusion": "no historical window in this repository qualifies as unseen for daily crypto data; the campaign's confirmatory evidence must come from sealed forward accrual, and any claim built on historical windows is labelled research-exposed",
+  "activation_gate": {
+    "artifact": "RFC049_ACTIVATION_GATE",
+    "checked_at_utc": "2026-10-10T11:26:20Z",
+    "next_campaign": "NOT_AUTHORIZED",
+    "discovery_campaign_failed": true,
+    "live_trading": "DISABLED",
+    "trades_authorized": 0,
+    "profitability_verified": false,
+    "authorized": false,
+    "consequence": "WP-049-06..10 (implementation, economic experiments, robustness, independent reproduction, final decision) are NOT executed; the campaign state ends at RFC049_PREPARED_AWAITING_CAMPAIGN_AUTHORIZATION"
+  }
+}

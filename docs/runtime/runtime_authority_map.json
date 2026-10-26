@@ -1,0 +1,43 @@
+{
+  "head": "df959741a03365dffd33c9814bb3431c151aec02",
+  "branch": "main",
+  "authority_order": ["REAL_RUNTIME", "EXECUTION_EVIDENCE", "TESTS", "SOURCE_CODE", "ARCH/RFC", "EXTERNAL_SOURCE", "ASSUMPTION"],
+  "entrypoints": {
+    "PRIMARY_RUNTIME_ENTRYPOINT": "scripts/autonomous_paper.py",
+    "PRIMARY_PAPER_ENTRYPOINT": "scripts/autonomous_paper.py",
+    "PRIMARY_BACKTEST_ENTRYPOINT": "scripts/multi_family_backtest.py",
+    "PRIMARY_RESEARCH_ENTRYPOINT": "scripts/paper_lab_research.py",
+    "PRIMARY_DASHBOARD_ENTRYPOINT": "scripts/strategy_ecosystem_dashboard.py",
+    "CLI": "trading-bot -> trading_bot.app:main"
+  },
+  "components": [
+    {"component_id": "AutonomousPaperRuntime", "path": "src/trading_bot/autonomous/runtime.py", "symbol": "AutonomousPaperRuntime", "classification": "RUNTIME_AUTHORITATIVE", "called_by": ["scripts/autonomous_paper.py"], "calls": ["StrategyRouter.route", "IndependentVerifier.verify", "DecisionEngine.decide", "RiskManager.check_signal", "PaperBroker.execute_signal", "DecisionTraceStore.append"], "runtime_reachable": true, "execution_evidence": "RFC000-AUDIT-01: 6 decisions, 6 traces, exit 0", "tests": ["tests/unit/autonomous/test_runtime_integration.py"], "confidence": "high"},
+    {"component_id": "UniverseScanner", "path": "src/trading_bot/scanner/scanner.py", "symbol": "UniverseScanner", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "scanner.pair.processed x3 per cycle", "confidence": "high"},
+    {"component_id": "FetcherBarReader", "path": "src/trading_bot/paper/snapshot_history.py", "symbol": "FetcherBarReader", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "candle_filter.filtered 95/100 completed", "confidence": "high"},
+    {"component_id": "CryptoAssetAgentRegistry", "path": "src/trading_bot/research/asset_intelligence", "symbol": "CryptoAssetAgentRegistry", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "regime=RANGE in traces", "confidence": "high"},
+    {"component_id": "StrategyRouter.route", "path": "src/trading_bot/research/strategy_router.py", "symbol": "StrategyRouter.route", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "runtime.py:773", "confidence": "high"},
+    {"component_id": "StrategyRouter.select_eligible_strategies", "path": "src/trading_bot/research/strategy_router.py", "symbol": "StrategyRouter.select_eligible_strategies", "classification": "RUNTIME_REACHABLE", "configuration_required": "--strategy-routing-mode LIFECYCLE (default LEGACY)", "runtime_reachable": true, "confidence": "high"},
+    {"component_id": "StrategyRegistry", "path": "src/trading_bot/autonomous/strategy_state.py", "symbol": "StrategyRegistry", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "startup registry counts", "confidence": "high"},
+    {"component_id": "AdmissionLedger", "path": "src/trading_bot/autonomous/admission_ledger.py", "symbol": "AdmissionLedger", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "confidence": "high"},
+    {"component_id": "SpecialistAgents", "path": "src/trading_bot/autonomous/agents.py", "symbol": "DataIntegrityAgent|CostEconomicsAgent|EvidenceProvenanceAgent|RegimeAlignmentAgent|RiskAdversaryAgent", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "5 ids printed at startup; runtime.py:952", "confidence": "high"},
+    {"component_id": "IndependentVerifier", "path": "src/trading_bot/autonomous/verifier.py", "symbol": "IndependentVerifier", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "runtime.py:1005", "confidence": "high"},
+    {"component_id": "DecisionEngine", "path": "src/trading_bot/autonomous/decision.py", "symbol": "DecisionEngine", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "confidence": "high"},
+    {"component_id": "RiskManager", "path": "src/trading_bot/risk/manager.py", "symbol": "RiskManager", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "check_signal x2 before broker", "confidence": "high"},
+    {"component_id": "PaperBroker", "path": "src/trading_bot/paper/broker.py", "symbol": "PaperBroker.execute_signal", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "runtime.py:1422 only call site", "confidence": "high"},
+    {"component_id": "IdempotencyGuard", "path": "src/trading_bot/execution/idempotency.py", "symbol": "IdempotencyGuard", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "confidence": "high"},
+    {"component_id": "PaperStateStore", "path": "src/trading_bot/paper/paper_state_store.py", "symbol": "PaperStateStore", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "paper_state.saved", "confidence": "high"},
+    {"component_id": "StartupReconcilerV4", "path": "src/trading_bot/paper/reconciliation_v4.py", "symbol": "StartupReconcilerV4", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "reconciliation=RECOVERED", "confidence": "high"},
+    {"component_id": "DecisionTraceStore", "path": "src/trading_bot/autonomous/trace.py", "symbol": "DecisionTraceStore", "classification": "RUNTIME_AUTHORITATIVE", "runtime_reachable": true, "execution_evidence": "traces.jsonl 6 rows", "confidence": "high"},
+    {"component_id": "StrategyRoutingMode", "path": "src/trading_bot/strategy_lifecycle/runtime_bridge.py", "symbol": "StrategyRoutingMode", "classification": "RUNTIME_REACHABLE", "configuration_required": "--strategy-routing-mode", "runtime_reachable": true, "confidence": "high"},
+    {"component_id": "strategy_lifecycle", "path": "src/trading_bot/strategy_lifecycle", "symbol": "StrategyPod,LifecycleController,HealthMonitor,Champion", "classification": "RESEARCH_ONLY", "runtime_reachable": false, "notes": "StrategyPod constructed only in tests; lifecycle FSM not hot-path", "confidence": "high"},
+    {"component_id": "StrategyEcosystemObservatory", "path": "src/trading_bot/observability/ecosystem.py", "symbol": "StrategyEcosystemObservatory", "classification": "OBSERVABILITY", "runtime_reachable": true, "execution_evidence": "dashboard HTTP 200", "confidence": "high"},
+    {"component_id": "PaperCycleEngine", "path": "src/trading_bot/paper/paper_cycle.py", "symbol": "PaperCycleEngine", "classification": "LEGACY", "runtime_reachable": false, "notes": "used by scripts/verify_l5_independent.py only", "confidence": "high"},
+    {"component_id": "research_pair_rfc030", "path": "src/trading_bot/research/pair", "symbol": "pair/*", "classification": "RESEARCH_ONLY", "runtime_reachable": false, "notes": "EXP-ARP-023 = BLOCKED_SHORT_DATA", "confidence": "high"},
+    {"component_id": "research_experimental", "path": "src/trading_bot/research/experimental", "symbol": "experimental/*", "classification": "EXPERIMENTAL", "runtime_reachable": false, "notes": "untracked; only scripts/source_candidate_experiment.py + tests", "confidence": "high"},
+    {"component_id": "htf_pit", "path": "src/trading_bot/market_data/htf_pit.py", "symbol": "htf_pit", "classification": "ORPHAN", "runtime_reachable": false, "notes": "DEF-HTF-PIT-001 s/ms; zero src/ importers", "confidence": "high"},
+    {"component_id": "paper_orphans", "path": "src/trading_bot/paper", "symbol": "reconciliation,startup_recovery,parity_gate,portfolio_manager,strategy_selector,trade_journal,validation", "classification": "ORPHAN", "runtime_reachable": false, "confidence": "high"}
+  ],
+  "risk_unavoidable": true,
+  "critical_test_runtime_mismatches": 0,
+  "false_success": 0
+}

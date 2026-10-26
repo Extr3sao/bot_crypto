@@ -1,0 +1,42 @@
+{
+  "campaign": "ALPHA-002",
+  "cause": {
+    "baseline_delta_bps": {
+      "A2-H01": -1.228127,
+      "A2-H02": -0.127502,
+      "A2-H03": -1.22444
+    },
+    "binding_constraint": "the derivatives confirmation subtracted value",
+    "note": "against the same rule with the derivatives confirmation removed, every fully-exercised mechanism did worse, i.e. participant data added nothing over the price condition it was built on",
+    "untested_reason": "A2-H02's frozen threshold (funding > 1e-4) was never strictly exceeded in the discovery slice — the maximum observed was exactly 1e-4 across all four assets — so it produced zero decisions and is recorded as INCONCLUSIVE, not negative"
+  },
+  "decision": "DEVELOPMENT COMPLETE",
+  "do_not_retune": true,
+  "evidence": {
+    "commit": "ea4d488",
+    "development_results": "reports/alpha002/ALPHA002_DEVELOPMENT_RESULTS.{md,json}",
+    "preregistration": "docs/research/alpha002/ALPHA002_PREREGISTRATION.{md,json}",
+    "verification": "reports/alpha002/ALPHA002_VERIFICATION.{md,json}"
+  },
+  "prohibited": [
+    "retuning thresholds, horizons or the cost model on this family",
+    "promoting an UNDERPOWERED cell to a candidate",
+    "re-reading the ALPHA-002 holdout for an ALPHA-002 question"
+  ],
+  "research_hypotheses_not_pursued": [
+    "OI contraction may outperform OI expansion (the declared non-traded exhaustion contrast out-returned the expansion subset; recorded for a future campaign, not pursued here)"
+  ],
+  "result": {
+    "A2-H01": "REJECT",
+    "A2-H02": "INCONCLUSIVE",
+    "A2-H03": "REJECT",
+    "false_success": 0,
+    "holdout_read": false,
+    "hypotheses_tested": 3,
+    "oos_candidates": 0,
+    "preregistration_hash": "8b09f608256a31722b366f10e52513e9a347405d078138a9c350df1ad2439f6b",
+    "verifier": "PASS 61/61"
+  },
+  "title": "Derivatives Positioning & Order-Flow Alpha",
+  "verdict": "NO_ALPHA_WITH_UNTESTED_HYPOTHESES"
+}

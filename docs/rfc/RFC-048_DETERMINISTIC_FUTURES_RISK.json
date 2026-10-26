@@ -1,0 +1,288 @@
+{
+  "rfc": "RFC-048",
+  "title": "DETERMINISTIC FUTURES RISK & LEVERAGE ENGINE",
+  "status": "IMPLEMENTED",
+  "verdict": "RFC048_OFFLINE_VERIFIED",
+  "baseline_commit": "66cfe08",
+  "branch": "main",
+  "mode": "offline_research_only",
+  "supersedes": null,
+  "parent_authority": "RFC-046 (offline discovery, campaign FAILED) / RFC-041 BUSINESS-FREEZE-2026-001",
+  "precedent": "RFC-047 (ST-6 scheduler provenance) — untouched by this RFC",
+  "live_trading": "DISABLED",
+  "trades_authorized": 0,
+  "profitability_verified": false,
+  "false_success": 0,
+  "produces_live_orders": false,
+  "reads_credentials": false,
+  "creates_strategies": false,
+  "reuses_oos_results": false,
+  "modifies_cost_model_v3": false,
+  "modifies_production_config": false,
+  "document": "docs/rfc/RFC-048_DETERMINISTIC_FUTURES_RISK.md",
+  "architecture": {
+    "authority_map": "docs/architecture/RFC048_RUNTIME_AUTHORITY_MAP.md",
+    "risk_flow": "docs/architecture/RFC048_FUTURES_RISK_FLOW.md",
+    "planes": {
+      "trading_runtime": "deterministic: data -> instrument -> proposal -> sizing -> margin -> liquidation -> portfolio -> feasibility -> decision -> simulated execution -> accounting",
+      "agent_intelligence": "may propose direction and arguments; may never set leverage, size, margin, limits, liquidation price or execution authorisation"
+    },
+    "second_risk_engine_created": false,
+    "spot_authority_reused_unmodified": "trading_bot.risk.manager.RiskManager",
+    "decision_boundary_reused": "trading_bot.autonomous.decision.DecisionEngine + autonomous.contracts"
+  },
+  "instrument_contract": {
+    "module": "src/trading_bot/risk/futures/instruments.py",
+    "fields": [
+      "instrument_id",
+      "venue",
+      "contract_type",
+      "collateral_asset",
+      "settlement_asset",
+      "contract_multiplier",
+      "quantity_step",
+      "price_tick",
+      "minimum_notional",
+      "maximum_notional",
+      "initial_margin_schedule",
+      "maintenance_margin_brackets",
+      "fee_schedule",
+      "funding_schedule",
+      "supported_position_modes",
+      "regulatory_eligibility_status",
+      "source_version",
+      "source_hash",
+      "effective_timestamp_ms"
+    ],
+    "supported": ["LINEAR_PERPETUAL"],
+    "declared_unsupported": [
+      "INVERSE_PERPETUAL",
+      "DELIVERY_FUTURE",
+      "LINEAR_DELIVERY_FUTURE",
+      "CROSS margin"
+    ],
+    "refusal_code": "INSTRUMENT_NOT_SUPPORTED / CONTRACT_TYPE_NOT_IMPLEMENTED",
+    "fixture": "data/rfc048/INSTRUMENTS.json",
+    "raw_sources": "data/rfc048/PROVENANCE.json"
+  },
+  "capital_and_risk_budget": {
+    "reference_equity_usdt": 200.0,
+    "experimental_risk_budgets_pct": [0.5, 1.0],
+    "sizing_rule": "EXPECTED_STOP_LOSS_WITH_COSTS <= RISK_BUDGET",
+    "components": [
+      "stop distance",
+      "round-trip cost",
+      "adverse slippage",
+      "gap reserve",
+      "exposure limit",
+      "available margin",
+      "instrument requirements",
+      "aggregate portfolio risk"
+    ],
+    "rounding": "down to quantity_step only",
+    "gap_reserve_required": true,
+    "stop_is_not_a_fill_guarantee": true
+  },
+  "leverage_engine": {
+    "scenarios": [1, 2, 3, 5],
+    "scenarios_are_authorisations": false,
+    "admissible": "min(requested, policy cap, venue bracket ceiling)",
+    "excess_request_outcome": "REDUCE_SIMULATED_SIZE with effective_leverage < requested"
+  },
+  "liquidation_model": {
+    "contract_families": ["LINEAR_PERPETUAL isolated"],
+    "ladder_source": "venue leverage-bracket payload, sha256 pinned",
+    "unknown_state": "LIQUIDATION_RISK_UNKNOWN",
+    "unknown_blocks_approval": true,
+    "partial_liquidation_modelled": false,
+    "stress_paths": [
+      "gradual adverse move",
+      "hard gap",
+      "spread widening",
+      "adverse funding",
+      "maintenance bracket change",
+      "liquidation before stop",
+      "stop not executed",
+      "stale data (blocked by the data gate)"
+    ],
+    "defect_fixed": {
+      "id": "DEF-048-01",
+      "summary": "long-side closed form subtracted rather than added the adverse terms, over-stating the liquidation buffer",
+      "found_by": "independent verifier numeric root",
+      "status": "FIXED"
+    }
+  },
+  "costs_and_funding": {
+    "spot_model": "docs/COST_MODEL_V3.json (frozen, unmodified, cited for the spot column only)",
+    "futures_model": "FUTURES_COST_MODEL (this RFC)",
+    "spot_round_trip_bps": 23.7906,
+    "futures_round_trip_bps_measured": 12.0242,
+    "components": [
+      "maker/taker commission",
+      "spread",
+      "slippage",
+      "market impact",
+      "funding payments",
+      "funding settlement timestamps",
+      "holding period",
+      "liquidation costs",
+      "contract restrictions"
+    ],
+    "states": ["COST_KNOWN", "COST_ESTIMATED", "COST_UNKNOWN"],
+    "unknown_cost_policy": "refuse; a missing cost is never a zero cost",
+    "funding_point_in_time": true,
+    "look_ahead_permitted": false,
+    "zero_funding_requires_interval_proof": true
+  },
+  "portfolio_risk": {
+    "controls": [
+      "gross exposure",
+      "net exposure",
+      "concentration",
+      "correlated positions",
+      "shared collateral",
+      "margin utilisation",
+      "drawdown",
+      "daily loss",
+      "consecutive losses",
+      "market data freshness",
+      "provider failure",
+      "portfolio stress"
+    ],
+    "snapshot_versioned": true,
+    "atomic_margin_reservation": true,
+    "concurrency_probe": "8 concurrent decisions against one 200 USDT pool",
+    "cross_margin_declared_safe": false
+  },
+  "risk_decision_contract": {
+    "module": "src/trading_bot/risk/futures/contracts.py",
+    "decisions": [
+      "APPROVE_SIMULATION",
+      "REDUCE_SIMULATED_SIZE",
+      "NO_TRADE",
+      "RISK_VETO",
+      "DATA_INVALID",
+      "UNSUPPORTED_INSTRUMENT"
+    ],
+    "order_authorised_field_exists": true,
+    "order_authorised_ever_true": false,
+    "authorises_live_order": false
+  },
+  "adversarial_tests": {
+    "file": "tests/unit/risk/test_futures_risk_engine.py",
+    "section_12_cases_implemented": 24,
+    "invariants": [
+      "a size reduction never increases the modelled loss",
+      "a costlier assumption never increases the approved size",
+      "limits hold under concurrency",
+      "rounding never increases risk"
+    ]
+  },
+  "independent_verifier": {
+    "module": "src/trading_bot/risk/futures_verification.py",
+    "imports_builder": false,
+    "independence_probe": "fresh interpreter, zero builder modules loaded",
+    "recomputes": [
+      "position sizing (grid search)",
+      "initial margin",
+      "maintenance margin (raw ladder)",
+      "liquidation (numeric root + bar simulation)",
+      "funding (venue settlements, point in time)",
+      "fees and cost floor",
+      "notional",
+      "exposure",
+      "portfolio margin pool",
+      "RiskDecision semantics"
+    ],
+    "negative_controls": [
+      "false margin",
+      "omitted cost",
+      "wrong liquidation",
+      "wrong notional",
+      "excess leverage",
+      "aggregate risk omitted",
+      "temporally invalid data",
+      "order authorisation"
+    ],
+    "false_success": 0,
+    "builder_is_not_verifier": true
+  },
+  "regulatory_gate": {
+    "default_status": "PRODUCT_ELIGIBILITY_UNKNOWN",
+    "research_allowed": true,
+    "production_eligible": false,
+    "sources": [
+      "https://developers.binance.com/docs/derivatives",
+      "https://www.esma.europa.eu/press-news/esma-news/esma-reminds-firms-their-obligations-under-cfd-product-intervention-measures"
+    ],
+    "esma_reference": "ESMA35-243228190-8024 (24/02/2026)",
+    "promotion_blocked_while_unknown": true
+  },
+  "work_packages": {
+    "WP-048-01": "DONE",
+    "WP-048-02": "DONE",
+    "WP-048-03": "DONE",
+    "WP-048-04": "DONE",
+    "WP-048-05": "DONE",
+    "WP-048-06": "DONE",
+    "WP-048-07": "DONE",
+    "WP-048-08": "DONE",
+    "additional_work_packages": []
+  },
+  "deliverables": {
+    "docs/rfc/RFC-048_DETERMINISTIC_FUTURES_RISK.md": true,
+    "docs/rfc/RFC-048_DETERMINISTIC_FUTURES_RISK.json": true,
+    "docs/architecture/RFC048_RUNTIME_AUTHORITY_MAP.md": true,
+    "docs/architecture/RFC048_FUTURES_RISK_FLOW.md": true,
+    "docs/research/RFC048_FUTURES_ECONOMIC_FEASIBILITY.md": true,
+    "data/rfc048/RISK_SCENARIOS.json": true,
+    "data/rfc048/MARGIN_LIQUIDATION_CASES.json": true,
+    "data/rfc048/RUNTIME_EXECUTION_REPORT.json": true,
+    "data/rfc048/INDEPENDENT_VERIFICATION.json": true,
+    "data/rfc048/FINAL_REPORT.md": true,
+    "data/rfc048/FINAL_REPORT.json": true
+  },
+  "acceptance_criteria": {
+    "ACC-048-01": "PASS",
+    "ACC-048-02": "PASS",
+    "ACC-048-03": "PASS",
+    "ACC-048-04": "PASS",
+    "ACC-048-05": "PASS",
+    "ACC-048-06": "PASS",
+    "ACC-048-07": "PASS",
+    "ACC-048-08": "PASS",
+    "ACC-048-09": "PASS",
+    "ACC-048-10": "PASS",
+    "ACC-048-11": "PASS",
+    "ACC-048-12": "PASS",
+    "ACC-048-13": "PASS",
+    "ACC-048-14": "PASS",
+    "ACC-048-15": "PASS"
+  },
+  "governance_preserved": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false,
+    "st6_scheduler_touched": false
+  },
+  "next_gate": {
+    "state": "RFC048_OFFLINE_VERIFIED",
+    "means": "supported contracts and risk calculations passed offline verification; not profitability, not production readiness",
+    "requires": [
+      "independently verified admitted strategy with a measured edge",
+      "jurisdictional eligibility check for venue and account type",
+      "binding (non-advisory) futures review enabled by an ADR",
+      "partial-liquidation and cross-margin rules, or an explicit exclusion decision",
+      "paper-trading evidence for the futures plane itself"
+    ]
+  },
+  "reproduce": [
+    "uv run python scripts/rfc048_derive_instruments.py",
+    "uv run python scripts/rfc048_run.py",
+    "uv run python scripts/rfc048_verify.py",
+    "uv run python scripts/rfc048_report.py",
+    "uv run pytest tests/unit/risk -q"
+  ]
+}

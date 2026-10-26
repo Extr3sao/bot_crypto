@@ -1,0 +1,60 @@
+{
+  "_schema_version": "microstructure-preregistration-v1",
+  "_claim": "the minimum data an experiment needs is fixed BEFORE the experiment is run, so it cannot be chosen after seeing a result",
+  "_rule": "changing any minimum_data value invalidates every run made under the previous value; a new value requires a new preregistration_version",
+  "_evidence_source": "docs/FORWARD_DATA_QUALITY_REPORT.json (measured, not projected)",
+  "preregistered_at": "2026-09-29",
+  "preregistration_version": "M-PREREG-V1",
+  "hypotheses": {
+    "M-03": {
+      "name": "order book imbalance",
+      "state": "TECHNICALLY_READY_NEEDS_HISTORY",
+      "requires": "forward book samples + valid sequence + enough observations",
+      "minimum_data": {
+        "forward_book_hours": 24.0,
+        "min_book_checkpoints": 1000,
+        "max_unrecovered_gap_seconds": 300.0,
+        "book_health_at_checkpoints_pct": 90.0,
+        "assets": ["BTC", "ETH", "SOL"],
+        "timeframes_minutes": [1, 5]
+      },
+      "quality_gates": [
+        "quality report PASS for the book streams",
+        "offline replay PASS with no network access",
+        "no unrecovered depth-chain gap overlapping the measured window"
+      ],
+      "why_this_minimum": "the previous single hour produced 160,219 book updates and 708 checkpoints with 56 depth-chain gaps; 24 h is the smallest window in which the imbalance measurement spans more than one session regime",
+      "measured_at_preregistration": {
+        "forward_book_hours": 1.0516,
+        "book_updates_in_hour": 160219,
+        "book_checkpoints_in_hour": 708,
+        "depth_chain_gaps_in_hour": 56
+      }
+    },
+    "M-07": {
+      "name": "open interest x price",
+      "state": "TECHNICALLY_READY_NEEDS_HISTORY",
+      "requires": "enough open-interest history to split DEV / VAL / OOS",
+      "minimum_data": {
+        "open_interest_days": 7.0,
+        "min_oi_samples": 10000,
+        "oi_sample_interval_seconds_max": 120.0,
+        "disjoint_periods_required": 3,
+        "assets": ["BTC", "ETH", "SOL"],
+        "timeframes_minutes": [5, 15, 30]
+      },
+      "quality_gates": [
+        "OI/funding/mark sampled continuously with no unrecovered gap",
+        "replay PASS from the persisted rows alone",
+        "the three periods are disjoint in time and each covers >= 1 day"
+      ],
+      "why_this_minimum": "the public OI history available to us ends 2026-08-26 (~31 days) and the forward capture contributes 0.06 day so far; three disjoint one-day-plus periods are the least that can carry a DEV/VAL/OOS split without overlap",
+      "measured_at_preregistration": {
+        "forward_oi_days": 0.06,
+        "public_oi_history_days": 31
+      }
+    }
+  },
+  "not_yet_run": true,
+  "note": "neither M-03 nor M-07 has been evaluated; this file exists so that when the data readiness gate opens, the threshold is already on the record"
+}

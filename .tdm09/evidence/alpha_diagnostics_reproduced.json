@@ -1,0 +1,2572 @@
+{
+  "artifact": "tdm08-alpha-diagnostics-v1",
+  "generated_by": "scripts/tdm08_alpha_diagnostic.py",
+  "estimator": {
+    "name": "HORIZON_H",
+    "window_bars": 100,
+    "horizon_minutes": 30.0,
+    "note": "signal at decision-bar close, marked at close of bar i+h; no SL/TP path"
+  },
+  "dataset": {
+    "path": "data/tdm08/DATASET.json",
+    "sha256": "af7fa95ced41f36381e67909b133d87a675274293ca3457d1901aa1a341d9d84",
+    "total_bars": 40572,
+    "window": {
+      "start": "2026-09-25T00:00:00Z",
+      "end_ms": 1792857524550
+    },
+    "files": [
+      {
+        "asset": "BTC",
+        "timeframe": "5m",
+        "path": "data/tdm08/BTC_5m.json",
+        "sha256": "3a70c00da7404a233e4bf849f96b8eb1f29a8715feb15d20c51f06c665d2c86c",
+        "bars": 8543,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792857000000,
+        "requests": 9
+      },
+      {
+        "asset": "BTC",
+        "timeframe": "15m",
+        "path": "data/tdm08/BTC_15m.json",
+        "sha256": "b95cf9b70c09b3e2d225b93b8945b7b16bad6f6a24228fc5939434df9f734409",
+        "bars": 2847,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792855800000,
+        "requests": 3
+      },
+      {
+        "asset": "BTC",
+        "timeframe": "30m",
+        "path": "data/tdm08/BTC_30m.json",
+        "sha256": "38c1e473874545721243962eec5d69c01df163a4658f97d766a1fdf49f740d22",
+        "bars": 1423,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792854000000,
+        "requests": 2
+      },
+      {
+        "asset": "BTC",
+        "timeframe": "1h",
+        "path": "data/tdm08/BTC_1h.json",
+        "sha256": "29adf88af85d9c70717d99b02bd22b10e3d428c123db2d3d5b626f217d8a8c98",
+        "bars": 711,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792850400000,
+        "requests": 1
+      },
+      {
+        "asset": "ETH",
+        "timeframe": "5m",
+        "path": "data/tdm08/ETH_5m.json",
+        "sha256": "95808c1dfba8e58173cb8c4d8aeb27c096ad861b09af3a5edc0cb2a316089bac",
+        "bars": 8543,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792857000000,
+        "requests": 9
+      },
+      {
+        "asset": "ETH",
+        "timeframe": "15m",
+        "path": "data/tdm08/ETH_15m.json",
+        "sha256": "2e5ab01fad4d9ad26192e648d9c7a28b68c95b49ac491449df64291ec750273c",
+        "bars": 2847,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792855800000,
+        "requests": 3
+      },
+      {
+        "asset": "ETH",
+        "timeframe": "30m",
+        "path": "data/tdm08/ETH_30m.json",
+        "sha256": "b381aa516055a0ab9c7c884c8130e2c1977494145672f70aee56d59d097960b9",
+        "bars": 1423,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792854000000,
+        "requests": 2
+      },
+      {
+        "asset": "ETH",
+        "timeframe": "1h",
+        "path": "data/tdm08/ETH_1h.json",
+        "sha256": "618a7af43c79e41a40e000f43f728808df9685152ff3bea24a87df26eb54c321",
+        "bars": 711,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792850400000,
+        "requests": 1
+      },
+      {
+        "asset": "SOL",
+        "timeframe": "5m",
+        "path": "data/tdm08/SOL_5m.json",
+        "sha256": "cec3085e2d06b6df663de0b8799b10a4448ddaeb00e18d2e5c84e2facede5448",
+        "bars": 8543,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792857000000,
+        "requests": 9
+      },
+      {
+        "asset": "SOL",
+        "timeframe": "15m",
+        "path": "data/tdm08/SOL_15m.json",
+        "sha256": "f1e6de05aa4472c79b0cead39bca44e473c2c4fc21925220f1f6c2bd16079db2",
+        "bars": 2847,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792855800000,
+        "requests": 3
+      },
+      {
+        "asset": "SOL",
+        "timeframe": "30m",
+        "path": "data/tdm08/SOL_30m.json",
+        "sha256": "d1df8c63248ea8021ff5ada5f29815097614f05e5bf176846cbe045c6310d67e",
+        "bars": 1423,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792854000000,
+        "requests": 2
+      },
+      {
+        "asset": "SOL",
+        "timeframe": "1h",
+        "path": "data/tdm08/SOL_1h.json",
+        "sha256": "697d334065ab7bbb58b36e23f4b06da171d361123f50d7146a11d77eb71c8fae",
+        "bars": 711,
+        "first_bar_ms": 1790294400000,
+        "last_bar_ms": 1792850400000,
+        "requests": 1
+      }
+    ]
+  },
+  "costs": {
+    "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+    "runtime_all_in_bps": 23.790569415042093,
+    "research_barrier_bps": 12.0
+  },
+  "cells": [
+    {
+      "family": "ema_crossover",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 1170,
+      "gross_bps_per_trade": -0.8753,
+      "gross_stdev_bps": 24.4363,
+      "t_stat": -1.225,
+      "ci95_bps": [
+        -2.3001,
+        0.4441
+      ],
+      "net_after_runtime_cost_bps": -24.6659,
+      "net_after_research_barrier_bps": -12.8753,
+      "win_rate_pct": 45.81,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 201,
+      "gross_bps_per_trade": -3.1643,
+      "gross_stdev_bps": 38.0846,
+      "t_stat": -1.178,
+      "ci95_bps": [
+        -8.456,
+        2.1842
+      ],
+      "net_after_runtime_cost_bps": -26.9549,
+      "net_after_research_barrier_bps": -15.1643,
+      "win_rate_pct": 47.76,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 265,
+      "gross_bps_per_trade": -1.364,
+      "gross_stdev_bps": 25.8031,
+      "t_stat": -0.861,
+      "ci95_bps": [
+        -4.4465,
+        1.5814
+      ],
+      "net_after_runtime_cost_bps": -25.1545,
+      "net_after_research_barrier_bps": -13.364,
+      "win_rate_pct": 44.53,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 13,
+      "gross_bps_per_trade": -15.4155,
+      "gross_stdev_bps": 38.4326,
+      "t_stat": -1.446,
+      "ci95_bps": [
+        -36.461,
+        3.7191
+      ],
+      "net_after_runtime_cost_bps": -39.2061,
+      "net_after_research_barrier_bps": -27.4155,
+      "win_rate_pct": 38.46,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 241,
+      "gross_bps_per_trade": 0.8246,
+      "gross_stdev_bps": 26.7402,
+      "t_stat": 0.479,
+      "ci95_bps": [
+        -2.4279,
+        4.1173
+      ],
+      "net_after_runtime_cost_bps": -22.966,
+      "net_after_research_barrier_bps": -11.1754,
+      "win_rate_pct": 51.87,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 13,
+      "gross_bps_per_trade": -0.5941,
+      "gross_stdev_bps": 18.7121,
+      "t_stat": -0.114,
+      "ci95_bps": [
+        -9.873,
+        9.026
+      ],
+      "net_after_runtime_cost_bps": -24.3847,
+      "net_after_research_barrier_bps": -12.5941,
+      "win_rate_pct": 46.15,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "BTC",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 856,
+      "gross_bps_per_trade": -0.5102,
+      "gross_stdev_bps": 23.3604,
+      "t_stat": -0.639,
+      "ci95_bps": [
+        -2.0683,
+        1.0489
+      ],
+      "net_after_runtime_cost_bps": -24.3007,
+      "net_after_research_barrier_bps": -12.5102,
+      "win_rate_pct": 47.9,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "BTC",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 260,
+      "gross_bps_per_trade": -3.0186,
+      "gross_stdev_bps": 32.4905,
+      "t_stat": -1.498,
+      "ci95_bps": [
+        -7.0086,
+        1.0748
+      ],
+      "net_after_runtime_cost_bps": -26.8091,
+      "net_after_research_barrier_bps": -15.0186,
+      "win_rate_pct": 48.85,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "BTC",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 106,
+      "gross_bps_per_trade": 4.9145,
+      "gross_stdev_bps": 29.6915,
+      "t_stat": 1.704,
+      "ci95_bps": [
+        -0.6676,
+        10.6669
+      ],
+      "net_after_runtime_cost_bps": -18.876,
+      "net_after_research_barrier_bps": -7.0855,
+      "win_rate_pct": 58.49,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "BTC",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 25,
+      "gross_bps_per_trade": -3.6647,
+      "gross_stdev_bps": 39.4735,
+      "t_stat": -0.464,
+      "ci95_bps": [
+        -19.3586,
+        11.5002
+      ],
+      "net_after_runtime_cost_bps": -27.4552,
+      "net_after_research_barrier_bps": -15.6647,
+      "win_rate_pct": 52.0,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "BTC",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 94,
+      "gross_bps_per_trade": 2.6315,
+      "gross_stdev_bps": 26.0428,
+      "t_stat": 0.98,
+      "ci95_bps": [
+        -2.3966,
+        7.8378
+      ],
+      "net_after_runtime_cost_bps": -21.159,
+      "net_after_research_barrier_bps": -9.3685,
+      "win_rate_pct": 52.13,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "BTC",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 11,
+      "gross_bps_per_trade": -5.0418,
+      "gross_stdev_bps": 21.374,
+      "t_stat": -0.782,
+      "ci95_bps": [
+        -16.3815,
+        7.3709
+      ],
+      "net_after_runtime_cost_bps": -28.8324,
+      "net_after_research_barrier_bps": -17.0418,
+      "win_rate_pct": 36.36,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "BTC",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 609,
+      "gross_bps_per_trade": -0.3069,
+      "gross_stdev_bps": 22.7388,
+      "t_stat": -0.333,
+      "ci95_bps": [
+        -2.0552,
+        1.394
+      ],
+      "net_after_runtime_cost_bps": -24.0975,
+      "net_after_research_barrier_bps": -12.3069,
+      "win_rate_pct": 47.78,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "BTC",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 272,
+      "gross_bps_per_trade": 0.2049,
+      "gross_stdev_bps": 28.173,
+      "t_stat": 0.12,
+      "ci95_bps": [
+        -3.1642,
+        3.3874
+      ],
+      "net_after_runtime_cost_bps": -23.5856,
+      "net_after_research_barrier_bps": -11.7951,
+      "win_rate_pct": 50.74,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "BTC",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 58,
+      "gross_bps_per_trade": 1.3659,
+      "gross_stdev_bps": 31.0684,
+      "t_stat": 0.335,
+      "ci95_bps": [
+        -7.1506,
+        8.7629
+      ],
+      "net_after_runtime_cost_bps": -22.4247,
+      "net_after_research_barrier_bps": -10.6341,
+      "win_rate_pct": 55.17,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "BTC",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 57,
+      "gross_bps_per_trade": -5.4368,
+      "gross_stdev_bps": 34.5207,
+      "t_stat": -1.189,
+      "ci95_bps": [
+        -14.6259,
+        3.0506
+      ],
+      "net_after_runtime_cost_bps": -29.2274,
+      "net_after_research_barrier_bps": -17.4368,
+      "win_rate_pct": 45.61,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "BTC",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 57,
+      "gross_bps_per_trade": -1.3664,
+      "gross_stdev_bps": 27.5801,
+      "t_stat": -0.374,
+      "ci95_bps": [
+        -8.2141,
+        6.0657
+      ],
+      "net_after_runtime_cost_bps": -25.157,
+      "net_after_research_barrier_bps": -13.3664,
+      "win_rate_pct": 35.09,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "BTC",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 6,
+      "gross_bps_per_trade": -6.7738,
+      "gross_stdev_bps": 32.5672,
+      "t_stat": -0.509,
+      "ci95_bps": [
+        -33.7185,
+        12.9246
+      ],
+      "net_after_runtime_cost_bps": -30.5644,
+      "net_after_research_barrier_bps": -18.7738,
+      "win_rate_pct": 66.67,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 272,
+      "gross_bps_per_trade": -0.7372,
+      "gross_stdev_bps": 35.6941,
+      "t_stat": -0.341,
+      "ci95_bps": [
+        -4.956,
+        3.3981
+      ],
+      "net_after_runtime_cost_bps": -24.5278,
+      "net_after_research_barrier_bps": -12.7372,
+      "win_rate_pct": 45.22,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 172,
+      "gross_bps_per_trade": -2.5311,
+      "gross_stdev_bps": 33.3627,
+      "t_stat": -0.995,
+      "ci95_bps": [
+        -7.4914,
+        2.5734
+      ],
+      "net_after_runtime_cost_bps": -26.3216,
+      "net_after_research_barrier_bps": -14.5311,
+      "win_rate_pct": 44.77,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 25,
+      "gross_bps_per_trade": -19.3094,
+      "gross_stdev_bps": 64.2679,
+      "t_stat": -1.502,
+      "ci95_bps": [
+        -45.1552,
+        3.3863
+      ],
+      "net_after_runtime_cost_bps": -43.1,
+      "net_after_research_barrier_bps": -31.3094,
+      "win_rate_pct": 44.0,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 54,
+      "gross_bps_per_trade": -1.0699,
+      "gross_stdev_bps": 40.0739,
+      "t_stat": -0.196,
+      "ci95_bps": [
+        -11.8109,
+        9.3634
+      ],
+      "net_after_runtime_cost_bps": -24.8604,
+      "net_after_research_barrier_bps": -13.0699,
+      "win_rate_pct": 50.0,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 25,
+      "gross_bps_per_trade": -1.442,
+      "gross_stdev_bps": 54.8474,
+      "t_stat": -0.131,
+      "ci95_bps": [
+        -23.919,
+        17.6864
+      ],
+      "net_after_runtime_cost_bps": -25.2326,
+      "net_after_research_barrier_bps": -13.442,
+      "win_rate_pct": 68.0,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 5,
+      "gross_bps_per_trade": -3.6013,
+      "gross_stdev_bps": 44.6246,
+      "t_stat": -0.18,
+      "ci95_bps": [
+        -39.2388,
+        28.5485
+      ],
+      "net_after_runtime_cost_bps": -27.3919,
+      "net_after_research_barrier_bps": -15.6013,
+      "win_rate_pct": 60.0,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 1169,
+      "gross_bps_per_trade": 0.0337,
+      "gross_stdev_bps": 32.79,
+      "t_stat": 0.035,
+      "ci95_bps": [
+        -1.8336,
+        2.0032
+      ],
+      "net_after_runtime_cost_bps": -23.7569,
+      "net_after_research_barrier_bps": -11.9663,
+      "win_rate_pct": 46.28,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 320,
+      "gross_bps_per_trade": 1.4343,
+      "gross_stdev_bps": 47.1157,
+      "t_stat": 0.545,
+      "ci95_bps": [
+        -3.6475,
+        6.3813
+      ],
+      "net_after_runtime_cost_bps": -22.3562,
+      "net_after_research_barrier_bps": -10.5657,
+      "win_rate_pct": 50.31,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 280,
+      "gross_bps_per_trade": -5.0153,
+      "gross_stdev_bps": 44.7442,
+      "t_stat": -1.876,
+      "ci95_bps": [
+        -9.8766,
+        -0.0402
+      ],
+      "net_after_runtime_cost_bps": -28.8059,
+      "net_after_research_barrier_bps": -17.0153,
+      "win_rate_pct": 42.14,
+      "classification": "REJECT"
+    },
+    {
+      "family": "trend",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 41,
+      "gross_bps_per_trade": -7.526,
+      "gross_stdev_bps": 60.437,
+      "t_stat": -0.797,
+      "ci95_bps": [
+        -25.2564,
+        10.1927
+      ],
+      "net_after_runtime_cost_bps": -31.3166,
+      "net_after_research_barrier_bps": -19.526,
+      "win_rate_pct": 46.34,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 260,
+      "gross_bps_per_trade": -0.6713,
+      "gross_stdev_bps": 40.5477,
+      "t_stat": -0.267,
+      "ci95_bps": [
+        -5.4755,
+        4.1605
+      ],
+      "net_after_runtime_cost_bps": -24.4619,
+      "net_after_research_barrier_bps": -12.6713,
+      "win_rate_pct": 49.62,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 19,
+      "gross_bps_per_trade": 5.3499,
+      "gross_stdev_bps": 17.2416,
+      "t_stat": 1.353,
+      "ci95_bps": [
+        -2.1508,
+        13.0733
+      ],
+      "net_after_runtime_cost_bps": -18.4407,
+      "net_after_research_barrier_bps": -6.6501,
+      "win_rate_pct": 57.89,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "ETH",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 857,
+      "gross_bps_per_trade": 0.6529,
+      "gross_stdev_bps": 32.4041,
+      "t_stat": 0.59,
+      "ci95_bps": [
+        -1.5228,
+        2.7744
+      ],
+      "net_after_runtime_cost_bps": -23.1377,
+      "net_after_research_barrier_bps": -11.3471,
+      "win_rate_pct": 46.79,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "ETH",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 344,
+      "gross_bps_per_trade": 1.2936,
+      "gross_stdev_bps": 41.906,
+      "t_stat": 0.573,
+      "ci95_bps": [
+        -3.2635,
+        5.8438
+      ],
+      "net_after_runtime_cost_bps": -22.4969,
+      "net_after_research_barrier_bps": -10.7064,
+      "win_rate_pct": 50.29,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "ETH",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 118,
+      "gross_bps_per_trade": -0.5524,
+      "gross_stdev_bps": 45.5927,
+      "t_stat": -0.132,
+      "ci95_bps": [
+        -8.5596,
+        7.5879
+      ],
+      "net_after_runtime_cost_bps": -24.3429,
+      "net_after_research_barrier_bps": -12.5524,
+      "win_rate_pct": 47.46,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "ETH",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 105,
+      "gross_bps_per_trade": -3.21,
+      "gross_stdev_bps": 52.7938,
+      "t_stat": -0.623,
+      "ci95_bps": [
+        -12.9359,
+        6.6246
+      ],
+      "net_after_runtime_cost_bps": -27.0005,
+      "net_after_research_barrier_bps": -15.21,
+      "win_rate_pct": 44.76,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "ETH",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 98,
+      "gross_bps_per_trade": 2.2412,
+      "gross_stdev_bps": 27.7334,
+      "t_stat": 0.8,
+      "ci95_bps": [
+        -3.4563,
+        7.672
+      ],
+      "net_after_runtime_cost_bps": -21.5494,
+      "net_after_research_barrier_bps": -9.7588,
+      "win_rate_pct": 57.14,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "ETH",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 29,
+      "gross_bps_per_trade": -6.7003,
+      "gross_stdev_bps": 23.6412,
+      "t_stat": -1.526,
+      "ci95_bps": [
+        -15.647,
+        1.3718
+      ],
+      "net_after_runtime_cost_bps": -30.4908,
+      "net_after_research_barrier_bps": -18.7003,
+      "win_rate_pct": 41.38,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "ETH",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 610,
+      "gross_bps_per_trade": 0.1595,
+      "gross_stdev_bps": 33.2927,
+      "t_stat": 0.118,
+      "ci95_bps": [
+        -2.3821,
+        2.8541
+      ],
+      "net_after_runtime_cost_bps": -23.6311,
+      "net_after_research_barrier_bps": -11.8405,
+      "win_rate_pct": 48.36,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "ETH",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 322,
+      "gross_bps_per_trade": 2.4266,
+      "gross_stdev_bps": 38.2354,
+      "t_stat": 1.139,
+      "ci95_bps": [
+        -1.684,
+        6.5322
+      ],
+      "net_after_runtime_cost_bps": -21.364,
+      "net_after_research_barrier_bps": -9.5734,
+      "win_rate_pct": 52.48,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "ETH",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 62,
+      "gross_bps_per_trade": 5.5511,
+      "gross_stdev_bps": 47.3016,
+      "t_stat": 0.924,
+      "ci95_bps": [
+        -5.6965,
+        17.8301
+      ],
+      "net_after_runtime_cost_bps": -18.2395,
+      "net_after_research_barrier_bps": -6.4489,
+      "win_rate_pct": 48.39,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "ETH",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 121,
+      "gross_bps_per_trade": 5.1786,
+      "gross_stdev_bps": 51.9567,
+      "t_stat": 1.096,
+      "ci95_bps": [
+        -3.6198,
+        15.0163
+      ],
+      "net_after_runtime_cost_bps": -18.6119,
+      "net_after_research_barrier_bps": -6.8214,
+      "win_rate_pct": 53.72,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "ETH",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 52,
+      "gross_bps_per_trade": -0.4612,
+      "gross_stdev_bps": 36.1769,
+      "t_stat": -0.092,
+      "ci95_bps": [
+        -9.7453,
+        9.1872
+      ],
+      "net_after_runtime_cost_bps": -24.2518,
+      "net_after_research_barrier_bps": -12.4612,
+      "win_rate_pct": 51.92,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "ETH",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 9,
+      "gross_bps_per_trade": -11.4586,
+      "gross_stdev_bps": 34.9574,
+      "t_stat": -0.983,
+      "ci95_bps": [
+        -33.7851,
+        9.4587
+      ],
+      "net_after_runtime_cost_bps": -35.2491,
+      "net_after_research_barrier_bps": -23.4586,
+      "win_rate_pct": 22.22,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 283,
+      "gross_bps_per_trade": -0.8256,
+      "gross_stdev_bps": 48.4253,
+      "t_stat": -0.287,
+      "ci95_bps": [
+        -6.2466,
+        4.7677
+      ],
+      "net_after_runtime_cost_bps": -24.6162,
+      "net_after_research_barrier_bps": -12.8256,
+      "win_rate_pct": 45.58,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 191,
+      "gross_bps_per_trade": -3.8402,
+      "gross_stdev_bps": 56.3083,
+      "t_stat": -0.943,
+      "ci95_bps": [
+        -11.3947,
+        4.0509
+      ],
+      "net_after_runtime_cost_bps": -27.6307,
+      "net_after_research_barrier_bps": -15.8402,
+      "win_rate_pct": 42.41,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 28,
+      "gross_bps_per_trade": 0.9927,
+      "gross_stdev_bps": 66.1539,
+      "t_stat": 0.079,
+      "ci95_bps": [
+        -23.9998,
+        25.5215
+      ],
+      "net_after_runtime_cost_bps": -22.7978,
+      "net_after_research_barrier_bps": -11.0073,
+      "win_rate_pct": 46.43,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 89,
+      "gross_bps_per_trade": -3.1209,
+      "gross_stdev_bps": 57.5704,
+      "t_stat": -0.511,
+      "ci95_bps": [
+        -15.206,
+        8.86
+      ],
+      "net_after_runtime_cost_bps": -26.9115,
+      "net_after_research_barrier_bps": -15.1209,
+      "win_rate_pct": 42.7,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 22,
+      "gross_bps_per_trade": -11.2115,
+      "gross_stdev_bps": 96.7081,
+      "t_stat": -0.544,
+      "ci95_bps": [
+        -55.2511,
+        22.1041
+      ],
+      "net_after_runtime_cost_bps": -35.0021,
+      "net_after_research_barrier_bps": -23.2115,
+      "win_rate_pct": 40.91,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 6,
+      "gross_bps_per_trade": -4.0823,
+      "gross_stdev_bps": 61.3445,
+      "t_stat": -0.163,
+      "ci95_bps": [
+        -44.32,
+        43.9174
+      ],
+      "net_after_runtime_cost_bps": -27.8728,
+      "net_after_research_barrier_bps": -16.0823,
+      "win_rate_pct": 50.0,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 1172,
+      "gross_bps_per_trade": -1.2715,
+      "gross_stdev_bps": 41.9383,
+      "t_stat": -1.038,
+      "ci95_bps": [
+        -3.7202,
+        1.1287
+      ],
+      "net_after_runtime_cost_bps": -25.062,
+      "net_after_research_barrier_bps": -13.2715,
+      "win_rate_pct": 45.65,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 499,
+      "gross_bps_per_trade": 0.6261,
+      "gross_stdev_bps": 53.8752,
+      "t_stat": 0.26,
+      "ci95_bps": [
+        -4.2644,
+        5.3326
+      ],
+      "net_after_runtime_cost_bps": -23.1645,
+      "net_after_research_barrier_bps": -11.3739,
+      "win_rate_pct": 48.1,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 291,
+      "gross_bps_per_trade": -4.1848,
+      "gross_stdev_bps": 51.0232,
+      "t_stat": -1.399,
+      "ci95_bps": [
+        -10.1078,
+        1.6381
+      ],
+      "net_after_runtime_cost_bps": -27.9754,
+      "net_after_research_barrier_bps": -16.1848,
+      "win_rate_pct": 41.24,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 71,
+      "gross_bps_per_trade": -6.4792,
+      "gross_stdev_bps": 70.1744,
+      "t_stat": -0.778,
+      "ci95_bps": [
+        -22.8837,
+        8.982
+      ],
+      "net_after_runtime_cost_bps": -30.2698,
+      "net_after_research_barrier_bps": -18.4792,
+      "win_rate_pct": 42.25,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 270,
+      "gross_bps_per_trade": -0.4142,
+      "gross_stdev_bps": 43.5924,
+      "t_stat": -0.156,
+      "ci95_bps": [
+        -5.739,
+        4.9713
+      ],
+      "net_after_runtime_cost_bps": -24.2048,
+      "net_after_research_barrier_bps": -12.4142,
+      "win_rate_pct": 48.52,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 8438,
+      "trades": 26,
+      "gross_bps_per_trade": 12.1214,
+      "gross_stdev_bps": 50.2729,
+      "t_stat": 1.229,
+      "ci95_bps": [
+        -5.5487,
+        32.9053
+      ],
+      "net_after_runtime_cost_bps": -11.6692,
+      "net_after_research_barrier_bps": 0.1214,
+      "win_rate_pct": 50.0,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "SOL",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 861,
+      "gross_bps_per_trade": -2.0777,
+      "gross_stdev_bps": 39.1304,
+      "t_stat": -1.558,
+      "ci95_bps": [
+        -4.5756,
+        0.6485
+      ],
+      "net_after_runtime_cost_bps": -25.8683,
+      "net_after_research_barrier_bps": -14.0777,
+      "win_rate_pct": 45.76,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "SOL",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 501,
+      "gross_bps_per_trade": -0.9631,
+      "gross_stdev_bps": 41.7165,
+      "t_stat": -0.517,
+      "ci95_bps": [
+        -4.6685,
+        2.6578
+      ],
+      "net_after_runtime_cost_bps": -24.7537,
+      "net_after_research_barrier_bps": -12.9631,
+      "win_rate_pct": 47.11,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "SOL",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 127,
+      "gross_bps_per_trade": 1.7721,
+      "gross_stdev_bps": 48.6411,
+      "t_stat": 0.411,
+      "ci95_bps": [
+        -6.3005,
+        10.2362
+      ],
+      "net_after_runtime_cost_bps": -22.0185,
+      "net_after_research_barrier_bps": -10.2279,
+      "win_rate_pct": 48.03,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "SOL",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 142,
+      "gross_bps_per_trade": -2.9686,
+      "gross_stdev_bps": 59.1593,
+      "t_stat": -0.598,
+      "ci95_bps": [
+        -12.6992,
+        6.6635
+      ],
+      "net_after_runtime_cost_bps": -26.7591,
+      "net_after_research_barrier_bps": -14.9686,
+      "win_rate_pct": 47.89,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "SOL",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 87,
+      "gross_bps_per_trade": 2.069,
+      "gross_stdev_bps": 37.315,
+      "t_stat": 0.517,
+      "ci95_bps": [
+        -5.7922,
+        9.9156
+      ],
+      "net_after_runtime_cost_bps": -21.7216,
+      "net_after_research_barrier_bps": -9.931,
+      "win_rate_pct": 54.02,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "SOL",
+      "timeframe": "15m",
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 2746,
+      "trades": 15,
+      "gross_bps_per_trade": -17.051,
+      "gross_stdev_bps": 35.652,
+      "t_stat": -1.852,
+      "ci95_bps": [
+        -34.9795,
+        0.0501
+      ],
+      "net_after_runtime_cost_bps": -40.8416,
+      "net_after_research_barrier_bps": -29.051,
+      "win_rate_pct": 26.67,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "SOL",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 595,
+      "gross_bps_per_trade": 1.5598,
+      "gross_stdev_bps": 42.5185,
+      "t_stat": 0.895,
+      "ci95_bps": [
+        -1.6156,
+        5.2865
+      ],
+      "net_after_runtime_cost_bps": -22.2308,
+      "net_after_research_barrier_bps": -10.4402,
+      "win_rate_pct": 51.09,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "SOL",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 408,
+      "gross_bps_per_trade": -2.3104,
+      "gross_stdev_bps": 42.3141,
+      "t_stat": -1.103,
+      "ci95_bps": [
+        -6.4521,
+        1.6691
+      ],
+      "net_after_runtime_cost_bps": -26.1009,
+      "net_after_research_barrier_bps": -14.3104,
+      "win_rate_pct": 46.32,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "SOL",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 60,
+      "gross_bps_per_trade": 1.3235,
+      "gross_stdev_bps": 43.9259,
+      "t_stat": 0.233,
+      "ci95_bps": [
+        -9.6903,
+        12.2166
+      ],
+      "net_after_runtime_cost_bps": -22.4671,
+      "net_after_research_barrier_bps": -10.6765,
+      "win_rate_pct": 53.33,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "SOL",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 167,
+      "gross_bps_per_trade": -0.5449,
+      "gross_stdev_bps": 45.0725,
+      "t_stat": -0.156,
+      "ci95_bps": [
+        -7.2825,
+        6.3772
+      ],
+      "net_after_runtime_cost_bps": -24.3355,
+      "net_after_research_barrier_bps": -12.5449,
+      "win_rate_pct": 45.51,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "SOL",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 41,
+      "gross_bps_per_trade": 5.9906,
+      "gross_stdev_bps": 49.6993,
+      "t_stat": 0.772,
+      "ci95_bps": [
+        -7.5662,
+        21.6838
+      ],
+      "net_after_runtime_cost_bps": -17.7999,
+      "net_after_research_barrier_bps": -6.0094,
+      "win_rate_pct": 43.9,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "SOL",
+      "timeframe": "30m",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 1323,
+      "trades": 16,
+      "gross_bps_per_trade": 4.3746,
+      "gross_stdev_bps": 63.6599,
+      "t_stat": 0.275,
+      "ci95_bps": [
+        -22.3739,
+        37.6505
+      ],
+      "net_after_runtime_cost_bps": -19.416,
+      "net_after_research_barrier_bps": -7.6254,
+      "win_rate_pct": 31.25,
+      "classification": "DEFER"
+    },
+    {
+      "family": "ema_crossover",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 277,
+      "gross_bps_per_trade": -1.6784,
+      "gross_stdev_bps": 53.9273,
+      "t_stat": -0.518,
+      "ci95_bps": [
+        -7.7656,
+        4.4869
+      ],
+      "net_after_runtime_cost_bps": -25.469,
+      "net_after_research_barrier_bps": -13.6784,
+      "win_rate_pct": 47.65,
+      "classification": "DEFER"
+    },
+    {
+      "family": "momentum",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 215,
+      "gross_bps_per_trade": -4.5267,
+      "gross_stdev_bps": 55.6753,
+      "t_stat": -1.192,
+      "ci95_bps": [
+        -11.982,
+        2.3863
+      ],
+      "net_after_runtime_cost_bps": -28.3173,
+      "net_after_research_barrier_bps": -16.5267,
+      "win_rate_pct": 43.26,
+      "classification": "DEFER"
+    },
+    {
+      "family": "breakout",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 32,
+      "gross_bps_per_trade": -3.7423,
+      "gross_stdev_bps": 84.2967,
+      "t_stat": -0.251,
+      "ci95_bps": [
+        -31.4138,
+        26.1134
+      ],
+      "net_after_runtime_cost_bps": -27.5328,
+      "net_after_research_barrier_bps": -15.7423,
+      "win_rate_pct": 40.62,
+      "classification": "DEFER"
+    },
+    {
+      "family": "trend",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 109,
+      "gross_bps_per_trade": 9.2157,
+      "gross_stdev_bps": 73.6471,
+      "t_stat": 1.306,
+      "ci95_bps": [
+        -4.0139,
+        23.3475
+      ],
+      "net_after_runtime_cost_bps": -14.5748,
+      "net_after_research_barrier_bps": -2.7843,
+      "win_rate_pct": 57.8,
+      "classification": "DEFER"
+    },
+    {
+      "family": "mean_reversion",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 26,
+      "gross_bps_per_trade": -0.1075,
+      "gross_stdev_bps": 87.6023,
+      "t_stat": -0.006,
+      "ci95_bps": [
+        -37.7811,
+        29.0315
+      ],
+      "net_after_runtime_cost_bps": -23.8981,
+      "net_after_research_barrier_bps": -12.1075,
+      "win_rate_pct": 50.0,
+      "classification": "DEFER"
+    },
+    {
+      "family": "volatility",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "window_bars": 100,
+      "evaluations": 611,
+      "trades": 6,
+      "gross_bps_per_trade": -14.9066,
+      "gross_stdev_bps": 38.6474,
+      "t_stat": -0.945,
+      "ci95_bps": [
+        -42.7064,
+        14.7948
+      ],
+      "net_after_runtime_cost_bps": -38.6972,
+      "net_after_research_barrier_bps": -26.9066,
+      "win_rate_pct": 33.33,
+      "classification": "DEFER"
+    }
+  ],
+  "family_timeframe": [
+    {
+      "strategy_id": "breakout@15m",
+      "family": "breakout",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "trades": 351,
+      "gross_bps_per_trade": 1.9396,
+      "gross_stdev_bps": 42.6132,
+      "t_stat": 0.853,
+      "ci95_bps": [
+        -2.6331,
+        6.372
+      ],
+      "net_after_runtime_cost_bps": -21.8509,
+      "net_after_research_barrier_bps": -10.0604,
+      "win_rate_pct": 51.0,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "breakout@1h",
+      "family": "breakout",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 85,
+      "gross_bps_per_trade": -6.7611,
+      "gross_stdev_bps": 72.6608,
+      "t_stat": -0.858,
+      "ci95_bps": [
+        -21.3384,
+        8.8799
+      ],
+      "net_after_runtime_cost_bps": -30.5516,
+      "net_after_research_barrier_bps": -18.7611,
+      "win_rate_pct": 43.53,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "breakout@30m",
+      "family": "breakout",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 180,
+      "gross_bps_per_trade": 2.7933,
+      "gross_stdev_bps": 41.3502,
+      "t_stat": 0.906,
+      "ci95_bps": [
+        -3.2883,
+        9.2205
+      ],
+      "net_after_runtime_cost_bps": -20.9973,
+      "net_after_research_barrier_bps": -9.2067,
+      "win_rate_pct": 52.22,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "breakout@5m",
+      "family": "breakout",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "trades": 836,
+      "gross_bps_per_trade": -3.5688,
+      "gross_stdev_bps": 42.261,
+      "t_stat": -2.442,
+      "ci95_bps": [
+        -6.4568,
+        -0.6703
+      ],
+      "net_after_runtime_cost_bps": -27.3594,
+      "net_after_research_barrier_bps": -15.5688,
+      "win_rate_pct": 42.58,
+      "classification": "REJECT"
+    },
+    {
+      "strategy_id": "ema_crossover@15m",
+      "family": "ema_crossover",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "trades": 2574,
+      "gross_bps_per_trade": -0.6473,
+      "gross_stdev_bps": 32.3064,
+      "t_stat": -1.016,
+      "ci95_bps": [
+        -1.9672,
+        0.595
+      ],
+      "net_after_runtime_cost_bps": -24.4378,
+      "net_after_research_barrier_bps": -12.6473,
+      "win_rate_pct": 46.81,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "ema_crossover@1h",
+      "family": "ema_crossover",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 832,
+      "gross_bps_per_trade": -1.0807,
+      "gross_stdev_bps": 46.6619,
+      "t_stat": -0.668,
+      "ci95_bps": [
+        -4.1802,
+        2.2633
+      ],
+      "net_after_runtime_cost_bps": -24.8712,
+      "net_after_research_barrier_bps": -13.0807,
+      "win_rate_pct": 46.15,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "ema_crossover@30m",
+      "family": "ema_crossover",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 1814,
+      "gross_bps_per_trade": 0.4622,
+      "gross_stdev_bps": 33.7438,
+      "t_stat": 0.583,
+      "ci95_bps": [
+        -1.0666,
+        1.9546
+      ],
+      "net_after_runtime_cost_bps": -23.3283,
+      "net_after_research_barrier_bps": -11.5378,
+      "win_rate_pct": 49.06,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "ema_crossover@5m",
+      "family": "ema_crossover",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "trades": 3511,
+      "gross_bps_per_trade": -0.7049,
+      "gross_stdev_bps": 33.8191,
+      "t_stat": -1.235,
+      "ci95_bps": [
+        -1.8374,
+        0.3737
+      ],
+      "net_after_runtime_cost_bps": -24.4955,
+      "net_after_research_barrier_bps": -12.7049,
+      "win_rate_pct": 45.91,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "mean_reversion@15m",
+      "family": "mean_reversion",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "trades": 279,
+      "gross_bps_per_trade": 2.319,
+      "gross_stdev_bps": 30.4312,
+      "t_stat": 1.273,
+      "ci95_bps": [
+        -1.2642,
+        6.0017
+      ],
+      "net_after_runtime_cost_bps": -21.4715,
+      "net_after_research_barrier_bps": -9.681,
+      "win_rate_pct": 54.48,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "mean_reversion@1h",
+      "family": "mean_reversion",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 73,
+      "gross_bps_per_trade": -3.9109,
+      "gross_stdev_bps": 80.1175,
+      "t_stat": -0.417,
+      "ci95_bps": [
+        -22.4718,
+        13.0385
+      ],
+      "net_after_runtime_cost_bps": -27.7015,
+      "net_after_research_barrier_bps": -15.9109,
+      "win_rate_pct": 53.42,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "mean_reversion@30m",
+      "family": "mean_reversion",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 150,
+      "gross_bps_per_trade": 0.9583,
+      "gross_stdev_bps": 37.5058,
+      "t_stat": 0.313,
+      "ci95_bps": [
+        -4.7597,
+        7.169
+      ],
+      "net_after_runtime_cost_bps": -22.8322,
+      "net_after_research_barrier_bps": -11.0417,
+      "win_rate_pct": 43.33,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "mean_reversion@5m",
+      "family": "mean_reversion",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "trades": 771,
+      "gross_bps_per_trade": -0.1137,
+      "gross_stdev_bps": 37.9496,
+      "t_stat": -0.083,
+      "ci95_bps": [
+        -2.6632,
+        2.524
+      ],
+      "net_after_runtime_cost_bps": -23.9043,
+      "net_after_research_barrier_bps": -12.1137,
+      "win_rate_pct": 49.94,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "momentum@15m",
+      "family": "momentum",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "trades": 1105,
+      "gross_bps_per_trade": -0.7442,
+      "gross_stdev_bps": 39.7989,
+      "t_stat": -0.622,
+      "ci95_bps": [
+        -3.1525,
+        1.6642
+      ],
+      "net_after_runtime_cost_bps": -24.5348,
+      "net_after_research_barrier_bps": -12.7442,
+      "win_rate_pct": 48.51,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "momentum@1h",
+      "family": "momentum",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 578,
+      "gross_bps_per_trade": -3.706,
+      "gross_stdev_bps": 50.2418,
+      "t_stat": -1.773,
+      "ci95_bps": [
+        -7.6094,
+        0.5219
+      ],
+      "net_after_runtime_cost_bps": -27.4966,
+      "net_after_research_barrier_bps": -15.706,
+      "win_rate_pct": 43.43,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "momentum@30m",
+      "family": "momentum",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 1002,
+      "gross_bps_per_trade": -0.1053,
+      "gross_stdev_bps": 37.6267,
+      "t_stat": -0.089,
+      "ci95_bps": [
+        -2.3689,
+        2.2032
+      ],
+      "net_after_runtime_cost_bps": -23.8959,
+      "net_after_research_barrier_bps": -12.1053,
+      "win_rate_pct": 49.5,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "momentum@5m",
+      "family": "momentum",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "trades": 1020,
+      "gross_bps_per_trade": 0.1327,
+      "gross_stdev_bps": 48.9993,
+      "t_stat": 0.087,
+      "ci95_bps": [
+        -2.9609,
+        3.1709
+      ],
+      "net_after_runtime_cost_bps": -23.6578,
+      "net_after_research_barrier_bps": -11.8673,
+      "win_rate_pct": 48.73,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "trend@15m",
+      "family": "trend",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "trades": 272,
+      "gross_bps_per_trade": -3.1257,
+      "gross_stdev_bps": 55.0327,
+      "t_stat": -0.937,
+      "ci95_bps": [
+        -9.346,
+        3.6231
+      ],
+      "net_after_runtime_cost_bps": -26.9163,
+      "net_after_research_barrier_bps": -15.1257,
+      "win_rate_pct": 47.06,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "trend@1h",
+      "family": "trend",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 252,
+      "gross_bps_per_trade": 2.6547,
+      "gross_stdev_bps": 62.1964,
+      "t_stat": 0.678,
+      "ci95_bps": [
+        -5.0653,
+        10.3415
+      ],
+      "net_after_runtime_cost_bps": -21.1359,
+      "net_after_research_barrier_bps": -9.3453,
+      "win_rate_pct": 50.79,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "trend@30m",
+      "family": "trend",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 345,
+      "gross_bps_per_trade": 0.6542,
+      "gross_stdev_bps": 46.1526,
+      "t_stat": 0.263,
+      "ci95_bps": [
+        -3.9418,
+        5.7189
+      ],
+      "net_after_runtime_cost_bps": -23.1363,
+      "net_after_research_barrier_bps": -11.3458,
+      "win_rate_pct": 48.41,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "trend@5m",
+      "family": "trend",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "trades": 125,
+      "gross_bps_per_trade": -7.7519,
+      "gross_stdev_bps": 64.0955,
+      "t_stat": -1.352,
+      "ci95_bps": [
+        -19.1248,
+        3.9694
+      ],
+      "net_after_runtime_cost_bps": -31.5425,
+      "net_after_research_barrier_bps": -19.7519,
+      "win_rate_pct": 43.2,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "volatility@15m",
+      "family": "volatility",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 2,
+      "horizon_minutes": 30.0,
+      "trades": 55,
+      "gross_bps_per_trade": -9.1915,
+      "gross_stdev_bps": 26.9803,
+      "t_stat": -2.527,
+      "ci95_bps": [
+        -16.3513,
+        -2.1546
+      ],
+      "net_after_runtime_cost_bps": -32.9821,
+      "net_after_research_barrier_bps": -21.1915,
+      "win_rate_pct": 36.36,
+      "classification": "REJECT"
+    },
+    {
+      "strategy_id": "volatility@1h",
+      "family": "volatility",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 17,
+      "gross_bps_per_trade": -7.7612,
+      "gross_stdev_bps": 46.5855,
+      "t_stat": -0.687,
+      "ci95_bps": [
+        -29.267,
+        14.0217
+      ],
+      "net_after_runtime_cost_bps": -31.5517,
+      "net_after_research_barrier_bps": -19.7612,
+      "win_rate_pct": 47.06,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "volatility@30m",
+      "family": "volatility",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 1,
+      "horizon_minutes": 30.0,
+      "trades": 31,
+      "gross_bps_per_trade": -2.3799,
+      "gross_stdev_bps": 50.812,
+      "t_stat": -0.261,
+      "ci95_bps": [
+        -18.2142,
+        16.0741
+      ],
+      "net_after_runtime_cost_bps": -26.1705,
+      "net_after_research_barrier_bps": -14.3799,
+      "win_rate_pct": 35.48,
+      "classification": "DEFER"
+    },
+    {
+      "strategy_id": "volatility@5m",
+      "family": "volatility",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "horizon_bars": 6,
+      "horizon_minutes": 30.0,
+      "trades": 58,
+      "gross_bps_per_trade": 7.0531,
+      "gross_stdev_bps": 36.0847,
+      "t_stat": 1.489,
+      "ci95_bps": [
+        -1.2464,
+        16.8713
+      ],
+      "net_after_runtime_cost_bps": -16.7375,
+      "net_after_research_barrier_bps": -4.9469,
+      "win_rate_pct": 51.72,
+      "classification": "DEFER"
+    }
+  ],
+  "summary": {
+    "by_family": {
+      "breakout": {
+        "trades": 1452,
+        "cells": [
+          {
+            "strategy_id": "breakout@15m",
+            "trades": 351,
+            "gross_bps_per_trade": 1.9396,
+            "ci95_bps": [
+              -2.6331,
+              6.372
+            ],
+            "net_after_runtime_cost_bps": -21.8509,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "breakout@1h",
+            "trades": 85,
+            "gross_bps_per_trade": -6.7611,
+            "ci95_bps": [
+              -21.3384,
+              8.8799
+            ],
+            "net_after_runtime_cost_bps": -30.5516,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "breakout@30m",
+            "trades": 180,
+            "gross_bps_per_trade": 2.7933,
+            "ci95_bps": [
+              -3.2883,
+              9.2205
+            ],
+            "net_after_runtime_cost_bps": -20.9973,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "breakout@5m",
+            "trades": 836,
+            "gross_bps_per_trade": -3.5688,
+            "ci95_bps": [
+              -6.4568,
+              -0.6703
+            ],
+            "net_after_runtime_cost_bps": -27.3594,
+            "classification": "REJECT"
+          }
+        ],
+        "gross_bps_per_trade_pooled": -1.6354,
+        "best_cell": [
+          "breakout@30m",
+          2.7933
+        ],
+        "classification": "DEFER"
+      },
+      "ema_crossover": {
+        "trades": 8731,
+        "cells": [
+          {
+            "strategy_id": "ema_crossover@15m",
+            "trades": 2574,
+            "gross_bps_per_trade": -0.6473,
+            "ci95_bps": [
+              -1.9672,
+              0.595
+            ],
+            "net_after_runtime_cost_bps": -24.4378,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "ema_crossover@1h",
+            "trades": 832,
+            "gross_bps_per_trade": -1.0807,
+            "ci95_bps": [
+              -4.1802,
+              2.2633
+            ],
+            "net_after_runtime_cost_bps": -24.8712,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "ema_crossover@30m",
+            "trades": 1814,
+            "gross_bps_per_trade": 0.4622,
+            "ci95_bps": [
+              -1.0666,
+              1.9546
+            ],
+            "net_after_runtime_cost_bps": -23.3283,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "ema_crossover@5m",
+            "trades": 3511,
+            "gross_bps_per_trade": -0.7049,
+            "ci95_bps": [
+              -1.8374,
+              0.3737
+            ],
+            "net_after_runtime_cost_bps": -24.4955,
+            "classification": "DEFER"
+          }
+        ],
+        "gross_bps_per_trade_pooled": -0.4812,
+        "best_cell": [
+          "ema_crossover@30m",
+          0.4622
+        ],
+        "classification": "DEFER"
+      },
+      "mean_reversion": {
+        "trades": 1273,
+        "cells": [
+          {
+            "strategy_id": "mean_reversion@15m",
+            "trades": 279,
+            "gross_bps_per_trade": 2.319,
+            "ci95_bps": [
+              -1.2642,
+              6.0017
+            ],
+            "net_after_runtime_cost_bps": -21.4715,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "mean_reversion@1h",
+            "trades": 73,
+            "gross_bps_per_trade": -3.9109,
+            "ci95_bps": [
+              -22.4718,
+              13.0385
+            ],
+            "net_after_runtime_cost_bps": -27.7015,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "mean_reversion@30m",
+            "trades": 150,
+            "gross_bps_per_trade": 0.9583,
+            "ci95_bps": [
+              -4.7597,
+              7.169
+            ],
+            "net_after_runtime_cost_bps": -22.8322,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "mean_reversion@5m",
+            "trades": 771,
+            "gross_bps_per_trade": -0.1137,
+            "ci95_bps": [
+              -2.6632,
+              2.524
+            ],
+            "net_after_runtime_cost_bps": -23.9043,
+            "classification": "DEFER"
+          }
+        ],
+        "gross_bps_per_trade_pooled": 0.328,
+        "best_cell": [
+          "mean_reversion@15m",
+          2.319
+        ],
+        "classification": "DEFER"
+      },
+      "momentum": {
+        "trades": 3705,
+        "cells": [
+          {
+            "strategy_id": "momentum@15m",
+            "trades": 1105,
+            "gross_bps_per_trade": -0.7442,
+            "ci95_bps": [
+              -3.1525,
+              1.6642
+            ],
+            "net_after_runtime_cost_bps": -24.5348,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "momentum@1h",
+            "trades": 578,
+            "gross_bps_per_trade": -3.706,
+            "ci95_bps": [
+              -7.6094,
+              0.5219
+            ],
+            "net_after_runtime_cost_bps": -27.4966,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "momentum@30m",
+            "trades": 1002,
+            "gross_bps_per_trade": -0.1053,
+            "ci95_bps": [
+              -2.3689,
+              2.2032
+            ],
+            "net_after_runtime_cost_bps": -23.8959,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "momentum@5m",
+            "trades": 1020,
+            "gross_bps_per_trade": 0.1327,
+            "ci95_bps": [
+              -2.9609,
+              3.1709
+            ],
+            "net_after_runtime_cost_bps": -23.6578,
+            "classification": "DEFER"
+          }
+        ],
+        "gross_bps_per_trade_pooled": -0.7921,
+        "best_cell": [
+          "momentum@5m",
+          0.1327
+        ],
+        "classification": "DEFER"
+      },
+      "trend": {
+        "trades": 994,
+        "cells": [
+          {
+            "strategy_id": "trend@15m",
+            "trades": 272,
+            "gross_bps_per_trade": -3.1257,
+            "ci95_bps": [
+              -9.346,
+              3.6231
+            ],
+            "net_after_runtime_cost_bps": -26.9163,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "trend@1h",
+            "trades": 252,
+            "gross_bps_per_trade": 2.6547,
+            "ci95_bps": [
+              -5.0653,
+              10.3415
+            ],
+            "net_after_runtime_cost_bps": -21.1359,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "trend@30m",
+            "trades": 345,
+            "gross_bps_per_trade": 0.6542,
+            "ci95_bps": [
+              -3.9418,
+              5.7189
+            ],
+            "net_after_runtime_cost_bps": -23.1363,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "trend@5m",
+            "trades": 125,
+            "gross_bps_per_trade": -7.7519,
+            "ci95_bps": [
+              -19.1248,
+              3.9694
+            ],
+            "net_after_runtime_cost_bps": -31.5425,
+            "classification": "DEFER"
+          }
+        ],
+        "gross_bps_per_trade_pooled": -0.9301,
+        "best_cell": [
+          "trend@1h",
+          2.6547
+        ],
+        "classification": "DEFER"
+      },
+      "volatility": {
+        "trades": 161,
+        "cells": [
+          {
+            "strategy_id": "volatility@15m",
+            "trades": 55,
+            "gross_bps_per_trade": -9.1915,
+            "ci95_bps": [
+              -16.3513,
+              -2.1546
+            ],
+            "net_after_runtime_cost_bps": -32.9821,
+            "classification": "REJECT"
+          },
+          {
+            "strategy_id": "volatility@1h",
+            "trades": 17,
+            "gross_bps_per_trade": -7.7612,
+            "ci95_bps": [
+              -29.267,
+              14.0217
+            ],
+            "net_after_runtime_cost_bps": -31.5517,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "volatility@30m",
+            "trades": 31,
+            "gross_bps_per_trade": -2.3799,
+            "ci95_bps": [
+              -18.2142,
+              16.0741
+            ],
+            "net_after_runtime_cost_bps": -26.1705,
+            "classification": "DEFER"
+          },
+          {
+            "strategy_id": "volatility@5m",
+            "trades": 58,
+            "gross_bps_per_trade": 7.0531,
+            "ci95_bps": [
+              -1.2464,
+              16.8713
+            ],
+            "net_after_runtime_cost_bps": -16.7375,
+            "classification": "DEFER"
+          }
+        ],
+        "gross_bps_per_trade_pooled": -1.8768,
+        "best_cell": [
+          "volatility@5m",
+          7.0531
+        ],
+        "classification": "DEFER"
+      }
+    }
+  }
+}

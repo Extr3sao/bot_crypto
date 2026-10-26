@@ -1,0 +1,30 @@
+# The RFC-049 audits hash these trees byte for byte (frozen specifications, vendor
+# snapshots, retrieved primary-source evidence).  Git's automatic end-of-line
+# normalisation would rewrite those bytes on checkout and silently break every
+# recorded digest, so the trees are stored exactly as they are on disk.
+data/rfc049/** -text
+
+# The cost-barrier CI evidence bundle is digest-pinned: the copy of the gitignored
+# market-horizon input must arrive in a clean checkout with exactly the bytes the
+# published explorer recorded for it, so git must not normalise them on the way in
+# or out.  Same reason as the RFC-049 trees above, same treatment.
+data/recovery/wp7/evidence/** -text
+
+# The WP-8 input-authority bundle is digest-pinned for the same reason as the
+# cost-barrier one: every external input the ACTIVE recovery lane needs must arrive
+# in a clean checkout with exactly the bytes its published artefact recorded, so git
+# must not normalise them on the way in or out.
+data/recovery/wp8/evidence/** -text
+
+# RFC-048 records a sha256 for every venue payload it cites.  Those digests were
+# first taken over CRLF bytes on a Windows working tree, while git (autocrlf) stored
+# LF; the recorded digests then matched nothing a clean checkout contains.  v2 now
+# pins the bytes as delivered, so the bytes must stay identical everywhere: no
+# end-of-line conversion, on the historical v1 payloads as much as on v2.
+data/rfc048/** -text
+
+# The admission ledger records a sha256 for the research artifacts it was built
+# from, and the runtime fails closed on it.  It is generated with explicit LF
+# (scripts/build_strategy_admission.py) and ``--check`` compares bytes, so a
+# checkout that converted the endings would report a stale ledger forever.
+config/strategy_admission.json -text

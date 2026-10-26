@@ -131,7 +131,10 @@ def load_settings_from_assets_yaml(
         resolved = conftest_path.parent.parent.parent.parent
         repo_root = str(resolved)
 
-    settings = load_settings(repo_root=repo_root, env={})
+    # The loader's public API is ``config_dir``/``env_file``; this helper used to
+    # pass ``repo_root=``/``env=``, which no version of ``load_settings`` ever
+    # accepted (it only survived because nothing called it). WP-TDM-07.
+    settings = load_settings(config_dir=Path(repo_root) / "config", env_file=None)
 
     if mode_override is not None:
         settings = settings.model_copy(

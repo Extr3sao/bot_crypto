@@ -1,0 +1,37 @@
+{
+  "baseline_version": "RFC035E_BASELINE_V1",
+  "rfc": "RFC-035E",
+  "task": "INDEPENDENT_EXTERNAL_EFFECT_REPRODUCTION",
+  "as_of_utc": "2026-10-08T00:05:00Z",
+  "branch": "main",
+  "source_commit": "7e21f7ca6dbf8816d83f2f8ab15aeb09310b878c",
+  "carried_in": {
+    "rfc035_status": "OPEN (not PASS): its selected candidate had no externally specified entry/exit rules",
+    "opp_0001_previous_classification": "REPLICATE_P0",
+    "opp_0001_corrected_classification": "RESEARCH_HYPOTHESIS_P0",
+    "reason": "the source defines no entry, exit, threshold, lookback, aggregation or size, so there is no external trading strategy to replicate exactly",
+    "rfc041_freeze": "ACTIVE (unchanged)",
+    "rfc036": "NOT_OPENED"
+  },
+  "question": "does lagged US spot BTC ETF net flow carry statistically and economically useful information about subsequent BTC returns, on independently reconstructed point-in-time data?",
+  "data": {
+    "raw_sources": [
+      {"source_id": "RF-01", "provider": "Farside Investors", "object": "BTC ETF flow all-data table (US$m)",
+       "sessions": 703, "coverage": "2024-01-11..2026-10-07"},
+      {"source_id": "RF-02", "provider": "Binance public REST", "object": "BTCUSDT 1d klines", "rows": 1042}
+    ],
+    "derived_dataset": "data/rfc035e/derived/etf_flow_btc_daily.json",
+    "pit_status": "UNKNOWN (exact historical publication timestamps are not published)",
+    "pit_convention": "conservative: flow_date + 1 day at 00:00Z (an availability rule for the strategy side, not a claim of fact)",
+    "manifests": ["research/rfc035e/raw_source_manifest.json", "research/rfc035e/data_manifest.json", "research/rfc035e/dataset_hashes.json"]
+  },
+  "spec": {"path": "reports/rfc035e/FALCONX_REPLICATION_SPEC.json", "frozen_before_results": true,
+           "windows": {"SOURCE_REPLICATION": ["2024-01-11", "2024-10-11"], "EXTERNAL_EFFECT_OOS": ["2024-10-12", "last available session"]}},
+  "scope_discipline": ["no strategy design", "no threshold, holding period, exit or sizing choice",
+                       "no parameter search, no asset or timeframe sweep", "no profitability claim"],
+  "gates_at_baseline": {"ruff": "clean on RFC-035E files", "datasets_hashable": true,
+                        "raw_re_parse_reproducible": "offline re-run produces the same derived dataset"},
+  "limitations": ["the flow table is final-data only; intraday revisions are unobservable",
+                  "weekend sessions do not exist in the provider calendar: a Friday-to-Monday lag is one step",
+                  "the source's exact variable construction is not published, so three declared transforms are tested instead"]
+}

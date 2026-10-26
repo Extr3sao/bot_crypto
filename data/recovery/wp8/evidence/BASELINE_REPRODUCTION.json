@@ -1,0 +1,66 @@
+{
+  "artifact": "WP8_BASELINE_REPRODUCTION",
+  "work_package": "WP-8A: reconstruct the baseline before changing anything",
+  "captured_at_utc": "2026-10-11T16:30:06Z",
+  "purpose": "the failures are recorded before the fix so that 'fixed' can be distinguished from 'changed'",
+  "trees": [
+    {
+      "label": "shared working tree (dirty by design)",
+      "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+      "head": "33512b591bbf60e9a995792644257262bdd0b563",
+      "pytest_exit_code": 1,
+      "summary": "1 failed, 25 passed in 10.10s",
+      "failed_nodes": [
+        "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic"
+      ],
+      "missing_inputs": [],
+      "clean": false
+    },
+    {
+      "label": "clean worktree at HEAD",
+      "root": "C:\\tmp\\wp8-baseline-HEAD",
+      "head": "33512b591bbf60e9a995792644257262bdd0b563",
+      "pytest_exit_code": 1,
+      "summary": "3 failed, 23 passed in 8.23s",
+      "failed_nodes": [
+        "tests/unit/research/test_active_recovery_wp.py::test_audit_is_deterministic_and_committed",
+        "tests/unit/research/test_active_recovery_wp.py::test_audit_records_the_paper_lane_failure_honestly",
+        "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic"
+      ],
+      "missing_inputs": [
+        "PAPER_DATA_24H_REPORT.json",
+        "data/raw/alpha001/BTC-USDT_1d.json",
+        "data/raw/alpha001/ETH-USDT_1d.json",
+        "data/st6/ST6_HEALTH_STATUS.json",
+        "reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md",
+        "reports/strategy-baseline/COST_BARRIER.json",
+        "reports/strategy-baseline/REGIME_ANALYSIS.json",
+        "reports/strategy-baseline/TIMEFRAME_AUDIT.json"
+      ],
+      "clean": true
+    },
+    {
+      "label": "clean worktree at the pre-WP-7 baseline 38b8e18",
+      "root": "C:\\tmp\\wp8-baseline-38b8e18",
+      "head": "38b8e183d54c5ac8552296218e28f3ded8d95885",
+      "pytest_exit_code": 1,
+      "summary": "3 failed, 23 passed in 8.23s",
+      "failed_nodes": [
+        "tests/unit/research/test_active_recovery_wp.py::test_audit_is_deterministic_and_committed",
+        "tests/unit/research/test_active_recovery_wp.py::test_audit_records_the_paper_lane_failure_honestly",
+        "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic"
+      ],
+      "missing_inputs": [
+        "PAPER_DATA_24H_REPORT.json",
+        "data/raw/alpha001/BTC-USDT_1d.json",
+        "data/raw/alpha001/ETH-USDT_1d.json",
+        "data/st6/ST6_HEALTH_STATUS.json",
+        "reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md",
+        "reports/strategy-baseline/COST_BARRIER.json",
+        "reports/strategy-baseline/REGIME_ANALYSIS.json",
+        "reports/strategy-baseline/TIMEFRAME_AUDIT.json"
+      ],
+      "clean": true
+    }
+  ]
+}

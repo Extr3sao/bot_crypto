@@ -1,0 +1,64 @@
+{
+  "sources": {
+    "exchange_info": {
+      "url": "https://fapi.binance.com/fapi/v1/exchangeInfo",
+      "file": "data/rfc048/raw/binance_usdm_exchange_info.json",
+      "sha256": "ea25e393baac13a118cdb94072f6d70f6fa814cb802f3c16dc9ee3655d19b626",
+      "bytes": 1961235
+    },
+    "leverage_brackets": {
+      "url": "https://www.binance.com/bapi/futures/v1/friendly/future/common/brackets?symbol=BTCUSDT",
+      "file": "data/rfc048/raw/binance_usdm_leverage_brackets_btcusdt.json",
+      "sha256": "07c298cd32e3f98b41b72d5bda0855fb14e5d091960fcd6325acbdf52dedc436",
+      "bytes": 4248
+    },
+    "premium_index": {
+      "url": "https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT",
+      "file": "data/rfc048/raw/binance_usdm_premium_index_btcusdt.json",
+      "sha256": "6eebda570e4a0251ca1e547c4925ceedbe94bb686cd1aedd404dd58417fb407e",
+      "bytes": 273
+    },
+    "depth": {
+      "url": "https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=100",
+      "file": "data/rfc048/raw/binance_usdm_depth_btcusdt_100.json",
+      "sha256": "786c6b99e82b167c8227573dc854ca28847cc80f1a98b76a02a2209869a11c7f",
+      "bytes": 9920
+    },
+    "funding_rate": {
+      "url": "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=200",
+      "file": "data/rfc048/raw/binance_usdm_funding_rate_btcusdt.json",
+      "sha256": "ba6f9f9c7bb50c3ec45136de06eea16f4e57e714ca1961d56176b18829bac345",
+      "bytes": 33816
+    },
+    "klines_5m": {
+      "url": "https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=5m&limit=1000",
+      "file": "data/rfc048/raw/binance_usdm_btcusdt_5m_klines.json",
+      "sha256": "22b37f53db1265bec9e4f6c1d2fb1fcb477788de92ffa9abda8df270e370b9cb",
+      "bytes": 216842
+    },
+    "esma_statement": {
+      "url": "https://www.esma.europa.eu/press-news/esma-news/esma-reminds-firms-their-obligations-under-cfd-product-intervention-measures",
+      "file": "data/rfc048/raw/esma_cfd_product_intervention_2026-02-24.html",
+      "sha256": "a15c6ee3095a334313bace2d6b4871b0862182aa267a6a6c8206a7f94ad98e0c",
+      "bytes": 60166
+    }
+  },
+  "derived": {
+    "instruments": {
+      "supported_instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+      "bracket_count": 12,
+      "max_bracket_notional_cap": 1800000000.0
+    },
+    "snapshot": {
+      "data_timestamp_ms": 1791582761730,
+      "spread_bps": 0.012122,
+      "kline_count": 1000
+    },
+    "funding": {
+      "interval_ms": 28800000,
+      "observation_count": 200,
+      "first_funding_time_ms": 1785830400002,
+      "last_funding_time_ms": 1791561600000
+    }
+  }
+}

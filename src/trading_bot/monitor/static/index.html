@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trading Decision Monitor — PAPER</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <a class="skip" href="#timeline">Saltar al timeline</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <h1>Trading Decision Monitor</h1>
+      <span class="badge badge-readonly" title="No envía órdenes, no modifica riesgo">SOLO LECTURA</span>
+    </div>
+
+    <div class="statusline" role="status" aria-live="polite">
+      <span id="modeBadge" class="badge badge-mode">—</span>
+      <span id="connBadge" class="badge badge-unknown" title="Estado de la conexión y frescura de datos">
+        <span id="connIcon" aria-hidden="true">?</span>
+        <span id="connText">sin conexión</span>
+      </span>
+      <span class="clock">
+        <span class="clock-label">UTC</span>
+        <span id="clockUtc">--:--:--</span>
+        <span class="clock-label">Local</span>
+        <span id="clockLocal">--:--:--</span>
+      </span>
+      <span id="ageBadge" class="muted">edad de datos: —</span>
+    </div>
+  </header>
+
+  <section class="filters" aria-label="Filtros">
+    <label>Run
+      <select id="runSelect"></select>
+    </label>
+    <label>Símbolo
+      <select id="symbolSelect"></select>
+    </label>
+    <label>Timeframe
+      <select id="timeframeSelect"></select>
+    </label>
+    <label>Estrategia
+      <select id="strategySelect"></select>
+    </label>
+    <label>Estado
+      <select id="statusSelect"></select>
+    </label>
+    <div class="filters-actions">
+      <button id="refreshBtn" type="button">Actualizar</button>
+      <button id="replayBtn" type="button" aria-pressed="false">Replay</button>
+    </div>
+  </section>
+
+  <section id="notice" class="notice" hidden></section>
+
+  <section class="funnel" aria-label="Cascada de decisión">
+    <h2>Cascada observable</h2>
+    <div class="funnel-grid" id="funnelGrid"></div>
+    <p class="funnel-last" id="lastStep">—</p>
+  </section>
+
+  <section class="chart-panel" aria-label="Gráfico de velas y marcadores">
+    <div class="chart-head">
+      <h2 id="chartTitle">Velas</h2>
+      <div class="legend" id="legend" aria-hidden="true"></div>
+    </div>
+    <div id="chart" class="chart"></div>
+    <div id="chartOverlay" class="chart-overlay" hidden></div>
+  </section>
+
+  <section id="timeline" class="timeline" aria-label="Timeline de decisiones">
+    <h2>Timeline</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Hora (UTC)</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Motivo principal</th>
+            <th scope="col">Estrategia</th>
+            <th scope="col">Riesgo</th>
+            <th scope="col">Precio</th>
+            <th scope="col"><span class="sr-only">Detalle</span></th>
+          </tr>
+        </thead>
+        <tbody id="timelineBody"></tbody>
+      </table>
+    </div>
+    <p class="empty" id="timelineEmpty" hidden>No hay decisiones para los filtros actuales.</p>
+  </section>
+
+  <aside id="drawer" class="drawer" hidden aria-label="Detalle de la decisión" role="dialog" aria-modal="false">
+    <div class="drawer-head">
+      <h2 id="drawerTitle">Decisión</h2>
+      <button id="drawerClose" type="button" aria-label="Cerrar detalle">✕</button>
+    </div>
+    <div id="drawerBody" class="drawer-body"></div>
+  </aside>
+
+  <footer class="footer">
+    <span>
+      Atribución: <strong>TradingView Lightweight Charts™</strong> (Apache-2.0),
+      uso bajo su licencia. Este panel no está afiliado a TradingView.
+    </span>
+    <span id="footerMeta" class="muted"></span>
+  </footer>
+
+  <script src="/vendor/lightweight-charts.standalone.production.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

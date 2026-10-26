@@ -1,0 +1,281 @@
+{
+  "model": "EXECUTION_COST_MODEL_V4",
+  "supersedes": "COST_MODEL_V3 (flat majors spread, volatility factor 1.0)",
+  "admission_scenario": "BINANCE_SPOT_STANDARD_TAKER",
+  "safety_multiple": 1.5,
+  "reference_intent": {
+    "size_usd": 1000.0,
+    "liquidity_regime": "normal",
+    "horizon_minutes": 75.0,
+    "entry_order_type": "market",
+    "exit_order_type": "market"
+  },
+  "asset_market_inputs": [
+    {
+      "asset": "BTC",
+      "symbol": "BTCUSDT",
+      "observed_spread_bps": 0.0012,
+      "spread_observations": 37,
+      "spread_source": "forward capture: reports/microstructure-v2/forward/forward_1790595680.jsonl",
+      "realized_vol_bps": 12.6895,
+      "vol_source": "reports/microstructure-v1/data/KLINES_BTCUSDT_5m.json"
+    },
+    {
+      "asset": "ETH",
+      "symbol": "ETHUSDT",
+      "observed_spread_bps": 0.0375,
+      "spread_observations": 37,
+      "spread_source": "forward capture: reports/microstructure-v2/forward/forward_1790595680.jsonl",
+      "realized_vol_bps": 16.7121,
+      "vol_source": "reports/microstructure-v1/data/KLINES_ETHUSDT_5m.json"
+    },
+    {
+      "asset": "SOL",
+      "symbol": "SOLUSDT",
+      "observed_spread_bps": 0.8422,
+      "spread_observations": 37,
+      "spread_source": "forward capture: reports/microstructure-v2/forward/forward_1790595680.jsonl",
+      "realized_vol_bps": 18.8841,
+      "vol_source": "reports/microstructure-v1/data/KLINES_SOLUSDT_5m.json"
+    }
+  ],
+  "assets": [
+    {
+      "asset": "BTC",
+      "symbol": "BTCUSDT",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "venue": "Binance",
+      "product": "Spot",
+      "size_usd": 1000.0,
+      "liquidity_regime": "normal",
+      "horizon_minutes": 75.0,
+      "observed_spread_bps": 0.0012,
+      "realized_vol_bps": 12.6895,
+      "components_bps": {
+        "fee": 20.0,
+        "spread": 0.0012,
+        "slippage_impact": 3.4988,
+        "funding_carry": 0.0,
+        "other": 0.0
+      },
+      "taker_round_trip_bps": 23.5,
+      "minimum_gross_edge_bps": 23.5,
+      "required_gross_edge_bps": 35.25,
+      "stress_bps": {
+        "1.25x": 29.375,
+        "1.5x": 35.25,
+        "2.0x": 47.0
+      },
+      "maker_round_trip_bps_theoretical": 41.25,
+      "maker_status": "EXECUTION_DEPENDENT",
+      "maker_note": "maker fee 10.0 bps vs taker 10.0 bps at VIP0 (regular user, 30d volume < 1,000,000 USD); passive execution does not reduce the fee",
+      "knowledge_class": "ESTIMATED",
+      "evidence": "fees SRC-01; spread SRC-07; model BINANCE_SPOT_STANDARD_TAKER",
+      "components": [
+        {
+          "name": "exchange_fee_entry",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+        },
+        {
+          "name": "exchange_fee_exit",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+        },
+        {
+          "name": "spread",
+          "value_bps": 0.001204,
+          "knowledge": "OBSERVED",
+          "source_id": "SRC-07",
+          "note": "2 taker leg(s) x half-spread"
+        },
+        {
+          "name": "slippage",
+          "value_bps": 3.300549,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.254"
+        },
+        {
+          "name": "market_impact",
+          "value_bps": 0.198242,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "size-driven displacement above the base slippage"
+        }
+      ]
+    },
+    {
+      "asset": "ETH",
+      "symbol": "ETHUSDT",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "venue": "Binance",
+      "product": "Spot",
+      "size_usd": 1000.0,
+      "liquidity_regime": "normal",
+      "horizon_minutes": 75.0,
+      "observed_spread_bps": 0.0375,
+      "realized_vol_bps": 16.7121,
+      "components_bps": {
+        "fee": 20.0,
+        "spread": 0.0375,
+        "slippage_impact": 3.7233,
+        "funding_carry": 0.0,
+        "other": 0.0
+      },
+      "taker_round_trip_bps": 23.7608,
+      "minimum_gross_edge_bps": 23.7608,
+      "required_gross_edge_bps": 35.6412,
+      "stress_bps": {
+        "1.25x": 29.701,
+        "1.5x": 35.6412,
+        "2.0x": 47.5215
+      },
+      "maker_round_trip_bps_theoretical": 41.25,
+      "maker_status": "EXECUTION_DEPENDENT",
+      "maker_note": "maker fee 10.0 bps vs taker 10.0 bps at VIP0 (regular user, 30d volume < 1,000,000 USD); passive execution does not reduce the fee",
+      "knowledge_class": "ESTIMATED",
+      "evidence": "fees SRC-01; spread SRC-07; model BINANCE_SPOT_STANDARD_TAKER",
+      "components": [
+        {
+          "name": "exchange_fee_entry",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+        },
+        {
+          "name": "exchange_fee_exit",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+        },
+        {
+          "name": "spread",
+          "value_bps": 0.037479,
+          "knowledge": "OBSERVED",
+          "source_id": "SRC-07",
+          "note": "2 taker leg(s) x half-spread"
+        },
+        {
+          "name": "slippage",
+          "value_bps": 3.512331,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.334"
+        },
+        {
+          "name": "market_impact",
+          "value_bps": 0.210962,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "size-driven displacement above the base slippage"
+        }
+      ]
+    },
+    {
+      "asset": "SOL",
+      "symbol": "SOLUSDT",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "venue": "Binance",
+      "product": "Spot",
+      "size_usd": 1000.0,
+      "liquidity_regime": "normal",
+      "horizon_minutes": 75.0,
+      "observed_spread_bps": 0.8422,
+      "realized_vol_bps": 18.8841,
+      "components_bps": {
+        "fee": 20.0,
+        "spread": 0.8422,
+        "slippage_impact": 3.8445,
+        "funding_carry": 0.0,
+        "other": 0.0
+      },
+      "taker_round_trip_bps": 24.6867,
+      "minimum_gross_edge_bps": 24.6867,
+      "required_gross_edge_bps": 37.03,
+      "stress_bps": {
+        "1.25x": 30.8584,
+        "1.5x": 37.03,
+        "2.0x": 49.3734
+      },
+      "maker_round_trip_bps_theoretical": 41.25,
+      "maker_status": "EXECUTION_DEPENDENT",
+      "maker_note": "maker fee 10.0 bps vs taker 10.0 bps at VIP0 (regular user, 30d volume < 1,000,000 USD); passive execution does not reduce the fee",
+      "knowledge_class": "ESTIMATED",
+      "evidence": "fees SRC-01; spread SRC-07; model BINANCE_SPOT_STANDARD_TAKER",
+      "components": [
+        {
+          "name": "exchange_fee_entry",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+        },
+        {
+          "name": "exchange_fee_exit",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+        },
+        {
+          "name": "spread",
+          "value_bps": 0.842171,
+          "knowledge": "OBSERVED",
+          "source_id": "SRC-07",
+          "note": "2 taker leg(s) x half-spread"
+        },
+        {
+          "name": "slippage",
+          "value_bps": 3.626686,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.378"
+        },
+        {
+          "name": "market_impact",
+          "value_bps": 0.217831,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "size-driven displacement above the base slippage"
+        }
+      ]
+    }
+  ],
+  "maker_gate": {
+    "status": "FAIL",
+    "reason": "maker fee equals taker fee at this tier, so passive execution saves no fee; and no FillEvidence exists in this phase, so no maker cost may be used for admission",
+    "maker_fee_bps": 10.0,
+    "taker_fee_bps": 10.0,
+    "fill_evidence_available": false
+  },
+  "notes": [
+    "spread is measured per asset from a real read-only capture; the observation count and source path are part of the model input",
+    "volatility is measured per asset from real 5m klines",
+    "fee/slippage/impact/funding arithmetic is unchanged from COST_MODEL_V3",
+    "zero-cost is never an admission model (unchanged from V3)"
+  ],
+  "cost_by_primary_horizon": {
+    "5": {
+      "BTC": 23.5,
+      "ETH": 23.7608,
+      "SOL": 24.6867
+    },
+    "15": {
+      "BTC": 23.5,
+      "ETH": 23.7608,
+      "SOL": 24.6867
+    }
+  },
+  "p95_spread_stress_round_trip_bps_25min": {
+    "BTCUSDT": 23.5,
+    "ETHUSDT": 23.7608,
+    "SOLUSDT": 24.687
+  }
+}

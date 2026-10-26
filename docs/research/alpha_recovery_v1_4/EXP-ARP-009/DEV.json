@@ -1,0 +1,91 @@
+{
+  "by_key": {
+    "XSEC": {
+      "avg_duration_min": 7623.53,
+      "avg_loss_usd": -33.4104,
+      "avg_mae_pct": 0.0,
+      "avg_mfe_pct": 0.0,
+      "avg_win_usd": 18.0179,
+      "concentration": {
+        "positive_trades": 9,
+        "top10pct_share": 0.3482,
+        "top1_share": 0.3482,
+        "top5_share": 0.926,
+        "total_positive_net": 162.16
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "rotate": 16,
+        "window_expiry": 1
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": -100.114,
+      "expectancy_net_bps": -123.673,
+      "fees_usd": 20.03,
+      "gross_usd": -85.1,
+      "max_drawdown_bps": 3837.02,
+      "median_duration_min": 4320.0,
+      "net_usd": -105.12,
+      "payoff": 0.5393,
+      "profit_factor": 0.6067,
+      "sharpe_per_trade": null,
+      "trades": 17,
+      "win_rate": 0.5294
+    }
+  },
+  "combined": {
+    "avg_duration_min": 7623.53,
+    "avg_loss_usd": -33.4104,
+    "avg_mae_pct": 0.0,
+    "avg_mfe_pct": 0.0,
+    "avg_win_usd": 18.0179,
+    "concentration": {
+      "positive_trades": 9,
+      "top10pct_share": 0.3482,
+      "top1_share": 0.3482,
+      "top5_share": 0.926,
+      "total_positive_net": 162.16
+    },
+    "cost_bps_rt": 23.559,
+    "exit_mix": {
+      "rotate": 16,
+      "window_expiry": 1
+    },
+    "expectancy_cost_bps": 23.56,
+    "expectancy_gross_bps": -100.114,
+    "expectancy_net_bps": -123.673,
+    "fees_usd": 20.03,
+    "gross_usd": -85.1,
+    "max_drawdown_bps": 3837.02,
+    "median_duration_min": 4320.0,
+    "net_usd": -105.12,
+    "payoff": 0.5393,
+    "profit_factor": 0.6067,
+    "sharpe_per_trade": null,
+    "trades": 17,
+    "win_rate": 0.5294
+  },
+  "duplicate_check": {
+    "applicable": true,
+    "degenerate_single_name": false,
+    "episodes": 17,
+    "held_symbols": [
+      "exp009_xsec_BTCUSDT",
+      "exp009_xsec_ETHUSDT",
+      "exp009_xsec_SOLUSDT"
+    ],
+    "result": "PASS"
+  },
+  "verdict": {
+    "checks": {
+      "gross_expectancy_gt_0": false,
+      "not_single_trade_concentrated": true,
+      "sample_sufficient": false
+    },
+    "result": "INSUFFICIENT_EVIDENCE",
+    "thresholds": {
+      "min_trades": 20,
+      "top1_share_max": 0.5
+    }
+  }
+}
