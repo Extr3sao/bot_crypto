@@ -88,8 +88,11 @@ universe:
     min_atr_percent: 0.05             # mercados muertos -> desactivar
 
   # REAL-DATA-PAPER-01: target multi-exchange explícito (sin fallback, CL-4).
+  # RFC-PAPER-008: public mainnet data for the REAL PAPER/SHADOW lab. The
+  # connector is read-only in this composition (PaperBroker is the execution
+  # boundary), so sandbox/synthetic data would make source=REAL a false claim.
   exchanges:
     - id: "binance"
       enabled: true
-      sandbox: true
+      sandbox: false
       type: "spot"

@@ -26,6 +26,7 @@ data. A stale heartbeat is rendered as stale — never as healthy.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 import time
@@ -268,7 +269,14 @@ def signals_payload(
         "state_reason": "no PAPER run directory was found",
         "events": [],
         "page": {"limit": DEFAULT_PAGE_LIMIT, "returned": 0, "total_matched": 0, "next_cursor": None},
-        "stats": {"by_stage": {}, "by_kind": {}, "by_symbol": {}, "records": 0},
+        "stats": {
+            "by_stage": {},
+            "by_kind": {},
+            "by_symbol": {},
+            "by_source": {},
+            "records": 0,
+        },
+        "outcomes": {"resolved": 0, "pending": 0, "by_mode": {}, "net_bps_mean_by_mode": {}},
         "filters": {},
         "limit_bounds": {"default": DEFAULT_PAGE_LIMIT, "max": MAX_PAGE_LIMIT},
         "retention": None,
@@ -311,10 +319,45 @@ def signals_payload(
     by_stage: dict[str, int] = {}
     by_kind: dict[str, int] = {}
     by_symbol: dict[str, int] = {}
+    by_source: dict[str, int] = {}
     for row in all_rows:
         by_stage[str(row.get("stage"))] = by_stage.get(str(row.get("stage")), 0) + 1
         by_kind[str(row.get("kind"))] = by_kind.get(str(row.get("kind")), 0) + 1
         by_symbol[str(row.get("symbol"))] = by_symbol.get(str(row.get("symbol")), 0) + 1
+        by_source[str(row.get("source"))] = by_source.get(str(row.get("source")), 0) + 1
+
+    # RFC-PAPER-008 — SHADOW observations and PAPER fills are different facts and
+    # are counted separately. Only decisions the runtime actually evaluated have
+    # an outcome; the rest are pending, not zero and not a loss.
+    outcomes = _read_jsonl(run_dir / OUTCOME_FILE)
+    signal_decisions = {
+        str(row.get("decision_id")) for row in all_rows if row.get("decision_id")
+    }
+    by_mode: dict[str, int] = {}
+    net_by_mode: dict[str, list[float]] = {}
+    resolved_decisions: set[str] = set()
+    for row in outcomes:
+        decision_id = str(row.get("decision_id") or "")
+        if not decision_id:
+            continue
+        resolved_decisions.add(decision_id)
+        mode = str(row.get("mode") or "UNKNOWN")
+        by_mode[mode] = by_mode.get(mode, 0) + 1
+        net = row.get("net_hypothetical_bps")
+        if net is not None:
+            with contextlib.suppress(TypeError, ValueError):
+                net_by_mode.setdefault(mode, []).append(float(net))
+    outcome_summary = {
+        "resolved": len(resolved_decisions & signal_decisions),
+        "pending": len(signal_decisions - resolved_decisions),
+        "by_mode": by_mode,
+        "net_bps_mean_by_mode": {
+            mode: round(sum(values) / len(values), 3)
+            for mode, values in net_by_mode.items()
+            if values
+        },
+        "scanned_rows": len(outcomes),
+    }
 
     state, reason = _signal_state(all_rows, status)
     integrity = ledger.verify()
@@ -334,8 +377,10 @@ def signals_payload(
                 "by_stage": by_stage,
                 "by_kind": by_kind,
                 "by_symbol": by_symbol,
+                "by_source": by_source,
                 "records": len(all_rows),
             },
+            "outcomes": outcome_summary,
             "filters": page.filters,
             "integrity": {
                 "ok": integrity["ok"],
@@ -578,7 +623,7 @@ def render_signals_section(payload: dict[str, Any]) -> str:
     return f"""<div id="signals" class="panel">
 <h2 style="font-size:13px;letter-spacing:.08em;color:#8b93a1;margin:0 0 6px">SIGNALS — {_escape(payload.get('run_id') or 'no run')}</h2>
 <div class="banner {tone}">{_escape(state)} — {_escape(payload.get('state_reason'))}</div>
-<div class="small">events {_escape(stats.get('records'))} · stage {_escape(stage_summary)} · kind {_escape(kind_summary)} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> · <a href="/api/analysis" style="color:#7fb2ff">AI JSON</a> {next_link}</div>
+<div class="small">events {_escape(stats.get('records'))} · source {_escape(stats.get('by_source'))} · stage {_escape(stage_summary)} · kind {_escape(kind_summary)} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · outcomes {_escape(payload.get('outcomes'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> · <a href="/api/analysis" style="color:#7fb2ff">AI JSON</a> {next_link}</div>
 <form method="get" action="/#signals" class="filters">
  <input name="symbol" placeholder="BTC/USDT" value="{_escape(filters.get('symbol') or '')}">
  <input name="strategy" placeholder="strategy_id" value="{_escape(filters.get('strategy') or '')}">
@@ -700,6 +745,12 @@ def render_page(payload: dict[str, Any]) -> str:
                 ("no trade kinds", paper.get("no_trade_kinds")),
                 ("paper trades", paper.get("paper_trades")),
                 ("shadow trades", paper.get("shadow_trades")),
+                ("last bar (UTC)", paper.get("last_market_time_utc")),
+                ("data age", _duration(paper.get("data_age_seconds"))),
+                ("last signal (UTC)", paper.get("last_decision_time_utc")),
+                ("signals appended (cycle)", paper.get("signals_appended")),
+                ("outcomes resolved", paper.get("outcomes_resolved")),
+                ("outcomes pending", paper.get("outcomes_pending")),
                 ("risk vetoes", paper.get("risk_vetoes")),
                 ("runtime failures", paper.get("runtime_failures")),
                 ("storage failures survived", paper.get("storage_failures")),
@@ -746,6 +797,19 @@ def render_page(payload: dict[str, Any]) -> str:
                 ("not paper executable", lab.get("strategies_not_paper_executable")),
                 ("checks ok", lab.get("all_checks_ok")),
             ],
+        ),
+        _card(
+            "PROVENANCE",
+            [
+                ("provider", (payload.get("provenance") or {}).get("provider")),
+                ("environment", (payload.get("provenance") or {}).get("environment")),
+                ("market data", (payload.get("provenance") or {}).get("market_data")),
+                ("sandbox", (payload.get("provenance") or {}).get("market_data_sandbox")),
+                ("signal source", (payload.get("provenance") or {}).get("signal_source")),
+                ("timeframe", (payload.get("provenance") or {}).get("timeframe")),
+                ("assets", (payload.get("provenance") or {}).get("assets")),
+            ],
+            tone="bad" if (payload.get("provenance") or {}).get("market_data") == "TESTNET" else "ok",
         ),
         _card(
             "READINESS",

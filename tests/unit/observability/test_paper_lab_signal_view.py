@@ -172,6 +172,13 @@ def test_api_signals_serves_events_with_their_outcome(tmp_path: Path, run_dir: P
     oldest = next(e for e in payload["events"] if e["decision_id"] == "dec-0")
     assert oldest["outcome"]["net_hypothetical_bps"] == pytest.approx(-21.5)
     assert payload["integrity"]["ok"] is True
+    # RFC-PAPER-008 — SHADOW outcomes and PAPER fills are counted apart, and the
+    # provenance of the stream is visible without reading the run directory.
+    assert payload["stats"]["by_source"] == {"REAL": 7}
+    assert payload["outcomes"]["resolved"] == 1
+    assert payload["outcomes"]["pending"] == 6
+    assert payload["outcomes"]["by_mode"] == {"SHADOW_TRADE": 1}
+    assert payload["outcomes"]["net_bps_mean_by_mode"]["SHADOW_TRADE"] == pytest.approx(-21.5)
 
 
 def test_limit_is_bounded_by_the_server(tmp_path: Path, run_dir: Path) -> None:

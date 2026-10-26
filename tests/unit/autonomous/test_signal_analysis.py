@@ -399,6 +399,59 @@ def test_sidecar_marks_not_configured_and_keeps_running(tmp_path: Path) -> None:
     assert third["statuses"] == {"ANALYZED": 2}
 
 
+def test_sidecar_once_before_the_first_signal_writes_a_heartbeat_only(
+    tmp_path: Path,
+) -> None:
+    """RFC-PAPER-008: the supervisor starts the sidecar with PAPER, not after it.
+
+    Before the first bar closes there is no `signals.jsonl`. That must be a
+    heartbeat (``stream_present: false``), not exit code 2 and not an empty
+    stream created by the observer.
+    """
+    sidecar = _load_sidecar()
+    run_dir = tmp_path / "autonomous-paper" / "run-empty"
+    run_dir.mkdir(parents=True)
+    (run_dir / "PAPER_RUN.json").write_text('{"run_id": "run-empty"}\n', encoding="utf-8")
+    args = sidecar.parse_args(
+        ["--run-root", str(tmp_path / "autonomous-paper"), "--run-id", run_dir.name, "--once"]
+    )
+    assert sidecar.resolve_run_dir(tmp_path / "autonomous-paper", run_dir.name) == run_dir
+    summary = sidecar.run_pass(args, run_dir, None)
+    assert summary["stream_present"] is False
+    assert summary["signals_seen"] == 0
+    assert summary["examined"] == 0
+    assert not (run_dir / "signals.jsonl").exists()
+    heartbeat = json.loads((run_dir / "AI_ANALYST_HEARTBEAT.json").read_text(encoding="utf-8"))
+    assert heartbeat["stream_present"] is False
+    assert heartbeat["statuses"] == {}
+
+
+def test_sidecar_loop_exits_cleanly_when_the_run_does_not_exist_yet(
+    tmp_path: Path,
+) -> None:
+    """A missing run is waited for, not a crash loop.
+
+    The supervisor starts children in parallel, so the analyst can wake before
+    PAPER has created its directory. Loop mode must honour its stop file and
+    return 0; the old path returned 2 and was restarted into ``FAILED``.
+    """
+    sidecar = _load_sidecar()
+    stop = tmp_path / "STOP.analyst"
+    stop.write_text("stop\n", encoding="utf-8")
+    code = sidecar.main(
+        [
+            "--run-root",
+            str(tmp_path / "autonomous-paper"),
+            "--run-id",
+            "not-created-yet",
+            "--loop",
+            "--stop-file",
+            str(stop),
+        ]
+    )
+    assert code == 0
+
+
 def test_sidecar_limit_bounds_one_pass(tmp_path: Path) -> None:
     sidecar = _load_sidecar()
     run_dir = _run_with_signals(tmp_path, count=5)

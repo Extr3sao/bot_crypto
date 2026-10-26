@@ -481,6 +481,16 @@ def build_status(
         payload["children"] = {}
         payload["disk"] = _disk_status(Path("."), limits, now_ms=now)
         payload["paper"] = {"available": False}
+        payload["provenance"] = {
+            "provider": None,
+            "environment": None,
+            "market_data": None,
+            "market_data_sandbox": None,
+            "signal_source": None,
+            "timeframe": None,
+            "assets": None,
+            "descriptor": None,
+        }
         payload["collector"] = {"available": False}
         payload["strategy_lab"] = {"available": False}
         payload["readiness"] = _readiness_status(Path(quality_path), Path(preregistration_path))
@@ -494,6 +504,11 @@ def build_status(
     forward_root = _plan_forward_root(plan)
     resolved_run_id = run_dir.name
     paper_hb = _paper_heartbeat(Path(paper_root), resolved_run_id, now_ms=now)
+    # RFC-PAPER-008 — provenance is read from the PAPER run's own descriptor, so
+    # the console can say which provider/venue produced what it is showing.
+    paper_descriptor = (
+        read_json(Path(paper_root) / resolved_run_id / "PAPER_RUN.json") or {}
+    )
 
     # The plan declares each child's executable; using it as the expected image
     # is what turns "a PID with this number exists" into "this child exists"
@@ -559,6 +574,16 @@ def build_status(
                 "errors": hb.get("errors"),
                 "paper_candidates": hb.get("paper_candidates"),
                 "canonical_clock_lock": hb.get("canonical_clock_lock"),
+                "last_market_time_ms": hb.get("last_market_time_ms"),
+                "last_market_time_utc": hb.get("last_market_time_utc"),
+                "last_decision_time_ms": hb.get("last_decision_time_ms"),
+                "last_decision_time_utc": hb.get("last_decision_time_utc"),
+                "data_age_seconds": _age_seconds(
+                    hb.get("last_market_time_ms"), now_ms=now
+                ),
+                "signals_appended": hb.get("signals_appended"),
+                "outcomes_resolved": hb.get("outcomes_resolved"),
+                "outcomes_pending": hb.get("outcomes_pending"),
             }
         )
     collector_payload = _collector_status(forward_root, resolved_run_id, now_ms=now)
@@ -598,6 +623,18 @@ def build_status(
             "children": children,
             "disk": _disk_status(run_dir, limits, now_ms=now),
             "paper": paper_payload,
+            "provenance": {
+                "provider": paper_descriptor.get("provider"),
+                "environment": paper_descriptor.get("environment"),
+                "market_data": paper_descriptor.get("market_data"),
+                "market_data_sandbox": paper_descriptor.get("market_data_sandbox"),
+                "signal_source": paper_descriptor.get("signal_source"),
+                "timeframe": paper_descriptor.get("timeframe"),
+                "assets": paper_descriptor.get("assets"),
+                "descriptor": str(
+                    Path(paper_root) / resolved_run_id / "PAPER_RUN.json"
+                ),
+            },
             "collector": collector_payload,
             "strategy_lab": _strategy_status(run_dir),
             "retention": (heartbeat.get("stop_report") or None),
