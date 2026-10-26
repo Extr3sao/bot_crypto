@@ -1,0 +1,49 @@
+{
+  "experiment_id": "EXP-ARP-018",
+  "strategy_id": "H-XSEC-LOWVOL-002",
+  "arm": "NEW_HYPOTHESIS",
+  "source_faithful": false,
+  "mechanism_family": "cross_sectional_low_volatility",
+  "prior_art": {
+    "experiment_id": "EXP-ARP-015",
+    "strategy_id": "H-XSEC-LOWVOL-001",
+    "decision": "INSUFFICIENT_EVIDENCE",
+    "relationship": "new experiment on a materially broader universe; minimum evidence NOT lowered"
+  },
+  "timeframe": "1d",
+  "min_trades": 15,
+  "universe": {
+    "kind": "PIT_DYNAMIC",
+    "min_history_days": 60,
+    "liquidity_lookback_days": 30,
+    "min_median_quote_volume": 1000000.0,
+    "max_gap_ratio": 0.05,
+    "max_stale_days": 2
+  },
+  "parameters": {
+    "ranking_feature": "realized_vol",
+    "ranking_window": 60,
+    "ascending": true,
+    "rebalance_days": 10,
+    "max_hold_days": 30,
+    "min_members": 5,
+    "entry_delay_days": 0
+  },
+  "cost_model": {
+    "version": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "round_trip_bps": 23.559016994374947,
+    "source": "live CostEngine (never hardcoded)",
+    "stress_multiples": [0.5, 1.0, 1.25, 1.5, 2.0]
+  },
+  "splits": {
+    "DEV": ["2019-01-01", "2023-12-31"],
+    "VALIDATION": ["2024-01-01", "2025-06-30"],
+    "OOS_LOCK": ["2025-07-01", "2026-02-28"],
+    "oos_opened": false
+  },
+  "config_hash": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+  "verifier": "UNASSIGNED",
+  "status": "PREREGISTERED",
+  "frozen_before_results": true
+}

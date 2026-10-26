@@ -1,0 +1,15 @@
+discovered: families=6 protocol=1 declared=5
+cell metrics ready in 260s
+{
+ "fingerprint_scheme": "v2",
+ "source_commit": "7a4593cb81ea659ce860215a4dbe17abbdad6a7e",
+ "rows": 30,
+ "measured": 24,
+ "eligible": 0,
+ "hold_net_positive": [],
+ "dev_net_positive": [],
+ "best_hold_gross": {
+  "candidate_id": "TDM12-volatility@5m",
+  "gross": 7.0531
+ }
+}

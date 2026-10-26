@@ -1,0 +1,1123 @@
+{
+  "artifact": "ST6_FORWARD_REGIME_REPORT",
+  "assets_observed": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "XRPUSDT"
+  ],
+  "commit": {
+    "head_at_declaration": "6b4edd4508437e87503acfcbacdb1ab0ead71bde",
+    "head_at_run": "9eb1e464cf8b090af222127153e33f6ea6e1e949"
+  },
+  "coverage": {
+    "artifact": "ST6_REGIME_COVERAGE",
+    "asset_presence_fraction": {
+      "BTCUSDT": 1.0,
+      "ETHUSDT": 1.0,
+      "SOLUSDT": 1.0,
+      "XRPUSDT": 1.0
+    },
+    "checks": {
+      "days_covered >= declared minimum": {
+        "observed": 2,
+        "required": 10,
+        "satisfied": false
+      },
+      "distinct slots >= declared minimum": {
+        "observed": 4,
+        "required": 6,
+        "satisfied": false
+      },
+      "distinct volatility bands >= declared minimum": {
+        "observed": 1,
+        "required": 2,
+        "satisfied": false
+      },
+      "each session >= declared minimum": {
+        "observed": 0,
+        "required": 8,
+        "satisfied": false
+      },
+      "every asset present in >= declared fraction of windows": {
+        "observed": 1.0,
+        "required": 0.9,
+        "satisfied": true
+      },
+      "rejected fraction <= declared maximum": {
+        "observed": 0.0,
+        "required": 0.2,
+        "satisfied": true
+      },
+      "weekday windows >= declared minimum": {
+        "observed": 4,
+        "required": 20,
+        "satisfied": false
+      },
+      "weekend windows >= declared minimum": {
+        "observed": 0,
+        "required": 4,
+        "satisfied": false
+      },
+      "windows_total >= declared minimum": {
+        "observed": 4,
+        "required": 42,
+        "satisfied": false
+      }
+    },
+    "coverage_complete": false,
+    "coverage_token": "REGIME_COVERAGE_INSUFFICIENT",
+    "day_detail": {
+      "2026-10-08": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [
+          "16:00-20:00 UTC",
+          "20:00-24:00 UTC"
+        ],
+        "windows": 2
+      },
+      "2026-10-09": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [
+          "00:00-04:00 UTC",
+          "04:00-08:00 UTC"
+        ],
+        "windows": 2
+      },
+      "2026-10-10": {
+        "complete": false,
+        "day_type": "weekend",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-11": {
+        "complete": false,
+        "day_type": "weekend",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-12": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-13": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-14": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-15": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-16": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-17": {
+        "complete": false,
+        "day_type": "weekend",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-18": {
+        "complete": false,
+        "day_type": "weekend",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-19": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-20": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-21": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      },
+      "2026-10-22": {
+        "complete": false,
+        "day_type": "weekday",
+        "slots": [],
+        "windows": 0
+      }
+    },
+    "declared_rule": {
+      "maximum_rejected_fraction": 0.2,
+      "maximum_windows_per_day": 6,
+      "minimum_asset_presence_fraction": 0.9,
+      "minimum_days_covered": 10,
+      "minimum_distinct_slots": 6,
+      "minimum_distinct_volatility_bands": 2,
+      "minimum_weekday_windows": 20,
+      "minimum_weekend_windows": 4,
+      "minimum_windows_per_three_sessions": 8,
+      "minimum_windows_total": 42,
+      "period_days": 14
+    },
+    "declared_rule_is_frozen": "the pass/fail rule is the one declared when the period was activated and is not adjusted after seeing a window; the liquidity bands actually observed are reported beside it rather than turned into a condition afterwards",
+    "generated_at_utc": "2026-10-09T04:03:24Z",
+    "missing": [
+      {
+        "condition": "days_covered >= declared minimum",
+        "gap": "still short of the declared coverage rule",
+        "observed": 2,
+        "required": 10
+      },
+      {
+        "condition": "windows_total >= declared minimum",
+        "gap": "still short of the declared coverage rule",
+        "observed": 4,
+        "required": 42
+      },
+      {
+        "condition": "each session >= declared minimum",
+        "gap": "still short of the declared coverage rule",
+        "observed": 0,
+        "required": 8
+      },
+      {
+        "condition": "weekday windows >= declared minimum",
+        "gap": "still short of the declared coverage rule",
+        "observed": 4,
+        "required": 20
+      },
+      {
+        "condition": "weekend windows >= declared minimum",
+        "gap": "still short of the declared coverage rule",
+        "observed": 0,
+        "required": 4
+      },
+      {
+        "condition": "distinct slots >= declared minimum",
+        "gap": "still short of the declared coverage rule",
+        "observed": 4,
+        "required": 6
+      },
+      {
+        "condition": "distinct volatility bands >= declared minimum",
+        "gap": "still short of the declared coverage rule",
+        "observed": 1,
+        "required": 2
+      }
+    ],
+    "observed_windows": 4,
+    "period": {
+      "days_elapsed": 2,
+      "days_remaining": 12,
+      "ends_at_utc": "2026-10-22T16:21:20Z",
+      "period_days": 14,
+      "started_at_utc": "2026-10-08T16:21:20Z"
+    },
+    "planned_windows": 84,
+    "reading": "the period is still open: the coverage rule is checked, not assumed, and an incomplete period keeps ECO-1 open with this limitation stated",
+    "regimes_identified": {
+      "day_types": [
+        "weekday"
+      ],
+      "liquidity_bands": [
+        "DEEP",
+        "THIN"
+      ],
+      "sessions": {
+        "asia": 2,
+        "europe": 0,
+        "us": 2
+      },
+      "slots": [
+        "00:00-04:00 UTC",
+        "04:00-08:00 UTC",
+        "16:00-20:00 UTC",
+        "20:00-24:00 UTC"
+      ],
+      "volatility_bands": [
+        "HIGH"
+      ]
+    },
+    "rejected_fraction": 0.0,
+    "windows_per_day": {
+      "2026-10-08": 2,
+      "2026-10-09": 2,
+      "2026-10-10": 0,
+      "2026-10-11": 0,
+      "2026-10-12": 0,
+      "2026-10-13": 0,
+      "2026-10-14": 0,
+      "2026-10-15": 0,
+      "2026-10-16": 0,
+      "2026-10-17": 0,
+      "2026-10-18": 0,
+      "2026-10-19": 0,
+      "2026-10-20": 0,
+      "2026-10-21": 0,
+      "2026-10-22": 0
+    }
+  },
+  "credentials_used": 0,
+  "current_head": "9eb1e464cf8b090af222127153e33f6ea6e1e949",
+  "does_not_license": [
+    "a hypothesis, a strategy, a campaign or a backtest",
+    "any paper or live trading, or any deployment of capital",
+    "any claim of edge, profit or production capability"
+  ],
+  "drift": {
+    "actions_on_drift": [
+      "the observation is recorded with its raw evidence and its hash",
+      "the asset and the context are named in the breach entry",
+      "the model is NOT adjusted and no strategy is touched",
+      "no real order is requested"
+    ],
+    "artifact": "ST6_MODEL_DRIFT",
+    "boundary_breaches": 0,
+    "breaches": [
+      {
+        "asset": "SOLUSDT",
+        "context": {
+          "day_type": "weekday",
+          "levels_consumed": 2,
+          "liquidity_band": "THIN",
+          "session": "us",
+          "size_usdt": 200.0,
+          "slot": "16:00-20:00 UTC",
+          "volatility_regime": "HIGH",
+          "window_id": "20261008T162202Z"
+        },
+        "kind": "impact_over_model_buy",
+        "multiple_of_model": 2.853711,
+        "observed_at_utc": "2026-10-08T16:22:15.903079Z",
+        "st6_effect": "DRIFT",
+        "threshold_bps": 0.25,
+        "value_bps": 0.713427697
+      }
+    ],
+    "breaches_total": 1,
+    "drift_breaches": 1,
+    "drift_detected": true,
+    "generated_at_utc": "2026-10-09T04:03:24Z",
+    "not_measured": [
+      "realised slippage",
+      "fill quality or price improvement",
+      "maker queue position"
+    ],
+    "per_asset_extremes": {
+      "BTCUSDT": {
+        "median_spread_bps": 0.001223,
+        "observations": 12,
+        "over_model_observations": 0,
+        "worst_impact_bps": 0.015344,
+        "worst_spread_bps": 0.001229
+      },
+      "ETHUSDT": {
+        "median_spread_bps": 0.040475,
+        "observations": 12,
+        "over_model_observations": 0,
+        "worst_impact_bps": 0.0,
+        "worst_spread_bps": 0.041091
+      },
+      "SOLUSDT": {
+        "median_spread_bps": 0.915542,
+        "observations": 12,
+        "over_model_observations": 0,
+        "worst_impact_bps": 0.713428,
+        "worst_spread_bps": 0.918738
+      },
+      "XRPUSDT": {
+        "median_spread_bps": 0.725483,
+        "observations": 12,
+        "over_model_observations": 0,
+        "worst_impact_bps": 0.0,
+        "worst_spread_bps": 0.737327
+      }
+    },
+    "period": {
+      "ends_at_utc": "2026-10-22T16:21:20Z",
+      "started_at_utc": "2026-10-08T16:21:20Z"
+    },
+    "rule": {
+      "aggregation_policy": "extreme values are never hidden by aggregation: every observation above a threshold is listed individually with its asset, instant and context, up to 1 recorded here",
+      "boundary_multiple": 1.5,
+      "impact_threshold_bps": 0.25,
+      "size_usdt": 200.0,
+      "source": "COST_MODEL_V3.model_constants, read at run time; this phase never writes it",
+      "spread_threshold_bps": 1.0
+    },
+    "st6_components": {
+      "depth": "WITHIN",
+      "impact": "DRIFT",
+      "spread": "WITHIN"
+    },
+    "st6_provisional": false,
+    "st6_window_verdict": "DRIFT_WIDER_THAN_MODELLED",
+    "what_the_rule_saw": [
+      {
+        "depth_covers_account_size": true,
+        "observations": 12,
+        "pooled_median_spread_bps": 0.389073383,
+        "rounds_covered": 3,
+        "source": "observations",
+        "window_id": "20261008T162202Z",
+        "worst_spread_bps": 0.918737654,
+        "worst_walk_bps_at_account_size": 0.713427697
+      },
+      {
+        "depth_covers_account_size": true,
+        "observations": 12,
+        "pooled_median_spread_bps": 0.383923488,
+        "rounds_covered": 3,
+        "source": "observations",
+        "window_id": "20261008T200323Z",
+        "worst_spread_bps": 0.916548279,
+        "worst_walk_bps_at_account_size": 0.0
+      },
+      {
+        "depth_covers_account_size": true,
+        "observations": 12,
+        "pooled_median_spread_bps": 0.381854511,
+        "rounds_covered": 3,
+        "source": "observations",
+        "window_id": "20261009T000323Z",
+        "worst_spread_bps": 0.914954938,
+        "worst_walk_bps_at_account_size": 0.0
+      },
+      {
+        "depth_covers_account_size": true,
+        "observations": 12,
+        "pooled_median_spread_bps": 0.37809949,
+        "rounds_covered": 3,
+        "source": "observations",
+        "window_id": "20261009T040323Z",
+        "worst_spread_bps": 0.904200009,
+        "worst_walk_bps_at_account_size": 0.0
+      }
+    ],
+    "what_the_rule_saw_note": "the ST-6 rule is applied to values recomputed over every round of each window, from the recorded observations; the *_round_zero fields in the window index are kept beside them so the difference is visible instead of hidden",
+    "windows_judged": 4
+  },
+  "drift_observed_so_far": true,
+  "duplication_policy": "one compact observation line per (window, asset, round) plus an index line per window; rollups live only in the report artefacts, never repeated inside individual events (CAP-004C)",
+  "eco_1": "OPEN — the declared coverage rule is not yet satisfied: the period is open; a drift breach has already been measured and is reported in this artefact rather than hidden behind the open period",
+  "eco_1_decision": "OPEN — the declared coverage rule is not yet satisfied: the period is open; a drift breach has already been measured and is reported in this artefact rather than hidden behind the open period",
+  "eco_2": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
+  "errors": {
+    "evidence_failures": [],
+    "rejected_observations": [],
+    "windows_incomplete": []
+  },
+  "false_success": 0,
+  "files_written": [
+    "data/st6/ST6_PERIOD.json",
+    "data/st6/ST6_WINDOWS.jsonl",
+    "data/st6/ST6_OBSERVATIONS.jsonl",
+    "data/st6/ST6_REGIME_COVERAGE.json",
+    "data/st6/ST6_MODEL_DRIFT.json",
+    "data/st6/ST6_FORWARD_REGIME_REPORT.json",
+    "data/st6/ST6_FORWARD_REGIME_REPORT.md"
+  ],
+  "generated_at_utc": "2026-10-09T04:03:24Z",
+  "insufficient_data": [
+    {
+      "condition": "days_covered >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 2,
+      "required": 10
+    },
+    {
+      "condition": "windows_total >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 4,
+      "required": 42
+    },
+    {
+      "condition": "each session >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 0,
+      "required": 8
+    },
+    {
+      "condition": "weekday windows >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 4,
+      "required": 20
+    },
+    {
+      "condition": "weekend windows >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 0,
+      "required": 4
+    },
+    {
+      "condition": "distinct slots >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 4,
+      "required": 6
+    },
+    {
+      "condition": "distinct volatility bands >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 1,
+      "required": 2
+    }
+  ],
+  "model_comparison": {
+    "reading": "the modelled terms are unchanged and were read from the frozen model at run time; no simulator output is presented as a measurement",
+    "statistics": {
+      "by_asset": {
+        "BTCUSDT": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 12,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 2547824.190261,
+            "median": 1145533.154884,
+            "min": 191462.31213,
+            "n": 24,
+            "p95": 2491413.452452,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.015344,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 24,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 12,
+          "spread_bps": {
+            "max": 0.001229,
+            "median": 0.001223,
+            "min": 0.001213,
+            "model_threshold_bps": 1.0,
+            "n": 12,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.001229,
+            "p99": null
+          }
+        },
+        "ETHUSDT": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 12,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 1659351.441292,
+            "median": 1013313.66693,
+            "min": 677799.139624,
+            "n": 24,
+            "p95": 1538115.204289,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 24,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 12,
+          "spread_bps": {
+            "max": 0.041091,
+            "median": 0.040475,
+            "min": 0.040097,
+            "model_threshold_bps": 1.0,
+            "n": 12,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.041089,
+            "p99": null
+          }
+        },
+        "SOLUSDT": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 12,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 5231477.45302,
+            "median": 3649177.471415,
+            "min": 1818359.5178,
+            "n": 24,
+            "p95": 4197401.205078,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.713428,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 24,
+            "over_model": 1,
+            "over_model_pct": 4.166667,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 12,
+          "spread_bps": {
+            "max": 0.918738,
+            "median": 0.915542,
+            "min": 0.9042,
+            "model_threshold_bps": 1.0,
+            "n": 12,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.918738,
+            "p99": null
+          }
+        },
+        "XRPUSDT": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 12,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 2866087.62202,
+            "median": 1911138.290415,
+            "min": 1657616.16623,
+            "n": 24,
+            "p95": 2762679.530587,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 24,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 12,
+          "spread_bps": {
+            "max": 0.737327,
+            "median": 0.725483,
+            "min": 0.716102,
+            "model_threshold_bps": 1.0,
+            "n": 12,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.737327,
+            "p99": null
+          }
+        }
+      },
+      "by_day_type": {
+        "weekday": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 48,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 5231477.45302,
+            "median": 1755631.991435,
+            "min": 191462.31213,
+            "n": 96,
+            "p95": 3914739.027938,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.713428,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 96,
+            "over_model": 1,
+            "over_model_pct": 1.041667,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 48,
+          "spread_bps": {
+            "max": 0.918738,
+            "median": 0.378596,
+            "min": 0.001213,
+            "model_threshold_bps": 1.0,
+            "n": 48,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.917862,
+            "p99": null
+          }
+        }
+      },
+      "by_liquidity_band": {
+        "DEEP": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 47,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 4236209.99112,
+            "median": 1731726.278125,
+            "min": 191462.31213,
+            "n": 94,
+            "p95": 3886447.011636,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.015344,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 94,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 47,
+          "spread_bps": {
+            "max": 0.918738,
+            "median": 0.041091,
+            "min": 0.001213,
+            "model_threshold_bps": 1.0,
+            "n": 47,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.916448,
+            "p99": null
+          }
+        },
+        "THIN": {
+          "book_age_ms": {
+            "max": 2000.0,
+            "median": 2000.0,
+            "min": 2000.0,
+            "n": 1,
+            "p95": 2000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 5231477.45302,
+            "median": 3524918.48541,
+            "min": 1818359.5178,
+            "n": 2,
+            "p95": 5060821.556259,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.713428,
+            "median": 0.356714,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 2,
+            "over_model": 1,
+            "over_model_pct": 50.0,
+            "p95": 0.677756,
+            "p99": null
+          },
+          "observations": 1,
+          "spread_bps": {
+            "max": 0.918738,
+            "median": 0.918738,
+            "min": 0.918738,
+            "model_threshold_bps": 1.0,
+            "n": 1,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.918738,
+            "p99": null
+          }
+        }
+      },
+      "by_session": {
+        "asia": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 24,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 3977484.75084,
+            "median": 1703006.773095,
+            "min": 462748.389844,
+            "n": 48,
+            "p95": 3945055.288765,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 48,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 24,
+          "spread_bps": {
+            "max": 0.914955,
+            "median": 0.378255,
+            "min": 0.001213,
+            "model_threshold_bps": 1.0,
+            "n": 24,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.914859,
+            "p99": null
+          }
+        },
+        "us": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 24,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 5231477.45302,
+            "median": 1781815.18804,
+            "min": 191462.31213,
+            "n": 48,
+            "p95": 3698344.765301,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.713428,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 48,
+            "over_model": 1,
+            "over_model_pct": 2.083333,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 24,
+          "spread_bps": {
+            "max": 0.918738,
+            "median": 0.384195,
+            "min": 0.001222,
+            "model_threshold_bps": 1.0,
+            "n": 24,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.918712,
+            "p99": null
+          }
+        }
+      },
+      "by_volatility_regime": {
+        "HIGH": {
+          "book_age_ms": {
+            "max": 15000.0,
+            "median": 8000.0,
+            "min": 1000.0,
+            "n": 48,
+            "p95": 15000.0,
+            "p99": null
+          },
+          "depth_notional_usdt": {
+            "max": 5231477.45302,
+            "median": 1755631.991435,
+            "min": 191462.31213,
+            "n": 96,
+            "p95": 3914739.027938,
+            "p99": null
+          },
+          "impact_bps": {
+            "max": 0.713428,
+            "median": 0.0,
+            "min": 0.0,
+            "model_threshold_bps": 0.25,
+            "n": 96,
+            "over_model": 1,
+            "over_model_pct": 1.041667,
+            "p95": 0.0,
+            "p99": null
+          },
+          "observations": 48,
+          "spread_bps": {
+            "max": 0.918738,
+            "median": 0.378596,
+            "min": 0.001213,
+            "model_threshold_bps": 1.0,
+            "n": 48,
+            "over_model": 0,
+            "over_model_pct": 0.0,
+            "p95": 0.917862,
+            "p99": null
+          }
+        }
+      },
+      "impact_extremes": {
+        "max_bps": 0.713428,
+        "mean_bps": 0.007591
+      },
+      "overall": {
+        "book_age_ms": {
+          "max": 15000.0,
+          "median": 8000.0,
+          "min": 1000.0,
+          "n": 48,
+          "p95": 15000.0,
+          "p99": null
+        },
+        "depth_notional_usdt": {
+          "max": 5231477.45302,
+          "median": 1755631.991435,
+          "min": 191462.31213,
+          "n": 96,
+          "p95": 3914739.027938,
+          "p99": null
+        },
+        "freshness": "book age is observation freshness, not execution latency",
+        "impact_bps": {
+          "max": 0.713428,
+          "median": 0.0,
+          "min": 0.0,
+          "model_threshold_bps": 0.25,
+          "n": 96,
+          "over_model": 1,
+          "over_model_pct": 1.041667,
+          "p95": 0.0,
+          "p99": null
+        },
+        "latency_reading": "book age is the elapsed local time between a round's book and the window close; it is observation freshness, not execution latency",
+        "observations": 48,
+        "rejected": 0,
+        "rejected_fraction": 0.0,
+        "spread_bps": {
+          "max": 0.918738,
+          "median": 0.378596,
+          "min": 0.001213,
+          "model_threshold_bps": 1.0,
+          "n": 48,
+          "over_model": 0,
+          "over_model_pct": 0.0,
+          "p95": 0.917862,
+          "p99": null
+        }
+      },
+      "spread_extremes": {
+        "max_bps": 0.918738,
+        "mean_bps": 0.42033,
+        "median_bps": 0.378596,
+        "min_bps": 0.001213
+      }
+    },
+    "thresholds": {
+      "boundary_multiple": 1.5,
+      "declared": "read from the frozen model at run time; this phase never writes them",
+      "impact_bps": 0.25,
+      "knowledge_class": "ASSUMED/ESTIMATED modelling constants, not observations",
+      "model": "COST_MODEL_V3",
+      "model_sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+      "source": "docs\\COST_MODEL_V3.json",
+      "spread_bps": 1.0
+    }
+  },
+  "observations_written": 48,
+  "orders_sent": 0,
+  "outcome": "INSUFFICIENT_REGIME_COVERAGE",
+  "outcome_basis": "the declared coverage rule is not yet satisfied: the period is open; a drift breach has already been measured and is reported in this artefact rather than hidden behind the open period",
+  "period": {
+    "days_covered": 2,
+    "declared_days": 14,
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "max_windows_per_day": 6,
+    "slots": [
+      "00:00-04:00 UTC",
+      "04:00-08:00 UTC",
+      "08:00-12:00 UTC",
+      "12:00-16:00 UTC",
+      "16:00-20:00 UTC",
+      "20:00-24:00 UTC"
+    ],
+    "started_at_utc": "2026-10-08T16:21:20Z",
+    "windows_observed": 4,
+    "windows_planned": 84
+  },
+  "phase": "ST-6 forward cost regime validation",
+  "regimes_identified": {
+    "day_types": [
+      "weekday"
+    ],
+    "liquidity_bands": [
+      "DEEP",
+      "THIN"
+    ],
+    "sessions": {
+      "asia": 2,
+      "europe": 0,
+      "us": 2
+    },
+    "slots": [
+      "00:00-04:00 UTC",
+      "04:00-08:00 UTC",
+      "16:00-20:00 UTC",
+      "20:00-24:00 UTC"
+    ],
+    "volatility_bands": [
+      "HIGH"
+    ]
+  },
+  "rejected_observations": 0,
+  "repairs": [
+    {
+      "at_utc": "2026-10-08T16:34:23Z",
+      "changed_fields": null,
+      "changed_observations": null,
+      "evidence_unchanged": true,
+      "raw_hashes_rechecked": 1,
+      "what": "book ages, the window reference instant, the slot and the per-window aggregates were re-derived from each raw snapshot's own local_finished_utc; the age had been measured against the instant the process started and came out below zero",
+      "why": "a negative observation age is impossible and is a defect, not evidence"
+    },
+    {
+      "at_utc": "2026-10-08T16:35:56Z",
+      "changed_fields": null,
+      "changed_observations": null,
+      "evidence_unchanged": true,
+      "raw_hashes_rechecked": 1,
+      "what": "book ages, the window reference instant, the slot and the per-window aggregates were re-derived from each raw snapshot's own local_finished_utc; the age had been measured against the instant the process started and came out below zero",
+      "why": "a negative observation age is impossible and is a defect, not evidence"
+    }
+  ],
+  "scheduler": {
+    "daemon_created": false,
+    "reused_cadence": "none: ST-6 was not scheduled, so this phase adds an idempotent --due command instead of a second scheduler",
+    "trading_scheduler_touched": false
+  },
+  "standing_state": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "ECO_2": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
+    "LIVE_TRADING": "DISABLED",
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "PROFITABILITY_VERIFIED": false,
+    "TRADES_AUTHORIZED": 0
+  },
+  "storage": {
+    "bounded": "gzip keeps the raw evidence well under a megabyte per day at six windows",
+    "compressed_bytes": 71930,
+    "events": "data/st6/ST6_OBSERVATIONS.jsonl, data/st6/ST6_WINDOWS.jsonl",
+    "raw": "data/st6/raw/<window_id>.json.gz (gzip; sha256 of the uncompressed bytes)",
+    "uncompressed_bytes": 725529
+  },
+  "tests": {
+    "false_success_target": 0,
+    "independent_verifier": "scripts/st6_forward_regime_verify.py",
+    "note": "the verifier recomputes spread, depth, impact and the per-regime statistics from the raw window bytes and compares them with the recorded observations; it is not the builder",
+    "unit_suite": "tests/unit/research/test_st6_forward_regime.py",
+    "verification_artifact": "data/st6/ST6_INDEPENDENT_VERIFICATION.json"
+  },
+  "volatility_reference": {
+    "declared_before_observation": true,
+    "interval": "1h",
+    "rule": "volatility regime = band of the live rolling 24-bar standard deviation of hourly log returns (in bps) against the tertiles of the same statistic computed over the frozen 1-hour archive: <= p33 LOW, <= p67 NORMAL, above p67 HIGH",
+    "series": {
+      "BTCUSDT": {
+        "archive": "data\\raw\\alpha003\\price\\BTCUSDT_1h.json",
+        "archive_sha256": "93af6a10d27a2ad58e4b1c2beb571d8fd6d5b0d7e07a8ff6e3848d58d33b3467",
+        "available": true,
+        "bars": 17676,
+        "first_bar_utc": "2024-10-01T00:00:00.000000Z",
+        "last_bar_utc": "2026-10-07T11:00:00.000000Z",
+        "median_bps": 37.716277,
+        "p33_bps": 30.411759,
+        "p67_bps": 45.774307,
+        "rolling_windows": 17652
+      },
+      "ETHUSDT": {
+        "archive": "data\\raw\\alpha003\\price\\ETHUSDT_1h.json",
+        "archive_sha256": "99a23e658448c12a20012532f3b49b464314c6b06d1715af1861889ab890488d",
+        "available": true,
+        "bars": 17676,
+        "first_bar_utc": "2024-10-01T00:00:00.000000Z",
+        "last_bar_utc": "2026-10-07T11:00:00.000000Z",
+        "median_bps": 56.275307,
+        "p33_bps": 46.272271,
+        "p67_bps": 68.667942,
+        "rolling_windows": 17652
+      },
+      "SOLUSDT": {
+        "archive": "data\\raw\\alpha003\\price\\SOLUSDT_1h.json",
+        "archive_sha256": "47e39783ea9df716e061952d1a1c2dabf013017855bfcdf0fc3b80b88fdc6522",
+        "available": true,
+        "bars": 17676,
+        "first_bar_utc": "2024-10-01T00:00:00.000000Z",
+        "last_bar_utc": "2026-10-07T11:00:00.000000Z",
+        "median_bps": 65.919983,
+        "p33_bps": 55.625375,
+        "p67_bps": 78.870082,
+        "rolling_windows": 17652
+      },
+      "XRPUSDT": {
+        "archive": "data\\raw\\alpha003\\price\\XRPUSDT_1h.json",
+        "archive_sha256": "c54c27608fe4e83d6a184423d2a2f8f736e9210c416d2f4335ff0c05ae7c2ea6",
+        "available": true,
+        "bars": 17676,
+        "first_bar_utc": "2024-10-01T00:00:00.000000Z",
+        "last_bar_utc": "2026-10-07T11:00:00.000000Z",
+        "median_bps": 58.93071,
+        "p33_bps": 46.833147,
+        "p67_bps": 75.40027,
+        "rolling_windows": 17652
+      }
+    },
+    "window_bars": 24
+  }
+}

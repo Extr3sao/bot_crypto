@@ -1,0 +1,187 @@
+{
+  "artifact": "tdm14a-output-manifest-v1",
+  "generated_at_utc": "2026-10-26T08:47:51Z",
+  "entries": 14,
+  "generated_in_their_run": 14,
+  "runs": [
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf",
+      "target_commit": "7a4593cb81ea659ce860215a4dbe17abbdad6a7e",
+      "started_utc": "2026-10-25T18:18:21Z",
+      "finished_utc": "2026-10-25T18:25:21Z",
+      "duration_seconds": 419.7,
+      "cell_metrics_sha256": "f91591280d300d176aca303b25bb28dbc63cbb3e50ae1c6a109e478f2d415e4f",
+      "review_sha256": "b068c812a85cab925e383dc2dd5712665778549ab8bf1f81e531e6e2f89699c2"
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf",
+      "target_commit": "7a4593cb81ea659ce860215a4dbe17abbdad6a7e",
+      "started_utc": "2026-10-25T18:28:23Z",
+      "finished_utc": "2026-10-25T18:34:49Z",
+      "duration_seconds": 386.1,
+      "cell_metrics_sha256": "f91591280d300d176aca303b25bb28dbc63cbb3e50ae1c6a109e478f2d415e4f",
+      "review_sha256": "0624d9c0198a4d6c35810e0c421165a99cacb423ead33c396a7f17847eb30682"
+    }
+  ],
+  "status": "PASS",
+  "rows": [
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf/.tdm12/review.json",
+      "name": "review",
+      "bytes": 6591,
+      "sha256": "b068c812a85cab925e383dc2dd5712665778549ab8bf1f81e531e6e2f89699c2",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf/.tdm12/cell_metrics.json",
+      "name": "cell_metrics",
+      "bytes": 7139849,
+      "sha256": "f91591280d300d176aca303b25bb28dbc63cbb3e50ae1c6a109e478f2d415e4f",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf/.replay-out/lf/CANDIDATE_REGISTRY.json",
+      "name": "registry_json",
+      "bytes": 85099,
+      "sha256": "86a020ac3dffa721a588b510cd122d08c501da4d4aee44ac6ca3e7e1d3e0e520",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": true
+    },
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf/.replay-out/lf/CANDIDATE_REGISTRY.csv",
+      "name": "registry_csv",
+      "bytes": 24367,
+      "sha256": "a4d616764d62a4943098808b2d79ba669959cf13600a44d6c9795f2931e9abde",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf/.replay-out/lf/DATA_WINDOW_REGISTRY.json",
+      "name": "window_registry",
+      "bytes": 1823,
+      "sha256": "4c88d75e97695a8dad491882bab737a3e6f5e8b5ee2b1c2a02e29d0a1cd54acb",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\lf\\review.log",
+      "name": "log:review",
+      "bytes": 246,
+      "sha256": "5f70d0b172426c6300bf14d08b7d59ef8894d165eced675dca66507ddba9e989",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\lf\\inventory.log",
+      "name": "log:inventory",
+      "bytes": 363,
+      "sha256": "076b33b2056eebd467a059efe3137728bbeb3548a653af2dc7f55ebb013b1b72",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf/.tdm12/review.json",
+      "name": "review",
+      "bytes": 6593,
+      "sha256": "0624d9c0198a4d6c35810e0c421165a99cacb423ead33c396a7f17847eb30682",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf/.tdm12/cell_metrics.json",
+      "name": "cell_metrics",
+      "bytes": 7139849,
+      "sha256": "f91591280d300d176aca303b25bb28dbc63cbb3e50ae1c6a109e478f2d415e4f",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf/.replay-out/crlf/CANDIDATE_REGISTRY.json",
+      "name": "registry_json",
+      "bytes": 85101,
+      "sha256": "bfe57e23388ee54579b6239d451ea8dc6cf65c16f553f16dc56568dbbd320751",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": true
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf/.replay-out/crlf/CANDIDATE_REGISTRY.csv",
+      "name": "registry_csv",
+      "bytes": 24367,
+      "sha256": "a4d616764d62a4943098808b2d79ba669959cf13600a44d6c9795f2931e9abde",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf/.replay-out/crlf/DATA_WINDOW_REGISTRY.json",
+      "name": "window_registry",
+      "bytes": 1823,
+      "sha256": "7c4a1893ceb8570f0e0e5239a019fa8a0a8d5532486ef3098032dc522abda224",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-logs\\crlf\\review.log",
+      "name": "log:review",
+      "bytes": 246,
+      "sha256": "b27b76f245c8acc7e30f21710633aab0f475c82baa30ed4ea46666ca96da1f36",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-logs\\crlf\\inventory.log",
+      "name": "log:inventory",
+      "bytes": 363,
+      "sha256": "965cf567c277240b1ab7ed48dbd5a5c359141a3a2a26da40ef2ea34360a2b11a",
+      "absent_before_run": true,
+      "generated_after_run_start": true,
+      "run_id_embedded": false
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "opportunity_id": "OPP-0029",
+  "title": "Time-series momentum in crypto (Grobys et al. 2025, via Karaptic Note 03)",
+  "source_ids": [
+    "S3-07"
+  ],
+  "economic_hypothesis": "the longest recent crypto-specific test of time-series momentum",
+  "market": "crypto, 30 large caps (plus a 2,500-coin robustness check)",
+  "assets": "30 large-cap coins over 416 weekly observations",
+  "timeframe": "weekly",
+  "entry_rules": "time-series momentum: long an asset when its own trailing return is positive, per the cited literature",
+  "exit_rules": "re-evaluated each week by the same trailing-return sign",
+  "risk_rules": "inverse-volatility position sizing in the literature's versions",
+  "parameters": "trailing formation window and weekly rebalance as defined by the cited papers",
+  "claimed_period": "2016-01 to 2023-12",
+  "claimed_metrics": "full sample +0.90%/week not significant; post-July-2020 negative and not significant",
+  "transaction_cost_model": "not run — closed at the literature stage",
+  "required_data": "crypto weekly price panel",
+  "external_code": "none",
+  "external_results": "Grobys, Kolari, Sandretto, Shahzad & Äijö (2025) via Karaptic Note 03",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the post-July-2020 regime a trader would trade today is negative and not significant",
+    "reviewed in RFC-035S3; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "a single 1,400% one-day outlier carries much of the raw sample",
+    "the value-weighted 2,500-coin check was never a tradable portfolio"
+  ],
+  "replication_difficulty": "the post-July-2020 regime a trader would trade today is negative and not significant",
+  "evidence_quality": "E3",
+  "selection_bias_risk": "LOW",
+  "overfitting_risk": "LOW",
+  "lookahead_risk": "LOW",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_3_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 2,
+    "CODE_AVAILABILITY": 0,
+    "DATA_REPRODUCIBILITY": 2,
+    "TRANSACTION_COST_REALISM": 0,
+    "OOS_EVIDENCE": 4,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 4,
+    "INDEPENDENT_VALIDATION": 4,
+    "IMPLEMENTATION_FIDELITY": 1
+  },
+  "evidence_score_total": 17,
+  "rank": "REJECT",
+  "rfc": "RFC-035S3",
+  "candidate_ref": "reports/rfc035/search_round_3/FINAL_REPORT.json",
+  "round_3_reason": "the post-July-2020 regime a trader would trade today is negative and not significant",
+  "candidate_id": "K-03"
+}

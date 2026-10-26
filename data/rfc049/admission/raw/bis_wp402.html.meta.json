@@ -1,0 +1,13 @@
+{
+  "key": "bis_wp402.html",
+  "url": "https://www.bis.org/publ/work402.htm",
+  "retrieved_at_utc": "2026-10-10T12:58:35Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "bytes": 125600,
+  "sha256": "95a0f327d7cfdba64049ff8eeae336e14c8ed2053363785d5e9e4e53e0097d53",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

@@ -1,0 +1,52 @@
+{
+ "opportunity_id": "OPP-0006",
+ "title": "Turn-of-the-candle intraday anomaly in Bitcoin returns",
+ "source_ids": ["S-06"],
+ "economic_hypothesis": "Exchange candle boundaries are a coordination device for order flow. A measurable, recurring drift appears around the turn of the candle, which is claimed to be statistically and economically significant and to survive an out-of-sample test.",
+ "market": "Bitcoin spot (multiple venues in the source, including Bitfinex)",
+ "assets": ["BTC"],
+ "timeframe": "minute-level",
+ "entry_rules": "PARTIAL: the anomaly is defined as returns around the turn of the candle; the source does not readably state a tradable entry rule at the level read.",
+ "exit_rules": "UNKNOWN",
+ "risk_rules": "UNKNOWN",
+ "parameters": "The candle-turn window (source uses venue-relative timing); no thresholds, no sizing.",
+ "claimed_period": "in-sample historical sample plus an out-of-sample window January-August 2022 (Bitfinex)",
+ "claimed_metrics": "positive returns of about 0.58 bps per minute around the candle turn, described as statistically and economically significant",
+ "transaction_cost_model": "NONE",
+ "required_data": "minute-level exchange data (public archives)",
+ "external_code": "NONE",
+ "external_results": "Peer-reviewed anomaly paper with an explicit out-of-sample test; unusually good for this registry.",
+ "forward_evidence": "NONE",
+ "live_evidence": "NONE",
+ "counter_evidence": [
+  "0.58 bps per minute is an order of magnitude below the project's 23.791 bps round-trip cost floor; the whole anomaly is smaller than one side of the trade.",
+  "The anomaly is tied to exchange-specific candle timing, so its magnitude is sensitive to which venue's clock defines the turn - a fidelity trap for replication.",
+  "No cost model, no net-of-cost result, and no statement about what share of the 0.58 bps survives a market-order entry."
+ ],
+ "ambiguities": [
+  "Whether the return is capturable at all with a market order at the boundary is untested by the source.",
+  "The exact window length and pre/post split are not established at the level read."
+ ],
+ "replication_difficulty": "MEDIUM methodologically, but the result is economically unusable.",
+ "evidence_quality": "HIGH as an anomaly, LOW as an opportunity.",
+ "selection_bias_risk": "LOW",
+ "overfitting_risk": "MEDIUM (many minute windows are testable)",
+ "lookahead_risk": "LOW",
+ "implementation_risk": "HIGH (sub-minute execution)",
+ "evidence_scores": {
+  "RULE_COMPLETENESS": 3,
+  "CODE_AVAILABILITY": 1,
+  "DATA_REPRODUCIBILITY": 4,
+  "TRANSACTION_COST_REALISM": 1,
+  "OOS_EVIDENCE": 3,
+  "FORWARD_EVIDENCE": 0,
+  "LIVE_EVIDENCE": 0,
+  "SAMPLE_SIZE": 3,
+  "INDEPENDENT_VALIDATION": 2,
+  "IMPLEMENTATION_FIDELITY": 2
+ },
+ "evidence_score_total": 19,
+ "rank": "REJECT",
+ "status": "REJECTED_COST_FLOOR",
+ "selection_note": "Rejected for the same reason OPP-0005 is: the gross effect per trade is a fraction of the project's cost floor. Recorded so the rejection is auditable rather than implicit."
+}

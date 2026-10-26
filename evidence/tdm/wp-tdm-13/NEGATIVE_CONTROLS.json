@@ -1,0 +1,155 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "phase": "WP-13C negative controls",
+  "verifier_id": "tdm13-independent-verifier/1",
+  "python": "3.11.15",
+  "controls": [
+    {
+      "id": "NC-01",
+      "name": "mutated dataset byte",
+      "injected": "flipped first byte of BTC_15m.json",
+      "run": {
+        "command": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\scripts\\tdm13_inputs.py verify",
+        "exit_code": 1,
+        "stdout": [
+          "verified 25/26 datasets",
+          "  FAIL HOLD:BTC:15m: b95cf9b70c09 != d21810c79767"
+        ],
+        "stderr": []
+      },
+      "expected_token": "FAIL",
+      "rejected": true,
+      "expected_token_seen": true,
+      "status": "PROVEN"
+    },
+    {
+      "id": "NC-02",
+      "name": "required dataset removed",
+      "injected": "deleted BTC_1h.json",
+      "run": {
+        "command": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\scripts\\tdm13_inputs.py verify",
+        "exit_code": 1,
+        "stdout": [
+          "verified 25/26 datasets",
+          "  FAIL HOLD:BTC:1h: missing evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_1h.json"
+        ],
+        "stderr": []
+      },
+      "expected_token": "missing",
+      "rejected": true,
+      "expected_token_seen": true,
+      "status": "PROVEN"
+    },
+    {
+      "id": "NC-03",
+      "name": "altered claim in RUN_REPORT.json",
+      "injected": "net_mean -36.3676 -> -35.3676",
+      "run": {
+        "command": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\scripts\\tdm13_independent_verify.py audit-claims --from-dir C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\.tdm13\\controls\\nc-03-85nrtuev",
+        "exit_code": 1,
+        "stdout": [
+          "audit-claims status=FAIL matched=15/16",
+          "  MISMATCH net_mean_matches_manifest: reported=-35.3676 derived=-36.3676"
+        ],
+        "stderr": []
+      },
+      "expected_token": "net_mean_matches_manifest",
+      "rejected": true,
+      "expected_token_seen": true,
+      "status": "PROVEN"
+    },
+    {
+      "id": "NC-04",
+      "name": "non-ancestor baseline commit",
+      "injected": "declared baseline=313aadf9 (real parent c144f47f)",
+      "run": {
+        "command": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\scripts\\tdm13_independent_verify.py audit-git",
+        "exit_code": 1,
+        "stdout": [
+          "audit-git status=FAIL deliverables=14/14 digests=7/16",
+          "  FAIL target_parent_is_baseline: parent of 313aadf9 is c144f47f",
+          "  FAIL digest CANDIDATE_REGISTRY.csv: recorded bfce93578bcf != committed ddc056085433",
+          "  FAIL digest CANDIDATE_REGISTRY.json: recorded fa0edcac4f92 != committed 1b6d86d7f6bb",
+          "  FAIL digest DATA_WINDOW_REGISTRY.json: recorded a160de7d66d7 != committed 027ae03a56d4",
+          "  FAIL digest DECISION_REGISTER.json: recorded 12804830a5d6 != committed ab74ec0cf7f8",
+          "  FAIL digest FINAL_REPORT.md: recorded dde73f77ca1c != committed 4e7a013240a2",
+          "  FAIL digest TDM11_CLOSURE_DECISION.json: recorded 262b8a10a436 != committed 941bf2162898",
+          "  FAIL digest tdm12_review.py: recorded 8a0542f2e730 != committed 9645e14a2ca3",
+          "  FAIL digest tdm12_inventory.py: recorded 37e718435e35 != committed 65a1a8403430",
+          "  FAIL digest tdm12_publish.py: recorded dbe0774f5943 != committed fe51e0cbf6ae"
+        ],
+        "stderr": []
+      },
+      "expected_token": "target_parent_is_baseline",
+      "rejected": true,
+      "expected_token_seen": true,
+      "status": "PROVEN"
+    },
+    {
+      "id": "NC-05",
+      "name": "altered evidence blob",
+      "injected": "appended bytes to BASELINE_AND_SCOPE.md",
+      "run": {
+        "command": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\scripts\\tdm13_independent_verify.py audit-git",
+        "exit_code": 1,
+        "stdout": [
+          "audit-git status=FAIL deliverables=14/14 digests=6/16",
+          "  FAIL digest BASELINE_AND_SCOPE.md: recorded df9d994f19bc != committed 10d3d453b033",
+          "  FAIL digest CANDIDATE_REGISTRY.csv: recorded bfce93578bcf != committed ddc056085433",
+          "  FAIL digest CANDIDATE_REGISTRY.json: recorded fa0edcac4f92 != committed 1b6d86d7f6bb",
+          "  FAIL digest DATA_WINDOW_REGISTRY.json: recorded a160de7d66d7 != committed 027ae03a56d4",
+          "  FAIL digest DECISION_REGISTER.json: recorded 12804830a5d6 != committed ab74ec0cf7f8",
+          "  FAIL digest FINAL_REPORT.md: recorded dde73f77ca1c != committed 4e7a013240a2",
+          "  FAIL digest TDM11_CLOSURE_DECISION.json: recorded 262b8a10a436 != committed 941bf2162898",
+          "  FAIL digest tdm12_review.py: recorded 8a0542f2e730 != committed 9645e14a2ca3",
+          "  FAIL digest tdm12_inventory.py: recorded 37e718435e35 != committed 65a1a8403430",
+          "  FAIL digest tdm12_publish.py: recorded dbe0774f5943 != committed fe51e0cbf6ae"
+        ],
+        "stderr": []
+      },
+      "expected_token": "BASELINE_AND_SCOPE.md",
+      "rejected": true,
+      "expected_token_seen": true,
+      "status": "PROVEN"
+    },
+    {
+      "id": "NC-06",
+      "name": "inventory/review timeout",
+      "injected": "replaced tdm12_review.py with a 30s sleep, timeout fixed at 2s",
+      "run": {
+        "command": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\scripts\\tdm13_replay.py --clone C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\.tdm13\\controls\\nc-06-14t6ccsu --target-commit e83774c69cc0b6ef6b77c647c9003cd755434f45 --review-timeout 2 --inventory-timeout 2 --out C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm13\\.tdm13\\controls\\nc-06-14t6ccsu\\.tdm13\\replay.json --python C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe",
+        "exit_code": 1,
+        "stdout": [
+          "review: TIMEOUT (2.0s, attempts=2)",
+          "  inventory: TIMEOUT (2.0s, attempts=2)",
+          "replay status=INCOMPLETE comparisons=0/3",
+          "  MISMATCH review.json:<missing>",
+          "  MISMATCH CANDIDATE_REGISTRY.json:<presence>",
+          "  MISMATCH DATA_WINDOW_REGISTRY.json:<presence>"
+        ],
+        "stderr": []
+      },
+      "expected_token": "TIMEOUT",
+      "rejected": true,
+      "expected_token_seen": true,
+      "status": "PROVEN",
+      "observed_status": "INCOMPLETE",
+      "observed_phase_status": [
+        {
+          "phase": "review",
+          "status": "TIMEOUT"
+        },
+        {
+          "phase": "inventory",
+          "status": "TIMEOUT"
+        }
+      ],
+      "elapsed_seconds": 8.7,
+      "never_pass": true
+    }
+  ],
+  "proven": 6,
+  "total": 6,
+  "status": "PASS",
+  "failures": []
+}

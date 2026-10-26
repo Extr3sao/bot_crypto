@@ -1,0 +1,81 @@
+{
+  "opportunity_id": "OPP-0018",
+  "title": "bitcoin-momentum-trading — 5-minute ML momentum direction model",
+  "source_ids": [
+    "S2-34"
+  ],
+  "economic_hypothesis": "none measurable was read",
+  "market": "read at listing level; the repository frames it as BTC 5-minute momentum",
+  "assets": "BTC",
+  "timeframe": "5-minute bars",
+  "entry_rules": "model-driven, not stated at this read level",
+  "exit_rules": "UNKNOWN; UNKNOWN; UNKNOWN; UNKNOWN",
+  "risk_rules": "UNKNOWN; none (24/7)",
+  "parameters": "the model is trained, so the 'parameters' are weights rather than a frozen rule set",
+  "claimed_period": "UNKNOWN",
+  "claimed_metrics": "UNKNOWN",
+  "transaction_cost_model": "UNKNOWN",
+  "required_data": "exchange OHLCV",
+  "external_code": "the repository",
+  "external_results": "listing-level read of a repository that claims a 5-minute directional model",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "5-minute crypto horizons are the regime the project's admission cost already killed internally",
+    "the model is retrained, so the 'same strategy' cannot be evaluated twice",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (UNKNOWN)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "market",
+    "data_fields",
+    "entry_long",
+    "entry_short",
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "parameters",
+    "sizing_rule",
+    "execution_assumption",
+    "warmup",
+    "transaction_costs",
+    "original_period",
+    "original_metrics",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_ESTABLISHED: a 5-minute horizon must clear the 23.791 bps round trip on every round turn, and the source reports no per-trade magnitude",
+  "evidence_quality": "E1 — listing-level read of a repository that claims a 5-minute directional model",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "HIGH",
+  "lookahead_risk": "HIGH",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_2_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 2,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 1,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 1,
+    "IMPLEMENTATION_FIDELITY": 2
+  },
+  "evidence_score_total": 17,
+  "rank": "REJECT",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "5/21",
+  "gaps_to_p0": [
+    "read the repository, the feature set and any published test",
+    "no cost model",
+    "retraining rather than fixed parameters"
+  ],
+  "rejection_reason_codes": [
+    "COST_FLOOR_HEADROOM_NOT_ESTABLISHED",
+    "SOURCE_READ_LEVEL_INSUFFICIENT",
+    "NO_FIXED_PARAMETERS_RETRAINING_REQUIRED"
+  ]
+}

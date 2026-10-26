@@ -1,0 +1,379 @@
+{
+  "artifact": "tdm14a-baseline-report-v1",
+  "rfc_id": "RFC-TDM-014A",
+  "wp": "WP-14A",
+  "run_id": "tdm14a-baseline-manual",
+  "generated_at_utc": "2026-10-25T17:43:46Z",
+  "repository": "Trading Agentic Portable (shared checkout: 'bot freebuff')",
+  "baseline": {
+    "rev": "04fb8bc8",
+    "exists": true,
+    "type": "commit",
+    "full_sha": "04fb8bc8a0900c278cd72c5e3478a45b66fcbc03",
+    "subject": "Carry commands and duration in the verification result",
+    "committed_at": "2026-10-25T15:03:43+01:00",
+    "tree": "15a78784f8b4ee90384ce7f2bb5e82f5f4da147d",
+    "parent": "d7819188cf9c8cb6257bc99e82a828bbe6d6c746",
+    "branches_containing": [
+      "evidence/tdm13",
+      "fix/tdm14a"
+    ]
+  },
+  "worktree": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a",
+    "branch": "fix/tdm14a",
+    "head": "04fb8bc8a0900c278cd72c5e3478a45b66fcbc03",
+    "status": {
+      "branch": "fix/tdm14a",
+      "head": "04fb8bc8a0900c278cd72c5e3478a45b66fcbc03",
+      "entry_count": 2,
+      "tracked_dirty_count": 0,
+      "tracked_dirty": [],
+      "fingerprint": "b36a13e98f360c007cc97d129c0dbb07a85fdbf3840f4b872a08e96a354eb280"
+    },
+    "registered_worktrees": [
+      "worktree C:/Users/GVLLFR0035/Downloads/bot freebuff",
+      "worktree C:/Users/GVLLFR0035/AppData/Local/Temp/recovery-rehearsal-9vicsg7h/checkout",
+      "worktree C:/Users/GVLLFR0035/Downloads/bot freebuff/wt-sup001",
+      "worktree C:/Users/GVLLFR0035/Downloads/exp004a-recovery-02k",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-adm002",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-audit001",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-base",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-eco001",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-g7",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-gate001",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-integ002",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-main001",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-mt0004",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-prd001",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-repro001",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-tdm06",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-tdm08",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-tdm09",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-tdm09-repro",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-tdm11",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-tdm12",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-tdm13",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-tdm14a",
+      "worktree C:/Users/GVLLFR0035/Downloads/ff-wt-trunkfmt",
+      "worktree C:/Users/GVLLFR0035/Downloads/tdm14a-eol-crlf",
+      "worktree C:/Users/GVLLFR0035/Downloads/tdm14a-eol-lf"
+    ],
+    "created_from": "04fb8bc8",
+    "creation_command": "git worktree add -b fix/tdm14a <path> 04fb8bc8"
+  },
+  "shared_checkout": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "role": "must stay untouched; its pre-existing changes are not ours",
+    "state": {
+      "branch": "main",
+      "head": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+      "entry_count": 62,
+      "tracked_dirty_count": 17,
+      "tracked_dirty": [
+        "gitattributes",
+        "config/strategy_admission.json",
+        "data/recovery/COST_BARRIER_VERIFICATION.json",
+        "data/st6/RFC047_RUNTIME_VERIFICATION.json",
+        "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "scripts/autonomous_paper.py",
+        "scripts/build_strategy_admission.py",
+        "scripts/rfc048_run.py",
+        "scripts/rfc048_verify.py",
+        "src/trading_bot/config/settings.py",
+        "src/trading_bot/market_data/exchange_connector.py",
+        "src/trading_bot/market_data/ohlcv_fetcher.py",
+        "src/trading_bot/research/__init__.py",
+        "src/trading_bot/research/admission.py",
+        "src/trading_bot/risk/futures_verification.py",
+        "tests/unit/risk/test_futures_independent_verifier.py",
+        "tests/unit/scanner/conftest.py"
+      ],
+      "fingerprint": "5aa0b463825cb7c903738f84aab2bc6d6dff01ddcc71abd12e8e98492c961004"
+    }
+  },
+  "environment": {
+    "python": "3.11.15",
+    "python_executable": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "git": "git version 2.51.1.windows.1",
+    "eol": {
+      "core.autocrlf": "true",
+      "core.eol": null,
+      "checkout.encoding": null,
+      "gitattributes_paths": [
+        "data/rfc049/**",
+        "data/recovery/wp7/evidence/**",
+        "data/recovery/wp8/evidence/**"
+      ],
+      "src_tree_covered_by_gitattributes": false,
+      "note": "no attribute rule normalises src/** or scripts/**, so the physical bytes of a Python module depend on core.autocrlf alone"
+    }
+  },
+  "checks": [
+    {
+      "check": "baseline_exists",
+      "status": "PASS",
+      "detail": "04fb8bc8"
+    },
+    {
+      "check": "baseline_is_commit",
+      "status": "PASS",
+      "detail": "commit"
+    },
+    {
+      "check": "declared_sha_matches",
+      "status": "PASS",
+      "detail": "04fb8bc8a0900c278cd72c5e3478a45b66fcbc03"
+    },
+    {
+      "check": "parent_is_declared",
+      "status": "PASS",
+      "detail": "d7819188cf9c8cb6257bc99e82a828bbe6d6c746"
+    },
+    {
+      "check": "branch_contains_baseline",
+      "status": "PASS",
+      "detail": [
+        "evidence/tdm13",
+        "fix/tdm14a"
+      ]
+    },
+    {
+      "check": "head_is_baseline",
+      "status": "PASS",
+      "detail": "04fb8bc8a0900c278cd72c5e3478a45b66fcbc03"
+    },
+    {
+      "check": "isolated_worktree",
+      "status": "PASS",
+      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a"
+    }
+  ],
+  "entrypoints": [
+    {
+      "path": "scripts/tdm12_review.py",
+      "role": "WP-12 review: PIT ledger, dependence, controls",
+      "exists": true,
+      "worktree_sha256": "8a0542f2e730bd2dee4bba32a275a33e1fd8bf870254fbb8b29a6bc2e9fe9a5e",
+      "blob_sha256": "8a0542f2e730bd2dee4bba32a275a33e1fd8bf870254fbb8b29a6bc2e9fe9a5e",
+      "matches_blob": true
+    },
+    {
+      "path": "scripts/tdm12_inventory.py",
+      "role": "WP-12 inventory: candidate registry, D-01 lives here",
+      "exists": true,
+      "worktree_sha256": "37e718435e35494e9510916ce50e9a4ea83984dfcaaf729d1788bd29c2fc8a0e",
+      "blob_sha256": "37e718435e35494e9510916ce50e9a4ea83984dfcaaf729d1788bd29c2fc8a0e",
+      "matches_blob": true
+    },
+    {
+      "path": "scripts/tdm13_inputs.py",
+      "role": "seal/verify/restore the 26 sealed inputs",
+      "exists": true,
+      "worktree_sha256": "28c87349795dffad42b414642d87f9ee7306261a4ba0985c022f9338fe910c02",
+      "blob_sha256": "28c87349795dffad42b414642d87f9ee7306261a4ba0985c022f9338fe910c02",
+      "matches_blob": true
+    },
+    {
+      "path": "scripts/tdm13_replay.py",
+      "role": "WP-13 replay driver (single-run, pre-014A)",
+      "exists": true,
+      "worktree_sha256": "55774332e49aac6718065d0cdb5fb7a85b3540cc35a623fc5d9ed1e790874f03",
+      "blob_sha256": "55774332e49aac6718065d0cdb5fb7a85b3540cc35a623fc5d9ed1e790874f03",
+      "matches_blob": true
+    },
+    {
+      "path": "scripts/tdm13_independent_verify.py",
+      "role": "WP-13 independent verifier",
+      "exists": true,
+      "worktree_sha256": "e8d939a3558ed28837110832d9f682183e771dffae8ee4cd642aae9cb780dc1e",
+      "blob_sha256": "e8d939a3558ed28837110832d9f682183e771dffae8ee4cd642aae9cb780dc1e",
+      "matches_blob": true
+    },
+    {
+      "path": "scripts/tdm13_negative_controls.py",
+      "role": "WP-13 negative controls",
+      "exists": true,
+      "worktree_sha256": "7566585efc371c096dbf9bd8084e39d222f670bd4c25698f2776df93bed8d38a",
+      "blob_sha256": "7566585efc371c096dbf9bd8084e39d222f670bd4c25698f2776df93bed8d38a",
+      "matches_blob": true
+    },
+    {
+      "path": "scripts/tdm13_report.py",
+      "role": "WP-13 report writer",
+      "exists": true,
+      "worktree_sha256": "3096616d3d93fd0d13c5c642c16631c213d02f5e202e4c45834c3f3c8faab8d6",
+      "blob_sha256": "3096616d3d93fd0d13c5c642c16631c213d02f5e202e4c45834c3f3c8faab8d6",
+      "matches_blob": true
+    }
+  ],
+  "contract_consumers": [
+    {
+      "contract": "parameter_hash",
+      "artifact": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.{json,csv}",
+      "producers": [
+        "scripts/tdm12_inventory.py::family_classes",
+        "main() row assembly"
+      ],
+      "consumers": [
+        "scripts/tdm13_independent_verify.py (claim re-derivation / row counts)",
+        "scripts/tdm12_publish.py (publishes the registry)",
+        "evidence/tdm/wp-tdm-12/RFC-TDM-012.md (field list, \u00a7schema)"
+      ],
+      "gate_role": "identity field only; no metric, gate or verdict reads it"
+    },
+    {
+      "contract": "REPLAY_REPORT.json",
+      "artifact": "evidence/tdm/wp-tdm-13/REPLAY_REPORT.json",
+      "producers": [
+        "scripts/tdm13_replay.py"
+      ],
+      "consumers": [
+        "scripts/tdm13_independent_verify.py (deliverable list, line 688)",
+        "scripts/tdm13_report.py (drives RUN_REPORT/verification_result)"
+      ],
+      "gate_role": "declares replay PASS/FAIL; verdict input"
+    }
+  ],
+  "scope_map": {
+    "modify": [
+      "scripts/tdm12_inventory.py",
+      "tests/unit/research/test_tdm13_independent_verify.py (only if the change breaks a contract)"
+    ],
+    "add": [
+      "src/trading_bot/research/source_fingerprint.py",
+      "scripts/tdm14a_baseline.py",
+      "scripts/tdm14a_replay.py",
+      "scripts/tdm14a_verify.py",
+      "scripts/tdm14a_negative_controls.py",
+      "tests/unit/research/test_source_fingerprint.py",
+      "tests/unit/research/test_tdm14a_replay_contract.py",
+      "evidence/tdm/wp-tdm-14a/* (deliverables)"
+    ],
+    "never_touch": [
+      "evidence/tdm/wp-tdm-11/**",
+      "evidence/tdm/wp-tdm-12/**",
+      "evidence/tdm/wp-tdm-13/**",
+      "src/trading_bot/**/production runtime paths (scanner, execution, risk gates)",
+      "the shared checkout and every change it already carries"
+    ],
+    "trading_paths_modified": []
+  },
+  "inputs": {
+    "state": "AVAILABLE",
+    "declared_count": 26,
+    "declared_total_bytes": 10310475,
+    "measured_files": 26,
+    "measured_bytes": 10310475,
+    "sha256_matching": 26,
+    "mismatches": [],
+    "splits": {
+      "HOLD": 13,
+      "DEV": 13,
+      "null": 0
+    }
+  },
+  "d01_defect": {
+    "status": "REPRODUCED",
+    "module": "src/trading_bot/research/families/breakout_family.py",
+    "rev": "04fb8bc8",
+    "lf": {
+      "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-eol-lf",
+      "core_autocrlf": "true",
+      "file_exists": true,
+      "working_tree_bytes": 4640,
+      "crlf_count": 0,
+      "sha256_working_tree": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "v1_fingerprint_as_published": "9825f38950c5b975",
+      "blob_bytes": 4640,
+      "sha256_blob": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "blob_oid_from_tree": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "blob_oid_from_working_tree": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "git_status_porcelain": ""
+    },
+    "crlf": {
+      "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-eol-crlf",
+      "core_autocrlf": "true",
+      "file_exists": true,
+      "working_tree_bytes": 4776,
+      "crlf_count": 136,
+      "sha256_working_tree": "359ba1b773defee8b017e3d20c4fa8ac60a3cd737932fa7174df47f1254a0fb0",
+      "v1_fingerprint_as_published": "359ba1b773defee8",
+      "blob_bytes": 4640,
+      "sha256_blob": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "blob_oid_from_tree": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "blob_oid_from_working_tree": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "git_status_porcelain": ""
+    },
+    "same_git_blob": true,
+    "physical_bytes_differ": true,
+    "v1_fingerprints_differ": true,
+    "v2_fingerprint_candidate_equal": true,
+    "commands": [
+      "git worktree add --detach <lf> 04fb8bc8  &&  git -C <lf> config core.autocrlf false",
+      "git worktree add --detach <crlf> 04fb8bc8 &&  git -C <crlf> config core.autocrlf true",
+      "git -C <crlf> checkout -- src/trading_bot/research/families/breakout_family.py",
+      "git -C <checkout> hash-object src/trading_bot/research/families/breakout_family.py",
+      "git -C <checkout> rev-parse 04fb8bc8:src/trading_bot/research/families/breakout_family.py"
+    ],
+    "tolerance_rule": "a physical difference is tolerated only when git status reports the path clean, i.e. git maps those bytes back to the same blob; v2 hashes that blob, v1 hashed the bytes"
+  },
+  "prior_results": {
+    "source": "evidence\\tdm\\wp-tdm-13\\verification_result.json",
+    "status": "REPORTED_NOT_VERIFIED",
+    "tdm13_verdict": null,
+    "tdm13_false_success": null,
+    "tdm13_keys": [
+      "baseline_commit_expected",
+      "claims_consistency",
+      "commands",
+      "duration_seconds",
+      "evidence_refs",
+      "failures",
+      "git_integrity",
+      "independence",
+      "input_state",
+      "live_orders",
+      "negative_controls",
+      "paper_orders",
+      "replay",
+      "result",
+      "result_reasons",
+      "rfc_id",
+      "run_id",
+      "target_commit",
+      "verifier_id"
+    ],
+    "tdm13_replay_status": "PASS",
+    "tdm13_replay_phases": [
+      {
+        "phase": "review",
+        "status": "REUSED",
+        "duration_seconds": 0.0
+      },
+      {
+        "phase": "inventory",
+        "status": "PASS",
+        "duration_seconds": 1.7
+      }
+    ],
+    "tdm13_replay_attempt_note": "attempt 2: clone re-checked out with core.autocrlf=false so working-tree bytes match the TDM-12 checkout; review and cell metrics reused, registry regenerated from scratch",
+    "tdm13_d01_measurements": {
+      "core_autocrlf_original_checkout": "false",
+      "core_autocrlf_clean_clone_before_fix": "true (inherited by git clone)",
+      "file": "src/trading_bot/research/families/breakout_family.py",
+      "bytes_original_checkout": 4640,
+      "bytes_clean_clone_before_fix": 4776,
+      "sha256_original_checkout": "9825f38950c5b975",
+      "sha256_clean_clone_before_fix": "359ba1b773defee8",
+      "git_blob_id_original": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "git_blob_id_clean_clone": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+      "blob_ids_equal": true
+    },
+    "tdm13_d01_recommended_fix": "fingerprint the blob id (git hash-object) or the LF-normalised content instead of working-tree bytes"
+  },
+  "elapsed_s": 2.5,
+  "status": "PASS",
+  "failed_checks": []
+}

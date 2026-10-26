@@ -1,0 +1,103 @@
+{
+  "artifact": "tdm14a-log-manifest-v1",
+  "generated_at_utc": "2026-10-25T19:08:49Z",
+  "logs": 7,
+  "all_match_run_reports": true,
+  "rows": [
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "phase": "review",
+      "source": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\lf\\review.log",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/lf/review.log.txt",
+      "bytes": 246,
+      "sha256": "5f70d0b172426c6300bf14d08b7d59ef8894d165eced675dca66507ddba9e989",
+      "matches_run_report": true
+    },
+    {
+      "run_id": "tdm14a-lf-20261025T181821Z",
+      "label": "LF",
+      "phase": "inventory",
+      "source": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-lf\\.replay-logs\\lf\\inventory.log",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/lf/inventory.log.txt",
+      "bytes": 363,
+      "sha256": "076b33b2056eebd467a059efe3137728bbeb3548a653af2dc7f55ebb013b1b72",
+      "matches_run_report": true
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "phase": "review",
+      "source": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-logs\\crlf\\review.log",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/crlf/review.log.txt",
+      "bytes": 246,
+      "sha256": "b27b76f245c8acc7e30f21710633aab0f475c82baa30ed4ea46666ca96da1f36",
+      "matches_run_report": true
+    },
+    {
+      "run_id": "tdm14a-crlf-20261025T182823Z",
+      "label": "CRLF",
+      "phase": "inventory",
+      "source": "C:\\Users\\GVLLFR0035\\Downloads\\tdm14a-run-crlf\\.replay-logs\\crlf\\inventory.log",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/crlf/inventory.log.txt",
+      "bytes": 363,
+      "sha256": "965cf567c277240b1ab7ed48dbd5a5c359141a3a2a26da40ef2ea34360a2b11a",
+      "matches_run_report": true
+    },
+    {
+      "run_id": "tests",
+      "label": "tests",
+      "phase": "pytest-base.log",
+      "source": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a\\.pytest-base.log",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-base.log.txt",
+      "bytes": 174888,
+      "sha256": "e137eb91aa998ef1d28d0832b80b434bd01e8369768984fdbaae5312bf438952",
+      "matches_run_report": true
+    },
+    {
+      "run_id": "tests",
+      "label": "tests",
+      "phase": "pytest-head-crlf.log",
+      "source": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a\\.pytest-head-crlf.log",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-head-crlf.log.txt",
+      "bytes": 175007,
+      "sha256": "541fd88488f593338e1e7318f7a37203eab4fde661ed3f3848c3e4aba9ee0ce8",
+      "matches_run_report": true
+    },
+    {
+      "run_id": "tests",
+      "label": "tests",
+      "phase": "pytest-head-lf.log",
+      "source": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a\\.pytest-head-lf.log",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-head-lf.log.txt",
+      "bytes": 188027,
+      "sha256": "9436a79d17029fba7a9eb2179c84dd4bb9efad2d6320a76a35320a76e78ee34e",
+      "matches_run_report": true
+    },
+    {
+      "run_id": "tdm14a-wp14d-closure",
+      "label": "TESTS",
+      "phase": "targeted",
+      "kind": "pytest",
+      "source": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt",
+      "bytes": 101,
+      "sha256": "6a3cbf99442d03091d0b3cbcb4ab2948abe1918d3c31a2806db4e8a4709059d3",
+      "matches_run_report": null,
+      "note": "pytest log, not a replay phase: matches_run_report does not apply"
+    },
+    {
+      "run_id": "tdm14a-wp14d-closure",
+      "label": "TESTS",
+      "phase": "targeted-final",
+      "kind": "pytest",
+      "source": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt",
+      "bytes": 101,
+      "sha256": "192bfb40ed321add6141f838319ce1ba88dc82c460cac9f40e232d3e880f46fc",
+      "matches_run_report": null,
+      "note": "pytest log, not a replay phase: matches_run_report does not apply"
+    }
+  ],
+  "note": "replay phase logs plus the pytest logs of the WP-14D re-run; a pytest log has no run_report digest to match, so that field is null rather than true"
+}

@@ -1,0 +1,7 @@
+R-01 preflight clean=True shared_dirty=17
+R-02 provenance missing=[] mismatched=[]
+R-03 ledger derived=115 problems=0
+R-04 clustered gross CI hi=-3.101
+R-05 lookahead mean=17.0538
+R-05 claim 3/6 reproduced=None
+wrote review.json in 123.7s

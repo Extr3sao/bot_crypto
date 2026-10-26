@@ -1,0 +1,515 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "verifier_id": "tdm13-independent-verifier/1",
+  "target_commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+  "baseline_commit_expected": "504256ec8934b97a6d405c202604ecac81a02346",
+  "git": {
+    "identity": [
+      {
+        "check": "target_commit_resolves",
+        "ok": true,
+        "detail": "git cat-file -e a96e9c80c608ed91943d1fab35db6fa1704111bb^{commit}"
+      },
+      {
+        "check": "baseline_commit_resolves",
+        "ok": true,
+        "detail": "git cat-file -e 504256ec8934b97a6d405c202604ecac81a02346^{commit}"
+      },
+      {
+        "check": "target_parent_is_baseline",
+        "ok": true,
+        "detail": "parent of a96e9c80 is 504256ec"
+      },
+      {
+        "check": "baseline_is_ancestor_of_target",
+        "ok": true,
+        "detail": "merge-base --is-ancestor baseline target"
+      },
+      {
+        "check": "target_on_declared_branch",
+        "ok": true,
+        "detail": "branches containing target: ['evidence/tdm12', 'evidence/tdm13']"
+      },
+      {
+        "check": "target_commit_has_date",
+        "ok": true,
+        "detail": "committed 2026-10-25T14:22:19+01:00"
+      }
+    ],
+    "deliverables": {
+      "expected": 14,
+      "present": 14,
+      "missing": [],
+      "extra_in_directory": [],
+      "per_file": [
+        {
+          "file": "RFC-TDM-012.md",
+          "in_commit": true,
+          "sha256": "71b5e2791c0dbc3571242abc962a4132eae86fc3ad49a22d90ec1f19bd22c18c"
+        },
+        {
+          "file": "BASELINE_AND_SCOPE.md",
+          "in_commit": true,
+          "sha256": "df9d994f19bc2d6f02e3d4223a3aab98e8b49dd5a9fc22d82e4d53c31d37deee"
+        },
+        {
+          "file": "INDEPENDENT_REVIEW.md",
+          "in_commit": true,
+          "sha256": "76e8c71a225ab0835e0a6879ff758f2f46151598bf8449ff9f55a7af5176f02f"
+        },
+        {
+          "file": "TDM11_CLOSURE_DECISION.json",
+          "in_commit": true,
+          "sha256": "262b8a10a43643e250b3c9e8546c5675cdb066918b96b52cca53dc2a4036b1d1"
+        },
+        {
+          "file": "RUNTIME_AUTHORITY_MAP.md",
+          "in_commit": true,
+          "sha256": "637ee8b7e2a25f74591b77e799a56f9c089c5647f697bc951eee001e1af75f1c"
+        },
+        {
+          "file": "CANDIDATE_REGISTRY.csv",
+          "in_commit": true,
+          "sha256": "bfce93578bcfcb3359d6009a9209e768a4a169bc7a838f25f2dfdae8e083d580"
+        },
+        {
+          "file": "CANDIDATE_REGISTRY.json",
+          "in_commit": true,
+          "sha256": "fa0edcac4f922e03c0d959bf1bd3926eacd8e833e43f9ec17bb1ea0a42eb3ae8"
+        },
+        {
+          "file": "DATA_WINDOW_REGISTRY.json",
+          "in_commit": true,
+          "sha256": "a160de7d66d7a926e174e0f5115d58588ea66a3a4eb49b81394606c4b8c2ed59"
+        },
+        {
+          "file": "COST_AND_BIAS_AUDIT.md",
+          "in_commit": true,
+          "sha256": "ffebf3d78b2fe6272d071cb13b9334e6e658cc8d9dd23966544c622c68838010"
+        },
+        {
+          "file": "RETROSPECTIVE_TRIAGE_REPORT.md",
+          "in_commit": true,
+          "sha256": "73517339c9a8c1c4ba1232a75af0f44a7a65d26a71f168acea318833de15c08c"
+        },
+        {
+          "file": "DECISION_REGISTER.json",
+          "in_commit": true,
+          "sha256": "12804830a5d6d6fdf8266b409691d1b82f3180c5874bc090448b377f733d8802"
+        },
+        {
+          "file": "RUN_REPORT.md",
+          "in_commit": true,
+          "sha256": "baf07d82355d1189be7f6a81291f0dd1bd48fb9d21272bb38cd58f2e4bbf6edc"
+        },
+        {
+          "file": "RUN_REPORT.json",
+          "in_commit": true,
+          "sha256": "3e1e2eb3f24ab7a56c3dbe541ae88ed04a8cffd0550378e5e93e976da61b681a"
+        },
+        {
+          "file": "FINAL_REPORT.md",
+          "in_commit": true,
+          "sha256": "dde73f77ca1cf1fca8c3893c7f42d2462a4506f2a807f938ff7cf164969e4529"
+        }
+      ]
+    },
+    "required_fields": {
+      "required": 17,
+      "present": 17,
+      "missing": [],
+      "ok": true
+    },
+    "digests": {
+      "checked": 16,
+      "ok": 16,
+      "failures": []
+    },
+    "scope": {
+      "baseline": "504256ec8934b97a6d405c202604ecac81a02346",
+      "target": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+      "changed_files": [
+        "evidence/tdm/wp-tdm-12/BASELINE_AND_SCOPE.md",
+        "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.csv",
+        "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json",
+        "evidence/tdm/wp-tdm-12/COST_AND_BIAS_AUDIT.md",
+        "evidence/tdm/wp-tdm-12/DATA_WINDOW_REGISTRY.json",
+        "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json",
+        "evidence/tdm/wp-tdm-12/FINAL_REPORT.md",
+        "evidence/tdm/wp-tdm-12/INDEPENDENT_REVIEW.md",
+        "evidence/tdm/wp-tdm-12/RETROSPECTIVE_TRIAGE_REPORT.md",
+        "evidence/tdm/wp-tdm-12/RFC-TDM-012.md",
+        "evidence/tdm/wp-tdm-12/RUNTIME_AUTHORITY_MAP.md",
+        "evidence/tdm/wp-tdm-12/RUN_REPORT.json",
+        "evidence/tdm/wp-tdm-12/RUN_REPORT.md",
+        "evidence/tdm/wp-tdm-12/TDM11_CLOSURE_DECISION.json",
+        "scripts/tdm12_inventory.py",
+        "scripts/tdm12_publish.py",
+        "scripts/tdm12_review.py"
+      ],
+      "changed_count": 17,
+      "src_or_tests_modified": [],
+      "changed_outside_evidence_and_scripts": [],
+      "status": "PASS"
+    },
+    "shared_checkout": {
+      "available": true,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+      "head": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+      "tracked_dirty": [
+        "gitattributes",
+        "config/strategy_admission.json",
+        "data/recovery/COST_BARRIER_VERIFICATION.json",
+        "data/st6/RFC047_RUNTIME_VERIFICATION.json",
+        "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "scripts/autonomous_paper.py",
+        "scripts/build_strategy_admission.py",
+        "scripts/rfc048_run.py",
+        "scripts/rfc048_verify.py",
+        "src/trading_bot/config/settings.py",
+        "src/trading_bot/market_data/exchange_connector.py",
+        "src/trading_bot/market_data/ohlcv_fetcher.py",
+        "src/trading_bot/research/__init__.py",
+        "src/trading_bot/research/admission.py",
+        "src/trading_bot/risk/futures_verification.py",
+        "tests/unit/risk/test_futures_independent_verifier.py",
+        "tests/unit/scanner/conftest.py"
+      ],
+      "tracked_dirty_count": 17,
+      "status": "PASS",
+      "detail": "read-only: recorded, not modified by this package"
+    },
+    "status": "PASS"
+  },
+  "claims": {
+    "checked": 16,
+    "matched": 16,
+    "rows": [
+      {
+        "claim": "ledger_trades",
+        "reported": 115,
+        "derived": 115,
+        "match": true,
+        "method": "count of RETROSPECTIVE_LEDGER.csv data rows",
+        "source": "evidence/tdm/wp-tdm-11/RETROSPECTIVE_LEDGER.csv"
+      },
+      {
+        "claim": "net_mean_bps",
+        "reported": -36.3676,
+        "derived": -36.3676,
+        "match": true,
+        "method": "mean(gross_bps) - 23.7906 over the ledger",
+        "source": "evidence/tdm/wp-tdm-11/RETROSPECTIVE_LEDGER.csv"
+      },
+      {
+        "claim": "net_mean_matches_manifest",
+        "reported": -36.3676,
+        "derived": -36.3676,
+        "match": true,
+        "method": "manifest metric vs independent recomputation",
+        "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+      },
+      {
+        "claim": "registry_rows",
+        "reported": 30,
+        "derived": 30,
+        "match": true,
+        "method": "len(CANDIDATE_REGISTRY.json.rows)",
+        "source": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json"
+      },
+      {
+        "claim": "strategies_measured",
+        "reported": 24,
+        "derived": 24,
+        "match": true,
+        "method": "len(CANDIDATE_REGISTRY.json.metrics_by_cell)",
+        "source": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json"
+      },
+      {
+        "claim": "cells_with_measured_trades",
+        "reported": 24,
+        "derived": 24,
+        "match": true,
+        "method": "cells carrying a measured hold trade count",
+        "source": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json"
+      },
+      {
+        "claim": "eligible",
+        "reported": [],
+        "derived": [],
+        "match": true,
+        "method": "cells net-positive on holdout AND development AND power-sufficient",
+        "source": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json"
+      },
+      {
+        "claim": "hold_net_positive_matches_manifest",
+        "reported": [],
+        "derived": [],
+        "match": true,
+        "method": "cells with hold net_mean > 0 vs manifest list",
+        "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+      },
+      {
+        "claim": "dev_net_positive_matches_manifest",
+        "reported": [],
+        "derived": [],
+        "match": true,
+        "method": "cells with dev net_mean > 0 vs manifest list",
+        "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+      },
+      {
+        "claim": "decision_register_eligible_matches",
+        "reported": [],
+        "derived": [],
+        "match": true,
+        "method": "DECISION_REGISTER.eligible_candidates vs recomputation",
+        "source": "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json"
+      },
+      {
+        "claim": "paper_orders",
+        "reported": 0,
+        "derived": 0,
+        "match": true,
+        "method": "manifest field",
+        "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+      },
+      {
+        "claim": "live_orders",
+        "reported": 0,
+        "derived": 0,
+        "match": true,
+        "method": "manifest field",
+        "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+      },
+      {
+        "claim": "verdict_matches_decision_register",
+        "reported": "NO_ELIGIBLE_CANDIDATE",
+        "derived": "NO_ELIGIBLE_CANDIDATE",
+        "match": true,
+        "method": "manifest result vs decision register",
+        "source": "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json"
+      },
+      {
+        "claim": "verdict_matches_manifest",
+        "reported": "NO_ELIGIBLE_CANDIDATE",
+        "derived": "NO_ELIGIBLE_CANDIDATE",
+        "match": true,
+        "method": "manifest result field",
+        "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+      },
+      {
+        "claim": "tdm11_alpha_status",
+        "reported": "REJECTED_ALPHA",
+        "derived": "REJECTED_ALPHA",
+        "match": true,
+        "method": "closure decision alpha_status",
+        "source": "evidence/tdm/wp-tdm-12/TDM11_CLOSURE_DECISION.json"
+      },
+      {
+        "claim": "no_execution_artifacts",
+        "reported": [],
+        "derived": [],
+        "match": true,
+        "method": "no PAPER/LIVE ledger inside the TDM-12 evidence tree",
+        "source": "evidence/tdm/wp-tdm-12/"
+      }
+    ],
+    "failures": [],
+    "status": "PASS"
+  },
+  "dataset_cross_check": {
+    "bar_files_checked": 24,
+    "bar_files_matching_tdm11": 24,
+    "bar_mismatches": [],
+    "manifest_files_checked": 2,
+    "manifest_mismatches": [],
+    "tdm12_dev_manifest_declared": "4a9e30c47b54144c631b0cdc94964693aae033ecf1a3ef41293a57c3a5b2fe23",
+    "tdm12_dev_manifest_sealed": "4a9e30c47b54144c631b0cdc94964693aae033ecf1a3ef41293a57c3a5b2fe23",
+    "tdm12_holdout_manifest_declared": "af7fa95ced41f36381e67909b133d87a675274293ca3457d1901aa1a341d9d84",
+    "tdm12_holdout_manifest_sealed": "af7fa95ced41f36381e67909b133d87a675274293ca3457d1901aa1a341d9d84",
+    "tdm12_manifest_hashes_match": true,
+    "rows": [
+      {
+        "dataset_id": "HOLD:BTC:15m",
+        "path": "data/tdm08/BTC_15m.json",
+        "bundle_sha256": "b95cf9b70c09b3e2d225b93b8945b7b16bad6f6a24228fc5939434df9f734409",
+        "tdm11_declared_sha256": "b95cf9b70c09b3e2d225b93b8945b7b16bad6f6a24228fc5939434df9f734409",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:BTC:1h",
+        "path": "data/tdm08/BTC_1h.json",
+        "bundle_sha256": "29adf88af85d9c70717d99b02bd22b10e3d428c123db2d3d5b626f217d8a8c98",
+        "tdm11_declared_sha256": "29adf88af85d9c70717d99b02bd22b10e3d428c123db2d3d5b626f217d8a8c98",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:BTC:30m",
+        "path": "data/tdm08/BTC_30m.json",
+        "bundle_sha256": "38c1e473874545721243962eec5d69c01df163a4658f97d766a1fdf49f740d22",
+        "tdm11_declared_sha256": "38c1e473874545721243962eec5d69c01df163a4658f97d766a1fdf49f740d22",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:BTC:5m",
+        "path": "data/tdm08/BTC_5m.json",
+        "bundle_sha256": "3a70c00da7404a233e4bf849f96b8eb1f29a8715feb15d20c51f06c665d2c86c",
+        "tdm11_declared_sha256": "3a70c00da7404a233e4bf849f96b8eb1f29a8715feb15d20c51f06c665d2c86c",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:ETH:15m",
+        "path": "data/tdm08/ETH_15m.json",
+        "bundle_sha256": "2e5ab01fad4d9ad26192e648d9c7a28b68c95b49ac491449df64291ec750273c",
+        "tdm11_declared_sha256": "2e5ab01fad4d9ad26192e648d9c7a28b68c95b49ac491449df64291ec750273c",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:ETH:1h",
+        "path": "data/tdm08/ETH_1h.json",
+        "bundle_sha256": "618a7af43c79e41a40e000f43f728808df9685152ff3bea24a87df26eb54c321",
+        "tdm11_declared_sha256": "618a7af43c79e41a40e000f43f728808df9685152ff3bea24a87df26eb54c321",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:ETH:30m",
+        "path": "data/tdm08/ETH_30m.json",
+        "bundle_sha256": "b381aa516055a0ab9c7c884c8130e2c1977494145672f70aee56d59d097960b9",
+        "tdm11_declared_sha256": "b381aa516055a0ab9c7c884c8130e2c1977494145672f70aee56d59d097960b9",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:ETH:5m",
+        "path": "data/tdm08/ETH_5m.json",
+        "bundle_sha256": "95808c1dfba8e58173cb8c4d8aeb27c096ad861b09af3a5edc0cb2a316089bac",
+        "tdm11_declared_sha256": "95808c1dfba8e58173cb8c4d8aeb27c096ad861b09af3a5edc0cb2a316089bac",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:SOL:15m",
+        "path": "data/tdm08/SOL_15m.json",
+        "bundle_sha256": "f1e6de05aa4472c79b0cead39bca44e473c2c4fc21925220f1f6c2bd16079db2",
+        "tdm11_declared_sha256": "f1e6de05aa4472c79b0cead39bca44e473c2c4fc21925220f1f6c2bd16079db2",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:SOL:1h",
+        "path": "data/tdm08/SOL_1h.json",
+        "bundle_sha256": "697d334065ab7bbb58b36e23f4b06da171d361123f50d7146a11d77eb71c8fae",
+        "tdm11_declared_sha256": "697d334065ab7bbb58b36e23f4b06da171d361123f50d7146a11d77eb71c8fae",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:SOL:30m",
+        "path": "data/tdm08/SOL_30m.json",
+        "bundle_sha256": "d1df8c63248ea8021ff5ada5f29815097614f05e5bf176846cbe045c6310d67e",
+        "tdm11_declared_sha256": "d1df8c63248ea8021ff5ada5f29815097614f05e5bf176846cbe045c6310d67e",
+        "match": true
+      },
+      {
+        "dataset_id": "HOLD:SOL:5m",
+        "path": "data/tdm08/SOL_5m.json",
+        "bundle_sha256": "cec3085e2d06b6df663de0b8799b10a4448ddaeb00e18d2e5c84e2facede5448",
+        "tdm11_declared_sha256": "cec3085e2d06b6df663de0b8799b10a4448ddaeb00e18d2e5c84e2facede5448",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:BTC:15m",
+        "path": "data/tdm10/BTC_15m.json",
+        "bundle_sha256": "aa38cfd3678dbe0c938cefd5330ed1ba1efce2c83886b6c3cee8153e784350f2",
+        "tdm11_declared_sha256": "aa38cfd3678dbe0c938cefd5330ed1ba1efce2c83886b6c3cee8153e784350f2",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:BTC:1h",
+        "path": "data/tdm10/BTC_1h.json",
+        "bundle_sha256": "95b3d29655ef9722cfcd342bef935cf6f28f64fe04f3a8218cbe00dbde8be607",
+        "tdm11_declared_sha256": "95b3d29655ef9722cfcd342bef935cf6f28f64fe04f3a8218cbe00dbde8be607",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:BTC:30m",
+        "path": "data/tdm10/BTC_30m.json",
+        "bundle_sha256": "7eed75ae36c74b353781e51c3e94f08a7b389a3687b025a70b447fef15b0700f",
+        "tdm11_declared_sha256": "7eed75ae36c74b353781e51c3e94f08a7b389a3687b025a70b447fef15b0700f",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:BTC:5m",
+        "path": "data/tdm10/BTC_5m.json",
+        "bundle_sha256": "7185907c6c847214797de177b088a9556a83141e4acd4ebaf41b839f87a31f6e",
+        "tdm11_declared_sha256": "7185907c6c847214797de177b088a9556a83141e4acd4ebaf41b839f87a31f6e",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:ETH:15m",
+        "path": "data/tdm10/ETH_15m.json",
+        "bundle_sha256": "d3dc523bff863efb11ddc7c5d198cf9c0c20ac93520eab8c07aaf39c5e3de11b",
+        "tdm11_declared_sha256": "d3dc523bff863efb11ddc7c5d198cf9c0c20ac93520eab8c07aaf39c5e3de11b",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:ETH:1h",
+        "path": "data/tdm10/ETH_1h.json",
+        "bundle_sha256": "e32c3ed8302c4d687b4d03555f20a0dbb06373ca33dda956afe387fbd3436e72",
+        "tdm11_declared_sha256": "e32c3ed8302c4d687b4d03555f20a0dbb06373ca33dda956afe387fbd3436e72",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:ETH:30m",
+        "path": "data/tdm10/ETH_30m.json",
+        "bundle_sha256": "957e5b90abf38fdbf8ede2f233bf28b464e1e7cb9bb4bb9bd42e1355b8af7180",
+        "tdm11_declared_sha256": "957e5b90abf38fdbf8ede2f233bf28b464e1e7cb9bb4bb9bd42e1355b8af7180",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:ETH:5m",
+        "path": "data/tdm10/ETH_5m.json",
+        "bundle_sha256": "078a70969decbee24b13f70d5b33c0496047689ece06f58b533f1611c4fc06eb",
+        "tdm11_declared_sha256": "078a70969decbee24b13f70d5b33c0496047689ece06f58b533f1611c4fc06eb",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:SOL:15m",
+        "path": "data/tdm10/SOL_15m.json",
+        "bundle_sha256": "b74e8e92a1efb20809479dad8c694d755830bc1b331f2bd6bdeae9126e2a5075",
+        "tdm11_declared_sha256": "b74e8e92a1efb20809479dad8c694d755830bc1b331f2bd6bdeae9126e2a5075",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:SOL:1h",
+        "path": "data/tdm10/SOL_1h.json",
+        "bundle_sha256": "96776edbca673e9940fc8022caacfa6d9b81fe082de64ff25834a87f998564d2",
+        "tdm11_declared_sha256": "96776edbca673e9940fc8022caacfa6d9b81fe082de64ff25834a87f998564d2",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:SOL:30m",
+        "path": "data/tdm10/SOL_30m.json",
+        "bundle_sha256": "43a004b6b2c423fc433a6feb39a4a821703aa7d0079da7aebb9e3461d6219b13",
+        "tdm11_declared_sha256": "43a004b6b2c423fc433a6feb39a4a821703aa7d0079da7aebb9e3461d6219b13",
+        "match": true
+      },
+      {
+        "dataset_id": "DEV:SOL:5m",
+        "path": "data/tdm10/SOL_5m.json",
+        "bundle_sha256": "3bfdaf60fcc605119d567369e8d56239205138bc7386cb278bd1f32b0d415e64",
+        "tdm11_declared_sha256": "3bfdaf60fcc605119d567369e8d56239205138bc7386cb278bd1f32b0d415e64",
+        "match": true
+      }
+    ],
+    "manifests": [
+      {
+        "dataset_id": "HOLD:manifest",
+        "path": "data/tdm08/DATASET.json",
+        "bundle_sha256": "af7fa95ced41f36381e67909b133d87a675274293ca3457d1901aa1a341d9d84"
+      },
+      {
+        "dataset_id": "DEV:manifest",
+        "path": "data/tdm10/DATASET_DEV.json",
+        "bundle_sha256": "4a9e30c47b54144c631b0cdc94964693aae033ecf1a3ef41293a57c3a5b2fe23"
+      }
+    ]
+  },
+  "digests_summary": "16/16"
+}
