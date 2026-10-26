@@ -1,0 +1,47 @@
+{
+  "schema_version": "paper-daily-report-v1",
+  "report_date": "2026-10-11",
+  "generated_at_ms": 1791749812466,
+  "generated_at_iso": "2026-10-11T20:16:52.466000+00:00",
+  "run_id": "wp9-runtime-legs",
+  "mode": "PAPER",
+  "timeframe": "5m",
+  "assets": [
+    "BTC",
+    "ETH"
+  ],
+  "runtime_hours": 0.01432,
+  "cycles": 3,
+  "decisions": 6,
+  "no_trade": 6,
+  "no_trade_kinds": {
+    "no_trade_NO_TRADE_STRATEGIC": 6
+  },
+  "shadow_trades": 0,
+  "paper_trades": 0,
+  "orders_created": 0,
+  "pnl": {
+    "gross_bps_total": 0.0,
+    "resolved_outcomes": 0,
+    "pending_outcomes": 0,
+    "note": "PAPER only; no capital, no live orders. 0 trades is a PASS."
+  },
+  "drawdown": {
+    "max_drawdown_bps": 0.0,
+    "note": "computed from resolved PAPER outcomes only"
+  },
+  "strategy_attribution": {},
+  "risk_events": {
+    "risk_NOT_APPLICABLE": 6
+  },
+  "runtime_failures": 0,
+  "errors": [],
+  "restarts": [],
+  "outcomes": {
+    "resolved": 0,
+    "pending": 0,
+    "performance_cells": 0
+  },
+  "paper_candidates": [],
+  "no_trade_is_expected": "No strategy is admitted for PAPER, so the correct behaviour is NO_TRADE with zero trades."
+}

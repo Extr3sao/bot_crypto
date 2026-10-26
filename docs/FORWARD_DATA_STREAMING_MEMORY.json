@@ -1,0 +1,76 @@
+{
+  "bounded": true,
+  "bounded_note": "the worst growth across every path stays a small multiple of the working set and a tiny fraction of what holding the rows would cost, so memory is a function of streams and intervals, not of row count",
+  "commit": "7fb9429e765dbf0d520e6a58df3dabacc05dbbde",
+  "kind": "FORWARD_DATA_STREAMING_MEMORY",
+  "materialised_bytes_per_row": 20004,
+  "materialised_equivalent_mb": 109660.9,
+  "method": "resident set sampled every 0.25 s around each analysis path; rows counted by the path itself",
+  "ratio_vs_materialised": 0.000389,
+  "rows_measured": 5481951,
+  "run_id": "forward-1790610007-9d07f3df",
+  "sample_interval_seconds": 0.25,
+  "stages": [
+    {
+      "detail": "rows=5481951 partial_tails=0",
+      "elapsed_seconds": 243.072,
+      "rows": 5481951,
+      "rss_baseline_mb": 103.3125,
+      "rss_delta_from_baseline_mb": 19.957,
+      "rss_final_mb": 123.26953125,
+      "rss_growth_from_baseline_mb": 19.961,
+      "rss_peak_mb": 123.2734375,
+      "samples": 918,
+      "stage": "replay"
+    },
+    {
+      "detail": "buckets=911 digest=d14ef058e29279a6",
+      "elapsed_seconds": 1328.526,
+      "rows": 5481951,
+      "rss_baseline_mb": 117.546875,
+      "rss_delta_from_baseline_mb": 42.633,
+      "rss_final_mb": 160.1796875,
+      "rss_growth_from_baseline_mb": 42.633,
+      "rss_peak_mb": 160.1796875,
+      "samples": 4922,
+      "stage": "aggregation"
+    },
+    {
+      "detail": "streams=42 gaps=803 degraded_s=146.65",
+      "elapsed_seconds": 273.815,
+      "rows": 5481951,
+      "rss_baseline_mb": 159.47265625,
+      "rss_delta_from_baseline_mb": 24.516,
+      "rss_final_mb": 183.98828125,
+      "rss_growth_from_baseline_mb": 26.188,
+      "rss_peak_mb": 185.66015625,
+      "samples": 1028,
+      "stage": "quality"
+    },
+    {
+      "detail": "kind=FORWARD_DATA_DAILY_REPORT verdict={}",
+      "elapsed_seconds": 256.629,
+      "rows": 0,
+      "rss_baseline_mb": 169.72265625,
+      "rss_delta_from_baseline_mb": 18.637,
+      "rss_final_mb": 188.359375,
+      "rss_growth_from_baseline_mb": 18.871,
+      "rss_peak_mb": 188.59375,
+      "samples": 967,
+      "stage": "daily"
+    },
+    {
+      "detail": "segments=78 book_rows_retained=0 books=6",
+      "elapsed_seconds": 279.11,
+      "rows": 5481951,
+      "rss_baseline_mb": 181.90234375,
+      "rss_delta_from_baseline_mb": 24.859,
+      "rss_final_mb": 206.76171875,
+      "rss_growth_from_baseline_mb": 24.859,
+      "rss_peak_mb": 206.76171875,
+      "samples": 1039,
+      "stage": "verifier"
+    }
+  ],
+  "worst_rss_growth_mb": 42.633
+}

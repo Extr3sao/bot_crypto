@@ -1,0 +1,18 @@
+{
+  "experiment_id": "EXP-ARP-012",
+  "final": "REJECT_VALIDATION",
+  "identity": {
+    "dataset": "extended",
+    "kind": "daily",
+    "max_hold_days": 5,
+    "min_trades": 10,
+    "strategy_id": "STRAT-CAND-016-VARIANT-B"
+  },
+  "oos_opened": false,
+  "stages": {
+    "COST": "PASS",
+    "DEV": "PASS",
+    "ROBUSTNESS": "NOT_REACHED",
+    "VALIDATION": "REJECT_VALIDATION"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "experiment_id": "EXP-ARP-022",
+  "strategy_id": "H-INTERMARKET-RISKAPP-001",
+  "arm": "PROJECT_DERIVED_VARIANT",
+  "source_faithful": false,
+  "source_attribution": "NONE — new project hypothesis",
+  "mechanism_family": "intermarket signals / multi-asset rotation",
+  "lineage": "NEW. Not a variant of EXP-ARP-008: the decision variable is a RATIO between two markets (ETH/BTC), used to rotate between BTC and a liquid alt basket.",
+  "mechanism_statement": "Use the ETH/BTC cross-market ratio as a risk-appetite proxy: hold the equal-weight liquid alt basket when ETH/BTC trades above its own 50-day moving average, otherwise hold BTC. Rebalance weekly.",
+  "assets": ["DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)"],
+  "timeframe": "1d",
+  "rules": {
+    "signal": "risk_on = ETHBTC_close_t > SMA50(ETHBTC)_t",
+    "holdings": "risk_on -> equal-weight top-20 liquid non-BTC alts; risk_off -> BTCUSDT",
+    "rebalance": "weekly at UTC close; act next open; only rotate when the regime flips or basket membership changes",
+    "stop": "none (regime flip is the exit)",
+    "position": "one leg at a time (BTC or alt basket); fixed total notional 500 USD; no compounding"
+  },
+  "parameters": {
+    "lookback_days": 50,
+    "alt_basket_size": 20,
+    "min_members": 5,
+    "max_hold_days": 7
+  },
+  "cost_model": {
+    "version": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "source": "live CostEngine (never hardcoded)",
+    "stress_multiples": [0.5, 1.0, 1.25, 1.5, 2.0]
+  },
+  "data": {
+    "corpus": "reports/alpha-diversified-v1/data (130 native 1d USDT markets)",
+    "universe_version": "ARP-006-UNIVERSE-v1",
+    "survivorship_limitation": "SURVIVORSHIP_DATA_LIMITATION"
+  },
+  "splits": {
+    "DEV": ["2019-01-01", "2024-01-01"],
+    "VALIDATION": ["2024-01-01", "2025-07-01"],
+    "OOS_LOCK": ["2026-03-01", "2027-03-01"],
+    "oos_opened": false,
+    "oos_status": "FORWARD_PAPER_ONLY_NOT_AVAILABLE"
+  },
+  "spec_contract": {
+    "experiment_id": "EXP-ARP-022",
+    "strategy_id": "H-INTERMARKET-RISKAPP-001",
+    "timeframe": "1d",
+    "assets": ["DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)"],
+    "lookback_days": 50,
+    "max_hold_days": 7,
+    "entry_rule": "rotate weekly: hold alt basket if ETH/BTC > SMA50 else hold BTC; act next open",
+    "exit_rule": "rotate on regime flip or basket membership change; act next open; no bar-close force",
+    "dataset_fingerprint": "abc847bd4e367e2c885d5b320fedbbba7e9a435ae24ca52ef4243018313f2014"
+  },
+  "implementation_config": {
+    "lookback_days": 50,
+    "max_hold_days": 7,
+    "dataset_fingerprint": "abc847bd4e367e2c885d5b320fedbbba7e9a435ae24ca52ef4243018313f2014",
+    "entry_rule": "rotate weekly: hold alt basket if ETH/BTC > SMA50 else hold BTC; act next open",
+    "exit_rule": "rotate on regime flip or basket membership change; act next open; no bar-close force",
+    "disposition": "NOT_IMPLEMENTED — pre-registration only; no DEV execution in ARP-008"
+  },
+  "kill_criteria": [
+    "DEV gross expectancy <= 0 -> REJECT_NO_EDGE",
+    "DEV gross expectancy <= cost bps -> REJECT_COSTS",
+    "DEV trades < 20 -> REJECT_INSUFFICIENT_SAMPLE",
+    "single trade > 50% of positive DEV net -> REJECT_FRAGILE",
+    "any look-ahead -> REJECT_PIT",
+    "VALIDATION net <= 0 -> REJECT_VALIDATION"
+  ],
+  "gates": {
+    "promotion": "positive net DEV AND positive net VALIDATION AND cost PASS AND robustness PASS AND PIT PASS AND contract PASS AND sample sufficient AND concentration acceptable AND builder != verifier"
+  },
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "frozen_before_results": true,
+  "oos_locked": true
+}
