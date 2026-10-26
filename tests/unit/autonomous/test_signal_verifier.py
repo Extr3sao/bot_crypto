@@ -46,7 +46,16 @@ def _run(tmp_path: Path, cycles: int = 2) -> Path:
     )
     asyncio.run(runtime.run(cycles=cycles))
     (run_dir / "PAPER_RUN.json").write_text(
-        json.dumps({"run_id": run_dir.name, "provider": "fake", "timeframe": "5m"}),
+        json.dumps(
+            {
+                "run_id": run_dir.name,
+                "provider": "fake",
+                "timeframe": "5m",
+                "market_data": "FAKE",
+                "market_data_sandbox": False,
+                "signal_source": "FAKE",
+            }
+        ),
         encoding="utf-8",
     )
     return run_dir
@@ -123,6 +132,49 @@ def test_a_demo_row_labelled_real_fails(tmp_path: Path, verifier: Any) -> None:
     code, report = _verify(verifier, tmp_path, run_dir)
     assert code == verifier.EXIT_FAIL
     assert "signals.source_matches_the_provider" in report["failed"]
+
+
+def test_a_testnet_run_cannot_pass_as_real(tmp_path: Path, verifier: Any) -> None:
+    """Every row and trace agreeing does not make a synthetic venue real.
+
+    This is the shape of the baseline defect: a ccxt connector pointed at
+    Binance testnet wrote `source=REAL`, and a verifier that only compared rows
+    to the provider name would have blessed it.
+    """
+    run_dir = _run(tmp_path)
+    (run_dir / "PAPER_RUN.json").write_text(
+        json.dumps(
+            {
+                "run_id": run_dir.name,
+                "provider": "ccxt",
+                "timeframe": "5m",
+                "market_data": "TESTNET",
+                "market_data_sandbox": True,
+                "signal_source": "REAL",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    def mutate(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        for row in rows:
+            row["source"] = "REAL"
+        return rows
+
+    _rewrite(run_dir / "signals.jsonl", mutate)
+    code, report = _verify(verifier, tmp_path, run_dir)
+    assert code == verifier.EXIT_FAIL
+    assert "run.data_provenance_is_honest" in report["failed"]
+
+
+def test_a_run_without_provenance_is_blocked(tmp_path: Path, verifier: Any) -> None:
+    run_dir = _run(tmp_path)
+    (run_dir / "PAPER_RUN.json").write_text(
+        json.dumps({"run_id": run_dir.name, "provider": "fake"}), encoding="utf-8"
+    )
+    code, report = _verify(verifier, tmp_path, run_dir)
+    assert code == verifier.EXIT_FAIL
+    assert "run.data_provenance_declared" in report["failed"]
 
 
 def test_analysis_for_an_unknown_signal_fails(tmp_path: Path, verifier: Any) -> None:

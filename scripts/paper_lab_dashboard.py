@@ -489,7 +489,11 @@ def analysis_payload(
                 "analysed": analysed,
                 "not_configured": by_status.get(AnalysisStatus.NOT_CONFIGURED.value, 0),
                 "failed": by_status.get(AnalysisStatus.FAILED.value, 0),
+                # ``pending`` is a *record* status; ``uncovered`` is the number of
+                # signals with no row at all yet. Reporting only the former read as
+                # "nothing pending" while four signals had never been looked at.
                 "pending": by_status.get(AnalysisStatus.PENDING.value, 0),
+                "uncovered": max(0, signals_total - len(latest)),
                 "by_status": by_status,
                 "coverage_pct": (
                     None if not signals_total else round(100.0 * len(latest) / signals_total, 1)
@@ -526,6 +530,7 @@ def render_analysis_card(payload: dict[str, Any]) -> str:
             ("not configured", coverage.get("not_configured")),
             ("failed", coverage.get("failed")),
             ("pending", coverage.get("pending")),
+            ("uncovered", coverage.get("uncovered")),
             ("cost (USD)", economics.get("cost_usd_total")),
             ("latency p95 (ms)", economics.get("latency_ms_p95")),
             ("authority over orders", payload.get("authority_over_orders")),
@@ -571,7 +576,13 @@ def render_signals_section(payload: dict[str, Any]) -> str:
             f"<td class='small'>{_escape(event.get('decision_time_utc') or '—')}</td>"
             f"<td>{_escape(event.get('symbol'))}</td>"
             f"<td>{_escape(event.get('strategy_id') or '—')}"
-            f"<div class='small'>{_escape(event.get('strategy_version') or '')}</div></td>"
+            + (
+                f"<div class='small'>{_escape(event['strategy_version'])}</div>"
+                if event.get("strategy_version")
+                and event.get("strategy_version") != event.get("strategy_id")
+                else ""
+            )
+            + "</td>"
             f"<td><b>{_escape(event.get('stage'))}</b><div class='small'>{_escape(event.get('kind'))}</div></td>"
             f"<td>{_escape(event.get('direction') or '—')}</td>"
             f"<td class='num'>{_bps(event.get('gross_edge_bps'))}</td>"
@@ -600,6 +611,9 @@ def render_signals_section(payload: dict[str, Any]) -> str:
     kind_summary = ", ".join(
         f"{key}={value}" for key, value in sorted((stats.get("by_kind") or {}).items())
     ) or "—"
+    source_summary = ", ".join(
+        f"{key}={value}" for key, value in sorted((stats.get("by_source") or {}).items())
+    ) or "—"
     options = "".join(
         f"<option value='{_escape(key)}'>{_escape(key)} ({_escape(count)} )</option>"
         for key, count in sorted((stats.get("by_stage") or {}).items())
@@ -623,7 +637,7 @@ def render_signals_section(payload: dict[str, Any]) -> str:
     return f"""<div id="signals" class="panel">
 <h2 style="font-size:13px;letter-spacing:.08em;color:#8b93a1;margin:0 0 6px">SIGNALS — {_escape(payload.get('run_id') or 'no run')}</h2>
 <div class="banner {tone}">{_escape(state)} — {_escape(payload.get('state_reason'))}</div>
-<div class="small">events {_escape(stats.get('records'))} · source {_escape(stats.get('by_source'))} · stage {_escape(stage_summary)} · kind {_escape(kind_summary)} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · outcomes {_escape(payload.get('outcomes'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> · <a href="/api/analysis" style="color:#7fb2ff">AI JSON</a> {next_link}</div>
+<div class="small">events {_escape(stats.get('records'))} · source {_escape(source_summary)} · stage {_escape(stage_summary)} · kind {_escape(kind_summary)} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · outcomes {_escape(payload.get('outcomes'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> · <a href="/api/analysis" style="color:#7fb2ff">AI JSON</a> {next_link}</div>
 <form method="get" action="/#signals" class="filters">
  <input name="symbol" placeholder="BTC/USDT" value="{_escape(filters.get('symbol') or '')}">
  <input name="strategy" placeholder="strategy_id" value="{_escape(filters.get('strategy') or '')}">
@@ -726,7 +740,14 @@ def render_page(payload: dict[str, Any]) -> str:
                 ("free", f"{disk.get('free_gb')} GB"),
                 ("level", disk.get("level")),
                 ("thresholds", disk.get("thresholds")),
-                ("observed rate", f"{disk.get('consumption_gb_per_day')} GB/day"),
+                (
+                    "observed rate",
+                    (
+                        f"{disk.get('consumption_gb_per_day')} GB/day"
+                        if disk.get("consumption_gb_per_day") is not None
+                        else None
+                    ),
+                ),
                 ("estimated hours left", disk.get("estimated_hours_remaining")),
                 ("guidance", disk.get("guidance")),
             ],

@@ -1,0 +1,426 @@
+{
+  "schema_version": "paper-signals-view-v1",
+  "generated_at_ms": 1793011322160,
+  "generated_at_utc": "2026-10-26T10:42:02Z",
+  "read_only": true,
+  "run_id": "paper-lab-rfc008-live-01",
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-01",
+  "available": true,
+  "state": "LIVE",
+  "state_reason": "the newest signal is 117s old",
+  "events": [
+    {
+      "schema_version": "signal-event-v1",
+      "signal_id": "8892f51b6b52ef47b9cbe94a05d02fbe",
+      "run_id": "e4befe24bf60488c",
+      "decision_id": "e4befe24bf60488c-SOL",
+      "asset": "SOL",
+      "symbol": "SOL/USDT",
+      "venue": "binance",
+      "timeframe": "5m",
+      "strategy_id": "ema_crossover@5m",
+      "strategy_version": "ema_crossover@5m",
+      "bar_close_time_ms": 1793011205124,
+      "bar_close_time_utc": "2026-10-26T10:40:05.124Z",
+      "decision_time_ms": 1793011205124,
+      "decision_time_utc": "2026-10-26T10:40:05.124Z",
+      "direction": "LONG",
+      "stage": "CANDIDATE",
+      "kind": "ALPHA",
+      "reason": "gross_edge_not_positive:-4.5600bps",
+      "gross_edge_bps": -4.56,
+      "estimated_cost_bps": 23.77428886,
+      "net_edge_bps": -28.33428886,
+      "risk_state": "APPROVED",
+      "data_quality": "OK",
+      "source": "REAL",
+      "evidence_refs": [
+        {
+          "decision_id": "e4befe24bf60488c-SOL",
+          "file": "traces.jsonl",
+          "kind": "decision_trace",
+          "run_id": "e4befe24bf60488c",
+          "sequence": 3,
+          "trace_hash": "9064a9a8821c07f5fd75ad68ec91f99c155aa783cea0cfd7809d823916574b57"
+        },
+        {
+          "data_fingerprint": "sha256:a3d8ed026ef80ef505df66f6604d4ea8",
+          "kind": "market_data"
+        },
+        {
+          "kind": "venue",
+          "venue": "binance"
+        }
+      ],
+      "candidates": [
+        {
+          "admission_status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": 1.49,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "mean_reversion@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -0.11,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "breakout@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.65,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "trend@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.88,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "momentum@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.56,
+          "router_reason": null,
+          "router_status": "SELECTED",
+          "selected": true,
+          "strategy_id": "ema_crossover@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.73,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "volatility@5m"
+        }
+      ],
+      "classification": "NO_GROSS_EDGE",
+      "no_trade_kind": "NO_TRADE_STRATEGIC",
+      "errors": [],
+      "order_created": false,
+      "regime": "LOW_VOLATILITY",
+      "created_at_ms": 1793011208832,
+      "created_at_utc": "2026-10-26T10:40:08.832Z",
+      "outcome": null,
+      "analysis": {
+        "status": "NOT_CONFIGURED",
+        "claim": null,
+        "regime_assessment": null,
+        "analysis_time_utc": "2026-10-26T10:40:24.595Z",
+        "model": null,
+        "latency_ms": null,
+        "cost_usd": null,
+        "error_code": "PROVIDER_NOT_CONFIGURED",
+        "error_message": "no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_URL) to enable analysis",
+        "analysis_id": "600e2867cad63fba174e8ed19927708f"
+      }
+    },
+    {
+      "schema_version": "signal-event-v1",
+      "signal_id": "6fb25cdca3c93ec14f30bd0abd4430ac",
+      "run_id": "e4befe24bf60488c",
+      "decision_id": "e4befe24bf60488c-ETH",
+      "asset": "ETH",
+      "symbol": "ETH/USDT",
+      "venue": "binance",
+      "timeframe": "5m",
+      "strategy_id": "ema_crossover@5m",
+      "strategy_version": "ema_crossover@5m",
+      "bar_close_time_ms": 1793011205124,
+      "bar_close_time_utc": "2026-10-26T10:40:05.124Z",
+      "decision_time_ms": 1793011205124,
+      "decision_time_utc": "2026-10-26T10:40:05.124Z",
+      "direction": "LONG",
+      "stage": "CANDIDATE",
+      "kind": "ALPHA",
+      "reason": "gross_edge_not_positive:-4.5600bps",
+      "gross_edge_bps": -4.56,
+      "estimated_cost_bps": 22.83343277,
+      "net_edge_bps": -27.39343277,
+      "risk_state": "APPROVED",
+      "data_quality": "OK",
+      "source": "REAL",
+      "evidence_refs": [
+        {
+          "decision_id": "e4befe24bf60488c-ETH",
+          "file": "traces.jsonl",
+          "kind": "decision_trace",
+          "run_id": "e4befe24bf60488c",
+          "sequence": 2,
+          "trace_hash": "e23ea077662021c139859b8d3ccab4bd977bf4b48cc2fc9ab3ab5e5a0fb6a9f1"
+        },
+        {
+          "data_fingerprint": "sha256:4eb2aa58c69c0b58a413870e5866d837",
+          "kind": "market_data"
+        },
+        {
+          "kind": "venue",
+          "venue": "binance"
+        }
+      ],
+      "candidates": [
+        {
+          "admission_status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": 1.49,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "mean_reversion@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -0.11,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "breakout@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.65,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "trend@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.88,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "momentum@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.56,
+          "router_reason": null,
+          "router_status": "SELECTED",
+          "selected": true,
+          "strategy_id": "ema_crossover@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.73,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "volatility@5m"
+        }
+      ],
+      "classification": "NO_GROSS_EDGE",
+      "no_trade_kind": "NO_TRADE_STRATEGIC",
+      "errors": [],
+      "order_created": false,
+      "regime": "LOW_VOLATILITY",
+      "created_at_ms": 1793011208830,
+      "created_at_utc": "2026-10-26T10:40:08.830Z",
+      "outcome": null,
+      "analysis": {
+        "status": "NOT_CONFIGURED",
+        "claim": null,
+        "regime_assessment": null,
+        "analysis_time_utc": "2026-10-26T10:40:24.594Z",
+        "model": null,
+        "latency_ms": null,
+        "cost_usd": null,
+        "error_code": "PROVIDER_NOT_CONFIGURED",
+        "error_message": "no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_URL) to enable analysis",
+        "analysis_id": "075ddc7f21133a61cfcf385943f692fa"
+      }
+    },
+    {
+      "schema_version": "signal-event-v1",
+      "signal_id": "0e15ebcb439a60aeb2c02e885047c10f",
+      "run_id": "e4befe24bf60488c",
+      "decision_id": "e4befe24bf60488c-BTC",
+      "asset": "BTC",
+      "symbol": "BTC/USDT",
+      "venue": "binance",
+      "timeframe": "5m",
+      "strategy_id": "ema_crossover@5m",
+      "strategy_version": "ema_crossover@5m",
+      "bar_close_time_ms": 1793011205124,
+      "bar_close_time_utc": "2026-10-26T10:40:05.124Z",
+      "decision_time_ms": 1793011205124,
+      "decision_time_utc": "2026-10-26T10:40:05.124Z",
+      "direction": "LONG",
+      "stage": "CANDIDATE",
+      "kind": "ALPHA",
+      "reason": "gross_edge_not_positive:-4.5600bps",
+      "gross_edge_bps": -4.56,
+      "estimated_cost_bps": 22.79181221,
+      "net_edge_bps": -27.35181221,
+      "risk_state": "APPROVED",
+      "data_quality": "OK",
+      "source": "REAL",
+      "evidence_refs": [
+        {
+          "decision_id": "e4befe24bf60488c-BTC",
+          "file": "traces.jsonl",
+          "kind": "decision_trace",
+          "run_id": "e4befe24bf60488c",
+          "sequence": 1,
+          "trace_hash": "b92995c74d5f4118f0e967206ff34358b019095b9828371024b70a11d133aeee"
+        },
+        {
+          "data_fingerprint": "sha256:3c58c2329bc4f854c329d8f44c0c217d",
+          "kind": "market_data"
+        },
+        {
+          "kind": "venue",
+          "venue": "binance"
+        }
+      ],
+      "candidates": [
+        {
+          "admission_status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": 1.49,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "mean_reversion@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -0.11,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "breakout@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.65,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "trend@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.88,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "momentum@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.56,
+          "router_reason": null,
+          "router_status": "SELECTED",
+          "selected": true,
+          "strategy_id": "ema_crossover@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.73,
+          "router_reason": "no_alpha_in_direction:ANY",
+          "router_status": "NOT_APPLICABLE",
+          "selected": false,
+          "strategy_id": "volatility@5m"
+        }
+      ],
+      "classification": "NO_GROSS_EDGE",
+      "no_trade_kind": "NO_TRADE_STRATEGIC",
+      "errors": [],
+      "order_created": false,
+      "regime": "LOW_VOLATILITY",
+      "created_at_ms": 1793011208830,
+      "created_at_utc": "2026-10-26T10:40:08.830Z",
+      "outcome": null,
+      "analysis": {
+        "status": "NOT_CONFIGURED",
+        "claim": null,
+        "regime_assessment": null,
+        "analysis_time_utc": "2026-10-26T10:40:24.593Z",
+        "model": null,
+        "latency_ms": null,
+        "cost_usd": null,
+        "error_code": "PROVIDER_NOT_CONFIGURED",
+        "error_message": "no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_URL) to enable analysis",
+        "analysis_id": "1b53e0938e706e4dc0ce7c71de1d027b"
+      }
+    }
+  ],
+  "page": {
+    "limit": 50,
+    "returned": 3,
+    "total_matched": 3,
+    "next_cursor": null
+  },
+  "stats": {
+    "by_stage": {
+      "CANDIDATE": 3
+    },
+    "by_kind": {
+      "ALPHA": 3
+    },
+    "by_symbol": {
+      "BTC/USDT": 1,
+      "ETH/USDT": 1,
+      "SOL/USDT": 1
+    },
+    "by_source": {
+      "REAL": 3
+    },
+    "records": 3
+  },
+  "outcomes": {
+    "resolved": 0,
+    "pending": 3,
+    "by_mode": {},
+    "net_bps_mean_by_mode": {},
+    "scanned_rows": 0
+  },
+  "filters": {
+    "symbol": null,
+    "strategy": null,
+    "timeframe": null,
+    "stage": null,
+    "kind": null,
+    "since_ms": null,
+    "cursor": null
+  },
+  "limit_bounds": {
+    "default": 50,
+    "max": 200
+  },
+  "retention": {
+    "records_per_generation": 20000,
+    "generations": 3
+  },
+  "integrity": {
+    "ok": true,
+    "duplicates": 0,
+    "malformed": 0,
+    "pit_violations": 0
+  }
+}

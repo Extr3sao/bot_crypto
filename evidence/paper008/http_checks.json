@@ -1,0 +1,44 @@
+{
+  "signals": [
+    200,
+    3,
+    "LIVE",
+    {
+      "REAL": 3
+    }
+  ],
+  "page1": [
+    200,
+    2,
+    2
+  ],
+  "page2": [
+    200,
+    1,
+    null
+  ],
+  "filter_eth": [
+    200,
+    1,
+    [
+      "ETH/USDT"
+    ]
+  ],
+  "html_filter_rows": [
+    200,
+    1,
+    true,
+    true
+  ],
+  "analysis": [
+    200,
+    "NOT_CONFIGURED",
+    3,
+    0,
+    false
+  ],
+  "post": [
+    405,
+    "{\"error\":\"this dashboard is read-only\",\"allowed\":[\"GET\"]}\n"
+  ]
+}

@@ -62,6 +62,23 @@ def test_mainnet_public_data_is_real_and_the_fake_provider_is_fake() -> None:
     ) == ("FAKE", "FAKE", None)
 
 
+def test_the_ccxt_provider_reads_the_public_mainnet_source() -> None:
+    """The signal plane is wired to G-7's public REST source, not the hub.
+
+    The Settings invariant keeps the credentialed connector sandboxed in PAPER;
+    the market-data plane therefore has to be a separate, public-only client,
+    or `source=REAL` would be impossible to earn honestly.
+    """
+    from trading_bot.config.settings import load_settings
+
+    paper = _load_script("autonomous_paper")
+    settings = load_settings(config_dir="config/realdata")
+    _factory, source = paper.build_scanner_factory(settings, "ccxt")
+    assert source.provider == "binance-public-rest"
+    assert source.venue == "binance"
+    assert source.sandbox_enabled is False
+
+
 def test_the_bridge_reports_unknown_provenance_as_sandbox() -> None:
     from trading_bot.market_data.scanner_bridge import HubMarketDataSource
 

@@ -1,0 +1,124 @@
+{
+  "schema_version": "rfc-paper-008-run-report-v1",
+  "generated_at_utc": "2026-10-26T11:02:30Z",
+  "run_id": "paper-lab-rfc008-live-01",
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-01",
+  "git_commit": "3504fcddf6eb091b6b5d017700bf7b7254141b61",
+  "dirty_tree": true,
+  "dirty_paths": 19,
+  "branch": "feat/rfc-paper-008",
+  "operating_system": "Windows-10-10.0.26200-SP0",
+  "provider": "ccxt",
+  "data_transport": "binance-public-rest",
+  "market_data": "MAINNET",
+  "signal_source": "REAL",
+  "venue": "ccxt:binance:binance-public-rest",
+  "symbols": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "timeframes": [
+    "5m"
+  ],
+  "started_at_utc": "2026-10-26T10:39:45Z",
+  "stopped_at_utc": "2026-10-26T11:00:49Z",
+  "observed_uptime_seconds": 1263.53,
+  "final_state": "DEGRADED",
+  "stop_reason": "duration reached",
+  "process_restarts": 1,
+  "process_exits": [
+    {
+      "process": "analyst",
+      "exit_code": 1,
+      "at_ms": 1793012278148
+    }
+  ],
+  "cycle_count": 5,
+  "signal_counts_by_kind_and_stage": {
+    "CANDIDATE": {
+      "ALPHA": 12
+    },
+    "REJECTED": {
+      "NO_ALPHA": 3
+    }
+  },
+  "signal_rows": 15,
+  "trace_rows": 15,
+  "no_trade_reasons": {
+    "NO_TRADE_STRATEGIC": 3
+  },
+  "admission_eligible": 0,
+  "admitted_for_paper": [],
+  "paper_orders": 0,
+  "shadow_outcomes": 0,
+  "paper_fills": 0,
+  "realised_paper_pnl_after_costs": null,
+  "data_age_seconds": 4.356,
+  "max_gap_seconds": 302.363,
+  "duplicate_count": 0,
+  "analysis_status_counts": {
+    "NOT_CONFIGURED": 15
+  },
+  "analysis_rows": 15,
+  "llm_provider": null,
+  "llm_call_count": 0,
+  "llm_cost_usd": null,
+  "llm_latency_p95_ms": null,
+  "http_checks": {
+    "/healthz": {
+      "http": 200,
+      "bytes": 53,
+      "latency_ms": 63
+    },
+    "/api/status": {
+      "http": 200,
+      "bytes": 101406,
+      "latency_ms": 30
+    },
+    "/api/signals": {
+      "http": 200,
+      "bytes": 66106,
+      "latency_ms": 62
+    },
+    "/api/analysis": {
+      "http": 200,
+      "bytes": 17289,
+      "latency_ms": 47
+    },
+    "/": {
+      "http": 200,
+      "bytes": 66780,
+      "latency_ms": 45
+    },
+    "POST /api/signals": {
+      "http": 405
+    }
+  },
+  "errors": [],
+  "verifier_result": true,
+  "verifier_report": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-01\\SIGNAL_VERIFY.json",
+  "false_success": 0,
+  "blockers": [
+    "PAPER_ORDER_BLOCKED_ADMISSION_0_OF_24",
+    "AI_NOT_CONFIGURED"
+  ],
+  "limitations": [
+    "no ANALYZED row: no provider key was configured; latency/cost are null",
+    "observed window is 0.35 h, not 24 h: state is 24H_NOT_VERIFIED",
+    "1 process restart(s) occurred (analyst exit=1); a DEGRADED final_state reflects that restart, not a data failure"
+  ],
+  "evidence_sha256": {
+    "PAPER_RUN.json": "2637de1d51fe3f5e1c60bfd86ff55a8993ca150a96acb708cb42b9702af65f28",
+    "signals.jsonl": "40ac8cbe81910ede5bdd8f56d16f5f5d1ad962d43c13c009e09979120b418eb6",
+    "traces.jsonl": "057c1c0a2ea96231f5ef244eb74d672139f085ddb41a3ae8d135a81e182897d3",
+    "analysis.jsonl": "d0c45337f2b33fc08b9f6827d9714280c48bbdd3803f2808e920f0b977ea7eef",
+    "outcomes.jsonl": "49f2a0ac924318c0ece7903f81ccd3743062d84d67f0d4c66fd80663c0587a03",
+    "heartbeat.json": "15504d2f4deaf9dfc353fedf4942d0e2076f65efbfad7896bebe5b919ac7c84e",
+    "heartbeat.jsonl": "0dfc888f9e1d6e30153de40bf47b984c479f5603c7e3cb8f66ce5cf77707e7c2",
+    "SIGNAL_VERIFY.json": "bf1fb59fc11dcad5134808f7f3673fb5b0443366566d7ede6e184d280f39aac8",
+    "LAB_PLAN.json": "282241dd07008f7072f3101752e1176d89f033778d294c117a277cd1c412bf76",
+    "LAB_RUN_REPORT.json": "4452056da76502fc3f048c370a43b7fe49a4d97902cf99acce497e912265a83a",
+    "SYSTEM_HEARTBEAT.json": "3d26c2270fefd57d90b8f1d53c0d804e23d386234901b98cbc770997015de97c"
+  }
+}

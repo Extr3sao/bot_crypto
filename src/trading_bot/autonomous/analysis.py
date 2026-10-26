@@ -685,10 +685,29 @@ def provider_from_env() -> LLMProvider | None:
 
 
 def pending_signals(
-    events: Iterable[SignalEvent], store: AnalysisStore
+    events: Iterable[SignalEvent],
+    store: AnalysisStore,
+    *,
+    provider_configured: bool = True,
 ) -> list[SignalEvent]:
-    """Signals with no ANALYZED row, oldest first (the order they were decided)."""
-    done = store.analysed_signal_ids()
+    """Signals still owed an analysis, oldest first.
+
+    ``ANALYZED`` is always terminal. With no provider configured,
+    ``NOT_CONFIGURED`` is terminal too: it records the state of the sidecar, not
+    a failed attempt, and re-examining the same five rows on every pass starved
+    every newer signal (observed: 5 of 12 covered while ``pending_before`` was
+    12). When a provider appears those rows become pending again, so enabling
+    the key still analyses the backlog.
+    """
+    latest = store.latest_by_signal()
+    terminal = {AnalysisStatus.ANALYZED.value}
+    if not provider_configured:
+        terminal.add(AnalysisStatus.NOT_CONFIGURED.value)
+    done = {
+        signal_id
+        for signal_id, record in latest.items()
+        if record.status in terminal
+    }
     pending = [event for event in events if event.signal_id not in done]
     pending.sort(key=lambda event: event.decision_time_ms)
     return pending

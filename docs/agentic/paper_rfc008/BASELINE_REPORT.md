@@ -81,15 +81,28 @@ Comparación directa del mismo par/vela (medida el 2026-10-26):
 
 Corrección:
 
-1. `config/realdata/*` pasa a `sandbox: false` (el perfil es el laboratorio
-   REAL; el único límite de ejecución sigue siendo `PaperBroker`).
-2. `HubMarketDataSource.sandbox_enabled` expone la procedencia real del
-   connector; procedencia desconocida se trata como sandbox.
+1. El plano de datos del scanner usa el módulo público de G-7
+   (`market_data/public_rest.py`, ya probado en `audit/g7-real-paper`):
+   `https://api.binance.com/api/v3/*`, sin claves y con allowlist de rutas. El
+   connector del hub **sigue en sandbox**, porque el invariante de `Settings`
+   lo exige en modo PAPER; simplemente ya no es la fuente de las señales.
+2. `PublicRestKlineSource.sandbox_enabled=False` y `venue=binance` declaran la
+   procedencia; `HubMarketDataSource.sandbox_enabled` sigue existiendo para que
+   ningún connector sandbox pueda publicarse como REAL.
 3. `resolve_data_provenance()` **rechaza** arrancar con `source` REAL desde un
    connector sandbox. La opción explícita `--allow-testnet-market-data`
    conserva el modo demo, pero publica `source=FAKE` y `market_data=TESTNET`.
-4. `PAPER_RUN.json` registra `market_data`, `market_data_sandbox` y
-   `signal_source`; el dashboard los muestra.
+4. `PAPER_RUN.json` registra `market_data`, `market_data_sandbox`,
+   `data_transport` y `signal_source`; el dashboard los muestra.
+
+Prueba de la corrección (ciclo real, `paper008-sourcecheck2`):
+
+```text
+[preflight] market data provider=ccxt venue=binance
+            mode=MAINNET signal_source=REAL
+PAPER_RUN environment=ccxt:binance:binance-public-rest
+signals.jsonl 3 filas source=REAL data_quality=OK
+```
 
 ### D-02 — el sidecar de IA moría antes de la primera señal (bloqueante para IA)
 

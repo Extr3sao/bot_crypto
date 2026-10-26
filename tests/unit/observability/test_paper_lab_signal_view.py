@@ -303,6 +303,7 @@ def test_api_analysis_reports_missing_coverage_honestly(tmp_path: Path, run_dir:
     assert payload["signals_total"] == 7
     assert payload["coverage"]["covered"] == 0
     assert payload["coverage"]["coverage_pct"] == 0.0
+    assert payload["coverage"]["uncovered"] == 7  # every signal, not just zero "pending"
     assert payload["state"] == "NOT_RUN"  # the sidecar never ran: not the same as empty
 
 
@@ -329,6 +330,7 @@ def test_api_analysis_counts_not_configured_separately(tmp_path: Path, run_dir: 
     assert payload["provider_configured"] is False
     assert payload["coverage"]["not_configured"] == 3
     assert payload["coverage"]["analysed"] == 0
+    assert payload["coverage"]["uncovered"] == 4
     # An analysis-free signal is labelled as such on the board, not left blank.
     with _serving(tmp_path, run_dir) as port:
         _, _, html = _get(port, "/signals")

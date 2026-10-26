@@ -1,0 +1,144 @@
+{
+  "schema_version": "paper-analysis-view-v1",
+  "generated_at_ms": 1793011322563,
+  "generated_at_utc": "2026-10-26T10:42:02Z",
+  "read_only": true,
+  "authority_over_orders": false,
+  "run_id": "paper-lab-rfc008-live-01",
+  "available": true,
+  "state": "NOT_CONFIGURED",
+  "signals_total": 3,
+  "coverage": {
+    "signals": 3,
+    "covered": 3,
+    "analysed": 0,
+    "not_configured": 3,
+    "failed": 0,
+    "pending": 0,
+    "by_status": {
+      "NOT_CONFIGURED": 3
+    },
+    "coverage_pct": 100.0
+  },
+  "records": [
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "600e2867cad63fba174e8ed19927708f",
+      "signal_id": "8892f51b6b52ef47b9cbe94a05d02fbe",
+      "run_id": "e4befe24bf60488c",
+      "decision_id": "e4befe24bf60488c-SOL",
+      "status": "NOT_CONFIGURED",
+      "model": null,
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793011224595,
+      "analysis_time_utc": "2026-10-26T10:40:24.595Z",
+      "claim": null,
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "uncertainties": [],
+      "regime_assessment": null,
+      "risk_observations": [],
+      "latency_ms": null,
+      "cost_usd": null,
+      "tokens_in": null,
+      "tokens_out": null,
+      "evidence_digest": "99affab98e80348196817b520bcbfeded0c3e892239d3066d955067fa7dcd72c",
+      "error_code": "PROVIDER_NOT_CONFIGURED",
+      "error_message": "no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_URL) to enable analysis"
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "075ddc7f21133a61cfcf385943f692fa",
+      "signal_id": "6fb25cdca3c93ec14f30bd0abd4430ac",
+      "run_id": "e4befe24bf60488c",
+      "decision_id": "e4befe24bf60488c-ETH",
+      "status": "NOT_CONFIGURED",
+      "model": null,
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793011224594,
+      "analysis_time_utc": "2026-10-26T10:40:24.594Z",
+      "claim": null,
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "uncertainties": [],
+      "regime_assessment": null,
+      "risk_observations": [],
+      "latency_ms": null,
+      "cost_usd": null,
+      "tokens_in": null,
+      "tokens_out": null,
+      "evidence_digest": "89195d56eaa09ca7b8c2b69d8fb2ce4529f60e4602bc6234ea4638c52b57fd9f",
+      "error_code": "PROVIDER_NOT_CONFIGURED",
+      "error_message": "no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_URL) to enable analysis"
+    },
+    {
+      "schema_version": "signal-analysis-v1",
+      "analysis_id": "1b53e0938e706e4dc0ce7c71de1d027b",
+      "signal_id": "0e15ebcb439a60aeb2c02e885047c10f",
+      "run_id": "e4befe24bf60488c",
+      "decision_id": "e4befe24bf60488c-BTC",
+      "status": "NOT_CONFIGURED",
+      "model": null,
+      "prompt_version": "signal-analyst-v1",
+      "analysis_time_ms": 1793011224593,
+      "analysis_time_utc": "2026-10-26T10:40:24.593Z",
+      "claim": null,
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "uncertainties": [],
+      "regime_assessment": null,
+      "risk_observations": [],
+      "latency_ms": null,
+      "cost_usd": null,
+      "tokens_in": null,
+      "tokens_out": null,
+      "evidence_digest": "974b6be91693a28a4ffc5eeeb066561369b8a30ec4be73defce5a3fdfa512bcf",
+      "error_code": "PROVIDER_NOT_CONFIGURED",
+      "error_message": "no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_URL) to enable analysis"
+    }
+  ],
+  "page": {
+    "limit": 50,
+    "returned": 3
+  },
+  "heartbeat": {
+    "schema_version": "ai-analyst-pass-v1",
+    "run_id": "paper-lab-rfc008-live-01",
+    "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-01",
+    "passed_at_ms": 1793011314609,
+    "passed_at_utc": "2026-10-26T10:41:54Z",
+    "provider_configured": false,
+    "provider": null,
+    "model": null,
+    "prompt_version": "signal-analyst-v1",
+    "stream_present": true,
+    "signals_seen": 3,
+    "pending_before": 3,
+    "examined": 3,
+    "statuses": {
+      "NOT_CONFIGURED": 3
+    },
+    "last_error": "PROVIDER_NOT_CONFIGURED: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_URL) to enable analysis",
+    "budget": {
+      "per_hour": 60,
+      "max_per_run": 500
+    },
+    "read_only": true,
+    "authority_over_orders": false,
+    "store": {
+      "records": 3,
+      "signals_covered": 3,
+      "by_status": {
+        "NOT_CONFIGURED": 3
+      },
+      "cost_usd_total": 0.0
+    }
+  },
+  "provider_configured": false,
+  "economics": {
+    "cost_usd_total": 0.0,
+    "cost_usd_per_analysis": null,
+    "latency_ms_p95": null,
+    "latency_ms_max": null
+  }
+}

@@ -336,6 +336,26 @@ def test_pending_signals_are_oldest_first(tmp_path: Path) -> None:
     assert [item.decision_id for item in pending_signals(events, store)] == ["dec-0", "dec-2"]
 
 
+def test_not_configured_rows_do_not_starve_newer_signals(tmp_path: Path) -> None:
+    """The observed 5-of-12 stall: the same five rows were re-examined forever.
+
+    With no key, NOT_CONFIGURED is the pass's answer, not a queue entry. Once a
+    key appears the whole backlog is eligible again, so enabling AI still
+    analyses the signals it missed.
+    """
+    store = AnalysisStore(tmp_path)
+    events = [event(index) for index in range(6)]
+    unconfigured = analyst(store, None)
+    for item in events[:5]:
+        unconfigured.analyze(item)
+
+    assert [
+        item.decision_id
+        for item in pending_signals(events, store, provider_configured=False)
+    ] == ["dec-5"]
+    assert len(pending_signals(events, store, provider_configured=True)) == 6
+
+
 # --------------------------------------------------------------------------- #
 # the sidecar script
 
@@ -387,16 +407,26 @@ def test_sidecar_marks_not_configured_and_keeps_running(tmp_path: Path) -> None:
     summary = sidecar.run_pass(args, run_dir, None)
     assert summary["provider_configured"] is False
     assert summary["statuses"] == {"NOT_CONFIGURED": 2}
-    # The signal stays pending (so configuring a key later still analyses the
-    # backlog) but the second pass appends nothing: the id is the identity.
+    # NOT_CONFIGURED is the pass's answer, not a queue entry: the second pass
+    # does not re-examine rows it already covered (the observed 5-of-12 stall).
+    # It appends nothing and the file keeps exactly two rows.
     again = sidecar.run_pass(args, run_dir, None)
-    assert again["examined"] == 2
-    assert again["pending_before"] == 2
+    assert again["examined"] == 0
+    assert again["pending_before"] == 0
     rows = (run_dir / "analysis.jsonl").read_text(encoding="utf-8").splitlines()
     assert len(rows) == 2
+    # A signal decided *after* those rows is still covered with no provider:
+    # the sidecar never starves the stream while waiting for a key.
+    from trading_bot.autonomous.signals import SignalLedger
+
+    SignalLedger(run_dir).append(event(2))
+    fresh = sidecar.run_pass(args, run_dir, None)
+    assert fresh["examined"] == 1
+    assert fresh["statuses"] == {"NOT_CONFIGURED": 1}
+    assert len((run_dir / "analysis.jsonl").read_text(encoding="utf-8").splitlines()) == 3
     # Once a provider exists, the same backlog is analysed for real.
     third = sidecar.run_pass(args, run_dir, StubProvider())
-    assert third["statuses"] == {"ANALYZED": 2}
+    assert third["statuses"] == {"ANALYZED": 3}
 
 
 def test_sidecar_once_before_the_first_signal_writes_a_heartbeat_only(

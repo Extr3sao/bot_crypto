@@ -272,8 +272,7 @@ def resolve_data_provenance(
                 (
                     "the market data source is a sandbox/testnet connector "
                     "(sandbox_enabled=True). PAPER/SHADOW with REAL signals requires "
-                    "public venue data: set sandbox: false for the Binance target in "
-                    "config/realdata/assets.yaml (no order path exists here), or pass "
+                    "public venue data (the public REST source), or pass "
                     "--allow-testnet-market-data to publish the run as FAKE"
                 ),
             )
@@ -290,9 +289,14 @@ def build_scanner_factory(settings: Settings, provider: str) -> Any:
 
         source: Any = build_demo_fetcher(settings)
     else:
-        from trading_bot.market_data.wiring import resolve_scanner_source
+        # RFC-PAPER-008 / G-7 — the market-data plane is Binance's PUBLIC REST
+        # endpoints (klines, 24h ticker, book ticker), not the credentialed hub
+        # connector. The hub stays sandboxed by the Settings invariant, which is
+        # correct for anything that could touch an account; the scanner only needs
+        # public truth, and only this source can honestly label a row REAL.
+        from trading_bot.market_data.public_rest import PublicRestKlineSource
 
-        source = resolve_scanner_source(settings, session_id="autonomous-paper")
+        source = PublicRestKlineSource(timeframe=settings.universe.timeframes[0])
 
     def factory() -> Any:
         scan_settings = settings.model_copy(
@@ -444,7 +448,10 @@ async def main() -> int:
         "mean_reversion": MeanReversionFamily(),
         "volatility": VolatilityFamily(),
     }
-    environment = f"{args.provider}:{settings.runtime.exchange_id or 'unset'}"
+    data_transport = str(getattr(data_source, "provider", "hub-connector"))
+    environment = (
+        f"{args.provider}:{settings.runtime.exchange_id or 'unset'}:{data_transport}"
+    )
     runtime = AutonomousPaperRuntime(
         settings=settings,
         scanner_factory=scanner_factory,
@@ -490,6 +497,7 @@ async def main() -> int:
             "environment": environment,
             "market_data": data_mode,
             "market_data_sandbox": market_data_sandbox,
+            "data_transport": data_transport,
             "signal_source": signal_source,
             "paper_candidates": registry.paper_candidates(args.timeframe),
             "registry_counts": registry.counts_by_status(),

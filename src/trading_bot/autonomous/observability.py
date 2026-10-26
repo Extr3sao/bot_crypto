@@ -21,7 +21,6 @@ from __future__ import annotations
 import contextlib
 import json
 import os
-import subprocess
 import sys
 import time
 from dataclasses import dataclass
@@ -81,48 +80,68 @@ def latest_lab_run(lab_root: Path | str) -> Path | None:
     return max(candidates, key=lambda path: path.stat().st_mtime)
 
 
-#: How long a process table may be reused. One ``tasklist`` spawn costs ~0.3 s on
-#: Windows, and the console asks about every child (twice: existence and image), so
-#: on 2026-10-26 ``GET /healthz`` measured 12.8 s for 25 spawns. Identities do not
-#: change inside a refresh, and an entry is at most this old.
-PROCESS_TABLE_TTL_SECONDS: Final[float] = 2.0
-_PROCESS_TABLE: dict[str, Any] = {"at": 0.0, "table": None}
+#: ``OpenProcess`` right, Windows process-access constants.
+_QUERY_LIMITED_INFORMATION = 0x1000
+_STILL_ACTIVE = 259
+_ERROR_ACCESS_DENIED = 5
+_ERROR_INVALID_PARAMETER = 87
 
 
-def _windows_process_table(now: float) -> dict[int, str] | None:
-    """``pid -> image`` for every process, from a single ``tasklist`` call.
+def _windows_probe(pid: int) -> tuple[bool | None, str | None]:
+    """``(exists, image)`` from one bounded Win32 query, with no child process.
 
-    ``None`` means the probe could not answer; blindness is never cached, so the
-    next caller looks again instead of inheriting a failed look.
+    This used to shell out to ``tasklist`` and parse the whole table. On this host
+    that call measured 10.2 s for 557 processes (and once hung past its timeout,
+    leaving ``GET /healthz`` unanswered for good), because the dashboard asks
+    about every child twice per request. ``OpenProcess`` answers the same
+    question in microseconds and cannot block on a console child.
+
+    ``(None, None)`` means the probe could not answer, which callers must report
+    as unknown rather than as death.
     """
-    cached = _PROCESS_TABLE.get("table")
-    if cached is not None and now - float(_PROCESS_TABLE.get("at") or 0.0) <= PROCESS_TABLE_TTL_SECONDS:
-        return cached
     try:
-        completed = subprocess.run(
-            ["tasklist", "/FO", "CSV", "/NH"],
-            capture_output=True,
-            text=True,
-            timeout=15,
-            check=False,
-        )
-    except (OSError, subprocess.SubprocessError):  # pragma: no cover - platform
-        return None
-    table: dict[int, str] = {}
-    for line in (completed.stdout or "").splitlines():
-        parts = [part.strip().strip('"') for part in line.split('","')]
-        if len(parts) < 2:
-            continue
-        try:
-            identifier = int(parts[1])
-        except ValueError:
-            continue
-        table[identifier] = parts[0].lstrip('"').lower()
-    if not table:
-        return None
-    _PROCESS_TABLE["at"] = now
-    _PROCESS_TABLE["table"] = table
-    return table
+        import ctypes
+        from ctypes import wintypes
+    except ImportError:  # pragma: no cover - platform dependent
+        return None, None
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    open_process = kernel32.OpenProcess
+    open_process.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    open_process.restype = wintypes.HANDLE
+    close_handle = kernel32.CloseHandle
+    close_handle.argtypes = [wintypes.HANDLE]
+    close_handle.restype = wintypes.BOOL
+
+    handle = open_process(_QUERY_LIMITED_INFORMATION, False, pid)
+    if not handle:
+        error = ctypes.get_last_error()
+        if error == _ERROR_ACCESS_DENIED:
+            return True, None  # it exists; we are simply not allowed to look
+        if error == _ERROR_INVALID_PARAMETER:
+            return False, None
+        return None, None
+    try:
+        code = wintypes.DWORD()
+        if kernel32.GetExitCodeProcess(handle, ctypes.byref(code)) and (
+            code.value != _STILL_ACTIVE
+        ):
+            return False, None
+        size = wintypes.DWORD(32_768)
+        buffer = ctypes.create_unicode_buffer(size.value)
+        query = kernel32.QueryFullProcessImageNameW
+        query.argtypes = [
+            wintypes.HANDLE,
+            wintypes.DWORD,
+            wintypes.LPWSTR,
+            ctypes.POINTER(wintypes.DWORD),
+        ]
+        query.restype = wintypes.BOOL
+        if query(handle, 0, buffer, ctypes.byref(size)):
+            return True, Path(buffer.value).name.lower()
+        return True, None
+    finally:
+        close_handle(handle)
 
 
 def process_image(pid: int | None) -> str | None:
@@ -136,10 +155,7 @@ def process_image(pid: int | None) -> str | None:
     if pid is None or pid <= 0:
         return None
     if sys.platform.startswith("win"):
-        table = _windows_process_table(time.monotonic())
-        if table is None:
-            return None
-        return table.get(pid)
+        return _windows_probe(pid)[1]
     try:
         comm = Path(f"/proc/{pid}/comm").read_text(encoding="utf-8").strip()
     except OSError:  # pragma: no cover - platform dependent
@@ -179,10 +195,12 @@ def process_alive(pid: int | None, *, expected_image: str | None = None) -> bool
     if pid is None:
         return None
     if sys.platform.startswith("win"):
-        table = _windows_process_table(time.monotonic())
-        if table is None:
+        exists, image = _windows_probe(pid)
+        if exists is None:
             return None
-        exists: bool | None = pid in table
+        if not exists:
+            return False
+        return _image_matches(expected_image, image) is not False
     else:
         try:
             os.kill(pid, 0)

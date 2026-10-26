@@ -129,6 +129,11 @@ class DiskThresholds:
 
 DEFAULT_DISK_THRESHOLDS: Final[DiskThresholds] = DiskThresholds()
 
+#: How long a successful restart keeps the lab reported as DEGRADED. Long enough
+#: for the operator to see the event in a refresh, short enough that a recovered
+#: child is not confused with a broken one for the rest of the window.
+RECOVERY_WINDOW_SECONDS: Final[float] = 300.0
+
 
 @dataclass(slots=True)
 class DiskTelemetry:
@@ -662,11 +667,21 @@ class Supervisor:
         ]
         if critical_not_running:
             return SystemState.DEGRADED
+        # A restart is history; it must not pin the lab to DEGRADED for the rest
+        # of a 24 h window. Observed on 2026-10-26: the sidecar was killed once,
+        # came back healthy, and the console still said DEGRADED 40 minutes later
+        # — a console that always cries wolf cannot report the next real failure.
+        # The event stays visible while it is current (``RECOVERY_WINDOW_SECONDS``)
+        # and is always counted in ``restarts``.
+        now = time.time()
         degraded_signals = [
             runtime.spec.name
             for runtime in self.processes
-            if runtime.restarts > 0
-            or (not runtime.spec.critical and runtime.state is not ProcessState.RUNNING)
+            if (not runtime.spec.critical and runtime.state is not ProcessState.RUNNING)
+            or (
+                runtime.restart_times
+                and now - runtime.restart_times[-1] <= RECOVERY_WINDOW_SECONDS
+            )
         ]
         return SystemState.DEGRADED if degraded_signals else SystemState.HEALTHY
 

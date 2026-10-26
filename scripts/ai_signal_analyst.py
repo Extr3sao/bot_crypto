@@ -134,7 +134,8 @@ def run_pass(args: argparse.Namespace, run_dir: Path, provider: Any) -> dict[str
                 events.append(SignalEvent.from_dict(row))
             except (ValueError, TypeError, KeyError):
                 continue
-    waiting = pending_signals(events, store)
+    provider_configured = provider is not None and provider.configured()
+    waiting = pending_signals(events, store, provider_configured=provider_configured)
     pending = waiting[: max(0, args.limit_per_pass)]
     analyst = SignalAnalyst(
         store=store,
@@ -163,7 +164,7 @@ def run_pass(args: argparse.Namespace, run_dir: Path, provider: Any) -> dict[str
         "run_dir": str(run_dir),
         "passed_at_ms": int(time.time() * 1000),
         "passed_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "provider_configured": provider is not None and provider.configured(),
+        "provider_configured": provider_configured,
         "provider": None if provider is None else provider.name,
         "model": None if provider is None else provider.model,
         "prompt_version": PROMPT_VERSION,

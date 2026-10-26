@@ -13,13 +13,13 @@ exchange:
   # explícito en el release gate.
   account_type: "spot"
 
-  # RFC-PAPER-008: this profile is the REAL PAPER/SHADOW lab, which reads
-  # public market data only (the only execution boundary is PaperBroker; the
-  # runtime refuses to start with mode != paper). Binance testnet serves
-  # synthetic prices/volumes, so a row built on it could not honestly say
-  # source=REAL. Keep sandbox false here; use the default config/exchange.yaml
-  # (sandbox: true) for any credentialed sandbox work.
-  sandbox: false
+  # SIEMPRE usar sandbox/testnet en desarrollo.
+  # En producción se requiere validar manualmente (ver release-gates.md).
+  # RFC-PAPER-008: the PAPER/SHADOW market data does NOT come from this
+  # connector; autonomous_paper reads Binance's public REST and labels the row
+  # REAL only from that source. The credentialed connector stays sandboxed
+  # because PAPER mode requires it (Settings invariant).
+  sandbox: true
 
   # Mercado por defecto. Para exchanges sin "spot"/"future" uniforme,
   # algunos overrides son necesarios.
