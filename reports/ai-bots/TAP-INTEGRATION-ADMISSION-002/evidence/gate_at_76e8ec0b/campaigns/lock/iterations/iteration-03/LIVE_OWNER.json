@@ -1,0 +1,91 @@
+{
+  "cycles": [
+    {
+      "after": {
+        "acquired_at_utc": "2026-10-26T09:44:32Z",
+        "fence": 7,
+        "host": "DESKTOP-4CHO695",
+        "path": "BTCUSDT.jsonl.lock",
+        "pid": 7244,
+        "process_start_ms": 1793007868069,
+        "purpose": "minutes:BTCUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "3f92188eb583436c880ca85dc4071bc7"
+      },
+      "before": {
+        "acquired_at_utc": "2026-10-26T09:44:32Z",
+        "fence": 7,
+        "host": "DESKTOP-4CHO695",
+        "path": "BTCUSDT.jsonl.lock",
+        "pid": 7244,
+        "process_start_ms": 1793007868069,
+        "purpose": "minutes:BTCUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "3f92188eb583436c880ca85dc4071bc7"
+      },
+      "code": "LOCK_HELD",
+      "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\lock\\session\\market-1m\\BTCUSDT.jsonl.lock is held by live pid 7244; a second writer would interleave prev_sha256 and the chain would stop verifying",
+      "outcome": "REFUSED",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\lock\\session\\market-1m\\BTCUSDT.jsonl.lock",
+      "unchanged": true
+    },
+    {
+      "after": {
+        "acquired_at_utc": "2026-10-26T09:44:32Z",
+        "fence": 7,
+        "host": "DESKTOP-4CHO695",
+        "path": "ETHUSDT.jsonl.lock",
+        "pid": 7244,
+        "process_start_ms": 1793007868069,
+        "purpose": "minutes:ETHUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "71613a03c0224a798190aa2252ae142d"
+      },
+      "before": {
+        "acquired_at_utc": "2026-10-26T09:44:32Z",
+        "fence": 7,
+        "host": "DESKTOP-4CHO695",
+        "path": "ETHUSDT.jsonl.lock",
+        "pid": 7244,
+        "process_start_ms": 1793007868069,
+        "purpose": "minutes:ETHUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "71613a03c0224a798190aa2252ae142d"
+      },
+      "code": "LOCK_HELD",
+      "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\lock\\session\\market-1m\\ETHUSDT.jsonl.lock is held by live pid 7244; a second writer would interleave prev_sha256 and the chain would stop verifying",
+      "outcome": "REFUSED",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\lock\\session\\market-1m\\ETHUSDT.jsonl.lock",
+      "unchanged": true
+    }
+  ],
+  "stream": {
+    "after": {
+      "acquired_at_utc": "2026-10-26T09:44:32Z",
+      "fence": 7,
+      "host": "DESKTOP-4CHO695",
+      "path": "STREAM.jsonl.lock",
+      "pid": 7244,
+      "process_start_ms": 1793007868069,
+      "purpose": "ledger:STREAM.jsonl",
+      "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+      "token": "2204470235fd4d49abae456cdc6ae749"
+    },
+    "before": {
+      "acquired_at_utc": "2026-10-26T09:44:32Z",
+      "fence": 7,
+      "host": "DESKTOP-4CHO695",
+      "path": "STREAM.jsonl.lock",
+      "pid": 7244,
+      "process_start_ms": 1793007868069,
+      "purpose": "ledger:STREAM.jsonl",
+      "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+      "token": "2204470235fd4d49abae456cdc6ae749"
+    },
+    "code": "LOCK_HELD",
+    "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\lock\\session\\STREAM.jsonl.lock is held by live pid 7244; a second writer would interleave prev_sha256 and the chain would stop verifying",
+    "outcome": "REFUSED",
+    "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\lock\\session\\STREAM.jsonl.lock",
+    "unchanged": true
+  }
+}

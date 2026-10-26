@@ -1,0 +1,11 @@
+{
+  "acquired_at_utc": "2026-10-26T09:38:45Z",
+  "fence": 3,
+  "host": "DESKTOP-4CHO695",
+  "path": "ETHUSDT.jsonl.lock",
+  "pid": 45720,
+  "process_start_ms": 1793007517475,
+  "purpose": "minutes:ETHUSDT.jsonl",
+  "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+  "token": "1b197309985b436bbeff635d7e48b7d7"
+}

@@ -1,15 +1,15 @@
 {
   "branch": "admission/integration-002",
-  "commit": "9d622bb5fb0ac53479b96ea5cd256e64e4e2dd52",
+  "commit": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
   "config": {
     "decision_every_bars": 1,
-    "duration_s": 1200,
+    "duration_s": 900,
     "equity": 10000.0,
     "latency_ms": 30000,
-    "max_cycles": 6,
+    "max_cycles": 7,
     "max_skew_ms": 5000,
     "mode": "PAPER",
-    "poll_interval_s": 15.0,
+    "poll_interval_s": 10.0,
     "settle_ms": 2500,
     "signal_source": "legacy_parity",
     "stale_after_ms": 150000,
@@ -26,9 +26,9 @@
   "live_enabled": false,
   "live_orders": 0,
   "mode": "PAPER",
-  "out_dir": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\paper_long\\session",
+  "out_dir": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\paper_long_76c\\session",
   "resume": false,
   "root": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002",
   "schema_version": "DEF_RUN_019_LIVE_META_V1",
-  "started_at_utc": "2026-10-25T17:19:50Z"
+  "started_at_utc": "2026-10-26T10:11:47Z"
 }

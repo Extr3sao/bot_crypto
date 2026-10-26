@@ -1,0 +1,322 @@
+{
+  "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 1.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 1.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+      "BTC/USDT": 80528.0,
+      "ETH/USDT": 2336.17,
+      "SOL/USDT": 101.67
+    },
+    "marked_equity_usdt": 9997.74343717,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": -2.25656283,
+    "pnl_unrealised_usdt": -2.25656283,
+    "schema_version": "paper-accounting/2"
+  },
+  "blocked_reasons": [],
+  "closed_trades": 0,
+  "cycles_blocked": 0,
+  "cycles_executed": 2,
+  "data_delay_measured_now_ms": 5375,
+  "data_delay_ms": 9433,
+  "data_delay_source": "PINNED_FROM_PREVIOUS_SESSION",
+  "decision_bars": [
+    1793008380000,
+    1793008440000
+  ],
+  "declared_latency_ms": 30000,
+  "drawdown_pct": 0.02359,
+  "execution": {
+    "bar_interval_ms": 60000,
+    "data_gap_policy": "fail_closed_unless_independent_coverage",
+    "entry_bar_range_policy": "full_bar_from_its_open",
+    "entry_quote_sources": {
+      "bar_open": 3
+    },
+    "exit_ts_resolutions": [
+      "OPEN_GAP",
+      "BAR_WINDOW",
+      "QUOTE"
+    ],
+    "expired_opinions": 0,
+    "fills": 3,
+    "gap_exits": 0,
+    "gap_policy": "open_on_gap",
+    "max_opinion_age_ms": 60000,
+    "open_phase_order": "gap_close>mark>entries>intrabar",
+    "opinions": {
+      "blocked_by_risk": 0,
+      "closed_by_intent": 0,
+      "deferrals_per_opinion": {
+        "16": 1,
+        "2": 1,
+        "4": 1
+      },
+      "deferred_slots": 3,
+      "executed_openings": 3,
+      "expired": 0,
+      "gated": 0,
+      "generated": 3,
+      "lifecycle": {
+        "duplicate_terminals": [],
+        "generated": 3,
+        "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+        "ledger_lines": 58,
+        "ok": true,
+        "orphan_terminals": [],
+        "rejected_by_code": {},
+        "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+        "session_continuity": "NONE",
+        "source": "ledger_bytes",
+        "terminal_classes": {
+          "BLOCKED_BY_RISK": 0,
+          "CLOSED": 0,
+          "FILLED": 3,
+          "GATED": 0,
+          "REJECTED": 0
+        },
+        "unrecorded": []
+      },
+      "pending_at_end": 0,
+      "rejected": {},
+      "superseded": 0,
+      "terminal_classes": {
+        "BLOCKED_BY_RISK": 0,
+        "CLOSED": 0,
+        "FILLED": 3,
+        "GATED": 0,
+        "REJECTED": 0
+      }
+    },
+    "quote_lag_ms": {
+      "max": 20567,
+      "median": 20567,
+      "min": 20567
+    },
+    "quote_source": "bar_open",
+    "stage_latency_ms": {
+      "data_to_decision": {
+        "max": 9433,
+        "p50": 9433,
+        "p95": 9433,
+        "p99": 9433,
+        "samples": 3
+      },
+      "decision_to_quote": {
+        "max": 50567,
+        "p50": 50567,
+        "p95": 50567,
+        "p99": 50567,
+        "samples": 3
+      },
+      "decision_to_received": {
+        "max": 30000,
+        "p50": 30000,
+        "p95": 30000,
+        "p99": 30000,
+        "samples": 3
+      },
+      "received_to_quote": {
+        "max": 20567,
+        "p50": 20567,
+        "p95": 20567,
+        "p99": 20567,
+        "samples": 3
+      }
+    },
+    "stale_valuation_vetoes": 0,
+    "stop_coverage": "entry_at_open_full_bar",
+    "sub_bar_fills": 0,
+    "subbar_entries": true,
+    "waiting_events": 3
+  },
+  "fills": 3,
+  "last_ledger": {
+    "new_rows": 3,
+    "path": "cycles\\cycle-0017\\ledger.jsonl",
+    "prefix": {
+      "compared": 54,
+      "ok": true
+    },
+    "rows": 59,
+    "sha256": "e2d3188422ea0bd64633c04250cf4b1ca5879e0eb31956efe1e7b69d9ad865f8"
+  },
+  "live_enabled": false,
+  "live_orders": 0,
+  "mode": "PAPER",
+  "net_realised_usdt": 0,
+  "open_positions_at_end": {
+    "BTC/USDT": {
+      "entry_commission_usdt": 0.5,
+      "entry_price": 80515.45444366458,
+      "mark_price": 80528.0,
+      "notional_usdt": 500.0,
+      "position_id": "pos-paper-prospective-003g-00000001",
+      "side": "buy",
+      "unrealised_pnl_usdt": 0.07790775
+    },
+    "ETH/USDT": {
+      "entry_commission_usdt": 0.5,
+      "entry_price": 2333.9184224827186,
+      "mark_price": 2336.17,
+      "notional_usdt": 500.0,
+      "position_id": "pos-paper-prospective-003g-00000005",
+      "side": "buy",
+      "unrealised_pnl_usdt": 0.48235994
+    },
+    "SOL/USDT": {
+      "entry_commission_usdt": 0.5,
+      "entry_price": 101.40293902945773,
+      "mark_price": 101.67,
+      "notional_usdt": 500.0,
+      "position_id": "pos-paper-prospective-003g-00000003",
+      "side": "sell",
+      "unrealised_pnl_usdt": -1.31683052
+    }
+  },
+  "provenance": {
+    "chain": [
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-d1cd63934262e691242a",
+        "started_at_ms": 1793007536436
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-b1a39c1f04cbbf8bb5cc",
+        "started_at_ms": 1793007565016
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-66cfd619d15da296add5",
+        "started_at_ms": 1793007689984
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-7415fb584dca66db5895",
+        "started_at_ms": 1793007751477
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-3d2d75f108f644092260",
+        "started_at_ms": 1793007871197
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-e44a67c1472b8a409eb9",
+        "started_at_ms": 1793007883808
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-2af23f79447b96bec084",
+        "started_at_ms": 1793007993579
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-c3a95960cc07ac6c9524",
+        "started_at_ms": 1793008059879
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-bd303b7e9714bbc3e9dc",
+        "started_at_ms": 1793008171808
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-ec287793e50539d93070",
+        "started_at_ms": 1793008238310
+      },
+      {
+        "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+        "runtime_digest": null,
+        "session_id": "sess-9d652425e39031357892",
+        "started_at_ms": 1793008355811
+      }
+    ],
+    "pinned_identity": "be83cc4fe7545617ff63ae0e05ce5ddfdca42627e1a1f3b0524be293f2326697",
+    "resumed": true,
+    "run_id": "run-be83cc4fe7545617ff63",
+    "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+    "session_id": "sess-4338deb44a317c62c1fb",
+    "unavailable_reasons": []
+  },
+  "provider": "paper-script",
+  "real_model_called": false,
+  "reconciliation": {
+    "accounting_schema_version": "paper-accounting/2",
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 1.5,
+    "curve_end_equity_usdt": 9997.74343717,
+    "entry_commission_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 1.5,
+    "execution_cost_usdt": 0,
+    "exit_commission_usdt": 0,
+    "final_equity_usdt": 10000.0,
+    "identities": {
+      "cash_rebuilds_from_realised_pnl": true,
+      "curve_ends_at_final_equity": true,
+      "every_close_after_its_entry_quote": true,
+      "every_fill_pays_at_or_after_its_answer": true,
+      "marked_equity_rebuilds_from_open_position": true,
+      "net_pnl_nets_every_named_cost": true,
+      "open_positions_are_disjoint_from_closed_trades": true,
+      "opinion_lifecycle_adds_up": true,
+      "realised_costs_equal_closed_trade_legs": true,
+      "risk_equity_matches_marked_equity": true,
+      "total_costs_equal_realised_plus_accrued": true,
+      "total_pnl_moves_the_marked_book": true
+    },
+    "initial_equity_usdt": 10000.0,
+    "marked_equity_usdt": 9997.74343717,
+    "marks_complete_at_end": true,
+    "net_realised_usdt": 0,
+    "open_gap_exits": 0,
+    "open_position_ids_at_end": [
+      "pos-paper-prospective-003g-00000001",
+      "pos-paper-prospective-003g-00000003",
+      "pos-paper-prospective-003g-00000005"
+    ],
+    "open_positions_at_end": 3,
+    "pnl_total_usdt": -2.25656283,
+    "reference_gross_usdt": 0,
+    "risk_equity_usdt": 9997.74343717,
+    "tolerance_usdt": 1e-06,
+    "unrealised_pnl_gross_usdt": -0.75656283,
+    "unrealised_pnl_net_usdt": -2.25656283
+  },
+  "runtime_drift": [],
+  "runtime_sha256": {
+    "src/trading_bot/indicators/builtin.py": "001a3c5b75f4139ae3e5a970241b64b987c305781e181d782003a35031b86270",
+    "src/trading_bot/market_data/minute_collector.py": "35ab5837643be6c6a32a81cc074f4808e50f5e6973d78769525c0eaf5854beea",
+    "src/trading_bot/paper/broker.py": "321db84ce7a7753a7fc3ce5dc4c762d5d6649cf4f7bef5513d4a1824f9e8b143",
+    "src/trading_bot/research/families/ema_crossover_family.py": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+    "src/trading_bot/risk/manager.py": "110ed942b227760d4c308adfdec1d1505ab6c087e1db976cba527c959301c495",
+    "src/trading_bot/vision/clock.py": "5c39bc4fbd1b3eaacf806108ab2a6e290d6ee835f8cddee33e7bd0a5bfc7dfc3",
+    "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1",
+    "src/trading_bot/vision/lane.py": "99ff8c9a3c863d1ee7ef308703f324c49f3ada2460a096f7b63290df914b23bc",
+    "src/trading_bot/vision/ledger.py": "bbdfd19b0b67b1f1d256536b5409782aff450114aaad54152beb18055dff1af4",
+    "src/trading_bot/vision/prospective.py": "7186757f1368f39795e1401a6a4573a22b0fad5d2e04346d7e8594c233faf7d2",
+    "src/trading_bot/vision/provider.py": "ad39e47e944fdbcf278674c2f9644fba61c6c6425dbb653fdeccb021c086c70e",
+    "src/trading_bot/vision/quotes.py": "5ec0766e068ec1c49762555529e548dc82e27abf8fe0c92fb224d85072d3c086",
+    "src/trading_bot/vision/settings.py": "a9f25bb24abd0f55d8a152e0fa5200883a8c7b6649b72752052336a491a90831",
+    "src/trading_bot/vision/signal_sources.py": "92b5b8227af15d74eafacdf8dc610961764a86f5f9086272139c8a31dd22be2a"
+  },
+  "runtime_stable": true,
+  "schema_version": "PROSPECTIVE_PAPER_SUMMARY_V1",
+  "signal_source": "legacy_parity",
+  "strategy_id": null,
+  "subbar_entries": true
+}

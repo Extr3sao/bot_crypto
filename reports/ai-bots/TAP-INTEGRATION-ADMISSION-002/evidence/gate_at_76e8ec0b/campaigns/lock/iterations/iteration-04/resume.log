@@ -1,0 +1,28 @@
+[wp04] root=C:\Users\GVLLFR0035\Downloads\ff-wt-adm002 commit=76e8ec0bfeb7 out=C:\Users\GVLLFR0035\AppData\Local\Temp\gate_76e8ec0b\campaigns\lock\session
+[wp04] bootstrap complete
+[wp04] measured 3 live delivery latencies
+2026-10-26 10:48:25 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-26 10:48:25 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=80515.45444366458 quantity=0.006209987926601623 side=buy symbol=BTC/USDT
+2026-10-26 10:48:25 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+2026-10-26 10:48:25 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=101.40293902945773 quantity=4.93082355191647 side=sell symbol=SOL/USDT
+2026-10-26 10:48:31 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=ETH/USDT
+2026-10-26 10:48:31 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=2333.9184224827186 quantity=0.2142319950789549 side=buy symbol=ETH/USDT
+[wp04] cycle 10 bar 2026-10-26T09:47:00Z fills=3 closed=0
+2026-10-26 10:49:16 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-26 10:49:16 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=80515.45444366458 quantity=0.006209987926601623 side=buy symbol=BTC/USDT
+2026-10-26 10:49:16 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+2026-10-26 10:49:16 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=101.40293902945773 quantity=4.93082355191647 side=sell symbol=SOL/USDT
+2026-10-26 10:49:19 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=ETH/USDT
+2026-10-26 10:49:19 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=2333.9184224827186 quantity=0.2142319950789549 side=buy symbol=ETH/USDT
+[wp04] cycle 11 bar 2026-10-26T09:48:00Z fills=3 closed=0
+{
+  "cycles_executed": 2,
+  "cycles_blocked": 0,
+  "fills": 3,
+  "closed_trades": 0,
+  "net_realised_usdt": 0,
+  "data_delay_ms": 9433,
+  "runtime_stable": true,
+  "run_id": "run-be83cc4fe7545617ff63",
+  "session_id": "sess-c3a95960cc07ac6c9524"
+}

@@ -6,7 +6,8 @@
     "entry_commissions_accrued_open_usdt": 0.0,
     "initial_equity_usdt": 10000.0,
     "mark_prices": {
-      "BTC/USDT": 80376.0
+      "BTC/USDT": 80410.26,
+      "ETH/USDT": 2329.34
     },
     "marked_equity_usdt": 10000.0,
     "pnl_realised_usdt": 0,
@@ -18,12 +19,12 @@
   "closed_trades": 0,
   "cycles_blocked": 0,
   "cycles_executed": 2,
-  "data_delay_measured_now_ms": 6184,
-  "data_delay_ms": 6184,
+  "data_delay_measured_now_ms": 8315,
+  "data_delay_ms": 8315,
   "data_delay_source": "MEASURED_AT_SESSION_START",
   "decision_bars": [
-    1792936860000,
-    1792936920000
+    1793010000000,
+    1793010060000
   ],
   "declared_latency_ms": 30000,
   "drawdown_pct": 0.0,
@@ -53,16 +54,16 @@
       "executed_openings": 0,
       "expired": 0,
       "gated": 0,
-      "generated": 1,
+      "generated": 2,
       "lifecycle": {
         "duplicate_terminals": [],
-        "generated": 1,
+        "generated": 2,
         "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
-        "ledger_lines": 4,
+        "ledger_lines": 7,
         "ok": true,
         "orphan_terminals": [],
         "rejected_by_code": {
-          "RUN_ENDED_WITH_ORDER_PENDING": 1
+          "RUN_ENDED_WITH_ORDER_PENDING": 2
         },
         "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
         "session_continuity": "NONE",
@@ -72,13 +73,13 @@
           "CLOSED": 0,
           "FILLED": 0,
           "GATED": 0,
-          "REJECTED": 1
+          "REJECTED": 2
         },
         "unrecorded": []
       },
-      "pending_at_end": 1,
+      "pending_at_end": 2,
       "rejected": {
-        "RUN_ENDED_WITH_ORDER_PENDING": 1
+        "RUN_ENDED_WITH_ORDER_PENDING": 2
       },
       "superseded": 0,
       "terminal_classes": {
@@ -86,7 +87,7 @@
         "CLOSED": 0,
         "FILLED": 0,
         "GATED": 0,
-        "REJECTED": 1
+        "REJECTED": 2
       }
     },
     "quote_lag_ms": {
@@ -133,14 +134,14 @@
   },
   "fills": 0,
   "last_ledger": {
-    "new_rows": 1,
+    "new_rows": 3,
     "path": "cycles\\cycle-0002\\ledger.jsonl",
     "prefix": {
-      "compared": 1,
+      "compared": 2,
       "ok": true
     },
-    "rows": 5,
-    "sha256": "dbcc23b8c39e2ce64ba4cd76f8ab25c56b9cca12d416713114c1cf588abe8c89"
+    "rows": 8,
+    "sha256": "4fd17c989f72ac10ce320b5c96bab24c14fcb201f1be617ab8651391794bc4c3"
   },
   "live_enabled": false,
   "live_orders": 0,
@@ -149,11 +150,11 @@
   "open_positions_at_end": {},
   "provenance": {
     "chain": [],
-    "pinned_identity": "f00ce322fd9954b2bb185cc09fdabb13abe5216ef6fa3bce7fbca27601852431",
+    "pinned_identity": "f107d30c9052e01b98cc17f9f916c40339402fb809a4a39fdd6fe2f10025b4da",
     "resumed": false,
-    "run_id": "run-f00ce322fd9954b2bb18",
+    "run_id": "run-f107d30c9052e01b98cc",
     "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
-    "session_id": "sess-5e7fc37ae0202d6e9970",
+    "session_id": "sess-2f7242a01134ed1d010c",
     "unavailable_reasons": []
   },
   "provider": "paper-script",

@@ -1,44 +1,44 @@
 {
   "blocked": {},
-  "events": 120,
-  "events_sha256": "39b9109598a990949c6b825b6a2132d2f44870d0e06d813d15b9098b6c736f42",
-  "generated_at_utc": "2026-10-25T17:25:14Z",
+  "events": 161,
+  "events_sha256": "9e788a33b87e3cceef27e7bc5f5726424eadbd3d0c4cce998a37feac07903c10",
+  "generated_at_utc": "2026-10-26T10:18:10Z",
   "max_skew_ms": 5000,
   "schema_version": "MINUTE_COLLECTOR_MANIFEST_V1",
   "settle_ms": 2500,
-  "skew_ms": -338,
+  "skew_ms": -159,
   "source": "binance_spot_rest_1m",
   "stale_after_ms": 150000,
   "symbols": {
     "BTCUSDT": {
-      "contiguous_tail_minutes": 130,
+      "contiguous_tail_minutes": 131,
       "dropped_prefix_minutes": 0,
-      "first_open_ms": 1792941300000,
-      "first_open_utc": "2026-10-25T15:15:00Z",
+      "first_open_ms": 1793002020000,
+      "first_open_utc": "2026-10-26T08:07:00Z",
       "gaps": [],
       "health": {
         "reason": "the last closed minute arrived inside its window",
         "state": "OK"
       },
-      "last_open_ms": 1792949040000,
-      "last_open_utc": "2026-10-25T17:24:00Z",
-      "minutes": 130,
-      "sha256": "4bd8e439d5eb37fd8c0b337706298e71cb1ed66e7ee02e41f2045a881c970168"
+      "last_open_ms": 1793009820000,
+      "last_open_utc": "2026-10-26T10:17:00Z",
+      "minutes": 131,
+      "sha256": "331bcfa6727805637f9bb68bd73c89965c422028d0150e04e09dc85c5f45684b"
     },
     "ETHUSDT": {
-      "contiguous_tail_minutes": 130,
+      "contiguous_tail_minutes": 131,
       "dropped_prefix_minutes": 0,
-      "first_open_ms": 1792941300000,
-      "first_open_utc": "2026-10-25T15:15:00Z",
+      "first_open_ms": 1793002020000,
+      "first_open_utc": "2026-10-26T08:07:00Z",
       "gaps": [],
       "health": {
         "reason": "the last closed minute arrived inside its window",
         "state": "OK"
       },
-      "last_open_ms": 1792949040000,
-      "last_open_utc": "2026-10-25T17:24:00Z",
-      "minutes": 130,
-      "sha256": "7a7a9d8d76c75c5f34a897a5b7079e6eb27399efe46a37b19c1836c6908c8b56"
+      "last_open_ms": 1793009820000,
+      "last_open_utc": "2026-10-26T10:17:00Z",
+      "minutes": 131,
+      "sha256": "521d4a1a6304295d8f2116622e6c618b4fdad69b48d4ca7b1be31e3fc8c5537a"
     }
   }
 }

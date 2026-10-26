@@ -2,7 +2,8 @@
   "accounting": {
     "initial_equity_usdt": 10000.0,
     "mark_prices": {
-      "BTC/USDT": 80376.0
+      "BTC/USDT": 80410.26,
+      "ETH/USDT": 2329.34
     },
     "meanings": {
       "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
@@ -20,25 +21,28 @@
     "schema_version": "paper-accounting/2"
   },
   "book_id": "paper-prospective-003g",
-  "calls": 1,
+  "calls": 3,
   "closed_trades": 0,
   "costs_realised_usdt": 0,
   "costs_total_usdt": 0.0,
   "costs_usdt": 0,
   "counters": {
     "action:LONG": 1,
-    "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+    "action:NO_TRADE": 1,
+    "action:SHORT": 1,
+    "dropped:MODEL_NO_TRADE": 1,
+    "guard:RUN_ENDED_WITH_ORDER_PENDING": 2,
     "opinion:deferred": 1,
-    "opinion:generated": 1,
+    "opinion:generated": 2,
     "requote:WAITING_FOR_QUOTE": 1
   },
-  "decision_points": 1,
+  "decision_points": 3,
   "drawdown_pct": 0.0,
   "drawdown_status": "MEASURED",
   "drawdown_usdt": 0.0,
   "entry_commissions_accrued_open_usdt": 0.0,
   "entry_commissions_realised_usdt": 0,
-  "equity_points": 31,
+  "equity_points": 126,
   "estimated_spend_usd": 0.0,
   "execution": {
     "bar_interval_ms": 60000,
@@ -66,16 +70,16 @@
       "executed_openings": 0,
       "expired": 0,
       "gated": 0,
-      "generated": 1,
+      "generated": 2,
       "lifecycle": {
         "duplicate_terminals": [],
-        "generated": 1,
+        "generated": 2,
         "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
-        "ledger_lines": 4,
+        "ledger_lines": 7,
         "ok": true,
         "orphan_terminals": [],
         "rejected_by_code": {
-          "RUN_ENDED_WITH_ORDER_PENDING": 1
+          "RUN_ENDED_WITH_ORDER_PENDING": 2
         },
         "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
         "session_continuity": "NONE",
@@ -85,13 +89,13 @@
           "CLOSED": 0,
           "FILLED": 0,
           "GATED": 0,
-          "REJECTED": 1
+          "REJECTED": 2
         },
         "unrecorded": []
       },
-      "pending_at_end": 1,
+      "pending_at_end": 2,
       "rejected": {
-        "RUN_ENDED_WITH_ORDER_PENDING": 1
+        "RUN_ENDED_WITH_ORDER_PENDING": 2
       },
       "superseded": 0,
       "terminal_classes": {
@@ -99,7 +103,7 @@
         "CLOSED": 0,
         "FILLED": 0,
         "GATED": 0,
-        "REJECTED": 1
+        "REJECTED": 2
       }
     },
     "quote_lag_ms": {
@@ -157,20 +161,20 @@
     "counter_disagreements": [],
     "deferred_slots": 1,
     "duplicate_terminals": [],
-    "generated": 1,
+    "generated": 2,
     "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
-    "ledger_lines": 4,
+    "ledger_lines": 7,
     "orphan_terminals": [],
     "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
     "session_continuity": "NONE",
     "source": "ledger_bytes",
-    "terminal": 1,
+    "terminal": 2,
     "terminal_classes": {
       "BLOCKED_BY_RISK": 0,
       "CLOSED": 0,
       "FILLED": 0,
       "GATED": 0,
-      "REJECTED": 1
+      "REJECTED": 2
     },
     "unrecorded": []
   },

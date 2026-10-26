@@ -1,6 +1,6 @@
 {
   "code": {
-    "commit": "9d622bb5fb0ac53479b96ea5cd256e64e4e2dd52",
+    "commit": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
     "files": {
       "src/trading_bot/config/settings.py": {
         "blob": "bef1f648ae6f14ba59ae33740335547bfb18ee86",
@@ -87,7 +87,7 @@
         "sha256": "92b5b8227af15d74eafacdf8dc610961764a86f5f9086272139c8a31dd22be2a"
       }
     },
-    "head_at_capture": "9d622bb5fb0ac53479b96ea5cd256e64e4e2dd52",
+    "head_at_capture": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
     "missing_runtime_paths": [],
     "policy": "CLEAN_RUNTIME_PATHS",
     "runtime_paths": [
@@ -123,27 +123,28 @@
     }
   },
   "config": {
-    "fingerprint": "0519fe8b705109e29d2179f439d38242adaa8928d87f964f9d579b71c63a2f5b",
+    "fingerprint": "512ac3b0795fdbbabc08f4e5833959c8e58f25774d189960d8b4ad360011fb26",
     "payload": {
       "decision_every_bars": 1,
-      "duration_s": 1200,
+      "duration_s": 240,
       "equity": 10000.0,
       "latency_ms": 30000,
-      "max_cycles": 6,
+      "max_cycles": 50,
       "max_skew_ms": 5000,
       "mode": "PAPER",
-      "poll_interval_s": 15.0,
+      "poll_interval_s": 5.0,
       "settle_ms": 2500,
       "signal_source": "legacy_parity",
       "stale_after_ms": 150000,
       "strategy_id": "ema_crossover",
       "symbols": [
         "BTCUSDT",
-        "ETHUSDT"
+        "ETHUSDT",
+        "SOLUSDT"
       ],
       "timeframe": "1m",
       "warmup_minutes": 120,
-      "window_bars": 120
+      "window_bars": 20
     }
   },
   "environment": {
@@ -166,7 +167,7 @@
   "environment_digest": "7b701554eb645c65ab5c222a6078d639609ac96eabda466dfc37661369f6d648",
   "live_enabled": false,
   "mode": "PAPER",
-  "pinned_identity": "453f8046b8882e7a4d59be214b9d662e6b013548dcc3000fe1e3afcc4a0534c6",
+  "pinned_identity": "c2c2fb1c061d9ecee1fdcf8a17b4b58fbba8113c29b22f47ec91a1a0b3761813",
   "provider": {
     "data": {
       "base_url": "https://api.binance.com",
@@ -186,7 +187,7 @@
     "parent_session_id": null,
     "resumed": false
   },
-  "run_id": "run-453f8046b8882e7a4d59",
+  "run_id": "run-c2c2fb1c061d9ecee1fd",
   "runtime": {
     "digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
     "paths": [
@@ -237,8 +238,8 @@
     }
   },
   "schema": "VISION_SESSION_PROVENANCE_V1",
-  "session_id": "sess-4dbae89d32a905112085",
-  "started_at_ms": 1792948790312,
-  "started_at_utc": "2026-10-25T17:19:50Z",
+  "session_id": "sess-baf8d4e1058181cf218d",
+  "started_at_ms": 1793007513487,
+  "started_at_utc": "2026-10-26T09:38:33Z",
   "unavailable_reasons": []
 }

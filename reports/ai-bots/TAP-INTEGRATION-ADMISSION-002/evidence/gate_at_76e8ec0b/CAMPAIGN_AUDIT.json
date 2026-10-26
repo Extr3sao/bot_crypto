@@ -1,0 +1,79 @@
+{
+  "campaigns": {
+    "lock": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\lock",
+    "supervisor": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\supervisor"
+  },
+  "claims": {
+    "C1": {
+      "claim": "the PAPER campaign ran several cycles, recovered from its crash, left no lock and sent no live order",
+      "detail": "cycles=[1, 2, 3, 4, 5] lines=13 state=RECOVERED locks=[] live_orders=[0] action=STOP_COMPLETED scenarios=['budget', 'corrupt']",
+      "evidence": [
+        "chain head 5d7392a58d1e5234dafc9eacca33351f1b3a72bb0381dc03916e4d3b34a259bc"
+      ],
+      "id": "C1",
+      "method": "re-hash session/STREAM.jsonl, read CAMPAIGN.json and the supervisor result, list *.lock, scan live_orders",
+      "problems": [],
+      "status": "PASS"
+    },
+    "L1": {
+      "claim": "six crash iterations were each reclaimed once, every resume exited 0, no lock survived and no order was live",
+      "detail": "iterations=6 cycles=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] reclaims=6 fences=[2, 5, 8, 11, 14, 17] races=2 rows=64 locks=[] live_orders=[0]",
+      "evidence": [
+        "chain head 8e6d5198e51478fec88cc2195578e463842c79cb05dffb6e9de1e3650cb6944e",
+        "counts {'cycles': 17, 'iterations': 6, 'reclaim_rows': 6, 'rows': 64, 'starts': 12}"
+      ],
+      "id": "L1",
+      "method": "re-hash STREAM.jsonl, recount rows and cycles, stat every iteration, list *.lock",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S1": {
+      "claim": "the supervisor check is not blind: breaking one stream line must fail C1",
+      "detail": "tampered campaign evaluated as FAIL (cycles=[1] lines=7 state=RECOVERED locks=[] live_orders=[0] action=STOP_COMPLETED scenarios=['budget', 'corrupt'])",
+      "evidence": [
+        "problems: ['chain SHA_AT_7', '1 cycle(s): not a multi-cycle campaign', 'CAMPAIGN.final.cycles [1, 2, 3, 4, 5] != stream [1]']"
+      ],
+      "id": "S1",
+      "method": "rewrite one STREAM.jsonl row in a temporary copy without recomputing its sha256 and re-evaluate C1",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S2": {
+      "claim": "the lock check is not blind: removing one iteration's recovery must fail it",
+      "detail": "tampered campaign evaluated as FAIL (iterations=6 cycles=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] reclaims=6 fences=[2, 5, 8, 11, 14, 17] races=2 rows=64 locks=[] live_orders=[0])",
+      "evidence": [
+        "problems: ['5 RECOVERY.json for 6 iterations']"
+      ],
+      "id": "S2",
+      "method": "delete iterations/iteration-03/RECOVERY.json in a temporary copy and re-evaluate L1",
+      "problems": [],
+      "status": "PASS"
+    },
+    "V1": {
+      "claim": "both campaign verifiers report the campaign that is on disk, with no undetected mutation and no false success",
+      "detail": "supervisor checks=33 mutations=12; lock checks=32 mutations=9",
+      "evidence": [
+        "supervisor artefacts=19",
+        "lock artefacts=71",
+        "campaign commits: supervisor=76e8ec0bfeb7 lock=76e8ec0bfeb7"
+      ],
+      "id": "V1",
+      "method": "recompute every artefact hash, re-check the verdict fields, the mutation lists and the check counts against their published floors",
+      "problems": [],
+      "status": "PASS"
+    }
+  },
+  "commits": {
+    "lock": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
+    "supervisor": "76e8ec0bfeb767955cbe8eb82522fced01077f06"
+  },
+  "false_success": 0,
+  "schema": "TAP_INTEGRATION_GATE_CAMPAIGN_AUDIT_V1",
+  "summary": {
+    "claims": 5,
+    "fail": 0,
+    "pass": 5,
+    "unknown": 0
+  },
+  "verdict": "PASS"
+}

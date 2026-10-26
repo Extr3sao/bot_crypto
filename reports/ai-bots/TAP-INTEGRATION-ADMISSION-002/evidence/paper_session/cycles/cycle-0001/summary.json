@@ -2,7 +2,8 @@
   "accounting": {
     "initial_equity_usdt": 10000.0,
     "mark_prices": {
-      "BTC/USDT": 80351.65
+      "BTC/USDT": 80422.0,
+      "ETH/USDT": 2330.36
     },
     "meanings": {
       "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
@@ -20,23 +21,25 @@
     "schema_version": "paper-accounting/2"
   },
   "book_id": "paper-prospective-003g",
-  "calls": 1,
+  "calls": 2,
   "closed_trades": 0,
   "costs_realised_usdt": 0,
   "costs_total_usdt": 0.0,
   "costs_usdt": 0,
   "counters": {
     "action:LONG": 1,
+    "action:NO_TRADE": 1,
+    "dropped:MODEL_NO_TRADE": 1,
     "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
     "opinion:generated": 1
   },
-  "decision_points": 1,
+  "decision_points": 2,
   "drawdown_pct": 0.0,
   "drawdown_status": "MEASURED",
   "drawdown_usdt": 0.0,
   "entry_commissions_accrued_open_usdt": 0.0,
   "entry_commissions_realised_usdt": 0,
-  "equity_points": 30,
+  "equity_points": 125,
   "estimated_spend_usd": 0.0,
   "execution": {
     "bar_interval_ms": 60000,
@@ -67,7 +70,7 @@
         "duplicate_terminals": [],
         "generated": 1,
         "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
-        "ledger_lines": 3,
+        "ledger_lines": 4,
         "ok": true,
         "orphan_terminals": [],
         "rejected_by_code": {
@@ -155,7 +158,7 @@
     "duplicate_terminals": [],
     "generated": 1,
     "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
-    "ledger_lines": 3,
+    "ledger_lines": 4,
     "orphan_terminals": [],
     "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
     "session_continuity": "NONE",

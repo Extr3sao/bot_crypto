@@ -1,6 +1,6 @@
 {
   "code": {
-    "commit": "55f991b710abd972ece30f002b47350bed31512e",
+    "commit": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
     "files": {
       "src/trading_bot/config/settings.py": {
         "blob": "bef1f648ae6f14ba59ae33740335547bfb18ee86",
@@ -87,7 +87,7 @@
         "sha256": "92b5b8227af15d74eafacdf8dc610961764a86f5f9086272139c8a31dd22be2a"
       }
     },
-    "head_at_capture": "55f991b710abd972ece30f002b47350bed31512e",
+    "head_at_capture": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
     "missing_runtime_paths": [],
     "policy": "CLEAN_RUNTIME_PATHS",
     "runtime_paths": [
@@ -123,26 +123,27 @@
     }
   },
   "config": {
-    "fingerprint": "ebbc9d5ac555fc2aec7b5a8130fdf922309fe921458c86f97efd4607c2395227",
+    "fingerprint": "b7859c743e8d8d61e4f64cf97a6c99397d813f593ff2acd78b2d1351ee6a8605",
     "payload": {
       "decision_every_bars": 1,
-      "duration_s": 300,
+      "duration_s": 400,
       "equity": 10000.0,
       "latency_ms": 30000,
       "max_cycles": 2,
       "max_skew_ms": 5000,
       "mode": "PAPER",
-      "poll_interval_s": 5.0,
+      "poll_interval_s": 10.0,
       "settle_ms": 2500,
       "signal_source": "legacy_parity",
       "stale_after_ms": 150000,
       "strategy_id": "ema_crossover",
       "symbols": [
-        "BTCUSDT"
+        "BTCUSDT",
+        "ETHUSDT"
       ],
       "timeframe": "1m",
-      "warmup_minutes": 25,
-      "window_bars": 20
+      "warmup_minutes": 120,
+      "window_bars": 120
     }
   },
   "environment": {
@@ -156,7 +157,7 @@
       "structlog": "26.1.0",
       "tenacity": "9.1.4"
     },
-    "executable": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\.venv\\Scripts\\python.exe",
+    "executable": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002\\.venv\\Scripts\\python.exe",
     "machine": "AMD64",
     "platform": "win32",
     "python_implementation": "CPython",
@@ -165,7 +166,7 @@
   "environment_digest": "7b701554eb645c65ab5c222a6078d639609ac96eabda466dfc37661369f6d648",
   "live_enabled": false,
   "mode": "PAPER",
-  "pinned_identity": "f00ce322fd9954b2bb185cc09fdabb13abe5216ef6fa3bce7fbca27601852431",
+  "pinned_identity": "f107d30c9052e01b98cc17f9f916c40339402fb809a4a39fdd6fe2f10025b4da",
   "provider": {
     "data": {
       "base_url": "https://api.binance.com",
@@ -185,7 +186,7 @@
     "parent_session_id": null,
     "resumed": false
   },
-  "run_id": "run-f00ce322fd9954b2bb18",
+  "run_id": "run-f107d30c9052e01b98cc",
   "runtime": {
     "digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
     "paths": [
@@ -236,8 +237,8 @@
     }
   },
   "schema": "VISION_SESSION_PROVENANCE_V1",
-  "session_id": "sess-5e7fc37ae0202d6e9970",
-  "started_at_ms": 1792936917473,
-  "started_at_utc": "2026-10-25T14:01:57Z",
+  "session_id": "sess-2f7242a01134ed1d010c",
+  "started_at_ms": 1793010051459,
+  "started_at_utc": "2026-10-26T10:20:51Z",
   "unavailable_reasons": []
 }

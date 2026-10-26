@@ -1,0 +1,103 @@
+$ C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\scripts\paper_lock_campaign_verify.py --campaign C:\Users\GVLLFR0035\AppData\Local\Temp\gate_76e8ec0b\campaigns\lock --out C:\Users\GVLLFR0035\AppData\Local\Temp\gate_76e8ec0b\LOCK_CAMPAIGN_VERIFICATION.json
+exit=0
+
+--- stdout ---
+{
+  "verdict": "PASS",
+  "checks": {
+    "stream_chain_intact": true,
+    "seq_continuous": true,
+    "iterations_contiguous": true,
+    "at_least_five_recoveries": true,
+    "both_crash_sites_covered": true,
+    "crash_boundaries_match_recorded_chains": true,
+    "every_crash_left_locks": true,
+    "all_leftovers_proved_abandoned": true,
+    "leftover_state_matches_recomputed_verdict": true,
+    "one_owner_per_path_per_crash": true,
+    "every_recovery_is_reclaimed": true,
+    "reclaim_reason_is_a_proof": true,
+    "reclaim_takes_over_the_crashed_owner": true,
+    "reclaim_fence_advances": true,
+    "every_resume_continued_the_session": true,
+    "every_resume_made_progress": true,
+    "resume_exited_zero": true,
+    "cycle_numbers_unique": true,
+    "cycle_numbers_ordered": true,
+    "cycle_gaps_are_interrupted_cycles": true,
+    "persisted_cycle_ledgers_intact": true,
+    "one_owner_per_iteration": true,
+    "owner_identity_never_repeats": true,
+    "live_owner_was_refused": true,
+    "stale_owner_was_refused": true,
+    "concurrent_reclaim_has_one_winner": true,
+    "no_lock_remaining_now": true,
+    "no_lock_after_any_resume": true,
+    "final_state_not_failed": true,
+    "no_live_orders": true,
+    "runtime_identity_stable": true,
+    "resume_flags_are_false_then_true": true
+  }
+}
+{
+  "adversarial": [
+    {
+      "mutation": "duplicated_cycle_with_valid_chain",
+      "detected": true,
+      "invalid": false,
+      "target_check": "cycle_numbers_unique"
+    },
+    {
+      "mutation": "reclaim_row_removed",
+      "detected": true,
+      "invalid": false,
+      "target_check": "every_recovery_is_reclaimed"
+    },
+    {
+      "mutation": "reclaim_fence_does_not_advance",
+      "detected": true,
+      "invalid": false,
+      "target_check": "reclaim_fence_advances"
+    },
+    {
+      "mutation": "resume_start_removed",
+      "detected": true,
+      "invalid": false,
+      "target_check": "every_resume_continued_the_session"
+    },
+    {
+      "mutation": "residual_lock_presented_as_recovered",
+      "detected": true,
+      "invalid": false,
+      "target_check": "no_lock_remaining_now"
+    },
+    {
+      "mutation": "leftover_owner_is_alive",
+      "detected": true,
+      "invalid": false,
+      "target_check": "all_leftovers_proved_abandoned"
+    },
+    {
+      "mutation": "resume_did_not_exit_cleanly",
+      "detected": true,
+      "invalid": false,
+      "target_check": "resume_exited_zero"
+    },
+    {
+      "mutation": "two_writers_claim_one_lock",
+      "detected": true,
+      "invalid": false,
+      "target_check": "one_owner_per_path_per_crash"
+    },
+    {
+      "mutation": "reclaim_names_the_wrong_owner",
+      "detected": true,
+      "invalid": false,
+      "target_check": "reclaim_takes_over_the_crashed_owner"
+    }
+  ],
+  "false_success": 0
+}
+
+--- stderr ---
+

@@ -2,8 +2,8 @@
   "accounting": {
     "initial_equity_usdt": 10000.0,
     "mark_prices": {
-      "BTC/USDT": 80822.14,
-      "ETH/USDT": 2355.71
+      "BTC/USDT": 80454.73,
+      "ETH/USDT": 2332.1
     },
     "meanings": {
       "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",

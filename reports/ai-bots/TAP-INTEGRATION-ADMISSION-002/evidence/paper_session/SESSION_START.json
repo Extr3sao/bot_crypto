@@ -2,28 +2,29 @@
   "config": {
     "decision_every_bars": 1,
     "declared_latency_ms": 30000,
-    "duration_s": 300,
+    "duration_s": 400,
     "equity": 10000.0,
-    "poll_interval_s": 5.0,
+    "poll_interval_s": 10.0,
     "settle_ms": 2500,
     "signal_source": "legacy_parity",
     "strategy_id": "ema_crossover",
     "symbols": [
-      "BTCUSDT"
+      "BTCUSDT",
+      "ETHUSDT"
     ],
     "timeframe": "1m",
-    "warmup_minutes": 25,
-    "window_bars": 20
+    "warmup_minutes": 120,
+    "window_bars": 120
   },
   "live_enabled": false,
   "live_orders": 0,
   "mode": "PAPER",
   "provenance": {
-    "pinned_identity": "f00ce322fd9954b2bb185cc09fdabb13abe5216ef6fa3bce7fbca27601852431",
+    "pinned_identity": "f107d30c9052e01b98cc17f9f916c40339402fb809a4a39fdd6fe2f10025b4da",
     "resumed": false,
-    "run_id": "run-f00ce322fd9954b2bb18",
+    "run_id": "run-f107d30c9052e01b98cc",
     "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
-    "session_id": "sess-5e7fc37ae0202d6e9970"
+    "session_id": "sess-2f7242a01134ed1d010c"
   },
   "provider": "paper-script",
   "real_model_called": false,
@@ -46,7 +47,7 @@
   "schema_version": "PROSPECTIVE_PAPER_SESSION_V1",
   "signal_source": "legacy_parity",
   "source": "binance_spot_rest_1m",
-  "started_at_utc": "2026-10-25T14:01:57Z",
+  "started_at_utc": "2026-10-26T10:20:51Z",
   "strategy_id": null,
   "subbar_entries": "PAPER_ONLY"
 }

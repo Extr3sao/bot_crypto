@@ -1,0 +1,20 @@
+{
+  "iteration": 3,
+  "launch": {
+    "cycles_before": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "pid": 50996,
+    "resume": true,
+    "rows_before": 22,
+    "started_at_utc": "2026-10-26T09:44:28Z"
+  },
+  "mode": "before_cycle",
+  "resume": true,
+  "started_at_utc": "2026-10-26T09:44:27Z"
+}

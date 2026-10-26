@@ -57,7 +57,7 @@ GATE_EVIDENCE = GATE_REPORT_DIR / "evidence"
 PAPER_SESSION = REPORT / "evidence" / "paper_session"
 ADMISSION = REPO / "config" / "strategy_admission.json"
 REVIEWER = GATE_REPORT_DIR / "tools" / "review_gate.py"
-GATE_RECOMPUTE = REPORT / "evidence" / "gate_at_9d622bb5"
+GATE_RECOMPUTE = REPORT / "evidence" / "gate_at_76e8ec0b"
 PAPER_LONG = REPORT / "evidence" / "paper_session_long"
 SCHEMA = "TAP_INTEGRATION_ADMISSION_VERIFICATION_V1"
 GENESIS = "0" * 64
@@ -618,7 +618,7 @@ def gate_recompute_claim(
     root = root or GATE_RECOMPUTE
     out = claim(
         "A9",
-        "the gate was recomputed at 600e744d, passed every step, changed no risk policy, and its "
+        "the gate was recomputed at 76e8ec0b, passed every step, changed no risk policy, and its "
         "recomputation still hashes",
         "read GATE_REPORT.json and its invariants, re-hash EVIDENCE_MANIFEST.json, classify the "
         "delta from the certified commit to HEAD",
@@ -757,8 +757,23 @@ def long_session_claim(root: Path | None = None) -> dict[str, Any]:
                 except json.JSONDecodeError:
                     problems.append(f"unreadable ledger row in {ledger.parent.name}")
     kinds = [row.get("kind") for row in rows]
-    app_fills = kinds.count("FILL")
-    closes = sum(1 for row in rows if row.get("kind") == "FILL" and row.get("closed"))
+    #: Each cycle ledger lists every open position at that cycle's end, so one fill appears in
+    #: every ledger written while the position stayed open: seven cycles made the single BTC
+    #: entry look like five FILL rows. Counting rows measures how long a position was held, not
+    #: how many were opened, so identity is the ``position_id`` the writer stamps on the row.
+    opens = {
+        str(row.get("position_id"))
+        for row in rows
+        if row.get("kind") == "FILL" and str(row.get("phase") or "").startswith("OPEN")
+    }
+    app_fills = len(opens)
+    closes = len(
+        {
+            str(row.get("position_id"))
+            for row in rows
+            if row.get("kind") == "FILL" and str(row.get("phase") or "").startswith("CLOSE")
+        }
+    )
     approved = sum(
         1 for row in rows if row.get("kind") == "DECISION_OUTCOME" and row.get("approved") is True
     )
@@ -783,10 +798,13 @@ def long_session_claim(root: Path | None = None) -> dict[str, Any]:
     if approved < 1:
         problems.append("no decision reached the risk gate")
     if int(summary.get("fills") or 0) != app_fills:
-        problems.append(f"summary fills {summary.get('fills')} != {app_fills} FILL row(s)")
+        problems.append(
+            f"summary fills {summary.get('fills')} != {app_fills} distinct opened position(s)"
+        )
     if int(summary.get("closed_trades") or 0) != closes:
         problems.append(
-            f"summary closed_trades {summary.get('closed_trades')} != {closes} closed FILL row(s)"
+            f"summary closed_trades {summary.get('closed_trades')} != {closes} distinct closed "
+            f"position(s)"
         )
     if app_fills == 0 and not reasons:
         problems.append("zero fills with no recorded gate or rejection explaining them")
@@ -808,7 +826,8 @@ def self_control_long_session() -> dict[str, Any]:
 
     out = claim(
         "S5",
-        "the long-session check is not blind: a summary claiming a fill with no FILL row must fail",
+        "the long-session check is not blind: a summary claiming more fills than the ledgers "
+        "hold must fail",
         "copy the session, raise its fill count, and re-evaluate A10 against the copy",
     )
     if not (PAPER_LONG / "SUMMARY.json").is_file():
@@ -824,7 +843,9 @@ def self_control_long_session() -> dict[str, Any]:
             json.dumps({**summary, "fills": int(summary.get("fills") or 0) + 1}), encoding="utf-8"
         )
         judged = long_session_claim(copy)
-    detected = judged["status"] == "FAIL" and any("FILL row" in p for p in judged["problems"])
+    detected = judged["status"] == "FAIL" and any(
+        "summary fills" in p for p in judged["problems"]
+    )
     out["detail"] = f"tampered fills judged={judged['status']} problems={judged['problems'][:2]}"
     out["problems"] = [] if detected else ["a fabricated fill did not fail A10"]
     out["status"] = "PASS" if detected else "FAIL"

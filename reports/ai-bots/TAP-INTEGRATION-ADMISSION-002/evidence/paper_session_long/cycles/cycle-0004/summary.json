@@ -2,8 +2,8 @@
   "accounting": {
     "initial_equity_usdt": 10000.0,
     "mark_prices": {
-      "BTC/USDT": 80850.01,
-      "ETH/USDT": 2361.14
+      "BTC/USDT": 80451.86,
+      "ETH/USDT": 2332.05
     },
     "meanings": {
       "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
@@ -24,24 +24,24 @@
   "calls": 6,
   "closed_trades": 0,
   "costs_realised_usdt": 0,
-  "costs_total_usdt": 0.0,
+  "costs_total_usdt": 1.0,
   "costs_usdt": 0,
   "counters": {
     "action:LONG": 2,
     "action:NO_TRADE": 3,
     "action:SHORT": 1,
+    "dropped:ALREADY_LONG": 1,
     "dropped:MODEL_NO_TRADE": 3,
-    "gate:WEEKEND_BLOCK": 2,
-    "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+    "fills": 2,
     "opinion:deferred": 2,
-    "opinion:generated": 3,
+    "opinion:generated": 2,
     "requote:WAITING_FOR_QUOTE": 2
   },
   "decision_points": 3,
-  "drawdown_pct": 0.0,
+  "drawdown_pct": 0.01403,
   "drawdown_status": "MEASURED",
-  "drawdown_usdt": 0.0,
-  "entry_commissions_accrued_open_usdt": 0.0,
+  "drawdown_usdt": 1.402996,
+  "entry_commissions_accrued_open_usdt": 1.0,
   "entry_commissions_realised_usdt": 0,
   "equity_points": 128,
   "estimated_spend_usd": 0.0,
@@ -49,14 +49,16 @@
     "bar_interval_ms": 60000,
     "data_gap_policy": "fail_closed_unless_independent_coverage",
     "entry_bar_range_policy": "full_bar_from_its_open",
-    "entry_quote_sources": {},
+    "entry_quote_sources": {
+      "bar_open": 2
+    },
     "exit_ts_resolutions": [
       "OPEN_GAP",
       "BAR_WINDOW",
       "QUOTE"
     ],
     "expired_opinions": 0,
-    "fills": 0,
+    "fills": 2,
     "gap_exits": 0,
     "gap_policy": "open_on_gap",
     "max_opinion_age_ms": 60000,
@@ -69,79 +71,75 @@
         "5": 1
       },
       "deferred_slots": 2,
-      "executed_openings": 0,
+      "executed_openings": 2,
       "expired": 0,
-      "gated": 2,
-      "generated": 3,
+      "gated": 0,
+      "generated": 2,
       "lifecycle": {
         "duplicate_terminals": [],
-        "generated": 3,
+        "generated": 2,
         "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
-        "ledger_lines": 14,
+        "ledger_lines": 13,
         "ok": true,
         "orphan_terminals": [],
-        "rejected_by_code": {
-          "RUN_ENDED_WITH_ORDER_PENDING": 1
-        },
+        "rejected_by_code": {},
         "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
         "session_continuity": "NONE",
         "source": "ledger_bytes",
         "terminal_classes": {
           "BLOCKED_BY_RISK": 0,
           "CLOSED": 0,
-          "FILLED": 0,
-          "GATED": 2,
-          "REJECTED": 1
+          "FILLED": 2,
+          "GATED": 0,
+          "REJECTED": 0
         },
         "unrecorded": []
       },
-      "pending_at_end": 1,
-      "rejected": {
-        "RUN_ENDED_WITH_ORDER_PENDING": 1
-      },
+      "pending_at_end": 0,
+      "rejected": {},
       "superseded": 0,
       "terminal_classes": {
         "BLOCKED_BY_RISK": 0,
         "CLOSED": 0,
-        "FILLED": 0,
-        "GATED": 2,
-        "REJECTED": 1
+        "FILLED": 2,
+        "GATED": 0,
+        "REJECTED": 0
       }
     },
     "quote_lag_ms": {
-      "max": null,
-      "median": null,
-      "min": null
+      "max": 25801,
+      "median": 25801,
+      "min": 25801
     },
     "quote_source": "bar_open",
     "stage_latency_ms": {
       "data_to_decision": {
-        "max": null,
-        "p50": null,
-        "p95": null,
-        "p99": null,
-        "samples": 0
+        "max": 4199,
+        "p50": 4199,
+        "p95": 4199,
+        "p99": 4199,
+        "samples": 2
       },
       "decision_to_quote": {
-        "max": null,
-        "p50": null,
-        "p95": null,
-        "p99": null,
-        "samples": 0
+        "max": 55801,
+        "p50": 55801,
+        "p95": 55801,
+        "p99": 55801,
+        "samples": 2
       },
       "decision_to_received": {
-        "max": null,
-        "p50": null,
-        "p95": null,
-        "p99": null,
-        "samples": 0
+        "max": 30000,
+        "p50": 30000,
+        "p95": 30000,
+        "p99": 30000,
+        "samples": 2
       },
       "received_to_quote": {
-        "max": null,
-        "p50": null,
-        "p95": null,
-        "p99": null,
-        "samples": 0
+        "max": 25801,
+        "p50": 25801,
+        "p95": 25801,
+        "p99": 25801,
+        "samples": 2
       }
     },
     "stale_valuation_vetoes": 0,
@@ -152,45 +150,64 @@
   },
   "execution_costs_realised_usdt": 0,
   "exit_commissions_realised_usdt": 0,
-  "fills": 0,
+  "fills": 2,
   "final_equity_usdt": 10000.0,
   "gross_realised_usdt": 0,
-  "marked_equity_usdt": 10000.0,
+  "marked_equity_usdt": 9998.5970037,
   "net_realised_usdt": 0,
-  "open_positions_at_end": {},
+  "open_positions_at_end": {
+    "BTC/USDT": {
+      "entry_commission_usdt": 0.5,
+      "entry_price": 80473.9845214082,
+      "mark_price": 80451.86,
+      "notional_usdt": 500.0,
+      "position_id": "pos-paper-prospective-003g-00000001",
+      "side": "buy",
+      "unrealised_pnl_usdt": -0.13746381
+    },
+    "ETH/USDT": {
+      "entry_commission_usdt": 0.5,
+      "entry_price": 2330.8121872628476,
+      "mark_price": 2332.05,
+      "notional_usdt": 500.0,
+      "position_id": "pos-paper-prospective-003g-00000003",
+      "side": "sell",
+      "unrealised_pnl_usdt": -0.26553249
+    }
+  },
   "opinion_accounting": {
     "adds_up": true,
     "counter_disagreements": [],
     "deferred_slots": 2,
     "duplicate_terminals": [],
-    "generated": 3,
+    "generated": 2,
     "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
-    "ledger_lines": 14,
+    "ledger_lines": 13,
     "orphan_terminals": [],
     "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
     "session_continuity": "NONE",
     "source": "ledger_bytes",
-    "terminal": 3,
+    "terminal": 2,
     "terminal_classes": {
       "BLOCKED_BY_RISK": 0,
       "CLOSED": 0,
-      "FILLED": 0,
-      "GATED": 2,
-      "REJECTED": 1
+      "FILLED": 2,
+      "GATED": 0,
+      "REJECTED": 0
     },
     "unrecorded": []
   },
   "pnl_realised_usdt": 0,
-  "pnl_total_usdt": 0.0,
-  "pnl_unrealised_usdt": 0.0,
+  "pnl_total_usdt": -1.4029963,
+  "pnl_unrealised_usdt": -1.4029963,
   "provider": "paper-script",
   "reconciliation": {
     "accounting_schema_version": "paper-accounting/2",
     "costs_realised_usdt": 0,
-    "costs_total_usdt": 0.0,
-    "curve_end_equity_usdt": 10000.0,
+    "costs_total_usdt": 1.0,
+    "curve_end_equity_usdt": 9998.5970037,
     "entry_commission_usdt": 0,
-    "entry_commissions_accrued_open_usdt": 0.0,
+    "entry_commissions_accrued_open_usdt": 1.0,
     "execution_cost_usdt": 0,
     "exit_commission_usdt": 0,
     "final_equity_usdt": 10000.0,
@@ -209,20 +226,23 @@
       "total_pnl_moves_the_marked_book": true
     },
     "initial_equity_usdt": 10000.0,
-    "marked_equity_usdt": 10000.0,
+    "marked_equity_usdt": 9998.5970037,
     "marks_complete_at_end": true,
     "net_realised_usdt": 0,
     "open_gap_exits": 0,
-    "open_position_ids_at_end": [],
-    "open_positions_at_end": 0,
-    "pnl_total_usdt": 0.0,
+    "open_position_ids_at_end": [
+      "pos-paper-prospective-003g-00000001",
+      "pos-paper-prospective-003g-00000003"
+    ],
+    "open_positions_at_end": 2,
+    "pnl_total_usdt": -1.4029963,
     "reference_gross_usdt": 0,
-    "risk_equity_usdt": 10000.0,
+    "risk_equity_usdt": 9998.5970037,
     "tolerance_usdt": 1e-06,
-    "unrealised_pnl_gross_usdt": 0.0,
-    "unrealised_pnl_net_usdt": 0.0
+    "unrealised_pnl_gross_usdt": -0.4029963,
+    "unrealised_pnl_net_usdt": -1.4029963
   },
-  "risk_equity_usdt": 10000.0,
+  "risk_equity_usdt": 9998.597004,
   "stop_reason": null,
   "trades": []
 }

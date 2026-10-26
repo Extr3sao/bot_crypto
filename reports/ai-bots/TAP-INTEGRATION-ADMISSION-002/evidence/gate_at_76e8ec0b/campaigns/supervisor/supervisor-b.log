@@ -1,0 +1,20 @@
+[supervisor] ALREADY_ACTIVE (ANOTHER_SUPERVISOR_IS_ACTIVE) state=None restarts=0 locks=0
+{
+  "action": "ALREADY_ACTIVE",
+  "attempts": [],
+  "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\supervisor\\supervisor\\SUPERVISOR.lock is held by live pid 39100; a second writer would interleave prev_sha256 and the chain would stop verifying",
+  "elapsed_s": 0.031,
+  "exit_code": 4,
+  "final_state": null,
+  "final_status": null,
+  "finished_at_utc": "2026-10-26T09:33:19Z",
+  "live_orders": 0,
+  "locks": [],
+  "mode": "PAPER",
+  "reason": "ANOTHER_SUPERVISOR_IS_ACTIVE",
+  "restarts": 0,
+  "schema_version": "TAP_PAPER_SUPERVISOR_V1",
+  "session": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\supervisor\\session",
+  "started_at_utc": "2026-10-26T09:33:19Z",
+  "state_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\gate_76e8ec0b\\campaigns\\supervisor\\supervisor"
+}
