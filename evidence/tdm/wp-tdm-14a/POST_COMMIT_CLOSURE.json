@@ -1,8 +1,8 @@
 {
   "artifact": "tdm14a-post-commit-closure-v1",
-  "run_id": "tdm14a-closure-final-2",
-  "head": "4a84fc3e929c67e34d8cbb6d17b25d62a2b3b846",
-  "head_committed_at": "2026-10-26T09:48:09+01:00",
+  "run_id": "tdm14a-closure-terminal",
+  "head": "9d2200d8f57490ce25d1d4e06b5305b4fe091999",
+  "head_committed_at": "2026-10-26T09:48:44+01:00",
   "files_checked": 27,
   "files_matching_head": 27,
   "failures": [],
@@ -37,10 +37,10 @@
     {
       "path": "evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
       "bytes_on_disk": 23451,
-      "sha256_worktree": "fe129f306f5c9696b9d49f2d4ccd138578aad808362f0d839c3b1b8948550633",
-      "sha256_head_blob": "7777b6d800e764fb59feaf6faf6ec6554e124d39a85576c5de73921b649e5ad5",
-      "worktree_identity": "500db7ea36fe72f279282aab1e8b12b85ff2b116",
-      "head_blob_oid": "500db7ea36fe72f279282aab1e8b12b85ff2b116",
+      "sha256_worktree": "7754c3fe471ba9f26b5a523a552a6f3f4a0786939fe83ca6c5c9c7055c447354",
+      "sha256_head_blob": "185a6a8a213d706685ccb5c5a78ccc8b2f891ae836b2087e6d33e182b1e86036",
+      "worktree_identity": "59fe5b5c832ccc1fa8050ade41c6b06a72c2b420",
+      "head_blob_oid": "59fe5b5c832ccc1fa8050ade41c6b06a72c2b420",
       "tracked_at_head": true,
       "match": true
     },
@@ -276,11 +276,11 @@
     },
     {
       "path": "evidence/tdm/wp-tdm-14a/verification_result.json",
-      "bytes_on_disk": 20324,
-      "sha256_worktree": "bd122cafd4d7c2220b0164c72870f93548207870cfd92a6539d18c1e95ec4223",
-      "sha256_head_blob": "69c15a040ac2ce6db709d4f0701f4468f9f96e05c2b3ae7b614186cb26b1fd12",
-      "worktree_identity": "7cc5f7a869eab5fa1660d00d91eab4de715d8fe2",
-      "head_blob_oid": "7cc5f7a869eab5fa1660d00d91eab4de715d8fe2",
+      "bytes_on_disk": 19779,
+      "sha256_worktree": "aeeacd91ca4ba1634c9fc4e1826c09cfdb1ca06356cc10a9984fb8e41a211014",
+      "sha256_head_blob": "caeb89693672c96d35a98953b5c45207ce70b2172e56b1a6d68b9c0fee7ce5ce",
+      "worktree_identity": "6aabd81191fbdc54895d6043aba9402ffa7d9794",
+      "head_blob_oid": "6aabd81191fbdc54895d6043aba9402ffa7d9794",
       "tracked_at_head": true,
       "match": true
     }
