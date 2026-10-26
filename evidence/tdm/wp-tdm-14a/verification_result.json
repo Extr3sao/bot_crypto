@@ -1,8 +1,8 @@
 {
   "artifact": "tdm14a-verification-result-v1",
   "rfc_id": "RFC-TDM-014A",
-  "run_id": "tdm14a-verify-postfix",
-  "generated_at_utc": "2026-10-26T08:40:39Z",
+  "run_id": "tdm14a-verify-closure-final",
+  "generated_at_utc": "2026-10-26T08:45:24Z",
   "verifier": "scripts/tdm14a_verify.py",
   "builder_executions": {
     "run_a": {
@@ -365,7 +365,7 @@
       "status": "PASS",
       "detail": {
         "suites": "tests/unit/research (whole directory) plus a targeted run of the new and directly affected suites",
-        "tests_passed": 39,
+        "tests_passed": 43,
         "tests_failed": 0,
         "tests_exit_code": 0,
         "negative_controls": 10,
@@ -449,7 +449,7 @@
       "id": "ACC-10",
       "status": "PASS",
       "detail": {
-        "files_changed_since_baseline": 37,
+        "files_changed_since_baseline": 39,
         "trading_paths_touched": [],
         "processes_executed": [
           "tdm12_inventory.py",
@@ -476,22 +476,40 @@
     },
     {
       "id": "ACC-12",
-      "status": "PASS",
+      "status": "FAIL",
       "detail": {
-        "commits_since_baseline": 5,
+        "commits_since_baseline": 8,
         "commit_subjects": [
+          "d7185a21 Render the closing report from the verdict instead of writing it by hand",
+          "409050c3 Close the second evidence commit against its own blobs",
+          "49c89696 Re-verify after the custody fix: twelve of twelve",
           "d93408e8 Stop the custody check from mangling the first dirty path",
           "5f42de14 Close the first evidence commit against its own blobs",
           "f8ae0243 Replay TDM-12 from scratch twice and publish the evidence",
           "7a4593cb Keep the sealed TDM-13 inputs byte-identical in a CRLF checkout",
           "04b02c2d Fingerprint the committed blob so a checkout cannot rename the code"
         ],
-        "head": "d93408e8e7362dfb6db1ff693c81232fcd43b530",
+        "head": "d7185a2110fbfb267929101e11f14e4f0635b64a",
         "uncommitted_tracked_changes": [
           "M evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
-          " M evidence/tdm/wp-tdm-14a/verification_result.json"
+          " M evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json",
+          " M evidence/tdm/wp-tdm-14a/OUTPUT_MANIFEST.json",
+          " M evidence/tdm/wp-tdm-14a/REPLAY_REPORT.json",
+          " M evidence/tdm/wp-tdm-14a/REPLAY_REPORT.md",
+          " M evidence/tdm/wp-tdm-14a/RUN_REPORT.json",
+          " M evidence/tdm/wp-tdm-14a/RUN_REPORT.md",
+          " M evidence/tdm/wp-tdm-14a/verification_result.json",
+          "?? evidence/tdm/wp-tdm-14a/FINAL_REPORT.md"
         ],
-        "uncommitted_outside_self_outputs": [],
+        "uncommitted_outside_self_outputs": [
+          "evidence/tdm/wp-tdm-14a/FINAL_REPORT.md",
+          "evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json",
+          "evidence/tdm/wp-tdm-14a/OUTPUT_MANIFEST.json",
+          "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.json",
+          "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.md",
+          "evidence/tdm/wp-tdm-14a/RUN_REPORT.json",
+          "evidence/tdm/wp-tdm-14a/RUN_REPORT.md"
+        ],
         "self_outputs_excluded": [
           "evidence/tdm/wp-tdm-14a/verification_result.json",
           "evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
@@ -500,13 +518,14 @@
         "amended_commits": 0,
         "amend_evidence": "every commit's parent is the previous commit of this branch; 04fb8bc8 and everything below it is untouched",
         "post_commit_closure": "PASS",
-        "closure_checked_head": "f8ae02435eacab0571bb4095234d71c9723b84a8",
+        "closure_checked_head": "49c8969617e0effee3872b006efe45dc7fb266eb",
         "files_changed_since_closure_head": [
+          "evidence/tdm/wp-tdm-14a/LOG_MANIFEST.json",
           "evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json",
           "evidence/tdm/wp-tdm-14a/TEST_RESULTS.json",
-          "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt",
-          "scripts/tdm14a_verify.py",
-          "tests/unit/research/test_tdm14a_verifier.py"
+          "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt",
+          "scripts/tdm14a_report.py",
+          "tests/unit/research/test_tdm14a_report.py"
         ],
         "closure_head_is_ancestor_of_head": true,
         "custody_note": "each evidence file is covered by the closure that followed its commit; a file cannot cover itself, which is why the closure report is always the last thing committed",
@@ -514,7 +533,7 @@
       }
     }
   ],
-  "verdict": "VERIFIED_PORTABLE_FULL_REPLAY",
+  "verdict": "FAILED",
   "decision_economics": "NO_ELIGIBLE_CANDIDATE / REJECTED_ALPHA (inherited, not re-evaluated)",
   "paper_orders": 0,
   "live_orders": 0,

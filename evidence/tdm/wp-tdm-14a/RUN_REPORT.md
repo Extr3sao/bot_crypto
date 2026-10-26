@@ -1,10 +1,16 @@
 # RUN_REPORT — RFC-TDM-014A
 
 **Veredicto:** `FAILED`
-**Baseline:** `04fb8bc8a0900c278cd72c5e3478a45b66fcbc03` · **HEAD:** `7a4593cb81ea659ce860215a4dbe17abbdad6a7e` · **Rama:** `fix/tdm14a`
+**Baseline:** `04fb8bc8a0900c278cd72c5e3478a45b66fcbc03` · **HEAD:** `d7185a2110fbfb267929101e11f14e4f0635b64a` · **Rama:** `fix/tdm14a`
 
 ## Commits
 
+- `d7185a21 Render the closing report from the verdict instead of writing it by hand`
+- `409050c3 Close the second evidence commit against its own blobs`
+- `49c89696 Re-verify after the custody fix: twelve of twelve`
+- `d93408e8 Stop the custody check from mangling the first dirty path`
+- `5f42de14 Close the first evidence commit against its own blobs`
+- `f8ae0243 Replay TDM-12 from scratch twice and publish the evidence`
 - `7a4593cb Keep the sealed TDM-13 inputs byte-identical in a CRLF checkout`
 - `04b02c2d Fingerprint the committed blob so a checkout cannot rename the code`
 
@@ -35,8 +41,8 @@
 ## Tests
 
 - suites: tests/unit/research (whole directory) plus a targeted run of the new and directly affected suites
-- pasados: 32 · fallados: 0 · exit: 0
-- duración: 7.6 s
+- pasados: 43 · fallados: 0 · exit: 0
+- duración: 7.39 s
 
 ## Controles negativos
 
@@ -83,11 +89,39 @@
 - `M	.gitattributes`
 - `A	evidence/tdm/wp-tdm-14a/BASELINE_REPORT.json`
 - `A	evidence/tdm/wp-tdm-14a/BASELINE_REPORT.md`
+- `A	evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json`
+- `A	evidence/tdm/wp-tdm-14a/FINGERPRINT_SCHEME_V2.md`
+- `A	evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json`
+- `A	evidence/tdm/wp-tdm-14a/LOG_MANIFEST.json`
+- `A	evidence/tdm/wp-tdm-14a/NEGATIVE_CONTROLS.json`
+- `A	evidence/tdm/wp-tdm-14a/OUTPUT_MANIFEST.json`
+- `A	evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json`
+- `A	evidence/tdm/wp-tdm-14a/REPLAY_REPORT.json`
+- `A	evidence/tdm/wp-tdm-14a/REPLAY_REPORT.md`
+- `A	evidence/tdm/wp-tdm-14a/RUN_REPORT.json`
+- `A	evidence/tdm/wp-tdm-14a/RUN_REPORT.md`
+- `A	evidence/tdm/wp-tdm-14a/TEST_RESULTS.json`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/crlf/inventory.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/crlf/review.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/lf/inventory.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/lf/review.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-base.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-head-crlf.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-head-lf.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt`
+- `A	evidence/tdm/wp-tdm-14a/run_crlf.json`
+- `A	evidence/tdm/wp-tdm-14a/run_lf.json`
+- `A	evidence/tdm/wp-tdm-14a/v1_compat.json`
+- `A	evidence/tdm/wp-tdm-14a/verification_result.json`
 - `M	scripts/tdm12_inventory.py`
 - `A	scripts/tdm14a_baseline.py`
 - `A	scripts/tdm14a_negative_controls.py`
 - `A	scripts/tdm14a_replay.py`
+- `A	scripts/tdm14a_report.py`
 - `A	scripts/tdm14a_v1_compat.py`
 - `A	scripts/tdm14a_verify.py`
 - `A	src/trading_bot/research/source_fingerprint.py`
 - `A	tests/unit/research/test_source_fingerprint.py`
+- `A	tests/unit/research/test_tdm14a_report.py`
+- `A	tests/unit/research/test_tdm14a_verifier.py`
