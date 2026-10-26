@@ -37,7 +37,6 @@ from trading_bot.autonomous.signals import (
 from .helpers import (
     BoomReader,
     SilentFamily,
-    StaticFamily,
     make_admitted_ledger,
     make_ledger,
     make_runtime,
