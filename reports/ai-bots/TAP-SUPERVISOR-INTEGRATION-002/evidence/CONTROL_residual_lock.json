@@ -1,0 +1,217 @@
+{
+  "adversarial": [],
+  "applicable_mutations": 0,
+  "artifacts": {
+    "session/RUN_META.json": "afd2b8de184513a535154b0e9b1fac181ec08020d2d4f83cced0831579746f2b",
+    "session/STREAM.jsonl": "7810fb366c34d21cc6eefe92d101e3690ce8595500939bdb772f4a6c1d295648",
+    "session/STREAM.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/cycles/cycle-0001/ledger.jsonl": "8a5a353894348ace5dd658a599bb4dc5f6ea3491cecd970c661bcbab946164b9",
+    "session/cycles/cycle-0001/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0002/ledger.jsonl": "836a8ddbd4faf49ffeba3e0ceef57143afa8dab2e62fe04776f59576b4cc32ec",
+    "session/cycles/cycle-0002/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0003/ledger.jsonl": "88616b434f897c1fa18a35b0675631c5934fff19e2b30eb835145d407ba2a0d3",
+    "session/cycles/cycle-0003/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0004/ledger.jsonl": "461cc67312c4b5620d23a76b6fe8ccb92659b465c0bff64bc5927fc3211d0281",
+    "session/cycles/cycle-0004/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0005/ledger.jsonl": "1f2373348cbac671a1f4e4953148d17a44761931ed7406d8493105decb986991",
+    "session/cycles/cycle-0005/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/market-1m/BTCUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/market-1m/ETHUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/market-1m/SOLUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "supervisor/SUPERVISOR.jsonl": "1327d03d5145d31422da9931120b0a5c4205b01de9ae8c43476d04681fde58d3",
+    "supervisor/SUPERVISOR_RESULT.json": "071714fc4bfa2478cafc4a25119996a91a76e12fb989144e3014d498b7032786"
+  },
+  "builder": "scripts/paper_supervisor_campaign.py",
+  "campaign": "C:\\Users\\GVLLFR0035\\Downloads\\ff-campaign-002-controls\\residual_lock",
+  "false_success": 0,
+  "invalid_mutations": [],
+  "judgement": {
+    "checks": {
+      "attempts_continue_the_stream": true,
+      "cycle_gaps_are_interrupted": true,
+      "cycle_ledgers_intact": true,
+      "cycle_numbers_increasing": true,
+      "cycle_numbers_unique": true,
+      "every_resume_backed_by_a_reclaim": true,
+      "every_resume_child_is_recorded": true,
+      "every_resume_decision_saw_only_abandoned_locks": true,
+      "final_state_not_failed": true,
+      "killed_children_did_not_exit_zero": true,
+      "loser_refused_without_spawning": true,
+      "no_clean_exit_without_evidence": true,
+      "no_live_orders": true,
+      "no_lock_remaining_now": false,
+      "no_supervisor_decision_acted_on_failed": true,
+      "one_run_id_and_pin": true,
+      "one_supervisor_acquired": true,
+      "only_one_supervisor_spawned": true,
+      "protected_paths_untouched": true,
+      "reclaim_fences_advance": true,
+      "restarts_within_budget": true,
+      "resume_decisions_match_resumed_starts": true,
+      "resume_flags_are_false_then_true": true,
+      "rows_never_shrank": true,
+      "runtime_bytes_stable": true,
+      "seq_continuous": true,
+      "starts_carry_their_own_identity": true,
+      "stream_chain_intact": true,
+      "supervisor_finished_completed": true,
+      "supervisor_result_counts_its_restarts": true,
+      "zero_exit_is_terminal": true
+    },
+    "counts": {
+      "cycles": 5,
+      "reclaim_rows": 1,
+      "resumed_starts": 1,
+      "rows": 13,
+      "starts": 2
+    },
+    "cycles": {
+      "directories": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "interrupted": [],
+      "ledgers": {
+        "cycle-0001": {
+          "lines": 7,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0002": {
+          "lines": 10,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0003": {
+          "lines": 17,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0004": {
+          "lines": 20,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0005": {
+          "lines": 27,
+          "ok": true,
+          "reason": "INTACT"
+        }
+      },
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "facts": {
+      "budget_action": null,
+      "budget_attempts": 0,
+      "budget_restarts": 0,
+      "corrupt_action": null,
+      "crashed_children": 1,
+      "cycles": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "exits": [
+        1,
+        0
+      ],
+      "fences": {
+        "BTCUSDT.jsonl.lock": [
+          2
+        ],
+        "ETHUSDT.jsonl.lock": [
+          2
+        ],
+        "SOLUSDT.jsonl.lock": [
+          2
+        ],
+        "STREAM.jsonl.lock": [
+          2
+        ]
+      },
+      "final_locks": [
+        "STREAM.jsonl.lock"
+      ],
+      "head": "6a317fa91e164dc6107a5c107ad1b7da5cb73cee0a5a928e6a43ae47cb9a89db",
+      "journal_actions": [
+        "START",
+        "RESUME",
+        "STOP_COMPLETED"
+      ],
+      "journal_events": [
+        "ACQUIRED",
+        "DECISION",
+        "SPAWNED",
+        "REFUSED",
+        "STOP",
+        "CHILD_EXIT",
+        "DECISION",
+        "BACKOFF",
+        "SPAWNED",
+        "CHILD_EXIT",
+        "DECISION",
+        "STOP"
+      ],
+      "reclaims": 1,
+      "result_action": "STOP_COMPLETED",
+      "resumed_starts": 1,
+      "rows": 13,
+      "scenarios_present": false,
+      "spawned_pids": [
+        40452,
+        22052
+      ],
+      "starts": 2
+    },
+    "journal": {
+      "acquired": 1,
+      "events": 12,
+      "exits": 2,
+      "refused": 1,
+      "resumes": 1,
+      "spawned": 2
+    },
+    "not_applicable_checks": [
+      "budget_was_exhausted_not_exceeded",
+      "corrupt_evidence_was_refused"
+    ],
+    "resume_windows": [
+      {
+        "backed": true,
+        "reclaims": [
+          {
+            "locks": [
+              {
+                "fence": 2,
+                "lock": "STREAM.jsonl.lock",
+                "pid": 39424,
+                "reason": "OWNER_PROCESS_DEAD"
+              }
+            ],
+            "seq": null
+          }
+        ],
+        "start_seq": 5
+      }
+    ],
+    "verdict": "FAIL"
+  },
+  "not_applicable_mutations": [],
+  "schema_version": "TAP_PAPER_SUPERVISOR_VERIFICATION_V1",
+  "undetected_mutations": [],
+  "verdict": "FAIL",
+  "verifier": "scripts/paper_supervisor_verify.py",
+  "verifier_commit": "b489d48825af9da6cb975d2462290134d1f45fd0"
+}

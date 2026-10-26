@@ -1,0 +1,204 @@
+{
+  "budget": {
+    "basis": "largest peak-to-trough fall inside each complete UTC day of the observer's readings",
+    "days_drawdown_gib": [
+      6.562,
+      4.29,
+      5.045,
+      7.597,
+      5.686,
+      5.334,
+      14.583,
+      8.996,
+      12.467,
+      6.959,
+      7.731
+    ],
+    "days_recovering": 3,
+    "days_spending": 8,
+    "drawdown_max_bytes": 15658606592,
+    "drawdown_p50_bytes": 7472607232,
+    "drawdown_p90_bytes": 13386858496,
+    "floor_bytes": 2147483648,
+    "history_days": 11,
+    "net_median_bytes": -1783136256,
+    "net_median_gib": -1.661,
+    "note": "the budget is the p90 drawdown plus the floor plus the campaign's own growth for the whole window. The maximum is reported next to it, not used as the budget.",
+    "own_bytes_per_day": 1153695,
+    "own_window_bytes": 103832550,
+    "readings": 941,
+    "required_at_max_bytes": 17909922790,
+    "required_at_max_gib": 16.68,
+    "required_bytes": 15638174694,
+    "required_gib": 14.564
+  },
+  "capacity": "INSUFFICIENT",
+  "contract": {
+    "declared_rows": 6480,
+    "git_diff_empty": true,
+    "git_diff_exit": 0,
+    "path": "config/preregistrations/EXP-004A.datasets.phase3.json",
+    "required_fraction": 0.9,
+    "rows_match": true,
+    "window_days": 90,
+    "window_end": "2027-01-21T00:00:00Z",
+    "window_matches": true,
+    "window_start": "2026-10-23T00:00:00Z"
+  },
+  "fingerprint": {
+    "append_only": {
+      "ALERT_LEDGER.jsonl": {
+        "exists": true,
+        "length": 1062,
+        "lines": 3,
+        "sha256": "a964521ef5673cb8aa0f3e2545bc7f2fa7399ac2a8ac4a9c4d739a4d04fe7f05"
+      },
+      "WATCHDOG_EVENTS.jsonl": {
+        "exists": true,
+        "length": 2316,
+        "lines": 4,
+        "sha256": "bc095f51b34f897919b8158fffe18589c199b9f57754d9d8182186300961366a"
+      },
+      "alerts.jsonl": {
+        "exists": true,
+        "length": 20820,
+        "lines": 63,
+        "sha256": "0d8864c4a250a46a013a8382fff0122843278e5f4fcd334914fbd9c3ca24ff10"
+      },
+      "runs.jsonl": {
+        "exists": true,
+        "length": 4249076,
+        "lines": 941,
+        "sha256": "cdf38b15703a54931543f27e70ea56505a345ba16169b363ec8ebda0f0f0c8a2"
+      },
+      "slots.jsonl": {
+        "exists": true,
+        "length": 187029,
+        "lines": 751,
+        "sha256": "e6c0197e9ea7812843d09788e068952db2b77b1b236681124bddbaa2e3807c4d"
+      }
+    },
+    "at_utc": "2026-10-23T13:42:20Z",
+    "rewritten_contract": {
+      "coverage.json": {
+        "critical_free_bytes": null,
+        "declared": {},
+        "warning_free_bytes": null
+      },
+      "health.json": {
+        "critical_free_bytes": 2147483648,
+        "declared": {},
+        "warning_free_bytes": 5368709120
+      },
+      "resource_budget.json": {
+        "critical_free_bytes": 2147483648,
+        "declared": {
+          "daily_kept": 366,
+          "lane_bytes": 268435456,
+          "ledger_kept": 4032,
+          "publication_interval_seconds": 86400,
+          "runs_kept": 2880,
+          "slots_kept": 2880
+        },
+        "warning_free_bytes": 5368709120
+      }
+    },
+    "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "write_once": {
+      "2026-10-13.json": {
+        "bytes": 143050,
+        "mtime_ns": 1792077439839969200,
+        "sha256": "9bfd37e08e96e13f9665c5cf37b8889d1cc6148690cac537b02060853394d5cc"
+      },
+      "2026-10-14.json": {
+        "bytes": 148252,
+        "mtime_ns": 1792077439853222600,
+        "sha256": "ebe0da1bdaf57ff254917a304d84c01d5429747e4364143313fb7f14427a5ad2"
+      },
+      "2026-10-15.json": {
+        "bytes": 152232,
+        "mtime_ns": 1792109494877604900,
+        "sha256": "e4c1d3e187a05eeb37406bd4de0b848901cf5bcbed8bb7a6c8d803fe489d1c09"
+      },
+      "2026-10-16.json": {
+        "bytes": 156627,
+        "mtime_ns": 1792195893515150100,
+        "sha256": "62cf5811f8a09e39258c59002787dd8524012ddd93856787a2c3167c783a0ef7"
+      },
+      "2026-10-17.json": {
+        "bytes": 154801,
+        "mtime_ns": 1792283193787760300,
+        "sha256": "18fc5d911b31cda308e8a87bdb39c8f2f74208214a86d68b018e1022f9859369"
+      },
+      "2026-10-18.json": {
+        "bytes": 150355,
+        "mtime_ns": 1792378594610320000,
+        "sha256": "38ca7acbd4c1bce26658eadf03d641a15e17e3316900c35118fc66712af46c3a"
+      },
+      "2026-10-19.json": {
+        "bytes": 156173,
+        "mtime_ns": 1792455093400437500,
+        "sha256": "1175aaaaad9467182ba7962d4190fc85b339ef87457418838719362b50db5bf0"
+      },
+      "2026-10-20.json": {
+        "bytes": 156540,
+        "mtime_ns": 1792541495567622000,
+        "sha256": "8542b1fb4a7d67ff32b83acb0f7df8d95991b44cf88b98e1063378732be9573a"
+      },
+      "2026-10-21.json": {
+        "bytes": 154903,
+        "mtime_ns": 1792627894959255400,
+        "sha256": "b013c482351c5118d59d7a266d169a4ec4c6e3c7fecb6211de50e5d4050441b8"
+      },
+      "2026-10-22.json": {
+        "bytes": 155484,
+        "mtime_ns": 1792734094510287900,
+        "sha256": "885defc4951b29f2e0c61a51d40e5fbb94e51d9b9a14e2b8144a1433cd5b83d6"
+      },
+      "2026-10-23.json": {
+        "bytes": 146108,
+        "mtime_ns": 1792758399099334800,
+        "sha256": "3267c8466224cd8ef240ad489167a84da54202fad48557aab09afdfa9cba154d"
+      }
+    }
+  },
+  "generated_at_utc": "2026-10-23T13:42:20Z",
+  "headroom_bytes": -14029216742,
+  "label": "after",
+  "refusals": {
+    "by_day": {
+      "2026-10-13": 13,
+      "2026-10-14": 32,
+      "2026-10-17": 11,
+      "2026-10-18": 37,
+      "2026-10-19": 11,
+      "2026-10-20": 3,
+      "2026-10-21": 13,
+      "2026-10-22": 17,
+      "2026-10-23": 30
+    },
+    "last": {
+      "at_utc": "2026-10-23T13:40:55Z",
+      "free_bytes": 1547677696,
+      "started_at_ms": 1792762855908
+    },
+    "refusals_are_history": "a refusal cannot be undone by freeing space later; it is reported as history and kept out of the present-tense capacity decision",
+    "total": 167
+  },
+  "shortfall_bytes": 14029216742,
+  "shortfall_gib": 13.066,
+  "volume": {
+    "at_utc": "2026-10-23T13:42:20Z",
+    "free_bytes": 1608957952,
+    "free_bytes_kernel32": 1608957952,
+    "free_gib": 1.4985,
+    "instrument_delta_bytes": 0,
+    "instruments_agree": true,
+    "path": "C:/",
+    "status": "CRITICAL",
+    "total_bytes": 255041990656,
+    "used_bytes": 253433032704,
+    "used_gib": 236.0279,
+    "used_percent": 99.37
+  }
+}

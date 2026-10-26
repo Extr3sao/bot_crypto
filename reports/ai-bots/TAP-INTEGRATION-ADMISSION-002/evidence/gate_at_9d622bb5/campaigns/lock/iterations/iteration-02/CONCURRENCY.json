@@ -1,0 +1,36 @@
+{
+  "children_exit_codes": [
+    0,
+    0
+  ],
+  "outcomes": [
+    {
+      "acquired_at_utc": "2026-10-25T17:37:15Z",
+      "fence": 5,
+      "held_s": 4.0,
+      "outcome": "RECLAIMED",
+      "pid": 44724,
+      "previous_owner": {
+        "acquired_at_utc": "2026-10-25T17:36:13Z",
+        "fence": 4,
+        "host": "DESKTOP-4CHO695",
+        "path": "STREAM.jsonl.lock",
+        "pid": 22756,
+        "process_start_ms": 1792949771024,
+        "purpose": "ledger:STREAM.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "aa5a18267128492c8864c66270600458"
+      },
+      "reason": "OWNER_PROCESS_DEAD",
+      "released": true
+    },
+    {
+      "code": "LOCK_HELD",
+      "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\lock\\session\\STREAM.jsonl.lock is held by live pid 44724; a second writer would interleave prev_sha256 and the chain would stop verifying",
+      "outcome": "REFUSED",
+      "pid": 46144
+    }
+  ],
+  "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\lock\\session\\STREAM.jsonl.lock",
+  "racers": 2
+}

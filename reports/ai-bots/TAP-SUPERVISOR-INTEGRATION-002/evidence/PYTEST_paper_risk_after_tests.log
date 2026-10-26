@@ -1,0 +1,50 @@
+........................................................................ [ 32%]
+............................F..F........................................ [ 64%]
+........................................................................ [ 97%]
+......                                                                   [100%]
+================================== FAILURES ===================================
+__________________ test_verifier_reproduces_a_real_approval ___________________
+
+instrument = InstrumentSpec(instrument_id='BINANCE_USDM_BTCUSDT_PERP', venue='BINANCE_USDM', venue_symbol='BTCUSDT', contract_type=...rackets': '07c298cd32e3f98b41b72d5bda0855fb14e5d091960fcd6325acbdf52dedc436', 'effective_timestamp_ms': 1791530164010})
+snapshot_payload = {'schema_version': 1, 'instrument_id': 'BINANCE_USDM_BTCUSDT_PERP', 'source_hash': '786c6b99e82b167c8227573dc854ca2884...98b76a02a2209869a11c7f', 'source_hash_klines': '22b37f53db1265bec9e4f6c1d2fb1fcb477788de92ffa9abda8df270e370b9cb', ...}
+funding_history = {'schema_version': 1, 'instrument_id': 'BINANCE_USDM_BTCUSDT_PERP', 'source_hash': 'ba6f9f9c7bb50c3ec45136de06eea16f4e57e714ca1961d56176b18829bac345', 'interval_ms': 28800000, ...}
+fixtures = VerificationFixtures(instruments={'schema_version': 1, 'generated_by': 'scripts/rfc048_derive_instruments.py', 'genera...a726d76b708d703743794ef50eb7', snapshot_source_hash='979c9fff0006600afdef8dfd687a431129e761726577fc656a011d0a1acef8f8')
+
+    def test_verifier_reproduces_a_real_approval(
+        instrument, snapshot_payload, funding_history, fixtures
+    ):
+        """A decision produced here survives an independent recomputation."""
+        case = build_case(instrument, snapshot_payload, funding_history)
+        assert case["decision"]["decision"] in {"APPROVE_SIMULATION", "REDUCE_SIMULATED_SIZE"}
+        checks, _ = verify_decision(case, fixtures)
+        failed = [c.name for c in checks if not c.passed]
+>       assert failed == []
+E       AssertionError: assert ['bracket_provenance'] == []
+E         
+E         Left contains one more item: 'bracket_provenance'
+E         Use -v to get more diff
+
+tests\unit\risk\test_futures_independent_verifier.py:150: AssertionError
+_________________ test_executed_artifacts_verify_when_present _________________
+
+fixtures = VerificationFixtures(instruments={'schema_version': 1, 'generated_by': 'scripts/rfc048_derive_instruments.py', 'genera...a726d76b708d703743794ef50eb7', snapshot_source_hash='979c9fff0006600afdef8dfd687a431129e761726577fc656a011d0a1acef8f8')
+
+    def test_executed_artifacts_verify_when_present(fixtures) -> None:
+        """The artefacts of the real offline run must survive verification."""
+        scenarios_path = DATA / "RISK_SCENARIOS.json"
+        if not scenarios_path.exists():  # pragma: no cover - run script not executed yet
+            pytest.skip("data/rfc048/RISK_SCENARIOS.json not generated")
+        scenarios = json.loads(scenarios_path.read_text(encoding="utf-8"))
+        report = run_verification({"decisions": scenarios["cases"]}, fixtures)
+        assert report["decisions_verified"] == len(scenarios["cases"])
+>       assert report["checks_failed"] == []
+E       AssertionError: assert [{'decision_i...ixture'}, ...] == []
+E         
+E         Left contains 28 more items, first extra item: {'decision_id': 'RFC048-DEC-001', 'check': 'bracket_provenance', 'detail': 'ladder matches the venue payload hash recorded in the fixture'}
+E         Use -v to get more diff
+
+tests\unit\risk\test_futures_independent_verifier.py:206: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/risk/test_futures_independent_verifier.py::test_verifier_reproduces_a_real_approval
+FAILED tests/unit/risk/test_futures_independent_verifier.py::test_executed_artifacts_verify_when_present
+2 failed, 220 passed in 20.96s

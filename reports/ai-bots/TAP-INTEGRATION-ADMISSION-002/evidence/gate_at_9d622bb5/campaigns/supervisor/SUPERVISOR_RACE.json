@@ -1,0 +1,14 @@
+{
+  "acquired_rows": 1,
+  "loser_exit_code": 4,
+  "loser_real_pid": 18788,
+  "loser_refused": true,
+  "loser_spawn_pid": 48408,
+  "loser_spawned": false,
+  "spawn_pids": [
+    36044,
+    48408
+  ],
+  "winner_pid": 37512,
+  "winner_spawn_pid": 36044
+}

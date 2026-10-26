@@ -1,0 +1,137 @@
+{
+  "hypothesis_id": "H-049-002",
+  "strategy_id": "S-049-002-MACRO_NET_LIQUIDITY_REGIME",
+  "spec_version": 1,
+  "status": "SPEC_FROZEN",
+  "family": "usd_net_liquidity_regime",
+  "economic_mechanism": "Bitcoin trades as a long-duration, dollar-liquidity-sensitive risk asset. Net dollar liquidity available to the financial system is visible in the Federal Reserve's own accounts: the size of the balance sheet minus the amounts drained back via the reverse repo facility and the Treasury General Account. When net liquidity expands, dollar funding conditions loosen and the market price of risk falls; when it contracts, risk assets de-rate. A 4-week expansion of net liquidity should therefore be followed by positive BTC net returns over the following weeks, and a contraction by flat or negative exposure.",
+  "source_ids": ["SRC-049-006", "SRC-049-007", "SRC-049-008"],
+  "source_versions": {
+    "SRC-049-006": "SSRN working paper 4904716 (2024)",
+    "SRC-049-007": "BIS Working Paper 402 (2013)",
+    "SRC-049-008": "FRED series metadata and release schedules (accessed 2026-10)"
+  },
+  "asset_universe": ["BTCUSDT"],
+  "replication_assets": ["ETHUSDT"],
+  "instrument_types": ["spot_long_cash"],
+  "direction": "long_only",
+  "timeframe": "1d bars; decision evaluated weekly at Sunday 23:00:00 UTC; execution at the next daily bar open (Monday 00:00 UTC)",
+  "entry_rule": "Let NL_t = WALCL_t - RRP_t - TGA_t where WALCL_t is the Federal Reserve total assets (Wednesday level), RRP_t is the overnight reverse repo amount and TGA_t is the Treasury General Account (Wednesday level), all in USD billions, aligned to the weekly Wednesday grid using each series' most recent observation on or before that Wednesday. At each weekly decision instant, use the most recent complete Wednesday snapshot whose inputs were all published on or before Saturday 23:59:00 UTC (declared release lags: WALCL and TGA at least 1 day after the Wednesday reference; RRP at least 1 business day). If NL_w - NL_{w-4} > 0 the strategy is LONG; otherwise FLAT. A LONG state is opened at the next bar open after a transition from FLAT.",
+  "exit_rule": "The position is closed at the next bar open after the weekly state becomes FLAT (4-week net-liquidity change <= 0). The runtime risk engine may close the position independently and unconditionally; the strategy has no discretionary stop, no target and no time stop beyond the state flip.",
+  "invalidation": [
+    "Any acceptance threshold in acceptance_thresholds fails on the sealed out-of-sample window.",
+    "The locked-bootstrap lower confidence bound of net per-trip expectancy is <= 0 at the preregistered level.",
+    "The net edge does not survive the 1.5x cost stress.",
+    "The signal's incremental edge over the two declared baselines (buy-and-hold and the own-price 200-day trend state) is <= 0.",
+    "A PIT audit finds a decision that consumed a value published after its decision instant (the release-lag table is part of the frozen specification)."
+  ],
+  "parameters": {
+    "liquidity_change_window_weeks": 4,
+    "decision_weekday": "Sunday",
+    "decision_time_utc": "23:00:00",
+    "execution_lag": "next daily bar open",
+    "parameter_searches": 0
+  },
+  "indicator_warmup": "8 complete weekly snapshots (4 for the change, 4 for the first decidable comparison) before the first decidable week",
+  "position_sizing_policy": "Long/cash spot, 1x notional, one position at a time, no leverage, no derivatives. The runtime risk engine owns sizing and limits and may reduce or veto; the strategy never sets margin or leverage.",
+  "risk_limits": {
+    "leverage": "1x only (spot long/cash)",
+    "max_equity_drawdown_for_admission": 0.25,
+    "per_trade_risk_budget": "not set by the strategy; risk engine applies its certified limits unchanged",
+    "single_trade_concentration_limit": "no single round trip may contribute more than 40% of positive net"
+  },
+  "holding_policy": "State-based; minimum hold 1 day; no discretionary exit beyond the frozen rule",
+  "funding_policy": "not applicable (spot)",
+  "execution_model": "Taker market orders on both legs at the next bar open after the decision instant; no maker fill assumption; no intrabar fills; costs from COST_MODEL_V3 (BINANCE_SPOT_STANDARD_TAKER) at the 200 USDT reference notional and at the measured notional of each simulation.",
+  "cost_model": {
+    "model": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "round_trip_bps_at_200_usdt": null,
+    "round_trip_bps_at_1000_usdt": null,
+    "stress_multiple": 1.5,
+    "knowledge": "fees KNOWN (Binance Spot VIP0 published schedule); spread/slippage/impact ESTIMATED; no account-verified schedule",
+    "note": "the numeric values are recorded in data/rfc049/PREREGISTRATION_MANIFEST.json, re-derived from the frozen model at build time, never typed by hand"
+  },
+  "market_data_version": {
+    "price": "data/raw/alpha001/BTC-USDT_1d.json (and ETH-USDT_1d.json for replication), sha256 recorded in PREREGISTRATION_MANIFEST.json",
+    "signal": "data/rfc049/vendor/raw/fred_WALCL.csv, fred_RRPONTSYD.csv, fred_WTREGEN.csv, sha256 recorded in VENDOR_MANIFEST.json",
+    "field": "WALCL (millions USD), RRPONTSYD (billions USD), WTREGEN (millions USD); unit alignment is part of the frozen transform"
+  },
+  "development_period": "first decidable week (on or after 2004-01-01) to 2023-12-31 (RESEARCH_EXPOSED for price; the FRED series were never used by any prior campaign)",
+  "validation_period": "2024-01-01 to 2026-10-10 (RESEARCH_EXPOSED for price, degraded evidential status; FRED series fresh)",
+  "oos_policy": "SEALED_FORWARD_OOS: observations collected strictly after the preregistration freeze timestamp recorded in PREREGISTRATION_MANIFEST.json; opened exactly once, after either 20 closed round trips have accrued or 24 months have elapsed since the freeze, whichever comes first; if fewer than 20 closed round trips have accrued at 24 months the outcome is INSUFFICIENT_OOS_SAMPLE, never PASS and never REJECT on power alone.",
+  "statistical_tests": [
+    "net per-trip expectancy = mean net PnL per closed round trip, after COST_MODEL_V3 costs",
+    "stationary block bootstrap (10,000 resamples, expected block length 7 days) one-sided 95% lower confidence bound on net expectancy",
+    "profit factor = gross positive net / gross negative net",
+    "1.5x cost stress: every modelled cost component multiplied by 1.5, all else unchanged",
+    "BH and Holm corrections across the campaign's admitted hypotheses for the primary p-value (block-bootstrap p)",
+    "sign stability across three equal consecutive sub-windows of each period",
+    "incremental tests: (a) versus buy-and-hold over identical active windows; (b) versus an own-price 200-day SMA long/cash state machine on the same asset; (c) versus the other admitted hypothesis's state (H-049-001)",
+    "non-traded comparators reported beside the result, never traded: 4-week change in 10-year real yield (DFII10) and in the broad dollar index (DTWEXBGS)"
+  ],
+  "acceptance_thresholds": {
+    "net_expectancy_positive": true,
+    "net_profit_factor_min": 1.1,
+    "net_pnl_oos_positive": true,
+    "lcb_95_net_expectancy_positive": true,
+    "cost_stress_1_5x_net_positive": true,
+    "positive_in_every_partition": ["development", "validation", "sealed_oos"],
+    "max_drawdown_le": 0.25,
+    "single_trade_share_of_positive_net_le": 0.4,
+    "minimum_oos_round_trips_or_months": "20 round trips or 24 months, whichever comes first",
+    "incremental_over_buy_and_hold_positive": true,
+    "incremental_over_200d_trend_baseline_positive": true
+  },
+  "estimated_turnover": {
+    "basis": "pre-measurement estimate from the rule's design (weekly decisions, 4-week net-liquidity change sign)",
+    "expected_round_trips_per_year": "10 to 26",
+    "annual_cost_drag_at_20_trips_pct_capital": null,
+    "note": "the drag is computed in PREREGISTRATION_MANIFEST.json from the frozen cost model; realised turnover is measured in Phase B and may not be tuned"
+  },
+  "cost_feasibility": "The rule trades a slow state with multi-week holding periods. The relevant hurdle per round trip is the frozen spot round-trip cost (see PREREGISTRATION_MANIFEST.json). A move-cost ratio of at least 2x per trip is required and is checked in Phase B from measured turnover; if the measured turnover makes the cost drag exceed the measured gross edge, the outcome is COST_DISQUALIFIED.",
+  "expected_market_behavior": "Signal positive during balance-sheet expansion and drain-completion episodes (e.g., RRP depletion), flat or out during balance-sheet contraction and TGA rebuilds; expected weakest in idiosyncratic crypto stress that overrides macro conditions.",
+  "alternative_explanations": [
+    "Trend proxy: BTC price itself leads the liquidity measures at weekly frequency in some periods (reverse causality), which the incremental trend test detects.",
+    "Mechanical distortions: RRP and TGA movements around debt-ceiling episodes are fiscal plumbing, not risk appetite; the registration keeps only the primary rule and reports those episodes as regime annotations, never as filter decisions.",
+    "Instability: the BTC-macro relationship weakened in several episodes (e.g., 2022-2023); sub-window sign stability is an explicit acceptance criterion.",
+    "Rate differential: the non-traded DFII10 comparator may carry the same information; if so, the net-liquidity version is reported as a re-description and rejected."
+  ],
+  "counter_evidence": [
+    "Public commentary and academic work document episodes where Bitcoin decoupled from global liquidity, so the effect is expected to be regime-dependent, not universal.",
+    "The repository's ALPHA-001 campaign found that most slow price-conditioned signals failed incremental tests against trend; a macro signal that merely replicates trend will be rejected by the same instrument.",
+    "FRED publication schedules are stable but not guaranteed: the frozen lag table uses conservative minimums."
+  ],
+  "market_regimes": ["balance-sheet expansion", "balance-sheet contraction", "debt-ceiling episodes", "crypto-native stress"],
+  "data_requirements": [
+    "WALCL, RRPONTSYD, WTREGEN weekly/daily series from FRED (SRC-049-008), full history since 2002-2003",
+    "daily spot OHLC for BTCUSDT (and ETHUSDT), in-repo klines from 2017-08"
+  ],
+  "point_in_time_assumptions": [
+    "declared minimum release lags: WALCL >= 1 day after the Wednesday reference date (H.4.1 Thursday release), WTREGEN >= 1 day (Daily Treasury Statement next business day), RRPONTSYD >= 1 business day",
+    "decision instants use only observations whose publication time is <= Saturday 23:59:00 UTC before the Sunday 23:00 UTC decision",
+    "no alignment across series beyond 'most recent value on or before the Wednesday grid point'",
+    "missing or unfetched input on a decision week forces FLAT for that week (fail-closed)"
+  ],
+  "known_failure_modes": [
+    "trend-proxy collapse",
+    "macro-crypto decoupling regime",
+    "release-lag error creating look-ahead (mitigated by the frozen lag table and a PIT audit)",
+    "few round trips making the sample underpowered",
+    "cost drift above the modelled schedule"
+  ],
+  "testable_predictions": [
+    "net per-trip expectancy after costs is positive on development and validation data",
+    "the state's forward net return exceeds buy-and-hold and the 200-day trend baseline over the same windows",
+    "the sign is stable across three consecutive sub-windows of the development period",
+    "the frozen rule, re-run independently by a verifier that never imports the builder, reproduces every trade and metric"
+  ],
+  "falsification_conditions": [
+    "any acceptance threshold fails on the sealed OOS",
+    "the effect is indistinguishable from the trend baseline (incremental <= 0)",
+    "LONG-state forward net return <= FLAT-state forward net return after costs across development and validation",
+    "PIT audit finds any decision that consumed a value published after its decision instant"
+  ],
+  "admission_status": "ADMITTED_FOR_PREREGISTRATION",
+  "notes": "Admission is not validation. No economic result for this hypothesis has been computed at freeze time. H-049-001 and H-049-002 share a 'liquidity -> risk appetite' family label but use different information sources and different transmission mechanisms; the frozen incremental tests (c) between the two states are the control for that overlap."
+}

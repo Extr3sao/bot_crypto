@@ -1,0 +1,141 @@
+$ C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\scripts\paper_supervisor_campaign.py scenarios --out C:\Users\GVLLFR0035\AppData\Local\Temp\tap_gate_600e744d\campaigns\supervisor\scenarios --source-session C:\Users\GVLLFR0035\AppData\Local\Temp\tap_gate_600e744d\campaigns\supervisor\session
+exit=0
+
+--- stdout ---
+{
+  "corrupt": {
+    "source": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_600e744d\\campaigns\\supervisor\\session",
+    "rows_before": 13,
+    "rows_after": null,
+    "state": "FAILED",
+    "why": [
+      "CHAIN_BAD_JSON_AT_14: Unterminated string starting at: line 1 column 41 (char 40)",
+      "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+    ],
+    "exit_code": 3,
+    "result": {
+      "action": "STOP_FAILED",
+      "attempts": [],
+      "elapsed_s": 0.078,
+      "exit_code": 3,
+      "final_state": "FAILED",
+      "final_status": {
+        "checked_at_utc": "2026-10-25T16:48:25Z",
+        "fencing": {
+          "fence_files": [
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0001/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0002/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0003/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0004/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0005/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 3,
+              "path": "market-1m/BTCUSDT.jsonl.lock.fence"
+            },
+            {
+              "fence": 3,
+              "path": "market-1m/ETHUSDT.jsonl.lock.fence"
+            },
+            {
+              "fence": 3,
+              "path": "market-1m/SOLUSDT.jsonl.lock.fence"
+            },
+            {
+              "fence": 3,
+              "path": "STREAM.jsonl.lock.fence"
+            }
+          ],
+          "max_fence_in_reclaims": 0,
+          "stream_fence": 3
+        },
+        "last_attempt": {
+          "aborted": false,
+          "exit_code": 0,
+          "refused": false
+        },
+        "ledger": {
+          "chain_ok": false,
+          "chain_reason": "BAD_JSON_AT_14: Unterminated string starting at: line 1 column 41 (char 40)",
+          "cycle_directories": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cycle_ledgers": {},
+          "cycle_ledgers_ok": true,
+          "cycles": [],
+          "head_sha256": null,
+          "interrupted_cycles": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "kinds": {},
+          "last_cycle": null,
+          "rows": 0,
+          "seq_continuous": false
+        },
+        "locks": {
+          "abandoned_paths": [
+            "STREAM.jsonl.lock"
+          ],
+          "active": [],
+          "all": [
+            {
+              "acquired_at_utc": null,
+              "bytes": 222,
+              "fence": 1,
+              "owner_host": "DESKTOP-4CHO695",
+              "owner_pid": 47436,
+              "owner_start_ms": null,
+              "path": "STREAM.jsonl.lock",
+              "purpose": "campaign-corrupt",
+              "reason": "OWNER_PROCESS_DEAD",
+              "state": "ABANDONED",
+              "token": "corrupt-ownercorrupt-ownercorrupt-ownercorrupt-owner"
+            }
+          ],
+          "awaiting_recovery": [
+            {
+              "acquired_at_utc": null,
+              "bytes": 222,
+              "fence": 1,
+              "owner_host": "DESKTOP-4CHO695",
+              "owner_pid": 47436,
+              "owner_start_ms": null,
+              "path": "STREAM.jsonl.lock",
+              "purpose": "campaign-corrupt",
+              "reason": "OWNER_PROCESS_DEAD",
+              "state": "ABANDONED",
+              "token": "corrupt-ownercorrupt-ownercorrupt-ownercorrupt-owner"
+            }
+          ]
+        },
+        "out_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_600e744d\\campaigns\\supervisor\\scenarios\\corrupt\\session",
+        "owner": {
+          "acquired_at_utc": null,
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "live": f
+
+--- stderr ---
+

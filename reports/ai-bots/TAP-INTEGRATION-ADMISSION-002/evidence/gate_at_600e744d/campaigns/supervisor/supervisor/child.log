@@ -1,0 +1,30 @@
+[wp04] root=C:\Users\GVLLFR0035\Downloads\ff-wt-adm002 commit=600e744ddf13 out=C:\Users\GVLLFR0035\AppData\Local\Temp\tap_gate_600e744d\campaigns\supervisor\session
+[wp04] bootstrap complete
+[wp04] measured 3 live delivery latencies
+[wp04] cycle 1 bar 2026-10-25T16:43:00Z fills=0 closed=0
+[wp04] root=C:\Users\GVLLFR0035\Downloads\ff-wt-adm002 commit=600e744ddf13 out=C:\Users\GVLLFR0035\AppData\Local\Temp\tap_gate_600e744d\campaigns\supervisor\session
+[wp04] bootstrap complete
+[wp04] measured 3 live delivery latencies
+[wp04] cycle 2 bar 2026-10-25T16:44:00Z fills=0 closed=0
+2026-10-25 17:46:10 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 17:46:10 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+[wp04] cycle 3 bar 2026-10-25T16:45:00Z fills=0 closed=0
+2026-10-25 17:47:12 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 17:47:12 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+[wp04] cycle 4 bar 2026-10-25T16:46:00Z fills=0 closed=0
+2026-10-25 17:48:14 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 17:48:14 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+2026-10-25 17:48:15 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 17:48:15 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+[wp04] cycle 5 bar 2026-10-25T16:47:00Z fills=0 closed=0
+{
+  "cycles_executed": 4,
+  "cycles_blocked": 0,
+  "fills": 0,
+  "closed_trades": 0,
+  "net_realised_usdt": 0,
+  "data_delay_ms": 6485,
+  "runtime_stable": true,
+  "run_id": "run-82f283920b9c390886a1",
+  "session_id": "sess-a59af5509250cfeae450"
+}

@@ -1,0 +1,1226 @@
+{
+  "artifact": "RFC049_DISCOVERY2_ECONOMIC_RESULTS",
+  "generated_at_utc": "2026-10-10T16:39:43Z",
+  "builder": "scripts/rfc049c_engine.py",
+  "head_at_run": "2d113a0ae82f38123eabe0385ab47bb7991b15ad",
+  "execution_plan": {
+    "path": "data/rfc049/discovery2/DISCOVERY2_EXECUTION_PLAN.md",
+    "sha256": "be80b04daa291f3cb95e765b86b725d1470c2cc7e9e84b753702520a5621ebc5"
+  },
+  "authorization": "data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json",
+  "frozen_inputs": {
+    "H-049-001": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
+    "H-049-002": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0"
+  },
+  "cost_model": {
+    "round_trip_bps_200_usdt": 23.353553390593273,
+    "round_trip_bps_1000_usdt": 23.790569415042093,
+    "stress_1_25x_bps": 29.191941738241592,
+    "stress_1_5x_bps": 35.03033008588991,
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "stake_usdt": 200.0,
+    "components": [
+      {
+        "name": "exchange_fee_entry",
+        "value_bps": 10.0,
+        "knowledge": "KNOWN"
+      },
+      {
+        "name": "exchange_fee_exit",
+        "value_bps": 10.0,
+        "knowledge": "KNOWN"
+      },
+      {
+        "name": "spread",
+        "value_bps": 1.0,
+        "knowledge": "ESTIMATED"
+      },
+      {
+        "name": "slippage",
+        "value_bps": 2.282842712,
+        "knowledge": "ESTIMATED"
+      },
+      {
+        "name": "market_impact",
+        "value_bps": 0.070710678,
+        "knowledge": "ESTIMATED"
+      }
+    ]
+  },
+  "grid": {
+    "first": "2018-12-30",
+    "last": "2026-10-04",
+    "instants": 406
+  },
+  "pit_audit": {
+    "H-049-001": {
+      "violations": 0,
+      "max_value_date": "2026-10-02"
+    },
+    "H-049-002": {
+      "violations": 0,
+      "max_value_date": "2026-09-30"
+    }
+  },
+  "macro_stats": {
+    "wednesdays_with_missing_input": 0,
+    "reachback_days_used": [
+      0,
+      1,
+      2
+    ],
+    "max_value_date": "2026-09-30",
+    "max_reachback_days_used": 2
+  },
+  "partition_policy": {
+    "development": "entry Sunday <= 2023-12-31",
+    "validation": "2024-01-01..2026-10-04",
+    "sealed_oos": "CLOSED, not computed",
+    "attribution": "partition of the entry Sunday; straddling trips listed"
+  },
+  "H-049-001": {
+    "per_asset": {
+      "BTCUSDT": {
+        "development": {
+          "round_trips": 14,
+          "net_sum_bps": 39427.4995769157,
+          "net_sum_usdt": 788.5499915383141,
+          "net_expectancy_bps": 2816.2499697796934,
+          "net_expectancy_usdt": 56.32499939559386,
+          "net_profit_factor": 6.837150796678818,
+          "net_compounded": 10.35352113614768,
+          "max_drawdown": 0.5136628798763249,
+          "single_trade_share_of_positive_net": 0.3512835755002628,
+          "stress_1_25x_net_sum_bps": 39345.762140048624,
+          "stress_1_5x_net_sum_bps": 39264.02470318155,
+          "stress_1_5x_expectancy_bps": 2804.573193084397,
+          "lcb_95_net_expectancy_bps": 659.0371581927014,
+          "bootstrap_p_le_zero": 0.0111,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": 659.0371581927014,
+            "block_2": 631.3156657835058,
+            "block_3": 635.752511302234
+          },
+          "mean_entry_spacing_days": 130.30769230769232,
+          "subwindows": [
+            {
+              "window": "2018-12-30..2020-08-29",
+              "round_trips": 6,
+              "net_sum_bps": 23910.770341322037,
+              "positive": true
+            },
+            {
+              "window": "2020-08-30..2022-04-30",
+              "round_trips": 5,
+              "net_sum_bps": -507.27416132241035,
+              "positive": false
+            },
+            {
+              "window": "2022-05-01..2023-12-31",
+              "round_trips": 3,
+              "net_sum_bps": 16024.003396916078,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 2,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 49.0
+        },
+        "validation": {
+          "round_trips": 9,
+          "net_sum_bps": 623.537883015497,
+          "net_sum_usdt": 12.470757660309939,
+          "net_expectancy_bps": 69.28198700172189,
+          "net_expectancy_usdt": 1.3856397400344378,
+          "net_profit_factor": 1.148988637842777,
+          "net_compounded": -0.011333707073546417,
+          "max_drawdown": 0.2794530090078329,
+          "single_trade_share_of_positive_net": 0.5375240565412946,
+          "stress_1_25x_net_sum_bps": 570.9923878866621,
+          "stress_1_5x_net_sum_bps": 518.4468927578266,
+          "stress_1_5x_expectancy_bps": 57.60521030642517,
+          "lcb_95_net_expectancy_bps": -619.8936594030001,
+          "bootstrap_p_le_zero": 0.4447,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": -619.8936594030001,
+            "block_2": -457.46956142446334,
+            "block_3": -380.27227291590276
+          },
+          "mean_entry_spacing_days": 93.625,
+          "subwindows": [
+            {
+              "window": "2024-01-01..2024-12-01",
+              "round_trips": 2,
+              "net_sum_bps": 2632.859379589133,
+              "positive": true
+            },
+            {
+              "window": "2024-12-02..2025-11-01",
+              "round_trips": 5,
+              "net_sum_bps": -1902.2284486238036,
+              "positive": false
+            },
+            {
+              "window": "2025-11-02..2026-10-04",
+              "round_trips": 2,
+              "net_sum_bps": -107.09304794983248,
+              "positive": false
+            }
+          ],
+          "subwindows_positive": 1,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 28
+        },
+        "all_exposed": {
+          "round_trips": 23,
+          "net_sum_bps": 40051.0374599312,
+          "net_sum_usdt": 801.020749198624,
+          "net_expectancy_bps": 1741.3494547796174,
+          "net_expectancy_usdt": 34.826989095592346,
+          "net_profit_factor": 4.6610671420367025,
+          "net_compounded": 10.224843653337267,
+          "max_drawdown": 0.5136628798763249,
+          "single_trade_share_of_positive_net": 0.31815583331377895,
+          "stress_1_25x_net_sum_bps": 39916.75452793529,
+          "stress_1_5x_net_sum_bps": 39782.47159593939,
+          "stress_1_5x_expectancy_bps": 1729.672678084321,
+          "lcb_95_net_expectancy_bps": 328.31503671563235,
+          "bootstrap_p_le_zero": 0.0169,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": 328.31503671563235,
+            "block_2": 322.7143050026429,
+            "block_3": 410.0704480808677
+          },
+          "mean_entry_spacing_days": 126.95454545454545,
+          "subwindows": [
+            {
+              "window": "2018-12-30..2021-07-31",
+              "round_trips": 10,
+              "net_sum_bps": 24802.421122527765,
+              "positive": true
+            },
+            {
+              "window": "2021-08-01..2024-03-02",
+              "round_trips": 4,
+              "net_sum_bps": 14625.078454387942,
+              "positive": true
+            },
+            {
+              "window": "2024-03-03..2026-10-04",
+              "round_trips": 9,
+              "net_sum_bps": 623.537883015497,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 3,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 35
+        },
+        "incrementals": {
+          "development": {
+            "strategy_net_compounded": 10.35352113614768,
+            "buy_and_hold_net": 10.11579397005693,
+            "buy_and_hold_incremental_bps": 2377.271660907496,
+            "trend_200d_net_compounded": 5.467491597291395,
+            "trend_200d_incremental_bps": 48860.29538856285,
+            "trend_200d_round_trips": 11
+          },
+          "validation": {
+            "strategy_net_compounded": -0.011333707073546417,
+            "buy_and_hold_net": 0.9674335968863607,
+            "buy_and_hold_incremental_bps": -9787.67303959907,
+            "trend_200d_net_compounded": 0.06480066532079909,
+            "trend_200d_incremental_bps": -761.3437239434551,
+            "trend_200d_round_trips": 6
+          }
+        },
+        "straddling_trips": [
+          {
+            "entry_sunday": "2023-08-27",
+            "exit_sunday": "2024-05-26"
+          }
+        ],
+        "simulation": {
+          "open_position_at_data_end": {
+            "entry_sunday": "2026-10-04",
+            "entry_ms": 1791158400000,
+            "entry_price": 86530.0
+          },
+          "transitions": 23
+        },
+        "trend200_states_long_weeks": 233,
+        "price_bars": {
+          "count": 3338,
+          "first_ms": 1502928000000,
+          "last_ms": 1791244800000
+        }
+      },
+      "ETHUSDT": {
+        "development": {
+          "round_trips": 14,
+          "net_sum_bps": 40189.33655408865,
+          "net_sum_usdt": 803.786731081773,
+          "net_expectancy_bps": 2870.6668967206183,
+          "net_expectancy_usdt": 57.41333793441237,
+          "net_profit_factor": 10.56665424659607,
+          "net_compounded": 14.609063810365212,
+          "max_drawdown": 0.18928707409921253,
+          "single_trade_share_of_positive_net": 0.2940029353954574,
+          "stress_1_25x_net_sum_bps": 40107.599117221594,
+          "stress_1_5x_net_sum_bps": 40025.861680354516,
+          "stress_1_5x_expectancy_bps": 2858.9901200253225,
+          "lcb_95_net_expectancy_bps": 946.85491915392,
+          "bootstrap_p_le_zero": 0.004,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": 946.85491915392,
+            "block_2": 1303.3516852431424,
+            "block_3": 1387.8002169726178
+          },
+          "mean_entry_spacing_days": 130.30769230769232,
+          "subwindows": [
+            {
+              "window": "2018-12-30..2020-08-29",
+              "round_trips": 6,
+              "net_sum_bps": 21154.09459813574,
+              "positive": true
+            },
+            {
+              "window": "2020-08-30..2022-04-30",
+              "round_trips": 5,
+              "net_sum_bps": 7136.708405147362,
+              "positive": true
+            },
+            {
+              "window": "2022-05-01..2023-12-31",
+              "round_trips": 3,
+              "net_sum_bps": 11898.533550805556,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 3,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 49.0
+        },
+        "validation": {
+          "round_trips": 9,
+          "net_sum_bps": -2409.5846206539177,
+          "net_sum_usdt": -48.19169241307836,
+          "net_expectancy_bps": -267.731624517102,
+          "net_expectancy_usdt": -5.35463249034204,
+          "net_profit_factor": 0.6979593758804191,
+          "net_compounded": -0.35065112354979644,
+          "max_drawdown": 0.4999545230537076,
+          "single_trade_share_of_positive_net": 0.7209313049642155,
+          "stress_1_25x_net_sum_bps": -2462.1301157827515,
+          "stress_1_5x_net_sum_bps": -2514.6756109115886,
+          "stress_1_5x_expectancy_bps": -279.40840121239876,
+          "lcb_95_net_expectancy_bps": -1329.6730632243327,
+          "bootstrap_p_le_zero": 0.6662,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": -1329.6730632243327,
+            "block_2": -1154.8816629762807,
+            "block_3": -1101.5956547681733
+          },
+          "mean_entry_spacing_days": 93.625,
+          "subwindows": [
+            {
+              "window": "2024-01-01..2024-12-01",
+              "round_trips": 2,
+              "net_sum_bps": -882.5958376398338,
+              "positive": false
+            },
+            {
+              "window": "2024-12-02..2025-11-01",
+              "round_trips": 5,
+              "net_sum_bps": -1715.747722571122,
+              "positive": false
+            },
+            {
+              "window": "2025-11-02..2026-10-04",
+              "round_trips": 2,
+              "net_sum_bps": 188.75893955703853,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 1,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 28
+        },
+        "all_exposed": {
+          "round_trips": 23,
+          "net_sum_bps": 37779.751933434745,
+          "net_sum_usdt": 755.5950386686949,
+          "net_expectancy_bps": 1642.5979101493365,
+          "net_expectancy_usdt": 32.85195820298673,
+          "net_profit_factor": 4.102125810816976,
+          "net_compounded": 9.135728047700185,
+          "max_drawdown": 0.4999545230537075,
+          "single_trade_share_of_positive_net": 0.2612349331189901,
+          "stress_1_25x_net_sum_bps": 37645.46900143884,
+          "stress_1_5x_net_sum_bps": 37511.18606944293,
+          "stress_1_5x_expectancy_bps": 1630.9211334540405,
+          "lcb_95_net_expectancy_bps": 287.4505743824967,
+          "bootstrap_p_le_zero": 0.0181,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": 287.4505743824967,
+            "block_2": 399.4121520288224,
+            "block_3": 485.72213853211053
+          },
+          "mean_entry_spacing_days": 126.95454545454545,
+          "subwindows": [
+            {
+              "window": "2018-12-30..2021-07-31",
+              "round_trips": 10,
+              "net_sum_bps": 28543.10944588546,
+              "positive": true
+            },
+            {
+              "window": "2021-08-01..2024-03-02",
+              "round_trips": 4,
+              "net_sum_bps": 11646.2271082032,
+              "positive": true
+            },
+            {
+              "window": "2024-03-03..2026-10-04",
+              "round_trips": 9,
+              "net_sum_bps": -2409.5846206539177,
+              "positive": false
+            }
+          ],
+          "subwindows_positive": 2,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 35
+        },
+        "incrementals": {
+          "development": {
+            "strategy_net_compounded": 14.609063810365212,
+            "buy_and_hold_net": 15.555751866197838,
+            "buy_and_hold_incremental_bps": -9466.880558326257,
+            "trend_200d_net_compounded": 11.529057605422613,
+            "trend_200d_incremental_bps": 30800.06204942599,
+            "trend_200d_round_trips": 8
+          },
+          "validation": {
+            "strategy_net_compounded": -0.35065112354979644,
+            "buy_and_hold_net": 0.22522629441650238,
+            "buy_and_hold_incremental_bps": -5758.774179662989,
+            "trend_200d_net_compounded": -0.053574389549365664,
+            "trend_200d_incremental_bps": -2970.7673400043077,
+            "trend_200d_round_trips": 3
+          }
+        },
+        "straddling_trips": [
+          {
+            "entry_sunday": "2023-08-27",
+            "exit_sunday": "2024-05-26"
+          }
+        ],
+        "simulation": {
+          "open_position_at_data_end": {
+            "entry_sunday": "2026-10-04",
+            "entry_ms": 1791158400000,
+            "entry_price": 2726.93
+          },
+          "transitions": 23
+        },
+        "trend200_states_long_weeks": 221,
+        "price_bars": {
+          "count": 3338,
+          "first_ms": 1502928000000,
+          "last_ms": 1791244800000
+        }
+      }
+    },
+    "criteria": {
+      "net_expectancy_positive:development": {
+        "observed": 2816.2499697796934,
+        "pass": true,
+        "scope": "computable"
+      },
+      "net_expectancy_positive:validation": {
+        "observed": 69.28198700172189,
+        "pass": true,
+        "scope": "computable"
+      },
+      "net_profit_factor_min:development": {
+        "observed": 6.837150796678818,
+        "pass": true,
+        "scope": "computable"
+      },
+      "net_profit_factor_min:validation": {
+        "observed": 1.148988637842777,
+        "pass": true,
+        "scope": "computable"
+      },
+      "lcb_95_net_expectancy_positive:development": {
+        "observed": 659.0371581927014,
+        "pass": true,
+        "scope": "computable"
+      },
+      "lcb_95_net_expectancy_positive:validation": {
+        "observed": -619.8936594030001,
+        "pass": false,
+        "scope": "computable"
+      },
+      "cost_stress_1_5x_net_positive:development": {
+        "observed": 39264.02470318155,
+        "pass": true,
+        "scope": "computable"
+      },
+      "cost_stress_1_5x_net_positive:validation": {
+        "observed": 518.4468927578266,
+        "pass": true,
+        "scope": "computable"
+      },
+      "positive_in_every_partition:development": {
+        "observed": 39427.4995769157,
+        "pass": true,
+        "scope": "computable"
+      },
+      "positive_in_every_partition:validation": {
+        "observed": 623.537883015497,
+        "pass": true,
+        "scope": "computable"
+      },
+      "positive_in_every_partition:sealed_oos": {
+        "observed": null,
+        "pass": null,
+        "scope": "deferred"
+      },
+      "max_drawdown_le_0.25:development": {
+        "observed": 0.5136628798763249,
+        "pass": false,
+        "scope": "computable"
+      },
+      "max_drawdown_le_0.25:validation": {
+        "observed": 0.2794530090078329,
+        "pass": false,
+        "scope": "computable"
+      },
+      "single_trade_share_le_0.4:development": {
+        "observed": 0.3512835755002628,
+        "pass": true,
+        "scope": "computable"
+      },
+      "single_trade_share_le_0.4:validation": {
+        "observed": 0.5375240565412946,
+        "pass": false,
+        "scope": "computable"
+      },
+      "incremental_over_buy_and_hold_positive:development": {
+        "observed": 2377.271660907496,
+        "pass": true,
+        "scope": "computable"
+      },
+      "incremental_over_200d_trend_baseline_positive:development": {
+        "observed": 48860.29538856285,
+        "pass": true,
+        "scope": "computable"
+      },
+      "incremental_over_buy_and_hold_positive:validation": {
+        "observed": -9787.67303959907,
+        "pass": false,
+        "scope": "computable"
+      },
+      "incremental_over_200d_trend_baseline_positive:validation": {
+        "observed": -761.3437239434551,
+        "pass": false,
+        "scope": "computable"
+      },
+      "net_pnl_oos_positive": {
+        "observed": null,
+        "pass": null,
+        "scope": "deferred"
+      },
+      "minimum_oos_round_trips_or_months": {
+        "observed": null,
+        "pass": null,
+        "scope": "deferred"
+      }
+    },
+    "failed_criteria": [
+      "lcb_95_net_expectancy_positive:validation",
+      "max_drawdown_le_0.25:development",
+      "max_drawdown_le_0.25:validation",
+      "single_trade_share_le_0.4:validation",
+      "incremental_over_buy_and_hold_positive:validation",
+      "incremental_over_200d_trend_baseline_positive:validation"
+    ],
+    "robustness_flags": [
+      "PARTIAL_SIGN_STABILITY:development",
+      "SIGN_UNSTABLE:validation"
+    ],
+    "verdict": "CANDIDATE_REJECTED",
+    "verdict_reason": "frozen criteria computable on the exposed partitions fail; the acceptance list can no longer be satisfied, so the candidate is closed at the DEV/VAL stage (policy §6)",
+    "no_pass_possible_now": true
+  },
+  "H-049-002": {
+    "per_asset": {
+      "BTCUSDT": {
+        "development": {
+          "round_trips": 26,
+          "net_sum_bps": 40175.55646245257,
+          "net_sum_usdt": 803.5111292490515,
+          "net_expectancy_bps": 1545.2137100943298,
+          "net_expectancy_usdt": 30.904274201886594,
+          "net_profit_factor": 7.494913550791841,
+          "net_compounded": 12.860765727555728,
+          "max_drawdown": 0.14384535896210177,
+          "single_trade_share_of_positive_net": 0.49915652685346334,
+          "stress_1_25x_net_sum_bps": 40023.758365413734,
+          "stress_1_5x_net_sum_bps": 39871.960268374874,
+          "stress_1_5x_expectancy_bps": 1533.5369333990336,
+          "lcb_95_net_expectancy_bps": 380.307380854551,
+          "bootstrap_p_le_zero": 0.0014,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": 380.307380854551,
+            "block_2": 421.2159818199343,
+            "block_3": 444.53162546541364
+          },
+          "mean_entry_spacing_days": 67.76,
+          "subwindows": [
+            {
+              "window": "2018-12-30..2020-08-29",
+              "round_trips": 7,
+              "net_sum_bps": 3873.5972211820017,
+              "positive": true
+            },
+            {
+              "window": "2020-08-30..2022-04-30",
+              "round_trips": 9,
+              "net_sum_bps": 31180.999288411163,
+              "positive": true
+            },
+            {
+              "window": "2022-05-01..2023-12-31",
+              "round_trips": 10,
+              "net_sum_bps": 5120.959952859415,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 3,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 28.0
+        },
+        "validation": {
+          "round_trips": 22,
+          "net_sum_bps": 1632.35067788861,
+          "net_sum_usdt": 32.647013557772205,
+          "net_expectancy_bps": 74.19775808584592,
+          "net_expectancy_usdt": 1.4839551617169184,
+          "net_profit_factor": 1.225193814805204,
+          "net_compounded": 0.03936852413511005,
+          "max_drawdown": 0.3516984384988624,
+          "single_trade_share_of_positive_net": 0.3588050990517119,
+          "stress_1_25x_net_sum_bps": 1503.9061342403468,
+          "stress_1_5x_net_sum_bps": 1375.4615905920848,
+          "stress_1_5x_expectancy_bps": 62.52098139054931,
+          "lcb_95_net_expectancy_bps": -293.6416362715361,
+          "bootstrap_p_le_zero": 0.3852,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": -293.6416362715361,
+            "block_2": -272.25876929742685,
+            "block_3": -239.43112784432023
+          },
+          "mean_entry_spacing_days": 46.333333333333336,
+          "subwindows": [
+            {
+              "window": "2024-01-01..2024-12-01",
+              "round_trips": 11,
+              "net_sum_bps": 1750.4666910492977,
+              "positive": true
+            },
+            {
+              "window": "2024-12-02..2025-11-01",
+              "round_trips": 5,
+              "net_sum_bps": -965.670486827408,
+              "positive": false
+            },
+            {
+              "window": "2025-11-02..2026-10-04",
+              "round_trips": 6,
+              "net_sum_bps": 847.5544736667204,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 2,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 21.0
+        },
+        "all_exposed": {
+          "round_trips": 48,
+          "net_sum_bps": 41807.90714034118,
+          "net_sum_usdt": 836.1581428068237,
+          "net_expectancy_bps": 870.9980654237746,
+          "net_expectancy_usdt": 17.419961308475493,
+          "net_profit_factor": 4.1120171886034775,
+          "net_compounded": 13.406443617632112,
+          "max_drawdown": 0.35169843849886234,
+          "single_trade_share_of_positive_net": 0.41890982465747,
+          "stress_1_25x_net_sum_bps": 41527.66449965408,
+          "stress_1_5x_net_sum_bps": 41247.42185896698,
+          "stress_1_5x_expectancy_bps": 859.3212887284789,
+          "lcb_95_net_expectancy_bps": 182.4544849212173,
+          "bootstrap_p_le_zero": 0.0065,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": 182.4544849212173,
+            "block_2": 193.5645942956325,
+            "block_3": 207.0194420476048
+          },
+          "mean_entry_spacing_days": 58.53191489361702,
+          "subwindows": [
+            {
+              "window": "2018-12-30..2021-07-31",
+              "round_trips": 13,
+              "net_sum_bps": 33413.80267369748,
+              "positive": true
+            },
+            {
+              "window": "2021-08-01..2024-03-02",
+              "round_trips": 15,
+              "net_sum_bps": 7713.403326958769,
+              "positive": true
+            },
+            {
+              "window": "2024-03-03..2026-10-04",
+              "round_trips": 20,
+              "net_sum_bps": 680.7011396849518,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 3,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 28.0
+        },
+        "incrementals": {
+          "development": {
+            "strategy_net_compounded": 12.860765727555728,
+            "buy_and_hold_net": 10.11579397005693,
+            "buy_and_hold_incremental_bps": 27449.717574987975,
+            "trend_200d_net_compounded": 5.467491597291395,
+            "trend_200d_incremental_bps": 73932.74130264334,
+            "trend_200d_round_trips": 11
+          },
+          "validation": {
+            "strategy_net_compounded": 0.03936852413511005,
+            "buy_and_hold_net": 0.9674335968863607,
+            "buy_and_hold_incremental_bps": -9280.650727512506,
+            "trend_200d_net_compounded": 0.06480066532079909,
+            "trend_200d_incremental_bps": -254.3214118568904,
+            "trend_200d_round_trips": 6
+          }
+        },
+        "straddling_trips": [
+          {
+            "entry_sunday": "2023-10-22",
+            "exit_sunday": "2024-01-07"
+          }
+        ],
+        "simulation": {
+          "open_position_at_data_end": {
+            "entry_sunday": "2026-10-04",
+            "entry_ms": 1791158400000,
+            "entry_price": 86530.0
+          },
+          "transitions": 48
+        },
+        "trend200_states_long_weeks": 233,
+        "price_bars": {
+          "count": 3338,
+          "first_ms": 1502928000000,
+          "last_ms": 1791244800000
+        }
+      },
+      "ETHUSDT": {
+        "development": {
+          "round_trips": 26,
+          "net_sum_bps": 47827.67788047075,
+          "net_sum_usdt": 956.5535576094151,
+          "net_expectancy_bps": 1839.5260723257984,
+          "net_expectancy_usdt": 36.79052144651597,
+          "net_profit_factor": 5.6535224606791115,
+          "net_compounded": 17.056522456047215,
+          "max_drawdown": 0.3747461005631768,
+          "single_trade_share_of_positive_net": 0.3983633670236436,
+          "stress_1_25x_net_sum_bps": 47675.87978343192,
+          "stress_1_5x_net_sum_bps": 47524.08168639305,
+          "stress_1_5x_expectancy_bps": 1827.849295630502,
+          "lcb_95_net_expectancy_bps": 393.87856928653537,
+          "bootstrap_p_le_zero": 0.0076,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": 393.87856928653537,
+            "block_2": 347.622582101006,
+            "block_3": 350.98465662627575
+          },
+          "mean_entry_spacing_days": 67.76,
+          "subwindows": [
+            {
+              "window": "2018-12-30..2020-08-29",
+              "round_trips": 7,
+              "net_sum_bps": -1842.4966338603454,
+              "positive": false
+            },
+            {
+              "window": "2020-08-30..2022-04-30",
+              "round_trips": 9,
+              "net_sum_bps": 44861.628177547,
+              "positive": true
+            },
+            {
+              "window": "2022-05-01..2023-12-31",
+              "round_trips": 10,
+              "net_sum_bps": 4808.546336784106,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 2,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 28.0
+        },
+        "validation": {
+          "round_trips": 22,
+          "net_sum_bps": -1968.91471369751,
+          "net_sum_usdt": -39.378294273950196,
+          "net_expectancy_bps": -89.49612334988682,
+          "net_expectancy_usdt": -1.7899224669977363,
+          "net_profit_factor": 0.8650069805382096,
+          "net_compounded": -0.361251769628701,
+          "max_drawdown": 0.5216288837875099,
+          "single_trade_share_of_positive_net": 0.17773205934934194,
+          "stress_1_25x_net_sum_bps": -2097.359257345773,
+          "stress_1_5x_net_sum_bps": -2225.803800994037,
+          "stress_1_5x_expectancy_bps": -101.17290004518348,
+          "lcb_95_net_expectancy_bps": -599.1966518610059,
+          "bootstrap_p_le_zero": 0.6107,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": -599.1966518610059,
+            "block_2": -600.2765866745439,
+            "block_3": -550.7243140115028
+          },
+          "mean_entry_spacing_days": 46.333333333333336,
+          "subwindows": [
+            {
+              "window": "2024-01-01..2024-12-01",
+              "round_trips": 11,
+              "net_sum_bps": 1494.4821489635108,
+              "positive": true
+            },
+            {
+              "window": "2024-12-02..2025-11-01",
+              "round_trips": 5,
+              "net_sum_bps": -4504.445312681233,
+              "positive": false
+            },
+            {
+              "window": "2025-11-02..2026-10-04",
+              "round_trips": 6,
+              "net_sum_bps": 1041.0484500202106,
+              "positive": true
+            }
+          ],
+          "subwindows_positive": 2,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 21.0
+        },
+        "all_exposed": {
+          "round_trips": 48,
+          "net_sum_bps": 45858.763166773235,
+          "net_sum_usdt": 917.1752633354647,
+          "net_expectancy_bps": 955.3908993077757,
+          "net_expectancy_usdt": 19.107817986155514,
+          "net_profit_factor": 2.844454881569441,
+          "net_compounded": 10.53357176545978,
+          "max_drawdown": 0.52162888378751,
+          "single_trade_share_of_positive_net": 0.32729746892267325,
+          "stress_1_25x_net_sum_bps": 45578.52052608614,
+          "stress_1_5x_net_sum_bps": 45298.277885399046,
+          "stress_1_5x_expectancy_bps": 943.7141226124801,
+          "lcb_95_net_expectancy_bps": 101.45819953228388,
+          "bootstrap_p_le_zero": 0.0259,
+          "bootstrap_block_obs": 1,
+          "lcb_block_sensitivity_bps": {
+            "block_1": 101.45819953228388,
+            "block_2": 44.546021159205644,
+            "block_3": 42.039282995182326
+          },
+          "mean_entry_spacing_days": 58.53191489361702,
+          "subwindows": [
+            {
+              "window": "2018-12-30..2021-07-31",
+              "round_trips": 13,
+              "net_sum_bps": 38490.19757722423,
+              "positive": true
+            },
+            {
+              "window": "2021-08-01..2024-03-02",
+              "round_trips": 15,
+              "net_sum_bps": 10042.031095226352,
+              "positive": true
+            },
+            {
+              "window": "2024-03-03..2026-10-04",
+              "round_trips": 20,
+              "net_sum_bps": -2673.4655056773286,
+              "positive": false
+            }
+          ],
+          "subwindows_positive": 2,
+          "subwindows_with_trips": 3,
+          "median_hold_days": 28.0
+        },
+        "incrementals": {
+          "development": {
+            "strategy_net_compounded": 17.056522456047215,
+            "buy_and_hold_net": 15.555751866197838,
+            "buy_and_hold_incremental_bps": 15007.705898493776,
+            "trend_200d_net_compounded": 11.529057605422613,
+            "trend_200d_incremental_bps": 55274.64850624602,
+            "trend_200d_round_trips": 8
+          },
+          "validation": {
+            "strategy_net_compounded": -0.361251769628701,
+            "buy_and_hold_net": 0.22522629441650238,
+            "buy_and_hold_incremental_bps": -5864.780640452034,
+            "trend_200d_net_compounded": -0.053574389549365664,
+            "trend_200d_incremental_bps": -3076.773800793353,
+            "trend_200d_round_trips": 3
+          }
+        },
+        "straddling_trips": [
+          {
+            "entry_sunday": "2023-10-22",
+            "exit_sunday": "2024-01-07"
+          }
+        ],
+        "simulation": {
+          "open_position_at_data_end": {
+            "entry_sunday": "2026-10-04",
+            "entry_ms": 1791158400000,
+            "entry_price": 2726.93
+          },
+          "transitions": 48
+        },
+        "trend200_states_long_weeks": 221,
+        "price_bars": {
+          "count": 3338,
+          "first_ms": 1502928000000,
+          "last_ms": 1791244800000
+        }
+      }
+    },
+    "criteria": {
+      "net_expectancy_positive:development": {
+        "observed": 1545.2137100943298,
+        "pass": true,
+        "scope": "computable"
+      },
+      "net_expectancy_positive:validation": {
+        "observed": 74.19775808584592,
+        "pass": true,
+        "scope": "computable"
+      },
+      "net_profit_factor_min:development": {
+        "observed": 7.494913550791841,
+        "pass": true,
+        "scope": "computable"
+      },
+      "net_profit_factor_min:validation": {
+        "observed": 1.225193814805204,
+        "pass": true,
+        "scope": "computable"
+      },
+      "lcb_95_net_expectancy_positive:development": {
+        "observed": 380.307380854551,
+        "pass": true,
+        "scope": "computable"
+      },
+      "lcb_95_net_expectancy_positive:validation": {
+        "observed": -293.6416362715361,
+        "pass": false,
+        "scope": "computable"
+      },
+      "cost_stress_1_5x_net_positive:development": {
+        "observed": 39871.960268374874,
+        "pass": true,
+        "scope": "computable"
+      },
+      "cost_stress_1_5x_net_positive:validation": {
+        "observed": 1375.4615905920848,
+        "pass": true,
+        "scope": "computable"
+      },
+      "positive_in_every_partition:development": {
+        "observed": 40175.55646245257,
+        "pass": true,
+        "scope": "computable"
+      },
+      "positive_in_every_partition:validation": {
+        "observed": 1632.35067788861,
+        "pass": true,
+        "scope": "computable"
+      },
+      "positive_in_every_partition:sealed_oos": {
+        "observed": null,
+        "pass": null,
+        "scope": "deferred"
+      },
+      "max_drawdown_le_0.25:development": {
+        "observed": 0.14384535896210177,
+        "pass": true,
+        "scope": "computable"
+      },
+      "max_drawdown_le_0.25:validation": {
+        "observed": 0.3516984384988624,
+        "pass": false,
+        "scope": "computable"
+      },
+      "single_trade_share_le_0.4:development": {
+        "observed": 0.49915652685346334,
+        "pass": false,
+        "scope": "computable"
+      },
+      "single_trade_share_le_0.4:validation": {
+        "observed": 0.3588050990517119,
+        "pass": true,
+        "scope": "computable"
+      },
+      "incremental_over_buy_and_hold_positive:development": {
+        "observed": 27449.717574987975,
+        "pass": true,
+        "scope": "computable"
+      },
+      "incremental_over_200d_trend_baseline_positive:development": {
+        "observed": 73932.74130264334,
+        "pass": true,
+        "scope": "computable"
+      },
+      "incremental_over_buy_and_hold_positive:validation": {
+        "observed": -9280.650727512506,
+        "pass": false,
+        "scope": "computable"
+      },
+      "incremental_over_200d_trend_baseline_positive:validation": {
+        "observed": -254.3214118568904,
+        "pass": false,
+        "scope": "computable"
+      },
+      "net_pnl_oos_positive": {
+        "observed": null,
+        "pass": null,
+        "scope": "deferred"
+      },
+      "minimum_oos_round_trips_or_months": {
+        "observed": null,
+        "pass": null,
+        "scope": "deferred"
+      }
+    },
+    "failed_criteria": [
+      "lcb_95_net_expectancy_positive:validation",
+      "max_drawdown_le_0.25:validation",
+      "single_trade_share_le_0.4:development",
+      "incremental_over_buy_and_hold_positive:validation",
+      "incremental_over_200d_trend_baseline_positive:validation"
+    ],
+    "robustness_flags": [
+      "PARTIAL_SIGN_STABILITY:validation"
+    ],
+    "verdict": "CANDIDATE_REJECTED",
+    "verdict_reason": "frozen criteria computable on the exposed partitions fail; the acceptance list can no longer be satisfied, so the candidate is closed at the DEV/VAL stage (policy §6)",
+    "no_pass_possible_now": true
+  },
+  "multiple_testing": {
+    "development": {
+      "raw": {
+        "H-049-001": 0.0111,
+        "H-049-002": 0.0014
+      },
+      "bh_adjusted": {
+        "H-049-001": 0.0111,
+        "H-049-002": 0.0028
+      },
+      "holm_adjusted": {
+        "H-049-002": 0.0028,
+        "H-049-001": 0.0111
+      },
+      "family_size": 2,
+      "note": "corrections are descriptive at the DEV/VAL stage; no threshold is moved by them"
+    },
+    "validation": {
+      "raw": {
+        "H-049-001": 0.4447,
+        "H-049-002": 0.3852
+      },
+      "bh_adjusted": {
+        "H-049-001": 0.4447,
+        "H-049-002": 0.4447
+      },
+      "holm_adjusted": {
+        "H-049-002": 0.7704,
+        "H-049-001": 0.7704
+      },
+      "family_size": 2,
+      "note": "corrections are descriptive at the DEV/VAL stage; no threshold is moved by them"
+    }
+  },
+  "result_scope": {
+    "classification": "RESEARCH_EXPOSED (development/validation), NON-CONFIRMATORY",
+    "sealed_oos_opened": false,
+    "no_pass_possible_now": true,
+    "profitability_verified": false
+  },
+  "checks": [
+    {
+      "check": "input:spec:H-049-001",
+      "result": "PASS",
+      "detail": "data/rfc049/specs/H-049-001.json sha256=fd5cd2991466e243…"
+    },
+    {
+      "check": "input:spec:H-049-002",
+      "result": "PASS",
+      "detail": "data/rfc049/specs/H-049-002.json sha256=cdafdc151e2514f9…"
+    },
+    {
+      "check": "input:price:BTC-USDT_1d.json",
+      "result": "PASS",
+      "detail": "data/raw/alpha001/BTC-USDT_1d.json"
+    },
+    {
+      "check": "input:price:ETH-USDT_1d.json",
+      "result": "PASS",
+      "detail": "data/raw/alpha001/ETH-USDT_1d.json"
+    },
+    {
+      "check": "input:signal:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "vendor/raw/defillama_stablecoin_supply_all.json"
+    },
+    {
+      "check": "input:signal:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "vendor/raw/blockchain_info_hashrate_8y.json"
+    },
+    {
+      "check": "input:signal:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "vendor/raw/blockchain_info_miners_revenue_all.json"
+    },
+    {
+      "check": "input:signal:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_WALCL.csv"
+    },
+    {
+      "check": "input:signal:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_RRPONTSYD.csv"
+    },
+    {
+      "check": "input:signal:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_WTREGEN.csv"
+    },
+    {
+      "check": "input:signal:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_DFII10.csv"
+    },
+    {
+      "check": "input:signal:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_DTWEXBGS.csv"
+    },
+    {
+      "check": "input:signal:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_DFF.csv"
+    },
+    {
+      "check": "input:cost_model",
+      "result": "PASS",
+      "detail": "docs/COST_MODEL_V3.json"
+    },
+    {
+      "check": "input:vendor:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "vendor/raw/defillama_stablecoin_supply_all.json"
+    },
+    {
+      "check": "input:vendor:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_WALCL.csv"
+    },
+    {
+      "check": "input:vendor:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_RRPONTSYD.csv"
+    },
+    {
+      "check": "input:vendor:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "vendor/raw/fred_WTREGEN.csv"
+    },
+    {
+      "check": "authorization:scope",
+      "result": "PASS",
+      "detail": "OFFLINE_DEV_VAL_ONLY"
+    },
+    {
+      "check": "cost:matches_frozen_200",
+      "result": "PASS",
+      "detail": "derived 23.353553390593273 vs frozen 23.353553391"
+    },
+    {
+      "check": "cost:matches_frozen_stress",
+      "result": "PASS",
+      "detail": "derived 35.03033008588991 vs frozen 35.030330086"
+    },
+    {
+      "check": "grid:matches_preregistered",
+      "result": "PASS",
+      "detail": "406 instants 2018-12-30..2026-10-04"
+    },
+    {
+      "check": "pit:H-049-001:no_future_input",
+      "result": "PASS",
+      "detail": "0 violations"
+    },
+    {
+      "check": "pit:H-049-002:no_future_input",
+      "result": "PASS",
+      "detail": "0 violations"
+    },
+    {
+      "check": "pit:H-049-001:sealed_window_untouched",
+      "result": "PASS",
+      "detail": "max consumed value date 2026-10-02 < 2026-10-11"
+    },
+    {
+      "check": "pit:H-049-002:sealed_window_untouched",
+      "result": "PASS",
+      "detail": "max consumed value date 2026-09-30 < 2026-10-11"
+    },
+    {
+      "check": "counts:H-049-001:match_rfc049b",
+      "result": "PASS",
+      "detail": "{\"development\": 14, \"validation\": 9, \"all_exposed\": 23}"
+    },
+    {
+      "check": "counts:H-049-002:match_rfc049b",
+      "result": "PASS",
+      "detail": "{\"development\": 26, \"validation\": 22, \"all_exposed\": 48}"
+    }
+  ],
+  "checks_failed": 0
+}

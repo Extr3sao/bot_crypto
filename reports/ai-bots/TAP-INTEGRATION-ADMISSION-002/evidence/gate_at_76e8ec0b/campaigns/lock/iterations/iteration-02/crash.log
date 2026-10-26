@@ -1,0 +1,8 @@
+[wp04] root=C:\Users\GVLLFR0035\Downloads\ff-wt-adm002 commit=76e8ec0bfeb7 out=C:\Users\GVLLFR0035\AppData\Local\Temp\gate_76e8ec0b\campaigns\lock\session
+[wp04] bootstrap complete
+[wp04] measured 3 live delivery latencies
+2026-10-26 10:42:18 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-26 10:42:18 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=80515.45444366458 quantity=0.006209987926601623 side=buy symbol=BTC/USDT
+2026-10-26 10:42:18 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+2026-10-26 10:42:18 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=101.40293902945773 quantity=4.93082355191647 side=sell symbol=SOL/USDT
+[wp04] cycle 4 bar 2026-10-26T09:41:00Z fills=2 closed=0

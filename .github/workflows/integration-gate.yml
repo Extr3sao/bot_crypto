@@ -1,0 +1,133 @@
+# Integration gate (TAP-INTEGRATION-GATE-001)
+#
+# Why this workflow exists: TAP-SUPERVISOR-INTEGRATION-002 certified its campaigns by hand.
+# A hand-run PASS can name a commit that never ran, reuse a previous delivery's evidence, or
+# quote a verifier whose report was never re-read. This workflow makes the two PAPER campaigns
+# a standing check on the commit that is actually checked out, and it refuses to soften a
+# step: there is no `continue-on-error` anywhere in this file, and the gate itself refuses to
+# run on a dirty tree or to write inside the repository it judges.
+#
+# What runs:
+#   1. `preflight` -- fast: entrypoints import, contract files present, tree clean, output
+#      path outside the tree. It runs neither campaign and cannot certify anything; the job
+#      name says so and the gate's own preflight payload carries `certifies: false`.
+#   2. `integration-gate` -- the real thing: supervisor campaign + negative scenarios, lock
+#      campaign with its six crash sites and two reclaim races, both campaign verifiers, the
+#      independent campaign audit (C1/L1/S1/S2/V1), the commit-stability check, the manifest.
+#      Then the independent reviewer re-derives the verdict and runs eight negative controls.
+#
+# On `pull_request` GitHub checks out the merge result of the PR, so the gate judges the
+# merged candidate rather than the branch tip. On `push` it judges the pushed commit.
+#
+# GOVERNANCE: this workflow is not a required status check today. Turning it into one needs a
+# repository administrator (Settings -> Branches -> Branch protection -> Require status checks)
+# and cannot be done from the repository. Until that is done the gate is voluntary, and the
+# report says `required_check: false` rather than claiming an enforcement that does not exist.
+
+name: Integration gate
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    name: Gate preflight (never a certification)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev --frozen
+
+      - name: Preflight
+        run: >-
+          uv run --no-sync python scripts/tap_integration_gate.py preflight
+          --out "${{ runner.temp }}/gate-preflight"
+
+      - name: Keep the preflight record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-gate-preflight
+          path: ${{ runner.temp }}/gate-preflight/
+          if-no-files-found: warn
+
+  integration-gate:
+    name: Integration gate (campaigns on this commit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # the gate compares HEAD with the commit the campaigns ran on, which needs history
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev --frozen
+
+      - name: Record the candidate
+        run: |
+          echo "github.sha=${{ github.sha }}"
+          echo "github.ref=${{ github.ref }}"
+          echo "event=${{ github.event_name }}"
+          git rev-parse HEAD
+
+      - name: Gate (both campaigns, both verifiers, independent audit)
+        run: >-
+          uv run --no-sync python scripts/tap_integration_gate.py run
+          --out "${{ runner.temp }}/gate"
+          --label "gh:${{ github.event_name }}:${{ github.sha }}"
+
+      - name: Independent review (re-derives the verdict and runs the negative controls)
+        if: always()
+        run: >-
+          uv run --no-sync python
+          reports/ai-bots/TAP-INTEGRATION-GATE-001/tools/review_gate.py
+          --evidence "${{ runner.temp }}/gate"
+          --out "${{ runner.temp }}/REVIEW.json"
+
+      - name: Keep the evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-gate-evidence
+          path: |
+            ${{ runner.temp }}/gate/
+            ${{ runner.temp }}/REVIEW.json
+          if-no-files-found: error

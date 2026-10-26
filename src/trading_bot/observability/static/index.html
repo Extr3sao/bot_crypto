@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRADING AGENTIC PORTABLE — Ecosistema de Estrategias</title>
+<style>
+:root { color-scheme: dark; --bg:#0f1115; --panel:#161a21; --line:#232833; --fg:#e6e8eb; --mut:#8b93a1; --ok:#8ff0a4; --bad:#ff9aa2; --warn:#ffd479; --info:#7fb2ff; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:13px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
+header { position:sticky; top:0; background:#0b0d11; border-bottom:1px solid var(--line); padding:8px 14px; z-index:5; }
+h1 { font-size:15px; margin:0; display:inline-block; }
+.badge { padding:2px 7px; border-radius:999px; background:#1b1f27; color:var(--mut); margin-left:6px; font-size:11px; }
+.badge.ok{background:#12331f;color:var(--ok)} .badge.bad{background:#3d1518;color:var(--bad)}
+.badge.warn{background:#3a2f10;color:var(--warn)} .badge.info{background:#10233a;color:var(--info)}
+nav { display:flex; gap:4px; flex-wrap:wrap; padding:8px 14px 0; border-bottom:1px solid var(--line); }
+nav button { background:transparent; color:var(--mut); border:1px solid transparent; border-bottom:2px solid transparent; padding:6px 10px; cursor:pointer; font:inherit; }
+nav button.active { color:var(--fg); border-bottom-color:var(--info); }
+main { padding:14px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px; }
+.card h2 { font-size:12px; letter-spacing:.08em; color:var(--mut); margin:0 0 8px; text-transform:uppercase; }
+.row { display:flex; justify-content:space-between; gap:12px; padding:2px 0; }
+.k{color:var(--mut)} .v{text-align:right; word-break:break-word; max-width:62%}
+table { width:100%; border-collapse:collapse; }
+th,td { text-align:left; padding:5px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+th { color:var(--mut); font-weight:400; cursor:pointer; }
+tr:hover td { background:#1b1f27; }
+.small{color:var(--mut)} code{background:#1b1f27;padding:1px 5px;border-radius:4px}
+.stale{color:var(--warn)} .missing{color:var(--mut); font-style:italic}
+.pill{padding:1px 6px;border-radius:999px;background:#1b1f27;font-size:11px}
+.pill.ACTIVE,.pill.HEALTHY,.pill.OK,.pill.FRESH{background:#12331f;color:var(--ok)}
+.pill.PAUSED,.pill.RETIRED,.pill.STALE,.pill.DEGRADED{background:#3a2f10;color:var(--warn)}
+.pill.FAILED,.pill.INSUFFICIENT_SAMPLE{background:#3d1518;color:var(--bad)}
+.pill.UNKNOWN,.pill.NOT_AVAILABLE,.pill.INSUFFICIENT_DATA{background:#232833;color:var(--mut)}
+#detail { margin-top:12px; }
+footer{color:var(--mut);padding:10px 14px;border-top:1px solid var(--line);margin-top:14px}
+input[type=search]{background:#0b0d11;border:1px solid var(--line);color:var(--fg);padding:5px 8px;border-radius:6px;font:inherit}
+</style>
+</head>
+<body>
+<header>
+  <h1>TRADING AGENTIC PORTABLE</h1>
+  <span class="badge info" id="env">Entorno: PAPER</span>
+  <span class="badge" id="routing">Modo de enrutado: …</span>
+  <span class="badge" id="campaign">Campaña: …</span>
+  <span class="badge" id="market">Datos de mercado: …</span>
+  <span class="badge" id="risk">Motor de riesgo: …</span>
+  <span class="badge" id="runtime">Runtime: …</span>
+  <span class="badge" id="commit">Commit: …</span>
+  <span class="badge" id="freshness">Frescura: …</span>
+  <span class="badge ok" id="ro">SOLO_LECTURA</span>
+  <span class="badge" id="live">control_live: false</span>
+</header>
+<nav id="nav"></nav>
+<main id="view"></main>
+<footer>
+  Superficie de observabilidad de solo lectura. Ningún endpoint puede arrancar, parar, promover, dimensionar, cambiar el riesgo, admitir una estrategia ni ejecutar.
+  Los datos ausentes se muestran como <code>NOT_AVAILABLE</code> / <code>UNKNOWN</code>; las muestras pequeñas como <code>INSUFFICIENT_SAMPLE</code>.
+  <span id="generated" class="small"></span>
+</footer>
+<script>
+const SECTIONS = [
+  ["control","SALA DE CONTROL"],["strategies","ESTRATEGIAS"],["agents","AGENTES"],["lifecycle","CICLO DE VIDA"],
+  ["routing","ENRUTADO"],["portfolio","CARTERA"],["risk","RIESGO"],["executions","EJECUCIONES"],
+  ["campaigns","CAMPAÑAS"],["traces","TRAZAS"],["system","SISTEMA"],
+];
+let cache = {};
+async function api(path){ const r = await fetch(path,{cache:'no-store'}); if(!r.ok) throw new Error(path+' '+r.status); return r.json(); }
+function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function cell(v){
+  if(v===undefined||v===null||v==='') return '<span class="missing">NOT_AVAILABLE</span>';
+  if(typeof v==='boolean') return `<span class="pill ${v?'OK':''}">${v?'true':'false'}</span>`;
+  if(typeof v==='object') return esc(JSON.stringify(v));
+  const s=String(v);
+  if(['ACTIVE','HEALTHY','OK','FRESH','PAUSED','RETIRED','STALE','DEGRADED','FAILED','UNKNOWN','NOT_AVAILABLE','INSUFFICIENT_DATA','INSUFFICIENT_SAMPLE'].includes(s)) return `<span class="pill ${esc(s)}">${esc(s)}</span>`;
+  return esc(s);
+}
+function kv(rows){ return rows.map(([k,v])=>`<div class="row"><span class="k">${esc(k)}</span><span class="v">${cell(v)}</span></div>`).join(''); }
+function card(title,rows){ return `<section class="card"><h2>${esc(title)}</h2>${kv(rows)}</section>`; }
+function table(cols,rows,onclick){
+  const head = cols.map(c=>`<th>${esc(c)}</th>`).join('');
+  const body = rows.map((r,i)=>`<tr data-i="${i}" ${onclick?'style="cursor:pointer"':''}>`+cols.map(c=>`<td>${cell(r[c])}</td>`).join('')+`</tr>`).join('');
+  return `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+}
+function num(v){ return typeof v==='number'? v.toFixed(2): v; }
+
+async function render(section){
+  for(const [id] of SECTIONS) document.getElementById('nav-'+id)?.classList.toggle('active', id===section);
+  const view = document.getElementById('view'); view.innerHTML='<p class="small">cargando…</p>';
+  let html='';
+  try {
+    if(section==='control'){
+      const s = cache.system || await api('/api/system'); cache.system=s;
+      const sys=s.system, t=sys.totals;
+      const topo = cache.topology || await api('/api/topology'); cache.topology=topo;
+      html = `<div class="grid">
+        ${card('RUNTIME',[['state',sys.runtime.state],['run_id',sys.runtime.run_id],['cycles',sys.runtime.cycles],['routing_mode',sys.routing_mode],['execution_mode',sys.execution_mode],['live_trading_enabled',sys.live_trading_enabled],['runtime_failures',sys.runtime.runtime_failures]])}
+        ${card('CAMPAÑA',[['campaign',sys.campaign],['commit',sys.commit],['config_hash',sys.config_hash]])}
+        ${card('SALUD DE DATOS DE MERCADO',[['status',sys.market_data_health.status],['assets',(sys.market_data_health.assets||[]).join(',')],['timeframe',sys.market_data_health.timeframe],['storage_failures',sys.market_data_health.storage_failures]])}
+        ${card('MOTOR DE RIESGO',[['status',sys.risk_engine.status],['authority',sys.risk_engine.authority],['verdicts',JSON.stringify(sys.risk_engine.verdicts)]])}
+        ${card('ESTRATEGIAS',[['total',t.strategies_total],['admitted_for_paper',t.admitted_for_paper],['decisions',t.decisions],['signals',t.signals],['proposals',t.proposals],['paper_trades',t.paper_trades]])}
+        ${card('DECISIONES',[['no_trade',t.no_trade],['order_created',t.order_created],['no_trade_kinds',JSON.stringify(t.no_trade_kinds)],['outcomes_resolved',t.outcomes_resolved]])}
+        ${card('AGENTES',[['governance',topo.are_strategies_governed_by_independent_agents],['shared_decision_layer_agents',(topo.shared_agents||[]).length],['strategies_with_dedicated_agent',topo.dedicated_agent_count],['strategies_with_no_agent',topo.no_agent_count]])}
+        ${card('SALVAGUARDAS',[['false_success',sys.false_success],['open_critical_defects',sys.open_critical_defects],['read_only',sys.read_only],['live_control',sys.live_control]])}
+      </div>`;
+    } else if(section==='strategies'){
+      const d = await api('/api/strategies');
+      window.__strategies=d.strategies;
+      html = `<p class="small">run ${esc(d.run_id)} · ${d.count} estrategias · pulsa una fila para ver el detalle</p>` + table(
+        ['strategy_id','family','timeframe','admission_status','admitted_for_paper','lifecycle','health','agent','signals','proposals','trades','expectancy_net_bps','profit_factor','pnl_bps'],
+        d.strategies, true);
+      html += `<div id="detail"></div>`;
+      setTimeout(()=>{ document.querySelectorAll('#view tbody tr').forEach(tr=>tr.onclick=()=>showStrategy(d.strategies[+tr.dataset.i].strategy_id)); },0);
+    } else if(section==='agents'){
+      const d = await api('/api/agents');
+      html = `<p class="small">gobernanza: <b>${esc(d.governance)}</b> — las estrategias no están gobernadas por agentes independientes; los siguientes son revisores compartidos de la capa de decisión.</p>`;
+      html += table(['agent_id','scope','status','messages','review_types','llm_calls','independent_state'], d.agents, false);
+    } else if(section==='lifecycle'){
+      const d = await api('/api/lifecycle');
+      html = `<div class="grid">${card('ESTADOS DEL CICLO DE VIDA', Object.entries(d.states))}${card('REGISTRO DE ADMISIÓN', Object.entries(d.admission_histogram))}${card('TRANSICIONES',[['timeline',d.transitions],['note',d.note]])}</div>`;
+    } else if(section==='routing'){
+      const d = await api('/api/routing/comparisons');
+      if(!d.available){ html = `<p class="missing">NOT_AVAILABLE</p>`; }
+      else html = `<div class="grid">${card('RESUMEN',[['run_id',d.run_id],['total',d.total],['agreement_rate',d.agreement_rate],['rejections_by_reason',JSON.stringify(d.rejections_by_reason)]])}${card('MATRIZ DE SELECCIÓN DEL ROUTER',Object.entries(d.matrix))}</div>` + table(['asset','regime','legacy','lifecycle','differences'], d.comparisons.map(c=>({asset:c.asset,regime:c.regime,legacy:(c.legacy||{}).selected?.join(','),lifecycle:(c.lifecycle||{}).selected?.join(',')||'(none)',differences:(c.differences||[]).join(',')})));
+    } else if(section==='portfolio'){
+      const d = await api('/api/portfolio');
+      html = `<div class="grid">${card('CARTERA',[['arbitration_events',d.arbitration_events],['portfolio_rejected',typeof d.portfolio_rejected==='string'?d.portfolio_rejected:JSON.stringify(d.portfolio_rejected)],['exposures',d.exposures],['concentration',d.concentration],['note',d.note]])}</div>`;
+    } else if(section==='risk'){
+      const d = await api('/api/risk');
+      html = `<div class="grid">${card('MOTOR DE RIESGO',[['engine',d.engine],['status',d.status],['authority',d.authority],['verdicts',JSON.stringify(d.verdicts)],['risk_approved',d.risk_approved],['risk_vetoed',d.risk_vetoed],['open_risk',d.open_risk]])}${card('CONFIGURACIÓN',[['config_source',d.config_source],['config_available',d.config_available],['note',d.note]])}</div>`;
+    } else if(section==='executions'){
+      const d = await api('/api/executions');
+      html = `<p class="small">modo_ejecución ${esc(d.execution_mode)} · ejecutadas ${d.executed}</p>` + (d.executed? table(['timestamp_ms','asset','strategy','direction','risk','decision_id'], d.executions) : `<p class="missing">Sin ejecuciones PAPER en esta ejecución (NOT_AVAILABLE para una matriz completa).</p>`);
+    } else if(section==='campaigns'){
+      const d = await api('/api/campaigns');
+      html = table(['campaign_id','agreement_rate','disagreements','cycles_with_comparisons','config_path'], d.campaigns);
+    } else if(section==='traces'){
+      const d = await api('/api/traces');
+      window.__traces=d.traces;
+      html = `<p class="small">run ${esc(d.run_id)} · ${d.count} trazas · pulsa una fila para ver la cronología de DecisionTrace</p>` + table(['decision_id','asset','mode','no_trade_kind','regime','verification','order_created'], d.traces);
+      html += `<div id="detail"></div>`;
+      setTimeout(()=>{ document.querySelectorAll('#view tbody tr').forEach(tr=>tr.onclick=()=>showTrace(d.traces[+tr.dataset.i].decision_id)); },0);
+    } else if(section==='system'){
+      const s = cache.system || await api('/api/system'); cache.system=s;
+      const t = (await api('/api/topology'));
+      html = `<div class="grid">${card('BARRA SUPERIOR',[['environment',s.system.environment],['routing_mode',s.system.routing_mode],['campaign',s.system.campaign],['market_data',s.system.market_data_health.status],['risk',s.system.risk_engine.status],['runtime',s.system.runtime.state],['commit',s.system.commit],['freshness',s.system.freshness.status]])}${card('GOBERNANZA DE AGENTES',[['are_strategies_governed_by_independent_agents',t.are_strategies_governed_by_independent_agents],['dedicated',t.dedicated_agent_count],['shared',t.shared_agent_count],['no_agent',t.no_agent_count]])}${card('CONTROLES',[['read_only',s.controls.read_only],['allowed_methods',(s.controls.allowed_methods||[]).join(',')]])}</div>`;
+    }
+  } catch(err){ html = `<p class="badge bad">ERROR al cargar ${esc(section)}: ${esc(err.message)}</p>`; }
+  view.innerHTML = html;
+}
+
+async function showStrategy(sid){
+  const d = await api('/api/strategies/'+encodeURIComponent(sid));
+  const p = d.performance.overall;
+  document.getElementById('detail').innerHTML = `<div class="grid">
+    ${card('IDENTIDAD',Object.entries(d.identity))}
+    ${card('ESTADO',Object.entries(d.state))}
+    ${card('RENDIMIENTO',[['status',p.status],['sample_count',p.sample_count],['net_expectancy_bps',p.net_expectancy_bps],['profit_factor',p.profit_factor],['hit_rate',p.hit_rate],['max_drawdown_bps',p.max_drawdown_bps]])}
+    ${card('EMBUDO', d.funnel.stages.map(s=>[s.stage,s.count]))}
+    ${card('EVIDENCIA',[['admission_source',d.evidence.admission_source],['run_id',d.evidence.run_id],['trace_file',d.evidence.trace_file]])}
+  </div>`;
+  document.getElementById('detail').scrollIntoView({behavior:'smooth'});
+}
+
+async function showTrace(id){
+  const d = await api('/api/traces/'+encodeURIComponent(id));
+  document.getElementById('detail').innerHTML = `<div class="grid">
+    ${card('TRAZA',[['decision_id',d.decision_id],['asset',d.asset],['regime',d.regime],['mode',d.mode],['no_trade_kind',d.no_trade_kind],['trace_hash',d.trace_hash]])}
+    ${card('REVISIONES DE AGENTES',[['count',(d.agent_messages||[]).length]])}
+  </div><section class="card"><h2>CRONOLOGÍA</h2>${d.timeline.map(s=>`<div class="row"><span class="k">${esc(s.stage)}</span><span class="v small">${esc(JSON.stringify(s.detail)).slice(0,240)}</span></div>`).join('')}</section>`;
+  document.getElementById('detail').scrollIntoView({behavior:'smooth'});
+}
+
+async function topbar(){
+  try{
+    const s = await api('/api/system'); cache.system=s;
+    const sys=s.system;
+    const set=(id,text,cls)=>{const e=document.getElementById(id); e.textContent=text; if(cls!==undefined){e.className='badge '+cls;}};
+    set('routing','Modo de enrutado: '+sys.routing_mode,'badge info');
+    set('campaign','Campaña: '+sys.campaign,'badge');
+    set('market','Datos de mercado: '+sys.market_data_health.status, sys.market_data_health.status==='HEALTHY'?'badge ok':'badge warn');
+    set('risk','Motor de riesgo: '+sys.risk_engine.status,'badge ok');
+    set('runtime','Runtime: '+sys.runtime.state, sys.runtime.state==='RUNNING'?'badge ok':'badge warn');
+    set('commit','Commit: '+String(sys.commit).slice(0,10),'badge');
+    set('freshness','Frescura: '+sys.freshness.status, sys.freshness.status==='FRESH'?'badge ok':'badge warn');
+    document.getElementById('generated').textContent=' · última actualización '+new Date().toISOString();
+  }catch(e){ /* keep last top bar */ }
+}
+
+function sse(){
+  try{
+    const es = new EventSource('/api/events/stream');
+    es.addEventListener('pulse', ev=>{ try{ const p=JSON.parse(ev.data); const f=document.getElementById('freshness'); f.textContent='Frescura: '+p.freshness.status; f.className='badge '+(p.freshness.status==='FRESH'?'ok':'warn'); }catch(_){}} );
+    es.onerror = ()=>{ /* SSE disconnect never affects the runtime */ };
+  }catch(e){}
+}
+
+function boot(){
+  const nav=document.getElementById('nav');
+  nav.innerHTML = SECTIONS.map(([id,label])=>`<button id="nav-${id}" data-s="${id}">${label}</button>`).join('');
+  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>render(b.dataset.s));
+  render('control');
+  topbar();
+  setInterval(topbar, 5000);
+  sse();
+}
+boot();
+</script>
+</body>
+</html>

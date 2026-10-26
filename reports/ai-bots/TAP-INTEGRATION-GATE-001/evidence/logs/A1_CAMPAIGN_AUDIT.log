@@ -1,0 +1,86 @@
+$ C:\Users\GVLLFR0035\Downloads\ff-wt-gate001\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-gate001\scripts\tap_gate_campaign_audit.py --supervisor C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\campaigns\supervisor --lock C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\campaigns\lock --supervisor-report C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\SUPERVISOR_VERIFICATION.json --lock-report C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\LOCK_CAMPAIGN_VERIFICATION.json --out C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\CAMPAIGN_AUDIT.json
+exit=0
+
+--- stdout ---
+{
+  "campaigns": {
+    "lock": "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock",
+    "supervisor": "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\supervisor"
+  },
+  "claims": {
+    "C1": {
+      "claim": "the PAPER campaign ran several cycles, recovered from its crash, left no lock and sent no live order",
+      "detail": "cycles=[1, 2, 3, 4, 5] lines=13 state=RECOVERED locks=[] live_orders=[0] action=STOP_COMPLETED scenarios=['budget', 'corrupt']",
+      "evidence": [
+        "chain head b5f27efdb5510f235879865e4e38415ef084e9e798ba8b8951e3ffc4775d620a"
+      ],
+      "id": "C1",
+      "method": "re-hash session/STREAM.jsonl, read CAMPAIGN.json and the supervisor result, list *.lock, scan live_orders",
+      "problems": [],
+      "status": "PASS"
+    },
+    "L1": {
+      "claim": "six crash iterations were each reclaimed once, every resume exited 0, no lock survived and no order was live",
+      "detail": "iterations=6 cycles=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] reclaims=6 fences=[2, 5, 8, 11, 14, 17] races=2 rows=64 locks=[] live_orders=[0]",
+      "evidence": [
+        "chain head baa8a9bfeea646da94a1e82b70b86ea2a150943f270970960ee7e0b8a3f22f0b",
+        "counts {'cycles': 17, 'iterations': 6, 'reclaim_rows': 6, 'rows': 64, 'starts': 12}"
+      ],
+      "id": "L1",
+      "method": "re-hash STREAM.jsonl, recount rows and cycles, stat every iteration, list *.lock",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S1": {
+      "claim": "the supervisor check is not blind: breaking one stream line must fail C1",
+      "detail": "tampered campaign evaluated as FAIL (cycles=[1] lines=7 state=RECOVERED locks=[] live_orders=[0] action=STOP_COMPLETED scenarios=['budget', 'corrupt'])",
+      "evidence": [
+        "problems: ['chain SHA_AT_7', '1 cycle(s): not a multi-cycle campaign', 'CAMPAIGN.final.cycles [1, 2, 3, 4, 5] != stream [1]']"
+      ],
+      "id": "S1",
+      "method": "rewrite one STREAM.jsonl row in a temporary copy without recomputing its sha256 and re-evaluate C1",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S2": {
+      "claim": "the lock check is not blind: removing one iteration's recovery must fail it",
+      "detail": "tampered campaign evaluated as FAIL (iterations=6 cycles=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] reclaims=6 fences=[2, 5, 8, 11, 14, 17] races=2 rows=64 locks=[] live_orders=[0])",
+      "evidence": [
+        "problems: ['5 RECOVERY.json for 6 iterations']"
+      ],
+      "id": "S2",
+      "method": "delete iterations/iteration-03/RECOVERY.json in a temporary copy and re-evaluate L1",
+      "problems": [],
+      "status": "PASS"
+    },
+    "V1": {
+      "claim": "both campaign verifiers report the campaign that is on disk, with no undetected mutation and no false success",
+      "detail": "supervisor checks=33 mutations=12; lock checks=32 mutations=9",
+      "evidence": [
+        "supervisor artefacts=19",
+        "lock artefacts=71",
+        "campaign commits: supervisor=9a420ff18179 lock=9a420ff18179"
+      ],
+      "id": "V1",
+      "method": "recompute every artefact hash, re-check the verdict fields, the mutation lists and the check counts against their published floors",
+      "problems": [],
+      "status": "PASS"
+    }
+  },
+  "commits": {
+    "lock": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+    "supervisor": "9a420ff18179c1f196221495aba5fdd2a81f5073"
+  },
+  "false_success": 0,
+  "schema": "TAP_INTEGRATION_GATE_CAMPAIGN_AUDIT_V1",
+  "summary": {
+    "claims": 5,
+    "fail": 0,
+    "pass": 5,
+    "unknown": 0
+  },
+  "verdict": "PASS"
+}
+
+--- stderr ---
+

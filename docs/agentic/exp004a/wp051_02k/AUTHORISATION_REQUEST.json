@@ -1,0 +1,85 @@
+{
+  "gap_gib": 13.066,
+  "generated_at_utc": "2026-10-23T13:43:38Z",
+  "items": [
+    {
+      "bytes": 7079094508,
+      "gib": 6.593,
+      "key": "scratch-temp",
+      "kind": "TEMP_RUN_LEFTOVER",
+      "needs_admin": false,
+      "owner": "any process (scratch)",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp",
+      "recovery": "none: scratch content has no origin by design",
+      "requires_authorisation": true,
+      "reversible": false,
+      "risk": "an interrupted run loses its output; open files refuse deletion",
+      "tier": 1
+    },
+    {
+      "bytes": 3516571630,
+      "gib": 3.275,
+      "key": "playwright-browsers",
+      "kind": "REPROVISIONABLE",
+      "needs_admin": false,
+      "owner": "host user (browser automation)",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright",
+      "recovery": "python -m playwright install chromium",
+      "requires_authorisation": true,
+      "reversible": true,
+      "risk": "other projects must re-download on next run",
+      "tier": 1
+    },
+    {
+      "bytes": 2148887064,
+      "gib": 2.001,
+      "key": "hermes-tooling-cache",
+      "kind": "REPROVISIONABLE",
+      "needs_admin": false,
+      "owner": "host user (tooling)",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\hermes",
+      "recovery": "re-run the tool; caches are rebuilt from the network",
+      "requires_authorisation": true,
+      "reversible": true,
+      "risk": "the tool re-downloads or recompiles on next use",
+      "tier": 1
+    },
+    {
+      "bytes": 1394267913,
+      "gib": 1.299,
+      "key": ".cache-tooling-cache",
+      "kind": "REPROVISIONABLE",
+      "needs_admin": false,
+      "owner": "host user (tooling)",
+      "path": "C:\\Users\\GVLLFR0035\\.cache",
+      "recovery": "re-run the tool; caches are rebuilt from the network",
+      "requires_authorisation": true,
+      "reversible": true,
+      "risk": "the tool re-downloads or recompiles on next use",
+      "tier": 1
+    },
+    {
+      "bytes": 1064841618,
+      "gib": 0.992,
+      "key": "worktree-bot_crypto_004g",
+      "kind": "REBUILDABLE",
+      "needs_admin": false,
+      "owner": "host user (experiment worktrees)",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_004g",
+      "recovery": "git bundle create X.bundle --all; git archive HEAD | tar -x on restore",
+      "requires_authorisation": true,
+      "reversible": true,
+      "risk": "experiment artefacts and untracked evidence are lost",
+      "tier": 2
+    }
+  ],
+  "not_requested_here": "no WSL distro, no C:\\ESD staging tree, no browser build, no worktree and no user file is deleted, moved or compacted by this program",
+  "procedure": [
+    "1. Free a reversible item first (moved or re-provisionable), never a user document.",
+    "2. After each item, run: python scripts/exp004a_wp051_02k_capacity.py --after",
+    "3. Stop as soon as capacity reports PASS; do not free more than the gap.",
+    "4. Re-run --report and the independent verifier before declaring capacity PASS."
+  ],
+  "total_gib": 14.16,
+  "why": "C: holds less than the campaign's p90 budget; the gap is 13.066 GiB and every remaining byte belongs to somebody who is not this package"
+}

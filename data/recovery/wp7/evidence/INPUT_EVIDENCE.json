@@ -1,0 +1,21 @@
+{
+  "artifact": "COST_BARRIER_INPUT_EVIDENCE",
+  "work_package": "WP-7B: byte-identical evidence copy of a gitignored generated input",
+  "captured_at_utc": "2026-10-11T18:36:24Z",
+  "captured_commit": "66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0",
+  "source_path": "reports/strategy-baseline/COST_BARRIER.json",
+  "evidence_path": "data/recovery/wp7/evidence/COST_BARRIER.json",
+  "reason": "reports/strategy-baseline/COST_BARRIER.json is generated from cached bar datasets that are not committed, so it is gitignored by design and absent from a clean checkout. This copy is byte-identical to the file the published artefact was built from.",
+  "bytes": 3822,
+  "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+  "sha256_lf": "1547cea438d2fb90d8556870c30dcbd911b5a841283ce982b423d04fbcc53640",
+  "line_endings": "CRLF",
+  "pin_authority": {
+    "artifact": "data/recovery/COST_BARRIER_EXPLORER.json",
+    "path": "reports/strategy-baseline/COST_BARRIER.json",
+    "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+    "payload_sha256": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb",
+    "how": "the published explorer recorded this digest for this input when it was built; the copy is admissible only while it reproduces that digest"
+  },
+  "not_a_signature": "integrity here is a digest chain anchored in the commit that carries it, not a signature: a party able to rewrite the artefact, this copy and the checker together defeats it, and that is stated as a limitation rather than hidden"
+}

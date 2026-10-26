@@ -1,0 +1,535 @@
+{
+  "artifact": "WP10_ACTIVE_RECOVERY_MATRIX",
+  "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
+  "phase": "PHASE 5 \u2014 ACTIVE RECOVERY MATRIX",
+  "generated_at_utc": "2026-10-12T06:08:55Z",
+  "mode": "OFFLINE READ-ONLY \u2014 no process, no order, no key, no capital",
+  "head": "90ed615b1b2514682bbf9a85834fdd81c45f0774",
+  "sources": {
+    "baseline": "data/recovery/wp10/WP10_BASELINE_ECONOMIC_AUDIT.json",
+    "execution_cost": "data/recovery/wp10/WP10_EXECUTION_COST_DISTRIBUTION.json",
+    "e2_preregistration": "data/recovery/wp10/WP10_E2_PREREGISTRATION.json"
+  },
+  "classes_definition": {
+    "ADOPT_FOR_NEW_EXPERIMENT": "a pre-registered rule returned PROMOTE on a reserved forward window",
+    "RESEARCH_MORE": "an edge exists and is resolvable, but it is short of the plane, or it has not yet passed the forward test",
+    "INSUFFICIENT_EVIDENCE": "a positive edge is claimed but cannot be believed yet: the interval is wider than the edge or the sign does not hold across partitions",
+    "REJECT": "no cell of the family shows a positive zero-cost gross edge",
+    "no_family_may_be_added_to_inflate_the_count": true
+  },
+  "families": {
+    "breakout": {
+      "cells": 4,
+      "trades_total": 6483,
+      "trades_per_day_total": 31.319,
+      "cells_with_positive_gross": 0,
+      "best_cell": "breakout@5m",
+      "best_cell_gross_bps": -0.084007,
+      "verdict": "REJECT",
+      "blocking_stage": "NO_EDGE",
+      "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat",
+      "detail": [
+        {
+          "strategy_id": "breakout@15m",
+          "timeframe": "15m",
+          "zero_cost_gross_bps": -1.822,
+          "ci95_half_width_bps": 3.168101,
+          "trades": 2058,
+          "trades_per_day": 9.942,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "breakout@1h",
+          "timeframe": "1h",
+          "zero_cost_gross_bps": -0.222,
+          "ci95_half_width_bps": 6.444677,
+          "trades": 714,
+          "trades_per_day": 3.449,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "breakout@30m",
+          "timeframe": "30m",
+          "zero_cost_gross_bps": -1.792,
+          "ci95_half_width_bps": 4.430577,
+          "trades": 1285,
+          "trades_per_day": 6.208,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "breakout@5m",
+          "timeframe": "5m",
+          "zero_cost_gross_bps": -0.084007,
+          "ci95_half_width_bps": null,
+          "trades": 2426,
+          "trades_per_day": 11.72,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        }
+      ]
+    },
+    "ema_crossover": {
+      "cells": 4,
+      "trades_total": 10765,
+      "trades_per_day_total": 52.004,
+      "cells_with_positive_gross": 0,
+      "best_cell": "ema_crossover@30m",
+      "best_cell_gross_bps": -0.726,
+      "verdict": "REJECT",
+      "blocking_stage": "NO_EDGE",
+      "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat",
+      "detail": [
+        {
+          "strategy_id": "ema_crossover@15m",
+          "timeframe": "15m",
+          "zero_cost_gross_bps": -1.122,
+          "ci95_half_width_bps": 2.367062,
+          "trades": 3166,
+          "trades_per_day": 15.295,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "ema_crossover@1h",
+          "timeframe": "1h",
+          "zero_cost_gross_bps": -0.964,
+          "ci95_half_width_bps": 3.279934,
+          "trades": 2641,
+          "trades_per_day": 12.758,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "ema_crossover@30m",
+          "timeframe": "30m",
+          "zero_cost_gross_bps": -0.726,
+          "ci95_half_width_bps": 2.685637,
+          "trades": 3233,
+          "trades_per_day": 15.618,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "ema_crossover@5m",
+          "timeframe": "5m",
+          "zero_cost_gross_bps": -4.560812,
+          "ci95_half_width_bps": null,
+          "trades": 1725,
+          "trades_per_day": 8.333,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        }
+      ]
+    },
+    "mean_reversion": {
+      "cells": 4,
+      "trades_total": 6177,
+      "trades_per_day_total": 29.841,
+      "cells_with_positive_gross": 3,
+      "best_cell": "mean_reversion@30m",
+      "best_cell_gross_bps": 5.472,
+      "verdict": "RESEARCH_MORE",
+      "blocking_stage": "COST_GAP",
+      "why": "the edge is resolvable but 17.881553 bps short of the frozen round trip",
+      "detail": [
+        {
+          "strategy_id": "mean_reversion@15m",
+          "timeframe": "15m",
+          "zero_cost_gross_bps": 2.714,
+          "ci95_half_width_bps": 3.591391,
+          "trades": 1604,
+          "trades_per_day": 7.749,
+          "classification": {
+            "stage": "UNRESOLVED",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "why": "the 95 % interval half width (3.591391 bps) is wider than the edge itself (2.714 bps)"
+          }
+        },
+        {
+          "strategy_id": "mean_reversion@1h",
+          "timeframe": "1h",
+          "zero_cost_gross_bps": -2.226,
+          "ci95_half_width_bps": 8.692807,
+          "trades": 448,
+          "trades_per_day": 2.164,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "mean_reversion@30m",
+          "timeframe": "30m",
+          "zero_cost_gross_bps": 5.472,
+          "ci95_half_width_bps": 5.272215,
+          "trades": 935,
+          "trades_per_day": 4.517,
+          "classification": {
+            "stage": "COST_GAP",
+            "verdict": "RESEARCH_MORE",
+            "why": "the edge is resolvable but 17.881553 bps short of the frozen round trip"
+          }
+        },
+        {
+          "strategy_id": "mean_reversion@5m",
+          "timeframe": "5m",
+          "zero_cost_gross_bps": 1.485392,
+          "ci95_half_width_bps": null,
+          "trades": 3190,
+          "trades_per_day": 15.411,
+          "classification": {
+            "stage": "UNRESOLVED",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "why": "no win/loss summary to size the interval with"
+          }
+        }
+      ]
+    },
+    "momentum": {
+      "cells": 4,
+      "trades_total": 11005,
+      "trades_per_day_total": 53.165,
+      "cells_with_positive_gross": 0,
+      "best_cell": "momentum@5m",
+      "best_cell_gross_bps": -1.883531,
+      "verdict": "REJECT",
+      "blocking_stage": "NO_EDGE",
+      "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat",
+      "detail": [
+        {
+          "strategy_id": "momentum@15m",
+          "timeframe": "15m",
+          "zero_cost_gross_bps": -3.972,
+          "ci95_half_width_bps": 2.593819,
+          "trades": 3163,
+          "trades_per_day": 15.28,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "momentum@1h",
+          "timeframe": "1h",
+          "zero_cost_gross_bps": -2.334,
+          "ci95_half_width_bps": 3.674085,
+          "trades": 2315,
+          "trades_per_day": 11.184,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "momentum@30m",
+          "timeframe": "30m",
+          "zero_cost_gross_bps": -2.612,
+          "ci95_half_width_bps": 2.931925,
+          "trades": 3001,
+          "trades_per_day": 14.498,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "momentum@5m",
+          "timeframe": "5m",
+          "zero_cost_gross_bps": -1.883531,
+          "ci95_half_width_bps": null,
+          "trades": 2526,
+          "trades_per_day": 12.203,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        }
+      ]
+    },
+    "trend": {
+      "cells": 4,
+      "trades_total": 5898,
+      "trades_per_day_total": 28.493,
+      "cells_with_positive_gross": 2,
+      "best_cell": "trend@30m",
+      "best_cell_gross_bps": 2.206,
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "blocking_stage": "UNRESOLVED",
+      "why": "the 95 % interval half width (4.771974 bps) is wider than the edge itself (2.206 bps)",
+      "detail": [
+        {
+          "strategy_id": "trend@15m",
+          "timeframe": "15m",
+          "zero_cost_gross_bps": 1.284,
+          "ci95_half_width_bps": 4.52761,
+          "trades": 1625,
+          "trades_per_day": 7.85,
+          "classification": {
+            "stage": "UNRESOLVED",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "why": "the 95 % interval half width (4.52761 bps) is wider than the edge itself (1.284 bps)"
+          }
+        },
+        {
+          "strategy_id": "trend@1h",
+          "timeframe": "1h",
+          "zero_cost_gross_bps": -1.252,
+          "ci95_half_width_bps": 5.370709,
+          "trades": 1407,
+          "trades_per_day": 6.797,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "trend@30m",
+          "timeframe": "30m",
+          "zero_cost_gross_bps": 2.206,
+          "ci95_half_width_bps": 4.771974,
+          "trades": 1575,
+          "trades_per_day": 7.609,
+          "classification": {
+            "stage": "UNRESOLVED",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "why": "the 95 % interval half width (4.771974 bps) is wider than the edge itself (2.206 bps)"
+          }
+        },
+        {
+          "strategy_id": "trend@5m",
+          "timeframe": "5m",
+          "zero_cost_gross_bps": -1.644771,
+          "ci95_half_width_bps": null,
+          "trades": 1291,
+          "trades_per_day": 6.237,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        }
+      ]
+    },
+    "volatility": {
+      "cells": 4,
+      "trades_total": 1089,
+      "trades_per_day_total": 5.261,
+      "cells_with_positive_gross": 2,
+      "best_cell": "volatility@30m",
+      "best_cell_gross_bps": 8.912,
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "blocking_stage": "UNRESOLVED",
+      "why": "the 95 % interval half width (12.009576 bps) is wider than the edge itself (8.912 bps)",
+      "detail": [
+        {
+          "strategy_id": "volatility@15m",
+          "timeframe": "15m",
+          "zero_cost_gross_bps": -7.064,
+          "ci95_half_width_bps": 9.374829,
+          "trades": 277,
+          "trades_per_day": 1.338,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        },
+        {
+          "strategy_id": "volatility@1h",
+          "timeframe": "1h",
+          "zero_cost_gross_bps": 6.276,
+          "ci95_half_width_bps": 18.564808,
+          "trades": 96,
+          "trades_per_day": 0.464,
+          "classification": {
+            "stage": "UNRESOLVED",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "why": "the 95 % interval half width (18.564808 bps) is wider than the edge itself (6.276 bps)"
+          }
+        },
+        {
+          "strategy_id": "volatility@30m",
+          "timeframe": "30m",
+          "zero_cost_gross_bps": 8.912,
+          "ci95_half_width_bps": 12.009576,
+          "trades": 196,
+          "trades_per_day": 0.947,
+          "classification": {
+            "stage": "UNRESOLVED",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "why": "the 95 % interval half width (12.009576 bps) is wider than the edge itself (8.912 bps)"
+          }
+        },
+        {
+          "strategy_id": "volatility@5m",
+          "timeframe": "5m",
+          "zero_cost_gross_bps": -4.735385,
+          "ci95_half_width_bps": null,
+          "trades": 520,
+          "trades_per_day": 2.512,
+          "classification": {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"
+          }
+        }
+      ]
+    }
+  },
+  "verdict_counts": {
+    "REJECT": 3,
+    "RESEARCH_MORE": 1,
+    "INSUFFICIENT_EVIDENCE": 2
+  },
+  "frequency": {
+    "objective_ops_per_day": 3.0,
+    "trades_per_day_all_24_cells": 200.083,
+    "trades_per_day_positive_cells": 44.547,
+    "where_frequency_exists": [
+      {
+        "strategy_id": "ema_crossover@30m",
+        "trades_per_day": 15.618,
+        "zero_cost_gross_bps": -0.726,
+        "net_vs_admission_floor_bps": -24.0796
+      },
+      {
+        "strategy_id": "mean_reversion@5m",
+        "trades_per_day": 15.411,
+        "zero_cost_gross_bps": 1.485392,
+        "net_vs_admission_floor_bps": -21.8682
+      },
+      {
+        "strategy_id": "ema_crossover@15m",
+        "trades_per_day": 15.295,
+        "zero_cost_gross_bps": -1.122,
+        "net_vs_admission_floor_bps": -24.4756
+      },
+      {
+        "strategy_id": "momentum@15m",
+        "trades_per_day": 15.28,
+        "zero_cost_gross_bps": -3.972,
+        "net_vs_admission_floor_bps": -27.3256
+      },
+      {
+        "strategy_id": "momentum@30m",
+        "trades_per_day": 14.498,
+        "zero_cost_gross_bps": -2.612,
+        "net_vs_admission_floor_bps": -25.9656
+      },
+      {
+        "strategy_id": "ema_crossover@1h",
+        "trades_per_day": 12.758,
+        "zero_cost_gross_bps": -0.964,
+        "net_vs_admission_floor_bps": -24.3176
+      }
+    ],
+    "reading": "frequency is not the binding constraint: several cells already trade far above the objective's daily rate, and every one of them is net-negative. The objective is unmet because the net expectancy is, not because opportunities are rare \u2014 and no entry may be manufactured to close the gap"
+  },
+  "hurdle": {
+    "frozen_round_trip_bps": 23.353553391,
+    "best_zero_cost_gross_bps": 8.912,
+    "shortfall_bps": 14.441553,
+    "required_move_per_round_trip_bps": 23.353553391,
+    "what_it_means": "a signal has to capture a price move larger than 23.354 bps per round trip before it can be net positive at the frozen plane; that is the number a new hypothesis must beat, and no threshold in this repository may be lowered to make it easier"
+  },
+  "measured_cost_layer": {
+    "state": "PLANE_OVERSTATES_MICROSTRUCTURE",
+    "source": "data/recovery/wp10/WP10_EXECUTION_COST_DISTRIBUTION.json",
+    "observed_round_trip_microstructure_bps_median": 0.024697,
+    "plane_known_fee_term_bps": 20.0,
+    "best_gross_edge_covers_known_fees_alone": false,
+    "consequence": "cheaper execution narrows the bar; it does not clear it. The fee legs alone already exceed the best gross edge in the register"
+  },
+  "forward_gate": {
+    "e2_state": "SPEC_ONLY",
+    "gate": "CLOSED",
+    "reserved_from": "2026-10-12T00:00:00Z",
+    "role": "stage 4 of the chain above: nothing may be ADOPT_FOR_NEW_EXPERIMENT until a pre-registered rule returns PROMOTE on the reserved forward window"
+  },
+  "separate_lines": {
+    "R6_P2_QUALITY": {
+      "operator_label": "R6 P2 QUALITY",
+      "repo_artefact": null,
+      "treatment": "kept separate and not used as evidence: the label does not exist in this repository, so it is an operator-side lane and is neither mapped nor inferred (the WP-4 roadmap recorded the same)"
+    },
+    "RFC049_DISCOVERY2": {
+      "artefact": "data/rfc049/discovery2/ACTIVE_STRATEGY_STATUS.json",
+      "present": true,
+      "treatment": "its two hypotheses were rejected at the development/validation stage on sign decay, drawdown over the limit and failure to beat the baselines; they are new hypotheses and are not members of the 24-strategy register, so they are neither re-opened nor counted as families",
+      "headline": null
+    },
+    "M03_M07_MICROSTRUCTURE": {
+      "treatment": "gated behind the forward-history requirements in config/microstructure_preregistration.json; not a family and not scorable until the history exists",
+      "artefact": "data/recovery/wp9/WP9_M03_M07_READINESS.json"
+    }
+  },
+  "frozen_artifacts_modified": 0,
+  "no_promotion": {
+    "strategies_admitted": 0,
+    "thresholds_changed": 0,
+    "cost_model_changed": false,
+    "live_trading": "DISABLED",
+    "trades_authorized": 0
+  },
+  "checks": [
+    {
+      "check": "every one of the 24 registered cells is classified",
+      "ok": true
+    },
+    {
+      "check": "no family is classified ADOPT without a forward PROMOTE",
+      "ok": true
+    },
+    {
+      "check": "the plane quoted is the rebuilt one, not a copy",
+      "ok": true
+    },
+    {
+      "check": "the low-frequency operator line is kept separate and unmapped",
+      "ok": true
+    },
+    {
+      "check": "frequency is reported next to expectancy so the two are not confused",
+      "ok": true
+    },
+    {
+      "check": "no frozen criterion, threshold or cost is modified",
+      "ok": true
+    }
+  ],
+  "verdict": "PARTIAL \u2014 the chain is populated and 0 families reach ADOPT; the obstacle is named per family, and for every family it is either an unresolvable edge or a cost gap",
+  "payload_sha256": "625b32aa7ec66e353b9c4f534cb5a740b4f7b8dd81c13d5e6a970df9fba94941"
+}

@@ -1,0 +1,57 @@
+{
+  "opportunity_id": "OPP-0028",
+  "title": "Cross-sectional momentum on Binance perpetuals (Karaptic pre-registered replication)",
+  "source_ids": [
+    "S3-04",
+    "S3-06"
+  ],
+  "economic_hypothesis": "an independent pre-registered replication of Liu, Tsyvinski & Wu (2022) momentum on 832 Binance perpetuals",
+  "market": "Binance USDⓈ-M perpetual futures",
+  "assets": "832 perpetual symbols",
+  "timeframe": "daily close, one-week holding, weekly rebalance",
+  "entry_rules": "each Sunday close rank the universe by trailing return; go long the top quintile and short the bottom quintile at the Monday open",
+  "exit_rules": "close the book after one week and re-rank; the two-week specification re-ranks fortnightly",
+  "risk_rules": "equal weighting inside each quintile; the universe is floored at $1,000,000 trailing turnover",
+  "parameters": "formation 1 week (and 2 weeks as a literature-mandated check), hold 1 week, quintile baskets, $1,000,000 liquidity floor",
+  "claimed_period": "2020-01-01 to 2026-07-31, 338 independent weeks",
+  "claimed_metrics": "gross +0.573%/week; net of a 0.40 pp round trip +0.173%/week; no significance test passes net",
+  "transaction_cost_model": "documented by the author: 0.05%/side taker plus 0.05%/side slippage = 0.40 pp round trip",
+  "required_data": "Binance USDⓈ-M perpetual daily-close panel",
+  "external_code": "github.com/Silent47boryara/searching-for-edge (directory 02-momentum)",
+  "external_results": "the note's own gross and net tables, pre-registered before the result was seen",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the effect is not distinguishable from zero net of the author's own documented costs and is not stable to a pre-registered specification change",
+    "reviewed in RFC-035S3; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "the two-week specification flips sign on an arbitrary Monday choice",
+    "shorting the bottom quintile is required, which the project's long/cash runtime cannot express"
+  ],
+  "replication_difficulty": "the effect is not distinguishable from zero net of the author's own documented costs and is not stable to a pre-registered specification change",
+  "evidence_quality": "E2",
+  "selection_bias_risk": "LOW (pre-registered before the result was seen)",
+  "overfitting_risk": "LOW",
+  "lookahead_risk": "LOW (Sunday-close ranking, Monday-open entry)",
+  "implementation_risk": "MEDIUM",
+  "status": "ROUND_3_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 5,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 5,
+    "OOS_EVIDENCE": 4,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 5,
+    "INDEPENDENT_VALIDATION": 4,
+    "IMPLEMENTATION_FIDELITY": 4
+  },
+  "evidence_score_total": 37,
+  "rank": "REJECT",
+  "rfc": "RFC-035S3",
+  "candidate_ref": "reports/rfc035/search_round_3/FINAL_REPORT.json",
+  "round_3_reason": "the effect is not distinguishable from zero net of the author's own documented costs and is not stable to a pre-registered specification change",
+  "candidate_id": "K-02"
+}

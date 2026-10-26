@@ -1,0 +1,23 @@
+{
+  "current": {
+    "acquired_at_utc": "2026-10-25T10:38:26Z",
+    "fence": 15,
+    "host": "DESKTOP-4CHO695",
+    "path": "STREAM.jsonl.lock",
+    "pid": 36536,
+    "process_start_ms": 1792924702453,
+    "purpose": "ledger:STREAM.jsonl",
+    "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+    "token": "9a1c81dc631045f5a89455c0c86909d8"
+  },
+  "lock_lost": {
+    "code": "LOCK_LOST",
+    "detail": "LOCK_LOST: C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\STREAM.jsonl.lock is owned by another writer (pid 36536, fence 15); this writer's fence 13 is stale, so its protected writes are refused",
+    "raised": true
+  },
+  "lock_still_present": true,
+  "old_fence": 13,
+  "old_token": "7e35bf88ca874067aeea41f0a7ce92c9",
+  "path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\STREAM.jsonl.lock",
+  "release_refused": true
+}
