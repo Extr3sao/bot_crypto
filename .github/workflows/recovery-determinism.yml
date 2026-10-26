@@ -125,6 +125,12 @@ jobs:
       - name: The repair moved no economic finding
         run: uv run python scripts/recovery_economic_invariance.py --check --json
 
+      # The audit's own determinism contract, exercised in the mode CI needs: the published
+      # artefact must equal a rebuild of this commit. `--check` is read-only, so a stale
+      # audit fails here instead of being rewritten into agreement with itself first.
+      - name: The published audit is current (read-only check)
+        run: uv run python scripts/active_economic_audit.py --check
+
       - name: Lane contract tests and determinism regressions
         run: >-
           uv run python -m pytest

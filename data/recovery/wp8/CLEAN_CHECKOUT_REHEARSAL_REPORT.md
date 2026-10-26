@@ -1,8 +1,8 @@
 # CLEAN CHECKOUT REHEARSAL REPORT (WP-8E)
 
-- rehearsed commit `e07ce6cc3c00` · runner `LOCAL` · scope `full`
+- rehearsed commit `d62ecb76aaec` · runner `LOCAL` · scope `full`
 - **status: PASS**
-- started `2026-10-11T18:51:11Z` · finished `2026-10-11T18:53:16Z`
+- started `2026-10-26T12:28:50Z` · finished `2026-10-26T12:35:56Z`
 
 The sequence runs in a detached worktree of the commit, never in the tree it was invoked
 from: a pass here is a claim about the commit.
@@ -33,7 +33,7 @@ of one commit differ there by construction.
 | --- | --- | --- | --- | --- |
 | `data/recovery/CAMPAIGN_STATE_VIEW.json` | `e7bee5d8b710` | `e7bee5d8b710` | **True** | False |
 | `data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md` | `7920b77b99a9` | `7920b77b99a9` | **True** | False |
-| `data/recovery/ACTIVE_ECONOMIC_AUDIT.json` | `023b66ffd121` | `023b66ffd121` | **True** | False |
+| `data/recovery/ACTIVE_ECONOMIC_AUDIT.json` | `c6ea34388745` | `c6ea34388745` | **True** | False |
 | `data/recovery/ACTIVE_ECONOMIC_AUDIT.md` | `62a57a9ad25d` | `62a57a9ad25d` | **True** | False |
 
 ## What moved
