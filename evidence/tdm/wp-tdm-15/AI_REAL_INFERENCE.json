@@ -1,0 +1,36 @@
+{
+  "schema_version": "rfc-tdm-015-evidence-v1",
+  "section": "ai_real_inference",
+  "run_id": "tdm15-live-02",
+  "provider_configured": false,
+  "provider_env_var": "SIGNAL_ANALYST_API_KEY",
+  "statuses": {
+    "NOT_CONFIGURED": 6
+  },
+  "error_codes": {
+    "PROVIDER_NOT_CONFIGURED": 6
+  },
+  "rows": 6,
+  "malformed_lines": 0,
+  "models_used": [],
+  "real_inferences": 0,
+  "tokens": {
+    "in": 0,
+    "out": 0
+  },
+  "cost_usd": 0.0,
+  "latency_ms": [],
+  "advisory_only": true,
+  "authority_over_orders": false,
+  "verdict": "AI_UNAVAILABLE_BLOCKED",
+  "blocker": "no LLM provider is configured on this host: SIGNAL_ANALYST_API_KEY is unset, so every signal is recorded NOT_CONFIGURED / PROVIDER_NOT_CONFIGURED. Single unlock: set SIGNAL_ANALYST_API_KEY (and optionally _MODEL/_BASE_URL) and rerun the analyst; no code change is required",
+  "false_success": 0,
+  "evidence_refs": [
+    {
+      "path": "reports\\autonomous-paper\\tdm15-live-02\\analysis.jsonl",
+      "exists": true,
+      "bytes": 5118,
+      "sha256": "82bfefd077e3b0d6d62325a3272911dfa8db0c95a68bd0591af20ff3b7c56279"
+    }
+  ]
+}

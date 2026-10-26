@@ -1,0 +1,361 @@
+{
+  "schema_version": "rfc-tdm-015-final-report-v1",
+  "rfc": "RFC-TDM-015",
+  "rfc_path": "docs/rfc/RFC-015_LIVE_SIGNAL_PAPER_AI_DASHBOARD.md",
+  "rfc_path_note": "the RFC names docs/rfcs/RFC-TDM-015-…md; this repository numbers its RFCs in docs/rfc/ (RFC-046, RFC-048, RFC-049), so the document follows the repository convention",
+  "date_utc": "2026-10-26",
+  "run_id": "tdm15-live-02",
+  "branch": "feat/wp-signal-001-003",
+  "local_head_at_report_generation": "3be8e5bd (parent of the pushed commit)",
+  "mode": "PAPER_ONLY",
+  "economic_status": "NO_ELIGIBLE_CANDIDATE / REJECTED_ALPHA (unchanged)",
+  "verdict": "PARTIAL",
+  "independence": "INDEPENDENCE_NOT_DEMONSTRATED",
+  "acc": [
+    {
+      "id": "ACC-01",
+      "status": "PASS",
+      "evidence": [
+        "docs/runtime/runtime_authority_map.md",
+        "evidence/tdm/wp-tdm-15/BASELINE_RUN_REPORT.json"
+      ]
+    },
+    {
+      "id": "ACC-02",
+      "status": "PASS",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/GITHUB_SYNC_REPORT.json"
+      ]
+    },
+    {
+      "id": "ACC-03",
+      "status": "PASS",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/SIGNAL_RUN_REPORT.json"
+      ],
+      "limit": "config/realdata/exchange.yaml sets sandbox: true: the venue is the public testnet, not the production book"
+    },
+    {
+      "id": "ACC-04",
+      "status": "PASS",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/SIGNAL_RUN_REPORT.json",
+        "evidence/tdm/wp-tdm-15/DASHBOARD_E2E.json"
+      ]
+    },
+    {
+      "id": "ACC-05",
+      "status": "PASS",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/SIGNAL_RUN_REPORT.json"
+      ]
+    },
+    {
+      "id": "ACC-06",
+      "status": "PASS",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/SIGNAL_RUN_REPORT.json",
+        "evidence/tdm/wp-tdm-15/PAPER_RECONCILIATION.json"
+      ]
+    },
+    {
+      "id": "ACC-07",
+      "status": "PARTIAL",
+      "reason": "the experimental route is wired and its deterministic gate runs (APPROVED), but the admission ledger admits none of the 24 strategies, so PAPER_ORDER is BLOCKED and there are 0 simulated orders. No strategy was fabricated to demonstrate one",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/PAPER_RECONCILIATION.json"
+      ]
+    },
+    {
+      "id": "ACC-08",
+      "status": "PASS",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/PAPER_RECONCILIATION.json"
+      ]
+    },
+    {
+      "id": "ACC-09",
+      "status": "BLOCKED",
+      "reason": "SIGNAL_ANALYST_API_KEY is absent: 6 rows NOT_CONFIGURED / PROVIDER_NOT_CONFIGURED, 0 inferences, 0 mocks",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/AI_REAL_INFERENCE.json"
+      ]
+    },
+    {
+      "id": "ACC-10",
+      "status": "PASS",
+      "limitation": "screenshot UNAVAILABLE (compositor produced no frames); the E2E is pinned by the DOM text hash and the HTTP payload hashes",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/DASHBOARD_E2E.json"
+      ]
+    },
+    {
+      "id": "ACC-11",
+      "status": "NOT_YET_VERIFIED",
+      "reason": "30 minutes of closed bars measured across two windows; a 72 h soak was not attempted and 24x7 is not certified",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/SOAK_REPORT.json"
+      ]
+    },
+    {
+      "id": "ACC-12",
+      "status": "PASS",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/SIGNAL_RUN_REPORT.json",
+        "evidence/tdm/wp-tdm-15/DASHBOARD_E2E.json"
+      ]
+    },
+    {
+      "id": "ACC-13",
+      "status": "PASS",
+      "evidence": [
+        "evidence/tdm/wp-tdm-15/FINAL_REPORT.md",
+        "evidence/tdm/wp-tdm-15/FINAL_REPORT.json"
+      ]
+    }
+  ],
+  "gates": {
+    "SIGNAL_STREAM_VERIFIED": "PASS",
+    "EXPERIMENTAL_PAPER_VERIFIED": "NOT_DEMONSTRATED",
+    "AI_REAL_VERIFIED": "BLOCKED",
+    "PAPER_OPERATIONAL_VERIFIED": "NOT_ACHIEVED",
+    "ALPHA_ELIGIBLE": "NO"
+  },
+  "runtime": {
+    "windows": 2,
+    "closed_bars": 7,
+    "window_utc": {
+      "first": "2026-10-26T09:35:05Z",
+      "last": "2026-10-26T10:05:06Z",
+      "span_minutes": 30.0
+    },
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "timeframe": "5m",
+    "provider": "ccxt",
+    "venue_sandbox": true,
+    "decisions": 21,
+    "signals": {
+      "total": 21,
+      "by_asset": {
+        "BTC": 7,
+        "ETH": 7,
+        "SOL": 7
+      },
+      "by_stage": {
+        "CANDIDATE": 21
+      },
+      "by_kind": {
+        "ALPHA": 21
+      },
+      "source": {
+        "REAL": 21
+      },
+      "data_quality": {
+        "OK": 21
+      }
+    },
+    "risk": {
+      "APPROVED": 21
+    },
+    "paper_orders": 0,
+    "live_orders": 0,
+    "orders_created": 0,
+    "stop_verdict": "CLEAN",
+    "stop_exit_codes": {
+      "paper": 0,
+      "collector": 0,
+      "retention": 0,
+      "strategy_lab": 0,
+      "analyst": 0
+    },
+    "reconciliation": [
+      "CONSISTENT",
+      "RECOVERED"
+    ],
+    "duplicate_signal_ids": 0,
+    "analyst": {
+      "provider_configured": false,
+      "rows": 6,
+      "statuses": {
+        "NOT_CONFIGURED": 6
+      },
+      "coverage": "6/21 (28.6%)",
+      "cost_usd": 0.0
+    },
+    "dashboard": {
+      "url_measured": "http://127.0.0.1:8790",
+      "latency_ms": {
+        "/healthz": 67.17,
+        "/": 87.07,
+        "/api/signals": 128.81,
+        "/api/analysis": 110.98,
+        "/api/status": 66.53
+      },
+      "mutating_verbs": {
+        "POST /api/signals": 405
+      },
+      "verifier_checks": 29,
+      "verifier_ok": true
+    }
+  },
+  "tests": {
+    "suite": {
+      "passed": 3406,
+      "failed": 90,
+      "errors": 14,
+      "skipped": 30,
+      "duration_seconds": 531.11
+    },
+    "baseline_comparison": {
+      "baseline": "3be8e5bd in a clean worktree",
+      "baseline_failing_nodes": 97,
+      "head_failing_nodes": 104,
+      "set_difference": 9,
+      "regressions_in_code": 0,
+      "explanation": "8 nodes fail only because unversioned data/rfc046 and data/economic001 artefacts exist in the shared checkout (absent at baseline); 1 node fails because another live lab wrote capture segments during its digest (see D-11)"
+    },
+    "targeted": {
+      "signal_and_lab": 119,
+      "paper": 57
+    },
+    "new_tests_added": 6
+  },
+  "defects": [
+    {
+      "id": "D-01",
+      "status": "FIXED",
+      "title": "a new run id on a used capture root crash-looped the collector",
+      "fix": "start_paper_lab.py refuses before launch (EXIT_CAPTURE_ROOT_CONFLICT = 5) and names --data-root/--resume",
+      "tests": [
+        "tests/unit/autonomous/test_lab_operations.py::test_a_new_run_id_into_an_owned_capture_root_is_refused_before_launch",
+        "tests/unit/autonomous/test_lab_operations.py::test_the_capture_root_refusal_happens_before_anything_is_created"
+      ]
+    },
+    {
+      "id": "D-02",
+      "status": "FIXED",
+      "title": "the bar-close wait ignored the stop file, so every stop escalated to a kill",
+      "fix": "paper_loop.wait_for_cadence sleeps in slices and answers the same predicate",
+      "tests": [
+        "tests/unit/autonomous/test_cadence.py::test_a_cadence_wait_answers_a_stop_request_before_the_bar"
+      ]
+    },
+    {
+      "id": "D-03",
+      "status": "FIXED",
+      "title": "the console spent 12.8 s per request on 25 tasklist spawns",
+      "fix": "one cached process table (PROCESS_TABLE_TTL_SECONDS); measured 65-130 ms",
+      "tests": [
+        "tests/unit/autonomous/test_pid_identity.py"
+      ]
+    },
+    {
+      "id": "D-04",
+      "status": "FIXED",
+      "title": "the filter changed the URL but not the board",
+      "fix": "status_payload(args, filters) renders the filtered board in the same response",
+      "tests": [
+        "tests/unit/observability/test_paper_lab_signal_view.py::test_the_page_honours_the_filter_it_was_asked_for"
+      ]
+    },
+    {
+      "id": "D-05",
+      "status": "FIXED",
+      "title": "the analyst exited when the run directory did not exist yet",
+      "fix": "the sidecar waits for the first signal stream instead of exiting",
+      "tests": [
+        "tests/unit/autonomous/test_signal_service.py"
+      ]
+    },
+    {
+      "id": "D-06",
+      "status": "OPEN",
+      "title": "PAPER_RUN.json is rewritten at shutdown without provider/environment/assets/timeframe",
+      "impact": "run provenance is lost and the verifier cannot check source against the provider (provider: null)"
+    },
+    {
+      "id": "D-07",
+      "status": "OPEN",
+      "title": "the analyst re-selects the same NOT_CONFIGURED rows every pass",
+      "impact": "15 of 21 signals never receive an analysis row (coverage 6/21)"
+    },
+    {
+      "id": "D-08",
+      "status": "OPEN",
+      "title": "final_state is DEGRADED after a clean stop",
+      "impact": "system_state() counts stopped critical children as degradation; stop_report.verdict CLEAN is the authoritative field"
+    },
+    {
+      "id": "D-09",
+      "status": "OPEN",
+      "title": "--restart overwrites LAB_RUN_REPORT.json and restarts heartbeat.jsonl",
+      "impact": "the previous window's report is replaced; its cycles survive in logs/paper.log"
+    },
+    {
+      "id": "D-10",
+      "status": "OPEN",
+      "title": "the resumed capture declares 34 gaps in its own state",
+      "impact": "the manifest must classify them as RECOVERED/UNRECOVERABLE before the capture is used"
+    },
+    {
+      "id": "D-11",
+      "status": "EXPLAINED",
+      "title": "9 set-difference test failures are environmental",
+      "impact": "8 stale unversioned data/ artefacts + 1 concurrent capture digest; none touches a modified module and no regression is claimed"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "B-01",
+      "title": "no LLM provider credential on this host",
+      "unlock": "set SIGNAL_ANALYST_API_KEY (optionally _MODEL/_BASE_URL) and rerun the analyst; no code change required"
+    },
+    {
+      "id": "B-02",
+      "title": "72 h soak not attempted",
+      "unlock": "define the SLOs first, then run a 72 h window with the same commands and publish its SOAK_REPORT"
+    }
+  ],
+  "limits": [
+    "venue is the public testnet (sandbox: true), not the production book",
+    "no experimental paper order exists: the ledger admits none of the 24 strategies",
+    "AI analysis is absent by configuration, and no substitute analysis was produced",
+    "the verifier is code-separated but run by the same operator",
+    "the screenshot could not be captured; DOM and HTTP hashes are the record"
+  ],
+  "commands": {
+    "start_paper_lab": "uv run python scripts/start_paper_lab.py --run-id tdm15-live-02 --provider ccxt --assets BTC,ETH,SOL --symbols BTCUSDT,ETHUSDT,SOLUSDT --timeframe 5m --paper-cadence bar-close --duration-hours 0.45 --data-root reports/microstructure-forward-lab/tdm15-live-02",
+    "dashboard": "uv run python scripts/paper_lab_dashboard.py --port 8790 --run-id tdm15-live-02",
+    "verifier": "uv run python scripts/wp_signal_verify.py --run-id tdm15-live-02 --dashboard-url http://127.0.0.1:8790",
+    "evidence": "uv run python scripts/wp15_evidence.py --run-id tdm15-live-02 --pytest-log <log> --baseline-log <log> --probe <probe.json> --e2e <e2e.json> --verify <verify.json>"
+  },
+  "false_success": 0,
+  "evidence_refs": [
+    "evidence/tdm/wp-tdm-15/BASELINE_RUN_REPORT.json",
+    "evidence/tdm/wp-tdm-15/BASELINE_RUN_REPORT.md",
+    "evidence/tdm/wp-tdm-15/SIGNAL_RUN_REPORT.json",
+    "evidence/tdm/wp-tdm-15/PAPER_RECONCILIATION.json",
+    "evidence/tdm/wp-tdm-15/AI_REAL_INFERENCE.json",
+    "evidence/tdm/wp-tdm-15/DASHBOARD_E2E.json",
+    "evidence/tdm/wp-tdm-15/SOAK_REPORT.json",
+    "evidence/tdm/wp-tdm-15/GITHUB_SYNC_REPORT.json",
+    "evidence/tdm/wp-tdm-15/FINAL_REPORT.md"
+  ],
+  "next_phase": "provider key + admission of one experimental strategy + a 72 h soak with SLOs declared before the trial",
+  "publication": {
+    "remote": "https://github.com/Extr3sao/bot_crypto.git",
+    "pushed_sha": "879bafc957353c022584e9e4eb04d7c2a653a637",
+    "branches": [
+      "feat/wp-signal-001-003",
+      "feat/tdm-015-live-paper"
+    ],
+    "verified_with": "git ls-remote --heads origin",
+    "force_push": false,
+    "merged_to_main": false,
+    "closure_note": "the pushed sha carries this report; the commit that records the sha is one commit later by construction, because a commit cannot contain its own sha. The pushed sha itself is verified against the remote refs, not assumed"
+  }
+}

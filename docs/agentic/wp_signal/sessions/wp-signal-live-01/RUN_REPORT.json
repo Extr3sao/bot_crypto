@@ -1,0 +1,129 @@
+{
+  "report": "WP-SIGNAL SUPERVISED SESSION RUN_REPORT",
+  "schema_version": "wp-signal-session-v1",
+  "generated_at_utc": "2026-10-26T10:50:49+00:00",
+  "run_id": "wp-signal-live-01",
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp-signal-live-01",
+  "lab_dir": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\paper-lab\\wp-signal-live-01",
+  "session": {
+    "started_by": "scripts/start_paper_lab.py --run-id wp-signal-live-01 --provider ccxt --routing-mode SHADOW --duration-hours 1 --data-root reports/microstructure-forward-lab-wp-signal-01",
+    "dashboard": "scripts/paper_lab_dashboard.py --port 8792 --run-id wp-signal-live-01",
+    "supervisor_state": "HEALTHY",
+    "uptime_seconds": 3064.341,
+    "children": {
+      "paper": "RUNNING",
+      "collector": "RUNNING",
+      "retention": "RUNNING",
+      "strategy_lab": "RUNNING",
+      "analyst": "RUNNING"
+    },
+    "restarts": {
+      "paper": 0,
+      "collector": 0,
+      "retention": 0,
+      "strategy_lab": 0,
+      "analyst": 0
+    }
+  },
+  "runtime": {
+    "provider": "ccxt",
+    "mode": "paper",
+    "cadence": null,
+    "traces": 144,
+    "signals": 144,
+    "stages": {
+      "REJECTED": 72,
+      "CANDIDATE": 72
+    },
+    "kinds": {
+      "NO_ALPHA": 72,
+      "ALPHA": 72
+    },
+    "sources": {
+      "REAL": 144
+    },
+    "orders_created": 0,
+    "first_decision_utc": "2026-10-26T09:59:35.090Z",
+    "last_decision_utc": "2026-10-26T10:50:05.906Z",
+    "paper_order_layer": "BLOCKED (0 strategies admitted; recorded by the capability preflight)"
+  },
+  "analysis": {
+    "rows": 5,
+    "by_status": {
+      "NOT_CONFIGURED": 5
+    },
+    "provider_configured": false,
+    "note": "no model key is configured on this host, so every row records NOT_CONFIGURED / PROVIDER_NOT_CONFIGURED instead of a synthesis"
+  },
+  "http": {
+    "GET /healthz": 200,
+    "GET /api/signals": {
+      "status": 200,
+      "returned": 50,
+      "total_matched": 138,
+      "stream_state": "LIVE",
+      "state_reason": "the newest signal is 25s old"
+    },
+    "GET /api/analysis": {
+      "status": 200,
+      "signals_total": 138,
+      "coverage": {
+        "signals": 138,
+        "covered": 5,
+        "analysed": 0,
+        "not_configured": 5,
+        "failed": 0,
+        "pending": 0,
+        "by_status": {
+          "NOT_CONFIGURED": 5
+        },
+        "coverage_pct": 3.6
+      },
+      "state": "NOT_CONFIGURED"
+    },
+    "GET /api/status": 200,
+    "POST /api/signals": 405,
+    "DELETE /api/signals": 405,
+    "read_only": true,
+    "authority_over_orders": false
+  },
+  "verification": {
+    "verifier": "scripts/wp_signal_verify.py executed from a clean clone of the PR head",
+    "pr_head": "b21aab58",
+    "checks_total": 29,
+    "checks_failed": 0,
+    "ok": true,
+    "counts": {
+      "provider": "ccxt",
+      "traces": 138,
+      "signal_rows": 138,
+      "trace_linked": 138,
+      "analysis_rows": 5,
+      "analysis_by_status": {
+        "NOT_CONFIGURED": 5
+      }
+    },
+    "exit_code": 0
+  },
+  "tests": {
+    "focal_signals_initial": "97 passed in 9.18s",
+    "focal_signals_after_verifier_fix": "55 passed in 4.78s",
+    "risk_autonomous_config_working_tree": "5 failed, 493 passed in 46.41s",
+    "risk_verifier_in_clean_clone": "8 passed in 3.55s (exit 0)"
+  },
+  "evidence_sha256": {
+    "api_analysis_limit_50.json": "cc0601d4eed87964e2b9c09339a1c720804db8af04bebc2f200adfd495a6fe30",
+    "api_signals_limit_50.json": "9253d2735486e7985c5f7a0af0f89b548a9908eb29bac98767d9fcb7377bb800",
+    "api_status.json": "3b10f989c3520b3bfaf97a323599d8eea4d16cae97d150357033e2bc27810205",
+    "healthz.json": "ee3de09a21d58e25273731d6a5dc06fe5d37608085ccc9b44609a969d7bc68e2",
+    "PAPER_RUN.json": "3430657e985d9c24fa23e93816466f6e6a6227bc0c3a123f4d76d29d1ef745fe",
+    "SIGNAL_VERIFY_HEAD.json": "968ea2d959a8b6b6a86e46a50a5ad3f7103336fbfd363896ebb41396337267f9",
+    "signals_page.html": "da15054fbce650b86d00dfe9ed3fb323b7cb5f418f71115f76995284722e1585",
+    "SYSTEM_HEARTBEAT.json": "067c88ff372efe28065d540f7993e9218a1b94fc51283a217589bc82d74c38ab"
+  },
+  "claims_not_made": [
+    "PAPER_RUNNING as a service claim: the supervisor, heartbeat and children were alive for the length of this session, but no Windows task was installed and no 24x7 ownership is claimed here.",
+    "AI analysis: no model provider is configured and no key was used, so the analyst rows are NOT_CONFIGURED, never a fabricated claim.",
+    "PROFITABLE: no strategy is admitted and no edge is claimed; every row is an observation of the engine's own decision."
+  ]
+}

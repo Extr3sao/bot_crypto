@@ -70,6 +70,10 @@ DISK_AUDIT_PATH = Path("data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.json")
 #: The preflight refused and started nothing (§10, WP-9B).
 EXIT_DISK_PREFLIGHT = 4
 
+#: A new run id cannot write into a capture root another run owns (§28), so the
+#: launch is refused before a single child exists.
+EXIT_CAPTURE_ROOT_CONFLICT = 5
+
 DEFAULT_LAB_ROOT = Path("reports/paper-lab")
 DEFAULT_FORWARD_ROOT = Path("reports/microstructure-forward-lab")
 DEFAULT_PAPER_ROOT = Path("reports/autonomous-paper")
@@ -125,6 +129,32 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "LEGACY is the default (unchanged). SHADOW records the lifecycle-aware "
             "selection without affecting execution."
         ),
+    )
+    parser.add_argument(
+        "--no-analyst",
+        action="store_true",
+        help=(
+            "WP-SIGNAL-002 — do not start the read-only AI analyst sidecar. The stream "
+            "and the dashboard do not depend on it; its failure domain is its own"
+        ),
+    )
+    parser.add_argument(
+        "--analyst-interval",
+        type=float,
+        default=60.0,
+        help="seconds between analyst passes (each pass is bounded by --analyst-limit)",
+    )
+    parser.add_argument(
+        "--analyst-limit",
+        type=int,
+        default=5,
+        help="signals one analyst pass may examine (bounds latency and spend per pass)",
+    )
+    parser.add_argument(
+        "--analyst-budget-per-hour",
+        type=int,
+        default=60,
+        help="durable hourly cap on provider calls, read from the analysis ledger",
     )
     parser.add_argument("--rotation-seconds", type=int, default=900)
     parser.add_argument("--heartbeat-seconds", type=float, default=30.0)
@@ -310,6 +340,51 @@ def collector_resumes(forward_root: Path, run_id: str) -> bool:
     return (forward_root / "state" / f"{run_id}.json").exists()
 
 
+def capture_root_conflict(forward_root: Path, run_id: str) -> str | None:
+    """Why this run id may not write into this capture root, or ``None`` when it may.
+
+    A segment's path is a function of the window it covers, not of the run that wrote
+    it, so ``SegmentWriter`` refuses to append into a segment another capture already
+    owns ("one dataset root belongs to one run"). That refusal is right, but it used
+    to happen *inside* the collector: the lab started, the critical child crash-looped
+    three times and the supervisor published ``DEGRADED`` for a fact nobody had been
+    told before launch. The same fact is knowable before the first child exists — and
+    the two ways out (``--resume`` the owner, or point ``--data-root`` at a fresh
+    directory) can only be chosen by the operator, so it is decided here instead of
+    discovered later.
+    """
+    if (forward_root / "state" / f"{run_id}.json").exists():
+        # A restart of the run that owns the root: the collector appends to its past
+        # on purpose, and ``--resume`` is what tells it so.
+        return None
+    owned: list[str] = []
+    segments = forward_root / "segments"
+    if segments.exists():
+        owned.extend(str(path.relative_to(forward_root)) for path in segments.rglob("*.jsonl.gz"))
+    manifests = forward_root / "manifest"
+    if manifests.exists():
+        owned.extend(
+            f"manifest/{path.name}"
+            for path in manifests.glob("*.json")
+            if path.stem != run_id
+        )
+    state = forward_root / "state"
+    if state.exists():
+        owned.extend(
+            f"state/{path.name}"
+            for path in state.glob("*.json")
+            if path.stem != run_id
+        )
+    if not owned:
+        return None
+    return (
+        f"{forward_root} already holds a capture from another run "
+        f"({len(owned)} artefact(s), e.g. {owned[0]}); one dataset root belongs to one "
+        f"run. Start {run_id!r} with --data-root <fresh directory>, or --resume the run "
+        f"that owns this root."
+    )
+
+
 def child_stop_files(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Path]:
     """Where each child is asked to stop, so it can finalise instead of dying.
 
@@ -327,6 +402,7 @@ def child_stop_files(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
         # Maintenance workers ask between passes.
         "retention": run_dir / f"{STOP_FILE_NAME}.retention",
         "strategy_lab": run_dir / f"{STOP_FILE_NAME}.strategy_lab",
+        "analyst": run_dir / f"{STOP_FILE_NAME}.analyst",
     }
 
 
@@ -466,7 +542,109 @@ def build_specs(
             env={"PYTHONUNBUFFERED": "1"},
             stop_file=stop_files["strategy_lab"],
         ),
+        *(
+            []
+            if getattr(args, "no_analyst", False)
+            else [
+                ManagedProcess(
+                    name="analyst",
+                    command=[
+                        python,
+                        str(REPO_ROOT / "scripts" / "ai_signal_analyst.py"),
+                        "--run-root",
+                        args.paper_root,
+                        "--run-id",
+                        run_id,
+                        "--loop",
+                        "--interval",
+                        str(args.analyst_interval),
+                        "--limit-per-pass",
+                        str(args.analyst_limit),
+                        "--budget-per-hour",
+                        str(args.analyst_budget_per_hour),
+                        "--stop-file",
+                        str(stop_files["analyst"]),
+                    ],
+                    cwd=REPO_ROOT,
+                    critical=False,
+                    max_restarts=2,
+                    env={"PYTHONUNBUFFERED": "1"},
+                    stop_file=stop_files["analyst"],
+                )
+            ]
+        ),
     ]
+
+
+def capability_preflight(args: argparse.Namespace) -> dict[str, Any]:
+    """What this launch may actually do, per layer, before anything starts.
+
+    The economic block (0 admitted strategies) must not stop the signal plane: an
+    ingestion or projection failure and an admission refusal are different facts,
+    and collapsing them is how "BLOCKED" turns into "nothing to watch". Each layer
+    is reported with the reason it holds, and the admission verdict is read from
+    the tracked ledger rather than asserted here.
+    """
+    ledger_path = REPO_ROOT / "config" / "strategy_admission.json"
+    layers: dict[str, dict[str, Any]] = {
+        "LIVE": {
+            "state": "DISABLED",
+            "reason": "no live path exists: every child is read-only market data or PAPER",
+        }
+    }
+    admitted: list[str] = []
+    strategies = 0
+    ledger_error: str | None = None
+    try:
+        from trading_bot.autonomous.admission_ledger import AdmissionLedger
+
+        ledger = AdmissionLedger.load(ledger_path)
+        strategies = len(ledger.strategy_ids())
+        admitted = list(ledger.paper_candidates())
+    except Exception as exc:  # a missing ledger is a finding, not a crash
+        ledger_error = f"{type(exc).__name__}: {exc}"
+    layers["INGEST"] = {
+        "state": "ENABLED",
+        "reason": "read-only market data via the configured provider",
+    }
+    layers["SIGNALS"] = {
+        "state": "ENABLED",
+        "reason": (
+            "projection of the persisted decision traces; independent of admission, "
+            "so REJECTED/NO_ALPHA rows are produced with 0 admitted strategies"
+        ),
+    }
+    layers["SHADOW"] = {
+        "state": "ENABLED",
+        "reason": "SHADOW records an observation and can never create an order",
+    }
+    layers["PAPER_ORDER"] = {
+        "state": "ENABLED" if admitted else "BLOCKED",
+        "reason": (
+            f"admitted for paper: {', '.join(admitted)}"
+            if admitted
+            else (
+                f"the admission ledger admits none of its {strategies} strategies for paper "
+                f"({ledger_error or 'gate not met'})"
+            )
+        ),
+    }
+    layers["ANALYST"] = {
+        "state": "ENABLED" if not getattr(args, "no_analyst", False) else "DISABLED",
+        "reason": (
+            "read-only sidecar; records NOT_CONFIGURED when no provider key is present"
+            if not getattr(args, "no_analyst", False)
+            else "disabled by --no-analyst"
+        ),
+    }
+    return {
+        "strategy_count": strategies,
+        "admitted_for_paper": admitted,
+        "paper_order_enabled": bool(admitted),
+        "layers": layers,
+        "ledger": str(ledger_path.relative_to(REPO_ROOT)),
+        "ledger_error": ledger_error,
+    }
 
 
 def print_status(args: argparse.Namespace) -> int:
@@ -548,9 +726,12 @@ def main() -> int:
     run_id = args.run_id or f"paper-lab-{time.strftime('%Y%m%d-%H%M%S', time.gmtime())}"
     run_dir = lab_dir / run_id
     stop_files = child_stop_files(args, run_id, run_dir)
+    forward_root = (REPO_ROOT / args.forward_root).resolve()
+    capture_conflict = capture_root_conflict(forward_root, run_id)
     # §10/WP-9B — cost the window before the children exist, so an autoscaled valve is
     # the valve the collector is actually launched with.
     disk_budget, refused = disk_preflight(args)
+    capabilities = capability_preflight(args)
     specs = build_specs(args, run_id, run_dir, stop_files)
 
     plan = {
@@ -559,6 +740,7 @@ def main() -> int:
         "duration_hours": args.duration_hours,
         "free_disk_bytes": disk_free_bytes(REPO_ROOT),
         "processes": [spec.to_dict() for spec in specs],
+        "capabilities": capabilities,
         "isolation": (
             "paper and collector are separate processes; the supervisor restarts "
             "each independently and neither shares state with the other"
@@ -592,6 +774,11 @@ def main() -> int:
                 "finalise, and only then terminates the ones that did not exit"
             ),
         },
+        "capture_root": {
+            "path": str(forward_root),
+            "conflict": capture_conflict,
+            "exit_code_when_refused": EXIT_CAPTURE_ROOT_CONFLICT,
+        },
         "no_live_path": (
             "children are read-only market data plus the PAPER broker; no child "
             "holds execution credentials"
@@ -599,13 +786,32 @@ def main() -> int:
     }
     if args.dry_run:
         print(json.dumps(plan, indent=2, ensure_ascii=False))
+        if capture_conflict:
+            print(f"[lab] capture root REFUSED: {capture_conflict}", file=sys.stderr)
         if refused:
             print(
                 f"[lab] disk preflight REFUSED: {disk_budget['state']} — "
                 + "; ".join(disk_budget["reasons"]),
                 file=sys.stderr,
             )
-        return refused or 0
+        return refused or (EXIT_CAPTURE_ROOT_CONFLICT if capture_conflict else 0)
+
+    if capture_conflict:
+        # Nothing has been created yet: no run directory, no child, no crash-loop for
+        # the supervisor to report as a mystery. The refusal names both ways out.
+        print(
+            json.dumps(
+                {
+                    "run_id": run_id,
+                    "capture_root": str(forward_root),
+                    "conflict": capture_conflict,
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+        print(f"[lab] capture root REFUSED: {capture_conflict}", file=sys.stderr)
+        return EXIT_CAPTURE_ROOT_CONFLICT
 
     if refused:
         # Nothing has been created yet: no run directory, no child, no partial capture
@@ -650,6 +856,7 @@ def main() -> int:
     print(f"[lab] duration    : {'until stopped' if not args.duration_hours else f'{args.duration_hours} h'}")
     print(f"[lab] stop with   : Ctrl-C, or write STOP into {run_dir}")
     print(f"[lab] graceful    : {args.stop_grace_seconds:.0f}s to finalise before a kill")
+    print(f"[lab] capabilities: {json.dumps(capabilities['layers'], ensure_ascii=False)}")
     for spec in specs:
         print(f"[lab]   {spec.name:<13} critical={spec.critical} :: {' '.join(spec.command[:3])} ...")
 

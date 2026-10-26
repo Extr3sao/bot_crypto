@@ -254,6 +254,7 @@ def make_runtime(
     horizon_minutes: float = 5.0,
     routing_mode: Any = "LEGACY",
     lifecycle_ecosystem: Any | None = None,
+    signal_source: str | None = None,
 ) -> tuple[AutonomousPaperRuntime, FakeScanner, Any]:
     """Compose a runtime over deterministic inputs (no network)."""
     from trading_bot.config.runtime import TradingMode
@@ -315,5 +316,6 @@ def make_runtime(
         size_usd=1_000.0,
         routing_mode=routing_mode,
         lifecycle_ecosystem=lifecycle_ecosystem,
+        signal_source=signal_source,
     )
     return runtime, scanner, broker

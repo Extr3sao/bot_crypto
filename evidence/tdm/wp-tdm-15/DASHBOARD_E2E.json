@@ -1,0 +1,143 @@
+{
+  "schema_version": "rfc-tdm-015-evidence-v1",
+  "section": "dashboard_e2e",
+  "endpoints": {
+    "/healthz": {
+      "status": 200,
+      "bytes": 53,
+      "latency_ms": 67.17
+    },
+    "/": {
+      "status": 200,
+      "bytes": 85214,
+      "latency_ms": 87.07
+    },
+    "/api/signals": {
+      "status": 200,
+      "bytes": 84535,
+      "latency_ms": 128.81
+    },
+    "/api/analysis": {
+      "status": 200,
+      "bytes": 7931,
+      "latency_ms": 110.98
+    },
+    "/api/status": {
+      "status": 200,
+      "bytes": 110274,
+      "latency_ms": 66.53
+    },
+    "/signals?symbol=ETH%2FUSDT": {
+      "status": 200,
+      "bytes": 24534,
+      "latency_ms": 64.99
+    },
+    "POST /api/signals": {
+      "status": 405,
+      "bytes": null,
+      "latency_ms": null
+    }
+  },
+  "browser": {
+    "schema_version": "wp15-browser-e2e-v1",
+    "browser": "Chromium (Freebuff preview, real page, loopback)",
+    "dashboard_url": "http://127.0.0.1:8790",
+    "run_id": "tdm15-live-02",
+    "observed_at_utc": "2026-10-26T10:08:00Z",
+    "steps": [
+      {
+        "step": 1,
+        "action": "open http://127.0.0.1:8790",
+        "observed": {
+          "title": "PAPER lab — tdm15-live-02",
+          "state_banner": "HEALTHY",
+          "eligibility_banner": "REJECTED_ALPHA — EXPERIMENTAL PAPER, NOT VALIDATED · no strategy is admitted for paper, so this lab can create no order",
+          "signals_table_present": true,
+          "analysis_status_visible": "NOT_CONFIGURED"
+        }
+      },
+      {
+        "step": 2,
+        "action": "type ETH/USDT into the symbol filter and submit the form",
+        "observed": {
+          "url_after_submit": "http://127.0.0.1:8790/?symbol=ETH%2FUSDT&strategy=&stage=&limit=50#signals",
+          "rows": 7,
+          "symbols": [
+            "ETH/USDT"
+          ],
+          "showing": "showing 7/7",
+          "note": "the same response is filtered; before the fix the page kept rendering every asset until the auto-refresh"
+        }
+      },
+      {
+        "step": 3,
+        "action": "read the rendered document text and pin it",
+        "observed": {
+          "characters": 5360,
+          "body_text_sha256": "c143eefdfc05bfe5b8371f3246511491687801cd6636bc0551eabbdf847211e4",
+          "first_decision_utc": "2026-10-26T10:05:06.498Z"
+        }
+      }
+    ],
+    "unfiltered_observation": {
+      "url": "http://127.0.0.1:8790/",
+      "rows": 18,
+      "symbols": [
+        "BTC/USDT",
+        "ETH/USDT",
+        "SOL/USDT"
+      ],
+      "note": "measured earlier in the same session, before the second run cycle; the board is chronological and newest first"
+    },
+    "screenshot": {
+      "status": "UNAVAILABLE",
+      "reason": "the preview webview reported 'no frames' (not composited), so no PNG was produced. The DOM text hash and the HTTP payload hashes above are the record instead of a picture"
+    },
+    "http_checks": {
+      "POST /api/signals": 405,
+      "GET /healthz": 200,
+      "GET /api/signals": 200,
+      "GET /api/analysis": 200,
+      "GET /api/status": 200
+    },
+    "verdict": "PASS_WITH_LIMITATION",
+    "limitation": "real browser interaction and DOM evidence; image capture blocked by the compositor, declared instead of replaced with a mock"
+  },
+  "verifier": {
+    "path": ".tmp\\wp15\\SIGNAL_VERIFY.json",
+    "ok": true,
+    "checks": 29,
+    "failed": [],
+    "counts": {
+      "provider": null,
+      "traces": 21,
+      "signal_rows": 21,
+      "trace_linked": 21,
+      "analysis_rows": 6,
+      "analysis_by_status": {
+        "NOT_CONFIGURED": 6
+      }
+    },
+    "generated_at_utc": "2026-10-26T10:09:20Z"
+  },
+  "evidence_refs": [
+    {
+      "path": ".tmp\\wp15\\dashboard_probe.json",
+      "exists": true,
+      "bytes": 233477,
+      "sha256": "23f1faad2f07244c83bb1a337e268fd2412f8aad140d5e21f6ebe185bbafe60e"
+    },
+    {
+      "path": ".tmp\\wp15\\browser_e2e.json",
+      "exists": true,
+      "bytes": 2281,
+      "sha256": "d6db624bfdb1be08860f5b6e38dc80bcc09275c47caf1c7ce03b3adec1f5898c"
+    },
+    {
+      "path": ".tmp\\wp15\\SIGNAL_VERIFY.json",
+      "exists": true,
+      "bytes": 4060,
+      "sha256": "a2018eb14b8e8760623a4419d61b6fabeac3a6c183acb95b31455470c0ce2496"
+    }
+  ]
+}

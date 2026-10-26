@@ -263,7 +263,7 @@ def test_every_child_that_must_finalise_is_stopped_by_a_file(lab_launcher: Any) 
     specs = lab_launcher.build_specs(namespace, "lab-test", run_dir, stop_files)
     by_name = {spec.name: spec for spec in specs}
 
-    assert set(stop_files) == {"paper", "collector", "retention", "strategy_lab"}
+    assert set(stop_files) == {"paper", "collector", "retention", "strategy_lab", "analyst"}
     for name, spec in by_name.items():
         assert spec.stop_file == stop_files[name], name
     # Every distinct child gets its own file: one file cannot stop two children
@@ -311,6 +311,58 @@ def test_a_restart_tells_the_collector_it_owns_the_root(
     # Only the collector owns capture state; PAPER resumes through its own store.
     assert "--resume" not in again["paper"].command
     assert "--resume" not in again["retention"].command
+
+
+def test_a_new_run_id_into_an_owned_capture_root_is_refused_before_launch(
+    tmp_path: Path, lab_launcher: Any
+) -> None:
+    """§28 — a crash-loop discovered after launch is a fact that was knowable before it.
+
+    The writer refuses to append into a segment another capture owns, so a fresh run
+    id pointed at a used root cannot ever write. Observed on 2026-10-26: the collector
+    died three times with ``STORAGE_WRITE_FAILURE`` and the lab published ``DEGRADED``
+    while PAPER itself was fine. The refusal belongs in the preflight, where both ways
+    out (``--resume`` the owner, or a fresh ``--data-root``) are still available.
+    """
+    forward = tmp_path / "forward"
+    assert lab_launcher.capture_root_conflict(forward, "lab-new") is None, "an absent root is free"
+
+    (forward / "state").mkdir(parents=True)
+    (forward / "state" / "lab-old.json").write_text("{", encoding="utf-8")
+    (forward / "segments" / "binance" / "spot" / "_GLOBAL").mkdir(parents=True)
+    (forward / "segments" / "binance" / "spot" / "_GLOBAL" / "0900.jsonl.gz").write_bytes(b"")
+    conflict = lab_launcher.capture_root_conflict(forward, "lab-new")
+    assert conflict is not None
+    assert "one dataset root belongs to one run" in conflict
+    assert "--data-root" in conflict and "--resume" in conflict
+
+    # The run that owns the root is the one exception: it continues its own capture.
+    assert lab_launcher.capture_root_conflict(forward, "lab-old") is None
+
+
+def test_the_capture_root_refusal_happens_before_anything_is_created(
+    tmp_path: Path, lab_launcher: Any, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    forward = tmp_path / "forward"
+    (forward / "state").mkdir(parents=True)
+    (forward / "state" / "lab-old.json").write_text("{}", encoding="utf-8")
+    lab_root = tmp_path / "lab"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "start_paper_lab.py",
+            "--run-id",
+            "lab-new",
+            "--data-root",
+            str(forward),
+            "--lab-root",
+            str(lab_root),
+        ],
+    )
+    assert lab_launcher.main() == lab_launcher.EXIT_CAPTURE_ROOT_CONFLICT
+    # Nothing ran: no run directory, no plan, no child that could crash-loop.
+    assert not (lab_root / "lab-new").exists()
 
 
 def test_the_stop_reason_is_read_from_the_evidence(

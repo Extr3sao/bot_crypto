@@ -217,7 +217,7 @@ def test_the_launcher_refuses_the_configuration_that_failed(launcher: Any, monke
 
 
 def test_the_launcher_autoscales_only_when_asked_and_the_children_get_the_new_valve(
-    launcher: Any, monkeypatch: Any, capsys: Any
+    launcher: Any, monkeypatch: Any, capsys: Any, tmp_path: Any
 ) -> None:
     monkeypatch.setattr(
         launcher.sys,
@@ -232,6 +232,10 @@ def test_the_launcher_autoscales_only_when_asked_and_the_children_get_the_new_va
             str(FAILED_VALVE_BYTES),
             "--autoscale-collector-budget",
             "--dry-run",
+            # A fresh capture root: this test is about the disk valve, and the
+            # capture-root preflight would otherwise refuse a root another run owns.
+            "--data-root",
+            str(tmp_path / "fresh-capture"),
         ],
     )
     assert launcher.main() == 0

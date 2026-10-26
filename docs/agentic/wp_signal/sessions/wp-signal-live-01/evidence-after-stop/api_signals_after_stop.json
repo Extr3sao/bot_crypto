@@ -1,0 +1,276 @@
+{
+  "schema_version": "paper-signals-view-v1",
+  "generated_at_ms": 1793012528450,
+  "generated_at_utc": "2026-10-26T11:02:08Z",
+  "read_only": true,
+  "run_id": "wp-signal-live-01",
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp-signal-live-01",
+  "available": true,
+  "state": "DOWN",
+  "state_reason": "the lab is not running; the stream is the last one written",
+  "events": [
+    {
+      "schema_version": "signal-event-v1",
+      "signal_id": "1b70241a80528f42363bb315307ea694",
+      "run_id": "53a513beb1c94827",
+      "decision_id": "53a513beb1c94827-SOL",
+      "asset": "SOL",
+      "symbol": "SOL/USDT",
+      "venue": "binance",
+      "timeframe": "5m",
+      "strategy_id": null,
+      "strategy_version": null,
+      "bar_close_time_ms": 1793011999090,
+      "bar_close_time_utc": "2026-10-26T10:53:19.090Z",
+      "decision_time_ms": 1793011999090,
+      "decision_time_utc": "2026-10-26T10:53:19.090Z",
+      "direction": null,
+      "stage": "REJECTED",
+      "kind": "NO_ALPHA",
+      "reason": "no_candidate_emitted_an_alpha",
+      "gross_edge_bps": null,
+      "estimated_cost_bps": null,
+      "net_edge_bps": null,
+      "risk_state": "NOT_APPLICABLE",
+      "data_quality": "OK",
+      "source": "REAL",
+      "evidence_refs": [
+        {
+          "decision_id": "53a513beb1c94827-SOL",
+          "file": "traces.jsonl",
+          "kind": "decision_trace",
+          "run_id": "53a513beb1c94827",
+          "sequence": 153,
+          "trace_hash": "3bf90bbd84ea520fc3cc5bfd86fe02b3cf612cf20f8daf709f1b398933846d88"
+        },
+        {
+          "data_fingerprint": "sha256:3d5312fe923cdab2faa454932a61813a",
+          "kind": "market_data"
+        },
+        {
+          "kind": "venue",
+          "venue": "binance"
+        }
+      ],
+      "candidates": [
+        {
+          "admission_status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": 1.49,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "mean_reversion@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -0.11,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "breakout@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.65,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "trend@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.88,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "momentum@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.56,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "ema_crossover@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.73,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "volatility@5m"
+        }
+      ],
+      "classification": "NO_ALPHA",
+      "no_trade_kind": "NO_TRADE_STRATEGIC",
+      "errors": [],
+      "order_created": false,
+      "regime": "LOW_VOLATILITY",
+      "created_at_ms": 1793012004260,
+      "created_at_utc": "2026-10-26T10:53:24.260Z",
+      "outcome": null,
+      "analysis": null
+    },
+    {
+      "schema_version": "signal-event-v1",
+      "signal_id": "bc7cc0b50707c3717e3bfba29ec5efa5",
+      "run_id": "53a513beb1c94827",
+      "decision_id": "53a513beb1c94827-ETH",
+      "asset": "ETH",
+      "symbol": "ETH/USDT",
+      "venue": "binance",
+      "timeframe": "5m",
+      "strategy_id": null,
+      "strategy_version": null,
+      "bar_close_time_ms": 1793011999090,
+      "bar_close_time_utc": "2026-10-26T10:53:19.090Z",
+      "decision_time_ms": 1793011999090,
+      "decision_time_utc": "2026-10-26T10:53:19.090Z",
+      "direction": null,
+      "stage": "REJECTED",
+      "kind": "NO_ALPHA",
+      "reason": "no_candidate_emitted_an_alpha",
+      "gross_edge_bps": null,
+      "estimated_cost_bps": null,
+      "net_edge_bps": null,
+      "risk_state": "NOT_APPLICABLE",
+      "data_quality": "OK",
+      "source": "REAL",
+      "evidence_refs": [
+        {
+          "decision_id": "53a513beb1c94827-ETH",
+          "file": "traces.jsonl",
+          "kind": "decision_trace",
+          "run_id": "53a513beb1c94827",
+          "sequence": 152,
+          "trace_hash": "f6dcf08d032b82f6143ce4a4ab9331a00939e608f0490d91c0758c80e3d54ddd"
+        },
+        {
+          "data_fingerprint": "sha256:7f621c2c6653fb5088d4f948065be719",
+          "kind": "market_data"
+        },
+        {
+          "kind": "venue",
+          "venue": "binance"
+        }
+      ],
+      "candidates": [
+        {
+          "admission_status": "COST_KILLED",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": 1.49,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "mean_reversion@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -0.11,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "breakout@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.65,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "trend@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -1.88,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "momentum@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.56,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "ema_crossover@5m"
+        },
+        {
+          "admission_status": "NO_GROSS_EDGE",
+          "admitted_for_paper": false,
+          "expected_gross_edge_bps": -4.73,
+          "router_reason": "stale_context",
+          "router_status": "REJECTED",
+          "selected": false,
+          "strategy_id": "volatility@5m"
+        }
+      ],
+      "classification": "NO_ALPHA",
+      "no_trade_kind": "NO_TRADE_STRATEGIC",
+      "errors": [],
+      "order_created": false,
+      "regime": "LOW_VOLATILITY",
+      "created_at_ms": 1793012004256,
+      "created_at_utc": "2026-10-26T10:53:24.256Z",
+      "outcome": null,
+      "analysis": null
+    }
+  ],
+  "page": {
+    "limit": 2,
+    "returned": 2,
+    "total_matched": 153,
+    "next_cursor": 152
+  },
+  "stats": {
+    "by_stage": {
+      "REJECTED": 75,
+      "CANDIDATE": 78
+    },
+    "by_kind": {
+      "NO_ALPHA": 75,
+      "ALPHA": 78
+    },
+    "by_symbol": {
+      "BTC/USDT": 51,
+      "ETH/USDT": 51,
+      "SOL/USDT": 51
+    },
+    "records": 153
+  },
+  "filters": {
+    "symbol": null,
+    "strategy": null,
+    "timeframe": null,
+    "stage": null,
+    "kind": null,
+    "since_ms": null,
+    "cursor": null
+  },
+  "limit_bounds": {
+    "default": 50,
+    "max": 200
+  },
+  "retention": {
+    "records_per_generation": 20000,
+    "generations": 3
+  },
+  "integrity": {
+    "ok": true,
+    "duplicates": 0,
+    "malformed": 0,
+    "pit_violations": 0
+  }
+}

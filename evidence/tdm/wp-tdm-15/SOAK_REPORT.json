@@ -1,0 +1,106 @@
+{
+  "schema_version": "rfc-tdm-015-evidence-v1",
+  "section": "soak",
+  "run_id": "tdm15-live-02",
+  "target_hours": 72.0,
+  "measured_hours": 0.1046,
+  "session_measured_minutes": 30.0,
+  "heartbeat_ledger_note": "heartbeat.jsonl belongs to the last window: the restart starts a new ledger instead of appending to the previous window's",
+  "measured_window_utc": {
+    "first_bar_close": "2026-10-26T09:35:05Z",
+    "last_bar_close": "2026-10-26T10:05:06Z",
+    "span_minutes": 30.0
+  },
+  "uptime_seconds": 200.0,
+  "heartbeat_rows": 7,
+  "first_heartbeat_utc": "2026-10-26T09:35:11Z",
+  "last_heartbeat_utc": "2026-10-26T10:05:13Z",
+  "cycles": 6,
+  "signal_rows": 21,
+  "windows": {
+    "last_window_report": {
+      "duration_seconds": 376.528,
+      "stop_reason": "duration reached",
+      "stop_verdict": "CLEAN"
+    },
+    "replaced_by_restart": "the first window's LAB_RUN_REPORT.json was overwritten by --restart with the same run id; its cycles survive in logs/paper.log and heartbeat.jsonl"
+  },
+  "final_state": "DEGRADED",
+  "stop_report": {
+    "schema_version": "lab-stop-report-v1",
+    "at_ms": 1793009287812,
+    "asked_to_finalise": [
+      "analyst",
+      "collector",
+      "paper",
+      "retention",
+      "strategy_lab"
+    ],
+    "escalated": [],
+    "failed_children": [],
+    "exit_codes": {
+      "paper": 0,
+      "collector": 0,
+      "retention": 0,
+      "strategy_lab": 0,
+      "analyst": 0
+    },
+    "verdict": "CLEAN",
+    "note": "a child that exits non-zero, or that has to be killed because it did not finalise, is a failure even though it was stopped on purpose (§2, §57)"
+  },
+  "restarts": {
+    "paper": 0,
+    "collector": 0,
+    "retention": 0,
+    "strategy_lab": 0,
+    "analyst": 0
+  },
+  "collector": {
+    "events": 310889,
+    "gaps": 34,
+    "reconnects": 1,
+    "stop_reason": "stop file"
+  },
+  "capabilities": {
+    "LIVE": {
+      "state": "DISABLED",
+      "reason": "no live path exists: every child is read-only market data or PAPER"
+    },
+    "INGEST": {
+      "state": "ENABLED",
+      "reason": "read-only market data via the configured provider"
+    },
+    "SIGNALS": {
+      "state": "ENABLED",
+      "reason": "projection of the persisted decision traces; independent of admission, so REJECTED/NO_ALPHA rows are produced with 0 admitted strategies"
+    },
+    "SHADOW": {
+      "state": "ENABLED",
+      "reason": "SHADOW records an observation and can never create an order"
+    },
+    "PAPER_ORDER": {
+      "state": "BLOCKED",
+      "reason": "the admission ledger admits none of its 24 strategies for paper (gate not met)"
+    },
+    "ANALYST": {
+      "state": "ENABLED",
+      "reason": "read-only sidecar; records NOT_CONFIGURED when no provider key is present"
+    }
+  },
+  "verdict": "NOT_YET_VERIFIED",
+  "note": "a 72 h window was not attempted in this session; the measured window is reported as measured. 24x7 is neither claimed nor certified",
+  "evidence_refs": [
+    {
+      "path": "reports\\paper-lab\\tdm15-live-02\\LAB_RUN_REPORT.json",
+      "exists": true,
+      "bytes": 18490,
+      "sha256": "9c43d39cb47f955287b4845277cf7aae8dfa80624c108558f80d09d405c512f2"
+    },
+    {
+      "path": "reports\\autonomous-paper\\tdm15-live-02\\heartbeat.jsonl",
+      "exists": true,
+      "bytes": 4043,
+      "sha256": "910c2c2629f0fb2e56465782afe02b9dee6e0a5075e97beed612d75d60574c80"
+    }
+  ]
+}

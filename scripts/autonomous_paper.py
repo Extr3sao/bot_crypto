@@ -301,6 +301,7 @@ async def main() -> int:
         StopController,
         build_daily_report,
         durable_write,
+        wait_for_cadence,
         write_daily_report,
     )
     from trading_bot.autonomous.reporting import write_run_report
@@ -474,13 +475,19 @@ async def main() -> int:
                 # if wall-clock jitter (or a restart) lands twice in the same bar
                 # window, skip the duplicate instead of deciding on the same bar
                 # twice.
-                await asyncio.sleep(
+                stopped_mid_wait = await wait_for_cadence(
                     seconds_until_next_evaluation(
                         int(time.time() * 1000),
                         cadence_interval_ms,
                         args.bar_close_settlement_seconds,
-                    )
+                    ),
+                    stopped=lambda: stop.stopped,
                 )
+                if stopped_mid_wait:
+                    # §51 — a stop asked for during the nap is answered in a second,
+                    # not after the bar, so the supervisor never has to escalate.
+                    stop_reason = stop.reason or "STOP file"
+                    break
                 current_close = bar_close_ms(
                     int(time.time() * 1000), cadence_interval_ms
                 )
@@ -606,6 +613,12 @@ async def main() -> int:
                 "run_id": run_id,
                 "pid": os.getpid(),
                 "state": "STOPPED",
+                # The provider is provenance, not startup chatter: the final rewrite
+                # used to drop it, and the independent verifier then had no way to
+                # tell a REAL signal from a FAKE one and silently skipped the check.
+                "provider": args.provider,
+                "assets": [a.strip().upper() for a in args.assets.split(",") if a.strip()],
+                "timeframe": args.timeframe,
                 "stop_reason": stop_reason or "completed",
                 "cycles": len(cycle_reports),
                 "cadence": args.cadence,
