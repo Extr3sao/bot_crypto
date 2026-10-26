@@ -13,7 +13,9 @@ from __future__ import annotations
 
 import inspect
 import shutil
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import pytest
 import yaml
@@ -29,7 +31,7 @@ CONFIG_DIR = REPO_ROOT / "config"
 
 #: One observable key per YAML file: the six files that ``YamlDirectorySource``
 #: must merge for the loader to be the real one.
-PROBES: tuple[tuple[str, tuple[str, ...], object, object], ...] = (
+PROBES: tuple[tuple[str, tuple[str, ...], object, Callable[[Settings], Any]], ...] = (
     ("assets.yaml", ("universe", "name"), "u19_assets_probe", lambda s: s.universe.name),
     ("exchange.yaml", ("exchange", "rate_limit_ms"), 1234, lambda s: s.exchange.rate_limit_ms),
     (
@@ -94,12 +96,9 @@ def test_types_module_reexports_the_authoritative_objects() -> None:
 
 def test_types_load_settings_still_serves_the_canonical_keywords() -> None:
     """``exchange_connector``'s fallback imports the names from ``types``."""
-    from trading_bot.config.types import FLAT_ENV_ALIASES, load_settings as types_loader
-
-    assert types_loader is load_settings
-    parameters = inspect.signature(types_loader).parameters
+    parameters = inspect.signature(types_module.load_settings).parameters
     assert "config_dir" in parameters and "env_file" in parameters
-    assert FLAT_ENV_ALIASES  # the real alias table, not an empty stub
+    assert types_module.FLAT_ENV_ALIASES  # the real alias table, not an empty stub
 
 
 def test_get_settings_returns_a_real_loaded_configuration(
@@ -107,9 +106,9 @@ def test_get_settings_returns_a_real_loaded_configuration(
 ) -> None:
     """The compat getter must read ``./config``, not return fixed defaults."""
     monkeypatch.chdir(REPO_ROOT)
-    configured = yaml.safe_load(
-        (CONFIG_DIR / "risk.yaml").read_text(encoding="utf-8")
-    )["risk"]["max_risk_per_trade_pct"]
+    configured = yaml.safe_load((CONFIG_DIR / "risk.yaml").read_text(encoding="utf-8"))["risk"][
+        "max_risk_per_trade_pct"
+    ]
 
     loaded = get_settings()
 
