@@ -39,10 +39,11 @@ from __future__ import annotations
 import hashlib
 import json
 import time
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
-from typing import Any, Iterable, Sequence
+from typing import Any
 
 __all__ = [
     "DEFAULT_PAGE_LIMIT",
@@ -73,7 +74,7 @@ DEFAULT_RETENTION_RECORDS = 20_000
 DEFAULT_RETENTION_GENERATIONS = 3
 
 
-class SignalStage(str, Enum):
+class SignalStage(StrEnum):
     """Where the decision stopped (§WP-SIGNAL-001).
 
     CANDIDATE — a proposal existed and did not become an order;
@@ -88,7 +89,7 @@ class SignalStage(str, Enum):
     PAPER = "PAPER"
 
 
-class SignalKind(str, Enum):
+class SignalKind(StrEnum):
     """What the row *is*, separately from where it stopped."""
 
     ALPHA = "ALPHA"
@@ -97,12 +98,12 @@ class SignalKind(str, Enum):
     OPERATIONAL_FAILURE = "OPERATIONAL_FAILURE"
 
 
-class SignalSource(str, Enum):
+class SignalSource(StrEnum):
     REAL = "REAL"
     FAKE = "FAKE"
 
 
-class DataQuality(str, Enum):
+class DataQuality(StrEnum):
     OK = "OK"
     STALE = "STALE"
     MISSING = "MISSING"
