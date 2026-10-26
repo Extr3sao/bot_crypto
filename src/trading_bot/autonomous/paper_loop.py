@@ -174,6 +174,15 @@ class PaperHeartbeat:
     storage_errors: tuple[str, ...] = ()
     mode: str = "PAPER"
     timestamp_iso: str = ""
+    #: RFC-PAPER-008 — the newest data and decision this cycle actually used, so
+    #: the dashboard can show "last bar UTC" and a data age instead of only a
+    #: cycle counter. None means the cycle produced no row; never 0, which would
+    #: read as a timestamp in 1970.
+    last_market_time_ms: int | None = None
+    last_decision_time_ms: int | None = None
+    signals_appended: int = 0
+    outcomes_resolved: int = 0
+    outcomes_pending: int = 0
     schema_version: str = PAPER_HEARTBEAT_SCHEMA_VERSION
 
     @classmethod
@@ -199,6 +208,13 @@ class PaperHeartbeat:
         vetoes = sum(
             1 for row in rows if str(getattr(row, "risk_state", "")) == "VETOED"
         )
+        market_times = [
+            int(getattr(row, "market_time_ms", 0) or 0) for row in rows
+        ]
+        decision_times = [
+            int(getattr(row, "decision_time_ms", 0) or 0) for row in rows
+        ]
+        signals = getattr(report, "signals", None) or {}
         return cls(
             run_id=run_id,
             cycle=cycle,
@@ -221,6 +237,11 @@ class PaperHeartbeat:
             uptime_seconds=round(max(0.0, (now - started_at_ms) / 1000.0), 3),
             state_age_seconds=state_age_seconds,
             paper_candidates=tuple(paper_candidates),
+            last_market_time_ms=max(market_times) if any(market_times) else None,
+            last_decision_time_ms=max(decision_times) if any(decision_times) else None,
+            signals_appended=int(signals.get("appended") or 0) if isinstance(signals, dict) else 0,
+            outcomes_resolved=int(getattr(report, "outcomes_resolved", 0) or 0),
+            outcomes_pending=int(getattr(report, "outcomes_pending", 0) or 0),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -245,6 +266,15 @@ class PaperHeartbeat:
             "cycles_completed": self.cycles_completed,
             "uptime_seconds": self.uptime_seconds,
             "state_age_seconds": self.state_age_seconds,
+            "last_market_time_ms": self.last_market_time_ms,
+            "last_market_time_utc": None if not self.last_market_time_ms else _iso(self.last_market_time_ms),
+            "last_decision_time_ms": self.last_decision_time_ms,
+            "last_decision_time_utc": (
+                None if not self.last_decision_time_ms else _iso(self.last_decision_time_ms)
+            ),
+            "signals_appended": self.signals_appended,
+            "outcomes_resolved": self.outcomes_resolved,
+            "outcomes_pending": self.outcomes_pending,
             "paper_candidates": list(self.paper_candidates),
             "storage_failures": self.storage_failures,
             "storage_errors": list(self.storage_errors[-5:]),

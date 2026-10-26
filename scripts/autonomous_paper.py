@@ -119,6 +119,17 @@ def parse_args() -> argparse.Namespace:
         help="Disable SHADOW evaluation (research observations) for this run.",
     )
     parser.add_argument(
+        "--allow-testnet-market-data",
+        dest="allow_testnet_market_data",
+        action="store_true",
+        help=(
+            "Allow a sandbox/testnet connector as the market data source. The run "
+            "then labels every signal source=FAKE instead of REAL: testnet prices "
+            "and volumes are not public market data, and a row that claims REAL "
+            "from them would be a false success. Refused by default."
+        ),
+    )
+    parser.add_argument(
         "--verify-provider",
         dest="verify_provider",
         action="store_true",
@@ -237,6 +248,38 @@ def preflight_run_universe(
     )
 
 
+def resolve_data_provenance(
+    *, provider: str, sandbox: bool, allow_testnet: bool
+) -> tuple[str | None, str, str | None]:
+    """What the signal `source` may claim, and whether the run may start.
+
+    ``REAL`` is a statement about the venue the data came from, not about the
+    library that fetched it. A CCXT connector pointed at Binance testnet serves
+    synthetic prices and volumes; labelling those rows REAL is the exact false
+    success this plane exists to prevent. The run is refused by default, and an
+    explicit ``--allow-testnet-market-data`` keeps the old demo mode honest by
+    publishing it as FAKE.
+    """
+    from trading_bot.autonomous.signals import SignalSource
+
+    if provider == "fake":
+        return SignalSource.FAKE.value, "FAKE", None
+    if sandbox:
+        if not allow_testnet:
+            return (
+                None,
+                "TESTNET",
+                (
+                    "the market data source is a sandbox/testnet connector "
+                    "(sandbox_enabled=True). PAPER/SHADOW with REAL signals requires "
+                    "public venue data (the public REST source), or pass "
+                    "--allow-testnet-market-data to publish the run as FAKE"
+                ),
+            )
+        return SignalSource.FAKE.value, "TESTNET", None
+    return SignalSource.REAL.value, "MAINNET", None
+
+
 def build_scanner_factory(settings: Settings, provider: str) -> Any:
     from trading_bot.scanner.mode_filters import build_filter_set_per_mode
     from trading_bot.scanner.scanner import UniverseScanner
@@ -246,9 +289,14 @@ def build_scanner_factory(settings: Settings, provider: str) -> Any:
 
         source: Any = build_demo_fetcher(settings)
     else:
-        from trading_bot.market_data.wiring import resolve_scanner_source
+        # RFC-PAPER-008 / G-7 — the market-data plane is Binance's PUBLIC REST
+        # endpoints (klines, 24h ticker, book ticker), not the credentialed hub
+        # connector. The hub stays sandboxed by the Settings invariant, which is
+        # correct for anything that could touch an account; the scanner only needs
+        # public truth, and only this source can honestly label a row REAL.
+        from trading_bot.market_data.public_rest import PublicRestKlineSource
 
-        source = resolve_scanner_source(settings, session_id="autonomous-paper")
+        source = PublicRestKlineSource(timeframe=settings.universe.timeframes[0])
 
     def factory() -> Any:
         scan_settings = settings.model_copy(
@@ -264,11 +312,26 @@ def build_scanner_factory(settings: Settings, provider: str) -> Any:
 
 
 def write_run_descriptor(run_dir: Path, payload: dict[str, Any]) -> Path:
-    """The supervisor's view of a live run: pid, mode, candidates, commit."""
+    """The supervisor's view of a live run: pid, mode, candidates, commit.
+
+    The file is *merged*, not replaced: the shutdown write used to overwrite the
+    start-up descriptor, so a stopped run lost its provider, assets and cadence —
+    the dashboard and the independent verifier then had no provenance to check.
+    A later write can only add or correct fields; it cannot silently forget them.
+    """
     run_dir.mkdir(parents=True, exist_ok=True)
     path = run_dir / "PAPER_RUN.json"
+    merged: dict[str, Any] = {}
+    if path.exists():
+        try:
+            existing = json.loads(path.read_text(encoding="utf-8"))
+            if isinstance(existing, dict):
+                merged = existing
+        except ValueError:
+            merged = {}
+    merged.update(payload)
     tmp = path.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    tmp.write_text(json.dumps(merged, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     os.replace(tmp, path)
     return path
 
@@ -331,6 +394,20 @@ async def main() -> int:
     run_dir = REPO_ROOT / args.run_root / run_id
 
     scanner_factory, data_source = build_scanner_factory(settings, args.provider)
+    market_data_sandbox = bool(getattr(data_source, "sandbox_enabled", False))
+    signal_source, data_mode, provenance_refusal = resolve_data_provenance(
+        provider=args.provider,
+        sandbox=market_data_sandbox,
+        allow_testnet=args.allow_testnet_market_data,
+    )
+    if provenance_refusal is not None:
+        print(f"Refusing to start: {provenance_refusal}", file=sys.stderr)
+        return 1
+    print(
+        f"[preflight] market data provider={args.provider} "
+        f"venue={settings.runtime.exchange_id or 'unset'} mode={data_mode} "
+        f"signal_source={signal_source}"
+    )
 
     support = preflight_run_universe(
         ledger=ledger,
@@ -371,7 +448,10 @@ async def main() -> int:
         "mean_reversion": MeanReversionFamily(),
         "volatility": VolatilityFamily(),
     }
-    environment = f"{args.provider}:{settings.runtime.exchange_id or 'unset'}"
+    data_transport = str(getattr(data_source, "provider", "hub-connector"))
+    environment = (
+        f"{args.provider}:{settings.runtime.exchange_id or 'unset'}:{data_transport}"
+    )
     runtime = AutonomousPaperRuntime(
         settings=settings,
         scanner_factory=scanner_factory,
@@ -391,6 +471,7 @@ async def main() -> int:
         environment=environment,
         idempotency=idempotency,
         routing_mode=args.strategy_routing_mode,
+        signal_source=signal_source,
     )
 
     heartbeat = HeartbeatWriter(run_dir=run_dir)
@@ -414,6 +495,10 @@ async def main() -> int:
             "timeframe": args.timeframe,
             "provider": args.provider,
             "environment": environment,
+            "market_data": data_mode,
+            "market_data_sandbox": market_data_sandbox,
+            "data_transport": data_transport,
+            "signal_source": signal_source,
             "paper_candidates": registry.paper_candidates(args.timeframe),
             "registry_counts": registry.counts_by_status(),
             "universe_preflight": support.to_dict(),
@@ -620,6 +705,8 @@ async def main() -> int:
                 "assets": [a.strip().upper() for a in args.assets.split(",") if a.strip()],
                 "timeframe": args.timeframe,
                 "stop_reason": stop_reason or "completed",
+                "signal_source": signal_source,
+                "market_data": data_mode,
                 "cycles": len(cycle_reports),
                 "cadence": args.cadence,
                 "bar_close_settlement_seconds": args.bar_close_settlement_seconds,

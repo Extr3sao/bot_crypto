@@ -48,6 +48,23 @@ class HubMarketDataSource:
     def timeframe(self) -> str:
         return self._timeframe
 
+    @property
+    def sandbox_enabled(self) -> bool:
+        """Whether the underlying connector reads a sandbox/testnet venue.
+
+        The signal plane labels a row ``REAL`` only when the market data came
+        from the public venue. A testnet is not that, even when it is read-only,
+        so the provenance decision needs this fact from the source itself — a
+        configuration string can drift from the connector that was built.
+
+        Unknown provenance is reported as sandbox: a row that cannot be proven
+        real must not be published as real.
+        """
+        try:
+            return bool(self._connector.sandbox_enabled)
+        except Exception:
+            return True
+
     async def fetch_recent(self, symbol: str, limit: int = 100) -> list[OHLCV]:
         return await asyncio.to_thread(self._connector.fetch_ohlcv, symbol, self._timeframe, limit)
 

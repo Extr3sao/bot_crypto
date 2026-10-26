@@ -336,6 +336,26 @@ def test_pending_signals_are_oldest_first(tmp_path: Path) -> None:
     assert [item.decision_id for item in pending_signals(events, store)] == ["dec-0", "dec-2"]
 
 
+def test_not_configured_rows_do_not_starve_newer_signals(tmp_path: Path) -> None:
+    """The observed 5-of-12 stall: the same five rows were re-examined forever.
+
+    With no key, NOT_CONFIGURED is the pass's answer, not a queue entry. Once a
+    key appears the whole backlog is eligible again, so enabling AI still
+    analyses the signals it missed.
+    """
+    store = AnalysisStore(tmp_path)
+    events = [event(index) for index in range(6)]
+    unconfigured = analyst(store, None)
+    for item in events[:5]:
+        unconfigured.analyze(item)
+
+    assert [
+        item.decision_id
+        for item in pending_signals(events, store, provider_configured=False)
+    ] == ["dec-5"]
+    assert len(pending_signals(events, store, provider_configured=True)) == 6
+
+
 # --------------------------------------------------------------------------- #
 # the sidecar script
 
@@ -387,16 +407,79 @@ def test_sidecar_marks_not_configured_and_keeps_running(tmp_path: Path) -> None:
     summary = sidecar.run_pass(args, run_dir, None)
     assert summary["provider_configured"] is False
     assert summary["statuses"] == {"NOT_CONFIGURED": 2}
-    # The signal stays pending (so configuring a key later still analyses the
-    # backlog) but the second pass appends nothing: the id is the identity.
+    # NOT_CONFIGURED is the pass's answer, not a queue entry: the second pass
+    # does not re-examine rows it already covered (the observed 5-of-12 stall).
+    # It appends nothing and the file keeps exactly two rows.
     again = sidecar.run_pass(args, run_dir, None)
-    assert again["examined"] == 2
-    assert again["pending_before"] == 2
+    assert again["examined"] == 0
+    assert again["pending_before"] == 0
     rows = (run_dir / "analysis.jsonl").read_text(encoding="utf-8").splitlines()
     assert len(rows) == 2
+    # A signal decided *after* those rows is still covered with no provider:
+    # the sidecar never starves the stream while waiting for a key.
+    from trading_bot.autonomous.signals import SignalLedger
+
+    SignalLedger(run_dir).append(event(2))
+    fresh = sidecar.run_pass(args, run_dir, None)
+    assert fresh["examined"] == 1
+    assert fresh["statuses"] == {"NOT_CONFIGURED": 1}
+    assert len((run_dir / "analysis.jsonl").read_text(encoding="utf-8").splitlines()) == 3
     # Once a provider exists, the same backlog is analysed for real.
     third = sidecar.run_pass(args, run_dir, StubProvider())
-    assert third["statuses"] == {"ANALYZED": 2}
+    assert third["statuses"] == {"ANALYZED": 3}
+
+
+def test_sidecar_once_before_the_first_signal_writes_a_heartbeat_only(
+    tmp_path: Path,
+) -> None:
+    """RFC-PAPER-008: the supervisor starts the sidecar with PAPER, not after it.
+
+    Before the first bar closes there is no `signals.jsonl`. That must be a
+    heartbeat (``stream_present: false``), not exit code 2 and not an empty
+    stream created by the observer.
+    """
+    sidecar = _load_sidecar()
+    run_dir = tmp_path / "autonomous-paper" / "run-empty"
+    run_dir.mkdir(parents=True)
+    (run_dir / "PAPER_RUN.json").write_text('{"run_id": "run-empty"}\n', encoding="utf-8")
+    args = sidecar.parse_args(
+        ["--run-root", str(tmp_path / "autonomous-paper"), "--run-id", run_dir.name, "--once"]
+    )
+    assert sidecar.resolve_run_dir(tmp_path / "autonomous-paper", run_dir.name) == run_dir
+    summary = sidecar.run_pass(args, run_dir, None)
+    assert summary["stream_present"] is False
+    assert summary["signals_seen"] == 0
+    assert summary["examined"] == 0
+    assert not (run_dir / "signals.jsonl").exists()
+    heartbeat = json.loads((run_dir / "AI_ANALYST_HEARTBEAT.json").read_text(encoding="utf-8"))
+    assert heartbeat["stream_present"] is False
+    assert heartbeat["statuses"] == {}
+
+
+def test_sidecar_loop_exits_cleanly_when_the_run_does_not_exist_yet(
+    tmp_path: Path,
+) -> None:
+    """A missing run is waited for, not a crash loop.
+
+    The supervisor starts children in parallel, so the analyst can wake before
+    PAPER has created its directory. Loop mode must honour its stop file and
+    return 0; the old path returned 2 and was restarted into ``FAILED``.
+    """
+    sidecar = _load_sidecar()
+    stop = tmp_path / "STOP.analyst"
+    stop.write_text("stop\n", encoding="utf-8")
+    code = sidecar.main(
+        [
+            "--run-root",
+            str(tmp_path / "autonomous-paper"),
+            "--run-id",
+            "not-created-yet",
+            "--loop",
+            "--stop-file",
+            str(stop),
+        ]
+    )
+    assert code == 0
 
 
 def test_sidecar_limit_bounds_one_pass(tmp_path: Path) -> None:

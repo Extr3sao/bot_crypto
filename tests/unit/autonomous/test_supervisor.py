@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 
 from trading_bot.autonomous.supervisor import (
+    RECOVERY_WINDOW_SECONDS,
     ManagedProcess,
     ProcessState,
     Supervisor,
@@ -144,6 +145,30 @@ def test_a_non_critical_failure_degrades_instead_of_failing(tmp_path: Path) -> N
         assert supervisor.system_state() is SystemState.DEGRADED
         # PAPER is untouched by the other component's failure.
         assert supervisor.get("paper").state is ProcessState.RUNNING
+    finally:
+        supervisor.stop_all()
+
+
+def test_a_recovered_restart_does_not_pin_the_lab_to_degraded(tmp_path: Path) -> None:
+    """RFC-PAPER-008: a restart is an event, not a permanent verdict.
+
+    Observed in ``paper-lab-rfc008-live-02``: the analyst was killed once, the
+    supervisor restarted it in five seconds, and the console still published
+    DEGRADED long afterwards — which would have hidden the next real failure.
+    """
+    supervisor = _supervisor(tmp_path, [_spec("paper", RUNNING_CHILD)])
+    try:
+        supervisor.start_all()
+        runtime = supervisor.get("paper")
+        assert supervisor.system_state() is SystemState.HEALTHY
+
+        runtime.restart_times.append(time.time())
+        assert supervisor.system_state() is SystemState.DEGRADED
+
+        runtime.restart_times[-1] = time.time() - RECOVERY_WINDOW_SECONDS - 1.0
+        assert supervisor.system_state() is SystemState.HEALTHY
+        # The history is still there: recovery is not amnesia.
+        assert runtime.restarts == 1
     finally:
         supervisor.stop_all()
 

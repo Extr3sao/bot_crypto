@@ -124,7 +124,11 @@ class Report:
 
 
 def verify_signals(
-    run_dir: Path, traces: dict[str, dict[str, Any]], provider: str | None, report: Report
+    run_dir: Path,
+    traces: dict[str, dict[str, Any]],
+    provider: str | None,
+    report: Report,
+    declared_source: str | None = None,
 ) -> list[dict[str, Any]]:
     signals, malformed = read_jsonl(run_dir / "signals.jsonl")
     report.counts["signal_rows"] = len(signals)
@@ -152,7 +156,9 @@ def verify_signals(
     fabricated: list[str] = []
     bad_source: list[str] = []
     edited: list[str] = []
-    expected_source = None if provider is None else ("FAKE" if provider == "fake" else "REAL")
+    expected_source = declared_source or (
+        None if provider is None else ("FAKE" if provider == "fake" else "REAL")
+    )
 
     for row in signals:
         signal_id = str(row.get("signal_id"))
@@ -372,11 +378,38 @@ def main(argv: list[str] | None = None) -> int:
         except ValueError:
             run_descriptor = {}
     provider = run_descriptor.get("provider")
+    declared_source = run_descriptor.get("signal_source")
+    market_data = run_descriptor.get("market_data")
     report.counts["provider"] = provider
+    report.counts["signal_source"] = declared_source
+    report.counts["market_data"] = market_data
     report.check(
         "run.descriptor_present",
         bool(run_descriptor),
         "PAPER_RUN.json present" if run_descriptor else "no PAPER_RUN.json: provider unknown",
+    )
+    # RFC-PAPER-008 — the descriptor is where a run states the venue it read. A
+    # row cannot be checked against "REAL" without it, and a testnet run dressed
+    # as REAL must fail even if every row and trace agree with each other.
+    report.check(
+        "run.data_provenance_declared",
+        bool(declared_source and market_data),
+        f"signal_source={declared_source!r} market_data={market_data!r}",
+    )
+    if provider == "fake":
+        provenance_honest = declared_source == "FAKE" and market_data == "FAKE"
+    elif provider:
+        provenance_honest = (
+            declared_source == "REAL"
+            and market_data == "MAINNET"
+            and run_descriptor.get("market_data_sandbox") is False
+        )
+    else:
+        provenance_honest = False
+    report.check(
+        "run.data_provenance_is_honest",
+        provenance_honest,
+        f"provider={provider!r} declares {market_data}/{declared_source}",
     )
 
     traces_rows, trace_malformed = read_jsonl(run_dir / "traces.jsonl")
@@ -387,7 +420,9 @@ def main(argv: list[str] | None = None) -> int:
     broken = [row.get("decision_id") for row in traces_rows if recompute_trace_hash(row) != row.get("trace_hash")]
     report.check("traces.hash_chain_intact", not broken, f"{len(broken)} trace(s) with a bad hash")
 
-    signals = verify_signals(run_dir, traces, provider, report)
+    signals = verify_signals(
+        run_dir, traces, provider, report, declared_source=declared_source
+    )
     verify_analysis(run_dir, {str(row.get("signal_id")) for row in signals}, report)
     if args.dashboard_url:
         verify_dashboard(args.dashboard_url, signals, report)

@@ -1,0 +1,16 @@
+{
+  "schema_version": "rfc-paper-008-disk-refusal-v1",
+  "checked_at_utc": "2026-10-26T12:44:42Z",
+  "command": "uv run python scripts/start_paper_lab.py --dry-run --provider ccxt --assets BTC --timeframe 5m --duration-hours 1000 --run-id paper-lab-rfc008-disk-refusal --data-root /tmp/rfc008-disk-refusal",
+  "expected_exit_code": 4,
+  "observed": {
+    "state": "INSUFFICIENT_FREE_SPACE",
+    "hours_affordable_by_disk": 100.016,
+    "hours_affordable_by_valve": 5.717,
+    "needed_gb_at_1_5x": 288.629,
+    "usable_gb_above_reserve": 19.245,
+    "refused": true
+  },
+  "note": "The preflight refused before any child started: a window the host cannot pay for is not a preference.",
+  "evidence_source": "stdout of the dry-run recorded in this session; exit code 4 observed"
+}

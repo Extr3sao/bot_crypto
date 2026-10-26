@@ -1,0 +1,120 @@
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  89af99276a164c8ed0cff465341175a2 BTC/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  ec22738eca2e49738be6863f804bb8e2 ETH/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  bf6c6da28ba259adb6d946655369ce4c SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  0e7a5a61a8f9c11fa7bc0dd26a9812f1 BTC/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  7e9aaf790b1da780edca8031a3e3234a ETH/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  3296f1291e6d3817e41afbb4bb071ada SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  17353190240d14e3d15a6406aef5d208 BTC/USDT SHADOW mean_reversion@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  6eab147921c9b67f4e2d507f37f6bf27 ETH/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  fc828bebd45b63510e97e961120ed6cb SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] stopped
+[analyst] run=paper-lab-rfc008-live-02 provider=- configured=False mode=loop
+[analyst] NOT_CONFIGURED  5cbced0274fd42c0c6c9f7f22e7c40a3 BTC/USDT REJECTED - :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  5f9bb8a4395491ab7483f3fdc4df7dbc ETH/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  04eb994767bbca80335a61dc91bb6135 SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  c058a4f0488ff5263e208aa36807d0de BTC/USDT REJECTED - :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  2c7cd69644be2524a84c975973637b4c ETH/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  5d46db0370565b0ae1a1bebb954486ec SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  7f98d5fcb1f9de97ad9e6dc6bccd5a35 BTC/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  42fbe1f14a383dbc64b3bfd661f841b6 ETH/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  010f1a7d0d16f3cfbf713631c3f86df2 SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  106161c32999d54cfb24c956d2466432 BTC/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  ddcf4964635b205e519a56d71f17e4fb ETH/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  4429379eb9eee490f2b9cc2c295955cf SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  8e7c193f3c0a704d1a24c1e82d37982a BTC/USDT CANDIDATE breakout@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  acffa7c32b6df3378966821b4ea8a521 ETH/USDT CANDIDATE breakout@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  21b15f035dfec6ab4c813f2ab604e87e SOL/USDT REJECTED - :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  2a4b464e69e9aa2d50f8515357114d60 BTC/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  20b3bee2f076ad0c3d3916606a3b298b ETH/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  023199fa2c2686b8d762ab337f98677a SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] NOT_CONFIGURED  908ba954ebf02aa98d73e0e219e39903 BTC/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  bcbedc99cb9d6817d39479c45655a27b ETH/USDT CANDIDATE momentum@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED  2b39d724936f5a1ec75eda373f3d0881 SOL/USDT CANDIDATE ema_crossover@5m :: no model provider is configured; set SIGNAL_ANALYST_API_KEY (and optionally SIGNAL_ANALYST_MODEL / SIGNAL_ANALYST_BASE_U
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] nothing pending: every signal already has an analysis
+[analyst] NOT_CONFIGURED: no provider key is present, so each pending signal is recorded as NOT_CONFIGURED (never as an analysed one). Set SIGNAL_ANALYST_API_KEY to enable live analysis.
+[analyst] stopped

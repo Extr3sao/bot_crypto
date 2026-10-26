@@ -1,0 +1,28 @@
+{
+  "schema_version": "rfc-paper-008-open-window-snapshot-v1",
+  "run_id": "paper-lab-rfc008-live-03",
+  "snapshot_at_utc": "2026-10-26T13:26:54Z",
+  "status": "OPEN (2h window); this is the first closed bar, not a certification",
+  "signals": 3,
+  "sources": [
+    "REAL"
+  ],
+  "stages": [
+    [
+      "CANDIDATE",
+      "ALPHA"
+    ]
+  ],
+  "symbols": [
+    "BTC/USDT",
+    "ETH/USDT",
+    "SOL/USDT"
+  ],
+  "analysis": 3,
+  "analysis_statuses": [
+    "NOT_CONFIGURED"
+  ],
+  "independent_verifier_ok": true,
+  "independent_verifier_failed": [],
+  "dashboard": "http://127.0.0.1:8983/"
+}

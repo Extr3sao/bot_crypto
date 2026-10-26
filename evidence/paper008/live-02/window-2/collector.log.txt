@@ -1,0 +1,120 @@
+    },
+    "perp|SOLUSDT": {
+      "health": "STALE",
+      "counters": {
+        "applied": 14750,
+        "buffered": 1,
+        "duplicates": 67,
+        "out_of_order": 0,
+        "gaps": 4,
+        "malformed": 0,
+        "resnapshots": 21,
+        "crossed_book_events": 0,
+        "invalidations": 0,
+        "snapshot_mismatches": 1
+      },
+      "last_update_id": 11927467991489,
+      "bid_levels": 1056,
+      "ask_levels": 1014
+    },
+    "spot|BTCUSDT": {
+      "health": "STALE",
+      "counters": {
+        "applied": 19401,
+        "buffered": 1,
+        "duplicates": 2,
+        "out_of_order": 0,
+        "gaps": 0,
+        "malformed": 0,
+        "resnapshots": 1,
+        "crossed_book_events": 0,
+        "invalidations": 0,
+        "snapshot_mismatches": 1
+      },
+      "last_update_id": 101922488851,
+      "bid_levels": 1612,
+      "ask_levels": 2095
+    },
+    "spot|ETHUSDT": {
+      "health": "STALE",
+      "counters": {
+        "applied": 19130,
+        "buffered": 1,
+        "duplicates": 2,
+        "out_of_order": 0,
+        "gaps": 0,
+        "malformed": 0,
+        "resnapshots": 1,
+        "crossed_book_events": 0,
+        "invalidations": 0,
+        "snapshot_mismatches": 1
+      },
+      "last_update_id": 82505854379,
+      "bid_levels": 1992,
+      "ask_levels": 1529
+    },
+    "spot|SOLUSDT": {
+      "health": "STALE",
+      "counters": {
+        "applied": 15001,
+        "buffered": 2,
+        "duplicates": 1,
+        "out_of_order": 0,
+        "gaps": 0,
+        "malformed": 0,
+        "resnapshots": 1,
+        "crossed_book_events": 0,
+        "invalidations": 0,
+        "snapshot_mismatches": 1
+      },
+      "last_update_id": 30460520793,
+      "bid_levels": 1116,
+      "ask_levels": 1237
+    }
+  },
+  "integrity": {
+    "write_failures": 0,
+    "duplicates": 213,
+    "out_of_order": 52,
+    "sequence_gaps": 10,
+    "malformed": 0,
+    "clock_violations": 0,
+    "max_clock_skew_ms": 0,
+    "data_recovering_gaps": 4,
+    "backfilled_events": 703,
+    "backfill_gaps_closed": 4,
+    "backfill_partial": 0,
+    "backfill_failures": 0,
+    "backfill_deferred": 0,
+    "gaps_by_status": {
+      "RECOVERED_COMPLETE": 4,
+      "RECOVERED_PARTIAL": 0,
+      "UNRECOVERABLE": 204
+    },
+    "remaining_missing_events": 19202244,
+    "data_lost_gaps": 78,
+    "data_lost_gap_seconds": 97.158,
+    "recovered_gaps": 4,
+    "resnapshots_failed": 0,
+    "resnapshots_deferred": 0,
+    "connect_failures": 0,
+    "failures": null,
+    "streams_selected": [
+      "agg_trade",
+      "depth",
+      "book_ticker"
+    ],
+    "keep_raw_payloads": true
+  },
+  "heartbeat_count": 31,
+  "degradation_events": [
+    {
+      "at_ms": 1793018827035,
+      "from": "HEALTHY",
+      "to": "DEGRADED"
+    }
+  ],
+  "exit_code": 0
+}
+manifest -> C:\Users\GVLLFR0035\Downloads\ff-wt-paper008\reports\lab-data\paper-lab-rfc008-live-02\manifest\paper-lab-rfc008-live-02.json
+forward collector: CONTROLLED_STOP (stop reason: stop file)

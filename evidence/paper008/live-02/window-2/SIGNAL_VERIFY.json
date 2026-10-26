@@ -1,0 +1,180 @@
+{
+  "schema_version": "wp-signal-verify-v1",
+  "generated_at_ms": 1793020737642,
+  "generated_at_utc": "2026-10-26T13:18:57Z",
+  "run_id": "paper-lab-rfc008-live-02",
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-02",
+  "dashboard_url": "http://127.0.0.1:8981",
+  "ok": true,
+  "checks": [
+    {
+      "name": "run.descriptor_present",
+      "ok": true,
+      "detail": "PAPER_RUN.json present"
+    },
+    {
+      "name": "run.data_provenance_declared",
+      "ok": true,
+      "detail": "signal_source='REAL' market_data='MAINNET'"
+    },
+    {
+      "name": "run.data_provenance_is_honest",
+      "ok": true,
+      "detail": "provider='ccxt' declares MAINNET/REAL"
+    },
+    {
+      "name": "traces.file_parses",
+      "ok": true,
+      "detail": "0 malformed line(s)"
+    },
+    {
+      "name": "traces.present",
+      "ok": true,
+      "detail": "33 trace(s)"
+    },
+    {
+      "name": "traces.hash_chain_intact",
+      "ok": true,
+      "detail": "0 trace(s) with a bad hash"
+    },
+    {
+      "name": "signals.file_parses",
+      "ok": true,
+      "detail": "0 malformed line(s)"
+    },
+    {
+      "name": "signals.present",
+      "ok": true,
+      "detail": "33 row(s) in signals.jsonl"
+    },
+    {
+      "name": "signals.ids_unique",
+      "ok": true,
+      "detail": "0 duplicate id(s)"
+    },
+    {
+      "name": "signals.sequence_monotonic",
+      "ok": true,
+      "detail": "33 rows, max sequence 33"
+    },
+    {
+      "name": "signals.every_row_maps_to_a_trace",
+      "ok": true,
+      "detail": "0 orphan row(s)"
+    },
+    {
+      "name": "signals.trace_hash_recomputes",
+      "ok": true,
+      "detail": "0 row(s) with a bad hash pin"
+    },
+    {
+      "name": "signals.times_match_the_trace",
+      "ok": true,
+      "detail": "0 mismatch(es)"
+    },
+    {
+      "name": "signals.no_look_ahead",
+      "ok": true,
+      "detail": "0 future bar(s)"
+    },
+    {
+      "name": "signals.stage_matches_the_decision",
+      "ok": true,
+      "detail": "0 row(s)"
+    },
+    {
+      "name": "signals.no_fabricated_edge",
+      "ok": true,
+      "detail": "0 row(s)"
+    },
+    {
+      "name": "signals.numbers_match_the_trace",
+      "ok": true,
+      "detail": "0 row(s) disagree with their proposal"
+    },
+    {
+      "name": "signals.source_matches_the_provider",
+      "ok": true,
+      "detail": "expected REAL for provider 'ccxt'"
+    },
+    {
+      "name": "analysis.file_parses",
+      "ok": true,
+      "detail": "0 malformed line(s)"
+    },
+    {
+      "name": "analysis.references_existing_signals",
+      "ok": true,
+      "detail": "0 orphan analysis row(s)"
+    },
+    {
+      "name": "analysis.ids_unique",
+      "ok": true,
+      "detail": "0 duplicate id(s)"
+    },
+    {
+      "name": "analysis.claims_present",
+      "ok": true,
+      "detail": "0 claim-less ANALYZED row(s)"
+    },
+    {
+      "name": "analysis.not_configured_is_honest",
+      "ok": true,
+      "detail": "0 row(s) mislabel a missing provider"
+    },
+    {
+      "name": "dashboard/api/signals",
+      "ok": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "dashboard/api/analysis",
+      "ok": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "dashboard/api/status",
+      "ok": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "dashboard.signals_read_only",
+      "ok": true,
+      "detail": "read_only=True"
+    },
+    {
+      "name": "dashboard.signals_match_the_file",
+      "ok": true,
+      "detail": "served 33 of 33 row(s)"
+    },
+    {
+      "name": "dashboard.newest_signal_matches",
+      "ok": true,
+      "detail": "the first served row is the newest persisted row"
+    },
+    {
+      "name": "dashboard.analysis_has_no_authority",
+      "ok": true,
+      "detail": "authority_over_orders=False"
+    },
+    {
+      "name": "dashboard.refuses_mutation",
+      "ok": true,
+      "detail": "POST returned 405"
+    }
+  ],
+  "failed": [],
+  "counts": {
+    "provider": "ccxt",
+    "signal_source": "REAL",
+    "market_data": "MAINNET",
+    "traces": 33,
+    "signal_rows": 33,
+    "trace_linked": 33,
+    "analysis_rows": 33,
+    "analysis_by_status": {
+      "NOT_CONFIGURED": 33
+    }
+  },
+  "verifier_imports_producer": false
+}

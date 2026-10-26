@@ -1,0 +1,31 @@
+{
+  "schema_version": "ai-analyst-pass-v1",
+  "run_id": "paper-lab-rfc008-live-02",
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-02",
+  "passed_at_ms": 1793018710974,
+  "passed_at_utc": "2026-10-26T12:45:10Z",
+  "provider_configured": false,
+  "provider": null,
+  "model": null,
+  "prompt_version": "signal-analyst-v1",
+  "stream_present": true,
+  "signals_seen": 12,
+  "pending_before": 0,
+  "examined": 0,
+  "statuses": {},
+  "last_error": null,
+  "budget": {
+    "per_hour": 60,
+    "max_per_run": 500
+  },
+  "read_only": true,
+  "authority_over_orders": false,
+  "store": {
+    "records": 12,
+    "signals_covered": 12,
+    "by_status": {
+      "NOT_CONFIGURED": 12
+    },
+    "cost_usd_total": 0.0
+  }
+}

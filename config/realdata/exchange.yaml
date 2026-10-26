@@ -15,6 +15,10 @@ exchange:
 
   # SIEMPRE usar sandbox/testnet en desarrollo.
   # En producción se requiere validar manualmente (ver release-gates.md).
+  # RFC-PAPER-008: the PAPER/SHADOW market data does NOT come from this
+  # connector; autonomous_paper reads Binance's public REST and labels the row
+  # REAL only from that source. The credentialed connector stays sandboxed
+  # because PAPER mode requires it (Settings invariant).
   sandbox: true
 
   # Mercado por defecto. Para exchanges sin "spot"/"future" uniforme,

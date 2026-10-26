@@ -9,6 +9,11 @@ pin the identity check that fixes it.
 from __future__ import annotations
 
 import os
+import subprocess
+import sys
+import time
+
+import pytest
 
 import trading_bot.autonomous.observability as obs
 from trading_bot.autonomous.observability import (
@@ -60,16 +65,51 @@ def test_pid_reused_is_false_when_no_expectation_is_known(monkeypatch) -> None:
     assert obs.pid_reused(6936, expected_image=None) is False
 
 
+def _fake_image(monkeypatch, image: str | None) -> None:
+    """Make the platform probe report ``image`` for a live PID.
+
+    Windows answers existence and identity in one query, so the fake sits at the
+    probe; elsewhere ``process_alive`` consults ``process_image`` afterwards.
+    """
+    if sys.platform.startswith("win"):
+        monkeypatch.setattr(obs, "_windows_probe", lambda pid: (True, image))
+    else:
+        monkeypatch.setattr(obs, "process_image", lambda pid: image)
+
+
 def test_process_alive_reports_false_for_an_image_mismatch(monkeypatch) -> None:
-    monkeypatch.setattr(obs, "process_image", lambda pid: "svchost.exe")
+    _fake_image(monkeypatch, "svchost.exe")
     assert obs.process_alive(LIVE_PID, expected_image="python.exe") is False
 
 
 def test_process_alive_stays_true_when_the_image_is_unknown(monkeypatch) -> None:
     # Blindness must never be reported as death.
-    monkeypatch.setattr(obs, "process_image", lambda pid: None)
+    _fake_image(monkeypatch, None)
     assert obs.process_alive(LIVE_PID, expected_image="python.exe") is True
 
 
 def test_process_alive_without_expectation_is_unchanged() -> None:
     assert process_alive(LIVE_PID) is True
+
+
+def test_windows_liveness_never_spawns_a_process(monkeypatch, ) -> None:
+    """RFC-PAPER-008: a status probe may not wait on a console program.
+
+    The removed ``tasklist`` probe measured 10.2 s for 557 processes on this host
+    and once hung past its own timeout, leaving ``/healthz`` unanswered while a
+    lab was running. Liveness must be a bounded in-process query.
+    """
+    if not sys.platform.startswith("win"):
+        pytest.skip("the subprocess probe this guards exists only on Windows")
+
+    def _explode(*args: object, **kwargs: object) -> None:
+        raise AssertionError("process liveness spawned a child process")
+
+    monkeypatch.setattr(subprocess, "run", _explode)
+    monkeypatch.setattr(subprocess, "Popen", _explode)
+    started = time.monotonic()
+    assert process_alive(LIVE_PID) is True
+    assert process_image(LIVE_PID) is not None
+    assert process_alive(999_999_999) is False
+    elapsed = time.monotonic() - started
+    assert elapsed < 0.5, f"three liveness probes took {elapsed:.3f}s"

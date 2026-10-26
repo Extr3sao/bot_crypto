@@ -1,0 +1,64 @@
+{
+  "run_id": "paper-lab-rfc008-live-02",
+  "pid": 29764,
+  "mode": "paper",
+  "continuous": true,
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "timeframe": "5m",
+  "provider": "ccxt",
+  "environment": "ccxt:binance:binance-public-rest",
+  "market_data": "MAINNET",
+  "market_data_sandbox": false,
+  "data_transport": "binance-public-rest",
+  "signal_source": "REAL",
+  "paper_candidates": [],
+  "registry_counts": {
+    "RESEARCH_REQUIRED": 0,
+    "PAPER_CANDIDATE": 0,
+    "PAPER_ACTIVE": 0,
+    "PAPER_RETIRED": 0,
+    "REJECTED": 0,
+    "RESEARCH_CANDIDATE": 0,
+    "COST_KILLED": 7,
+    "NO_GROSS_EDGE": 17,
+    "UNKNOWN": 0
+  },
+  "universe_preflight": {
+    "configured": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "asset_agent_supported": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "strategy_supported": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "provider_supported": null,
+    "effective": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "unsupported": {},
+    "strategy_universe_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+    "provider_verified": false,
+    "ok": true,
+    "blocking_reason": null
+  },
+  "stop_signals_installed": [
+    "SIGINT",
+    "SIGTERM",
+    "SIGBREAK"
+  ],
+  "started_at_ms": 1793017293598
+}

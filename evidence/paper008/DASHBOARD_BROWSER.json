@@ -1,0 +1,71 @@
+{
+  "schema_version": "rfc-paper-008-browser-check-v1",
+  "checked_at_utc": "2026-10-26T10:44:33Z",
+  "url": "http://127.0.0.1:8971/",
+  "tab_id": "b6d893ee-dd8d-44e4-894c-5868cae54eb4",
+  "title": "PAPER lab — paper-lab-rfc008-live-01",
+  "banner": "HEALTHY",
+  "eligibility_banner": "REJECTED_ALPHA — EXPERIMENTAL PAPER, NOT VALIDATED · no strategy is admitted for paper, so this lab can create no order",
+  "provenance_card": {
+    "provider": "ccxt",
+    "environment": "ccxt:binance:binance-public-rest",
+    "market_data": "MAINNET",
+    "sandbox": "no",
+    "signal_source": "REAL",
+    "timeframe": "5m",
+    "assets": "BTC, ETH, SOL"
+  },
+  "rows": [
+    {
+      "decision_utc": "2026-10-26T10:40:05.124Z",
+      "symbol": "SOL/USDT",
+      "strategy": "ema_crossover@5m",
+      "stage": "CANDIDATE",
+      "kind": "ALPHA",
+      "direction": "LONG",
+      "gross_bps": "-4.56",
+      "cost_bps": "+23.77",
+      "net_bps": "-28.33",
+      "risk": "APPROVED",
+      "data": "OK",
+      "reason": "gross_edge_not_positive:-4.5600bps",
+      "analysis": "NOT_CONFIGURED"
+    },
+    {
+      "decision_utc": "2026-10-26T10:40:05.124Z",
+      "symbol": "ETH/USDT",
+      "strategy": "ema_crossover@5m",
+      "stage": "CANDIDATE",
+      "kind": "ALPHA",
+      "direction": "LONG",
+      "gross_bps": "-4.56",
+      "cost_bps": "+22.83",
+      "net_bps": "-27.39",
+      "risk": "APPROVED",
+      "data": "OK",
+      "reason": "gross_edge_not_positive:-4.5600bps",
+      "analysis": "NOT_CONFIGURED"
+    },
+    {
+      "decision_utc": "2026-10-26T10:40:05.124Z",
+      "symbol": "BTC/USDT",
+      "strategy": "ema_crossover@5m",
+      "stage": "CANDIDATE",
+      "kind": "ALPHA",
+      "direction": "LONG",
+      "gross_bps": "-4.56",
+      "cost_bps": "+22.79",
+      "net_bps": "-27.35",
+      "risk": "APPROVED",
+      "data": "OK",
+      "reason": "gross_edge_not_positive:-4.5600bps",
+      "analysis": "NOT_CONFIGURED"
+    }
+  ],
+  "dom_body_hash": -566375200,
+  "screenshot": {
+    "status": "UNAVAILABLE",
+    "reason": "the preview webview produced no frames (not composited); DOM/accessibility snapshot and HTTP payloads are the evidence"
+  },
+  "read_only": true
+}

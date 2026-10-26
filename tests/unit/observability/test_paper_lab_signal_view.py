@@ -172,6 +172,13 @@ def test_api_signals_serves_events_with_their_outcome(tmp_path: Path, run_dir: P
     oldest = next(e for e in payload["events"] if e["decision_id"] == "dec-0")
     assert oldest["outcome"]["net_hypothetical_bps"] == pytest.approx(-21.5)
     assert payload["integrity"]["ok"] is True
+    # RFC-PAPER-008 — SHADOW outcomes and PAPER fills are counted apart, and the
+    # provenance of the stream is visible without reading the run directory.
+    assert payload["stats"]["by_source"] == {"REAL": 7}
+    assert payload["outcomes"]["resolved"] == 1
+    assert payload["outcomes"]["pending"] == 6
+    assert payload["outcomes"]["by_mode"] == {"SHADOW_TRADE": 1}
+    assert payload["outcomes"]["net_bps_mean_by_mode"]["SHADOW_TRADE"] == pytest.approx(-21.5)
 
 
 def test_limit_is_bounded_by_the_server(tmp_path: Path, run_dir: Path) -> None:
@@ -256,6 +263,24 @@ def test_page_embeds_the_signal_board(tmp_path: Path, run_dir: Path) -> None:
     assert "/api/signals" in page
 
 
+def test_the_page_refreshes_the_health_cards_and_not_only_the_table(
+    tmp_path: Path, run_dir: Path
+) -> None:
+    """RFC-PAPER-008: a console that only refreshes the table lies about health.
+
+    Observed on 2026-10-26: after ``--restart`` the page kept publishing the old
+    DEGRADED state and the old uptime until a manual reload, because only
+    ``/signals`` was re-fetched. The whole page now refreshes on a bounded timer,
+    and never while a filter input has focus (that input's value is unsaved).
+    """
+    args = _args(tmp_path, run_dir)
+    page = DASH.render_page(DASH.status_payload(args))
+    assert "STATUS_REFRESH_MS" in page
+    assert "window.location.reload()" in page
+    assert "document.visibilityState === 'visible'" in page
+    assert "INPUT', 'SELECT', 'TEXTAREA" in page
+
+
 def test_the_page_honours_the_filter_it_was_asked_for(tmp_path: Path, run_dir: Path) -> None:
     """A submit that changes the URL must change the board on the same response.
 
@@ -296,6 +321,7 @@ def test_api_analysis_reports_missing_coverage_honestly(tmp_path: Path, run_dir:
     assert payload["signals_total"] == 7
     assert payload["coverage"]["covered"] == 0
     assert payload["coverage"]["coverage_pct"] == 0.0
+    assert payload["coverage"]["uncovered"] == 7  # every signal, not just zero "pending"
     assert payload["state"] == "NOT_RUN"  # the sidecar never ran: not the same as empty
 
 
@@ -322,6 +348,7 @@ def test_api_analysis_counts_not_configured_separately(tmp_path: Path, run_dir: 
     assert payload["provider_configured"] is False
     assert payload["coverage"]["not_configured"] == 3
     assert payload["coverage"]["analysed"] == 0
+    assert payload["coverage"]["uncovered"] == 4
     # An analysis-free signal is labelled as such on the board, not left blank.
     with _serving(tmp_path, run_dir) as port:
         _, _, html = _get(port, "/signals")

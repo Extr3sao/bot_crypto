@@ -1,0 +1,190 @@
+{
+  "schema_version": "rfc-paper-008-verify-v1",
+  "generated_at_ms": 1793021233153,
+  "report": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\docs\\agentic\\paper_rfc008\\RUN_REPORT.json",
+  "run_id": "paper-lab-rfc008-live-02",
+  "ok": true,
+  "checks": [
+    {
+      "name": "report.present",
+      "ok": true,
+      "detail": "read C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\docs\\agentic\\paper_rfc008\\RUN_REPORT.json"
+    },
+    {
+      "name": "report.schema",
+      "ok": true,
+      "detail": "rfc-paper-008-run-report-v1"
+    },
+    {
+      "name": "report.run_dir",
+      "ok": true,
+      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-02"
+    },
+    {
+      "name": "files.parse",
+      "ok": true,
+      "detail": "0 malformed line(s)"
+    },
+    {
+      "name": "report.signal_rows",
+      "ok": true,
+      "detail": "report=33 files=33"
+    },
+    {
+      "name": "report.trace_rows",
+      "ok": true,
+      "detail": "report=33 files=33"
+    },
+    {
+      "name": "report.cycle_count",
+      "ok": true,
+      "detail": "report=11 files=11"
+    },
+    {
+      "name": "report.stage_counts",
+      "ok": true,
+      "detail": "{\"CANDIDATE\": {\"ALPHA\": 28}, \"REJECTED\": {\"NO_ALPHA\": 4}, \"SHADOW\": {\"ALPHA\": 1}}"
+    },
+    {
+      "name": "report.paper_orders",
+      "ok": true,
+      "detail": "report=0 files=0"
+    },
+    {
+      "name": "report.shadow_outcomes",
+      "ok": true,
+      "detail": "report=1 files=1"
+    },
+    {
+      "name": "report.paper_fills",
+      "ok": true,
+      "detail": "report=0 files=0"
+    },
+    {
+      "name": "report.admission_eligible",
+      "ok": true,
+      "detail": "report=0 descriptor=0"
+    },
+    {
+      "name": "report.no_order_without_admission",
+      "ok": true,
+      "detail": "admitted=0 paper_rows=0"
+    },
+    {
+      "name": "report.duplicate_count",
+      "ok": true,
+      "detail": "report=0 files=0"
+    },
+    {
+      "name": "report.max_gap",
+      "ok": true,
+      "detail": "report=301.093 files=301.093"
+    },
+    {
+      "name": "report.analysis_counts",
+      "ok": true,
+      "detail": "{\"NOT_CONFIGURED\": 33}"
+    },
+    {
+      "name": "report.evidence_hashes",
+      "ok": true,
+      "detail": "stale/missing: []"
+    },
+    {
+      "name": "report.evidence_complete",
+      "ok": true,
+      "detail": "11 file(s) hashed"
+    },
+    {
+      "name": "report.verifier_passed",
+      "ok": true,
+      "detail": "SIGNAL_VERIFY.ok=True"
+    },
+    {
+      "name": "report.verifier_result_matches",
+      "ok": true,
+      "detail": "report=True file=True"
+    },
+    {
+      "name": "report.verifier_path_is_inside_run",
+      "ok": true,
+      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-02\\SIGNAL_VERIFY.json"
+    },
+    {
+      "name": "report.real_provenance",
+      "ok": true,
+      "detail": "ccxt MAINNET REAL"
+    },
+    {
+      "name": "report.signal_source_honest",
+      "ok": true,
+      "detail": "{\"REAL\": 33}"
+    },
+    {
+      "name": "report.duration_honest",
+      "ok": true,
+      "detail": "uptime=1958.982 limitations_mention_24h=True"
+    },
+    {
+      "name": "report.uptime_is_a_measurement",
+      "ok": true,
+      "detail": "1958.982"
+    },
+    {
+      "name": "report.blocker_admission",
+      "ok": true,
+      "detail": "[\"PAPER_ORDER_BLOCKED_ADMISSION_0_OF_24\", \"AI_NOT_CONFIGURED\"]"
+    },
+    {
+      "name": "report.blocker_ai",
+      "ok": true,
+      "detail": "[\"PAPER_ORDER_BLOCKED_ADMISSION_0_OF_24\", \"AI_NOT_CONFIGURED\"]"
+    },
+    {
+      "name": "dashboard.gets",
+      "ok": true,
+      "detail": "{\"/\": {\"bytes\": 126536, \"http\": 200, \"ms\": 93.0}, \"/api/analysis\": {\"bytes\": 35689, \"http\": 200, \"ms\": 94.0}, \"/api/signals\": {\"bytes\": 144442, \"http\": 200, \"ms\": 110.0}, \"/api/status\": {\"bytes\": 203625, \"http\": 200, \"ms\": 109.0}, \"/healthz\": {\"bytes\": 53, \"http\": 200, \"ms\": 141.0}}"
+    },
+    {
+      "name": "dashboard.refuses_mutation",
+      "ok": true,
+      "detail": "POST=405"
+    },
+    {
+      "name": "dashboard.analysis_has_no_authority",
+      "ok": true,
+      "detail": "http=200 authority=False"
+    },
+    {
+      "name": "dashboard.serves_the_run",
+      "ok": true,
+      "detail": "dashboard=paper-lab-rfc008-live-02 run=paper-lab-rfc008-live-02"
+    },
+    {
+      "name": "dashboard.signal_total_matches",
+      "ok": true,
+      "detail": "dashboard=None files=33"
+    },
+    {
+      "name": "dashboard.analysis_coverage_matches",
+      "ok": true,
+      "detail": "signals payload analysis=None"
+    },
+    {
+      "name": "report.false_success",
+      "ok": true,
+      "detail": "report.false_success=0"
+    }
+  ],
+  "failed": [],
+  "counts": {
+    "signals": 33,
+    "traces": 33,
+    "analysis": 33,
+    "outcomes": 23,
+    "heartbeats": 11,
+    "malformed": 0,
+    "analysis_uncovered": 0
+  },
+  "verifier_imports_producer": false
+}

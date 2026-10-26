@@ -1,0 +1,38 @@
+{
+  "schema_version": "paper-heartbeat-v1",
+  "run_id": "paper-lab-rfc008-live-02",
+  "mode": "PAPER",
+  "cycle": 6,
+  "timestamp_ms": 1793020510782,
+  "timestamp_iso": "2026-10-26T13:15:10.782000+00:00",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "timeframe": "5m",
+  "strategies_evaluated": 18,
+  "decisions": 3,
+  "no_trade": 3,
+  "no_trade_kinds": {
+    "NO_TRADE_STRATEGIC": 3
+  },
+  "shadow_trades": 0,
+  "paper_trades": 0,
+  "risk_vetoes": 0,
+  "runtime_failures": 0,
+  "errors": [],
+  "cycles_completed": 6,
+  "uptime_seconds": 1743.755,
+  "state_age_seconds": 1750.047,
+  "last_market_time_ms": 1793020507036,
+  "last_market_time_utc": "2026-10-26T13:15:07.036000+00:00",
+  "last_decision_time_ms": 1793020507036,
+  "last_decision_time_utc": "2026-10-26T13:15:07.036000+00:00",
+  "signals_appended": 3,
+  "outcomes_resolved": 2,
+  "outcomes_pending": 6,
+  "paper_candidates": [],
+  "storage_failures": 0,
+  "storage_errors": []
+}

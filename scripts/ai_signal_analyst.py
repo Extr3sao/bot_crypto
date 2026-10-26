@@ -68,10 +68,19 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 def resolve_run_dir(root: Path, run_id: str | None) -> Path | None:
-    """The run to read: named, or the newest one that actually has a stream."""
+    """The run to read: named, or the newest one that actually has a stream.
+
+    A *named* run is resolved by its directory, not by its stream: the supervisor
+    starts this sidecar and the PAPER child at the same time, so the first bar can
+    close minutes after the directory exists. Requiring the stream here made the
+    sidecar exit with code 2, be restarted twice by the supervisor and end as
+    ``FAILED`` before the first signal was ever written — the AI plane was dead
+    exactly when there was something to analyse. Waiting is the correct state;
+    the heartbeat reports ``stream_present: false`` while it waits.
+    """
     if run_id:
         candidate = root / run_id
-        return candidate if (candidate / "signals.jsonl").exists() else None
+        return candidate if candidate.exists() else None
     if not root.exists():
         return None
     runs = [
@@ -113,15 +122,20 @@ def trace_evidence(run_dir: Path, decision_ids: set[str]) -> dict[str, list[str]
 
 def run_pass(args: argparse.Namespace, run_dir: Path, provider: Any) -> dict[str, Any]:
     """One bounded pass: at most `--limit-per-pass` model calls."""
-    ledger = SignalLedger(run_dir)
+    # A pass before the first bar closed must be a heartbeat, not an empty
+    # signals.jsonl: creating the stream would make the dashboard report a run
+    # that has no events as if the runtime had written one.
+    stream_present = (run_dir / "signals.jsonl").exists()
     store = AnalysisStore(run_dir)
     events: list[SignalEvent] = []
-    for row in ledger.iter_rows():
-        try:
-            events.append(SignalEvent.from_dict(row))
-        except (ValueError, TypeError, KeyError):
-            continue
-    waiting = pending_signals(events, store)
+    if stream_present:
+        for row in SignalLedger(run_dir).iter_rows():
+            try:
+                events.append(SignalEvent.from_dict(row))
+            except (ValueError, TypeError, KeyError):
+                continue
+    provider_configured = provider is not None and provider.configured()
+    waiting = pending_signals(events, store, provider_configured=provider_configured)
     pending = waiting[: max(0, args.limit_per_pass)]
     analyst = SignalAnalyst(
         store=store,
@@ -150,10 +164,11 @@ def run_pass(args: argparse.Namespace, run_dir: Path, provider: Any) -> dict[str
         "run_dir": str(run_dir),
         "passed_at_ms": int(time.time() * 1000),
         "passed_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "provider_configured": provider is not None and provider.configured(),
+        "provider_configured": provider_configured,
         "provider": None if provider is None else provider.name,
         "model": None if provider is None else provider.model,
         "prompt_version": PROMPT_VERSION,
+        "stream_present": stream_present,
         "signals_seen": len(events),
         # Captured before this pass spent anything, so the number is measured
         # rather than reconstructed after the fact.
@@ -194,49 +209,67 @@ def stop_requested(path: Path | None) -> bool:
     return bool(path) and path.exists()
 
 
+def _sleep_or_stop(stop_file: Path | None, seconds: float) -> bool:
+    """Sleep in slices, waking early on the stop file. True means stop now."""
+    deadline = time.monotonic() + max(0.0, seconds)
+    while not stop_requested(stop_file):
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return False
+        time.sleep(min(1.0, remaining))
+    return True
+
+
+def _provider_line(provider: Any) -> str:
+    return (
+        f"provider={'-' if provider is None else provider.name + ':' + provider.model} "
+        f"configured={provider is not None and provider.configured()}"
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     allow_tolerant_console_output()
     args = parse_args(argv)
     root = REPO_ROOT / args.run_root
-    run_dir = resolve_run_dir(root, args.run_id)
-    if run_dir is None and not args.loop:
-        print(
-            f"[analyst] no run with a signal stream under {root}"
-            + (f" (run id {args.run_id!r})" if args.run_id else ""),
-            file=sys.stderr,
-        )
-        return 2
-    if run_dir is None:
-        # The supervisor starts all children together, so the PAPER child may not
-        # have written its first bar yet. Exiting here would burn the supervisor's
-        # restart budget on a race the sidecar is supposed to lose gracefully.
-        print(
-            f"[analyst] waiting for the first signal stream under {root}"
-            + (f" (run id {args.run_id!r})" if args.run_id else ""),
-            file=sys.stderr,
-        )
-    provider = provider_from_env()
-    print(
-        f"[analyst] run={'-' if run_dir is None else run_dir.name} provider="
-        f"{'-' if provider is None else provider.name + ':' + provider.model} "
-        f"configured={provider is not None and provider.configured()} mode="
-        f"{'loop' if args.loop else 'once'}"
-    )
     stop_file = None if args.stop_file is None else Path(args.stop_file)
+    provider = provider_from_env()
     if not args.loop:
-        assert run_dir is not None
+        run_dir = resolve_run_dir(root, args.run_id)
+        if run_dir is None:
+            print(
+                f"[analyst] no run under {root}"
+                + (f" (run id {args.run_id!r})" if args.run_id else ""),
+                file=sys.stderr,
+            )
+            return 2
+        print(f"[analyst] run={run_dir.name} {_provider_line(provider)} mode=once")
         run_pass(args, run_dir, provider)
         return 0
+
+    # Loop mode owns the waiting: the supervisor starts all children together, so
+    # a missing run or a stream with no closed bar yet is a state to display, never
+    # a reason to exit and burn the restart budget.
+    announced = False
     try:
         while not stop_requested(stop_file):
             run_dir = resolve_run_dir(root, args.run_id)
-            if run_dir is not None:
-                run_pass(args, run_dir, provider)
-            deadline = time.monotonic() + max(1.0, args.interval)
-            while time.monotonic() < deadline:
-                if stop_requested(stop_file):
+            if run_dir is None:
+                if not announced:
+                    print(
+                        f"[analyst] waiting for run under {root}"
+                        + (f" (run id {args.run_id!r})" if args.run_id else ""),
+                        file=sys.stderr,
+                    )
+                    announced = True
+                if _sleep_or_stop(stop_file, min(5.0, max(1.0, args.interval))):
                     break
-                time.sleep(min(1.0, deadline - time.monotonic()))
+                continue
+            if not announced:
+                print(f"[analyst] run={run_dir.name} {_provider_line(provider)} mode=loop")
+                announced = True
+            run_pass(args, run_dir, provider)
+            if _sleep_or_stop(stop_file, max(1.0, args.interval)):
+                break
     except KeyboardInterrupt:
         print("[analyst] interrupted")
     print("[analyst] stopped")

@@ -1,0 +1,260 @@
+{
+  "run_id": "paper-lab-rfc008-live-02",
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02",
+  "duration_hours": 2.0,
+  "free_disk_bytes": 21332295680,
+  "processes": [
+    {
+      "name": "paper",
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\scripts\\autonomous_paper.py",
+        "--continuous",
+        "--interval",
+        "60.0",
+        "--cadence",
+        "bar-close",
+        "--bar-close-settlement-seconds",
+        "5.0",
+        "--assets",
+        "BTC,ETH,SOL",
+        "--timeframe",
+        "5m",
+        "--provider",
+        "ccxt",
+        "--run-id",
+        "paper-lab-rfc008-live-02",
+        "--run-root",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper",
+        "--state-path",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\paper_state.json",
+        "--strategy-routing-mode",
+        "LEGACY"
+      ],
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008",
+      "critical": true,
+      "max_restarts": 3,
+      "restart_on_exit": true,
+      "stop_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-02\\STOP",
+      "stop_on_storage_guard": false,
+      "failure_exit_code": 1
+    },
+    {
+      "name": "collector",
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\scripts\\forward_collector.py",
+        "--mode",
+        "run",
+        "--symbols",
+        "BTCUSDT,ETHUSDT,SOLUSDT",
+        "--markets",
+        "spot,perp",
+        "--data-root",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\lab-data\\paper-lab-rfc008-live-02",
+        "--run-id",
+        "paper-lab-rfc008-live-02",
+        "--resume",
+        "--rotation-seconds",
+        "900",
+        "--heartbeat-seconds",
+        "60",
+        "--max-total-bytes",
+        "1100000000",
+        "--min-free-bytes",
+        "400000000",
+        "--stop-file",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\lab-data\\paper-lab-rfc008-live-02\\state\\paper-lab-rfc008-live-02.stop"
+      ],
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008",
+      "critical": true,
+      "max_restarts": 3,
+      "restart_on_exit": true,
+      "stop_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\lab-data\\paper-lab-rfc008-live-02\\state\\paper-lab-rfc008-live-02.stop",
+      "stop_on_storage_guard": true,
+      "failure_exit_code": 2
+    },
+    {
+      "name": "retention",
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\scripts\\forward_retention.py",
+        "--root",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\lab-data\\paper-lab-rfc008-live-02",
+        "--run-id",
+        "paper-lab-rfc008-live-02",
+        "--rotation-seconds",
+        "900",
+        "--raw-hot-hours",
+        "2.0",
+        "--sealed-grace-seconds",
+        "1800",
+        "--delete-when-free-below",
+        "0",
+        "--loop",
+        "--interval",
+        "300",
+        "--stop-file",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.retention"
+      ],
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008",
+      "critical": false,
+      "max_restarts": 2,
+      "restart_on_exit": true,
+      "stop_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.retention",
+      "stop_on_storage_guard": false,
+      "failure_exit_code": 1
+    },
+    {
+      "name": "strategy_lab",
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\scripts\\paper_lab_research.py",
+        "--run-root",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02",
+        "--forward-root",
+        "reports/lab-data/paper-lab-rfc008-live-02",
+        "--timeframe",
+        "5m",
+        "--assets",
+        "BTC,ETH,SOL",
+        "--loop",
+        "--interval",
+        "900",
+        "--stop-file",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.strategy_lab"
+      ],
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008",
+      "critical": false,
+      "max_restarts": 2,
+      "restart_on_exit": true,
+      "stop_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.strategy_lab",
+      "stop_on_storage_guard": false,
+      "failure_exit_code": 1
+    },
+    {
+      "name": "analyst",
+      "command": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\scripts\\ai_signal_analyst.py",
+        "--run-root",
+        "reports\\autonomous-paper",
+        "--run-id",
+        "paper-lab-rfc008-live-02",
+        "--loop",
+        "--interval",
+        "60.0",
+        "--limit-per-pass",
+        "5",
+        "--budget-per-hour",
+        "60",
+        "--stop-file",
+        "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.analyst"
+      ],
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008",
+      "critical": false,
+      "max_restarts": 2,
+      "restart_on_exit": true,
+      "stop_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.analyst",
+      "stop_on_storage_guard": false,
+      "failure_exit_code": 1
+    }
+  ],
+  "capabilities": {
+    "strategy_count": 24,
+    "admitted_for_paper": [],
+    "paper_order_enabled": false,
+    "layers": {
+      "LIVE": {
+        "state": "DISABLED",
+        "reason": "no live path exists: every child is read-only market data or PAPER"
+      },
+      "INGEST": {
+        "state": "ENABLED",
+        "reason": "read-only market data via the configured provider"
+      },
+      "SIGNALS": {
+        "state": "ENABLED",
+        "reason": "projection of the persisted decision traces; independent of admission, so REJECTED/NO_ALPHA rows are produced with 0 admitted strategies"
+      },
+      "SHADOW": {
+        "state": "ENABLED",
+        "reason": "SHADOW records an observation and can never create an order"
+      },
+      "PAPER_ORDER": {
+        "state": "BLOCKED",
+        "reason": "the admission ledger admits none of its 24 strategies for paper (gate not met)"
+      },
+      "ANALYST": {
+        "state": "ENABLED",
+        "reason": "read-only sidecar; records NOT_CONFIGURED when no provider key is present"
+      }
+    },
+    "ledger": "config\\strategy_admission.json",
+    "ledger_error": null
+  },
+  "isolation": "paper and collector are separate processes; the supervisor restarts each independently and neither shares state with the other",
+  "retention": {
+    "raw_hot_hours": 2.0,
+    "sealed_grace_seconds": 1800,
+    "delete_when_free_below": 0,
+    "deletion_enabled": false,
+    "preservation": "raw is deleted only after M-03 and M-07 are shown to survive compaction at the preregistered resolution"
+  },
+  "disk": {
+    "thresholds": {
+      "warning_bytes": 1500000000,
+      "critical_bytes": 800000000,
+      "stop_bytes": 300000000,
+      "warning_gb": 1.5,
+      "critical_gb": 0.8,
+      "stop_gb": 0.3
+    },
+    "budget": {
+      "state": "COHERENT",
+      "hours": 2.0,
+      "rate_bytes_per_hour": 192251690.906,
+      "rate_source": "measured by scripts/wp9_disk_budget_audit.py on paper-lab-continuous-02, paper-lab-continuous-03",
+      "overhead_bytes_per_hour": 167455.032,
+      "effective_rate_bytes_per_hour": 192419145.938,
+      "stress_multiplier": 1.5,
+      "required_gb": 0.385,
+      "required_gb_at_stress": 0.577,
+      "collector_max_bytes": 1100000000,
+      "collector_max_gb": 1.1,
+      "free_bytes": 21332295680,
+      "free_gb": 21.332,
+      "reserve_bytes": 2000000000,
+      "hours_affordable_by_valve": 5.717,
+      "hours_affordable_by_disk": 100.47,
+      "recommended_collector_max_bytes": 577257438,
+      "autoscaled": false,
+      "ok": true,
+      "reasons": [
+        "the valve pays for 2.00 h at 1.5x (1.100 GB available, 0.577 GB needed) and the host keeps 18.755 GB above the reserve"
+      ],
+      "preflight": "costed before any child starts; the defect that stopped the first 24 h window was two numbers that were never compared",
+      "refused": false,
+      "exit_code_when_refused": 4
+    },
+    "storage_guard": "at the STOP level the collector is asked to stop gracefully; PAPER is not touched"
+  },
+  "collector_resume": true,
+  "graceful_stop": {
+    "stop_grace_seconds": 120.0,
+    "stop_files": {
+      "paper": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\autonomous-paper\\paper-lab-rfc008-live-02\\STOP",
+      "collector": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\lab-data\\paper-lab-rfc008-live-02\\state\\paper-lab-rfc008-live-02.stop",
+      "retention": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.retention",
+      "strategy_lab": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.strategy_lab",
+      "analyst": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\paper-lab\\paper-lab-rfc008-live-02\\STOP.analyst"
+    },
+    "method": "the supervisor writes each child's stop file, waits for it to seal and finalise, and only then terminates the ones that did not exit"
+  },
+  "capture_root": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-paper008\\reports\\lab-data\\paper-lab-rfc008-live-02",
+    "conflict": null,
+    "exit_code_when_refused": 5
+  },
+  "no_live_path": "children are read-only market data plus the PAPER broker; no child holds execution credentials"
+}
