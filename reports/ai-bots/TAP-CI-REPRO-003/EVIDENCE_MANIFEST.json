@@ -1,0 +1,212 @@
+{
+  "artifact": "RFC_TAP_CI_003_EVIDENCE_MANIFEST",
+  "generated_at_utc": "2026-10-26T13:19:17Z",
+  "baseline_commit": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+  "tested_commit": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+  "head_when_built": "eda14ae4e0aa18b9660441de31f94b1c7a6b9a61",
+  "convention": "sha256 over the bytes on disk; sha256_lf over the same bytes with CRLF normalised to LF, so a checkout that rewrites line endings is not mistaken for changed content",
+  "groups": {
+    "code_and_workflows": [
+      {
+        "path": "scripts/active_economic_audit.py",
+        "bytes": 70630,
+        "sha256": "73434e88fe837a657301c915fdd6f970dcd4b5b2651f56d995fb547519988cf0",
+        "sha256_lf": "73434e88fe837a657301c915fdd6f970dcd4b5b2651f56d995fb547519988cf0"
+      },
+      {
+        "path": "tests/unit/research/test_cost_barrier_gate.py",
+        "bytes": 28458,
+        "sha256": "daafa91bdc34979a015afa33e1ade01bfa03952e7b24692deb73fcd25c018ada",
+        "sha256_lf": "daafa91bdc34979a015afa33e1ade01bfa03952e7b24692deb73fcd25c018ada"
+      },
+      {
+        "path": "tests/unit/research/test_cost_barrier_ci_parity.py",
+        "bytes": 10455,
+        "sha256": "feb869b34a7231f618278fd6576cf30f7d501da48ee87d207d850119bcecad45",
+        "sha256_lf": "feb869b34a7231f618278fd6576cf30f7d501da48ee87d207d850119bcecad45"
+      },
+      {
+        "path": "tests/unit/research/test_recovery_ci_parity.py",
+        "bytes": 7662,
+        "sha256": "14d3a215ca35715d53987723461b35c508eb25a8475943e4bb623441313224a4",
+        "sha256_lf": "14d3a215ca35715d53987723461b35c508eb25a8475943e4bb623441313224a4"
+      },
+      {
+        "path": ".github/workflows/cost-barrier-gate.yml",
+        "bytes": 5996,
+        "sha256": "5b9dd4bb5ab2fae56bc6146811ea37a74ad8cb703840a1b86a66cdd6f854aec5",
+        "sha256_lf": "5b9dd4bb5ab2fae56bc6146811ea37a74ad8cb703840a1b86a66cdd6f854aec5"
+      },
+      {
+        "path": ".github/workflows/recovery-determinism.yml",
+        "bytes": 6952,
+        "sha256": "9444a9f555ad3adbed111449042db24b2997b2b5c09adaf19e0c1ca53115e71f",
+        "sha256_lf": "9444a9f555ad3adbed111449042db24b2997b2b5c09adaf19e0c1ca53115e71f"
+      }
+    ],
+    "published_artefacts": [
+      {
+        "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "bytes": 210806,
+        "sha256": "0d1f930cd7407121be03251e271c9e8f7bff0ea259fd16b2cdcd74e00c16659e",
+        "sha256_lf": "0d1f930cd7407121be03251e271c9e8f7bff0ea259fd16b2cdcd74e00c16659e"
+      },
+      {
+        "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.md",
+        "bytes": 14503,
+        "sha256": "89e945172c7b9a03e688e6a963fd65ba63faf3fe46e4ee99f977204c3202f42f",
+        "sha256_lf": "89e945172c7b9a03e688e6a963fd65ba63faf3fe46e4ee99f977204c3202f42f"
+      },
+      {
+        "path": "data/recovery/COST_BARRIER_EXPLORER.json",
+        "bytes": 314080,
+        "sha256": "88dd5a0e7e4a60faff93e81b4f6d6ac68b33e40aee65afb2543b2445da0726cc",
+        "sha256_lf": "2960eb48cd2db11a9e29c27f3fd12e08ddcbdf07e13f391d5a712fb66a578381"
+      },
+      {
+        "path": "data/recovery/COST_BARRIER_EXPLORER.md",
+        "bytes": 18380,
+        "sha256": "d05c8e014f2966f50a97f15cd831fc0f3c3043db451a0c7697c45006791e1251",
+        "sha256_lf": "9a31ad6a3aa3698132138530d373a2453a27a3d6dd1eb9f8028d0db9a65a6fec"
+      },
+      {
+        "path": "data/recovery/COST_BARRIER_VERIFICATION.json",
+        "bytes": 5785,
+        "sha256": "3498f2c30d4eda9d8effe8cac748daf4fc180cdac907237779d28132b8ca4ef9",
+        "sha256_lf": "c99fdba0e0689ea3f8bfc46f6c2af791dfb054a918703ee55efe2f06abfdb8b4"
+      },
+      {
+        "path": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+        "bytes": 10799,
+        "sha256": "c832de02a7865da4967e5709ed0710a0fa1f6249a9cd474ea3739f7186635e2d",
+        "sha256_lf": "2d67957b0eb9aa689a5f2c48dd6683c350b08d70e38d6230336cd18326d6851f"
+      },
+      {
+        "path": "data/recovery/wp7/evidence/COST_BARRIER.json",
+        "bytes": 3822,
+        "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+        "sha256_lf": "1547cea438d2fb90d8556870c30dcbd911b5a841283ce982b423d04fbcc53640"
+      },
+      {
+        "path": "data/recovery/wp7/evidence/INPUT_EVIDENCE.json",
+        "bytes": 1590,
+        "sha256": "ffc3058ca3f31be4b18d28938e2c0c30ca98263947574c6f763918b49da97314",
+        "sha256_lf": "27dd174791a114518b53c7f7961c529ea1bddab6bfccfcc58495fd58f91b3d07"
+      },
+      {
+        "path": "data/recovery/wp7/evidence/PRODUCER_PINS.json",
+        "bytes": 3197,
+        "sha256": "451be869421dfc82580791e7b2906d495a332f7a441aa7687ef0749a9b18dfef",
+        "sha256_lf": "39649af680bc2ba7147d61ab0cf967010a34ff696d339028e0bfd93fa9cb130c"
+      },
+      {
+        "path": "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+        "bytes": 16537,
+        "sha256": "f33e9c88c563afb9b0556c92a88a45ab03ebe8f8131c750562ca28dfb314d2cd",
+        "sha256_lf": "c93968f11794201d7bf9b11121c0127f0652e2e0567f679eaf96c18163270fb5"
+      },
+      {
+        "path": "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md",
+        "bytes": 2908,
+        "sha256": "a4fb309cc991f0d925acce52d93b9b5c3e32aba163d2fc31ea0db766346d603d",
+        "sha256_lf": "b06218d31055bdf4bd452c11cb44b67e3da92966332f819928c81329db7ccca5"
+      },
+      {
+        "path": "data/recovery/INDEPENDENT_VERIFICATION.json",
+        "bytes": 9689,
+        "sha256": "4692ac6c4b710d461afa99dc456d125eec50a7ca1f4a6757ea3f026df3ec56e7",
+        "sha256_lf": "18b99cb451ec0cf14c651552104c148e2987591421b39c5d8e585e96d60387c3"
+      }
+    ],
+    "run_evidence": [
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/pytest_final.txt",
+        "bytes": 276,
+        "sha256": "999b306061487b81e503e4186410751a6aa3d2a25c8b9c454add4942589c35df",
+        "sha256_lf": "0d73b0acfbf1a907d6188fa06cda6d00a8041266ec2573bc8ff294d0484cc2dd"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/audit_check.json",
+        "bytes": 253,
+        "sha256": "0f95feea39bd4f9f662b43d99e2087069a76fb7c323b6ebc4e08c39295f35e36",
+        "sha256_lf": "44654b4e992d55211ac91ac22b1e5ce5389f9e5e5239346088ce91e2418ce207"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/evidence_bundle.json",
+        "bytes": 3659,
+        "sha256": "d0bbf3bb1fad51703fa02f04fb51b4a5f29be894943d40250e4944b9e7571665",
+        "sha256_lf": "c08df09485ecb4bbe6ab5ccd0d130f56a770fedb4ebacc205e426dcf27cf38bf"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/gate_report.json",
+        "bytes": 16020,
+        "sha256": "b4c9b78820f1846b16042a2dc8e55ddb7854969bd703c0aabff7ad2272b2063b",
+        "sha256_lf": "f876a6385c044dc3e0b9f4dde142eeb781dd0eec959825e26a906729bc948975"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/cost_barrier_verify.json",
+        "bytes": 5785,
+        "sha256": "ff6127c4da563589267472c7d670ee6c15cd8215638c341aaa53acef9a678272",
+        "sha256_lf": "d90719cf691a6b635f882390845e82c8f5509ccf48ae632c1d412a469851a2fe"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/recovery_verify.json",
+        "bytes": 367,
+        "sha256": "b114af3dfcffd2bbdb31c70fedceb328e42e98e256b0d9f91a43a84538475b38",
+        "sha256_lf": "69f75ee7dfda60b7f258fcd00385a3f62a61a760c03002d2a0fa4dda54891a93"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/ci_runs.json",
+        "bytes": 5233,
+        "sha256": "e6127e099500b1e561ead2d85fe76426d1232e377cdd05fc984953fba162e90c",
+        "sha256_lf": "e6127e099500b1e561ead2d85fe76426d1232e377cdd05fc984953fba162e90c"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/certification_local_run.log",
+        "bytes": 1474,
+        "sha256": "9eeb11944c274776075af5aa6388e06b746e5adeb11074239b4bc45d706b1331",
+        "sha256_lf": "d1533e31b8bc2fe95d6f31a9ed6cf6ef1c3df47492451cae7e5d18f2a6c42d39"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/gate_console.txt",
+        "bytes": 18012,
+        "sha256": "3840ee34b8f9c971708503c1421f9ffade79b1ec52968e41baa4803d397e2029",
+        "sha256_lf": "8a42bc72ec087596806294761362e316e6f4c51c40b3d4e59dec0cd96f7e7178"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/evidence/evidence_console.txt",
+        "bytes": 4602,
+        "sha256": "36d67b881281ae4cf346cbdacad2d40301cdcd21d9c9cd3649cbbce6be840b81",
+        "sha256_lf": "484c28ac7042005503678e1daa1622e5e1c7489b07633d2f63b0b3dc7d553aab"
+      }
+    ],
+    "report_documents": [
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/BASELINE.md",
+        "bytes": 7621,
+        "sha256": "10e8c537acffff8f1402c365f9e298bda5ba4abd5a6d89daef4afaed34f2ac7b",
+        "sha256_lf": "10e8c537acffff8f1402c365f9e298bda5ba4abd5a6d89daef4afaed34f2ac7b"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/CHANGELOG.md",
+        "bytes": 6023,
+        "sha256": "c41f3cb69e61595fcbfa7eaf4ccda00eed5538787204a46be72e7296b25bc03a",
+        "sha256_lf": "c41f3cb69e61595fcbfa7eaf4ccda00eed5538787204a46be72e7296b25bc03a"
+      },
+      {
+        "path": "reports/ai-bots/TAP-CI-REPRO-003/TEST_RESULTS.json",
+        "bytes": 5914,
+        "sha256": "19f7f5f0a6d0609d9ea971b6f1c56d91e5530fed5e25373b56534b2198ce8430",
+        "sha256_lf": "19f7f5f0a6d0609d9ea971b6f1c56d91e5530fed5e25373b56534b2198ce8430"
+      }
+    ]
+  },
+  "self_reference": {
+    "excluded": [
+      "EVIDENCE_MANIFEST.json",
+      "INDEPENDENT_VERIFICATION.json"
+    ],
+    "why": "a manifest cannot contain its own digest; the verification records the digest of this manifest and of FINAL_REPORT.{json,md} instead"
+  },
+  "files_total": 31
+}

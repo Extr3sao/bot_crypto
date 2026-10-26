@@ -1,0 +1,9 @@
+cost-barrier certification: CERTIFIED (exit 0)
+  candidate 7a6260ad60ef (fix/ci-repro-003), dirty watched paths 0
+  full certification satisfied: True
+  gate status FULL_REPRODUCTION_PASS  ·  evidence 5a79ebe30355e469
+  [PASS] contract_tests - C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_cost_barrier_explorer.py tests/unit/research/test_cost_barrier_gate.py tests/unit/research/test_cost_barrier_adversarial.py tests/unit/research/test_cost_barrier_ci_parity.py
+  [PASS] materialize_inputs - C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\scripts\cost_barrier_evidence.py --materialize
+  [PASS] input_integrity - C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\scripts\cost_barrier_evidence.py --report C:\Users\GVLLFR0035\AppData\Local\Temp\ci\cert_fourth\integrity.json
+  [PASS] full_reproduction - C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\scripts\cost_barrier_gate.py --json --report C:\Users\GVLLFR0035\AppData\Local\Temp\ci\cert_fourth\gate_report.json
+  [PASS] adversarial - C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-adm002\scripts\cost_barrier_adversarial.py --out C:\Users\GVLLFR0035\AppData\Local\Temp\ci\cert_fourth\adversarial.json

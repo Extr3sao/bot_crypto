@@ -1,0 +1,170 @@
+[
+  {
+    "id": 40312138206,
+    "workflow": "Cost-barrier drift gate",
+    "event": "pull_request",
+    "head_sha": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-10-26T11:03:14Z",
+    "html_url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40312138206",
+    "failing_steps": [
+      {
+        "job": "Reproduce the cost-barrier artefacts from the declared inputs",
+        "step": "Certification record",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Reproduce the cost-barrier artefacts from the declared inputs",
+        "step": "Keep the evidence",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  {
+    "id": 40312138093,
+    "workflow": "recovery-determinism",
+    "event": "pull_request",
+    "head_sha": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-10-26T11:03:14Z",
+    "html_url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40312138093",
+    "failing_steps": [
+      {
+        "job": "Rehearse the recovery lane in a clean checkout of this commit",
+        "step": "Lane contract tests and determinism regressions",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  {
+    "id": 40312138506,
+    "workflow": "Integration gate",
+    "event": "pull_request",
+    "head_sha": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-10-26T11:03:14Z",
+    "html_url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40312138506",
+    "failing_steps": [
+      {
+        "job": "Integration gate (campaigns on this commit)",
+        "step": "Gate (both campaigns, both verifiers, independent audit)",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Integration gate (campaigns on this commit)",
+        "step": "Independent review (re-derives the verdict and runs the negative controls)",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  {
+    "id": 40312138095,
+    "workflow": "CI Baseline",
+    "event": "pull_request",
+    "head_sha": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-10-26T11:03:14Z",
+    "html_url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40312138095",
+    "failing_steps": [
+      {
+        "job": "Security audit (pip-audit)",
+        "step": "pip-audit",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Tests + Coverage (pytest, fast)",
+        "step": "Pytest (excl. slow + market) + coverage >= 90%",
+        "conclusion": "cancelled"
+      },
+      {
+        "job": "Format + Lint (Ruff)",
+        "step": "Ruff format --check",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Type check (Mypy strict)",
+        "step": "Mypy strict",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Smoke PR-pipeline (parse + preflight, no side effects)",
+        "step": "Set up job",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  {
+    "id": 40326169405,
+    "workflow": "Cost-barrier drift gate",
+    "event": "pull_request",
+    "head_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-26T12:54:35Z",
+    "html_url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169405",
+    "failing_steps": []
+  },
+  {
+    "id": 40326169257,
+    "workflow": "recovery-determinism",
+    "event": "pull_request",
+    "head_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-26T12:54:35Z",
+    "html_url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169257",
+    "failing_steps": []
+  },
+  {
+    "id": 40326169488,
+    "workflow": "Integration gate",
+    "event": "pull_request",
+    "head_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+    "status": "in_progress",
+    "conclusion": null,
+    "created_at": "2026-10-26T12:54:35Z",
+    "html_url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169488",
+    "failing_steps": []
+  },
+  {
+    "id": 40326169295,
+    "workflow": "CI Baseline",
+    "event": "pull_request",
+    "head_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-10-26T12:54:35Z",
+    "html_url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169295",
+    "failing_steps": [
+      {
+        "job": "Smoke PR-pipeline (parse + preflight, no side effects)",
+        "step": "Set up job",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Security audit (pip-audit)",
+        "step": "pip-audit",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Format + Lint (Ruff)",
+        "step": "Ruff format --check",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Type check (Mypy strict)",
+        "step": "Mypy strict",
+        "conclusion": "failure"
+      },
+      {
+        "job": "Tests + Coverage (pytest, fast)",
+        "step": "Pytest (excl. slow + market) + coverage >= 90%",
+        "conclusion": "failure"
+      }
+    ]
+  }
+]

@@ -1,0 +1,174 @@
+{
+  "artifact": "RFC_TAP_CI_003_TEST_RESULTS",
+  "baseline_commit": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+  "tested_commit": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+  "last_evidence_commit": "eda14ae4e0aa18b9660441de31f94b1c7a6b9a61",
+  "evidence_commit_delta": [
+    "data/recovery/INDEPENDENT_VERIFICATION.json"
+  ],
+  "report_commit": "the commit that carries reports/ai-bots/TAP-CI-REPRO-003",
+  "generated_at_utc": "2026-10-26T13:10:55Z",
+  "environment": {
+    "os": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15",
+    "runner": "LOCAL"
+  },
+  "local": [
+    {
+      "command": "uv run python -m pytest tests/unit/research/test_cost_barrier_explorer.py tests/unit/research/test_cost_barrier_gate.py tests/unit/research/test_cost_barrier_adversarial.py tests/unit/research/test_cost_barrier_ci_parity.py tests/unit/research/test_active_recovery_wp.py tests/unit/research/test_recovery_determinism.py tests/unit/research/test_recovery_ci_parity.py -q -p no:cacheprovider",
+      "exit_code": 0,
+      "passed": 146,
+      "failed": 0,
+      "skipped": 0,
+      "duration_s": 168.38,
+      "evidence": "evidence/pytest_final.txt"
+    },
+    {
+      "command": "uv run python scripts/active_economic_audit.py --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "classification": "CURRENT",
+      "wrote_files": false,
+      "evidence": "evidence/audit_check.json"
+    },
+    {
+      "command": "uv run python scripts/cost_barrier_evidence.py --report <evidence>",
+      "exit_code": 0,
+      "status": "VERIFIED",
+      "checks_total": 6,
+      "checks_failed": 0,
+      "producers": {
+        "scripts/active_economic_audit.py": "EXACT",
+        "scripts/cost_barrier.py": "EXACT",
+        "scripts/cost_barrier_explorer.py": "EXACT",
+        "scripts/cost_barrier_verify.py": "EXACT"
+      },
+      "evidence": "evidence/evidence_bundle.json"
+    },
+    {
+      "command": "uv run python scripts/cost_barrier_gate.py --json --report <evidence>",
+      "exit_code": 0,
+      "status": "FULL_REPRODUCTION_PASS",
+      "checks_total": 13,
+      "checks_failed": 0,
+      "satisfies_full_certification": true,
+      "advisories": 0,
+      "evidence": "evidence/gate_report.json"
+    },
+    {
+      "command": "uv run python scripts/cost_barrier_verify.py --out <evidence>",
+      "exit_code": 0,
+      "status": "PASS",
+      "checks_total": 4,
+      "checks_failed": 0,
+      "controls_total": 13,
+      "controls_missed": 0,
+      "false_success": 0,
+      "evidence": "evidence/cost_barrier_verify.json"
+    },
+    {
+      "command": "uv run python scripts/recovery_verify.py --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "checks": {
+        "C1": "PASS",
+        "C2": "PASS",
+        "C3": "PASS",
+        "C4": "PASS",
+        "C5": "PASS",
+        "C6": "PASS",
+        "C7": "PASS",
+        "C8": "PASS",
+        "C9": "PASS",
+        "C10": "PASS",
+        "C11": "PASS",
+        "C12": "PASS",
+        "C13": "PASS",
+        "C14": "PASS",
+        "C15": "PASS",
+        "C16": "PASS",
+        "C17": "PASS"
+      },
+      "controls": 13,
+      "controls_missed": 0,
+      "evidence": "evidence/recovery_verify.json"
+    },
+    {
+      "command": "uv run python scripts/cost_barrier_adversarial.py",
+      "exit_code": 0,
+      "attacks_total": 17,
+      "attacks_detected": 17,
+      "attacks_evaded": 0,
+      "legs_failed": []
+    },
+    {
+      "command": "uv run python scripts/cost_barrier_certify.py",
+      "exit_code": 0,
+      "status": "CERTIFIED",
+      "contract_tests_passed": true,
+      "dirty_watched_paths": [],
+      "evidence_fingerprint": "5a79ebe30355e469085081fcdf9ed259481bdbd556cfe0d878c5805dc62b7aa8",
+      "supersedes_fingerprint": "492146e91c0720291474bae2bf3f02122727480a2f3860c37a8d659416e13241",
+      "evidence": "evidence/certification_local_run.log"
+    },
+    {
+      "command": "uv run python scripts/clean_checkout_rehearsal.py --scope full --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "rehearsed_commit": "d62ecb76aaec4bd8ebabc9f58b4386940a8de04d",
+      "artifacts_identical": {
+        "data/recovery/CAMPAIGN_STATE_VIEW.json": true,
+        "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md": true,
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json": true,
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.md": true
+      },
+      "published_paths_moved": []
+    }
+  ],
+  "ci": {
+    "tested_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+    "runs": [
+      {
+        "id": 40326169405,
+        "workflow": "Cost-barrier drift gate",
+        "conclusion": "success",
+        "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169405"
+      },
+      {
+        "id": 40326169257,
+        "workflow": "recovery-determinism",
+        "conclusion": "success",
+        "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169257"
+      },
+      {
+        "id": 40326169295,
+        "workflow": "CI Baseline",
+        "conclusion": "failure",
+        "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169295",
+        "root_cause": "B12 inherited: Ruff format, pip-audit and the smoke pipeline's setup fail on this base; out of scope"
+      },
+      {
+        "id": 40326169488,
+        "workflow": "Integration gate",
+        "conclusion": "failure",
+        "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169488",
+        "root_cause": "B11: the runner has no live feed, so no campaign cycle can execute; out of scope"
+      }
+    ],
+    "baseline_runs": [
+      {
+        "id": 40312138206,
+        "workflow": "Cost-barrier drift gate",
+        "conclusion": "failure",
+        "failing_step": "Certification record"
+      },
+      {
+        "id": 40312138093,
+        "workflow": "recovery-determinism",
+        "conclusion": "failure",
+        "failing_step": "Lane contract tests and determinism regressions"
+      }
+    ]
+  },
+  "false_success": 0
+}

@@ -1,0 +1,1 @@
+{"check": "determinism:payload_sha256_stable", "mode": "read-only", "published": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json", "result": "PASS", "classification": "CURRENT", "detail": "c6ea34388745471e... matches the published artefact", "exit_code": 0}

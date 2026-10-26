@@ -1,0 +1,265 @@
+{
+  "artifact": "RFC_TAP_CI_003_FINAL_REPORT",
+  "phase": "RFC-TAP-CI-003 — evidence reproducibility and B13/B14 closure",
+  "baseline_commit": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+  "baseline_branch": "admission/integration-002",
+  "tested_commit": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+  "last_evidence_commit": "eda14ae4e0aa18b9660441de31f94b1c7a6b9a61",
+  "report_commit": "the commit that carries this folder (git log -- reports/ai-bots/TAP-CI-REPRO-003)",
+  "branch": "fix/ci-repro-003",
+  "pull_request": {
+    "number": 53,
+    "url": "https://github.com/Extr3sao/bot_crypto/pull/53",
+    "state": "open",
+    "merged": false
+  },
+  "generated_at_utc": "2026-10-26T13:20:00Z",
+  "statuses": {
+    "CI_REPRO_STATUS": {
+      "value": "PASS",
+      "detail": "cost-barrier-gate and recovery-determinism both success on 63950a72, every step included"
+    },
+    "INTEGRATION_STATUS": {
+      "value": "NO_GO",
+      "changed_by_this_rfc": false,
+      "detail": "Integration gate 40326169488 failed: B11, the runner has no live feed"
+    },
+    "PAPER_RUNTIME_STATUS": {
+      "value": "PARTIAL",
+      "changed_by_this_rfc": false,
+      "detail": "no runtime was executed by this RFC; prior evidence remains 7 cycles, 2 fills, 0 closes, 0 live orders"
+    },
+    "STRATEGY_ADMISSION_STATUS": {
+      "value": "NO_GO",
+      "changed_by_this_rfc": false,
+      "detail": "0 of 24 strategies admitted; 17 NO_GROSS_EDGE, 7 COST_KILLED"
+    },
+    "PROFITABILITY_EVIDENCE_STATUS": {
+      "value": "NEGATIVE",
+      "changed_by_this_rfc": false,
+      "detail": "best gross 8.912 bps against a 12.177 bps observed floor; 0 cells clear it and 24/24 are net negative"
+    }
+  },
+  "commits": [
+    {
+      "sha": "4ec7a7cd",
+      "subject": "Make the CI evidence reproducible instead of checkout-dependent",
+      "files": 9
+    },
+    {
+      "sha": "d62ecb76",
+      "subject": "Re-issue the cost-barrier certification over the new evidence",
+      "files": 1
+    },
+    {
+      "sha": "09a137c1",
+      "subject": "Rehearse the regenerated audit and check it read-only in CI",
+      "files": 3
+    },
+    {
+      "sha": "7a6260ad",
+      "subject": "Keep the evidence the jobs actually produce",
+      "files": 4
+    },
+    {
+      "sha": "63950a72",
+      "subject": "Re-fingerprint the certification after the workflow fix",
+      "files": 1
+    },
+    {
+      "sha": "eda14ae4",
+      "subject": "Record the independent recovery verification at the fixed commit",
+      "files": 1
+    }
+  ],
+  "implemented": [
+    {
+      "id": "B14b",
+      "what": "active_economic_audit.py --check is strictly read-only and rebuilds in memory before comparing",
+      "files": ["scripts/active_economic_audit.py"],
+      "detail": "rejects MISSING / UNREADABLE / INCOMPLETE / TAMPERED; classifies ECONOMIC_DRIFT vs STALE_PROVENANCE; exit 0/1/2; normal writes use LF"
+    },
+    {
+      "id": "B13",
+      "what": "producer-pin tests assert the manifest's byte contract instead of the authoring tree's raw bytes",
+      "files": ["tests/unit/research/test_cost_barrier_gate.py"],
+      "detail": "EXACT or EOL_ONLY admissible; DRIFT and ABSENT still fail; new regressions cover both conventions and an absent producer"
+    },
+    {
+      "id": "B14a",
+      "what": "regenerated the stale audit and every artefact that fingerprints it",
+      "files": [
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.md",
+        "data/recovery/COST_BARRIER_EXPLORER.json",
+        "data/recovery/COST_BARRIER_EXPLORER.md",
+        "data/recovery/COST_BARRIER_VERIFICATION.json",
+        "data/recovery/wp7/evidence/INPUT_EVIDENCE.json",
+        "data/recovery/wp7/evidence/PRODUCER_PINS.json"
+      ],
+      "detail": "identity moved 023b66ff -> c6ea3438; only the entrypoints section changed; every economic finding is identical"
+    },
+    {
+      "id": "B14a-cert",
+      "what": "re-issued the certification record twice with supersession preserved",
+      "files": ["data/recovery/wp7/COST_BARRIER_CERTIFICATION.json"],
+      "detail": "0cfdb13e -> 492146e9 -> 5a79ebe3; previous fingerprint, head and evidence-table digest retained"
+    },
+    {
+      "id": "B14c",
+      "what": "recovery-determinism runs the read-only audit check and the rehearsal was re-executed",
+      "files": [
+        ".github/workflows/recovery-determinism.yml",
+        "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+        "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md"
+      ],
+      "detail": "rehearsal PASS on d62ecb76, 4/4 artefacts identical, no published path moved"
+    },
+    {
+      "id": "B15",
+      "what": "both workflows upload the hidden .ci evidence directory",
+      "files": [
+        ".github/workflows/cost-barrier-gate.yml",
+        ".github/workflows/recovery-determinism.yml",
+        "tests/unit/research/test_cost_barrier_ci_parity.py",
+        "tests/unit/research/test_recovery_ci_parity.py"
+      ],
+      "detail": "include-hidden-files: true, pinned by parity tests"
+    }
+  ],
+  "tests": {
+    "command": "uv run python -m pytest tests/unit/research/test_cost_barrier_explorer.py tests/unit/research/test_cost_barrier_gate.py tests/unit/research/test_cost_barrier_adversarial.py tests/unit/research/test_cost_barrier_ci_parity.py tests/unit/research/test_active_recovery_wp.py tests/unit/research/test_recovery_determinism.py tests/unit/research/test_recovery_ci_parity.py -q -p no:cacheprovider",
+    "exit_code": 0,
+    "passed": 146,
+    "failed": 0,
+    "skipped": 0,
+    "duration_s": 168.38,
+    "commits_covered": "63950a72 (code identical to eda14ae4; that commit adds one run record)"
+  },
+  "runtime_validation": {
+    "audit_check": {"result": "PASS", "classification": "CURRENT", "exit_code": 0, "wrote_files": false},
+    "evidence_bundle": {"status": "VERIFIED", "checks_total": 6, "checks_failed": 0, "producers_exact": 4},
+    "gate": {
+      "status": "FULL_REPRODUCTION_PASS",
+      "checks_total": 13,
+      "checks_failed": 0,
+      "advisories": 0,
+      "satisfies_full_certification": true
+    },
+    "cost_barrier_verify": {"status": "PASS", "controls_total": 13, "controls_missed": 0, "false_success": 0},
+    "recovery_verify": {"status": "PASS", "checks": "C1-C17", "controls": 13, "controls_missed": 0},
+    "adversarial": {"attacks_total": 17, "attacks_detected": 17, "attacks_evaded": 0},
+    "certification": {
+      "status": "CERTIFIED",
+      "evidence_fingerprint": "5a79ebe30355e469085081fcdf9ed259481bdbd556cfe0d878c5805dc62b7aa8",
+      "dirty_watched_paths": [],
+      "authors_promotion": false,
+      "authorizes_live_trading": false
+    },
+    "rehearsal": {
+      "status": "PASS",
+      "rehearsed_commit": "d62ecb76aaec4bd8ebabc9f58b4386940a8de04d",
+      "artifacts_identical": 4,
+      "published_paths_moved": []
+    },
+    "economic_findings_changed": false,
+    "risk_admission_cost_files_changed": false
+  },
+  "ci_runs": [
+    {
+      "id": 40326169405,
+      "workflow": "Cost-barrier drift gate",
+      "head_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169405"
+    },
+    {
+      "id": 40326169257,
+      "workflow": "recovery-determinism",
+      "head_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169257"
+    },
+    {
+      "id": 40326169295,
+      "workflow": "CI Baseline",
+      "head_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+      "status": "completed",
+      "conclusion": "failure",
+      "root_cause": "B12 inherited from main: Ruff format, pip-audit, smoke setup",
+      "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169295"
+    },
+    {
+      "id": 40326169488,
+      "workflow": "Integration gate",
+      "head_sha": "63950a7295d7659fffe894e49d6fa5624d1280a2",
+      "status": "completed",
+      "conclusion": "failure",
+      "root_cause": "B11: the runner has no live feed; no campaign cycle can execute",
+      "url": "https://github.com/Extr3sao/bot_crypto/actions/runs/40326169488"
+    }
+  ],
+  "false_success": 0,
+  "defects": [
+    {
+      "id": "B13",
+      "classification": "CHECKER_DEFECT",
+      "status": "CLOSED",
+      "cause": "two producer-pin tests required PIN_EXACT although PRODUCER_PINS.json admits identical content in LF or CRLF and the gate already treated only DRIFT/ABSENT as failure"
+    },
+    {
+      "id": "B14a",
+      "classification": "STALE_ARTIFACT",
+      "status": "CLOSED",
+      "cause": "the audit recorded the pre-537e4990 digest of scripts/start_paper_trading.py; rebuild produced a different identity with identical economics"
+    },
+    {
+      "id": "B14b",
+      "classification": "CHECKER_DEFECT",
+      "status": "CLOSED",
+      "cause": "active_economic_audit.py --check wrote both artefacts before reading the published one, so a stale audit was rewritten into agreement and certified"
+    },
+    {
+      "id": "B15",
+      "classification": "EVIDENCE_PACKAGING_DEFECT",
+      "status": "CLOSED",
+      "cause": "upload-artifact@v4 excludes hidden files, so .ci/ was not uploaded; cost-barrier failed on if-no-files-found: error and recovery lost its console evidence"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "B11",
+      "status": "OPEN",
+      "scope": "out of this RFC",
+      "detail": "the GitHub runner has no market feed, so the Integration gate cannot execute a campaign cycle and remains NO_GO"
+    },
+    {
+      "id": "B12",
+      "status": "OPEN",
+      "scope": "out of this RFC",
+      "detail": "CI Baseline has never been green on main: Ruff format debt, pip-audit findings and a smoke setup that references a non-existent action"
+    }
+  ],
+  "limitations": [
+    "CI_REPRO_STATUS=PASS is a statement about reproducibility on the tested commit, not about profitability or admission",
+    "local verification ran on Windows 3.11.15; the cross-platform evidence is the ubuntu-latest run",
+    "re-running cost_barrier_verify.py into the published path changes the verification document's moment and invalidates the certification fingerprint; CI runs it in a temporary directory",
+    "the audit's head field is a83ac165 (the commit it was regenerated from); head is outside the identity by contract and --check remains CURRENT"
+  ],
+  "evidence": {
+    "baseline": "BASELINE.md",
+    "changelog": "CHANGELOG.md",
+    "test_results": "TEST_RESULTS.json",
+    "manifest": "EVIDENCE_MANIFEST.json",
+    "independent_verification": "INDEPENDENT_VERIFICATION.json",
+    "raw": "evidence/"
+  },
+  "next_phase": [
+    "B11: make the runner able to execute a declared replay (never presented as live) or provide a self-hosted runner with a feed, so the Integration gate can certify",
+    "B12: pay down Ruff/Mypy in reviewed slices and replace the missing microsoft/powershell action in the smoke pipeline",
+    "do not move any economic threshold: the evidence is negative; the honest next step is a new strategy hypothesis, not a weaker gate",
+    "review and, if accepted, merge PR #53; this RFC merges nothing automatically"
+  ]
+}
