@@ -124,6 +124,9 @@ def test_the_evidence_is_kept_even_when_a_step_fails():
     kept = str(uploads[0]["with"]["path"])
     assert "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json" in kept
     assert "data/recovery/INDEPENDENT_VERIFICATION.json" in kept
+    # upload-artifact v4 drops dot-directories unless asked: without this the job went
+    # green while the rehearsal stdout and the verifier's record were missing from it.
+    assert str(uploads[0]["with"].get("include-hidden-files")).lower() == "true"
 
 
 def test_no_step_can_be_softened():

@@ -159,3 +159,7 @@ jobs:
             data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json
             data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md
             data/recovery/INDEPENDENT_VERIFICATION.json
+          # `.ci/` is hidden, and upload-artifact v4 drops dot-directories by default:
+          # the job looked green while the rehearsal and verifier outputs were missing
+          # from the artifact. Upload what the run actually produced.
+          include-hidden-files: true

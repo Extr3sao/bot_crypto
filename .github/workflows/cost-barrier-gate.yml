@@ -139,3 +139,7 @@ jobs:
           name: cost-barrier-certification
           path: .ci/
           if-no-files-found: error
+          # `.ci/` is a dot-directory: upload-artifact v4 excludes hidden files by
+          # default, so without this the step found nothing and failed the job after
+          # every contract inside it had passed. The evidence is the point.
+          include-hidden-files: true

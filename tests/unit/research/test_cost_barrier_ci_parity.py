@@ -126,6 +126,10 @@ def test_the_adversarial_suite_and_the_certifier_run_and_evidence_is_kept():
     upload = next(row for row in steps() if "upload-artifact" in str(row.get("uses", "")))
     assert upload.get("if") == "always()", "the evidence must be kept even when a step fails"
     assert upload["with"]["if-no-files-found"] == "error"
+    # The evidence lives under `.ci/`, and upload-artifact v4 excludes hidden files by
+    # default: the job passed every contract and then failed finding nothing to upload.
+    # (the loader here is not the YAML one, but the value may still be a bool or a string)
+    assert str(upload["with"].get("include-hidden-files")).lower() == "true"
 
 
 def test_no_step_can_be_softened():
