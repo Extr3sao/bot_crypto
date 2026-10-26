@@ -105,7 +105,7 @@
       "false_success": 0,
       "pass": 15,
       "path": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/ADMISSION_VERIFICATION.json",
-      "sha256": "2e95f9fcf1d343753e29284a01d4a63d40882e851407f03d6026a5b7ad0024df",
+      "sha256": "b0014e1e1a7bb719ff26af8b8697805799b1a41e18b3a54ee8c9b0c17d8d2fb3",
       "verdict": "PASS"
     },
     "verifier": {
@@ -133,7 +133,7 @@
     "status": "OPEN",
     "subject": "weekly loss veto rolled to UTC Monday 00:00"
   },
-  "generated_at_utc": "2026-10-26T12:30:00Z",
+  "generated_at_utc": "2026-10-26T12:40:00Z",
   "github_actions": {
     "branch_tip_at_the_time": "3c967185",
     "honest_summary": "the gate refuses to certify; it did not produce a false PASS. The only false success was the lock campaign's exit code, now closed.",
@@ -224,7 +224,7 @@
       "head": "76e8ec0bfeb767955cbe8eb82522fced01077f06",
       "pass": 15,
       "result": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/evidence/ADMISSION_VERIFICATION.json",
-      "result_sha256": "2e95f9fcf1d343753e29284a01d4a63d40882e851407f03d6026a5b7ad0024df",
+      "result_sha256": "b0014e1e1a7bb719ff26af8b8697805799b1a41e18b3a54ee8c9b0c17d8d2fb3",
       "verdict": "PASS",
       "verifier": "reports/ai-bots/TAP-INTEGRATION-ADMISSION-002/tools/admission_verify.py",
       "verifier_sha256": "d02c6f87931f651557da73e12dd4fe2d6aaacfcce7718e9b07f4cbaa08c44e0c"
