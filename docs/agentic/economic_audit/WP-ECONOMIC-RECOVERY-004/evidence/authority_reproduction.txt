@@ -1,0 +1,32 @@
+=== ledger revisions: blob vs CRLF renderings ===
+eb53e631 2026-10-25 blob=5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76 crlf=21a642de96a691aef8e80be6265c6104fa89ab0297e6f24f46dabf0ed5e20f72 pin_matches_blob=False pin_matches_crlf=False
+    11:38:51 +0100 fix(evidence): reconstruct the admission anchor and stop tests rewriting tracked data
+ddaf14d1 2026-09-28 blob=92aab5415d92ff39219e7db68cb8057f746e4d7e6d6a6fb46a3971754bfc65e2 crlf=6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1 pin_matches_blob=False pin_matches_crlf=True
+    11:35:05 +0200 feat(autonomous): wire deterministic risk into SHADOW and make availability bar-close
+65b3821d 2026-09-28 blob=64184cb0b82046f5b4eaa663d2f2c4a7d270ae6002f63d5b15b11ddc94fb7796 crlf=c1186fe0dd0f37f3fa84dda2817939419db964087e064ef20ce10457bd193060 pin_matches_blob=False pin_matches_crlf=False
+    06:57:48 +0200 feat(autonomous): executable PAPER/SHADOW decision runtime with trace, outcomes and experience
+
+=== explorer pin for the ledger ===
+{
+ "path": "config/strategy_admission.json",
+ "role": "tracked admission ledger: the only source of 'may this run PAPER?'",
+ "exists": true,
+ "tracked": true,
+ "sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+ "state_sha256": null
+}
+
+=== semantic diff ddaf14d1 -> HEAD ===
+diff --git a/config/strategy_admission.json b/config/strategy_admission.json
+index 9153eb18..3c65f82d 100644
+--- a/config/strategy_admission.json
++++ b/config/strategy_admission.json
+@@ -9,7 +9,7 @@
+     },
+     {
+       "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
+-      "sha256": "5f794c36829f947ff56de3995b68bb4f374d770bb32bd6147bff59a014ea05bf"
++      "sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81"
+     }
+   ],
+   "_admission_cost_model": "COST_MODEL_V3 (evaluated live per cycle; never stored here)",

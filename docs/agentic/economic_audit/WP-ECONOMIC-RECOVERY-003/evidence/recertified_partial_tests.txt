@@ -1,0 +1,7 @@
+................FF...................................................... [ 66%]
+......F.............................                                     [100%]
+=========================== short test summary info ===========================
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_pinned_producers_match_their_manifest
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_changed_producer_is_a_named_failure
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout
+3 failed, 105 passed in 164.12s (0:02:44)

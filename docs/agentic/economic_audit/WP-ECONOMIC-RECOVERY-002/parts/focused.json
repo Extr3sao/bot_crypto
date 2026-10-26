@@ -1,0 +1,67 @@
+{
+  "nodes": [
+    "tests/unit/research/test_active_recovery_wp.py::test_audit_is_deterministic_and_committed",
+    "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic",
+    "tests/unit/research/test_cost_barrier_ci_parity.py::test_tests_ci_and_the_runtime_all_run_the_same_bytes",
+    "tests/unit/research/test_cost_barrier_ci_parity.py::test_the_producer_pins_survive_a_checkout_that_rewrites_line_endings",
+    "tests/unit/research/test_economic001_evidence_closure.py::test_the_closure_is_not_inside_the_commit_it_names",
+    "tests/unit/research/test_economic001_evidence_closure.py::test_the_delivery_commit_carries_exactly_the_six_deliverables",
+    "tests/unit/research/test_economic001_evidence_closure.py::test_the_verification_artefact_stays_inside_its_own_vocabulary",
+    "tests/unit/research/test_recovery_determinism.py::test_a_sabotaged_committed_input_is_detected",
+    "tests/unit/research/test_recovery_determinism.py::test_a_sabotaged_evidence_copy_is_detected",
+    "tests/unit/research/test_recovery_determinism.py::test_an_uncommitted_edit_to_a_committed_document_cannot_move_the_identity",
+    "tests/unit/research/test_recovery_determinism.py::test_every_evidence_copy_reproduces_the_published_authority",
+    "tests/unit/research/test_recovery_determinism.py::test_no_source_of_either_artefact_came_from_the_working_tree",
+    "tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical",
+    "tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit",
+    "tests/unit/research/test_recovery_determinism.py::test_the_published_artefacts_report_reproducibility_invariants",
+    "tests/unit/research/test_recovery_determinism.py::test_the_repair_moved_no_economic_finding",
+    "tests/unit/research/test_rfc046_discovery_proposal.py::test_rfc_045_stays_empty_by_control",
+    "tests/unit/research/test_st6_scheduler.py::test_a_second_writer_refuses_and_makes_no_market_request",
+    "tests/unit/research/test_st6_scheduler.py::test_an_impossible_cadence_refuses_with_a_non_zero_status",
+    "tests/unit/research/test_st6_scheduler.py::test_the_run_log_is_compact_self_consistent_and_unique",
+    "tests/unit/research/test_st6_scheduler.py::test_the_run_log_records_who_invoked_the_tick"
+  ],
+  "working": {
+    "counts": {
+      "passed": 21
+    },
+    "failures": [],
+    "skips": [],
+    "exit_code": 0,
+    "raw_tail": [
+      ".....................                                                    [100%]",
+      "21 passed in 110.41s (0:01:50)"
+    ],
+    "import_path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\src\\trading_bot\\__init__.py",
+    "tracked_data": {
+      "rewritten": [],
+      "removed": [],
+      "added": [],
+      "files_hashed_before": 2018,
+      "files_hashed_after": 2018
+    }
+  },
+  "clone": {
+    "counts": {
+      "passed": 21
+    },
+    "failures": [],
+    "skips": [],
+    "exit_code": 0,
+    "raw_tail": [
+      ".....................                                                    [100%]",
+      "21 passed in 99.91s (0:01:39)"
+    ],
+    "import_path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp-eco002-focused-t7mbh7iw\\repo\\src\\trading_bot\\__init__.py",
+    "tracked_data": {
+      "rewritten": [],
+      "removed": [],
+      "added": [],
+      "files_hashed_before": 2018,
+      "files_hashed_after": 2018
+    },
+    "imported_its_own_source": true,
+    "checkout_dir": "<temporary directory, removed>"
+  }
+}

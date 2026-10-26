@@ -1,0 +1,1221 @@
+{
+  "wp": "WP-ECONOMIC-BLOCKER-001",
+  "artefact": "TEST_BASELINE_COMPARISON",
+  "commit": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "branch": "audit/economic-blocker-001",
+  "python": "3.11.15",
+  "pytest_selection_failing": [
+    "tests/unit/risk",
+    "tests/unit/research"
+  ],
+  "pytest_selection_healthy": [
+    "tests/unit/autonomous",
+    "tests/unit/paper",
+    "tests/unit/scanner"
+  ],
+  "worktree_touched_src_tests_config": "(none)",
+  "this_wp_changes_runtime_code": false,
+  "working_tree_run": {
+    "counts": {
+      "failed": 89,
+      "passed": 1845,
+      "skipped": 30,
+      "error": 14
+    },
+    "failures": [
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/risk/test_futures_independent_verifier.py::test_verifier_reproduces_a_real_approval",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/risk/test_futures_independent_verifier.py::test_executed_artifacts_verify_when_present",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_expansion_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-013]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_expansion_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-014]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_expansion_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-015]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_manifests.py::test_frozen_manifest_is_present_and_pre_registered[EXP-ARP-007]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_manifests.py::test_frozen_manifest_is_present_and_pre_registered[EXP-ARP-010]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_v1_4_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-009]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_v1_4_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-011]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_v1_4_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-012]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_v1_4_manifests.py::test_split_firewall_never_opens_oos_when_validation_fails",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp009_exp021_pit.py::test_frozen_contract_passes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp009_exp021_pit.py::test_frozen_manifest_matches_corpus_digest",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp010_exp022_pit.py::test_frozen_contract_passes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp011_exp019_pit.py::test_frozen_contract_passes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp013_exp023_spec.py::test_dataset_fingerprint_matches_frozen_corpus",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_sandbox_carries_everything_the_gate_reads",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_adversarial.py::test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_adversarial.py::test_a_line_ending_only_change_is_not_a_finding",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_explorer.py::test_payload_hash_reproduces_and_matches_the_committed_artefact",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_explorer.py::test_reading_the_sources_leaves_them_byte_identical",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_explorer.py::test_the_market_horizon_is_reused_not_redefined",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_explorer.py::test_governance_flags_stay_unauthorized",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_the_gate_reproduces_the_committed_state_in_full_mode",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_check_mode_is_partial_and_says_so",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_the_cli_has_one_exit_code_per_state",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_number_with_an_honest_rehash_is_caught",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_the_published_market_horizon_section_reproduces_from_the_pinned_source",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_market_horizon_row_is_caught_by_the_re_derivation",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_published_lines_block_is_caught",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_the_pinned_producers_match_their_manifest",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_changed_producer_is_a_named_failure",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_integrity_checks_are_tagged_as_such[source:market_horizon_rows_match_the_pinned_source]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_drift_monitor.py::test_every_window_keeps_its_raw_bytes_and_the_hash_matches",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_verified_bytes_are_the_shipped_bytes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_dataset_hashes_are_the_files_on_disk",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_every_deliverable_hash_matches_the_repository",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_report_bytes_still_match_the_rfc046_verification",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_medians_reproduce_on_a_third_window_convention",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_timestamps_are_gapless_grid_aligned_and_on_one_timeline",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_two_tolls_are_distinct_and_the_historical_one_is_frozen",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_exp004a_wp051_02k.py::test_contract_reads_the_frozen_window",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_all_deliverables_exist_and_are_not_empty",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_independent_verification_recorded_its_own_result",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_negative_controls_are_recorded",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[FINAL_REPORT.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[SEARCH_POSTMORTEM.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[ECONOMIC_FEASIBILITY.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[ALTERNATIVE_PATHS.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[INDEPENDENT_VERIFICATION.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[BASELINE.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[RULE_CONTRACT_AUDIT.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[CANDIDATE_DEEP_DIVE.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[ECONOMIC_EVIDENCE.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[REJECTION_LOG.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[FINAL_REPORT.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[INDEPENDENT_VERIFICATION.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_eight_required_deliverables_exist",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_final_status_blocks_rfc_036",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_every_field_uses_one_of_the_four_states",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_an_explicit_absence_is_settled_not_missing",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_rule_completeness_and_evidence_completeness_are_reported_separately",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_no_candidate_is_promoted_to_replication",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_integrity_manifest_re_derives",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_independent_verification_is_green_and_can_fail",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_activation_and_campaign.py::test_signals_need_no_data_after_their_own_exit",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_activation_and_campaign.py::test_zero_sample_hypothesis_is_recorded_as_such",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_discovery_proposal.py::test_all_requested_deliverables_exist_and_are_not_empty",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_discovery_proposal.py::test_pit_enforcement_is_mechanical_and_rooted_in_a_real_defect",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_economic_gate.py::test_artefacts_exist_and_are_verified_clean",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_economic_gate.py::test_the_horizon_table_is_measured_on_the_campaign_bars",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_economic_gate.py::test_the_rfc046_confirmations_match_the_recorded_artefacts",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc047_windows_evidence.py::test_the_verifier_shares_no_code_with_the_builder_and_passes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc047_windows_evidence.py::test_the_eighteen_controls_reject_the_manipulations_and_accept_the_honest_state",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc047_windows_evidence.py::test_the_verifier_notices_a_host_that_disagrees_with_the_audit",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_shock_event_is_the_frozen_detector",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_signal_values_are_in_int8_set",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_trend_continuation]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_confirm_followthrough]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_range_location]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_forward_from_entry_is_nan_near_end",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_run_hypothesis_is_deterministic",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint026_execution.py::test_candidate_replay_is_deterministic_and_reconciles",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_task_definition_matches_the_repository_and_the_host",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_every_ended_slot_is_accounted_for_and_nothing_is_reconstructed",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_health_status_is_declared_and_not_a_heartbeat",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_scheduler_report_agrees_with_its_verification",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_close_replay_is_isolated_and_passes_on_the_shipped_state",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_every_required_field_is_present",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_closure_values_are_exact",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_promotion_flag_is_set",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_runtime_is_still_paper_and_unarmed",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_cost_is_derived_and_internally_consistent",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_turnover_arithmetic_uses_the_measured_cost",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_cost_reports_known_and_assumed_separately",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_every_scenario_and_sensitivity_is_present",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_root_causes_cover_all_eight_and_are_owned",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_root_cause_review_refuses_to_infer_absence_of_alpha",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_recommendation_is_a_proposal_not_a_decision",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_catalogue_and_registry_are_consistent",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_baseline_separates_observed_from_reproduced",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_cap004b_and_campaign_are_quoted_faithfully",
+        "message": ""
+      }
+    ],
+    "exit_code": 1,
+    "import_path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\src\\trading_bot\\__init__.py"
+  },
+  "clean_checkout_run": {
+    "counts": {
+      "failed": 110,
+      "passed": 1824,
+      "skipped": 30,
+      "error": 14
+    },
+    "failures": [
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/risk/test_futures_independent_verifier.py::test_verifier_reproduces_a_real_approval",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/risk/test_futures_independent_verifier.py::test_executed_artifacts_verify_when_present",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_active_recovery_wp.py::test_audit_is_deterministic_and_committed",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_expansion_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-013]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_expansion_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-014]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_expansion_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-015]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_manifests.py::test_frozen_manifest_is_present_and_pre_registered[EXP-ARP-007]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_manifests.py::test_frozen_manifest_is_present_and_pre_registered[EXP-ARP-010]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_v1_4_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-009]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_v1_4_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-011]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_v1_4_manifests.py::test_frozen_manifest_present_and_pre_registered[EXP-ARP-012]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_alpha_recovery_v1_4_manifests.py::test_split_firewall_never_opens_oos_when_validation_fails",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp009_exp021_pit.py::test_frozen_contract_passes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp009_exp021_pit.py::test_frozen_manifest_matches_corpus_digest",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp010_exp022_pit.py::test_frozen_contract_passes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp011_exp019_pit.py::test_frozen_contract_passes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_arp013_exp023_spec.py::test_dataset_fingerprint_matches_frozen_corpus",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_sandbox_carries_everything_the_gate_reads",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_adversarial.py::test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_adversarial.py::test_a_line_ending_only_change_is_not_a_finding",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_ci_parity.py::test_tests_ci_and_the_runtime_all_run_the_same_bytes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_ci_parity.py::test_the_producer_pins_survive_a_checkout_that_rewrites_line_endings",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_explorer.py::test_payload_hash_reproduces_and_matches_the_committed_artefact",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_explorer.py::test_reading_the_sources_leaves_them_byte_identical",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_explorer.py::test_the_market_horizon_is_reused_not_redefined",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_explorer.py::test_governance_flags_stay_unauthorized",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_the_gate_reproduces_the_committed_state_in_full_mode",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_check_mode_is_partial_and_says_so",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_the_cli_has_one_exit_code_per_state",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_number_with_an_honest_rehash_is_caught",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_the_published_market_horizon_section_reproduces_from_the_pinned_source",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_market_horizon_row_is_caught_by_the_re_derivation",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_published_lines_block_is_caught",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_the_pinned_producers_match_their_manifest",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_changed_producer_is_a_named_failure",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_barrier_gate.py::test_integrity_checks_are_tagged_as_such[source:market_horizon_rows_match_the_pinned_source]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_cost_drift_monitor.py::test_every_window_keeps_its_raw_bytes_and_the_hash_matches",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_verified_bytes_are_the_shipped_bytes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_dataset_hashes_are_the_files_on_disk",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_delivery_commit_carries_exactly_the_six_deliverables",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_closure_is_not_inside_the_commit_it_names",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_every_deliverable_hash_matches_the_repository",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_report_bytes_still_match_the_rfc046_verification",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_medians_reproduce_on_a_third_window_convention",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_timestamps_are_gapless_grid_aligned_and_on_one_timeline",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_two_tolls_are_distinct_and_the_historical_one_is_frozen",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_verification_artefact_stays_inside_its_own_vocabulary",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_exp004a_wp051_02k.py::test_contract_reads_the_frozen_window",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_all_deliverables_exist_and_are_not_empty",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_independent_verification_recorded_its_own_result",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_negative_controls_are_recorded",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[FINAL_REPORT.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[SEARCH_POSTMORTEM.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[ECONOMIC_FEASIBILITY.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[ALTERNATIVE_PATHS.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[INDEPENDENT_VERIFICATION.md]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_every_evidence_copy_reproduces_the_published_authority",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_an_uncommitted_edit_to_a_committed_document_cannot_move_the_identity",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_the_published_artefacts_report_reproducibility_invariants",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_no_source_of_either_artefact_came_from_the_working_tree",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_the_repair_moved_no_economic_finding",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_a_sabotaged_evidence_copy_is_detected",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_recovery_determinism.py::test_a_sabotaged_committed_input_is_detected",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[BASELINE.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[RULE_CONTRACT_AUDIT.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[CANDIDATE_DEEP_DIVE.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[ECONOMIC_EVIDENCE.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[REJECTION_LOG.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[FINAL_REPORT.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[INDEPENDENT_VERIFICATION.json]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_eight_required_deliverables_exist",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_final_status_blocks_rfc_036",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_every_field_uses_one_of_the_four_states",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_an_explicit_absence_is_settled_not_missing",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_rule_completeness_and_evidence_completeness_are_reported_separately",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_no_candidate_is_promoted_to_replication",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_integrity_manifest_re_derives",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_independent_verification_is_green_and_can_fail",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_activation_and_campaign.py::test_signals_need_no_data_after_their_own_exit",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_activation_and_campaign.py::test_zero_sample_hypothesis_is_recorded_as_such",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_discovery_proposal.py::test_all_requested_deliverables_exist_and_are_not_empty",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_discovery_proposal.py::test_rfc_045_stays_empty_by_control",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_discovery_proposal.py::test_pit_enforcement_is_mechanical_and_rooted_in_a_real_defect",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_economic_gate.py::test_artefacts_exist_and_are_verified_clean",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_economic_gate.py::test_the_horizon_table_is_measured_on_the_campaign_bars",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc046_economic_gate.py::test_the_rfc046_confirmations_match_the_recorded_artefacts",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc047_windows_evidence.py::test_the_verifier_shares_no_code_with_the_builder_and_passes",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc047_windows_evidence.py::test_the_eighteen_controls_reject_the_manipulations_and_accept_the_honest_state",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_rfc047_windows_evidence.py::test_the_verifier_notices_a_host_that_disagrees_with_the_audit",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_shock_event_is_the_frozen_detector",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_signal_values_are_in_int8_set",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_trend_continuation]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_confirm_followthrough]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_range_location]",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_forward_from_entry_is_nan_near_end",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint024_stats.py::test_run_hypothesis_is_deterministic",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_sprint026_execution.py::test_candidate_replay_is_deterministic_and_reconciles",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_task_definition_matches_the_repository_and_the_host",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_run_log_is_compact_self_consistent_and_unique",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_every_ended_slot_is_accounted_for_and_nothing_is_reconstructed",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_a_second_writer_refuses_and_makes_no_market_request",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_an_impossible_cadence_refuses_with_a_non_zero_status",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_health_status_is_declared_and_not_a_heartbeat",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_scheduler_report_agrees_with_its_verification",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_close_replay_is_isolated_and_passes_on_the_shipped_state",
+        "message": ""
+      },
+      {
+        "kind": "FAILED",
+        "node": "tests/unit/research/test_st6_scheduler.py::test_the_run_log_records_who_invoked_the_tick",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_every_required_field_is_present",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_closure_values_are_exact",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_no_promotion_flag_is_set",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_runtime_is_still_paper_and_unarmed",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_cost_is_derived_and_internally_consistent",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_turnover_arithmetic_uses_the_measured_cost",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_cost_reports_known_and_assumed_separately",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_every_scenario_and_sensitivity_is_present",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_root_causes_cover_all_eight_and_are_owned",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_root_cause_review_refuses_to_infer_absence_of_alpha",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_recommendation_is_a_proposal_not_a_decision",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_catalogue_and_registry_are_consistent",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_baseline_separates_observed_from_reproduced",
+        "message": ""
+      },
+      {
+        "kind": "ERROR",
+        "node": "tests/unit/research/test_profitability_gate035.py::test_cap004b_and_campaign_are_quoted_faithfully",
+        "message": ""
+      }
+    ],
+    "exit_code": 1,
+    "import_path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp-eco001-baseline-296lvl4h\\src\\trading_bot\\__init__.py",
+    "used_clean_checkout": true,
+    "checkout_dir": "<temporary directory, removed>",
+    "imported_its_own_source": true
+  },
+  "healthy_run": {
+    "counts": {
+      "passed": 447
+    },
+    "failures": [],
+    "exit_code": 0,
+    "import_path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\src\\trading_bot\\__init__.py"
+  },
+  "clean_checkout_imported_its_own_source": true,
+  "identical_failure_sets": false,
+  "working_failures_are_subset_of_clean_checkout": true,
+  "failures_only_in_working_tree": [],
+  "failures_only_in_clean_checkout": [
+    "FAILED tests/unit/research/test_active_recovery_wp.py::test_audit_is_deterministic_and_committed",
+    "FAILED tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic",
+    "FAILED tests/unit/research/test_cost_barrier_ci_parity.py::test_tests_ci_and_the_runtime_all_run_the_same_bytes",
+    "FAILED tests/unit/research/test_cost_barrier_ci_parity.py::test_the_producer_pins_survive_a_checkout_that_rewrites_line_endings",
+    "FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_closure_is_not_inside_the_commit_it_names",
+    "FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_delivery_commit_carries_exactly_the_six_deliverables",
+    "FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_verification_artefact_stays_inside_its_own_vocabulary",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_a_sabotaged_committed_input_is_detected",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_a_sabotaged_evidence_copy_is_detected",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_an_uncommitted_edit_to_a_committed_document_cannot_move_the_identity",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_every_evidence_copy_reproduces_the_published_authority",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_no_source_of_either_artefact_came_from_the_working_tree",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_the_published_artefacts_report_reproducibility_invariants",
+    "FAILED tests/unit/research/test_recovery_determinism.py::test_the_repair_moved_no_economic_finding",
+    "FAILED tests/unit/research/test_rfc046_discovery_proposal.py::test_rfc_045_stays_empty_by_control",
+    "FAILED tests/unit/research/test_st6_scheduler.py::test_a_second_writer_refuses_and_makes_no_market_request",
+    "FAILED tests/unit/research/test_st6_scheduler.py::test_an_impossible_cadence_refuses_with_a_non_zero_status",
+    "FAILED tests/unit/research/test_st6_scheduler.py::test_the_run_log_is_compact_self_consistent_and_unique",
+    "FAILED tests/unit/research/test_st6_scheduler.py::test_the_run_log_records_who_invoked_the_tick"
+  ],
+  "preexisting_failure_count": 103,
+  "conclusion": "every test that fails in this working tree also fails on a clean checkout of the same commit, so none of the failures is caused by this work package",
+  "clean_checkout_failures_explained_by_local_state": [
+    "tests that read generated reports/** artefacts which are not versioned, so a clean checkout cannot reproduce the state that makes them pass",
+    "tests/unit/research/test_rfc047_windows_evidence.py and test_st6_scheduler.py rewrite the tracked file data/st6/RFC047_RUNTIME_VERIFICATION.json while running, so the suite mutates repository state as a side effect (that file was restored to HEAD after this measurement)"
+  ]
+}

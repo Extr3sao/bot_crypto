@@ -1,0 +1,5 @@
+cost-barrier evidence bundle: BLOCKED_MISSING_INPUT (capture)
+  head 2bd6e346348ee7fc039f8ada31a390387a4c30c2
+  reports/strategy-baseline/COST_BARRIER.json is not on this machine, so there is nothing to capture
+  FAILURES:
+    - reports/strategy-baseline/COST_BARRIER.json absent

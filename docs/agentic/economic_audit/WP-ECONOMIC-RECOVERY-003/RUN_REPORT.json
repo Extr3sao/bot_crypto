@@ -1,0 +1,188 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-003",
+  "artifact": "RUN_REPORT",
+  "branch": "repro/economic-recovery-002",
+  "commit_under_audit": "2bd6e346348ee7fc039f8ada31a390387a4c30c2",
+  "measured_on_utc": "2026-10-25",
+  "environment": {
+    "python": "3.11.15",
+    "implementation": "CPython",
+    "platform": "Windows-10-10.0.26200",
+    "package_manager": "uv",
+    "note": "core.autocrlf=true is the host default; four chain files are pinned -text in .gitattributes"
+  },
+  "scripts": {
+    "audit": "scripts/wp_eco003_audit.py",
+    "verify": "scripts/wp_eco003_verify.py"
+  },
+  "commands": [
+    {
+      "id": "audit",
+      "command": "uv run python scripts/wp_eco003_audit.py",
+      "exit_code": 0,
+      "headline": "chain nodes: 18; pins: 21; drifting: 3; dependencies classified: 19",
+      "writes": ["EVIDENCE_IMPACT_MATRIX.json"]
+    },
+    {
+      "id": "gate_check",
+      "command": "uv run python scripts/cost_barrier_gate.py --check",
+      "exit_code": 5,
+      "headline": "INTEGRITY_FAILURE (check mode); checks 10/11 PASS; controls 6/6",
+      "failing_check": "inputs:published_pins_match_the_declared_sources",
+      "cause": "config/strategy_admission.json content drift (pin 6c4dd0be1fc2...)"
+    },
+    {
+      "id": "contract_suite",
+      "command": "uv run python -m pytest tests/unit/research/test_cost_barrier_explorer.py tests/unit/research/test_cost_barrier_gate.py tests/unit/research/test_cost_barrier_adversarial.py tests/unit/research/test_cost_barrier_ci_parity.py -q --tb=line -p no:cacheprovider",
+      "exit_code": 1,
+      "failed": 19,
+      "passed": 74,
+      "transcript": "evidence/contract_suite_failure_reasons.txt"
+    },
+    {
+      "id": "materialise_in_worktree",
+      "command": "git worktree add --detach <tmp> 2bd6e346 && scripts/cost_barrier_evidence.py --materialize",
+      "exit_code": 0,
+      "headline": "reports/strategy-baseline/COST_BARRIER.json written, sha256 2437f446... (equals the explorer pin)",
+      "note": "throwaway worktree, removed afterwards; the repository's published evidence was not written"
+    },
+    {
+      "id": "contract_suite_materialised",
+      "command": "same 4 suites inside the worktree with the input materialised",
+      "exit_code": 1,
+      "failed": 9,
+      "passed": 84,
+      "transcript": "evidence/contract_suite_with_input_materialised.txt",
+      "reading": "10 of the 19 red nodes were only the absent gitignored input"
+    },
+    {
+      "id": "full_suite",
+      "command": "uv run python -m pytest tests -q --tb=no -rfE -p no:cacheprovider",
+      "exit_code": 1,
+      "failed": 90,
+      "errors": 14,
+      "passed": 3270,
+      "skipped": 31,
+      "red_nodes": 104,
+      "transcript": "evidence/full_suite_before_recertification.txt"
+    },
+    {
+      "id": "independent_verification",
+      "command": "uv run python scripts/wp_eco003_verify.py",
+      "exit_code": 0,
+      "headline": "14/14 PASS",
+      "writes": ["INDEPENDENT_VERIFICATION.json"]
+    },
+    {
+      "id": "lint",
+      "command": "uv run ruff check scripts/wp_eco003_audit.py scripts/wp_eco003_verify.py && uv run ruff format --check ...",
+      "exit_code": 0,
+      "headline": "All checks passed"
+    }
+  ],
+  "findings": {
+    "chain": {
+      "nodes": 18,
+      "pins": 21,
+      "drifting": 3,
+      "pin_pathologies": 2,
+      "declared_absent": 2
+    },
+    "drift": [
+      {
+        "path": "config/strategy_admission.json",
+        "status": "DRIFT",
+        "blocking": true,
+        "cause": "the pin is the CRLF rendering of revision ddaf14d1, not any committed blob, and it predates the anchor repair in eb53e631"
+      },
+      {
+        "path": "reports/strategy-baseline/COST_BARRIER.json",
+        "status": "ABSENT",
+        "blocking": false,
+        "cause": "gitignored; recoverable byte-identically from data/recovery/wp7/evidence/COST_BARRIER.json"
+      },
+      {
+        "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "status": "EOL_ONLY",
+        "blocking": false,
+        "cause": "byte pin is a CRLF rendering; the semantic state_sha256 is what the gate reads"
+      }
+    ],
+    "dependencies": {
+      "total": 19,
+      "recoverable_by_rerun": 16,
+      "recoverable_exact": 1,
+      "host_only": 1,
+      "never_committed_deliverable": 1,
+      "blocking_for_recertification": 0
+    },
+    "multi_family_results": {
+      "files_expected": 6,
+      "present_in_working_tree": 0,
+      "present_in_any_commit": 0,
+      "exactly_reconstructible": 0,
+      "rows_with_committed_input": 1,
+      "committed_input": "docs/EMA_CROSSOVER_PERFORMANCE_BASELINE.json"
+    },
+    "recertification_simulation": {
+      "economic_numbers_changed": "none (rebuilt explorer payload 4383d812... equals the published one)",
+      "explorer_differing_leaves": 5,
+      "gate_after": {
+        "status": "FULL_REPRODUCTION_PASS",
+        "exit_code": 0
+      },
+      "certification_after": {
+        "status": "CERTIFIED",
+        "exit_code": 0
+      },
+      "contract_suite_after": "93 passed",
+      "full_suite_set_difference": {
+        "before": 104,
+        "after": 85,
+        "closed": 19,
+        "introduced": 0
+      },
+      "partial_recertification": {
+        "failed": 3,
+        "passed": 105,
+        "reading": "rebuilding explorer and verification without re-capturing the producer pins leaves the chain half-pinned"
+      }
+    }
+  },
+  "deviations_from_wp002": [
+    {
+      "claim": "one preexisting node changed from green to red",
+      "measured": "19 red nodes in the contract suite on a clean checkout; 10 close when the declared input is materialised, 9 are the stale pins",
+      "effect": "scope correction, same cause"
+    },
+    {
+      "claim": "two deliverables were never committed",
+      "measured": "one: docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md; reports/rfc046/IMPACT_ASSESSMENT.md has a committed producer",
+      "effect": "one path reclassified RECOVERABLE_BY_RERUN"
+    },
+    {
+      "claim": "the stale pin is the ledger with the stale anchor",
+      "measured": "the pin is the CRLF rendering of ddaf14d1; no committed blob has those bytes",
+      "effect": "recertification must refresh content, and the chain needs a state pin or -text guarantees"
+    },
+    {
+      "claim": "the cost-barrier input does not exist here",
+      "measured": "absent from its path, present byte-identically as evidence, restorable by the committed materialiser",
+      "effect": "the bundle is recertifiable without the frozen corpus"
+    }
+  ],
+  "limits": [
+    "nothing published was regenerated; the recertification ran in a throwaway clone",
+    "the two full-suite runs collected different totals, so they are compared by node identity only",
+    "85 pre-existing red nodes remain and are not addressed by this WP",
+    "reports/strategy-baseline/data/ is absent (0 files) and data/raw/ is empty: the multi-family layer is not reconstructible",
+    "no promotion, rentability or production flag was touched"
+  ],
+  "independent_verification": {
+    "artifact": "INDEPENDENT_VERIFICATION.json",
+    "checks": 14,
+    "passed": 14,
+    "failed": 0,
+    "exit_code": 0
+  }
+}

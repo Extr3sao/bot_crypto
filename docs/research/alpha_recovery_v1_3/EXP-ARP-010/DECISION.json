@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-ARP-010",
+  "final": "INSUFFICIENT_EVIDENCE",
+  "identity": {
+    "arm": "PROJECT_DERIVED_VARIANT",
+    "note": "New project hypothesis; no STRAT-CAND lineage.",
+    "source_attribution": "NONE",
+    "strategy_id": "H-VOLSPIKE-MR-001"
+  },
+  "oos_opened": false,
+  "stages": {
+    "COST": "NOT_REACHED",
+    "DEV": "INSUFFICIENT_EVIDENCE",
+    "ROBUSTNESS": "NOT_REACHED",
+    "VALIDATION": "NOT_REACHED"
+  }
+}

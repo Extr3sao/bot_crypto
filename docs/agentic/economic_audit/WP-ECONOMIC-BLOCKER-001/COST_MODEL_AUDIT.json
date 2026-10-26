@@ -1,0 +1,710 @@
+{
+  "wp": "WP-ECONOMIC-BLOCKER-001",
+  "artefact": "COST_MODEL_AUDIT",
+  "model": "COST_MODEL_V3 / COST_MODEL_V4 (research+marginal path); production execution cost model untouched",
+  "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+  "scenario": {
+    "venue": "Binance",
+    "product": "Spot",
+    "tier": "VIP0 (regular user, 30d volume < 1,000,000 USD)",
+    "maker_fee_bps": 10.0,
+    "taker_fee_bps": 10.0,
+    "fee_source_id": "SRC-01",
+    "default_taker_spread_bps": 1.0,
+    "spread_source_id": "SRC-07"
+  },
+  "component_inventory": {
+    "names": [
+      "exchange_fee_entry",
+      "exchange_fee_exit",
+      "spread",
+      "slippage",
+      "market_impact",
+      "adverse_selection",
+      "missed_fill_penalty",
+      "fill_probability_inflation",
+      "funding_carry"
+    ],
+    "knowledge": {
+      "exchange_fee_entry": "KNOWN (venue schedule, SRC-01)",
+      "exchange_fee_exit": "KNOWN (venue schedule, SRC-01)",
+      "spread": "OBSERVED when the snapshot carries spread_bps, else ESTIMATED default",
+      "slippage": "ESTIMATED (base 1.0 bps x liquidity x size x volatility)",
+      "market_impact": "ESTIMATED (size-driven displacement)",
+      "adverse_selection": "ASSUMED, maker-only (not charged on a taker round trip)",
+      "missed_fill_penalty": "ASSUMED, maker-only",
+      "fill_probability_inflation": "ASSUMED, maker-only",
+      "funding_carry": "KNOWN = 0 on spot"
+    }
+  },
+  "recorded_runtime_cost": {
+    "status": "ASSESSED",
+    "note": "",
+    "source_root": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001",
+    "block_count": 24,
+    "all_recomputed_match": true,
+    "max_abs_delta_bps": 5.042096518081962e-09,
+    "by_spread_knowledge": {
+      "OBSERVED": {
+        "cases": 24,
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "round_trip_bps_min": 22.791816,
+        "round_trip_bps_max": 23.794132
+      }
+    },
+    "cases": [
+      {
+        "asset": "BTC",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.00125219,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.79182161,
+        "recomputed_round_trip_bps": 22.791821605042095,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "ETH",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.04330663,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.83387605,
+        "recomputed_round_trip_bps": 22.833876045042096,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "SOL",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.99875156,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 23.78932098,
+        "recomputed_round_trip_bps": 23.789320975042095,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "BTC",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.00125263,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.79182204,
+        "recomputed_round_trip_bps": 22.791822045042096,
+        "delta_bps": 5.042096518081962e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "ETH",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.0433147,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.83388412,
+        "recomputed_round_trip_bps": 22.833884115042096,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "SOL",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.99915072,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 23.78972014,
+        "recomputed_round_trip_bps": 23.789720135042096,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "BTC",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.00125276,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.79182217,
+        "recomputed_round_trip_bps": 22.791822175042093,
+        "delta_bps": 5.042092965368283e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "ETH",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.04332953,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.83389894,
+        "recomputed_round_trip_bps": 22.833898945042094,
+        "delta_bps": 5.042092965368283e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "SOL",
+        "run": "run-a-1h",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.99925056,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 23.78981998,
+        "recomputed_round_trip_bps": 23.789819975042093,
+        "delta_bps": -4.957907862035427e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "BTC",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.00125265,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.79182207,
+        "recomputed_round_trip_bps": 22.791822065042098,
+        "delta_bps": -4.957900756608069e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "ETH",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.04332033,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.83388975,
+        "recomputed_round_trip_bps": 22.833889745042093,
+        "delta_bps": -4.957907862035427e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "SOL",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.99885132,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 23.78942074,
+        "recomputed_round_trip_bps": 23.789420735042093,
+        "delta_bps": -4.957907862035427e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "BTC",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.00125484,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.79182425,
+        "recomputed_round_trip_bps": 22.791824255042094,
+        "delta_bps": 5.042092965368283e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "ETH",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.0434121,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.83398152,
+        "recomputed_round_trip_bps": 22.833981515042097,
+        "delta_bps": -4.957900756608069e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "SOL",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 1.00125156,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 23.79182098,
+        "recomputed_round_trip_bps": 23.791820975042093,
+        "delta_bps": -4.957907862035427e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "BTC",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.00125533,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.79182475,
+        "recomputed_round_trip_bps": 22.791824745042092,
+        "delta_bps": -4.957907862035427e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "ETH",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.04347552,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.83404494,
+        "recomputed_round_trip_bps": 22.834044935042094,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "SOL",
+        "run": "run-b-5m",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 1.00356265,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 23.79413206,
+        "recomputed_round_trip_bps": 23.794132065042092,
+        "delta_bps": 5.042092965368283e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "BTC",
+        "run": "run-c-controlled-exec",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.0012466,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.79181602,
+        "recomputed_round_trip_bps": 22.791816015042095,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "ETH",
+        "run": "run-c-controlled-exec",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.04316811,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.83373752,
+        "recomputed_round_trip_bps": 22.833737525042096,
+        "delta_bps": 5.042096518081962e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "SOL",
+        "run": "run-c-controlled-exec",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.99527246,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 23.78584187,
+        "recomputed_round_trip_bps": 23.785841875042095,
+        "delta_bps": 5.042096518081962e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "BTC",
+        "run": "run-c-controlled-exec",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.00124627,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.79181569,
+        "recomputed_round_trip_bps": 22.791815685042096,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "ETH",
+        "run": "run-c-controlled-exec",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.04315916,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 22.83372858,
+        "recomputed_round_trip_bps": 22.833728575042095,
+        "delta_bps": -4.957904309321748e-09,
+        "matches": true,
+        "fee_component_matches": true
+      },
+      {
+        "asset": "SOL",
+        "run": "run-c-controlled-exec",
+        "size_usd": 1000.0,
+        "horizon_minutes": 5.0,
+        "spread_bps": 0.99566884,
+        "spread_knowledge": "OBSERVED",
+        "recorded_round_trip_bps": 23.78623826,
+        "recomputed_round_trip_bps": 23.786238255042093,
+        "delta_bps": -4.957907862035427e-09,
+        "matches": true,
+        "fee_component_matches": true
+      }
+    ],
+    "reported_range_bps": [
+      22.7918,
+      22.8337,
+      22.8339,
+      22.834,
+      23.7858,
+      23.7862,
+      23.7893,
+      23.7894,
+      23.7897,
+      23.7898,
+      23.7918,
+      23.7941
+    ]
+  },
+  "published_model_v4_recomputed": {
+    "source": "docs/EXECUTION_COST_MODEL_V4.json",
+    "source_sha256": "7e772c34cbf0c894fc1ff00d643e82680847ebedaf986ba6dbb5b756121641a4",
+    "all_match": true,
+    "assets": [
+      {
+        "asset": "BTC",
+        "published_round_trip_bps": 23.5,
+        "recomputed_round_trip_bps": 23.499988,
+        "published_required_gross_bps": 35.25,
+        "recomputed_required_gross_bps": 35.249982,
+        "matches": true
+      },
+      {
+        "asset": "ETH",
+        "published_round_trip_bps": 23.7608,
+        "recomputed_round_trip_bps": 23.760795,
+        "published_required_gross_bps": 35.6412,
+        "recomputed_required_gross_bps": 35.641192,
+        "matches": true
+      },
+      {
+        "asset": "SOL",
+        "published_round_trip_bps": 24.6867,
+        "recomputed_round_trip_bps": 24.686717,
+        "published_required_gross_bps": 37.03,
+        "recomputed_required_gross_bps": 37.030076,
+        "matches": true
+      }
+    ]
+  },
+  "decomposition": {
+    "observed_spread": {
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps_input": 0.0012,
+      "spread_knowledge": "OBSERVED",
+      "round_trip_bps": 22.791769415042097,
+      "components": [
+        {
+          "name": "exchange_fee_entry",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "share_pct": 43.8755
+        },
+        {
+          "name": "exchange_fee_exit",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "share_pct": 43.8755
+        },
+        {
+          "name": "spread",
+          "value_bps": 0.0012,
+          "knowledge": "OBSERVED",
+          "source_id": "SRC-07",
+          "note": "2 taker leg(s) x half-spread",
+          "share_pct": 0.0053
+        },
+        {
+          "name": "slippage",
+          "value_bps": 2.632456,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "share_pct": 11.55
+        },
+        {
+          "name": "market_impact",
+          "value_bps": 0.158114,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "size-driven displacement above the base slippage",
+          "share_pct": 0.6937
+        }
+      ],
+      "component_names_covered": [
+        "exchange_fee_entry",
+        "exchange_fee_exit",
+        "market_impact",
+        "slippage",
+        "spread"
+      ],
+      "by_knowledge": {
+        "KNOWN_bps": 20.0,
+        "OBSERVED_bps": 0.0012,
+        "ESTIMATED_bps": 2.79057,
+        "ASSUMED_bps": 0,
+        "KNOWN_share_pct": 87.751,
+        "certain_part_exceeds_max_gross_edge": 20.0
+      },
+      "stress": {
+        "1.0": 22.791769,
+        "1.25": 28.489712,
+        "1.5": 34.187654,
+        "2.0": 45.583539
+      },
+      "required_gross_edge_bps_1.0x": 22.791769,
+      "required_gross_edge_bps_1.5x": 34.187654,
+      "required_gross_edge_bps_2.0x": 45.583539
+    },
+    "estimated_spread_fallback": {
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps_input": 1.0,
+      "spread_knowledge": "ESTIMATED",
+      "round_trip_bps": 23.790569415042093,
+      "components": [
+        {
+          "name": "exchange_fee_entry",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "share_pct": 42.0335
+        },
+        {
+          "name": "exchange_fee_exit",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN",
+          "source_id": "SRC-01",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "share_pct": 42.0335
+        },
+        {
+          "name": "spread",
+          "value_bps": 1.0,
+          "knowledge": "ESTIMATED",
+          "source_id": "SRC-07",
+          "note": "2 taker leg(s) x half-spread",
+          "share_pct": 4.2033
+        },
+        {
+          "name": "slippage",
+          "value_bps": 2.632456,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "share_pct": 11.0651
+        },
+        {
+          "name": "market_impact",
+          "value_bps": 0.158114,
+          "knowledge": "ESTIMATED",
+          "source_id": "MODEL-V3",
+          "note": "size-driven displacement above the base slippage",
+          "share_pct": 0.6646
+        }
+      ],
+      "component_names_covered": [
+        "exchange_fee_entry",
+        "exchange_fee_exit",
+        "market_impact",
+        "slippage",
+        "spread"
+      ],
+      "by_knowledge": {
+        "KNOWN_bps": 20.0,
+        "OBSERVED_bps": 0,
+        "ESTIMATED_bps": 3.79057,
+        "ASSUMED_bps": 0,
+        "KNOWN_share_pct": 84.0669,
+        "certain_part_exceeds_max_gross_edge": 20.0
+      },
+      "stress": {
+        "1.0": 23.790569,
+        "1.25": 29.738212,
+        "1.5": 35.685854,
+        "2.0": 47.581139
+      },
+      "required_gross_edge_bps_1.0x": 23.790569,
+      "required_gross_edge_bps_1.5x": 35.685854,
+      "required_gross_edge_bps_2.0x": 47.581139
+    }
+  },
+  "sweep": [
+    {
+      "size_usd": 250.0,
+      "horizon_minutes": 5.0,
+      "round_trip_bps": 23.395285,
+      "known_bps": 20.0,
+      "estimated_bps": 2.395285,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 250.0,
+      "horizon_minutes": 15.0,
+      "round_trip_bps": 23.395285,
+      "known_bps": 20.0,
+      "estimated_bps": 2.395285,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 250.0,
+      "horizon_minutes": 60.0,
+      "round_trip_bps": 23.395285,
+      "known_bps": 20.0,
+      "estimated_bps": 2.395285,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 250.0,
+      "horizon_minutes": 240.0,
+      "round_trip_bps": 23.395285,
+      "known_bps": 20.0,
+      "estimated_bps": 2.395285,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "round_trip_bps": 23.790569,
+      "known_bps": 20.0,
+      "estimated_bps": 2.79057,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 1000.0,
+      "horizon_minutes": 15.0,
+      "round_trip_bps": 23.790569,
+      "known_bps": 20.0,
+      "estimated_bps": 2.79057,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 1000.0,
+      "horizon_minutes": 60.0,
+      "round_trip_bps": 23.790569,
+      "known_bps": 20.0,
+      "estimated_bps": 2.79057,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 1000.0,
+      "horizon_minutes": 240.0,
+      "round_trip_bps": 23.790569,
+      "known_bps": 20.0,
+      "estimated_bps": 2.79057,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 5000.0,
+      "horizon_minutes": 5.0,
+      "round_trip_bps": 24.767767,
+      "known_bps": 20.0,
+      "estimated_bps": 3.767767,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 5000.0,
+      "horizon_minutes": 15.0,
+      "round_trip_bps": 24.767767,
+      "known_bps": 20.0,
+      "estimated_bps": 3.767767,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 5000.0,
+      "horizon_minutes": 60.0,
+      "round_trip_bps": 24.767767,
+      "known_bps": 20.0,
+      "estimated_bps": 3.767767,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 5000.0,
+      "horizon_minutes": 240.0,
+      "round_trip_bps": 24.767767,
+      "known_bps": 20.0,
+      "estimated_bps": 3.767767,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 25000.0,
+      "horizon_minutes": 5.0,
+      "round_trip_bps": 26.952847,
+      "known_bps": 20.0,
+      "estimated_bps": 5.952847,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 25000.0,
+      "horizon_minutes": 15.0,
+      "round_trip_bps": 26.952847,
+      "known_bps": 20.0,
+      "estimated_bps": 5.952847,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 25000.0,
+      "horizon_minutes": 60.0,
+      "round_trip_bps": 26.952847,
+      "known_bps": 20.0,
+      "estimated_bps": 5.952847,
+      "observed_bps": 1.0
+    },
+    {
+      "size_usd": 25000.0,
+      "horizon_minutes": 240.0,
+      "round_trip_bps": 26.952847,
+      "known_bps": 20.0,
+      "estimated_bps": 5.952847,
+      "observed_bps": 1.0
+    }
+  ],
+  "barrier": {
+    "runtime_round_trip_observed_spread_bps": 22.791769,
+    "runtime_round_trip_estimated_spread_bps": 23.790569,
+    "required_gross_edge_bps_1.0x": 22.791769,
+    "required_gross_edge_bps_1.5x": 34.187654,
+    "research_admission_barrier_bps": 12.0,
+    "research_barrier_gap_bps": 10.791769,
+    "max_measured_gross_edge_bps": 8.91,
+    "max_gross_minus_runtime_cost_bps": -13.881769,
+    "max_gross_minus_known_fees_bps": -11.09,
+    "known_fees_alone_exceed_every_gross_edge": true,
+    "safety_multiple_used_by_v4": 1.5
+  }
+}

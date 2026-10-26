@@ -1,0 +1,176 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-002",
+  "artefact": "REPRODUCIBILITY_COMPARISON",
+  "commit_under_measurement": "64fa5112ebdea81291dbc5db07512cc8737feeb0",
+  "branch": "repro/economic-recovery-002",
+  "python": "3.11.15",
+  "method": "the clean checkout is a real `git clone` at the commit under test, not `git archive HEAD | tar -x`: the archive has no .git, which made 17 of the 21 nodes the previous work package attributed to the clean checkout fail for the method's reason (9 of them in test_recovery_determinism.py alone)",
+  "working_tree": {
+    "counts": {
+      "failed": 90,
+      "passed": 1848,
+      "skipped": 30,
+      "error": 14
+    },
+    "exit_code": 1,
+    "failure_count": 104,
+    "tracked_files_rewritten_by_the_run": [],
+    "tracked_files_removed_by_the_run": [],
+    "tracked_files_added_by_the_run": [],
+    "files_hashed": 2018,
+    "dirty_before_the_run": []
+  },
+  "clean_clone": {
+    "counts": {
+      "failed": 90,
+      "passed": 1847,
+      "skipped": 31,
+      "error": 14
+    },
+    "exit_code": 1,
+    "failure_count": 104,
+    "imported_its_own_source": true,
+    "has_git_history": true,
+    "has_dot_venv": false,
+    "line_endings": {
+      "config/strategy_admission.json": {
+        "crlf_lines": 0,
+        "lf_lines": 547
+      },
+      "docs/STRATEGY_ADMISSION_MATRIX.json": {
+        "crlf_lines": 0,
+        "lf_lines": 614
+      },
+      "docs/STRATEGY_DISCOVERY_V3_RESULTS.json": {
+        "crlf_lines": 0,
+        "lf_lines": 64
+      }
+    },
+    "reports_entries_present": [
+      "reports\\.gitkeep",
+      "reports\\managed-futures-v1\\raw\\gc.zip"
+    ],
+    "tracked_files_rewritten_by_the_run": [],
+    "tracked_files_removed_by_the_run": []
+  },
+  "healthy_selection": {
+    "counts": {
+      "passed": 447
+    },
+    "exit_code": 0,
+    "failures": [],
+    "tracked_files_rewritten_by_the_run": []
+  },
+  "previous_clean_only_nodes": [
+    {
+      "node": "tests/unit/research/test_active_recovery_wp.py::test_audit_is_deterministic_and_committed",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_cost_barrier_ci_parity.py::test_tests_ci_and_the_runtime_all_run_the_same_bytes",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_cost_barrier_ci_parity.py::test_the_producer_pins_survive_a_checkout_that_rewrites_line_endings",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_closure_is_not_inside_the_commit_it_names",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_delivery_commit_carries_exactly_the_six_deliverables",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_economic001_evidence_closure.py::test_the_verification_artefact_stays_inside_its_own_vocabulary",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_a_sabotaged_committed_input_is_detected",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_a_sabotaged_evidence_copy_is_detected",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_an_uncommitted_edit_to_a_committed_document_cannot_move_the_identity",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_every_evidence_copy_reproduces_the_published_authority",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_no_source_of_either_artefact_came_from_the_working_tree",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_the_published_artefacts_report_reproducibility_invariants",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_recovery_determinism.py::test_the_repair_moved_no_economic_finding",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_rfc046_discovery_proposal.py::test_rfc_045_stays_empty_by_control",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_st6_scheduler.py::test_a_second_writer_refuses_and_makes_no_market_request",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_st6_scheduler.py::test_an_impossible_cadence_refuses_with_a_non_zero_status",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_st6_scheduler.py::test_the_run_log_is_compact_self_consistent_and_unique",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    },
+    {
+      "node": "tests/unit/research/test_st6_scheduler.py::test_the_run_log_records_who_invoked_the_tick",
+      "working_tree": "PASSED",
+      "clean_clone": "PASSED"
+    }
+  ],
+  "failures_only_in_working_tree": [],
+  "failures_only_in_clean_clone": [],
+  "working_failures_are_subset_of_clone": true,
+  "preexisting_failure_count_working_tree": 104,
+  "tests_rewrite_no_tracked_file": true
+}

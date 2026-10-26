@@ -1,0 +1,49 @@
+{
+  "run_id": "PAPER-BURN-IN-V1",
+  "baseline_commit": "cfadc73a477d5efb089c5e7448e9b66de37753f4",
+  "instrumentation_commit": "0d0b76e",
+  "defect_fix_commit": "d370638",
+  "provider": "binance_testnet_spot_readonly (no credentials, no order API)",
+  "assets": ["BTC/USDT", "ETH/USDT", "SOL/USDT"],
+  "timeframe": "5m",
+  "paper_command": "uv run python scripts/start_paper_trading.py --assets BTC,ETH,SOL --timeframe 5m --max-cycles N --provider ccxt --interval 0 --balance 10000 --config-dir config/realdata --state-path <path> --burnin-events <path>",
+  "stages": {
+    "stage1": {"cycles": 45, "errors": 0, "health": "all HEALTHY"},
+    "restart_test": {"cycles": 10, "reconciliation": "RECOVERED", "post_restart_orders": 0},
+    "stage2": {"cycles": 365, "errors": 0, "health": "all HEALTHY (over 4 process segments after shell timeout kills)"},
+    "post_fix_validation": {"cycles": 55, "errors": 0, "reconciliation": "CONSISTENT then RECOVERED", "risk_consistent_with_fills": true}
+  },
+  "totals": {
+    "cycles_attempted": 475,
+    "cycles_completed": 475,
+    "cycles_failed": 0,
+    "uptime_minutes_approx": 57,
+    "orders_created": 7,
+    "duplicates_suppressed": 125,
+    "risk_approvals": 9,
+    "risk_vetoes": 1226,
+    "closed_trades": 4,
+    "open_positions_at_end": 3,
+    "realized_pnl_usdt_pre_fix_book": 3.53,
+    "realized_pnl_usdt_post_fix_book": -6.2,
+    "sample": "INSUFFICIENT_SAMPLE"
+  },
+  "defects": [
+    {
+      "id": "DEF-101",
+      "severity": "P1",
+      "symptom": "risk_state.trades_today=278 and daily_pnl=+980.46 with only 4 real fills; 764 intents vetoed by 'Daily trade limit reached (20)'; risk equity drifted vs broker equity",
+      "root_cause": "reconcile_session returned the FULL closed-trade ledger every session and PaperSessionRunner re-fed it into RiskManager -> cumulative double-count of trade counts and PnL",
+      "fix": "PaperExecutionSummary.new_closed_trades carries only the delta since the previous reconcile (report cursor; restored ledgers pre-marked); runner forwards the delta only",
+      "commit": "d370638",
+      "regression_test": "test_reconcile_session_feeds_only_delta_to_risk (5 repeated reconciles leave trades_today==1)",
+      "status": "FIXED_AND_VERIFIED"
+    }
+  ],
+  "temporal_integrity_violations": 0,
+  "duplicated_economic_effects": 0,
+  "corrupted_state_events": 0,
+  "final_health": "HEALTHY",
+  "verdict": "BURN_IN_V1_PASS_WITH_ONE_FIXED_P1",
+  "next_recommended_run": "PAPER-BURN-IN-V2 (12h) after STRATEGY-BEHAVIOR-AUDIT-V1 given the dominant NO_TRADE/cooldown behavior"
+}

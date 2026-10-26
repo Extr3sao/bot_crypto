@@ -1,0 +1,81 @@
+{
+  "schema": "WP007_RUN_REPORT_V1",
+  "phase": "WP-ECONOMIC-RECOVERY-007",
+  "status": "NO_ADMITTED_STRATEGY",
+  "authorization": "BLOCKED",
+  "sample": {
+    "venue": "Binance USDⓈ-M futures (fapi/v1/klines, public, no credentials)",
+    "symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "bar": "5m",
+    "days": 120,
+    "bars_per_symbol": 34560,
+    "bars_total": 103680,
+    "period_utc": ["2026-06-27T17:40:00Z", "2026-10-25T17:35:00Z"],
+    "partitions_utc": {
+      "DEV": ["2026-06-27T17:40:00Z", "2026-08-26T17:40:00Z"],
+      "VAL": ["2026-08-26T17:40:00Z", "2026-09-25T17:40:00Z"],
+      "OOS": ["2026-09-25T17:40:00Z", "2026-10-25T17:40:00Z"]
+    },
+    "gaps": 0,
+    "data_quality": "PASS"
+  },
+  "cost_model": {
+    "fees_bps_per_leg": 5.0,
+    "slippage_bps_per_leg": 1.0,
+    "half_spread_bps": 0.0,
+    "round_trip_bps": 12.0,
+    "scenarios": ["BASE", "2X_COST", "STRESSED_SLIPPAGE", "ZERO_COST"],
+    "zero_cost_is_diagnostic_only": true
+  },
+  "commands": [
+    {"cmd": "scripts/multi_family_backtest.py --dump-trades --out reports/economic/w006",
+     "exit": 0, "wall_seconds": 273, "artifacts": ["MULTI_FAMILY_RESULTS.json", "MULTI_FAMILY_RUN.json", "TRADES.csv"]},
+    {"cmd": "scripts/w006_verify.py", "exit": 0, "artifacts": ["INDEPENDENT_VERIFICATION.json"],
+     "trades_verified": 23444, "checks_passed": 10, "checks_failed": 0},
+    {"cmd": "scripts/w007_classify.py", "exit": 0, "artifacts": ["ECONOMIC_CLASSIFICATION.json"]}
+  ],
+  "trades_evaluated": 23444,
+  "classifications": {
+    "ADMIT": [],
+    "EXPERIMENT": ["mean_reversion"],
+    "REJECT": ["ema_crossover", "momentum", "breakout", "trend", "volatility"]
+  },
+  "economics": {
+    "ema_crossover": {"trades": 826, "gross_pnl": -94.47, "costs": 495.60, "net_base": -590.08,
+                      "net_2x_cost": -939.01, "net_zero_cost": -90.85, "verdict": "REJECT"},
+    "momentum": {"trades": 1313, "gross_pnl": -202.87, "costs": 787.96, "net_base": -990.82,
+                 "net_2x_cost": -1643.52, "net_zero_cost": -219.53, "verdict": "REJECT"},
+    "breakout": {"trades": 1168, "gross_pnl": -154.09, "costs": 700.97, "net_base": -855.06,
+                 "net_2x_cost": -1414.88, "net_zero_cost": -159.86, "verdict": "REJECT"},
+    "trend": {"trades": 523, "gross_pnl": -0.06, "costs": 313.93, "net_base": -313.99,
+              "net_2x_cost": -575.59, "net_zero_cost": -0.06, "verdict": "REJECT"},
+    "mean_reversion": {"trades": 1748, "gross_pnl": 242.81, "costs": 1048.87, "net_base": -806.06,
+                       "net_2x_cost": -1409.73, "net_zero_cost": 205.02, "verdict": "EXPERIMENT",
+                       "gross_per_trade": 0.1389, "cost_per_trade": 0.60,
+                       "breakeven_round_trip_bps": 2.778, "charged_round_trip_bps": 12.0,
+                       "edge_to_cost_ratio": 0.231},
+    "volatility": {"trades": 347, "gross_pnl": -152.17, "costs": 208.23, "net_base": -360.40,
+                   "net_2x_cost": -533.93, "net_zero_cost": -153.96, "verdict": "REJECT"}
+  },
+  "positive_pairs_by_symbol": 0,
+  "positive_pairs_by_partition_with_costs": 0,
+  "claims": {
+    "economic_experiments_run": 1,
+    "real_market_data_used": true,
+    "synthetic_data_in_economics": false,
+    "hyperparameters_tuned": 0,
+    "oos_used_for_selection": false,
+    "profitability_claimed": false,
+    "strategies_admitted": 0,
+    "paper_authorized": false,
+    "ledger_modified": false,
+    "gates_modified": false
+  },
+  "limitations": [
+    "one venue, three symbols, 120 days: rejection applies to this sample, not to every market",
+    "spread is a declared 0 bps assumption stressed by the 2X_COST scenario; no order-book history",
+    "taker-only fills; no maker fill model, so no maker result is claimed",
+    "results scale with the 500-unit notional cap; the edge-to-cost ratio does not"
+  ],
+  "next_action": "run the same matrix on 15m and 1h resampled from the same manifest to test whether the deficit is temporal-frame specific, then test a higher threshold on mean_reversion with the acceptance criterion fixed in advance (gross/op >= 12 bps in DEV and VAL, >= 100 trades in DEV)"
+}

@@ -1,0 +1,173 @@
+{
+  "schema": "WP005_RUN_REPORT_V1",
+  "phase": "WP-ECONOMIC-RECOVERY-005",
+  "run_at_utc": "2026-10-25",
+  "git": {
+    "head": "a6290714f8685dc3b91fdbc7ed4a66c305dba848",
+    "branch": "repro/economic-recovery-002",
+    "commits_made_by_this_wp": 0,
+    "deliverables_committed": false
+  },
+  "preflight": {
+    "command": "scripts/wp005_preflight.py --repo . --out <outside-the-repo>",
+    "status": "BLOCKED",
+    "exit_code": 2,
+    "blockers": [
+      "NO_DATASETS_IN_CANONICAL_INPUT_PATH",
+      "NO_MULTI_FAMILY_RESULTS"
+    ],
+    "datasets_found": 0,
+    "multi_family_result_artifacts_found": 0,
+    "families_covered": 0,
+    "economic_execution": "NOT_RUN",
+    "independent_economic_verification": "NOT_RUN",
+    "economic_result": "INCONCLUSIVE",
+    "paper": "NOT_AUTHORIZED",
+    "observation": "evidence/WP005_PREFLIGHT_OBSERVATION.json"
+  },
+  "inputs": {
+    "config/strategy_admission.json": {
+      "sha256": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+      "schema_version": "strategy-admission-ledger-v1",
+      "strategies": 24,
+      "admitted_for_paper": 0,
+      "modified_by_this_wp": false
+    },
+    "data/recovery/COST_BARRIER_EXPLORER.json": {
+      "sha256": "fdc6892f12280f4fa6bf391397deafe53103b78e140f4ddba861acd66a914061",
+      "modified_by_this_wp": false
+    },
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.json": {
+      "sha256": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+      "modified_by_this_wp": false
+    },
+    "scripts/multi_family_backtest.py": {
+      "sha256": "17904a18db507ba5a14835ce96f1997d42d9d63200517c187bff5be4daed330b",
+      "modified_by_this_wp": false
+    },
+    "family_modules_present": 6,
+    "family_modules_expected": 6
+  },
+  "controls": [
+    {
+      "id": "C0",
+      "claim": "the entrypoint writes a success-shaped artefact when no dataset matches",
+      "evidence_class": "REPRODUCED",
+      "transcript": "evidence/control_empty_dataset.txt",
+      "script": "evidence/control_empty_dataset.py",
+      "observed": {
+        "datasets_in_input_dir": 0,
+        "artifact_written": "reports/strategy-baseline/MULTI_FAMILY_RESULTS.json",
+        "artifact_bytes": 62791,
+        "families": 6,
+        "scenarios_per_family": 4,
+        "trades_by_family": 0,
+        "process_exit_code": 0
+      }
+    },
+    {
+      "id": "C0b",
+      "claim": "an all-zero artefact is detected by this WP's rule and missed by a naive presence check",
+      "evidence_class": "REPRODUCED",
+      "transcript": "evidence/control_zero_trade_detection.txt",
+      "script": "evidence/control_zero_trade_detection.py",
+      "observed": {
+        "json": "VALID",
+        "naive_empty_check": false,
+        "zero_trade_families": 6,
+        "would_block": true
+      }
+    },
+    {
+      "id": "C1",
+      "claim": "an exception inside a family is indistinguishable from 'no signal'",
+      "evidence_class": "REPRODUCED",
+      "transcript": "evidence/control_family_exception_masking.txt",
+      "script": "evidence/control_family_exception_masking.py",
+      "observed": {
+        "healthy_family_trades": 6,
+        "failing_family_trades": 0,
+        "traceback_emitted": false,
+        "error_key_present": false,
+        "process_exit_code": 0
+      }
+    },
+    {
+      "id": "C2",
+      "claim": "the field named gross contains slippage",
+      "evidence_class": "REPRODUCED",
+      "transcript": "evidence/control_synthetic_cost_and_split.txt",
+      "script": "evidence/control_synthetic_cost_and_split.py",
+      "observed": {
+        "gross_base_minus_gross_zero_cost_usd": {
+          "ema_crossover": 0.40,
+          "momentum": 0.35
+        }
+      }
+    },
+    {
+      "id": "C3",
+      "claim": "the DEV/VAL/OOS split is inferred from the dataset filename prefix",
+      "evidence_class": "REPRODUCED",
+      "transcript": "evidence/control_synthetic_cost_and_split.txt",
+      "script": "evidence/control_synthetic_cost_and_split.py",
+      "observed": {
+        "totals_unchanged_after_rename": true,
+        "dev_val_oos_trades_after_rename": 0
+      }
+    }
+  ],
+  "defects": {
+    "D1_zero_dataset_artifact": "REPRODUCED",
+    "D2_masked_family_exception": "REPRODUCED",
+    "D3_gross_contains_slippage": "REPRODUCED",
+    "D4_split_by_filename": "REPRODUCED",
+    "D5_same_bar_fill": "READ_NOT_REPRODUCED",
+    "D6_realised_only_equity": "READ_NOT_REPRODUCED",
+    "D7_no_datasets": "ABSENT",
+    "D8_provenance_coverage_pit": "NOT_ASSESSED"
+  },
+  "preflight_rules_added": [
+    "an aggregate whose families all record zero trades is a blocker (ZERO_TRADE_RESULT), not a result",
+    "a full run writes one aggregate keyed by family while FAM=<family> runs write one file per family; both satisfy coverage, a file count does not",
+    "a family module that does not exist is a blocker",
+    "no tree can produce PASS: the strongest outcome is REQUIRES_RUNTIME_EXECUTION_AND_INDEPENDENT_VERIFICATION",
+    "--out inside the observed repo is refused (exit 2) and nothing is written"
+  ],
+  "tests": {
+    "new_file": "tests/unit/research/test_wp005_preflight.py",
+    "new_tests_passed": 20,
+    "new_tests_failed": 0,
+    "lane_suite": {
+      "command": "pytest tests/unit/research -q",
+      "failed": 69,
+      "errors": 14,
+      "passed": 1795,
+      "skipped": 30,
+      "exit_code": 1,
+      "failure_set_identical_to_wp004": true,
+      "failures_mentioning_wp005": 0,
+      "transcript": "evidence/lane_suite_after.txt"
+    }
+  },
+  "claims": {
+    "economic_experiments_run": 0,
+    "real_market_data_used": false,
+    "backtest_executed_on_real_data": false,
+    "strategy_classified_viable": 0,
+    "strategy_classified_unviable": 0,
+    "false_success_produced_by_this_wp": 0,
+    "false_success_global_certification": "NOT_ASSESSED",
+    "paper_permission_changed": false,
+    "gates_modified": false,
+    "rfc_modified": false,
+    "architecture_modified": false
+  },
+  "limitations": [
+    "no dataset exists in the tree, so no economic question is answerable at this HEAD",
+    "controls use synthetic seeded random walks; they establish observability of defects, never performance",
+    "D5 and D6 are read from source and not reproduced; D5 requires comparison with the paper adapter",
+    "the 69 pre-existing research failures are unchanged and unattributed; none is claimed irrelevant",
+    "the observation snapshot was taken with this WP's artefacts untracked, and its git status says so"
+  ]
+}

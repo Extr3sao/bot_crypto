@@ -1,0 +1,78 @@
+{
+  "ledger": {
+    "bytes_sha256": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+    "unchanged_vs_head": true,
+    "pin_before": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+    "pin_after": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+    "state_pin_before": null,
+    "state_pin_after": "4d1b1e6a9857356a7685764e3481a31dd447df8ea16e7adde73d4815b7f032f9",
+    "state_contract_after": "strategy-admission-ledger-identity-v1"
+  },
+  "audit": {
+    "pin_before": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3",
+    "pin_after": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+    "state_pin_before": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+    "state_pin_after": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53"
+  },
+  "explorer": {
+    "sha256_before_head_blob": "02388981122d84a9121542f61782284b517970e550cd91a37d426eadd4925286",
+    "sha256_after": "fdc6892f12280f4fa6bf391397deafe53103b78e140f4ddba861acd66a914061",
+    "payload_sha256_before": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb",
+    "payload_sha256_after": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb",
+    "payload_unchanged": true,
+    "content_lines_changed": 13,
+    "content_diff": [
+      "-  \"generated_at_utc\": \"2026-10-11T18:36:08Z\",",
+      "-  \"head\": \"66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0\",",
+      "-  \"branch\": \"main\",",
+      "+  \"generated_at_utc\": \"2026-10-25T13:34:00Z\",",
+      "+  \"head\": \"7311e55330d2841772015a2aa4efea591daab22a\",",
+      "+  \"branch\": \"repro/economic-recovery-002\",",
+      "-      \"sha256\": \"e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3\",",
+      "+      \"sha256\": \"8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481\",",
+      "-      \"sha256\": \"6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1\",",
+      "-      \"state_sha256\": null",
+      "+      \"sha256\": \"5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76\",",
+      "+      \"state_sha256\": \"4d1b1e6a9857356a7685764e3481a31dd447df8ea16e7adde73d4815b7f032f9\",",
+      "+      \"state_contract\": \"strategy-admission-ledger-identity-v1\""
+    ],
+    "byte_delta_is_line_endings_plus_those_lines": true,
+    "note": "the HEAD blob is the CRLF rendering git produced on this host; the repaired file is written with newline='\n'. Only the provenance lines and the two sources[] pins differ in content."
+  },
+  "verification": {
+    "sha256_before_head_blob": "80c197b4e23251ce1b8a2c004e7bd6d65e7ec70ce0976f358b0efd0e27538c19",
+    "sha256_after": "c5fa1031e262f6b6c92d662d41214cc8ff9b16568c9a2eaf160634b8847c5612",
+    "status": "PASS"
+  },
+  "changed_sources": [
+    {
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "sha256": [
+        "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3",
+        "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481"
+      ],
+      "state_sha256": [
+        "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+        "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53"
+      ]
+    },
+    {
+      "path": "config/strategy_admission.json",
+      "sha256": [
+        "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+        "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76"
+      ],
+      "state_sha256": [
+        null,
+        "4d1b1e6a9857356a7685764e3481a31dd447df8ea16e7adde73d4815b7f032f9"
+      ]
+    }
+  ],
+  "line_endings": {
+    "data/recovery/COST_BARRIER_EXPLORER.json": "LF",
+    "data/recovery/COST_BARRIER_VERIFICATION.json": "LF",
+    "data/recovery/wp7/evidence/INPUT_EVIDENCE.json": "LF",
+    "data/recovery/wp7/evidence/PRODUCER_PINS.json": "LF",
+    "data/recovery/wp7/evidence/COST_BARRIER.json": "CRLF (byte-identical to the pinned input, untouched)"
+  }
+}

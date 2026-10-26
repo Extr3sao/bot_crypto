@@ -1,0 +1,86 @@
+{
+  "COMPLETED_WINDOWS": 7,
+  "CONCURRENCY_TEST": "PASS",
+  "CURRENT_HEAD": "7cd8d72f8d4330682af560f11b30cac211ad78b3",
+  "DISK_STATUS": {
+    "critical_free_bytes": 2147483648,
+    "free_bytes": 20566544384,
+    "free_gib": 19.1541,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "reading": "the storage guard the campaign already uses, not a second threshold set",
+    "status": "HEALTHY",
+    "total_bytes": 255041990656,
+    "total_gib": 237.5264,
+    "used_percent": 91.94,
+    "warning_free_bytes": 5368709120
+  },
+  "DUE_IDEMPOTENCY": "PASS",
+  "ERROR_EXIT_STATUS_TEST": "PASS",
+  "FALSE_SUCCESS": 0,
+  "HEALTH": {
+    "artifact": "data\\st6\\ST6_HEALTH_STATUS.json",
+    "generated_at_utc": "2026-10-09T16:35:13Z",
+    "reading": "read at generation time, straight after the live tests, which deliberately provoke a lease collision and a refusal: a WARNING here can be their signature rather than an operational fault. The health artefact, rewritten by every tick, is the authority.",
+    "status": "HEALTHY"
+  },
+  "INDEPENDENT_VERIFICATION": {
+    "artifact": "data\\st6\\ST6_SCHEDULER_VERIFICATION.json",
+    "checks_passed": 4970,
+    "checks_total": 4970,
+    "false_success": 0,
+    "status": "PASS"
+  },
+  "LEASE_READING": "a tick that neither renews nor releases its lease is abandoned after this many seconds; the shared lease cannot always prove a pid is dead on this platform, so the age rule is short enough that a killed tick can never cost a window",
+  "LEASE_STALE_AFTER_SECONDS": 300,
+  "MARKET_REQUESTS_ON_SKIPPED_RUNS": 0,
+  "MISSED_WINDOWS": 0,
+  "NEXT_GATE": "the declared period closes at 2026-10-22T16:21:20Z; then the consolidation and the independent verification run automatically and the gate becomes the ECO-1 decision",
+  "PENDING_WINDOWS": 77,
+  "PERIOD_CLOSURE_GUARD_TEST": "PASS",
+  "PLANNED_WINDOWS": 84,
+  "REAL_EXECUTION_TEST": "PASS",
+  "RUN_EVENTS": 371,
+  "RUN_EVENTS_RECORDED_OUTSIDE_A_SLOT": 232,
+  "SCHEDULER_ENABLED": true,
+  "SCHEDULER_INSTALLED": true,
+  "SCHEDULER_STATE": {
+    "arguments": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime.py\" --due --scheduled",
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "enabled": true,
+    "installed": true,
+    "queried_at_utc": "2026-10-09T16:35:14Z",
+    "query_error": null,
+    "query_exit_code": 0,
+    "reading": "the task's own registration, read from the scheduler; it is never treated as evidence that a measurement was taken",
+    "repetition_interval": "PT15M",
+    "task_name": "TradingAgentic-ST6-Forward",
+    "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+  },
+  "TASK_NAME": "TradingAgentic-ST6-Forward",
+  "artifact": "ST6_SCHEDULER_REPORT",
+  "autonomous_collection_active": true,
+  "collection_is_evidence": "a scheduled tick that took no sample is not a measurement: the evidence is the window with its raw bytes and its hash, and the run log only says what the tick did",
+  "credentials_used": 0,
+  "generated_at_utc": "2026-10-09T16:35:14Z",
+  "observations_written": 84,
+  "orders_sent": 0,
+  "period": {
+    "closed": false,
+    "closure_artifact": {
+      "path": "data\\st6\\ST6_PERIOD_CLOSURE.json",
+      "reading": "absent",
+      "written_by": "this command, once the declared period has ended"
+    },
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "started_at_utc": "2026-10-08T16:21:20Z"
+  },
+  "result_status": "ST6_AUTONOMOUS_COLLECTION_ACTIVE",
+  "standing_state": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "ECO_2": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
+    "LIVE_TRADING": "DISABLED",
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "PROFITABILITY_VERIFIED": false,
+    "TRADES_AUTHORIZED": 0
+  }
+}

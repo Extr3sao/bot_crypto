@@ -1,0 +1,133 @@
+{
+  "schema": "W006_DATA_QUALITY_V1",
+  "manifest": "data\\economic\\w006\\MANIFEST.json",
+  "manifest_sha256": "3e392e0fcbc6ae548fd654e1622ad9d5580fd0f7c710ee6239af863fa194d62d",
+  "source": {
+    "venue": "Binance USDⓈ-M futures",
+    "endpoint": "https://fapi.binance.com/fapi/v1/klines",
+    "auth": "none (public market data)",
+    "interval": "5m",
+    "interval_ms": 300000
+  },
+  "fetched_at_utc": "2026-10-25T17:41:09.989579+00:00",
+  "partitions": {
+    "boundaries_utc": {
+      "dev": [
+        "2026-06-27T17:40:00Z",
+        "2026-08-26T17:40:00Z"
+      ],
+      "val": [
+        "2026-08-26T17:40:00Z",
+        "2026-09-25T17:40:00Z"
+      ],
+      "oos": [
+        "2026-09-25T17:40:00Z",
+        "2026-10-25T17:40:00Z"
+      ]
+    },
+    "rule": "chronological over pooled coverage"
+  },
+  "datasets": {
+    "BTCUSDT": {
+      "symbol": "BTCUSDT",
+      "failures": [],
+      "warnings": [],
+      "path": "datasets/BTCUSDT_5m.json",
+      "bytes": 3381712,
+      "sha256": "6ba56816a77b5fea8749ba2008d8fcec507b6da62dfc2c58f20f19d4955853c5",
+      "requests": 24,
+      "response_rows_total": 34561,
+      "distinct_response_digests": 24,
+      "bars": 34560,
+      "start_ts": 1782582000000,
+      "end_ts": 1792949700000,
+      "start_utc": "2026-06-27T17:40:00Z",
+      "end_utc": "2026-10-25T17:35:00Z",
+      "span_hours": 2879.917,
+      "gaps": [],
+      "gap_count": 0,
+      "last_bar_closes_before_fetch": true,
+      "expected_bars": 34560,
+      "extreme_moves": 0,
+      "bars_by_partition": {
+        "DEV": 17280,
+        "VAL": 8640,
+        "OOS": 8640
+      },
+      "status": "PASS"
+    },
+    "ETHUSDT": {
+      "symbol": "ETHUSDT",
+      "failures": [],
+      "warnings": [],
+      "path": "datasets/ETHUSDT_5m.json",
+      "bytes": 3408333,
+      "sha256": "63a8f39c1f6d80701dd2d8af461db743a8deeb29177023d6a3fb6fc75b22ae55",
+      "requests": 24,
+      "response_rows_total": 34561,
+      "distinct_response_digests": 24,
+      "bars": 34560,
+      "start_ts": 1782582000000,
+      "end_ts": 1792949700000,
+      "start_utc": "2026-06-27T17:40:00Z",
+      "end_utc": "2026-10-25T17:35:00Z",
+      "span_hours": 2879.917,
+      "gaps": [],
+      "gap_count": 0,
+      "last_bar_closes_before_fetch": true,
+      "expected_bars": 34560,
+      "extreme_moves": 0,
+      "bars_by_partition": {
+        "DEV": 17280,
+        "VAL": 8640,
+        "OOS": 8640
+      },
+      "status": "PASS"
+    },
+    "SOLUSDT": {
+      "symbol": "SOLUSDT",
+      "failures": [],
+      "warnings": [],
+      "path": "datasets/SOLUSDT_5m.json",
+      "bytes": 3195688,
+      "sha256": "7cbf41aed656b2665ca0edde50ee87b2920919f1e3635f0a26bcab6a3b75bd4d",
+      "requests": 24,
+      "response_rows_total": 34561,
+      "distinct_response_digests": 24,
+      "bars": 34560,
+      "start_ts": 1782582000000,
+      "end_ts": 1792949700000,
+      "start_utc": "2026-06-27T17:40:00Z",
+      "end_utc": "2026-10-25T17:35:00Z",
+      "span_hours": 2879.917,
+      "gaps": [],
+      "gap_count": 0,
+      "last_bar_closes_before_fetch": true,
+      "expected_bars": 34560,
+      "extreme_moves": 0,
+      "bars_by_partition": {
+        "DEV": 17280,
+        "VAL": 8640,
+        "OOS": 8640
+      },
+      "status": "PASS"
+    }
+  },
+  "checks_run": [
+    "alignment",
+    "coverage",
+    "digest",
+    "gaps",
+    "monotonicity",
+    "ohlc",
+    "partitions",
+    "pit",
+    "provenance"
+  ],
+  "limitations": [
+    "a digest match proves the bytes match the manifest, not that the exchange served that history; re-requesting the recorded URLs is the only check for that",
+    "basic OHLC consistency cannot detect fabricated-but-consistent bars",
+    "no order-book history is used, so spread is a declared assumption, not a measurement"
+  ],
+  "status": "PASS"
+}

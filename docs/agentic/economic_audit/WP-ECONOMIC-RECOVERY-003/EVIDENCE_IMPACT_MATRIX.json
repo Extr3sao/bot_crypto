@@ -1,0 +1,1277 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-003",
+  "artefact": "EVIDENCE_IMPACT_MATRIX",
+  "commit_under_measurement": "2bd6e346348ee7fc039f8ada31a390387a4c30c2",
+  "branch": "repro/economic-recovery-002",
+  "method": "digests computed from the files on disk (raw and LF-normalised), producers and inputs declared in this script, consumers derived by scanning every tracked text file for the path, pins read from the artefacts that publish them",
+  "gate_check_now": {
+    "command": "scripts/cost_barrier_gate.py --check",
+    "exit_code": 5,
+    "headline": "cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5"
+  },
+  "classes": {
+    "REBUILT": "the producer rewrites it during recertification",
+    "UNCHANGED_PAYLOAD": "rebuilt, but the economic payload digest does not change",
+    "HISTORICAL_RECORD": "a past observation; it records what was true then and is not a live pin",
+    "NOT_TOUCHED": "outside the recertification blast radius",
+    "REBUILT_ALREADY": "rebuilt by the previous work package (the anchor repair)"
+  },
+  "chain": [
+    {
+      "id": "corpus",
+      "path": "reports/strategy-baseline/data",
+      "kind": "input_corpus",
+      "producer": null,
+      "producer_note": "cached 5m bar datasets; gitignored by design, absent from every checkout",
+      "inputs": [
+        "exchange klines, bucketed to complete 5m days"
+      ],
+      "recert_effect": "NOT_TOUCHED",
+      "exists_in_working_tree": false,
+      "tracked_at_head": false,
+      "sha256": null,
+      "sha256_lf": null,
+      "consumers": [
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.md",
+        "data/recovery/wp7/COST_BARRIER_CI_DESIGN.md",
+        "data/recovery/wp7/COST_BARRIER_RUNTIME_AUTHORITY.md",
+        "docs/research/alpha_recovery_v1_2/experiments/EXP-ARP-006/MANIFEST.json",
+        "docs/research/alpha_recovery_v1_2/experiments/EXP-ARP-007/MANIFEST.json",
+        "docs/research/alpha_recovery_v1_2/experiments/EXP-ARP-008/MANIFEST.json",
+        "docs/research/alpha_recovery_v1_2/experiments/EXP-ARP-009/MANIFEST.json",
+        "docs/research/alpha_recovery_v1_2/experiments/EXP-ARP-010/MANIFEST.json",
+        "docs/research/alpha_recovery_v1_3/DATA_COVERAGE.md",
+        "docs/research/alpha_recovery_v1_4/BASELINE.md",
+        "docs/research/alpha_recovery_v1_4/experiments/EXP-ARP-009/MANIFEST.json",
+        "docs/research/alpha_recovery_v1_4/experiments/EXP-ARP-011/MANIFEST.json",
+        "docs/research/alpha_recovery_v1_4/experiments/EXP-ARP-012/MANIFEST.json",
+        "docs/research/strategy_lifecycle/EXP-STRAT-DYNAMIC-001_RESULTS.md",
+        "docs/research/strategy_lifecycle/experiments/EXP-STRAT-DYNAMIC-001.md",
+        "docs/runtime/ECONOMIC_BASELINE_CONTRACT.md",
+        "docs/runtime/data_authority_map.json",
+        "scripts/alpha_expansion_inventory.py",
+        "scripts/alpha_recovery_campaign.py",
+        "scripts/cost_barrier_gate.py",
+        "scripts/fetch_alpha_expansion_history.py",
+        "scripts/fetch_alpha_recovery_extended.py",
+        "scripts/rfc010_baseline_replay.py",
+        "scripts/rfc020_data_audit.py",
+        "scripts/rfc020_htf_stale_audit.py",
+        "scripts/rfc020_provenance.py",
+        "scripts/sprint025_lib.py",
+        "scripts/strategy_dynamic_experiment.py",
+        "src/trading_bot/research/alpha_recovery/campaign.py",
+        "src/trading_bot/research/alpha_recovery/extended.py",
+        "src/trading_bot/research/strategy_failure_diagnostics.py",
+        "tests/unit/research/test_alpha_expansion_manifests.py",
+        "tests/unit/research/test_alpha_recovery_manifests.py",
+        "tests/unit/research/test_alpha_recovery_v1_4_manifests.py"
+      ]
+    },
+    {
+      "id": "multi_family",
+      "path": "reports/strategy-baseline/MULTI_FAMILY_RESULTS_*.json",
+      "kind": "research_result",
+      "producer": "scripts/multi_family_backtest.py",
+      "inputs": [
+        "reports/strategy-baseline/data"
+      ],
+      "recert_effect": "NOT_TOUCHED",
+      "exists_in_working_tree": false,
+      "tracked_at_head": false,
+      "sha256": null,
+      "sha256_lf": null,
+      "consumers": [
+        "docs/MULTI_STRATEGY_FINAL_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/ANCHOR_REPAIR.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/FINAL_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/RUN_REPORT.json",
+        "scripts/wp_eco002_anchor.py"
+      ]
+    },
+    {
+      "id": "cost_barrier_input",
+      "path": "reports/strategy-baseline/COST_BARRIER.json",
+      "kind": "research_result",
+      "producer": "scripts/cost_barrier.py",
+      "inputs": [
+        "reports/strategy-baseline/data"
+      ],
+      "recert_effect": "NOT_TOUCHED",
+      "note": "byte-identical copy preserved at data/recovery/wp7/evidence/COST_BARRIER.json",
+      "exists_in_working_tree": false,
+      "tracked_at_head": false,
+      "sha256": null,
+      "sha256_lf": null,
+      "consumers": [
+        ".ci/wp9/ci_norun.json",
+        ".ci/wp9/ci_run.json",
+        ".github/workflows/cost-barrier-gate.yml",
+        "context/retrieval-log.md",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "data/recovery/CAMPAIGN_STATE_VIEW.json",
+        "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md",
+        "data/recovery/COST_BARRIER_EXPLORER.json",
+        "data/recovery/COST_BARRIER_EXPLORER.md",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.md",
+        "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+        "data/recovery/wp7/COST_BARRIER_CI_DESIGN.md",
+        "data/recovery/wp7/COST_BARRIER_RUNTIME_AUTHORITY.md",
+        "data/recovery/wp7/evidence/INPUT_EVIDENCE.json",
+        "data/recovery/wp8/ACTIVE_RECOVERY_REPRODUCIBILITY.md",
+        "data/recovery/wp8/CAMPAIGN_STATE_DETERMINISM_AUDIT.md",
+        "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+        "data/recovery/wp8/FINAL_REPORT.md",
+        "data/recovery/wp8/RECOVERY_RUNTIME_AUTHORITY_MAP.md",
+        "data/recovery/wp9/WP9_CI_EXECUTION_REPORT.json",
+        "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/DECLARED_DEPENDENCIES.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/FINAL_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/RUN_REPORT.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone_dependency_tracebacks.txt",
+        "docs/ci.md",
+        "scripts/active_economic_audit.py",
+        "scripts/cost_barrier.py",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_evidence.py",
+        "scripts/cost_barrier_explorer.py",
+        "scripts/cost_barrier_gate.py",
+        "scripts/recovery_input_evidence.py",
+        "tests/unit/research/test_active_recovery_wp.py",
+        "tests/unit/research/test_cost_barrier_adversarial.py"
+      ]
+    },
+    {
+      "id": "criteria",
+      "path": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+      "kind": "pre_registration",
+      "producer": null,
+      "producer_note": "pre-registered document, committed before the baselines ran (c1ffbaa)",
+      "inputs": [],
+      "recert_effect": "NOT_TOUCHED",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "11369d7f099d5ff22d4bb45af26ac70f80c5fe328abc8bef33dec009232fc77b",
+      "sha256_lf": "11369d7f099d5ff22d4bb45af26ac70f80c5fe328abc8bef33dec009232fc77b",
+      "consumers": [
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "data/recovery/wp10/FINAL_REPORT.md",
+        "data/recovery/wp10/WP10_BASELINE_ECONOMIC_AUDIT.json",
+        "docs/STRATEGY_ADMISSION_MATRIX.json",
+        "docs/STRATEGY_ADMISSION_MATRIX.md",
+        "docs/STRATEGY_DISCOVERY_V3.md",
+        "docs/STRATEGY_DISCOVERY_V3_ADMISSION.json",
+        "docs/STRATEGY_DISCOVERY_V3_ADMISSION.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.md",
+        "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json",
+        "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md",
+        "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md",
+        "scripts/active_economic_audit.py",
+        "scripts/build_admission_matrix.py",
+        "scripts/cost_barrier.py",
+        "scripts/multi_tf_backtest.py",
+        "scripts/regime_analysis.py",
+        "scripts/rfc046_audit.py",
+        "scripts/wp_eco001_admission_audit.py"
+      ]
+    },
+    {
+      "id": "matrix",
+      "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
+      "kind": "derived_evidence",
+      "producer": "scripts/build_admission_matrix.py",
+      "inputs": [
+        "reports/strategy-baseline/MULTI_FAMILY_RESULTS_*.json",
+        "docs/EMA_CROSSOVER_PERFORMANCE_BASELINE.json"
+      ],
+      "recert_effect": "NOT_TOUCHED",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81",
+      "sha256_lf": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81",
+      "consumers": [
+        "config/strategy_admission.json",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "data/recovery/wp10/WP10_BASELINE_ECONOMIC_AUDIT.json",
+        "docs/AUTONOMOUS_PAPER_RUNTIME.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/FINAL_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/INDEPENDENT_VERIFICATION.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/RUN_REPORT.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/RUN_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/ANCHOR_REPAIR.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/FINAL_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/INDEPENDENT_VERIFICATION.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/REPRODUCIBILITY_COMPARISON.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone.json",
+        "scripts/active_economic_audit.py",
+        "scripts/build_admission_matrix.py",
+        "scripts/build_strategy_admission.py",
+        "scripts/recovery_verify.py",
+        "scripts/wp_eco001_admission_audit.py",
+        "scripts/wp_eco001_economics.py",
+        "scripts/wp_eco001_verify.py",
+        "scripts/wp_eco002_anchor.py",
+        "scripts/wp_eco002_reproducibility.py",
+        "scripts/wp_eco002_verify.py",
+        "src/trading_bot/autonomous/admission_ledger.py",
+        "tests/unit/research/test_strategy_admission_ledger.py"
+      ]
+    },
+    {
+      "id": "v3_results",
+      "path": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "kind": "research_result",
+      "producer": null,
+      "producer_note": "authored artefact: the repository reads it, no script writes it",
+      "inputs": [
+        "reports/strategy-baseline/data"
+      ],
+      "recert_effect": "NOT_TOUCHED",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0",
+      "sha256_lf": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0",
+      "consumers": [
+        "config/strategy_admission.json",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "data/recovery/ACTIVE_RECOVERY_ROADMAP.md",
+        "data/recovery/wp10/FINAL_REPORT.md",
+        "data/recovery/wp10/WP10_BASELINE_ECONOMIC_AUDIT.json",
+        "data/recovery/wp10/WP10_BASELINE_ECONOMIC_AUDIT.md",
+        "docs/AUTONOMOUS_PAPER_RUNTIME.md",
+        "docs/DECISION_TRACE_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/INDEPENDENT_VERIFICATION.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/INDEPENDENT_VERIFICATION.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/REPRODUCIBILITY_COMPARISON.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone.json",
+        "docs/runtime/data_authority_map.json",
+        "scripts/active_economic_audit.py",
+        "scripts/build_strategy_admission.py",
+        "scripts/recovery_verify.py",
+        "scripts/wp10_baseline_economic_audit.py",
+        "scripts/wp_eco001_admission_audit.py",
+        "scripts/wp_eco001_cost_audit.py",
+        "scripts/wp_eco002_reproducibility.py",
+        "scripts/wp_eco002_verify.py",
+        "src/trading_bot/autonomous/admission_ledger.py",
+        "tests/unit/autonomous/test_pit_ledger.py",
+        "tests/unit/autonomous/test_strategy_state.py",
+        "tests/unit/autonomous/test_universe_preflight.py",
+        "tests/unit/cert/test_paper_smoke_decision_path.py"
+      ]
+    },
+    {
+      "id": "ledger",
+      "path": "config/strategy_admission.json",
+      "kind": "runtime_config",
+      "producer": "scripts/build_strategy_admission.py",
+      "inputs": [
+        "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "docs/STRATEGY_ADMISSION_MATRIX.json"
+      ],
+      "recert_effect": "REBUILT_ALREADY",
+      "note": "repaired by WP-002: the anchor named a matrix digest no commit ever had",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+      "sha256_lf": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        ".github/workflows/recovery-determinism.yml",
+        "config/baseline/RFC010-BASELINE-DEV.json",
+        "context/retrieval-log.md",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "data/recovery/CAMPAIGN_STATE_VIEW.json",
+        "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md",
+        "data/recovery/COST_BARRIER_EXPLORER.json",
+        "data/recovery/COST_BARRIER_EXPLORER.md",
+        "data/recovery/wp10/FINAL_REPORT.md",
+        "data/recovery/wp10/WP10_BASELINE_ECONOMIC_AUDIT.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.md",
+        "data/recovery/wp7/COST_BARRIER_RUNTIME_AUTHORITY.md",
+        "data/recovery/wp9/FINAL_REPORT.md",
+        "data/recovery/wp9/INDEPENDENT_VERIFICATION.json",
+        "data/recovery/wp9/WP9_ACTIVE_ECONOMIC_BLOCKERS.json",
+        "data/rfc049/discovery2/ACTIVE_STRATEGY_STATUS.json",
+        "docs/AUTONOMOUS_PAPER_RUNTIME.md",
+        "docs/PAPER_CONTINUOUS_OPERATIONS.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/ANCHOR_REPAIR.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/FINAL_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/INDEPENDENT_VERIFICATION.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/REPRODUCIBILITY_COMPARISON.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/RUN_REPORT.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/RUN_REPORT.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone_dependency_tracebacks.txt",
+        "docs/observability/DASHBOARD_DATA_SOURCES.md",
+        "docs/observability/DASHBOARD_RUNBOOK.md",
+        "docs/observability/INDEPENDENT_VERIFICATION_PLAN.md",
+        "docs/observability/RFC-OBS-015_STRATEGY_ECOSYSTEM_DASHBOARD.md",
+        "docs/research/alpha_recovery_v1_2/REGISTRY_RECONCILIATION.md",
+        "docs/research/alpha_recovery_v1_4/BASELINE.md",
+        "docs/runtime/ECONOMIC_BASELINE_CONTRACT.md",
+        "docs/runtime/REAL_RUNTIME_GRAPH.md",
+        "docs/runtime/data_authority_map.json",
+        "docs/runtime/data_authority_map.md",
+        "docs/runtime/runtime_authority_map.md",
+        "scripts/active_economic_audit.py",
+        "scripts/alpha_diversified_v1.py",
+        "scripts/alpha_expansion_v1.py",
+        "scripts/alpha_recovery_campaign.py",
+        "scripts/alpha_recovery_v1_3.py",
+        "scripts/alpha_recovery_v1_4.py",
+        "scripts/arp007_oos.py",
+        "scripts/arp009_exp_021.py",
+        "scripts/arp010_exp_022.py",
+        "scripts/arp011_exp_019.py",
+        "scripts/arp012_verify_exp_019.py",
+        "scripts/autonomous_paper.py",
+        "scripts/build_strategy_admission.py",
+        "scripts/campaign_state_view.py",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_explorer.py",
+        "scripts/cost_barrier_gate.py",
+        "scripts/paper_lab_research.py",
+        "scripts/paper_lab_verification.py",
+        "scripts/recovery_verify.py",
+        "scripts/rfc020_ledger_regime_audit.py",
+        "scripts/rfc049c_active_audit.py",
+        "scripts/start_paper_trading.py",
+        "scripts/wp10_baseline_economic_audit.py",
+        "scripts/wp9_economic_blockers.py",
+        "scripts/wp9_verify.py",
+        "scripts/wp_eco001_admission_audit.py",
+        "scripts/wp_eco001_cost_audit.py",
+        "scripts/wp_eco001_economics.py",
+        "scripts/wp_eco001_verify.py",
+        "scripts/wp_eco002_anchor.py",
+        "scripts/wp_eco002_report.py",
+        "scripts/wp_eco002_reproducibility.py",
+        "scripts/wp_eco002_verify.py",
+        "src/trading_bot/autonomous/admission_ledger.py",
+        "src/trading_bot/observability/ecosystem.py",
+        "src/trading_bot/observability/topology.py",
+        "src/trading_bot/research/strategy_failure_diagnostics.py",
+        "tests/unit/autonomous/test_lab_operations.py",
+        "tests/unit/research/test_alpha_expansion_manifests.py",
+        "tests/unit/research/test_alpha_recovery_manifests.py",
+        "tests/unit/research/test_alpha_recovery_v1_4_manifests.py",
+        "tests/unit/research/test_recovery_ci_parity.py",
+        "tests/unit/research/test_strategy_admission_ledger.py"
+      ]
+    },
+    {
+      "id": "audit",
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "kind": "derived_evidence",
+      "producer": "scripts/active_economic_audit.py",
+      "inputs": [
+        "config/strategy_admission.json",
+        "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "docs/COST_MODEL_V3.json",
+        "reports/strategy-baseline/COST_BARRIER.json"
+      ],
+      "recert_effect": "UNCHANGED_PAYLOAD",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+      "sha256_lf": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        ".github/workflows/recovery-determinism.yml",
+        "data/recovery/ACTIVE_RECOVERY_ROADMAP.md",
+        "data/recovery/CAMPAIGN_STATE_VIEW.json",
+        "data/recovery/COST_BARRIER_EXPLORER.json",
+        "data/recovery/COST_BARRIER_EXPLORER.md",
+        "data/recovery/COST_BARRIER_VERIFICATION.json",
+        "data/recovery/INDEPENDENT_VERIFICATION.json",
+        "data/recovery/RUN_REPORT.json",
+        "data/recovery/RUN_REPORT.md",
+        "data/recovery/wp10/FINAL_REPORT.md",
+        "data/recovery/wp10/WP10_BASELINE_ECONOMIC_AUDIT.json",
+        "data/recovery/wp10/WP10_EXECUTION_COST_DISTRIBUTION.json",
+        "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+        "data/recovery/wp7/COST_BARRIER_RUNTIME_AUTHORITY.md",
+        "data/recovery/wp8/ACTIVE_RECOVERY_REPRODUCIBILITY.md",
+        "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+        "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md",
+        "data/recovery/wp8/FINAL_REPORT.md",
+        "data/recovery/wp8/RECOVERY_RUNTIME_AUTHORITY_MAP.md",
+        "data/recovery/wp9/FINAL_REPORT.md",
+        "data/recovery/wp9/INDEPENDENT_VERIFICATION.json",
+        "data/recovery/wp9/WP9_ACTIVE_ECONOMIC_BLOCKERS.json",
+        "scripts/active_economic_audit.py",
+        "scripts/clean_checkout_rehearsal.py",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_certify.py",
+        "scripts/cost_barrier_explorer.py",
+        "scripts/cost_barrier_gate.py",
+        "scripts/cost_barrier_verify.py",
+        "scripts/recovery_economic_invariance.py",
+        "scripts/recovery_input_evidence.py",
+        "scripts/recovery_run_report.py",
+        "scripts/recovery_verify.py",
+        "scripts/wp9_economic_blockers.py",
+        "scripts/wp9_verify.py",
+        "tests/unit/research/test_recovery_ci_parity.py"
+      ]
+    },
+    {
+      "id": "cost_model_doc",
+      "path": "docs/COST_MODEL_V3.json",
+      "kind": "model_document",
+      "producer": null,
+      "producer_note": "committed model document with a content pin in the explorer",
+      "inputs": [],
+      "recert_effect": "NOT_TOUCHED",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+      "sha256_lf": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        "context/retrieval-log.md",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.md",
+        "data/recovery/COST_BARRIER_EXPLORER.json",
+        "data/recovery/COST_BARRIER_EXPLORER.md",
+        "data/recovery/wp7/COST_BARRIER_RUNTIME_AUTHORITY.md",
+        "data/rfc048/ECONOMIC_FEASIBILITY.json",
+        "data/rfc048/INDEPENDENT_CERTIFICATION.json",
+        "data/rfc049/BASELINE_AUDIT.json",
+        "data/rfc049/RUN_REPORT.json",
+        "data/rfc049/RUN_REPORT.md",
+        "data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json",
+        "data/rfc049/discovery2/DISCOVERY2_EXECUTION_PLAN.md",
+        "data/rfc049/discovery2/ECONOMIC_RESULTS.json",
+        "docs/COST_MODEL_V3.md",
+        "docs/MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.json",
+        "docs/MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/INDEPENDENT_VERIFICATION.json",
+        "docs/architecture/RFC048_RUNTIME_AUTHORITY_MAP.md",
+        "docs/research/RFC048_FUTURES_ECONOMIC_FEASIBILITY.md",
+        "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md",
+        "docs/rfc/RFC-048_DETERMINISTIC_FUTURES_RISK.json",
+        "docs/rfc/RFC-049_PROFITABILITY_DISCOVERY_2.md",
+        "scripts/active_economic_audit.py",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_explorer.py",
+        "scripts/cost_barrier_gate.py",
+        "scripts/research_verification.py",
+        "scripts/rfc048_run.py",
+        "scripts/rfc048v_certify.py",
+        "scripts/rfc049_prepare.py",
+        "scripts/rfc049_verify.py",
+        "scripts/rfc049c_engine.py",
+        "scripts/sprint026_exec.py",
+        "scripts/venue_execution_research.py",
+        "scripts/wp_eco002_verify.py",
+        "tests/unit/research/test_rfc046_economic_gate.py"
+      ]
+    },
+    {
+      "id": "cost_model_module",
+      "path": "src/trading_bot/research/microstructure/cost_model_v3.py",
+      "kind": "model_code",
+      "producer": null,
+      "producer_note": "the executable cost model; pinned by content in the explorer",
+      "inputs": [],
+      "recert_effect": "NOT_TOUCHED",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee",
+      "sha256_lf": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        "data/recovery/COST_BARRIER_EXPLORER.json",
+        "data/recovery/COST_BARRIER_EXPLORER.md",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.md",
+        "data/recovery/wp7/COST_BARRIER_RUNTIME_AUTHORITY.md",
+        "data/rfc046/audit.json",
+        "docs/COST_MODEL_V3.md",
+        "docs/architecture/RFC048_RUNTIME_AUTHORITY_MAP.md",
+        "docs/architecture/RFC049_RUNTIME_FLOW.md",
+        "docs/runtime/data_authority_map.json",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_explorer.py",
+        "scripts/cost_barrier_gate.py",
+        "scripts/rfc039_run.py",
+        "scripts/rfc046_audit.py",
+        "tests/unit/research/test_cost_barrier_gate.py"
+      ]
+    },
+    {
+      "id": "input_evidence",
+      "path": "data/recovery/wp7/evidence/INPUT_EVIDENCE.json",
+      "kind": "evidence_bundle",
+      "producer": "scripts/cost_barrier_evidence.py",
+      "inputs": [
+        "reports/strategy-baseline/COST_BARRIER.json"
+      ],
+      "recert_effect": "REBUILT",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "c4afce3831a71fd78ebe2569a52a9abf51416d162f37a695582ef6c7d8876853",
+      "sha256_lf": "20c45964842a82964737dcac0b54c20b3938766ceb996d28a66595954ddbbdda",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+        "scripts/cost_barrier_certify.py",
+        "scripts/cost_barrier_gate.py"
+      ]
+    },
+    {
+      "id": "input_evidence_copy",
+      "path": "data/recovery/wp7/evidence/COST_BARRIER.json",
+      "kind": "evidence_copy",
+      "producer": "scripts/cost_barrier_evidence.py",
+      "inputs": [
+        "reports/strategy-baseline/COST_BARRIER.json"
+      ],
+      "recert_effect": "UNCHANGED_PAYLOAD",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+      "sha256_lf": "1547cea438d2fb90d8556870c30dcbd911b5a841283ce982b423d04fbcc53640",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        "context/retrieval-log.md",
+        "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+        "data/recovery/wp7/COST_BARRIER_CI_DESIGN.md",
+        "data/recovery/wp7/evidence/INPUT_EVIDENCE.json",
+        "docs/ci.md",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_certify.py",
+        "scripts/cost_barrier_gate.py"
+      ]
+    },
+    {
+      "id": "producer_pins",
+      "path": "data/recovery/wp7/evidence/PRODUCER_PINS.json",
+      "kind": "evidence_bundle",
+      "producer": "scripts/cost_barrier_evidence.py",
+      "inputs": [
+        "scripts/active_economic_audit.py",
+        "scripts/cost_barrier.py",
+        "scripts/cost_barrier_explorer.py",
+        "scripts/cost_barrier_verify.py"
+      ],
+      "recert_effect": "REBUILT",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "a973fd41d6388874b2ea4d261e2e354c960f0bf7ab86ea917a9e754acedafa95",
+      "sha256_lf": "b57e3f622d9d787ecc1dea0b6ed1d9921e24d67b457241f28db8b9a1769d548f",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        "context/retrieval-log.md",
+        "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+        "data/recovery/wp7/COST_BARRIER_CI_DESIGN.md",
+        "data/recovery/wp7/COST_BARRIER_RUNTIME_AUTHORITY.md",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone_dependency_tracebacks.txt",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_certify.py",
+        "tests/unit/research/test_cost_barrier_gate.py"
+      ]
+    },
+    {
+      "id": "explorer",
+      "path": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "kind": "published_evidence",
+      "producer": "scripts/cost_barrier_explorer.py",
+      "inputs": [
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "reports/strategy-baseline/COST_BARRIER.json",
+        "config/strategy_admission.json",
+        "docs/COST_MODEL_V3.json",
+        "src/trading_bot/research/microstructure/cost_model_v3.py"
+      ],
+      "recert_effect": "UNCHANGED_PAYLOAD",
+      "note": "payload_sha256 excludes the volatile block and sources[]; rebuilding it with current pins reproduces 4383d812",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "02388981122d84a9121542f61782284b517970e550cd91a37d426eadd4925286",
+      "sha256_lf": "02388981122d84a9121542f61782284b517970e550cd91a37d426eadd4925286",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        "context/retrieval-log.md",
+        "data/recovery/COST_BARRIER_VERIFICATION.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.md",
+        "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+        "data/recovery/wp7/evidence/INPUT_EVIDENCE.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/ANCHOR_REPAIR.json",
+        "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/FINAL_REPORT.md",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_certify.py",
+        "scripts/cost_barrier_evidence.py",
+        "scripts/cost_barrier_gate.py",
+        "scripts/cost_barrier_verify.py",
+        "scripts/wp_eco002_anchor.py"
+      ]
+    },
+    {
+      "id": "verification",
+      "path": "data/recovery/COST_BARRIER_VERIFICATION.json",
+      "kind": "published_evidence",
+      "producer": "scripts/cost_barrier_verify.py",
+      "inputs": [
+        "data/recovery/COST_BARRIER_EXPLORER.json"
+      ],
+      "recert_effect": "UNCHANGED_PAYLOAD",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "80c197b4e23251ce1b8a2c004e7bd6d65e7ec70ce0976f358b0efd0e27538c19",
+      "sha256_lf": "80c197b4e23251ce1b8a2c004e7bd6d65e7ec70ce0976f358b0efd0e27538c19",
+      "consumers": [
+        ".github/workflows/cost-barrier-gate.yml",
+        "context/retrieval-log.md",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.md",
+        "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+        "scripts/cost_barrier_adversarial.py",
+        "scripts/cost_barrier_certify.py",
+        "scripts/cost_barrier_gate.py",
+        "scripts/cost_barrier_verify.py"
+      ]
+    },
+    {
+      "id": "adversarial",
+      "path": "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json",
+      "kind": "published_evidence",
+      "producer": "scripts/cost_barrier_adversarial.py",
+      "inputs": [
+        "data/recovery/COST_BARRIER_EXPLORER.json",
+        "data/recovery/COST_BARRIER_VERIFICATION.json"
+      ],
+      "recert_effect": "REBUILT",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "350d239f5ec5f74629778e6979b3af08af32cf0299c24aedcd7ce9287585b195",
+      "sha256_lf": "350d239f5ec5f74629778e6979b3af08af32cf0299c24aedcd7ce9287585b195",
+      "consumers": [
+        "tests/unit/research/test_cost_barrier_adversarial.py"
+      ]
+    },
+    {
+      "id": "certification",
+      "path": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+      "kind": "published_evidence",
+      "producer": "scripts/cost_barrier_certify.py",
+      "inputs": [
+        "data/recovery/COST_BARRIER_EXPLORER.json",
+        "data/recovery/COST_BARRIER_VERIFICATION.json",
+        "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json",
+        "data/recovery/wp7/evidence/PRODUCER_PINS.json"
+      ],
+      "recert_effect": "REBUILT",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "3a4e2bc059088c3c0bfad6a6b0d97cf0d7359160e9df1ab7170ead9cf38e0acc",
+      "sha256_lf": "3a4e2bc059088c3c0bfad6a6b0d97cf0d7359160e9df1ab7170ead9cf38e0acc",
+      "consumers": [
+        "data/recovery/RUN_REPORT.md",
+        "data/recovery/wp8/FINAL_REPORT.md",
+        "data/recovery/wp8/RUN_REPORT.json",
+        "data/recovery/wp8/RUN_REPORT.md",
+        "scripts/cost_barrier_certify.py"
+      ]
+    },
+    {
+      "id": "wp8_rehearsal",
+      "path": "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+      "kind": "historical_record",
+      "producer": "scripts/clean_checkout_rehearsal.py",
+      "inputs": [
+        "data/recovery/COST_BARRIER_EXPLORER.json"
+      ],
+      "recert_effect": "HISTORICAL_RECORD",
+      "note": "records the digest it observed at its own commit; it is not a live pin",
+      "exists_in_working_tree": true,
+      "tracked_at_head": true,
+      "sha256": "f201d253f985249d100b109924515cf04b517f6b693391931ff257c80d3c2e1f",
+      "sha256_lf": "f201d253f985249d100b109924515cf04b517f6b693391931ff257c80d3c2e1f",
+      "consumers": [
+        ".github/workflows/recovery-determinism.yml",
+        "data/recovery/wp8/ACTIVE_RECOVERY_REPRODUCIBILITY.md",
+        "data/recovery/wp8/RUN_REPORT.json",
+        "scripts/clean_checkout_rehearsal.py",
+        "scripts/recovery_verify.py",
+        "tests/unit/research/test_recovery_ci_parity.py"
+      ]
+    }
+  ],
+  "pins": [
+    {
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "pinned_by": "data/recovery/COST_BARRIER_EXPLORER.json#sources[]",
+      "pin": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3",
+      "state_pin": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+      "on_disk": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+      "status": "EOL_ONLY",
+      "role": "ACTIVE economic audit (WP-3): the 24 cells and their zero-cost gross edge",
+      "committed_renderings": {
+        "blob": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+        "lf": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+        "crlf": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3"
+      },
+      "pin_names_a_revision_of_the_file": null,
+      "pin_names_the_committed_blob": false,
+      "pin_names_the_crlf_rendering": true
+    },
+    {
+      "path": "reports/strategy-baseline/COST_BARRIER.json",
+      "pinned_by": "data/recovery/COST_BARRIER_EXPLORER.json#sources[]",
+      "pin": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+      "state_pin": null,
+      "on_disk": null,
+      "status": "ABSENT",
+      "role": "transaction-cost barrier: median bars/hours for a move equal to the cost",
+      "committed_renderings": {
+        "blob": null,
+        "lf": null,
+        "crlf": null
+      },
+      "pin_names_a_revision_of_the_file": null,
+      "pin_names_the_committed_blob": false,
+      "pin_names_the_crlf_rendering": false
+    },
+    {
+      "path": "config/strategy_admission.json",
+      "pinned_by": "data/recovery/COST_BARRIER_EXPLORER.json#sources[]",
+      "pin": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+      "state_pin": null,
+      "on_disk": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+      "status": "DRIFT",
+      "role": "tracked admission ledger: the only source of 'may this run PAPER?'",
+      "committed_renderings": {
+        "blob": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+        "lf": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+        "crlf": "21a642de96a691aef8e80be6265c6104fa89ab0297e6f24f46dabf0ed5e20f72"
+      },
+      "pin_names_a_revision_of_the_file": "ddaf14d1db0330fc0ba3776643a1f0c23625e7ea",
+      "pin_names_the_committed_blob": false,
+      "pin_names_the_crlf_rendering": false
+    },
+    {
+      "path": "docs/COST_MODEL_V3.json",
+      "pinned_by": "data/recovery/COST_BARRIER_EXPLORER.json#sources[]",
+      "pin": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+      "state_pin": null,
+      "on_disk": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+      "status": "EXACT",
+      "role": "COST_MODEL_V3 document: venue scenarios and knowledge classes",
+      "committed_renderings": {
+        "blob": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+        "lf": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+        "crlf": "eb887ae9132902b5cdd07dab4c0c263af535eb80de55398276c8a9e14036bbd6"
+      },
+      "pin_names_a_revision_of_the_file": null,
+      "pin_names_the_committed_blob": true,
+      "pin_names_the_crlf_rendering": false
+    },
+    {
+      "path": "src/trading_bot/research/microstructure/cost_model_v3.py",
+      "pinned_by": "data/recovery/COST_BARRIER_EXPLORER.json#sources[]",
+      "pin": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee",
+      "state_pin": null,
+      "on_disk": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee",
+      "status": "EXACT",
+      "role": "the executable cost model this artefact evaluates",
+      "committed_renderings": {
+        "blob": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee",
+        "lf": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee",
+        "crlf": "e676e641c0d896601ed86dc6ad4210894bb46fa724084cf2c8ac8e767904839b"
+      },
+      "pin_names_a_revision_of_the_file": null,
+      "pin_names_the_committed_blob": true,
+      "pin_names_the_crlf_rendering": false
+    },
+    {
+      "path": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "02388981122d84a9121542f61782284b517970e550cd91a37d426eadd4925286",
+      "state_pin": null,
+      "on_disk": "02388981122d84a9121542f61782284b517970e550cd91a37d426eadd4925286",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "data/recovery/COST_BARRIER_VERIFICATION.json",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "80c197b4e23251ce1b8a2c004e7bd6d65e7ec70ce0976f358b0efd0e27538c19",
+      "state_pin": null,
+      "on_disk": "80c197b4e23251ce1b8a2c004e7bd6d65e7ec70ce0976f358b0efd0e27538c19",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+      "state_pin": null,
+      "on_disk": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "data/recovery/wp7/evidence/COST_BARRIER.json",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "1547cea438d2fb90d8556870c30dcbd911b5a841283ce982b423d04fbcc53640",
+      "state_pin": null,
+      "on_disk": "1547cea438d2fb90d8556870c30dcbd911b5a841283ce982b423d04fbcc53640",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "data/recovery/wp7/evidence/INPUT_EVIDENCE.json",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "20c45964842a82964737dcac0b54c20b3938766ceb996d28a66595954ddbbdda",
+      "state_pin": null,
+      "on_disk": "20c45964842a82964737dcac0b54c20b3938766ceb996d28a66595954ddbbdda",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "data/recovery/wp7/evidence/PRODUCER_PINS.json",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "b57e3f622d9d787ecc1dea0b6ed1d9921e24d67b457241f28db8b9a1769d548f",
+      "state_pin": null,
+      "on_disk": "b57e3f622d9d787ecc1dea0b6ed1d9921e24d67b457241f28db8b9a1769d548f",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "scripts/cost_barrier_gate.py",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "8707fb90d042886ef27ee2c5e774a43f0f5b1d59dd5e023b0a7fb23f5a1d8725",
+      "state_pin": null,
+      "on_disk": "8707fb90d042886ef27ee2c5e774a43f0f5b1d59dd5e023b0a7fb23f5a1d8725",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "scripts/cost_barrier_evidence.py",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "6ab4cc400f9d45a88f3bfe0167a5c535317da45e31e42cdd88d595a9f403d411",
+      "state_pin": null,
+      "on_disk": "6ab4cc400f9d45a88f3bfe0167a5c535317da45e31e42cdd88d595a9f403d411",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "scripts/cost_barrier_adversarial.py",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "c56c2049d97aef9def479f926b64fc72da3dec2821f20e24a6b3896175bc2439",
+      "state_pin": null,
+      "on_disk": "c56c2049d97aef9def479f926b64fc72da3dec2821f20e24a6b3896175bc2439",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "scripts/cost_barrier_explorer.py",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "state_pin": null,
+      "on_disk": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "scripts/cost_barrier_verify.py",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "state_pin": null,
+      "on_disk": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": ".github/workflows/cost-barrier-gate.yml",
+      "pinned_by": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json#evidence_digests",
+      "pin": "fae181321e4e6232e4d070b80968cf77b5a6ff1d62f2396333e25aaa17bca579",
+      "state_pin": null,
+      "on_disk": "fae181321e4e6232e4d070b80968cf77b5a6ff1d62f2396333e25aaa17bca579",
+      "status": "EXACT",
+      "role": "content digest recorded by the certification"
+    },
+    {
+      "path": "scripts/active_economic_audit.py",
+      "pinned_by": "data/recovery/wp7/evidence/PRODUCER_PINS.json#producers[]",
+      "pin": "6c4fbd8093a7057a0d02d7fdcb2953dccebf11b2959746bf1ebc7bb45f0cf5ba",
+      "state_pin": "6c4fbd8093a7057a0d02d7fdcb2953dccebf11b2959746bf1ebc7bb45f0cf5ba",
+      "on_disk": "6c4fbd8093a7057a0d02d7fdcb2953dccebf11b2959746bf1ebc7bb45f0cf5ba",
+      "status": "EXACT",
+      "role": "producer of the WP-3 audit (the 24 cells)"
+    },
+    {
+      "path": "scripts/cost_barrier.py",
+      "pinned_by": "data/recovery/wp7/evidence/PRODUCER_PINS.json#producers[]",
+      "pin": "03c69a01232a656c318de4b0b21aa759e27a03a48eedf3b319c8389abfc68cc0",
+      "state_pin": "2c9ed4e053f49fe26cf8c37b31bf6fb471e0f0ccab4b510a56406e250fd1c3b8",
+      "on_disk": "2c9ed4e053f49fe26cf8c37b31bf6fb471e0f0ccab4b510a56406e250fd1c3b8",
+      "status": "EXACT",
+      "role": "producer of the market-horizon report (gitignored output)"
+    },
+    {
+      "path": "scripts/cost_barrier_explorer.py",
+      "pinned_by": "data/recovery/wp7/evidence/PRODUCER_PINS.json#producers[]",
+      "pin": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "state_pin": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "on_disk": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "status": "EXACT",
+      "role": "builder of the explorer artefact"
+    },
+    {
+      "path": "scripts/cost_barrier_verify.py",
+      "pinned_by": "data/recovery/wp7/evidence/PRODUCER_PINS.json#producers[]",
+      "pin": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "state_pin": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "on_disk": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "status": "EXACT",
+      "role": "independent verifier of the explorer artefact"
+    }
+  ],
+  "pin_pathology": [
+    {
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "pin": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3",
+      "finding": "the pin names the CRLF rendering of the committed blob, not the blob",
+      "covered_by_a_state_pin": true,
+      "consequence": "the byte pin can never match on a checkout that stores LF; it is survivable only because the semantic state pin is what the gate reads"
+    },
+    {
+      "path": "config/strategy_admission.json",
+      "pin": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+      "finding": "the pin names the CRLF rendering of revision ddaf14d1, not any blob",
+      "covered_by_a_state_pin": false,
+      "consequence": "the byte pin is the only protection and it names bytes no commit contains"
+    }
+  ],
+  "drift": [
+    {
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "pinned_by": "data/recovery/COST_BARRIER_EXPLORER.json#sources[]",
+      "pin": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3",
+      "state_pin": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+      "on_disk": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+      "status": "EOL_ONLY",
+      "role": "ACTIVE economic audit (WP-3): the 24 cells and their zero-cost gross edge",
+      "committed_renderings": {
+        "blob": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+        "lf": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+        "crlf": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3"
+      },
+      "pin_names_a_revision_of_the_file": null,
+      "pin_names_the_committed_blob": false,
+      "pin_names_the_crlf_rendering": true
+    },
+    {
+      "path": "reports/strategy-baseline/COST_BARRIER.json",
+      "pinned_by": "data/recovery/COST_BARRIER_EXPLORER.json#sources[]",
+      "pin": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+      "state_pin": null,
+      "on_disk": null,
+      "status": "ABSENT",
+      "role": "transaction-cost barrier: median bars/hours for a move equal to the cost",
+      "committed_renderings": {
+        "blob": null,
+        "lf": null,
+        "crlf": null
+      },
+      "pin_names_a_revision_of_the_file": null,
+      "pin_names_the_committed_blob": false,
+      "pin_names_the_crlf_rendering": false
+    },
+    {
+      "path": "config/strategy_admission.json",
+      "pinned_by": "data/recovery/COST_BARRIER_EXPLORER.json#sources[]",
+      "pin": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+      "state_pin": null,
+      "on_disk": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+      "status": "DRIFT",
+      "role": "tracked admission ledger: the only source of 'may this run PAPER?'",
+      "committed_renderings": {
+        "blob": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+        "lf": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+        "crlf": "21a642de96a691aef8e80be6265c6104fa89ab0297e6f24f46dabf0ed5e20f72"
+      },
+      "pin_names_a_revision_of_the_file": "ddaf14d1db0330fc0ba3776643a1f0c23625e7ea",
+      "pin_names_the_committed_blob": false,
+      "pin_names_the_crlf_rendering": false
+    }
+  ],
+  "simulation": {
+    "where": "a temporary `git clone` at the commit under audit, plus one throwaway `git worktree` to separate the causes; the published evidence in this repository was never touched",
+    "steps": [
+      "scripts/cost_barrier_evidence.py --materialize",
+      "scripts/cost_barrier_explorer.py --out-dir <tmp>",
+      "scripts/cost_barrier_verify.py --explorer <tmp>/COST_BARRIER_EXPLORER.json --out <tmp>/VERIFICATION.json",
+      "publish the two rebuilt files, commit",
+      "scripts/cost_barrier_evidence.py --capture, commit",
+      "scripts/cost_barrier_certify.py (draft: refuses, writes fresh content digests), commit",
+      "scripts/cost_barrier_certify.py (certifies: exit 0)"
+    ],
+    "explorer_payload_sha256_published": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb",
+    "explorer_payload_sha256_rebuilt": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb",
+    "rebuilt_explorer_differs_in": [
+      "/branch",
+      "/generated_at_utc",
+      "/head",
+      "/sources[0]/sha256 (ACTIVE_ECONOMIC_AUDIT.json: pin is the CRLF rendering, content is LF)",
+      "/sources[2]/sha256 (config/strategy_admission.json: pin predates the anchor repair)"
+    ],
+    "rebuilt_explorer_bytes": 212351,
+    "rebuilt_explorer_differing_leaves": 5,
+    "verifier_on_rebuilt": {
+      "status": "PASS",
+      "checks_failed": 0,
+      "controls": "13/13"
+    },
+    "gate_before": {
+      "status": "INTEGRITY_FAILURE",
+      "exit_code": 5,
+      "checks_passed": "10/11"
+    },
+    "gate_after": {
+      "status": "FULL_REPRODUCTION_PASS",
+      "exit_code": 0
+    },
+    "certification_after": {
+      "status": "CERTIFIED",
+      "exit_code": 0,
+      "satisfies_full_certification": true
+    },
+    "contract_suite": {
+      "files": [
+        "tests/unit/research/test_cost_barrier_explorer.py",
+        "tests/unit/research/test_cost_barrier_gate.py",
+        "tests/unit/research/test_cost_barrier_adversarial.py",
+        "tests/unit/research/test_cost_barrier_ci_parity.py"
+      ],
+      "nodes": 93,
+      "on_head_without_the_gitignored_input": {
+        "failed": 19,
+        "passed": 74,
+        "measured_on": "HEAD 2bd6e346 working tree, 2026-10-25"
+      },
+      "on_head_with_the_input_materialised": {
+        "failed": 9,
+        "passed": 84,
+        "measured_on": "throwaway `git worktree` at 2bd6e346, input materialised, 2026-10-25",
+        "reading": "10 of the 19 red nodes are only the absent input; the other 9 are the stale pins and the checkout artefacts they encode"
+      },
+      "after_full_recertification": {
+        "failed": 0,
+        "passed": 93,
+        "source": "evidence/simulated_certification_record.json#steps.contract_tests (exit 0)"
+      }
+    },
+    "full_suite": {
+      "before_recertification": {
+        "red_nodes": 104,
+        "composition": "90 failed + 14 errors",
+        "source": "evidence/full_suite_before_recertification.txt"
+      },
+      "after_recertification": {
+        "red_nodes": 85,
+        "composition": "71 failed + 14 errors",
+        "source": "evidence/recertified_clone_tests.txt"
+      },
+      "set_difference": {
+        "before": 104,
+        "after": 85,
+        "closed": 19,
+        "closed_nodes": [
+          "tests/unit/research/test_cost_barrier_adversarial.py::test_a_line_ending_only_change_is_not_a_finding",
+          "tests/unit/research/test_cost_barrier_adversarial.py::test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check",
+          "tests/unit/research/test_cost_barrier_adversarial.py::test_the_sandbox_carries_everything_the_gate_reads",
+          "tests/unit/research/test_cost_barrier_explorer.py::test_governance_flags_stay_unauthorized",
+          "tests/unit/research/test_cost_barrier_explorer.py::test_payload_hash_reproduces_and_matches_the_committed_artefact",
+          "tests/unit/research/test_cost_barrier_explorer.py::test_reading_the_sources_leaves_them_byte_identical",
+          "tests/unit/research/test_cost_barrier_explorer.py::test_the_market_horizon_is_reused_not_redefined",
+          "tests/unit/research/test_cost_barrier_gate.py::test_a_changed_producer_is_a_named_failure",
+          "tests/unit/research/test_cost_barrier_gate.py::test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical",
+          "tests/unit/research/test_cost_barrier_gate.py::test_a_missing_required_input_blocks_rather_than_fails",
+          "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_market_horizon_row_is_caught_by_the_re_derivation",
+          "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_number_with_an_honest_rehash_is_caught",
+          "tests/unit/research/test_cost_barrier_gate.py::test_a_moved_published_lines_block_is_caught",
+          "tests/unit/research/test_cost_barrier_gate.py::test_check_mode_is_partial_and_says_so",
+          "tests/unit/research/test_cost_barrier_gate.py::test_integrity_checks_are_tagged_as_such[source:market_horizon_rows_match_the_pinned_source]",
+          "tests/unit/research/test_cost_barrier_gate.py::test_the_cli_has_one_exit_code_per_state",
+          "tests/unit/research/test_cost_barrier_gate.py::test_the_gate_reproduces_the_committed_state_in_full_mode",
+          "tests/unit/research/test_cost_barrier_gate.py::test_the_pinned_producers_match_their_manifest",
+          "tests/unit/research/test_cost_barrier_gate.py::test_the_published_market_horizon_section_reproduces_from_the_pinned_source"
+        ],
+        "introduced": []
+      },
+      "reading": "the two runs collected different totals (different environment), so only the node identity matters: the set difference is exactly the 19 cost-barrier nodes and nothing was introduced"
+    },
+    "partial_recertification": {
+      "what_was_skipped": "the producer-pin capture and the certification digest refresh",
+      "failed": 3,
+      "passed": 105,
+      "source": "evidence/recertified_partial_tests.txt",
+      "reading": "rebuilding the explorer and the verification is not enough: the pins that quote them must be re-captured in the same pass, or the chain is left half-pinned"
+    },
+    "economic_numbers_changed": "none measured: the rebuilt explorer reproduces payload 4383d812 byte for byte, so every published cost, fee and horizon number is unchanged",
+    "evidence_files": [
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/explorer_rebuild_diff.txt",
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/pristine_clone_cost_barrier_tests.txt",
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/recertified_clone_tests.txt",
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/recertified_partial_tests.txt",
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/full_suite_before_recertification.txt",
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/contract_suite_failure_reasons.txt",
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/contract_suite_with_input_materialised.txt",
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/simulated_certification_record.json",
+      "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-003/evidence/simulated_rebuilt_verification.json"
+    ]
+  },
+  "dependency_classification": {
+    "verdict": {
+      "blocking_for_recertification": [],
+      "none_of_these_block_the_cost_barrier": true
+    },
+    "rows": [
+      {
+        "path": "reports/rfc035/search_round_3/RULE_CONTRACT_AUDIT.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/rfc035s3_closure.py:1784, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "data/raw/alpha003/price/BTCUSDT_5m.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "exchange klines can be fetched again, but not byte-identically: a rerun is a new dataset, not the frozen one",
+        "blocks": [
+          "reports/strategy-baseline/COST_BARRIER.json",
+          "reports/strategy-baseline/MULTI_FAMILY_RESULTS_*.json"
+        ]
+      },
+      {
+        "path": "reports/profitability_gate035/INDEPENDENT_VERIFICATION.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/pgate035_verify.py:690, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/rfc035/search_round_3/FINAL_REPORT.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/rfc035s3_closure.py:1806, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/rfc035/search_round_3/INDEPENDENT_VERIFICATION.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/rfc035s3_verify.py:675, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/strategy-baseline/COST_BARRIER.json",
+        "classification": "RECOVERABLE_EXACT",
+        "foundation": "byte-identical copy at data/recovery/wp7/evidence/COST_BARRIER.json reproduces the pinned digest: True",
+        "blocks": []
+      },
+      {
+        "path": "data/raw/alpha003/price/BTCUSDT_15m.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "exchange klines can be fetched again, but not byte-identically: a rerun is a new dataset, not the frozen one",
+        "blocks": [
+          "reports/strategy-baseline/COST_BARRIER.json",
+          "reports/strategy-baseline/MULTI_FAMILY_RESULTS_*.json"
+        ]
+      },
+      {
+        "path": "data/st6/ST6_HEALTH_STATUS.json",
+        "classification": "HOST_ONLY",
+        "foundation": "runtime evidence written by this machine's ticks; not part of the economic chain",
+        "blocks": []
+      },
+      {
+        "path": "reports/profitability_gate035/ALTERNATIVE_PATHS.md",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/pgate035_closure.py:1546, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/profitability_gate035/ECONOMIC_FEASIBILITY.md",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/pgate035_closure.py:1544, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/profitability_gate035/FINAL_REPORT.md",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/pgate035_closure.py:1550, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/profitability_gate035/INDEPENDENT_VERIFICATION.md",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/pgate035_verify.py:738, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/profitability_gate035/SEARCH_POSTMORTEM.md",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/pgate035_closure.py:1543, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/rfc035/search_round_3/BASELINE.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/rfc035s3_closure.py:1780, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/rfc035/search_round_3/CANDIDATE_DEEP_DIVE.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/rfc035s3_closure.py:1787, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/rfc035/search_round_3/ECONOMIC_EVIDENCE.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/rfc035s3_closure.py:1791, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/rfc035/search_round_3/REJECTION_LOG.json",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/rfc035s3_closure.py:1797, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "reports/rfc046/IMPACT_ASSESSMENT.md",
+        "classification": "RECOVERABLE_BY_RERUN",
+        "foundation": "gitignored output of scripts/rfc046_audit.py:732, a committed producer; re-running it produces a new instance of the same artefact, not the original bytes (no digest of this file is recorded anywhere, and its inputs are the absent corpus)",
+        "blocks": []
+      },
+      {
+        "path": "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+        "classification": "NEVER_COMMITTED_DELIVERABLE",
+        "foundation": "a document the tests require and no commit carries; nothing can produce it, so only its absence can be recorded",
+        "blocks": []
+      }
+    ]
+  },
+  "test_analysis": {
+    "node": "tests/unit/research/test_cost_barrier_gate.py::test_a_missing_required_input_blocks_rather_than_fails",
+    "what_it_asserts": "a declared input that is absent produces BLOCKED_MISSING_INPUT, with its exit code and the path named in the 'inputs:declared_inputs_present' detail",
+    "why_it_failed_after_the_anchor_repair": "the gate evaluates integrity before blockage (`decide_status`: integrity -> BLOCKED -> reproduction). With the ledger no longer matching the pin the explorer published, that pre-existing integrity failure takes precedence, so the run reports INTEGRITY_FAILURE and the test's own scenario never gets to be the verdict",
+    "precedence_is_integrity_before_blocked": true,
+    "obligation_preserved": "a real integrity inconsistency must still surface as a blocker of certification: the measured result after recertification is that the same test passes unchanged, because the integrity failure was repaired rather than masked",
+    "correct_resolution": "recertify (restore the pins) \u2014 not relax the test, not reorder the precedence, and not assert 'blocked or integrity' which would accept an unidentifiable failure as a pass",
+    "evidence_after_recertification": "evidence/recertified_clone_tests.txt (the node is green, unmodified)"
+  }
+}

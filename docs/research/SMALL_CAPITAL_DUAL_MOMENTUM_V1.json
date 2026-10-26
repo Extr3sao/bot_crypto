@@ -1,0 +1,24 @@
+{
+  "gates": {
+    "G_BUSINESS_PRODUCT": "PASS",
+    "G_DM_REPRO": "PASS",
+    "G_DM_1_DISCOVERY": "PASS",
+    "G_DM_2_VALIDATION": "PASS",
+    "G_BUSINESS_EDGE": "FAIL",
+    "ROBUSTNESS": "NOT_RUN",
+    "HOLDOUT": "NOT_OPENED"
+  },
+  "kpi": {
+    "BUSINESS_VALIDATED_EDGE_COUNT": 0,
+    "PAPER_CANDIDATE": 0,
+    "FORWARD_PROFITABLE": 0,
+    "LIVE_PROFITABLE": 0
+  },
+  "next": "STRATEGIC_BUSINESS_DECISION",
+  "spec_sha256": "1dce52814b511a9a51df3dc3b1ac8568c7276a0440d03832d7ff43e4875df294",
+  "search_status": "PAUSED",
+  "superseded_by": "RFC-041",
+  "superseded_decision_id": "BUSINESS-FREEZE-2026-001",
+  "superseded_stale_claim": "next = STRATEGIC_BUSINESS_DECISION",
+  "superseded_note": "RFC-041 marks this claim SUPERSEDED; history retained, canonical state updated in docs/research/ECONOMIC_STATE.json."
+}

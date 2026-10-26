@@ -1,0 +1,1282 @@
+{
+  "wp": "WP-ECONOMIC-BLOCKER-001",
+  "artefact": "COST_OBSERVED",
+  "source_root": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001",
+  "source_status": "ASSESSED",
+  "source_note": "",
+  "block_count": 24,
+  "blocks": [
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "BTC",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.00125219,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.79182161,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.001252
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "ETH",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.04330663,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.83387605,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.043307
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "SOL",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.99875156,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 23.78932098,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.998752
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "BTC",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.00125263,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.79182204,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.001253
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "ETH",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.0433147,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.83388412,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.043315
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "SOL",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.99915072,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 23.78972014,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.999151
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "BTC",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.00125276,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.79182217,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.001253
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "ETH",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.04332953,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.83389894,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.04333
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-a-1h",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-a-1h/traces.jsonl",
+      "trace_sha256": "a8cb67ebfb27c4657d56e423e017d66ef791121c5736d1bf12a8f9e3aa4bcb17",
+      "asset": "SOL",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.99925056,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 23.78981998,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.999251
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "BTC",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.00125265,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.79182207,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.001253
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "ETH",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.04332033,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.83388975,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.04332
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "SOL",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.99885132,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 23.78942074,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.998851
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "BTC",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.00125484,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.79182425,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.001255
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "ETH",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.0434121,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.83398152,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.043412
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "SOL",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 1.00125156,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 23.79182098,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 1.001252
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "BTC",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.00125533,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.79182475,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.001255
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "ETH",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.04347552,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.83404494,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.043476
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-b-5m",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-b-5m/traces.jsonl",
+      "trace_sha256": "68d446cb4b2f990418803d40ae2681482b4673b25d596f03ebfb0051bae4455f",
+      "asset": "SOL",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 1.00356265,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 23.79413206,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 1.003563
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-c-controlled-exec",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-c-controlled-exec/traces.jsonl",
+      "trace_sha256": "becb5b7f439cde2edcbad6064e5d969041dc57bf22321c3d42c48089756dba36",
+      "asset": "BTC",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.0012466,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.79181602,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.001247
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-c-controlled-exec",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-c-controlled-exec/traces.jsonl",
+      "trace_sha256": "becb5b7f439cde2edcbad6064e5d969041dc57bf22321c3d42c48089756dba36",
+      "asset": "ETH",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.04316811,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.83373752,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.043168
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-c-controlled-exec",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-c-controlled-exec/traces.jsonl",
+      "trace_sha256": "becb5b7f439cde2edcbad6064e5d969041dc57bf22321c3d42c48089756dba36",
+      "asset": "SOL",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.99527246,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 23.78584187,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.995272
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-c-controlled-exec",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-c-controlled-exec/traces.jsonl",
+      "trace_sha256": "becb5b7f439cde2edcbad6064e5d969041dc57bf22321c3d42c48089756dba36",
+      "asset": "BTC",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.00124627,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.79181569,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.001246
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-c-controlled-exec",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-c-controlled-exec/traces.jsonl",
+      "trace_sha256": "becb5b7f439cde2edcbad6064e5d969041dc57bf22321c3d42c48089756dba36",
+      "asset": "ETH",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.04315916,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 22.83372858,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.043159
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    },
+    {
+      "run": "run-c-controlled-exec",
+      "trace": "C:/Users/GVLLFR0035/Downloads/ff-wt-prd001/docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/raw/runs/run-c-controlled-exec/traces.jsonl",
+      "trace_sha256": "becb5b7f439cde2edcbad6064e5d969041dc57bf22321c3d42c48089756dba36",
+      "asset": "SOL",
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_usd": 1000.0,
+      "horizon_minutes": 5.0,
+      "spread_bps": 0.99566884,
+      "spread_knowledge": "OBSERVED",
+      "fee_bps": 20.0,
+      "slippage_bps": 2.63245553,
+      "impact_bps": 0.15811388,
+      "funding_bps": 0,
+      "round_trip_bps": 23.78623826,
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "OBSERVED",
+          "name": "spread",
+          "note": "2 taker leg(s) x half-spread",
+          "source_id": "SRC-07",
+          "value_bps": 0.995669
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632456
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "note": "size-driven displacement above the base slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158114
+        }
+      ]
+    }
+  ]
+}

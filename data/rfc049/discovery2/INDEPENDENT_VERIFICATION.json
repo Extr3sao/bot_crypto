@@ -1,0 +1,255 @@
+{
+  "artifact": "RFC049_DISCOVERY2_INDEPENDENT_VERIFICATION",
+  "generated_at_utc": "2026-10-10T16:40:47Z",
+  "verifier": "scripts/rfc049c_verify.py",
+  "builder": "scripts/rfc049c_engine.py",
+  "builder_imported": false,
+  "shared_code_with_builder": false,
+  "method": "every reported number is recomputed from the frozen inputs with an independent implementation; tampered copies are used as negative controls and must be detected",
+  "status": "PASS",
+  "checks_total": 37,
+  "checks_failed": 0,
+  "checks": [
+    {
+      "check": "spec:H-049-001",
+      "result": "PASS",
+      "detail": "spec bytes"
+    },
+    {
+      "check": "spec:H-049-002",
+      "result": "PASS",
+      "detail": "spec bytes"
+    },
+    {
+      "check": "price:BTC-USDT_1d.json",
+      "result": "PASS",
+      "detail": "price bytes"
+    },
+    {
+      "check": "price:ETH-USDT_1d.json",
+      "result": "PASS",
+      "detail": "price bytes"
+    },
+    {
+      "check": "signal:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "signal:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "signal:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "signal:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "signal:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "signal:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "signal:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "signal:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "signal:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "signal bytes"
+    },
+    {
+      "check": "cost:200",
+      "result": "PASS",
+      "detail": "23.353553390593273"
+    },
+    {
+      "check": "cost:reported",
+      "result": "PASS",
+      "detail": "reported 23.353553390593273"
+    },
+    {
+      "check": "cost:stress",
+      "result": "PASS",
+      "detail": "1.5x"
+    },
+    {
+      "check": "grid:size",
+      "result": "PASS",
+      "detail": "406 2018-12-30..2026-10-04"
+    },
+    {
+      "check": "counts:H-049-001",
+      "result": "PASS",
+      "detail": "{\"development\": 14, \"validation\": 9, \"all_exposed\": 23}"
+    },
+    {
+      "check": "counts:H-049-002",
+      "result": "PASS",
+      "detail": "{\"development\": 26, \"validation\": 22, \"all_exposed\": 48}"
+    },
+    {
+      "check": "counts:rfc049b:H-049-001",
+      "result": "PASS",
+      "detail": "RFC-049B feasibility counts reproduced"
+    },
+    {
+      "check": "counts:rfc049b:H-049-002",
+      "result": "PASS",
+      "detail": "RFC-049B feasibility counts reproduced"
+    },
+    {
+      "check": "ledger:H-049-001:BTCUSDT",
+      "result": "PASS",
+      "detail": "ledger=23 recomputed=23"
+    },
+    {
+      "check": "ledger:H-049-002:BTCUSDT",
+      "result": "PASS",
+      "detail": "ledger=48 recomputed=48"
+    },
+    {
+      "check": "metrics:headline",
+      "result": "PASS",
+      "detail": "66 comparisons, mismatches: []"
+    },
+    {
+      "check": "metrics:incrementals",
+      "result": "PASS",
+      "detail": "mismatches: []"
+    },
+    {
+      "check": "eligibility:recomputed",
+      "result": "PASS",
+      "detail": "mismatches: []"
+    },
+    {
+      "check": "eligibility:thresholds_unchanged",
+      "result": "PASS",
+      "detail": "thresholds_changed is False"
+    },
+    {
+      "check": "pit:no_future_input",
+      "result": "PASS",
+      "detail": "0 violations over 812 decisions"
+    },
+    {
+      "check": "sealed:untouched",
+      "result": "PASS",
+      "detail": "max consumed dates 2026-10-02 / 2026-09-30"
+    },
+    {
+      "check": "sealed:no_oos_result",
+      "result": "PASS",
+      "detail": "sealed_oos_opened=False"
+    },
+    {
+      "check": "scope:no_pass_claim",
+      "result": "PASS",
+      "detail": "no pass possible now"
+    },
+    {
+      "check": "verdicts:failures_recomputed",
+      "result": "PASS",
+      "detail": "reported failures match independent recomputation"
+    },
+    {
+      "check": "ablation:recomputed",
+      "result": "PASS",
+      "detail": "4 arms x 2 partitions + 4 regime buckets reproduced"
+    },
+    {
+      "check": "ablation:not_adopted",
+      "result": "PASS",
+      "detail": "adoption status"
+    },
+    {
+      "check": "ablation:no_modification",
+      "result": "PASS",
+      "detail": "frozen hypotheses untouched"
+    },
+    {
+      "check": "active_audit:recomputed",
+      "result": "PASS",
+      "detail": "24 strategies, counts {'NO_GROSS_EDGE': 17, 'COST_KILLED': 7}, best gross 8.91"
+    },
+    {
+      "check": "active_audit:label_absent",
+      "result": "PASS",
+      "detail": "no tracked artifact carries the operator label"
+    }
+  ],
+  "negative_controls": [
+    {
+      "control": "tampered_spec_detected",
+      "result": "DETECTED",
+      "detail": "sha256 mismatch found"
+    },
+    {
+      "control": "truncated_price_changes_counts",
+      "result": "DETECTED",
+      "detail": "full=23 truncated=22"
+    },
+    {
+      "control": "ledger_comparison_detects_truncation",
+      "result": "DETECTED",
+      "detail": "trade-by-trade comparison flags it"
+    },
+    {
+      "control": "lookahead_availability_fails_pit",
+      "result": "DETECTED",
+      "detail": "clean=0 injected=405"
+    },
+    {
+      "control": "cost_tamper_detected",
+      "result": "DETECTED",
+      "detail": "cost comparison rejects +1 bps"
+    },
+    {
+      "control": "metric_tamper_detected",
+      "result": "DETECTED",
+      "detail": "artifact comparison rejects a +100 bps edit"
+    },
+    {
+      "control": "verdict_tamper_detected",
+      "result": "DETECTED",
+      "detail": "verdict CANDIDATE_REJECTED recomputation catches a shortened failure list"
+    },
+    {
+      "control": "sealed_grid_extension_detected",
+      "result": "DETECTED",
+      "detail": "grid check rejects an instant inside the sealed window"
+    }
+  ],
+  "negative_controls_total": 8,
+  "negative_controls_missed": [],
+  "FALSE_SUCCESS": 0,
+  "verified_artifacts": {
+    "ECONOMIC_RESULTS.json": "0090ecdd91c32de807190048c11fbb7e6db8113b015ce75ed0bc4e996739f9a3",
+    "DISCOVERY2_STATISTICAL_ELIGIBILITY.json": "5d9b9882ed69b1e4e8cdae3a4b77e002f0e983b873edb091c0af3b7fc3ca0440",
+    "trades/H-049-001_BTCUSDT.json": "f7343b881b1721999d883203d516067c60e938e8e85acda0167902df956b38e1",
+    "trades/H-049-002_BTCUSDT.json": "74c6cc6f8cb6cbb015aef8f662c934e4658d01776f826502fbb54e4e682e7217"
+  },
+  "scope": {
+    "sealed_oos_opened": false,
+    "trading": "not performed",
+    "profitability_verified": false
+  }
+}

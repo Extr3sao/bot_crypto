@@ -1,0 +1,17 @@
+differing leaves: 5 of a document with 212351 bytes
+  /branch
+    published: 'main'
+    rebuilt  : ''
+  /generated_at_utc
+    published: '2026-10-11T18:36:08Z'
+    rebuilt  : '2026-10-25T11:55:24Z'
+  /head
+    published: '66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0'
+    rebuilt  : '2bd6e346348ee7fc039f8ada31a390387a4c30c2'
+  /sources[0]/sha256
+    published: 'e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3'
+    rebuilt  : '8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481'
+  /sources[2]/sha256
+    published: '6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1'
+    rebuilt  : '5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76'
+by kind: {'other': 3, 'digest': 2}

@@ -1,0 +1,244 @@
+{
+  "wp": "WP-ECONOMIC-BLOCKER-001",
+  "title": "Auditoría de costes y admisión de estrategias",
+  "commit_at_run": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "branch": "audit/economic-blocker-001",
+  "python": "3.11.15",
+  "scope": {
+    "in": "admisión, modelo de costes, economía por estrategia, baseline de tests, verificación independiente",
+    "out": "trading real, credenciales privadas, cambios de parámetros de riesgo/comisiones/admisión, arquitectura nueva"
+  },
+  "commands": [
+    {
+      "command": "uv run python scripts/wp_eco001_admission_audit.py",
+      "exit_code": 0,
+      "observed": "24 entradas clasificadas; builder reproduce el ledger"
+    },
+    {
+      "command": "uv run python scripts/wp_eco001_cost_audit.py",
+      "exit_code": 0,
+      "observed": "24/24 bloques de coste recomputados; V4 re-derivado"
+    },
+    {
+      "command": "uv run python scripts/wp_eco001_economics.py",
+      "exit_code": 0,
+      "observed": "24 filas; 0 netas positivas"
+    },
+    {
+      "command": "uv run python scripts/wp_eco001_test_baseline.py --phase working",
+      "exit_code": 0,
+      "observed": "pytest del árbol: 89 failed, 14 errors (exit 1 capturado dentro)"
+    },
+    {
+      "command": "uv run python scripts/wp_eco001_test_baseline.py --phase clean",
+      "exit_code": 0,
+      "observed": "checkout limpio: 110 failed, 14 errors; import propio verificado"
+    },
+    {
+      "command": "uv run python scripts/wp_eco001_test_baseline.py --phase healthy",
+      "exit_code": 0,
+      "observed": "447 passed (exit 0)"
+    },
+    {
+      "command": "uv run python scripts/wp_eco001_test_baseline.py --phase assemble",
+      "exit_code": 0,
+      "observed": "subconjunto verificado; 21 fallos sólo en checkout limpio"
+    },
+    {
+      "command": "uv run python scripts/wp_eco001_verify.py",
+      "exit_code": 0,
+      "observed": "27 PASS / 0 FAIL / 1 defecto declarado"
+    },
+    {
+      "command": "uv run ruff check scripts/wp_eco001_*.py",
+      "exit_code": 0,
+      "observed": "All checks passed"
+    },
+    {
+      "command": "uv run python scripts/build_strategy_admission.py --check",
+      "exit_code": 1,
+      "observed": "ADMISSION_LEDGER_STALE: el defecto de §6 del informe de admisión"
+    }
+  ],
+  "artefacts": [
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/COST_MODEL_AUDIT.json",
+      "bytes": 21947,
+      "sha256": "8f6c5b3ecdccd203bb338379a174fb99482a93526e9ad8d1dd6bb24ca20a89a2"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/COST_MODEL_AUDIT.md",
+      "bytes": 7306,
+      "sha256": "c94a037a2822dbe871a993dd0ebe2b4b393cb29ad498a40efb7a257c4b568516"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/COST_OBSERVED.json",
+      "bytes": 44496,
+      "sha256": "8e2409275fe3d14af66f43a68f8da42275d8d3c8215097d4c025cadcf4e0d5ed"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/FINAL_REPORT.md",
+      "bytes": 10295,
+      "sha256": "06f5672512bd26664c1f7f14a12ebadd48b17bb94ec95478bc6e089223bee66a"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/RUN_REPORT.md",
+      "bytes": 4746,
+      "sha256": "8166936346bee5e901a0f0e28b63b67a67e45dddb202358e5ae1cd27a019a15e"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.json",
+      "bytes": 30337,
+      "sha256": "167ac5a6ded6e8bbba36617cf76eb4de9962b81c959f2639498156117afe0898"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ADMISSION_AUDIT.md",
+      "bytes": 10331,
+      "sha256": "324ab6a3f3bdcf82984c6f6e8640dfa78d382143a0927babf1ca58eefc507e66"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ECONOMICS.json",
+      "bytes": 7216,
+      "sha256": "8c3234936652e9f162df32d36a45ace6a1997deb6341dc0a43e231b2ca1791cc"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/STRATEGY_ECONOMICS_MATRIX.csv",
+      "bytes": 7946,
+      "sha256": "fff39cfb4a51da595ad77f1226c42006b5189a2cfd758620032516e0b601c2d1"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/TEST_BASELINE_COMPARISON.json",
+      "bytes": 48709,
+      "sha256": "004a5b9651efbcd7110b8a7b7d445766280caed75dac40df4e479e0eea790b45"
+    },
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001/TEST_BASELINE_COMPARISON.md",
+      "bytes": 4571,
+      "sha256": "086cdc8d2affd5a98841d459d1b818919f9b62b7acebd9aecd2a76a5bbd5b4d7"
+    }
+  ],
+  "key_results": {
+    "ledger_entries": 24,
+    "entries_by_timeframe": {
+      "5m": 6,
+      "15m": 6,
+      "1h": 6,
+      "30m": 6
+    },
+    "paper_candidates": [],
+    "rejection_reason_counts": {
+      "ECONOMIC_NEGATIVE_GROSS": 17,
+      "ECONOMIC_BELOW_RESEARCH_BARRIER": 24,
+      "EVIDENCE_SAMPLE_UNPROVEN": 18,
+      "ADMISSION_GATE_NO_PAPER_CANDIDATES": 24,
+      "CRITERIA_UNCOMPUTED": 24,
+      "ECONOMIC_BELOW_RUNTIME_COST": 7
+    },
+    "builder_reproduces_ledger": true,
+    "ledger_provenance_ok": false,
+    "cost_blocks_recomputed": 24,
+    "cost_recompute_max_abs_delta_bps": 5.042096518081962e-09,
+    "round_trip_bps_by_asset": {
+      "BTC": 22.7918,
+      "ETH": 22.8338,
+      "SOL": 23.79,
+      "note": "the runtime's three assets, from the recorded traces; the matrix uses the widest (SOL) so the table cannot flatter a strategy"
+    },
+    "known_fee_share_pct": 87.751,
+    "research_barrier_bps": 12.0,
+    "runtime_barrier_bps": 22.791769,
+    "best_gross_bps": {
+      "strategy_id": "volatility@30m",
+      "gross_bps": 8.91,
+      "net_bps": -14.880569,
+      "sample_trades": 0
+    },
+    "max_gross_minus_cost_bps": -13.881769,
+    "max_gross_minus_known_fees_bps": -11.09,
+    "net_positive_entries": 0,
+    "tests_working_tree": {
+      "failed": 89,
+      "passed": 1845,
+      "skipped": 30,
+      "error": 14
+    },
+    "tests_clean_checkout": {
+      "failed": 110,
+      "passed": 1824,
+      "skipped": 30,
+      "error": 14
+    },
+    "tests_healthy": {
+      "passed": 447
+    },
+    "working_failures_are_subset_of_clean": true,
+    "preexisting_failures": 103,
+    "failures_only_in_clean_checkout": 21,
+    "failures_only_in_working_tree": 0
+  },
+  "verification": {
+    "artefact": "INDEPENDENT_VERIFICATION.json",
+    "totals": {
+      "pass": 27,
+      "fail": 0,
+      "not_assessed": 0,
+      "known_defect": 1,
+      "checks": 28
+    },
+    "verdict": "VERIFIED_WITH_DECLARED_DEFECTS"
+  },
+  "declared_defects": [
+    {
+      "id": "PROVENANCE_ANCHOR_STALE",
+      "severity": "audit-chain (runtime-inert)",
+      "detail": "el sha256 registrado para docs/STRATEGY_ADMISSION_MATRIX.json no coincide con el fichero ni con ninguna revisión commiteada; build_strategy_admission.py --check sale 1",
+      "evidence": [
+        "STRATEGY_ADMISSION_AUDIT.json:provenance",
+        "commands[build_strategy_admission.py --check]"
+      ],
+      "not_repaired_because": "regenerar el ledger toca config/, el artefacto bajo auditoría"
+    },
+    {
+      "id": "TEST_SUITE_WRITES_TRACKED_DATA",
+      "severity": "evidence hygiene (mutates the repo while measuring it)",
+      "detail": "tests/unit/research/test_rfc047_windows_evidence.py and test_st6_scheduler.py rewrite the tracked file data/st6/RFC047_RUNTIME_VERIFICATION.json when they run (92 changed lines observed); the file was restored to HEAD after the measurement",
+      "evidence": [
+        "TEST_BASELINE_COMPARISON.json:clean_checkout_failures_explained_by_local_state",
+        "git status after running the research suite"
+      ],
+      "not_repaired_because": "repairing the tests is out of scope for an economics audit; declared so future before/after comparisons know the suite mutates repository state"
+    }
+  ],
+  "not_assessed": [
+    "rentabilidad futura de cualquier estrategia",
+    "ejecución real desde señales (0 estrategias admitidas)",
+    "PAPER_RUNTIME_VALIDATED (no se declara)",
+    "coste como distribución por régimen (medición puntual: 3 runs, 24 bloques, 3 activos)",
+    "fills reales (el spread es observado en el snapshot, no ejecutado)"
+  ],
+  "limitations": [
+    "las cifras 'gross' del ledger y de la matriz vienen de estudios distintos y no son intercambiables",
+    "el runtime evaluó el coste con volatility_bps=0, así que el slippage estimado es optimista",
+    "c6_dd y c8_no_window_dominance siguen sin calcular en la matriz pre-registrada",
+    "el baseline de tests es de este commit; no se extrapola a otros"
+  ],
+  "deliverables_expected": [
+    "STRATEGY_ADMISSION_AUDIT.md/json",
+    "COST_MODEL_AUDIT.md/json",
+    "STRATEGY_ECONOMICS_MATRIX.csv",
+    "TEST_BASELINE_COMPARISON.md",
+    "RUN_REPORT.md/json",
+    "FINAL_REPORT.md",
+    "INDEPENDENT_VERIFICATION.json"
+  ],
+  "artefacts_omitted": [
+    {
+      "path": "INDEPENDENT_VERIFICATION.json",
+      "why": "written by the verifier after this manifest; hash it from the file itself"
+    },
+    {
+      "path": "RUN_REPORT.json",
+      "why": "this manifest: a hash of itself inside itself is stale by construction"
+    }
+  ]
+}

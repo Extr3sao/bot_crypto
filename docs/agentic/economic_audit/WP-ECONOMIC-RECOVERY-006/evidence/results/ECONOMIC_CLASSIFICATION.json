@@ -1,0 +1,364 @@
+{
+  "schema": "W007_ECONOMIC_CLASSIFICATION_V1",
+  "results": "reports\\economic\\w006\\MULTI_FAMILY_RESULTS.json",
+  "criteria": {
+    "ADMIT": "net_pnl > 0 at BASE, 2X_COST and STRESSED_SLIPPAGE; net_pnl > 0 in DEV and OOS; at least 100 trades",
+    "EXPERIMENT": "gross_pnl > 0 at BASE, or net_pnl > 0 at ZERO_COST with >= 100 trades",
+    "REJECT": "no gross edge",
+    "min_trades": 100
+  },
+  "sample": {
+    "days": 120.0,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "bar": "5m",
+    "partitions_utc": {
+      "dev": [
+        "2026-06-27T17:40:00Z",
+        "2026-08-26T17:40:00Z"
+      ],
+      "val": [
+        "2026-08-26T17:40:00Z",
+        "2026-09-25T17:40:00Z"
+      ],
+      "oos": [
+        "2026-09-25T17:40:00Z",
+        "2026-10-25T17:40:00Z"
+      ]
+    }
+  },
+  "families": {
+    "breakout": {
+      "classification": "REJECT",
+      "reasons": [
+        "net not positive under all cost scenarios: BASE=-855.06, 2X_COST=-1414.88, STRESSED_SLIPPAGE=-1300.62",
+        "no gross edge: gross=-154.09"
+      ],
+      "diagnostics": {
+        "trades_per_day_per_symbol": 3.24,
+        "gross_per_trade": -0.1319,
+        "cost_per_trade": 0.6001,
+        "net_per_trade": -0.7321,
+        "edge_to_cost_ratio": -0.22,
+        "breakeven_round_trip_bps_at_typical_size": -2.638,
+        "partition_net_base": {
+          "DEV": -487.139608,
+          "VAL": -187.898003,
+          "OOS": -180.019099
+        },
+        "partition_net_zero_cost": {
+          "DEV": -143.121242,
+          "VAL": -11.4297,
+          "OOS": -5.31215
+        },
+        "per_symbol_net_base": {
+          "BTCUSDT": -210.260947,
+          "ETHUSDT": -244.219196,
+          "SOLUSDT": -400.576567
+        },
+        "per_symbol_trades_base": {
+          "BTCUSDT": 312,
+          "ETHUSDT": 404,
+          "SOLUSDT": 452
+        }
+      },
+      "totals_base": {
+        "trades": 1168,
+        "gross_pnl": -154.086154,
+        "spread_cost": 0.0,
+        "slippage_cost": 116.828429,
+        "fees": 584.142146,
+        "net_pnl": -855.05671,
+        "profit_factor": 0.5875,
+        "win_rate": 34.33,
+        "expectancy_net": -0.732069,
+        "cost_per_trade": 0.600146
+      },
+      "scenario_net": {
+        "BASE": -855.05671,
+        "2X_COST": -1414.883728,
+        "STRESSED_SLIPPAGE": -1300.624311,
+        "ZERO_COST": -159.863092
+      }
+    },
+    "ema_crossover": {
+      "classification": "REJECT",
+      "reasons": [
+        "net not positive under all cost scenarios: BASE=-590.08, 2X_COST=-939.01, STRESSED_SLIPPAGE=-880.53",
+        "no gross edge: gross=-94.47"
+      ],
+      "diagnostics": {
+        "trades_per_day_per_symbol": 2.29,
+        "gross_per_trade": -0.1144,
+        "cost_per_trade": 0.6,
+        "net_per_trade": -0.7144,
+        "edge_to_cost_ratio": -0.191,
+        "breakeven_round_trip_bps_at_typical_size": -2.288,
+        "partition_net_base": {
+          "DEV": -322.94699,
+          "VAL": -179.730875,
+          "OOS": -87.398464
+        },
+        "partition_net_zero_cost": {
+          "DEV": -44.742072,
+          "VAL": -80.033364,
+          "OOS": 33.921217
+        },
+        "per_symbol_net_base": {
+          "BTCUSDT": -164.167748,
+          "ETHUSDT": -185.730577,
+          "SOLUSDT": -240.178004
+        },
+        "per_symbol_trades_base": {
+          "BTCUSDT": 192,
+          "ETHUSDT": 270,
+          "SOLUSDT": 364
+        }
+      },
+      "totals_base": {
+        "trades": 826,
+        "gross_pnl": -94.473786,
+        "spread_cost": 0.0,
+        "slippage_cost": 82.600428,
+        "fees": 413.00212,
+        "net_pnl": -590.076329,
+        "profit_factor": 0.5177,
+        "win_rate": 26.51,
+        "expectancy_net": -0.714378,
+        "cost_per_trade": 0.600003
+      },
+      "scenario_net": {
+        "BASE": -590.076329,
+        "2X_COST": -939.005818,
+        "STRESSED_SLIPPAGE": -880.525762,
+        "ZERO_COST": -90.854219
+      }
+    },
+    "mean_reversion": {
+      "classification": "EXPERIMENT",
+      "reasons": [
+        "net not positive under all cost scenarios: BASE=-806.06, 2X_COST=-1409.73, STRESSED_SLIPPAGE=-1300.04",
+        "gross edge before costs: 242.81"
+      ],
+      "diagnostics": {
+        "trades_per_day_per_symbol": 4.86,
+        "gross_per_trade": 0.1389,
+        "cost_per_trade": 0.6,
+        "net_per_trade": -0.4611,
+        "edge_to_cost_ratio": 0.231,
+        "breakeven_round_trip_bps_at_typical_size": 2.778,
+        "partition_net_base": {
+          "DEV": -429.106099,
+          "VAL": -149.906412,
+          "OOS": -227.048136
+        },
+        "partition_net_zero_cost": {
+          "DEV": 69.96431,
+          "VAL": 120.298269,
+          "OOS": 14.761895
+        },
+        "per_symbol_net_base": {
+          "BTCUSDT": -268.83733,
+          "ETHUSDT": -183.522244,
+          "SOLUSDT": -353.701073
+        },
+        "per_symbol_trades_base": {
+          "BTCUSDT": 473,
+          "ETHUSDT": 629,
+          "SOLUSDT": 646
+        }
+      },
+      "totals_base": {
+        "trades": 1748,
+        "gross_pnl": 242.81291,
+        "spread_cost": 0.0,
+        "slippage_cost": 174.812269,
+        "fees": 874.06129,
+        "net_pnl": -806.060647,
+        "profit_factor": 0.6994,
+        "win_rate": 48.0,
+        "expectancy_net": -0.461133,
+        "cost_per_trade": 0.600042
+      },
+      "scenario_net": {
+        "BASE": -806.060647,
+        "2X_COST": -1409.727803,
+        "STRESSED_SLIPPAGE": -1300.040695,
+        "ZERO_COST": 205.024474
+      }
+    },
+    "momentum": {
+      "classification": "REJECT",
+      "reasons": [
+        "net not positive under all cost scenarios: BASE=-990.82, 2X_COST=-1643.52, STRESSED_SLIPPAGE=-1513.59",
+        "no gross edge: gross=-202.87"
+      ],
+      "diagnostics": {
+        "trades_per_day_per_symbol": 3.65,
+        "gross_per_trade": -0.1545,
+        "cost_per_trade": 0.6001,
+        "net_per_trade": -0.7546,
+        "edge_to_cost_ratio": -0.257,
+        "breakeven_round_trip_bps_at_typical_size": -3.09,
+        "partition_net_base": {
+          "DEV": -544.817823,
+          "VAL": -229.76307,
+          "OOS": -216.242873
+        },
+        "partition_net_zero_cost": {
+          "DEV": -159.761006,
+          "VAL": -12.553819,
+          "OOS": -47.219329
+        },
+        "per_symbol_net_base": {
+          "BTCUSDT": -257.583716,
+          "ETHUSDT": -325.11101,
+          "SOLUSDT": -408.12904
+        },
+        "per_symbol_trades_base": {
+          "BTCUSDT": 311,
+          "ETHUSDT": 507,
+          "SOLUSDT": 495
+        }
+      },
+      "totals_base": {
+        "trades": 1313,
+        "gross_pnl": -202.865271,
+        "spread_cost": 0.0,
+        "slippage_cost": 131.326421,
+        "fees": 656.632068,
+        "net_pnl": -990.823766,
+        "profit_factor": 0.6168,
+        "win_rate": 38.84,
+        "expectancy_net": -0.754626,
+        "cost_per_trade": 0.600121
+      },
+      "scenario_net": {
+        "BASE": -990.823766,
+        "2X_COST": -1643.518054,
+        "STRESSED_SLIPPAGE": -1513.591159,
+        "ZERO_COST": -219.534154
+      }
+    },
+    "trend": {
+      "classification": "REJECT",
+      "reasons": [
+        "net not positive under all cost scenarios: BASE=-313.99, 2X_COST=-575.59, STRESSED_SLIPPAGE=-523.27",
+        "no gross edge: gross=-0.06"
+      ],
+      "diagnostics": {
+        "trades_per_day_per_symbol": 1.45,
+        "gross_per_trade": -0.0001,
+        "cost_per_trade": 0.6002,
+        "net_per_trade": -0.6004,
+        "edge_to_cost_ratio": -0.0,
+        "breakeven_round_trip_bps_at_typical_size": -0.002,
+        "partition_net_base": {
+          "DEV": -209.987976,
+          "VAL": -14.533482,
+          "OOS": -89.465006
+        },
+        "partition_net_zero_cost": {
+          "DEV": -73.767741,
+          "VAL": 98.975407,
+          "OOS": -25.265162
+        },
+        "per_symbol_net_base": {
+          "BTCUSDT": -22.921294,
+          "ETHUSDT": -107.977077,
+          "SOLUSDT": -183.088093
+        },
+        "per_symbol_trades_base": {
+          "BTCUSDT": 72,
+          "ETHUSDT": 182,
+          "SOLUSDT": 269
+        }
+      },
+      "totals_base": {
+        "trades": 523,
+        "gross_pnl": -0.057496,
+        "spread_cost": 0.0,
+        "slippage_cost": 52.321493,
+        "fees": 261.607466,
+        "net_pnl": -313.986464,
+        "profit_factor": 0.7493,
+        "win_rate": 56.98,
+        "expectancy_net": -0.600357,
+        "cost_per_trade": 0.600247
+      },
+      "scenario_net": {
+        "BASE": -313.986464,
+        "2X_COST": -575.593939,
+        "STRESSED_SLIPPAGE": -523.272436,
+        "ZERO_COST": -0.057496
+      }
+    },
+    "volatility": {
+      "classification": "REJECT",
+      "reasons": [
+        "net not positive under all cost scenarios: BASE=-360.40, 2X_COST=-533.93, STRESSED_SLIPPAGE=-499.22",
+        "no gross edge: gross=-152.17"
+      ],
+      "diagnostics": {
+        "trades_per_day_per_symbol": 0.96,
+        "gross_per_trade": -0.4385,
+        "cost_per_trade": 0.6001,
+        "net_per_trade": -1.0386,
+        "edge_to_cost_ratio": -0.731,
+        "breakeven_round_trip_bps_at_typical_size": -8.771,
+        "partition_net_base": {
+          "DEV": -171.674941,
+          "VAL": -124.038384,
+          "OOS": -64.68889
+        },
+        "partition_net_zero_cost": {
+          "DEV": -60.691011,
+          "VAL": -68.206356,
+          "OOS": -25.066603
+        },
+        "per_symbol_net_base": {
+          "BTCUSDT": -104.157491,
+          "ETHUSDT": -106.35762,
+          "SOLUSDT": -149.887104
+        },
+        "per_symbol_trades_base": {
+          "BTCUSDT": 81,
+          "ETHUSDT": 134,
+          "SOLUSDT": 132
+        }
+      },
+      "totals_base": {
+        "trades": 347,
+        "gross_pnl": -152.169752,
+        "spread_cost": 0.0,
+        "slippage_cost": 34.705414,
+        "fees": 173.527054,
+        "net_pnl": -360.402215,
+        "profit_factor": 0.5361,
+        "win_rate": 38.33,
+        "expectancy_net": -1.038623,
+        "cost_per_trade": 0.600094
+      },
+      "scenario_net": {
+        "BASE": -360.402215,
+        "2X_COST": -533.929261,
+        "STRESSED_SLIPPAGE": -499.22385,
+        "ZERO_COST": -153.96397
+      }
+    }
+  },
+  "counts": {
+    "REJECT": 5,
+    "EXPERIMENT": 1
+  },
+  "status": "NO_ADMITTED_STRATEGY",
+  "limitations": [
+    "one venue, three symbols, 120 days: a family that fails here is rejected for this sample, not proven dead on every market",
+    "spread is a declared assumption (0 bps by default); the cost model is charged per leg and the spread assumption is tested by the 2X_COST scenario",
+    "no walk-forward refit is performed because no hyperparameters are fitted; the partitions are evaluation buckets, not training folds",
+    "ZERO_COST is diagnostic only and can never support admission"
+  ]
+}

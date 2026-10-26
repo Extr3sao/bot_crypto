@@ -1,0 +1,128 @@
+{
+  "schema": "WP005_PREFLIGHT_V1",
+  "mode": "READ_ONLY_OFFLINE",
+  "repo": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001",
+  "git": {
+    "head": {
+      "returncode": 0,
+      "stdout": "a6290714f8685dc3b91fdbc7ed4a66c305dba848",
+      "stderr": ""
+    },
+    "branch": {
+      "returncode": 0,
+      "stdout": "repro/economic-recovery-002",
+      "stderr": ""
+    },
+    "status": {
+      "returncode": 0,
+      "stdout": "# branch.oid a6290714f8685dc3b91fdbc7ed4a66c305dba848\n# branch.head repro/economic-recovery-002\n? data/st6/ST6_RUNS.jsonl\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/FINAL_REPORT.md\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/MULTI_FAMILY_DIAGNOSTIC.md\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/RUN_REPORT.json\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/RUN_REPORT.md\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/WP005_PREFLIGHT_OBSERVATION.json\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/WP005_PREFLIGHT_OBSERVATION.md\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/control_empty_dataset.py\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/control_empty_dataset.txt\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/control_family_exception_masking.py\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/control_family_exception_masking.txt\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/control_synthetic_cost_and_split.py\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/control_synthetic_cost_and_split.txt\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/control_zero_trade_detection.py\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/control_zero_trade_detection.txt\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/lane_suite_after.txt\n? docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-005/evidence/preflight_run.txt\n? scripts/wp005_preflight.py\n? tests/unit/research/test_wp005_preflight.py",
+      "stderr": ""
+    }
+  },
+  "inputs": {
+    "config/strategy_admission.json": {
+      "path": "config/strategy_admission.json",
+      "status": "PRESENT",
+      "sha256": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+      "bytes": 27625,
+      "json": "VALID",
+      "strategy_count": 24,
+      "admitted_for_paper": 0,
+      "schema_version": "strategy-admission-ledger-v1"
+    },
+    "data/recovery/COST_BARRIER_EXPLORER.json": {
+      "path": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "status": "PRESENT",
+      "sha256": "fdc6892f12280f4fa6bf391397deafe53103b78e140f4ddba861acd66a914061",
+      "bytes": 303416,
+      "json": "VALID"
+    },
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.json": {
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "status": "PRESENT",
+      "sha256": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+      "bytes": 212758,
+      "json": "VALID"
+    },
+    "scripts/multi_family_backtest.py": {
+      "path": "scripts/multi_family_backtest.py",
+      "status": "PRESENT",
+      "sha256": "17904a18db507ba5a14835ce96f1997d42d9d63200517c187bff5be4daed330b",
+      "bytes": 15398
+    },
+    "src/trading_bot/research/families/ema_crossover_family.py": {
+      "path": "src/trading_bot/research/families/ema_crossover_family.py",
+      "status": "PRESENT",
+      "sha256": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "bytes": 4608
+    },
+    "src/trading_bot/research/families/momentum_family.py": {
+      "path": "src/trading_bot/research/families/momentum_family.py",
+      "status": "PRESENT",
+      "sha256": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685",
+      "bytes": 4352
+    },
+    "src/trading_bot/research/families/breakout_family.py": {
+      "path": "src/trading_bot/research/families/breakout_family.py",
+      "status": "PRESENT",
+      "sha256": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7",
+      "bytes": 4640
+    },
+    "src/trading_bot/research/families/trend_family.py": {
+      "path": "src/trading_bot/research/families/trend_family.py",
+      "status": "PRESENT",
+      "sha256": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471",
+      "bytes": 5182
+    },
+    "src/trading_bot/research/families/mean_reversion_family.py": {
+      "path": "src/trading_bot/research/families/mean_reversion_family.py",
+      "status": "PRESENT",
+      "sha256": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349",
+      "bytes": 4501
+    },
+    "src/trading_bot/research/families/volatility_family.py": {
+      "path": "src/trading_bot/research/families/volatility_family.py",
+      "status": "PRESENT",
+      "sha256": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9",
+      "bytes": 5771
+    }
+  },
+  "entrypoint_contract": {
+    "aggregate_output": "reports/strategy-baseline/MULTI_FAMILY_RESULTS.json",
+    "per_family_output": "reports/strategy-baseline/MULTI_FAMILY_RESULTS_<family>.json",
+    "scenarios": [
+      "BASE",
+      "2X_COST",
+      "STRESSED_SLIPPAGE",
+      "ZERO_COST"
+    ],
+    "note": "the entrypoint writes its JSON even when no dataset matched; presence is not execution"
+  },
+  "datasets": [],
+  "multi_family_results": [],
+  "result_coverage": {
+    "aggregate_present": false,
+    "families_covered": [],
+    "families_missing": [
+      "breakout",
+      "ema_crossover",
+      "mean_reversion",
+      "momentum",
+      "trend",
+      "volatility"
+    ],
+    "families_with_zero_trades": []
+  },
+  "blockers": [
+    "NO_DATASETS_IN_CANONICAL_INPUT_PATH",
+    "NO_MULTI_FAMILY_RESULTS"
+  ],
+  "economic_execution": "NOT_RUN",
+  "independent_economic_verification": "NOT_RUN",
+  "economic_result": "INCONCLUSIVE",
+  "paper": "NOT_AUTHORIZED",
+  "false_success_observed": 0,
+  "false_success_global_certification": "NOT_ASSESSED",
+  "warning": "File presence and basic OHLCV shape cannot establish historical provenance, point-in-time discipline, actual backtest execution, cost parity or economic admission.",
+  "observed_at_utc": "2026-10-25T17:28:45.099960+00:00"
+}

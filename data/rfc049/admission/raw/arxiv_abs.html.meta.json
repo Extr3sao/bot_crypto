@@ -1,0 +1,13 @@
+{
+  "key": "arxiv_abs.html",
+  "url": "https://arxiv.org/abs/2411.06327v2",
+  "retrieved_at_utc": "2026-10-10T12:58:34Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "bytes": 41509,
+  "sha256": "0116a86601dafb7440966818682af2de6debcc720c175479a5db811ce8dcefe1",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

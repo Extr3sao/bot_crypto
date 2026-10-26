@@ -1,0 +1,6 @@
+$ ./.venv/Scripts/python.exe scripts/w006_validate_data.py
+BTCUSDT: PASS bars=34560 2026-06-27T17:40:00Z -> 2026-10-25T17:35:00Z gaps=0 partitions={'DEV': 17280, 'VAL': 8640, 'OOS': 8640} failures=[]
+ETHUSDT: PASS bars=34560 2026-06-27T17:40:00Z -> 2026-10-25T17:35:00Z gaps=0 partitions={'DEV': 17280, 'VAL': 8640, 'OOS': 8640} failures=[]
+SOLUSDT: PASS bars=34560 2026-06-27T17:40:00Z -> 2026-10-25T17:35:00Z gaps=0 partitions={'DEV': 17280, 'VAL': 8640, 'OOS': 8640} failures=[]
+OVERALL: PASS -> reports\economic\w006\DATA_QUALITY.json
+EXIT=0

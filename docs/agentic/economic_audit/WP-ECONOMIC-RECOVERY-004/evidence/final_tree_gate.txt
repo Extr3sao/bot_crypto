@@ -1,0 +1,19 @@
+cost-barrier drift gate: FULL_REPRODUCTION_PASS (full mode) exit 0
+  head c447cdb7c8793c85bbab92e964c76017e080b911  branch repro/economic-recovery-002
+  checks 13/13 PASS
+  controls 6/6 detected
+  full certification satisfied: True
+  [PASS] artifact:explorer_self_hash_and_checks - payload_sha256 recomputes from the stored body and 0 checks failed
+  [PASS] artifact:explorer_governance_flags_unchanged - promotion/rentable/certified/production_ready false; NOT_AUTHORIZED; 0 trades
+  [PASS] artifact:verification_attests_the_explorer - status PASS, 0 failed checks, 0 missed controls, false_success 0, signals cross-pinned to the explorer's payload hash
+  [PASS] inputs:declared_inputs_present - 9/9 declared inputs present
+  [PASS] inputs:published_pins_match_the_declared_sources - 9/9 present; pinned: 3 byte-exact, 2 state-exact, 0 line-ending-only, 0 drifted
+  [PASS] producers:digests_match_the_pinned_manifest - 4/4 producer(s) match the pin recorded in data/recovery/wp7/evidence/PRODUCER_PINS.json (4 exact, 0 line-ending-only)
+  [PASS] source:market_horizon_rows_match_the_pinned_source - every market-horizon row and the published lines reproduce from reports/strategy-baseline/COST_BARRIER.json (12 rows)
+  [PASS] ci:activation_contract_covers_every_declared_input - 20 watched path(s) covered by both triggers; the gate and the materializer are invoked and no step is softened
+  [PASS] reproduce:explorer_rebuilds_identically - payload_sha256 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb matches the published artefact
+  [PASS] reproduce:verifier_passes - verifier PASS on COST_BARRIER_EXPLORER.json; 13 mutation controls, 0 missed, false_success 0
+  [PASS] reproduce:verification_document_unchanged - the fresh verification document equals the published one
+  [PASS] read_only:no_published_file_changed - the gate and the tools it drives left every watched file byte-identical
+  [PASS] controls:self_controls_detect_tampering - 6/6 controls detected
+GATE_EXIT=0

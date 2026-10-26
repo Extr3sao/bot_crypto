@@ -1,0 +1,82 @@
+{
+  "opportunity_id": "OPP-0026",
+  "title": "An Adaptive Multi-Agent Bitcoin Trading System (LLM-driven)",
+  "source_ids": [
+    "S2-18"
+  ],
+  "economic_hypothesis": "none verifiable was read",
+  "market": "UNKNOWN",
+  "assets": "BTC",
+  "timeframe": "UNKNOWN",
+  "entry_rules": "UNKNOWN",
+  "exit_rules": "UNKNOWN; UNKNOWN; UNKNOWN; UNKNOWN",
+  "risk_rules": "UNKNOWN; none (24/7)",
+  "parameters": "prompts and model versions",
+  "claimed_period": "UNKNOWN",
+  "claimed_metrics": "UNKNOWN",
+  "transaction_cost_model": "UNKNOWN",
+  "required_data": "UNKNOWN",
+  "external_code": "UNKNOWN",
+  "external_results": "abstract-level read of a preprint",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the system's decision layer is a proprietary model, so its behaviour cannot be frozen or audited",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (UNKNOWN)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "market",
+    "assets",
+    "timeframe",
+    "data_source",
+    "data_fields",
+    "entry_long",
+    "entry_short",
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "parameters",
+    "sizing_rule",
+    "execution_assumption",
+    "warmup",
+    "transaction_costs",
+    "original_period",
+    "original_metrics",
+    "implementation_source",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_ASSESSED",
+  "evidence_quality": "E0 — abstract-level read of a preprint",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "HIGH",
+  "lookahead_risk": "HIGH",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_2_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 0,
+    "CODE_AVAILABILITY": 1,
+    "DATA_REPRODUCIBILITY": 2,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 0,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 0,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 4,
+  "rank": "REJECT",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "1/21",
+  "gaps_to_p0": [
+    "nothing beyond the abstract was readable"
+  ],
+  "rejection_reason_codes": [
+    "REPRODUCIBILITY_LLM_OR_HARDWARE",
+    "RULES_INCOMPLETE_MATERIAL_FIELDS",
+    "SOURCE_READ_LEVEL_INSUFFICIENT"
+  ]
+}

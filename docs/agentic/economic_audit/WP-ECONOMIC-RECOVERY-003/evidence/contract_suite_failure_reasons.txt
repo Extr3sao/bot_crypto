@@ -1,0 +1,121 @@
+FF....F........FFFFF.....FFF...FFF.......F....F........F.FF............. [ 77%]
+.....................                                                    [100%]
+================================== FAILURES ===================================
+E   AssertionError: the committed artefact is not the fresh build; rerun scripts/cost_barrier_explorer.py
+    assert '9f103090b89a...b3555d06caf97' == '4383d812d6e1...373dfaa2621fb'
+      
+      - 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb
+      + 9f103090b89af94b0d50e4c8e510d0da5af8e5b867c62149a53b3555d06caf97
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_explorer.py:70: AssertionError: the committed artefact is not the fresh build; rerun scripts/cost_barrier_explorer.py
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\reports\\strategy-baseline\\COST_BARRIER.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\reports\\strategy-baseline\\COST_BARRIER.json'
+E   AssertionError: assert set() == {'15m', '1h', '30m', '5m'}
+      
+      Extra items in the right set:
+      '1h'
+      '30m'
+      '5m'
+      '15m'
+      Use -v to get more diff
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_explorer.py:153: AssertionError: assert set() == {'15m', '1h', '30m', '5m'}
+E   assert 5 == 0
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_explorer.py:265: assert 5 == 0
+E   AssertionError: ['full reproduction requires every declared input; absent: reports/strategy-baseline/COST_BARRIER.json. Materialize th... 'the builder failed (exit 1); its own checks did not pass, so no reproduction claim can be made', '5 check(s) failed']
+    assert 'INTEGRITY_FAILURE' == 'FULL_REPRODUCTION_PASS'
+      
+      - FULL_REPRODUCTION_PASS
+      + INTEGRITY_FAILURE
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:124: AssertionError: ['full reproduction requires every declared input; absent: reports/strategy-baseline/COST_BARRIER.json. Materialize th... 'the builder failed (exit 1); its own checks did not pass, so no reproduction claim can be made', '5 check(s) failed']
+E   AssertionError: ['cited input config/strategy_admission.json no longer matches the content pin the explorer published (6c4dd0be1fc2fff2...): the artefact must be regenerated and re-verified', '1 check(s) failed']
+    assert 'INTEGRITY_FAILURE' == 'CHECK_ONLY_PASS'
+      
+      - CHECK_ONLY_PASS
+      + INTEGRITY_FAILURE
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:138: AssertionError: ['cited input config/strategy_admission.json no longer matches the content pin the explorer published (6c4dd0be1fc2fff2...): the artefact must be regenerated and re-verified', '1 check(s) failed']
+E   AssertionError: cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5
+        head 2bd6e346348ee7fc039f8ada31a390387a4c30c2  branch repro/economic-recovery-002
+        checks 10/11 PASS
+        controls 6/6 detected
+        full certification satisfied: False (partial run)
+        [PASS] artifact:explorer_self_hash_and_checks - payload_sha256 recomputes from the stored body and 0 checks failed
+        [PASS] artifact:explorer_governance_flags_unchanged - promotion/rentable/certified/production_ready false; NOT_AUTHORIZED; 0 trades
+        [PASS] artifact:verification_attests_the_explorer - status PASS, 0 failed checks, 0 missed controls, false_success 0, signals cross-pinned to the explorer's payload hash
+        [PASS] inputs:declared_inputs_present - absent: reports/strategy-baseline/COST_BARRIER.json (tolerated in --check mode: no builder run is attempted)
+        [FAIL] inputs:published_pins_match_the_declared_sources - 8/9 present; pinned: 2 byte-exact, 1 state-exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)
+        [PASS] producers:digests_match_the_pinned_manifest - 4/4 producer(s) match the pin recorded in data/recovery/wp7/evidence/PRODUCER_PINS.json (3 exact, 1 line-ending-only)
+        [PASS] ci:activation_contract_covers_every_declared_input - 20 watched path(s) covered by both triggers; the gate and the materializer are invoked and no step is softened
+        [PASS] reproduce:verifier_passes - verifier PASS on COST_BARRIER_EXPLORER.json; 13 mutation controls, 0 missed, false_success 0
+        [PASS] reproduce:verification_document_unchanged - the fresh verification document equals the published one
+        [PASS] read_only:no_published_file_changed - the gate and the tools it drives left every watched file byte-identical
+        [PASS] controls:self_controls_detect_tampering - 6/6 controls detected
+        advisories:
+          - check mode: the builder was not re-run because reports/strategy-baseline/COST_BARRIER.json is absent from this checkout; the verifier still recomputes every published number from the primary sources
+        FAILURES:
+          - cited input config/strategy_admission.json no longer matches the content pin the explorer published (6c4dd0be1fc2fff2...): the artefact must be regenerated and re-verified
+          - 1 check(s) failed
+        INTEGRITY_FAILURE (no re-run could explain these):
+          - inputs:published_pins_match_the_declared_sources: 8/9 present; pinned: 2 byte-exact, 1 state-exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)
+      
+    assert 5 == 2
+     +  where 5 = CompletedProcess(args=['C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\.venv\\Scripts\\python.exe', 'C:\\Users\\GVLLF...t, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)\n", stderr='').returncode
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:152: AssertionError: cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5
+E   AssertionError: assert 'zero_cost_gross_bps' in 'not attempted: the builder did not produce a fresh artefact'
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:195: AssertionError: assert 'zero_cost_gross_bps' in 'not attempted: the builder did not produce a fresh artefact'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\reports\\strategy-baseline\\COST_BARRIER.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\reports\\strategy-baseline\\COST_BARRIER.json'
+E   AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+    assert []
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:112: AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+E   AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+    assert []
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:112: AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+E   AssertionError: assert 'INTEGRITY_FAILURE' == 'BLOCKED_MISSING_INPUT'
+      
+      - BLOCKED_MISSING_INPUT
+      + INTEGRITY_FAILURE
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:391: AssertionError: assert 'INTEGRITY_FAILURE' == 'BLOCKED_MISSING_INPUT'
+E   assert False
+     +  where False = all(<generator object test_the_pinned_producers_match_their_manifest.<locals>.<genexpr> at 0x000001EE9A0D9700>)
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:421: assert False
+E   assert False
+     +  where False = all(<generator object test_a_changed_producer_is_a_named_failure.<locals>.<genexpr> at 0x000001EE9A0DBE60>)
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:432: assert False
+E   AssertionError: assert 'INTEGRITY_FAILURE' == 'FULL_REPRODUCTION_PASS'
+      
+      - FULL_REPRODUCTION_PASS
+      + INTEGRITY_FAILURE
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:542: AssertionError: assert 'INTEGRITY_FAILURE' == 'FULL_REPRODUCTION_PASS'
+E   AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+    assert []
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_gate.py:112: AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+E   AssertionError: the sandbox is incomplete: ['reports/strategy-baseline/COST_BARRIER.json']
+    assert ['reports/str...BARRIER.json'] == []
+      
+      Left contains one more item: 'reports/strategy-baseline/COST_BARRIER.json'
+      Use -v to get more diff
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_adversarial.py:165: AssertionError: the sandbox is incomplete: ['reports/strategy-baseline/COST_BARRIER.json']
+E   assert False is True
+C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\tests\unit\research\test_cost_barrier_adversarial.py:190: assert False is True
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-902\\test_a_line_ending_only_change0\\A11\\reports\\strategy-baseline\\COST_BARRIER.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-902\\test_a_line_ending_only_change0\\A11\\reports\\strategy-baseline\\COST_BARRIER.json'
+=========================== short test summary info ===========================
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_payload_hash_reproduces_and_matches_the_committed_artefact
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_reading_the_sources_leaves_them_byte_identical
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_the_market_horizon_is_reused_not_redefined
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_governance_flags_stay_unauthorized
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_gate_reproduces_the_committed_state_in_full_mode
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_check_mode_is_partial_and_says_so
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_cli_has_one_exit_code_per_state
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_number_with_an_honest_rehash_is_caught
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_published_market_horizon_section_reproduces_from_the_pinned_source
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_market_horizon_row_is_caught_by_the_re_derivation
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_published_lines_block_is_caught
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_missing_required_input_blocks_rather_than_fails
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_pinned_producers_match_their_manifest
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_changed_producer_is_a_named_failure
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_integrity_checks_are_tagged_as_such[source:market_horizon_rows_match_the_pinned_source]
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_the_sandbox_carries_everything_the_gate_reads
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_line_ending_only_change_is_not_a_finding
+19 failed, 74 passed in 85.36s (0:01:25)
