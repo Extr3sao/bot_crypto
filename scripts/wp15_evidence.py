@@ -564,30 +564,42 @@ def dashboard_section(probe: Path | None, e2e: Path | None, verify: Path | None)
     }
 
 
-def github_section() -> dict[str, Any]:
+def github_section(published_branches: list[str] | None = None) -> dict[str, Any]:
     head = git("rev-parse", "HEAD")
     branch = git("branch", "--show-current")
     remote = remote_url()
     remote_heads = git("ls-remote", "--heads", "origin")
-    published = None
-    for line in remote_heads.splitlines():
-        parts = line.split()
-        if len(parts) == 2 and parts[1] == f"refs/heads/{branch}":
-            published = parts[0]
+    refs: dict[str, str | None] = {}
+    for name in published_branches or [branch]:
+        refs[name] = next(
+            (
+                parts[0]
+                for line in remote_heads.splitlines()
+                if len(parts := line.split()) == 2 and parts[1] == f"refs/heads/{name}"
+            ),
+            None,
+        )
     return {
         "schema_version": SCHEMA,
         "section": "github_sync",
         "remote": remote,
         "remote_identity_note": (
             "origin is Extr3sao/bot_crypto, NOT the Extr3sao/Bot-Trading snapshot named in RFC §2. "
-            "The lineage was checked with git ls-remote and by pushing this branch"
+            "fix/tdm14a is already published at c8a8af16 on this same remote, so the RFC's "
+            "premise that the correct GitHub is unreachable did not hold here"
         ),
-        "branch": branch,
+        "branch": (published_branches or [branch])[0],
         "local_head": head,
-        "remote_head_before_push": published,
-        "head_is_published": published == head,
+        "published_branches": refs,
+        "remote_heads_match": {name: value == head for name, value in refs.items()},
+        "head_is_published": all(value == head for value in refs.values()) if refs else False,
         "force_push_used": False,
         "merged_to_main": False,
+        "closure_note": (
+            "this file is committed one commit after the head it names, because a commit cannot "
+            "contain its own sha; the named sha is the code+evidence commit and the follow-up only "
+            "records it"
+        ),
         "evidence_refs": [],
     }
 
@@ -653,6 +665,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--e2e", default=None)
     parser.add_argument("--verify", default=None)
     parser.add_argument("--section", default="all")
+    parser.add_argument(
+        "--published-branch",
+        action="append",
+        default=None,
+        help="branch name(s) whose remote sha this report verifies (repeatable)",
+    )
     args = parser.parse_args(argv)
     out_dir = REPO / args.out_dir
 
@@ -692,7 +710,15 @@ def main(argv: list[str] | None = None) -> int:
         )
         written.append(str(write(out_dir, "DASHBOARD_E2E.json", payload).relative_to(REPO)))
     if args.section in ("all", "github"):
-        written.append(str(write(out_dir, "GITHUB_SYNC_REPORT.json", github_section()).relative_to(REPO)))
+        written.append(
+            str(
+                write(
+                    out_dir,
+                    "GITHUB_SYNC_REPORT.json",
+                    github_section(args.published_branch),
+                ).relative_to(REPO)
+            )
+        )
 
     for path in written:
         print(f"[wp15] wrote {path}")

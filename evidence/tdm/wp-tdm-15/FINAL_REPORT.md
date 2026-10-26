@@ -123,8 +123,10 @@ pertenece a una sola ejecución (ver D-01).
 
 ```text
 PHASE                 RFC-TDM-015 — WP-00 a WP-05, primera ventana operativa
-COMMITS               ver GITHUB_SYNC_REPORT.json y la respuesta de sesión
-PUSHED_REMOTE_SHA     ver GITHUB_SYNC_REPORT.json (verificado con git ls-remote)
+COMMITS               879bafc9 (código + evidencia) + cierre que registra el SHA
+PUSHED_REMOTE_SHA     879bafc957353c022584e9e4eb04d7c2a653a637 en
+                      feat/wp-signal-001-003 y feat/tdm-015-live-paper,
+                      verificado con git ls-remote, sin force-push ni merge
 IMPLEMENTED           plano de señales (proyección), analista asesor, consola con
                       banner económico, preflight del árbol de captura, parada
                       consciente del cierre de vela, tabla de procesos cacheada,
