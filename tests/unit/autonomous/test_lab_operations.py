@@ -263,7 +263,7 @@ def test_every_child_that_must_finalise_is_stopped_by_a_file(lab_launcher: Any) 
     specs = lab_launcher.build_specs(namespace, "lab-test", run_dir, stop_files)
     by_name = {spec.name: spec for spec in specs}
 
-    assert set(stop_files) == {"paper", "collector", "retention", "strategy_lab"}
+    assert set(stop_files) == {"paper", "collector", "retention", "strategy_lab", "analyst"}
     for name, spec in by_name.items():
         assert spec.stop_file == stop_files[name], name
     # Every distinct child gets its own file: one file cannot stop two children

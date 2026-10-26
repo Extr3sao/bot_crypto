@@ -126,6 +126,32 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "selection without affecting execution."
         ),
     )
+    parser.add_argument(
+        "--no-analyst",
+        action="store_true",
+        help=(
+            "WP-SIGNAL-002 — do not start the read-only AI analyst sidecar. The stream "
+            "and the dashboard do not depend on it; its failure domain is its own"
+        ),
+    )
+    parser.add_argument(
+        "--analyst-interval",
+        type=float,
+        default=60.0,
+        help="seconds between analyst passes (each pass is bounded by --analyst-limit)",
+    )
+    parser.add_argument(
+        "--analyst-limit",
+        type=int,
+        default=5,
+        help="signals one analyst pass may examine (bounds latency and spend per pass)",
+    )
+    parser.add_argument(
+        "--analyst-budget-per-hour",
+        type=int,
+        default=60,
+        help="durable hourly cap on provider calls, read from the analysis ledger",
+    )
     parser.add_argument("--rotation-seconds", type=int, default=900)
     parser.add_argument("--heartbeat-seconds", type=float, default=30.0)
     parser.add_argument(
@@ -327,6 +353,7 @@ def child_stop_files(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
         # Maintenance workers ask between passes.
         "retention": run_dir / f"{STOP_FILE_NAME}.retention",
         "strategy_lab": run_dir / f"{STOP_FILE_NAME}.strategy_lab",
+        "analyst": run_dir / f"{STOP_FILE_NAME}.analyst",
     }
 
 
@@ -466,7 +493,109 @@ def build_specs(
             env={"PYTHONUNBUFFERED": "1"},
             stop_file=stop_files["strategy_lab"],
         ),
+        *(
+            []
+            if getattr(args, "no_analyst", False)
+            else [
+                ManagedProcess(
+                    name="analyst",
+                    command=[
+                        python,
+                        str(REPO_ROOT / "scripts" / "ai_signal_analyst.py"),
+                        "--run-root",
+                        args.paper_root,
+                        "--run-id",
+                        run_id,
+                        "--loop",
+                        "--interval",
+                        str(args.analyst_interval),
+                        "--limit-per-pass",
+                        str(args.analyst_limit),
+                        "--budget-per-hour",
+                        str(args.analyst_budget_per_hour),
+                        "--stop-file",
+                        str(stop_files["analyst"]),
+                    ],
+                    cwd=REPO_ROOT,
+                    critical=False,
+                    max_restarts=2,
+                    env={"PYTHONUNBUFFERED": "1"},
+                    stop_file=stop_files["analyst"],
+                )
+            ]
+        ),
     ]
+
+
+def capability_preflight(args: argparse.Namespace) -> dict[str, Any]:
+    """What this launch may actually do, per layer, before anything starts.
+
+    The economic block (0 admitted strategies) must not stop the signal plane: an
+    ingestion or projection failure and an admission refusal are different facts,
+    and collapsing them is how "BLOCKED" turns into "nothing to watch". Each layer
+    is reported with the reason it holds, and the admission verdict is read from
+    the tracked ledger rather than asserted here.
+    """
+    ledger_path = REPO_ROOT / "config" / "strategy_admission.json"
+    layers: dict[str, dict[str, Any]] = {
+        "LIVE": {
+            "state": "DISABLED",
+            "reason": "no live path exists: every child is read-only market data or PAPER",
+        }
+    }
+    admitted: list[str] = []
+    strategies = 0
+    ledger_error: str | None = None
+    try:
+        from trading_bot.autonomous.admission_ledger import AdmissionLedger
+
+        ledger = AdmissionLedger.load(ledger_path)
+        strategies = len(ledger.strategy_ids())
+        admitted = list(ledger.paper_candidates())
+    except Exception as exc:  # a missing ledger is a finding, not a crash
+        ledger_error = f"{type(exc).__name__}: {exc}"
+    layers["INGEST"] = {
+        "state": "ENABLED",
+        "reason": "read-only market data via the configured provider",
+    }
+    layers["SIGNALS"] = {
+        "state": "ENABLED",
+        "reason": (
+            "projection of the persisted decision traces; independent of admission, "
+            "so REJECTED/NO_ALPHA rows are produced with 0 admitted strategies"
+        ),
+    }
+    layers["SHADOW"] = {
+        "state": "ENABLED",
+        "reason": "SHADOW records an observation and can never create an order",
+    }
+    layers["PAPER_ORDER"] = {
+        "state": "ENABLED" if admitted else "BLOCKED",
+        "reason": (
+            f"admitted for paper: {', '.join(admitted)}"
+            if admitted
+            else (
+                f"the admission ledger admits none of its {strategies} strategies for paper "
+                f"({ledger_error or 'gate not met'})"
+            )
+        ),
+    }
+    layers["ANALYST"] = {
+        "state": "ENABLED" if not getattr(args, "no_analyst", False) else "DISABLED",
+        "reason": (
+            "read-only sidecar; records NOT_CONFIGURED when no provider key is present"
+            if not getattr(args, "no_analyst", False)
+            else "disabled by --no-analyst"
+        ),
+    }
+    return {
+        "strategy_count": strategies,
+        "admitted_for_paper": admitted,
+        "paper_order_enabled": bool(admitted),
+        "layers": layers,
+        "ledger": str(ledger_path.relative_to(REPO_ROOT)),
+        "ledger_error": ledger_error,
+    }
 
 
 def print_status(args: argparse.Namespace) -> int:
@@ -551,6 +680,7 @@ def main() -> int:
     # §10/WP-9B — cost the window before the children exist, so an autoscaled valve is
     # the valve the collector is actually launched with.
     disk_budget, refused = disk_preflight(args)
+    capabilities = capability_preflight(args)
     specs = build_specs(args, run_id, run_dir, stop_files)
 
     plan = {
@@ -559,6 +689,7 @@ def main() -> int:
         "duration_hours": args.duration_hours,
         "free_disk_bytes": disk_free_bytes(REPO_ROOT),
         "processes": [spec.to_dict() for spec in specs],
+        "capabilities": capabilities,
         "isolation": (
             "paper and collector are separate processes; the supervisor restarts "
             "each independently and neither shares state with the other"
@@ -650,6 +781,7 @@ def main() -> int:
     print(f"[lab] duration    : {'until stopped' if not args.duration_hours else f'{args.duration_hours} h'}")
     print(f"[lab] stop with   : Ctrl-C, or write STOP into {run_dir}")
     print(f"[lab] graceful    : {args.stop_grace_seconds:.0f}s to finalise before a kill")
+    print(f"[lab] capabilities: {json.dumps(capabilities['layers'], ensure_ascii=False)}")
     for spec in specs:
         print(f"[lab]   {spec.name:<13} critical={spec.critical} :: {' '.join(spec.command[:3])} ...")
 
