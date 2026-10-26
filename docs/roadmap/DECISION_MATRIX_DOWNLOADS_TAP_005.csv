@@ -1,0 +1,10 @@
+kind,current_example,preliminary,reason,disabling_allowed,gate_to_change
+bootstrap_histórico,real_market_context.py 1000x1h 500x4h 500x1d,KEEP_BOOTSTRAP,Indicadores necesitan lookback inicial; comprobar consumo y cache,NO,Demostrar datos equivalentes en consumidor real
+CCXT_ohlcv_runtime,exchange_connector.py fetch_ohlcv,KEEP_INCREMENTAL,Sin precios actuales no hay IA de mercado,NO,Snapshot PIT y dato incremental válido
+OHLCVStore,ohlcv_fetcher.py cache,REUSE,Almacena y evita pedir lo que ya existe,NO,Idempotencia y correcciones probadas
+CAP004_task,cap004_supervisor.py task 15m,UNKNOWN_OWNER,La definición no prueba tarea instalada,NO,Get-ScheduledTask read-only + owner
+OOS_prospective,oos_capture.py,KEEP_EVIDENCE,Registro append-only no borrar,NO,Protocolo congelado y evidencia nueva
+forward_websocket,forward_collector.py,RESEARCH_ONLY,Discovery no opera canónicamente,NO,Admisión a runtime con pruebas
+manual_test_download,scripts/fetch_*.py,DISCOVER_BEFORE_DISABLE,Puede ser histórico no continuo,NO,PID task consumer y byte identity
+Freebuff_bun_shell,Freebuff exe Bun.spawn,EXTERNAL_POPUP_BLOCK,Problema de interfaz externo al repo,NO,Fix oficial + ensayo visual GUI
+paper_quote_feed,1m/quotes intended in AI003E,PLAN_P1,Precios tras respuesta y real availability,NO,Coste y proveedor de datos demostrados
