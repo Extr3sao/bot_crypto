@@ -1,8 +1,8 @@
 {
   "artifact": "tdm14a-verification-result-v1",
   "rfc_id": "RFC-TDM-014A",
-  "run_id": "tdm14a-verify-clean-tree",
-  "generated_at_utc": "2026-10-26T08:46:18Z",
+  "run_id": "tdm14a-verify-terminal",
+  "generated_at_utc": "2026-10-26T08:48:38Z",
   "verifier": "scripts/tdm14a_verify.py",
   "builder_executions": {
     "run_a": {
@@ -478,8 +478,12 @@
       "id": "ACC-12",
       "status": "PASS",
       "detail": {
-        "commits_since_baseline": 9,
+        "commits_since_baseline": 13,
         "commit_subjects": [
+          "14739805 Re-close after the defect renumbering",
+          "4a84fc3e Give the verifier's own defect a unique id",
+          "83d1abec Close the evidence tree against HEAD",
+          "3aed6995 Publish the pass, not a report about the pass",
           "a806a7bf Publish the regenerated deliverables and the closing report",
           "d7185a21 Render the closing report from the verdict instead of writing it by hand",
           "409050c3 Close the second evidence commit against its own blobs",
@@ -490,7 +494,7 @@
           "7a4593cb Keep the sealed TDM-13 inputs byte-identical in a CRLF checkout",
           "04b02c2d Fingerprint the committed blob so a checkout cannot rename the code"
         ],
-        "head": "a806a7bf6866c38a03c6545e04f0512e3a016952",
+        "head": "1473980592f13123592553027635ba64017ca265",
         "uncommitted_tracked_changes": [
           "M evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json"
         ],
@@ -503,23 +507,9 @@
         "amended_commits": 0,
         "amend_evidence": "every commit's parent is the previous commit of this branch; 04fb8bc8 and everything below it is untouched",
         "post_commit_closure": "PASS",
-        "closure_checked_head": "49c8969617e0effee3872b006efe45dc7fb266eb",
+        "closure_checked_head": "4a84fc3e929c67e34d8cbb6d17b25d62a2b3b846",
         "files_changed_since_closure_head": [
-          "evidence/tdm/wp-tdm-14a/EOL_COMPARISON.json",
-          "evidence/tdm/wp-tdm-14a/FINAL_REPORT.md",
-          "evidence/tdm/wp-tdm-14a/INPUT_MANIFEST.json",
-          "evidence/tdm/wp-tdm-14a/LOG_MANIFEST.json",
-          "evidence/tdm/wp-tdm-14a/OUTPUT_MANIFEST.json",
-          "evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json",
-          "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.json",
-          "evidence/tdm/wp-tdm-14a/REPLAY_REPORT.md",
-          "evidence/tdm/wp-tdm-14a/RUN_REPORT.json",
-          "evidence/tdm/wp-tdm-14a/RUN_REPORT.md",
-          "evidence/tdm/wp-tdm-14a/TEST_RESULTS.json",
-          "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt",
-          "evidence/tdm/wp-tdm-14a/verification_result.json",
-          "scripts/tdm14a_report.py",
-          "tests/unit/research/test_tdm14a_report.py"
+          "evidence/tdm/wp-tdm-14a/POST_COMMIT_CLOSURE.json"
         ],
         "closure_head_is_ancestor_of_head": true,
         "custody_note": "each evidence file is covered by the closure that followed its commit; a file cannot cover itself, which is why the closure report is always the last thing committed",
