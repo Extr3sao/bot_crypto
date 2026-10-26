@@ -21,6 +21,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 from trading_bot.ops.single_writer import SingleWriter, diagnose_lock
@@ -54,7 +55,9 @@ def _write_stream(path: Path, entries: list[dict[str, Any]]) -> list[dict[str, A
         digest = line_hash(index, prev, entry)
         rows.append({"seq": index, "prev_sha256": prev, "entry": entry, "sha256": digest})
         prev = digest
-    path.write_text("\n".join(json.dumps(row, sort_keys=True) for row in rows) + "\n", encoding="utf-8")
+    path.write_text(
+        "\n".join(json.dumps(row, sort_keys=True) for row in rows) + "\n", encoding="utf-8"
+    )
     return rows
 
 
@@ -210,7 +213,12 @@ def build_campaign(root: Path) -> Path:
         )
         (directory / "RECOVERY.json").write_text(
             json.dumps(
-                {"iteration": index, "exit_code": 0, "locks_after": [], "chain_after": {"ok": True}},
+                {
+                    "iteration": index,
+                    "exit_code": 0,
+                    "locks_after": [],
+                    "chain_after": {"ok": True},
+                },
                 sort_keys=True,
             ),
             encoding="utf-8",
@@ -289,7 +297,9 @@ def test_every_mutation_is_effective_and_detected(tmp_path: Path) -> None:
     assert invalid == [], f"mutations that changed nothing: {invalid}"
     assert undetected == [], f"mutations that slipped through: {undetected}"
 
-    duplicate = next(item for item in results if item["mutation"] == "duplicated_cycle_with_valid_chain")
+    duplicate = next(
+        item for item in results if item["mutation"] == "duplicated_cycle_with_valid_chain"
+    )
     assert "stream_chain_intact" not in duplicate["false_checks"], (
         "the duplicate must be caught by numbering, not by a broken chain"
     )
@@ -337,6 +347,52 @@ def test_an_old_owner_gets_lock_lost_and_cannot_release_the_new_lock(tmp_path: P
     assert payload["release_refused"] is True
     assert payload["lock_still_present"] is True
     assert current is not None and current["token"] == holder.token
+
+
+def test_a_blocked_feed_cannot_exit_zero(tmp_path: Path, monkeypatch) -> None:
+    """CI ran the gate without a live feed: the session reported BLOCKED after one cycle-less
+    launch, the campaign broke on NO_SESSION_START and still returned 0 because the final
+    session state was READY. READY is what an empty directory reports too, so the exit code
+    has to be driven by the iterations, not by that state."""
+
+    class _FakeProcess:
+        pid = 4242
+
+    def _fake_start(*args: Any, **kwargs: Any) -> _FakeProcess:
+        # The real entrypoint opens the stream before it discovers the feed is blocked, and
+        # that empty-but-present stream is exactly why the session reports READY afterwards.
+        session = Path(args[0])
+        session.mkdir(parents=True, exist_ok=True)
+        (session / "STREAM.jsonl").touch()
+        log = kwargs.get("log")
+        if log is not None:
+            Path(log).write_text("[wp04] BLOCKED — no cycle\n", encoding="utf-8")
+        return _FakeProcess()
+
+    monkeypatch.setattr(campaign, "start_session", _fake_start)
+    monkeypatch.setattr(campaign, "wait_for", lambda *a, **k: False)
+
+    args = SimpleNamespace(
+        out=str(tmp_path / "campaign"),
+        symbols=["BTCUSDT"],
+        modes=[
+            "after_cycle",
+            "after_cycle",
+            "before_cycle",
+            "after_cycle",
+            "after_cycle",
+            "after_cycle",
+        ],
+        race_iterations=[2, 5],
+        wait_cycle_timeout_s=1.0,
+        wait_abandoned_timeout_s=1.0,
+        before_cycle_wait_s=0.0,
+    )
+    code = campaign.run_campaign(args)
+    payload = json.loads((tmp_path / "campaign" / "CAMPAIGN.json").read_text(encoding="utf-8"))
+    assert code == 1
+    assert payload["failures"] == ["iteration-01:NO_SESSION_START", "incomplete:1/6 crash sites"]
+    assert payload["final_status"]["state"] == "READY"
 
 
 def test_two_racers_produce_exactly_one_reclaimer(tmp_path: Path) -> None:

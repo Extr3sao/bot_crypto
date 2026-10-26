@@ -372,7 +372,9 @@ def race_reclaim(path: Path, *, racers: int, hold_s: float, out: Path) -> dict[s
     return {
         "path": str(path),
         "racers": racers,
-        "outcomes": [json.loads(report.read_text(encoding="utf-8")) for report in reports if report.exists()],
+        "outcomes": [
+            json.loads(report.read_text(encoding="utf-8")) for report in reports if report.exists()
+        ],
         "children_exit_codes": [child.returncode for child in children],
     }
 
@@ -446,7 +448,9 @@ def run_campaign(args: argparse.Namespace) -> int:
         write(target / "STATUS_BEFORE_LAUNCH.json", status_before_launch)
 
         crash_log = target / "crash.log"
-        process = start_session(session, log=crash_log, resume=index > 1, symbols=list(args.symbols))
+        process = start_session(
+            session, log=crash_log, resume=index > 1, symbols=list(args.symbols)
+        )
         record["launch"] = {
             "pid": process.pid,
             "started_at_utc": utc_now(),
@@ -470,8 +474,9 @@ def run_campaign(args: argparse.Namespace) -> int:
         # of the *real* guard while a *real* session runs.
         stream_lock = session / "STREAM.jsonl.lock"
         wait_for(
-            lambda lock_path=stream_lock: diagnose_lock(SingleWriter(lock_path).read())["state"]
-            == "HELD",
+            lambda lock_path=stream_lock: (
+                diagnose_lock(SingleWriter(lock_path).read())["state"] == "HELD"
+            ),
             timeout_s=60,
         )
         live_probe = {
@@ -536,9 +541,7 @@ def run_campaign(args: argparse.Namespace) -> int:
         if killed["already_exited_before_kill"]:
             record["failure"] = "PROCESS_EXITED_BEFORE_KILL"
             break
-        if abandoned_after_s is None or not all(
-            item["state"] == "ABANDONED" for item in leftover
-        ):
+        if abandoned_after_s is None or not all(item["state"] == "ABANDONED" for item in leftover):
             record["failure"] = "OWNER_NOT_PROVED_GONE"
             break
 
@@ -575,7 +578,11 @@ def run_campaign(args: argparse.Namespace) -> int:
                 ),
                 timeout_s=120,
             )
-            stale = probe_stale(stream_lock, old_stream) if appeared else {"error": "NEW_OWNER_NEVER_APPEARED"}
+            stale = (
+                probe_stale(stream_lock, old_stream)
+                if appeared
+                else {"error": "NEW_OWNER_NEVER_APPEARED"}
+            )
             write(target / "STALE_OWNER.json", stale)
             record["stale_owner"] = {
                 "raised": bool((stale.get("lock_lost") or {}).get("raised")),
@@ -602,7 +609,9 @@ def run_campaign(args: argparse.Namespace) -> int:
                 "exit_code": resume_exit,
                 "rows_before_resume": record["rows_at_crash"],
                 "rows_after_resume": len(rows_after),
-                "new_rows": [row["entry"].get("kind") for row in rows_after[record["rows_at_crash"] :]],
+                "new_rows": [
+                    row["entry"].get("kind") for row in rows_after[record["rows_at_crash"] :]
+                ],
                 "cycle_numbers": cycle_numbers(session),
                 "reclaimed": [
                     {"seq": row["seq"], "entry": row["entry"]}
@@ -637,19 +646,34 @@ def run_campaign(args: argparse.Namespace) -> int:
         "cycle_numbers": cycle_numbers(session),
         "fences": fence_snapshot(session),
     }
+    # A blocked feed leaves the session in READY exactly like a healthy one, so the final state
+    # alone cannot distinguish "six crashes survived" from "one iteration never started".
+    # CI found that: the campaign exited 0 after NO_CYCLE_BEFORE_CRASH because READY was in the
+    # accepted set. The exit code now also requires every requested crash site to have run.
+    failures = [
+        f"iteration-{item['iteration']:02d}:{item['failure']}"
+        for item in campaign["iterations"]
+        if "failure" in item
+    ]
+    if len(campaign["iterations"]) != len(args.modes):
+        failures.append(f"incomplete:{len(campaign['iterations'])}/{len(args.modes)} crash sites")
+    campaign["failures"] = failures
     write(out / "CAMPAIGN.json", campaign)
     print(
         json.dumps(
             {
                 "iterations": len(campaign["iterations"]),
+                "requested_iterations": len(args.modes),
                 "state": campaign["final_status"]["state"],
                 "cycles": campaign["chains"]["cycle_numbers"],
                 "locks": len(campaign["final_locks"]),
+                "failures": failures,
             },
             indent=2,
         )
     )
-    return 0 if campaign["final_status"]["state"] in ("RECOVERED", "READY") else 1
+    complete = not failures and campaign["final_status"]["state"] in ("RECOVERED", "READY")
+    return 0 if complete else 1
 
 
 def main(argv: list[str] | None = None) -> int:
