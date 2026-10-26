@@ -105,6 +105,24 @@ def git(cwd: Path, *args: str) -> tuple[int, str]:
     return proc.returncode, proc.stdout.strip()
 
 
+def porcelain_path(line: str) -> str:
+    """Repo-relative path of one ``git status --porcelain`` line.
+
+    The status occupies two columns, but ``git()`` strips the whole stdout, which
+    eats the leading space of the *first* line only. Reading from column 2 and
+    trimming the result survives both spellings. The earlier ``line[3:]`` assumed
+    the space was always there and turned the first dirty path into
+    ``vidence/...``; the ACC-12 clean-tree test then compared that mangled name
+    against the exclusion list, so a genuinely uncommitted artefact could be
+    reported as committed. That is a false-negative in a custody check, i.e. the
+    class of defect this RFC exists to remove.
+    """
+    rest = line[2:].strip()
+    if " -> " in rest:  # rename or copy: both endpoints are useful, keep target
+        rest = rest.split(" -> ")[-1]
+    return rest.strip('"')
+
+
 def blob_digest_independently(repo: Path, commit: str, relpath: str) -> tuple[str, str]:
     """The canonical digest, re-implemented here on purpose (no shared import)."""
     proc = subprocess.run(
@@ -208,7 +226,9 @@ def check_baseline(baseline: dict[str, Any]) -> dict[str, Any]:
         if line.strip()
     ]
     _, shared_dirty = git(shared_path, "status", "--porcelain", "--untracked-files=no")
-    shared_dirty_paths = {line[3:] for line in shared_dirty.splitlines() if line.strip()}
+    shared_dirty_paths = {
+        porcelain_path(line) for line in shared_dirty.splitlines() if line.strip()
+    }
     overlap = sorted(shared_dirty_paths & set(my_files))
     external = head != head_then or now != recorded
     ok = not failed and not ancestor and not overlap
@@ -798,7 +818,7 @@ def check_git_hygiene(negatives: dict[str, Any]) -> dict[str, Any]:
         for line in status.splitlines()
         if line.strip() and (line[:2].strip() or line.startswith("?? evidence/"))
     ]
-    dirty_paths = [line[3:].strip() for line in dirty]
+    dirty_paths = [porcelain_path(line) for line in dirty]
     outside_self = sorted(p for p in dirty_paths if p not in SELF_OUTPUTS)
     closure_path = EVIDENCE / "POST_COMMIT_CLOSURE.json"
     closure = read_json(closure_path) if closure_path.is_file() else None
@@ -845,7 +865,15 @@ def check_git_hygiene(negatives: dict[str, Any]) -> dict[str, Any]:
 
 
 def verdict(checks: list[dict[str, Any]]) -> str:
+    """Degrade in one direction only: no result, no promotion.
+
+    An empty check list used to fall through to the success branch on the strength
+    of universal quantification over nothing, so a caller that forgot to build the
+    checks would publish a green verdict. No checks is no evidence.
+    """
     statuses = [c["status"] for c in checks]
+    if not statuses:
+        return "BLOCKED"
     if "FAIL" in statuses:
         return "FAILED"
     if any(s != "PASS" for s in statuses):

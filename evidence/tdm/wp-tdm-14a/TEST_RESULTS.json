@@ -4,22 +4,37 @@
   "suites": "tests/unit/research (whole directory) plus a targeted run of the new and directly affected suites",
   "command": "PYTHONPATH=<tree>/src python -m pytest tests/unit/research -q -p no:cacheprovider",
   "exit_code": 0,
-  "passed": 32,
+  "passed": 39,
   "failed": 0,
   "skipped": 0,
   "errors": 0,
-  "duration_seconds": 7.6,
-  "targeted_command": "python -m pytest tests/unit/research/test_source_fingerprint.py tests/unit/research/test_tdm13_independent_verify.py -q",
+  "duration_seconds": 6.64,
+  "targeted_command": "PYTHONPATH=<tree>/src python -m pytest tests/unit/research/test_source_fingerprint.py tests/unit/research/test_tdm13_independent_verify.py tests/unit/research/test_tdm14a_verifier.py -q -p no:cacheprovider",
   "targeted_run": {
     "available": true,
-    "log": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a\\.pytest-targeted.log",
-    "log_sha256": "1ec853176cbf962119a52eed3d3e69c29148ddb0dd671b4f783d19b09e73266e",
+    "log": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt",
+    "log_sha256": "6a3cbf99442d03091d0b3cbcb4ab2948abe1918d3c31a2806db4e8a4709059d3",
     "failed": 0,
-    "passed": 32,
+    "passed": 39,
     "skipped": 0,
     "errors": 0,
-    "duration_seconds": 7.6,
-    "failures": []
+    "duration_seconds": 6.64,
+    "failures": [],
+    "supersedes": {
+      "log": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a\\.pytest-targeted.log",
+      "log_sha256": "1ec853176cbf962119a52eed3d3e69c29148ddb0dd671b4f783d19b09e73266e",
+      "passed": 32,
+      "why": "WP-14D found a defect in the verifier itself (D-02); the new suite covers it, so the targeted run was repeated after the fix"
+    }
+  },
+  "verifier_defect_fixed_in_wp14d": {
+    "id": "D-02",
+    "title": "check_git_hygiene sliced porcelain lines at column 3 while the git() helper strips the whole stdout",
+    "effect": "the first dirty path lost one character (evidence/... became vidence/...), so it never matched the SELF_OUTPUTS exclusion list and an uncommitted artefact could be reported as outside_self_outputs, or a self output could masquerade as foreign; the ACC-12 clean-tree test was therefore not trustworthy for the first line of every status block",
+    "detected_by": "re-running the verifier after the evidence commit: ACC-12 reported 'vidence/tdm/wp-tdm-14a/EOL_COMPARISON.json' as an uncommitted foreign change",
+    "fix": "porcelain_path() reads from column 2 and trims, so both spellings parse; regression tests pin the shifted-line case and the exclusion behaviour",
+    "second_fix": "verdict() returned VERIFIED_PORTABLE_FULL_REPLAY for an empty check list; an empty list is now BLOCKED",
+    "status": "FIXED_AND_TESTED"
   },
   "directory_run": {
     "passed": 1768,
@@ -27,7 +42,9 @@
     "errors": 14,
     "skipped": 30,
     "duration_seconds": 268.27,
-    "exit_code": 1
+    "exit_code": 1,
+    "measured_before": "tests/unit/research/test_tdm14a_verifier.py did not exist yet; it adds 7 passing tests and no failures, so the head total is 1775 passed, 79 failed, 14 errors, 30 skipped",
+    "why_not_rerun": "the 79 failures and 14 errors are the pre-existing set proven identical at the baseline; a second full-directory run would cost four minutes and change no conclusion. The new file is covered by the targeted run above."
   },
   "baseline_run": {
     "available": true,
@@ -358,8 +375,8 @@
   },
   "failures_only_at_baseline": [],
   "failures_only_at_head": [],
-  "new_tests": 16,
-  "new_tests_suite": "tests/unit/research/test_source_fingerprint.py",
+  "new_tests": 23,
+  "new_tests_suite": "tests/unit/research/test_source_fingerprint.py (16) and tests/unit/research/test_tdm14a_verifier.py (7)",
   "identical_failure_sets": true,
   "preexisting_failures_note": "79 tests fail at the baseline commit in this environment; they are not caused by this RFC and were not touched. The statement made here is the measured difference between the two trees, not an absolute green suite.",
   "eol_experiment": {
