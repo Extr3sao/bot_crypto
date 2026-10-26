@@ -1,0 +1,80 @@
+{
+  "artifact": "RFC049B_OOS_SAMPLE_FEASIBILITY",
+  "generated_at_utc": "2026-10-10T13:15:30Z",
+  "method": "frozen rules applied to research-exposed inputs; only trade counts and dates are produced. No return, no PnL and no profit factor is computed, and the sealed window is untouched.",
+  "thresholds_changed": false,
+  "statistical_criterion_unchanged": "20 round trips or 24 months, whichever comes first; fewer than 20 at 24 months is INSUFFICIENT_OOS_SAMPLE and is neither PASS nor REJECT",
+  "H-049-001": {
+    "declared_development_start": null,
+    "effective_first_decidable_week": "2018-12-30",
+    "effective_last_decidable_week": "2026-10-04",
+    "exposed_years_measured": 7.76,
+    "round_trips": {
+      "development": 14,
+      "validation": 9,
+      "all_exposed": 23,
+      "last_12_months": 2
+    },
+    "round_trips_per_year_all_exposed": 2.96,
+    "round_trips_per_year_last_12_months": 2,
+    "round_trips_per_month_all_exposed": 0.247,
+    "expected_round_trips_in_24_month_sealed_window": 5.9,
+    "months_to_reach_20_round_trips_at_measured_rate": 81.0,
+    "frozen_floor": "20 closed round trips or 24 months, whichever comes first",
+    "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION",
+    "median_hold_days": 35
+  },
+  "H-049-002": {
+    "declared_development_start": "first decidable week (on or after 2004-01-01) to 2023-12-31 (RESEARCH_EXPOSED for price; the FRED series were never used by any prior campaign)",
+    "effective_first_decidable_week": "2018-12-30",
+    "effective_last_decidable_week": "2026-10-04",
+    "exposed_years_measured": 7.76,
+    "round_trips": {
+      "development": 26,
+      "validation": 22,
+      "all_exposed": 48,
+      "last_12_months": 6
+    },
+    "round_trips_per_year_all_exposed": 6.18,
+    "round_trips_per_year_last_12_months": 6,
+    "round_trips_per_month_all_exposed": 0.515,
+    "expected_round_trips_in_24_month_sealed_window": 12.4,
+    "months_to_reach_20_round_trips_at_measured_rate": 38.8,
+    "frozen_floor": "20 closed round trips or 24 months, whichever comes first",
+    "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION",
+    "median_hold_days": 28.0
+  },
+  "precision_requirements": [
+    {
+      "per_trip_information_ratio": 0.15,
+      "round_trips_for_one_sided_95pct_precision": 121,
+      "months_at_h001_measured_rate": 489.9,
+      "months_at_h002_measured_rate": 235.0
+    },
+    {
+      "per_trip_information_ratio": 0.2,
+      "round_trips_for_one_sided_95pct_precision": 68,
+      "months_at_h001_measured_rate": 275.3,
+      "months_at_h002_measured_rate": 132.0
+    },
+    {
+      "per_trip_information_ratio": 0.25,
+      "round_trips_for_one_sided_95pct_precision": 44,
+      "months_at_h001_measured_rate": 178.1,
+      "months_at_h002_measured_rate": 85.4
+    },
+    {
+      "per_trip_information_ratio": 0.3,
+      "round_trips_for_one_sided_95pct_precision": 31,
+      "months_at_h001_measured_rate": 125.5,
+      "months_at_h002_measured_rate": 60.2
+    },
+    {
+      "per_trip_information_ratio": 0.4,
+      "round_trips_for_one_sided_95pct_precision": 17,
+      "months_at_h001_measured_rate": 68.8,
+      "months_at_h002_measured_rate": 33.0
+    }
+  ],
+  "conclusion": "the frozen count floor is reachable inside the sealed window only if the realised turnover matches the measured exposed-history turnover. Where it does not, the correct outcome is INSUFFICIENT_OOS_SAMPLE, and the sample floor must not be lowered to manufacture a verdict."
+}

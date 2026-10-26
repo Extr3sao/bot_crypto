@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "generated_by": "scripts/rfc048_derive_instruments.py",
+  "generated_at_utc": "2026-10-09T07:16:04Z",
+  "supported_contract_types": [
+    "LINEAR_PERPETUAL"
+  ],
+  "unsupported_contract_types": [
+    "INVERSE_PERPETUAL",
+    "DELIVERY_FUTURE",
+    "LINEAR_DELIVERY_FUTURE"
+  ],
+  "position_modes_supported": [
+    "ISOLATED"
+  ],
+  "position_modes_unsupported": [
+    "CROSS"
+  ],
+  "instruments": [
+    {
+      "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+      "venue": "BINANCE_USDM",
+      "venue_symbol": "BTCUSDT",
+      "contract_type": "LINEAR_PERPETUAL",
+      "collateral_asset": "USDT",
+      "settlement_asset": "USDT",
+      "base_asset": "BTC",
+      "quote_asset": "USDT",
+      "contract_multiplier": 1.0,
+      "contract_multiplier_source": "venue_absent_default_1.0",
+      "quantity_step": 0.001,
+      "quantity_min": 0.001,
+      "quantity_max": 120.0,
+      "price_tick": 0.1,
+      "price_precision": 2,
+      "quantity_precision": 3,
+      "minimum_notional": 50.0,
+      "maximum_notional": null,
+      "initial_margin_schedule": {
+        "mode": "isolated_only",
+        "venue_required_margin_percent": 5.0,
+        "venue_maintenance_margin_percent": 2.5,
+        "note": "requiredMarginPercent/maintMarginPercent are the venue's symbol-level defaults; the binding schedule is maintenance_margin_brackets below."
+      },
+      "maintenance_margin_brackets": [
+        {
+          "bracket_seq": 1,
+          "notional_floor": 0.0,
+          "notional_cap": 300000.0,
+          "maintenance_margin_rate": 0.004,
+          "cum_maintenance_amount": 0.0,
+          "max_open_pos_leverage": 150,
+          "min_open_pos_leverage": 101
+        },
+        {
+          "bracket_seq": 2,
+          "notional_floor": 300000.0,
+          "notional_cap": 800000.0,
+          "maintenance_margin_rate": 0.005,
+          "cum_maintenance_amount": 300.0,
+          "max_open_pos_leverage": 100,
+          "min_open_pos_leverage": 76
+        },
+        {
+          "bracket_seq": 3,
+          "notional_floor": 800000.0,
+          "notional_cap": 3000000.0,
+          "maintenance_margin_rate": 0.0065,
+          "cum_maintenance_amount": 1500.0,
+          "max_open_pos_leverage": 75,
+          "min_open_pos_leverage": 51
+        },
+        {
+          "bracket_seq": 4,
+          "notional_floor": 3000000.0,
+          "notional_cap": 12000000.0,
+          "maintenance_margin_rate": 0.01,
+          "cum_maintenance_amount": 12000.0,
+          "max_open_pos_leverage": 50,
+          "min_open_pos_leverage": 26
+        },
+        {
+          "bracket_seq": 5,
+          "notional_floor": 12000000.0,
+          "notional_cap": 70000000.0,
+          "maintenance_margin_rate": 0.02,
+          "cum_maintenance_amount": 132000.0,
+          "max_open_pos_leverage": 25,
+          "min_open_pos_leverage": 21
+        },
+        {
+          "bracket_seq": 6,
+          "notional_floor": 70000000.0,
+          "notional_cap": 100000000.0,
+          "maintenance_margin_rate": 0.025,
+          "cum_maintenance_amount": 482000.0,
+          "max_open_pos_leverage": 20,
+          "min_open_pos_leverage": 11
+        },
+        {
+          "bracket_seq": 7,
+          "notional_floor": 100000000.0,
+          "notional_cap": 230000000.0,
+          "maintenance_margin_rate": 0.05,
+          "cum_maintenance_amount": 2982000.0,
+          "max_open_pos_leverage": 10,
+          "min_open_pos_leverage": 6
+        },
+        {
+          "bracket_seq": 8,
+          "notional_floor": 230000000.0,
+          "notional_cap": 480000000.0,
+          "maintenance_margin_rate": 0.1,
+          "cum_maintenance_amount": 14482000.0,
+          "max_open_pos_leverage": 5,
+          "min_open_pos_leverage": 5
+        },
+        {
+          "bracket_seq": 9,
+          "notional_floor": 480000000.0,
+          "notional_cap": 600000000.0,
+          "maintenance_margin_rate": 0.125,
+          "cum_maintenance_amount": 26482000.0,
+          "max_open_pos_leverage": 4,
+          "min_open_pos_leverage": 4
+        },
+        {
+          "bracket_seq": 10,
+          "notional_floor": 600000000.0,
+          "notional_cap": 800000000.0,
+          "maintenance_margin_rate": 0.15,
+          "cum_maintenance_amount": 41482000.0,
+          "max_open_pos_leverage": 3,
+          "min_open_pos_leverage": 3
+        },
+        {
+          "bracket_seq": 11,
+          "notional_floor": 800000000.0,
+          "notional_cap": 1200000000.0,
+          "maintenance_margin_rate": 0.25,
+          "cum_maintenance_amount": 121482000.0,
+          "max_open_pos_leverage": 2,
+          "min_open_pos_leverage": 2
+        },
+        {
+          "bracket_seq": 12,
+          "notional_floor": 1200000000.0,
+          "notional_cap": 1800000000.0,
+          "maintenance_margin_rate": 0.5,
+          "cum_maintenance_amount": 421482000.0,
+          "max_open_pos_leverage": 1,
+          "min_open_pos_leverage": 1
+        }
+      ],
+      "fee_schedule": {
+        "maker_bps": 2.0,
+        "taker_bps": 5.0,
+        "source": "https://www.binance.com/en/fee/futureFee (VIP0 USD\u24c8-M, published)",
+        "verified_against_account": false
+      },
+      "funding_schedule": {
+        "interval_ms": 28800000,
+        "interval_source": "observed_delta_of_fundingRate_endpoint",
+        "observed_rate_count": 200
+      },
+      "liquidation_fee_rate": 0.0125,
+      "supported_position_modes": [
+        "ONE_WAY",
+        "ISOLATED"
+      ],
+      "regulatory_eligibility_status": "PRODUCT_ELIGIBILITY_UNKNOWN",
+      "regulatory_note": "ESMA statement 24/02/2026 (ESMA35-243228190-8024): derivatives marketed as perpetual futures may fall within the scope of national CFD product intervention measures (leverage limits, margin close-out, negative balance protection). Offline research on venue fixtures is allowed; promotion to production is blocked while eligibility is unverified.",
+      "research_allowed": true,
+      "production_eligible": false,
+      "source_version": "exchangeInfo:1791530164010",
+      "source_hash": "ceb70da7f3661f3d0d602bf8270ed9f41cdfa4a3c40577e58bc11599a833e37f",
+      "source_hash_brackets": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+      "effective_timestamp_ms": 1791530164010
+    },
+    {
+      "instrument_id": "BINANCE_USDM_BTCUSDT_261225",
+      "venue": "BINANCE_USDM",
+      "venue_symbol": "BTCUSDT_261225",
+      "contract_type": "DELIVERY_FUTURE",
+      "collateral_asset": "USDT",
+      "settlement_asset": "USDT",
+      "base_asset": "BTC",
+      "quote_asset": "USDT",
+      "contract_multiplier": 1.0,
+      "quantity_step": 0.001,
+      "quantity_min": 0.001,
+      "price_tick": 0.1,
+      "minimum_notional": 5.0,
+      "maintenance_margin_brackets": [],
+      "fee_schedule": null,
+      "funding_schedule": null,
+      "supported_position_modes": [],
+      "regulatory_eligibility_status": "PRODUCT_ELIGIBILITY_UNKNOWN",
+      "research_allowed": true,
+      "production_eligible": false,
+      "source_version": "exchangeInfo:1791530164010",
+      "source_hash": "ceb70da7f3661f3d0d602bf8270ed9f41cdfa4a3c40577e58bc11599a833e37f",
+      "effective_timestamp_ms": 1791530164010,
+      "unsupported_reason": "delivery futures settle at expiry and carry a settlement mechanics this RFC did not model (no expiry handling, no delivery margin path). Parameters were read from the venue fixture and are registered, but the contract type is refused with INSTRUMENT_NOT_SUPPORTED."
+    },
+    {
+      "instrument_id": "BINANCE_COINM_BTCUSD_PERP",
+      "venue": "BINANCE_COINM",
+      "venue_symbol": "BTCUSD_PERP",
+      "contract_type": "INVERSE_PERPETUAL",
+      "collateral_asset": "BTC",
+      "settlement_asset": "BTC",
+      "base_asset": "BTC",
+      "quote_asset": "USD",
+      "contract_multiplier": null,
+      "quantity_step": null,
+      "price_tick": null,
+      "minimum_notional": null,
+      "maintenance_margin_brackets": [],
+      "fee_schedule": null,
+      "funding_schedule": null,
+      "supported_position_modes": [],
+      "regulatory_eligibility_status": "PRODUCT_ELIGIBILITY_UNKNOWN",
+      "research_allowed": true,
+      "production_eligible": false,
+      "source_version": "declared_not_fetched",
+      "source_hash": "ceb70da7f3661f3d0d602bf8270ed9f41cdfa4a3c40577e58bc11599a833e37f",
+      "effective_timestamp_ms": null,
+      "unsupported_reason": "inverse contracts are coin-margined and their PnL/liquidation algebra is not the linear one. No fixture was fetched, so no parameter is available and no linear formula may be applied to it. Refused with INSTRUMENT_NOT_SUPPORTED."
+    }
+  ],
+  "provenance": {
+    "schema_version": "rfc048-provenance-v2",
+    "supersedes": {
+      "file": "data/rfc048/INSTRUMENTS.json",
+      "sha256": "188c8333d1a648ee674f2ecb9fa32da7049aa8b8acca7ee8701205a7573143ac",
+      "preserved": true
+    },
+    "digest_representation": "bytes as stored by the repository (LF)",
+    "source_digests": {
+      "source_hash": "ceb70da7f3661f3d0d602bf8270ed9f41cdfa4a3c40577e58bc11599a833e37f",
+      "source_hash_brackets": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d"
+    },
+    "note": "Only source_hash and source_hash_brackets differ from v1; every other field is byte-identical JSON."
+  }
+}

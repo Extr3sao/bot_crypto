@@ -1,0 +1,20 @@
+PASS  SNAPSHOT_BEFORE_TWO_INSTRUMENTS              before: free 1.4558 GiB, delta 0 B
+PASS  SNAPSHOT_AFTER_TWO_INSTRUMENTS               after: free 1.4985 GiB, delta 0 B
+FAIL  VOLUME_IS_AT_LEAST_AS_TIGHT_AS_REPORTED      measured 40.047 GiB against reported 1.498 GiB
+FAIL  BUDGET_RECOMPUTED_FROM_THE_LOG               p90 0.000 GiB, required 0.000 GiB, delta 15638174694 B
+FAIL  FLOOR_UNCHANGED                              store floor None B; guard module carries the same constant: True
+PASS  CONTRACT_UNCHANGED                           git diff exit 0, window 90 d, rows 6480
+FAIL  WRITE_ONCE_SHARDS_UNCHANGED                  0/11 shard(s) byte-identical
+FAIL  APPEND_ONLY_PREFIXES_INTACT                  0/5 append-only file(s) unchanged up to their old length
+FAIL  NO_ROW_LOST_OR_INVENTED                      0/5 append-only file(s) did not shrink
+PASS  INVENTORY_ACCOUNTS_FOR_THE_VOLUME            230.38 GiB of 236.09 GiB explained (0.976) by 28 top-level row(s)
+FAIL  NOTHING_FOREIGN_WAS_DELETED                  209 director(ies) removed, all inside this repository family
+PASS  PROTECTED_TREES_STILL_PRESENT                3/3 protected tree(s) still on disk
+PASS  VERDICT_FOLLOWS_THE_ARITHMETIC               free 40.047 GiB, required 14.564 GiB, package verdict BLOCKED
+PASS  AUTHORISATION_REQUEST_IS_ACTIONABLE          5 item(s), 14.16 GiB against a 13.07 GiB gap
+PASS  TESTS_RAN_AND_PASSED                         pytest exit 0: 32 passed in 0.84s
+PASS  DEFECTS_STILL_OPEN                           open: ['ALERT_REMOTE', 'DEF-02I-07', 'DEF-02I-08', 'DEF-02K-01']
+PASS  WP_02J_COMMITTED_WITH_ITS_VERDICT            commit(s): ['e508f3c9 Register WP-051-02J with the verdict it earned: BLOCKED'], committed verdict BLOCKED
+PASS  NO_ELEVATION_AND_NO_NETWORK                  builder tokens found: none
+
+11/18 PASS, 7 FAIL -> FAIL

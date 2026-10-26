@@ -1,0 +1,656 @@
+{
+  "schema_version": "rfc048v-runtime-authority-verification-v1",
+  "rfc": "RFC-048V",
+  "generated_at_utc": "2026-10-10T09:29:41Z",
+  "current_head": "081201f1eeaf77985f55dc488ffec373939d8c02",
+  "duration_seconds": 0.085,
+  "entrypoint": {
+    "decision_authority": "trading_bot.autonomous.decision.DecisionEngine.decide",
+    "runtime_call_site": "src/trading_bot/autonomous/runtime.py (self._decision_engine.decide)",
+    "flow": "TradeProposal -> FuturesRiskEngine -> RiskDecision -> RiskReview -> DecisionRequest -> DecisionEngine -> SHADOW_TRADE / NO_TRADE",
+    "note": "the futures review is advisory by construction; the runtime only lets a BINDING review gate an order-authorising packet, and it refuses an advisory review on one"
+  },
+  "verdicts": {
+    "runtime_reachability": "PASS",
+    "veto_irreversibility": "PASS",
+    "engine_error_fail_safe": "PASS",
+    "incomplete_data_refused": "PASS",
+    "live_path_blocked": "PASS",
+    "approvals_are_not_order_permissions": "PASS"
+  },
+  "conclusion": "PASS",
+  "runtime_reachability": {
+    "cases": [
+      {
+        "scenario": "S01",
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "review_verdict": "ADJUST",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S02",
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "review_verdict": "ADJUST",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S03",
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "review_verdict": "ADJUST",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S04",
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "review_verdict": "ADJUST",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S05",
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "review_verdict": "ADJUST",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S06",
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "review_verdict": "ADJUST",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S07",
+        "engine_decision": "NO_TRADE",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S08",
+        "engine_decision": "NO_TRADE",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S09",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S10",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S11",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S12",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S13",
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "review_verdict": "ADJUST",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S14",
+        "engine_decision": "NO_TRADE",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S15",
+        "engine_decision": "NO_TRADE",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S16",
+        "engine_decision": "NO_TRADE",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S17",
+        "engine_decision": "UNSUPPORTED_INSTRUMENT",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S18",
+        "engine_decision": "DATA_INVALID",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S19",
+        "engine_decision": "DATA_INVALID",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S20",
+        "engine_decision": "DATA_INVALID",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S21",
+        "engine_decision": "NO_TRADE",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S22",
+        "engine_decision": "NO_TRADE",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S23",
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "review_verdict": "ADJUST",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S24",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S25",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S26",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S27",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S28",
+        "engine_decision": "DATA_INVALID",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S29",
+        "engine_decision": "UNSUPPORTED_INSTRUMENT",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S30",
+        "engine_decision": "UNSUPPORTED_INSTRUMENT",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      },
+      {
+        "scenario": "S31",
+        "engine_decision": "RISK_VETO",
+        "review_verdict": "VETO",
+        "review_advisory": true,
+        "review_source": "FuturesRiskEngine[RFC048-DECISION-ENGINE-ADAPTER-v1]",
+        "intent_mode": "SHADOW_TRADE",
+        "intent_classification": "NOT_ADMITTED",
+        "final_mode": "SHADOW_TRADE",
+        "final_classification": "NOT_ADMITTED",
+        "final_order_authorised": false,
+        "futures_decision_order_authorised": false
+      }
+    ],
+    "case_count": 31,
+    "approved_count": 8,
+    "reached_the_real_decision_engine": true,
+    "any_order_authorised": false,
+    "any_review_lost": false,
+    "advisory_everywhere": true
+  },
+  "veto_irreversibility": {
+    "cases": [
+      {
+        "decision": "RISK_VETO",
+        "binding": {
+          "mode": "NO_TRADE",
+          "classification": "RISK_VETO",
+          "order_authorised": false,
+          "review_advisory": false
+        },
+        "advisory": {
+          "mode": "SHADOW_TRADE",
+          "classification": "NOT_ADMITTED",
+          "order_authorised": false,
+          "review_advisory": true
+        },
+        "advisory_on_order_authorising_packet": {
+          "raised": "advisory risk review cannot accompany an order-authorising packet",
+          "mode_if_not_raised": null
+        }
+      },
+      {
+        "decision": "DATA_INVALID",
+        "binding": {
+          "mode": "NO_TRADE",
+          "classification": "RISK_VETO",
+          "order_authorised": false,
+          "review_advisory": false
+        },
+        "advisory": {
+          "mode": "SHADOW_TRADE",
+          "classification": "NOT_ADMITTED",
+          "order_authorised": false,
+          "review_advisory": true
+        },
+        "advisory_on_order_authorising_packet": {
+          "raised": "advisory risk review cannot accompany an order-authorising packet",
+          "mode_if_not_raised": null
+        }
+      },
+      {
+        "decision": "UNSUPPORTED_INSTRUMENT",
+        "binding": {
+          "mode": "NO_TRADE",
+          "classification": "RISK_VETO",
+          "order_authorised": false,
+          "review_advisory": false
+        },
+        "advisory": {
+          "mode": "SHADOW_TRADE",
+          "classification": "NOT_ADMITTED",
+          "order_authorised": false,
+          "review_advisory": true
+        },
+        "advisory_on_order_authorising_packet": {
+          "raised": "advisory risk review cannot accompany an order-authorising packet",
+          "mode_if_not_raised": null
+        }
+      }
+    ],
+    "veto_always_blocks_when_binding": true,
+    "advisory_can_never_sit_on_an_order": true,
+    "verdict": "PASS"
+  },
+  "engine_error_fail_safe": {
+    "review": {
+      "verdict": "VETO",
+      "advisory": false,
+      "evaluated": false,
+      "rule": "futures_engine_fail_safe",
+      "reason": "FUTURES_ENGINE_ERROR:RuntimeError: simulated engine failure"
+    },
+    "nominal_packet": {
+      "mode": "NO_TRADE",
+      "classification": "RISK_VETO",
+      "order_authorised": false
+    },
+    "order_authorising_packet": {
+      "mode": "NO_TRADE",
+      "classification": "RISK_VETO",
+      "order_authorised": false,
+      "notional_usdt": null
+    },
+    "verdict": "PASS"
+  },
+  "incomplete_data": {
+    "review_verdict": "VETO",
+    "mode": "NO_TRADE",
+    "classification": "RISK_VETO",
+    "order_authorised": false,
+    "verdict": "PASS"
+  },
+  "live_path": {
+    "engine_refuses_live_route": true,
+    "engine_decision": "RISK_VETO",
+    "engine_reasons": [
+      "LIVE_ROUTE_ATTEMPTED"
+    ],
+    "source_scan": {
+      "files": [
+        {
+          "file": "src/trading_bot/risk/futures/__init__.py",
+          "lines": 75,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures/contracts.py",
+          "lines": 223,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures/costs.py",
+          "lines": 427,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures/engine.py",
+          "lines": 980,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures/instruments.py",
+          "lines": 348,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures/integration.py",
+          "lines": 346,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures/margin.py",
+          "lines": 497,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures/portfolio.py",
+          "lines": 239,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures/sizing.py",
+          "lines": 366,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures_falsification.py",
+          "lines": 926,
+          "forbidden_hits": []
+        },
+        {
+          "file": "src/trading_bot/risk/futures_verification.py",
+          "lines": 1017,
+          "forbidden_hits": []
+        }
+      ],
+      "file_count": 11,
+      "violations": []
+    },
+    "verdict": "PASS"
+  },
+  "approvals": {
+    "approved_decisions": [
+      {
+        "scenario": "S01",
+        "decision": "REDUCE_SIMULATED_SIZE",
+        "order_authorised": false,
+        "approved_notional": 82.50004923188
+      },
+      {
+        "scenario": "S02",
+        "decision": "REDUCE_SIMULATED_SIZE",
+        "order_authorised": false,
+        "approved_notional": 82.50004923188
+      },
+      {
+        "scenario": "S03",
+        "decision": "REDUCE_SIMULATED_SIZE",
+        "order_authorised": false,
+        "approved_notional": 82.50004923188
+      },
+      {
+        "scenario": "S04",
+        "decision": "REDUCE_SIMULATED_SIZE",
+        "order_authorised": false,
+        "approved_notional": 82.50004923188
+      },
+      {
+        "scenario": "S05",
+        "decision": "REDUCE_SIMULATED_SIZE",
+        "order_authorised": false,
+        "approved_notional": 82.50004923188
+      },
+      {
+        "scenario": "S06",
+        "decision": "REDUCE_SIMULATED_SIZE",
+        "order_authorised": false,
+        "approved_notional": 82.50004923188
+      },
+      {
+        "scenario": "S13",
+        "decision": "REDUCE_SIMULATED_SIZE",
+        "order_authorised": false,
+        "approved_notional": 82.50004923188
+      },
+      {
+        "scenario": "S23",
+        "decision": "REDUCE_SIMULATED_SIZE",
+        "order_authorised": false,
+        "approved_notional": 82.50004923188
+      }
+    ],
+    "approved_count": 8,
+    "any_order_authorised": false,
+    "verdict": "PASS"
+  },
+  "governance": {
+    "live_trading": "DISABLED",
+    "trades_authorised": 0,
+    "orders_emitted": 0
+  }
+}

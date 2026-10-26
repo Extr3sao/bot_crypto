@@ -1,0 +1,60 @@
+{
+  "model": "EXECUTION_MODEL_V1",
+  "generated_by": "scripts/venue_execution_research.py",
+  "taker": {
+    "model": "EXECUTION_MODEL_V1",
+    "kind": "TAKER",
+    "base_slippage_bps": 1.0,
+    "half_spread_bps": 0.5,
+    "participation_rate": 0.1,
+    "books_per_level_bps": 0.5,
+    "status": "EVIDENCE_BACKED"
+  },
+  "maker": {
+    "model": "EXECUTION_MODEL_V1",
+    "kind": "MAKER",
+    "maker_fee_bps": 0.0,
+    "maker_rebate_bps": 0.0,
+    "requote_penalty_bps": 0.1,
+    "nominal_fill_prob": 0.5,
+    "status": "EXECUTION_MODEL_REQUIRED"
+  },
+  "maker_without_evidence": {
+    "prob_filled": 0.0,
+    "prob_partial": 0.0,
+    "prob_missed": 1.0,
+    "expected_effective_cost_bps": null,
+    "expected_slippage_bps": null,
+    "adverse_selection_bps": null,
+    "status": "EXECUTION_MODEL_REQUIRED",
+    "notes": "no usable fill evidence (needs a forward collection of fill_rate + adverse_move_after_fill_bps)"
+  },
+  "maker_synthetic_stress_test": {
+    "label": "SYNTHETIC_STRESS_TEST",
+    "admissible": false,
+    "scenario": {
+      "fill_prob": 0.4,
+      "partial_prob": 0.2,
+      "missed_opportunity_cost_bps": 3.0,
+      "adverse_selection_bps": 1.0
+    },
+    "outcome": {
+      "prob_filled": 0.4,
+      "prob_partial": 0.12,
+      "prob_missed": 0.48,
+      "expected_effective_cost_bps": 1.98,
+      "expected_slippage_bps": 1.0,
+      "adverse_selection_bps": 1.0,
+      "status": "SYNTHETIC_STRESS_TEST",
+      "notes": "not admissible evidence; bounds a cost envelope only"
+    }
+  },
+  "required_evidence_for_admission": [
+    "fill_rate (from a forward collection, n > 0)",
+    "partial_fill_rate",
+    "median time to fill",
+    "adverse move after fill (bps)"
+  ],
+  "status": "EXECUTION_MODEL_REQUIRED",
+  "status_reason": "no measured fill evidence exists yet; the maker path stays EXECUTION_MODEL_REQUIRED and is barred from admission"
+}

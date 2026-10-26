@@ -1,0 +1,66 @@
+{
+  "experiment_id": "EXP-ARP-014",
+  "strategy_id": "H-XSEC-REV-001",
+  "arm": "NEW_PROJECT_HYPOTHESIS",
+  "source_faithful": false,
+  "source_attribution": "NONE — new project hypothesis, no source hypothesis claimed",
+  "preregistration_source": "docs/research/alpha_expansion_v1/experiments/EXP-ARP-014/SPEC.md",
+  "prior_art": {
+    "experiment_id": "EXP-ARP-013",
+    "strategy_id": "H-XSEC-MOM-LONG-001",
+    "decision": "n/a",
+    "relationship": "orthogonal factor on the same infrastructure (opposite sign of the ranking)"
+  },
+  "mechanism_family": "cross_sectional_reversal",
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+  "timeframe": "1d",
+  "timeframe_derivation": "complete UTC epoch buckets constructed from native 1h bars",
+  "rules": {
+    "feature": "trailing_return over 7 day-contiguous days",
+    "decision": "rank synchronized assets at day D close ascending (worst = best)",
+    "entry": "next day (D+1) open",
+    "exit": "leader change -> rotate; else force-exit after 7 days",
+    "direction": "long-only",
+    "min_members": 2
+  },
+  "parameters": {
+    "ranking_feature": "trailing_return",
+    "ranking_window": 7,
+    "ascending": true,
+    "rebalance_days": 3,
+    "max_hold_days": 7,
+    "min_members": 2
+  },
+  "cost_model": {
+    "version": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "source": "live CostEngine (never hardcoded)",
+    "stress_multiples": [0.5, 1.0, 1.25, 1.5, 2.0]
+  },
+  "data": {
+    "dataset_fingerprint": "2ce6e6b5ff1c84d6b365934ab9fbcb0b2ee987a4f041354c454ec6aca952e04a",
+    "corpus": "reports/alpha-expansion-v1/data (native 1h shards 2019-2026)",
+    "baseline_fingerprint_untouched": "9d51385d570b8ff4ba1af22c3d4491f78c36111ec7383173e7d0351d5ee21658",
+    "extended_digest_untouched": "d3669d28de0014bf4299361adb9cca2c4d0de9a9b856077b8e1bff92260030e0"
+  },
+  "splits": {
+    "DEV": [0, 1704067200000],
+    "VALIDATION": [1704067200000, 1751328000000],
+    "OOS_LOCK": [1751328000000, 1772323200000],
+    "oos_opened": false
+  },
+  "config_hash": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+  "verifier": "UNASSIGNED",
+  "kill_criteria": [
+    "DEV gross expectancy <= 0 -> REJECT_NO_EDGE",
+    "DEV net expectancy <= 0 at 1.0x -> REJECT_COSTS",
+    "DEV trades < 20 -> INSUFFICIENT_EVIDENCE",
+    "single trade > 50% of positive DEV net -> REJECT_FRAGILE",
+    "single-point optimum -> REJECT_FRAGILE",
+    "single-name degeneration -> REJECT_DUPLICATE",
+    "any look-ahead -> REJECT_PIT"
+  ],
+  "testability": "ADEQUATE (DEV ~1806 days/symbol, 2019-2023, multi-regime)",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "frozen_before_results": true
+}

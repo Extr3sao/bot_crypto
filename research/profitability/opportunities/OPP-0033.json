@@ -1,0 +1,58 @@
+{
+  "opportunity_id": "OPP-0033",
+  "title": "Karaptic Research — pre-registered crypto strategy replication series",
+  "source_ids": [
+    "S3-04",
+    "S3-05",
+    "S3-10"
+  ],
+  "economic_hypothesis": "a public research programme that prices every hypothesis gross then net of realistic execution costs",
+  "market": "crypto spot and perpetuals on Binance and Gate.io",
+  "assets": "per note",
+  "timeframe": "per note",
+  "entry_rules": "the series' protocol: take the published claim, reconstruct its mechanism, replicate gross, then net of realistic execution costs, then test significance",
+  "exit_rules": "per note",
+  "risk_rules": "a fixed rule caps the series at two independently published implementations per class",
+  "parameters": "per note",
+  "claimed_period": "2020 to 2026 across the published notes",
+  "claimed_metrics": "the series states in advance that it expects to close more hypotheses than it confirms",
+  "transaction_cost_model": "the protocol requires gross then net-of-costs pricing for every hypothesis",
+  "required_data": "public Binance and Gate.io market data plus the cited papers",
+  "external_code": "github.com/Silent47boryara/searching-for-edge",
+  "external_results": "the individual notes in the series",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "a venue and a protocol rather than a strategy; kept as a source of independent replication evidence",
+    "reviewed in RFC-035S3; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "this is a venue and a protocol, not a strategy",
+    "the repository declares no license and no release tag"
+  ],
+  "replication_difficulty": "a venue and a protocol rather than a strategy; kept as a source of independent replication evidence",
+  "evidence_quality": "E2",
+  "selection_bias_risk": "LOW",
+  "overfitting_risk": "LOW",
+  "lookahead_risk": "LOW",
+  "implementation_risk": "LOW",
+  "status": "ROUND_3_WATCH",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 1,
+    "CODE_AVAILABILITY": 4,
+    "DATA_REPRODUCIBILITY": 3,
+    "TRANSACTION_COST_REALISM": 5,
+    "OOS_EVIDENCE": 0,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 4,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 17,
+  "rank": "WATCH",
+  "rfc": "RFC-035S3",
+  "candidate_ref": "reports/rfc035/search_round_3/FINAL_REPORT.json",
+  "round_3_reason": "a venue and a protocol rather than a strategy; kept as a source of independent replication evidence",
+  "candidate_id": "K-01"
+}

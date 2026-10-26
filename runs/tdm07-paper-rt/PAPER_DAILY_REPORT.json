@@ -1,0 +1,57 @@
+{
+  "schema_version": "paper-daily-report-v1",
+  "report_date": "2026-10-24",
+  "generated_at_ms": 1792843906612,
+  "generated_at_iso": "2026-10-24T12:11:46.612000+00:00",
+  "run_id": "tdm07-paper-rt",
+  "mode": "PAPER",
+  "timeframe": "5m",
+  "assets": [
+    "BTC",
+    "ETH"
+  ],
+  "runtime_hours": 0.001441,
+  "cycles": 1,
+  "decisions": 2,
+  "no_trade": 2,
+  "no_trade_kinds": {
+    "no_trade_NO_TRADE_STRATEGIC": 2
+  },
+  "shadow_trades": 0,
+  "paper_trades": 0,
+  "orders_created": 0,
+  "pnl": {
+    "gross_bps_total": 0.0,
+    "resolved_outcomes": 0,
+    "pending_outcomes": 2,
+    "note": "PAPER only; no capital, no live orders. 0 trades is a PASS."
+  },
+  "drawdown": {
+    "max_drawdown_bps": 0.0,
+    "note": "computed from resolved PAPER outcomes only"
+  },
+  "strategy_attribution": {
+    "ema_crossover@5m": {
+      "decisions": 2,
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trade": 2,
+      "risk_vetoes": 0,
+      "outcomes_resolved": 0,
+      "limitations": "per-strategy PnL is not attributed yet (no admitted strategy has traded)"
+    }
+  },
+  "risk_events": {
+    "risk_APPROVED": 2
+  },
+  "runtime_failures": 0,
+  "errors": [],
+  "restarts": [],
+  "outcomes": {
+    "resolved": 0,
+    "pending": 2,
+    "performance_cells": 0
+  },
+  "paper_candidates": [],
+  "no_trade_is_expected": "No strategy is admitted for PAPER, so the correct behaviour is NO_TRADE with zero trades."
+}
