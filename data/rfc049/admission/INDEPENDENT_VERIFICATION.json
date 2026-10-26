@@ -1,0 +1,424 @@
+{
+  "artifact": "RFC049B_INDEPENDENT_VERIFICATION",
+  "generated_at_utc": "2026-10-10T16:12:35Z",
+  "verifier": "scripts/rfc049b_verify.py",
+  "builder": "scripts/rfc049b_admission.py",
+  "builder_imported": false,
+  "shared_code_with_builder": false,
+  "method": "every reported number is recomputed from the frozen inputs and the retained primary-source evidence with an independent implementation; negative controls tamper with copies and must be detected",
+  "status": "PASS",
+  "checks_total": 66,
+  "checks_failed": 0,
+  "checks": [
+    {
+      "check": "frozen_spec_unchanged:H-049-001",
+      "result": "PASS",
+      "detail": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88"
+    },
+    {
+      "check": "frozen_spec_unchanged:H-049-002",
+      "result": "PASS",
+      "detail": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0"
+    },
+    {
+      "check": "frozen_dataset_unchanged:BTC-USDT_1d.json",
+      "result": "PASS",
+      "detail": "data/raw/alpha001/BTC-USDT_1d.json"
+    },
+    {
+      "check": "frozen_dataset_unchanged:ETH-USDT_1d.json",
+      "result": "PASS",
+      "detail": "data/raw/alpha001/ETH-USDT_1d.json"
+    },
+    {
+      "check": "frozen_dataset_unchanged:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "defillama_stablecoin_supply_all.json"
+    },
+    {
+      "check": "frozen_dataset_unchanged:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "blockchain_info_hashrate_8y.json"
+    },
+    {
+      "check": "frozen_dataset_unchanged:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "blockchain_info_miners_revenue_all.json"
+    },
+    {
+      "check": "frozen_dataset_unchanged:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "fred_WALCL.csv"
+    },
+    {
+      "check": "frozen_dataset_unchanged:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "fred_RRPONTSYD.csv"
+    },
+    {
+      "check": "frozen_dataset_unchanged:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "fred_WTREGEN.csv"
+    },
+    {
+      "check": "frozen_dataset_unchanged:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "fred_DFII10.csv"
+    },
+    {
+      "check": "frozen_dataset_unchanged:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "fred_DTWEXBGS.csv"
+    },
+    {
+      "check": "frozen_dataset_unchanged:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "fred_DFF.csv"
+    },
+    {
+      "check": "vendor_bytes_unchanged:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "defillama_stablecoin_supply_all.json"
+    },
+    {
+      "check": "vendor_bytes_unchanged:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "blockchain_info_hashrate_8y.json"
+    },
+    {
+      "check": "vendor_bytes_unchanged:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "blockchain_info_miners_revenue_all.json"
+    },
+    {
+      "check": "vendor_bytes_unchanged:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "fred_WALCL.csv"
+    },
+    {
+      "check": "vendor_bytes_unchanged:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "fred_RRPONTSYD.csv"
+    },
+    {
+      "check": "vendor_bytes_unchanged:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "fred_WTREGEN.csv"
+    },
+    {
+      "check": "vendor_bytes_unchanged:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "fred_DFII10.csv"
+    },
+    {
+      "check": "vendor_bytes_unchanged:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "fred_DTWEXBGS.csv"
+    },
+    {
+      "check": "vendor_bytes_unchanged:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "fred_DFF.csv"
+    },
+    {
+      "check": "stable:rows",
+      "result": "PASS",
+      "detail": "3238"
+    },
+    {
+      "check": "stable:first_last",
+      "result": "PASS",
+      "detail": "2017-11-29..2026-10-10"
+    },
+    {
+      "check": "stable:contiguous",
+      "result": "PASS",
+      "detail": "gaps=0"
+    },
+    {
+      "check": "stable:peg_factor_range",
+      "result": "PASS",
+      "detail": "min=0.974648 max=1.008596"
+    },
+    {
+      "check": "stable:valuation_divergence",
+      "result": "PASS",
+      "detail": "0.025119759156405075"
+    },
+    {
+      "check": "stable:refetch_evidence_retained",
+      "result": "PASS",
+      "detail": "refetch_defillama.json"
+    },
+    {
+      "check": "stable:no_settled_revision",
+      "result": "PASS",
+      "detail": "recomputed 0 settled revisions from the retained re-fetch"
+    },
+    {
+      "check": "macro:h41_release_date",
+      "result": "PASS",
+      "detail": "October 08, 2026"
+    },
+    {
+      "check": "macro:h41_total_assets_matches_WALCL",
+      "result": "PASS",
+      "detail": "h41=6747560.0 frozen=6747560.0"
+    },
+    {
+      "check": "macro:h41_tga_week_average_matches_WTREGEN",
+      "result": "PASS",
+      "detail": "h41=[880253.0] frozen=880253.0"
+    },
+    {
+      "check": "macro:nyfed_rrp_identity",
+      "result": "PASS",
+      "detail": "operations=7 mismatches=[]"
+    },
+    {
+      "check": "macro:dts_corroborates_h41_wednesday",
+      "result": "PASS",
+      "detail": "dts 2026-10-06=885414.0 vs h41 wednesday [885783.0]"
+    },
+    {
+      "check": "macro:units:WALCL",
+      "result": "PASS",
+      "detail": "Millions of U.S. Dollars"
+    },
+    {
+      "check": "macro:units:RRPONTSYD",
+      "result": "PASS",
+      "detail": "Billions of US Dollars"
+    },
+    {
+      "check": "macro:units:WTREGEN",
+      "result": "PASS",
+      "detail": "Millions of U.S. Dollars"
+    },
+    {
+      "check": "macro:walcl_not_restated",
+      "result": "PASS",
+      "detail": "changed=0"
+    },
+    {
+      "check": "macro:rrp_revision_exposure_measured",
+      "result": "PASS",
+      "detail": "changed=4"
+    },
+    {
+      "check": "macro:tga_unit_restatement_measured",
+      "result": "PASS",
+      "detail": "changed=847"
+    },
+    {
+      "check": "sources:SRC-049-003:quote_relocatable",
+      "result": "PASS",
+      "detail": "anchor=primary market quote_chars=1500"
+    },
+    {
+      "check": "sources:SRC-049-003:anchor_present",
+      "result": "PASS",
+      "detail": "primary market"
+    },
+    {
+      "check": "sources:SRC-049-007:quote_relocatable",
+      "result": "PASS",
+      "detail": "anchor=global liquidity quote_chars=1083"
+    },
+    {
+      "check": "sources:SRC-049-007:anchor_present",
+      "result": "PASS",
+      "detail": "global liquidity"
+    },
+    {
+      "check": "sources:SRC-049-002:abstract_relocatable",
+      "result": "PASS",
+      "detail": "abstract_chars=1099"
+    },
+    {
+      "check": "sources:SRC-049-005:doi",
+      "result": "PASS",
+      "detail": "10.3390/fintech5030068"
+    },
+    {
+      "check": "sources:SRC-049-005:journal_corrects_phase_a",
+      "result": "PASS",
+      "detail": "registry said JRFM; registration agency says FinTech"
+    },
+    {
+      "check": "sources:SRC-049-005:counter_evidence_substance_visible",
+      "result": "PASS",
+      "detail": "the abstract states the analysis accounts for the depegging of stablecoins"
+    },
+    {
+      "check": "sources:SRC-049-006:identity_verified_though_unread",
+      "result": "PASS",
+      "detail": "candidates=['10.2139/ssrn.4904716', '10.2139/ssrn.3720039', '10.3390/jrfm13110263']"
+    },
+    {
+      "check": "sources:SRC-049-004:derived_text_retained",
+      "result": "PASS",
+      "detail": "philly_wp26-24.extracted.txt"
+    },
+    {
+      "check": "sources:SRC-049-004:quote_is_in_retained_text",
+      "result": "PASS",
+      "detail": "quote_chars=1500"
+    },
+    {
+      "check": "sources:SRC-049-004:direction_tokens_present",
+      "result": "PASS",
+      "detail": "{\"lifeline\": true, \"muted\": true, \"stabilizing\": true}"
+    },
+    {
+      "check": "sources:SRC-049-004:read_level_is_full_text",
+      "result": "PASS",
+      "detail": "FULL_TEXT_VERIFIED"
+    },
+    {
+      "check": "feasibility:H-049-001:round_trips",
+      "result": "PASS",
+      "detail": "recomputed 23 vs reported 23"
+    },
+    {
+      "check": "feasibility:H-049-002:round_trips",
+      "result": "PASS",
+      "detail": "recomputed 48 vs reported 48"
+    },
+    {
+      "check": "independence:agreement_rate",
+      "result": "PASS",
+      "detail": "recomputed 0.4951 vs reported 0.4938"
+    },
+    {
+      "check": "independence:jaccard",
+      "result": "PASS",
+      "detail": "recomputed 0.3121 vs reported 0.3121"
+    },
+    {
+      "check": "pit:no_look_ahead_in_frozen_rules",
+      "result": "PASS",
+      "detail": "recomputed violations=0"
+    },
+    {
+      "check": "pit:reported_violations_are_zero",
+      "result": "PASS",
+      "detail": "both hypotheses report zero availability violations"
+    },
+    {
+      "check": "governance:unchanged",
+      "result": "PASS",
+      "detail": "{\"DISCOVERY_CAMPAIGN_FAILED\": true, \"LIVE_TRADING\": \"DISABLED\", \"NEXT_CAMPAIGN\": \"NOT_AUTHORIZED\", \"PROFITABILITY_VERIFIED\": false, \"TRADES_AUTHORIZED\": 0}"
+    },
+    {
+      "check": "labels:no_forbidden_claim",
+      "result": "PASS",
+      "detail": "no artifact asserts a forbidden claim (the governance flags appear only as false, which is the point of reporting them)"
+    },
+    {
+      "check": "no_returns:no_economic_quantity_present",
+      "result": "PASS",
+      "detail": "[]"
+    },
+    {
+      "check": "scope:no_oos_opened",
+      "result": "PASS",
+      "detail": "the sealed window is untouched"
+    },
+    {
+      "check": "scope:experiments_zero",
+      "result": "PASS",
+      "detail": "0"
+    },
+    {
+      "check": "report:admission_states_declared",
+      "result": "PASS",
+      "detail": "READY_FOR_AUTHORIZED_TEST / READY_FOR_AUTHORIZED_TEST"
+    },
+    {
+      "check": "evidence:retained_hashes_match",
+      "result": "PASS",
+      "detail": "[]"
+    }
+  ],
+  "negative_controls": [
+    {
+      "control": "fabricated_round_trip_count",
+      "result": "DETECTED",
+      "detail": "an inflated count is only accepted by a verifier that copies the field"
+    },
+    {
+      "control": "lost_trade_changes_count",
+      "result": "DETECTED",
+      "detail": "23 -> 22"
+    },
+    {
+      "control": "weakened_threshold_detected",
+      "result": "DETECTED",
+      "detail": "the threshold was removed from the copy, so a threshold audit must fail it"
+    },
+    {
+      "control": "governance_drift_detected",
+      "result": "DETECTED",
+      "detail": "a flipped authorization flag cannot pass a governance check"
+    },
+    {
+      "control": "missing_artifact_detected",
+      "result": "DETECTED",
+      "detail": "absent artifact"
+    },
+    {
+      "control": "injected_return_quantity_detected",
+      "result": "DETECTED",
+      "detail": "net_pnl injected into a report copy"
+    },
+    {
+      "control": "tampered_vendor_byte_detected",
+      "result": "DETECTED",
+      "detail": "single-byte tamper changes the digest"
+    },
+    {
+      "control": "future_input_detected",
+      "result": "DETECTED",
+      "detail": "an input dated after the decision instant violates the availability rule"
+    },
+    {
+      "control": "affirmative_claim_detected",
+      "result": "DETECTED",
+      "detail": "an injected PROFITABILITY_VERIFIED=true is caught; the honest false flag is not"
+    },
+    {
+      "control": "units_tamper_detected",
+      "result": "DETECTED",
+      "detail": "WTREGEN is not billions, so a tampered claim of billions would fail"
+    },
+    {
+      "control": "opened_oos_detected",
+      "result": "DETECTED",
+      "detail": "an opened sealed window is a stop condition, not a detail"
+    },
+    {
+      "control": "stale_evidence_detected",
+      "result": "DETECTED",
+      "detail": "the evidence index hash matches the retained vintage file"
+    }
+  ],
+  "negative_controls_total": 12,
+  "negative_controls_missed": [],
+  "FALSE_SUCCESS": 0,
+  "verified_artifacts": {
+    "ADMISSION_AUDIT.json": "146bdbfac73d9662a6c75bdc4d3e5e587a5c2122906ffc18270259a310199f01",
+    "PIT_SOURCE_VERIFICATION.json": "1c37a4857bdc33af212e57c46e70865e8c0fec60445f718b3bbedfcab0d68467",
+    "OOS_SAMPLE_FEASIBILITY.json": "7474606612b6fdc5af6e9b100e92f4aa84b8ba2b67f0da7c70b45a20f8b4bae9",
+    "HYPOTHESIS_INDEPENDENCE.md": "3d0987e9417c3f30471528878d3cad2099b531fae89dca87670fdbda77f6e675",
+    "FINAL_ADMISSION_REPORT.json": "362d692e50d9c4dfcdd09c4c70f35f7b6c2c91348b732e52c116277a98cae398",
+    "FINAL_ADMISSION_REPORT.md": "3859496ce929e375c424a189c75fc93c2377d92d4e750639ca8ac0ee680b63f1"
+  },
+  "scope": {
+    "returns_computed": false,
+    "pnl_computed": false,
+    "oos_opened": false,
+    "experiments_executed": 0,
+    "trading": "not performed"
+  }
+}

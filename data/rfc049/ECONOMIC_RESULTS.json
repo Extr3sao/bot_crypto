@@ -1,0 +1,39 @@
+{
+  "artifact": "RFC049_ECONOMIC_RESULTS",
+  "status": "NOT_RUN",
+  "reason": "NEXT_CAMPAIGN=NOT_AUTHORIZED — economic campaign not authorized",
+  "generated_at_utc": "2026-10-10T11:26:20Z",
+  "no_result_claim": true,
+  "runs": [],
+  "run_schema_per_RFC049_section_27": {
+    "run_id": null,
+    "commit": null,
+    "environment": null,
+    "strategy_spec_hash": null,
+    "dataset_hash": null,
+    "cost_model_hash": null,
+    "risk_policy_hash": null,
+    "timestamp_utc": null,
+    "trades": null,
+    "metrics": null,
+    "errors": null,
+    "verifier_result": null
+  },
+  "frozen_reference": {
+    "frozen_specs": [
+      "H-049-001",
+      "H-049-002"
+    ],
+    "deferred_specs": [
+      "H-049-003"
+    ],
+    "sealed_oos_start_utc": "2026-10-11T00:00:00Z"
+  },
+  "candidate_states_per_RFC049_section_23": {
+    "H-049-001": "NOT_ADMITTED_FOR_EVALUATION",
+    "H-049-002": "NOT_ADMITTED_FOR_EVALUATION",
+    "H-049-003": "RESEARCH_CANDIDATE"
+  },
+  "consolidated_state": "DISCOVERY2_NOT_AUTHORIZED",
+  "note": "this file is a contract, not a report: it must never be overwritten with results until the campaign is authorized, and any future run must append its own run entry"
+}

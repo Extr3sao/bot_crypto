@@ -1,0 +1,195 @@
+{
+ "schema": "wp00307-python-pins/1",
+ "scanned_json_files": 417,
+ "skipped_files": 3,
+ "pinned_python_paths": {
+  "scripts/active_economic_audit.py": [
+   "data/recovery/RUN_REPORT.json",
+   "data/recovery/wp7/evidence/PRODUCER_PINS.json"
+  ],
+  "scripts/autonomous_paper.py": [
+   "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+  ],
+  "scripts/campaign_state_view.py": [
+   "data/recovery/RUN_REPORT.json"
+  ],
+  "scripts/cost_barrier.py": [
+   "data/recovery/wp7/evidence/PRODUCER_PINS.json"
+  ],
+  "scripts/cost_barrier_explorer.py": [
+   "data/recovery/wp7/evidence/PRODUCER_PINS.json"
+  ],
+  "scripts/cost_barrier_gate.py": [
+   "data/recovery/wp7/COST_BARRIER_ADVERSARIAL_REPORT.json"
+  ],
+  "scripts/cost_barrier_verify.py": [
+   "data/recovery/wp7/evidence/PRODUCER_PINS.json"
+  ],
+  "scripts/paper_lab_research.py": [
+   "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+  ],
+  "scripts/recovery_verify.py": [
+   "data/recovery/RUN_REPORT.json"
+  ],
+  "scripts/rfc010_baseline_replay.py": [
+   "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+  ],
+  "scripts/rfc021_ledger_pit.py": [
+   "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+  ],
+  "scripts/rfc048_derive_instruments.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "scripts/rfc048_report.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "scripts/rfc048_run.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "scripts/rfc048_verify.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "scripts/rfc048v_certify.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "scripts/rfc048v_falsify.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "scripts/rfc048v_runtime_authority.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "scripts/st6_close_replay.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json",
+   "data/st6/ST6_VERSIONING_REPORT.json"
+  ],
+  "scripts/st6_close_verify.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json",
+   "data/st6/ST6_VERSIONING_REPORT.json"
+  ],
+  "scripts/st6_forward_regime.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json",
+   "data/st6/ST6_VERSIONING_REPORT.json"
+  ],
+  "scripts/st6_health_check.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json",
+   "data/st6/ST6_VERSIONING_REPORT.json"
+  ],
+  "scripts/st6_scheduler_evidence.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json"
+  ],
+  "scripts/st6_scheduler_verify.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json",
+   "data/st6/ST6_VERSIONING_REPORT.json"
+  ],
+  "scripts/st6_scheduler_witness.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json"
+  ],
+  "scripts/st6_slot_ledger.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json"
+  ],
+  "scripts/st6_state_snapshot.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json",
+   "data/st6/ST6_VERSIONING_REPORT.json"
+  ],
+  "scripts/start_paper_trading.py": [
+   "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+  ],
+  "src/trading_bot/research/microstructure/cost_model_v3.py": [
+   "data/recovery/COST_BARRIER_EXPLORER.json"
+  ],
+  "src/trading_bot/risk/futures/__init__.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures/contracts.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures/costs.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures/engine.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures/instruments.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures/integration.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures/margin.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures/portfolio.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures/sizing.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures_falsification.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "src/trading_bot/risk/futures_verification.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "tests/unit/research/test_active_recovery_wp.py": [
+   "data/recovery/RUN_REPORT.json"
+  ],
+  "tests/unit/research/test_st6_scheduler.py": [
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+   "data/st6/snapshots/ST6_LIVE_STATE_20261009T163535Z.json",
+   "data/st6/ST6_VERSIONING_REPORT.json"
+  ],
+  "tests/unit/risk/test_futures_falsification_regressions.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "tests/unit/risk/test_futures_independent_verifier.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "tests/unit/risk/test_futures_risk_engine.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ],
+  "tests/unit/risk/test_futures_runtime_integration.py": [
+   "data/rfc048/INDEPENDENT_CERTIFICATION.json"
+  ]
+ }
+}

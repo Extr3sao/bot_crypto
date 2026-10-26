@@ -1,0 +1,68 @@
+{
+ "schema": "wp00307-final-report/1",
+ "work_package": "WP-003-07",
+ "generated_at_utc": "2026-10-23T11:30:58Z",
+ "answers": {
+  "commits_and_branches": {
+   "base": "1d2192b0",
+   "format_commit": "026ea574c32ab15a477d70e850cc9fecbdf1ec47",
+   "branch": "recovery/trunk-format-001",
+   "main": "untouched at 1d2192b0",
+   "origin_main": "untouched at 5e6f9632"
+  },
+  "integrated": "nothing was merged and nothing was rebased; the isolated branch applies the project formatter to 409 files and leaves 24 pinned files byte-identical",
+  "not_integrated": "24 pinned files, listed with the artefact that pins each one; the 6 red research nodes and the cobertura/pip-audit gates are untouched",
+  "tests_and_ci": {
+   "specific": "6 pin tests red before the exemptions, green after",
+   "regression": "NO_NEW_FAILURES",
+   "ci": "NOT_PERFORMED"
+  },
+  "blockers": [
+   "24 files cannot be formatted while their certification records are in force",
+   "coverage 62.34 % against a 90 % gate is a policy decision",
+   "pip-audit 80 advisories on the base is a policy decision",
+   "the 95 red research nodes are pre-existing and untouched",
+   "CI cannot run for this branch: the workflow only triggers on main"
+  ],
+  "paper": "unchanged: no runtime file, config, rule or dataset was modified",
+  "next_step": "decide whether to re-certify the 24 pins (regenerate PRODUCER_PINS, the cost barrier certification and the active economic audit, then format the remaining 24) or to keep the pins permanent and exempt the files in CI"
+ },
+ "dimensions": {
+  "FORMAT_ONLY": {
+   "result": "PASS",
+   "basis": "409 files, AST identical, 7305 comments identical"
+  },
+  "NO_NEW_FAILURES": {
+   "result": "NO_NEW_FAILURES",
+   "basis": "0 new red nodes out of 95"
+  },
+  "GATE_DEBT_ADDED": {
+   "result": "NONE",
+   "basis": "lint +0, mypy +0, collection +0"
+  },
+  "INDEPENDENT_VERIFICATION": {
+   "result": "PASS_WITH_DECLARED_RESIDUAL",
+   "basis": "8 checks, 6/6 controls"
+  },
+  "CI": {
+   "result": "NOT_PERFORMED",
+   "basis": "workflow only triggers on main"
+  },
+  "MAIN_UNTOUCHED": {
+   "result": "PASS",
+   "basis": "1d2192b0 locally, 5e6f9632 on origin"
+  }
+ },
+ "limitations": [
+  "The verifier compares AST, comment tokens and literal values; it does not compare rendered output, so a change in whitespace-only string content outside a docstring would show as a content change and fail rather than pass silently.",
+  "The suite comparison is one run per side on a Windows host with a shared .venv; it does not control for test order beyond what pytest's own collection provides.",
+  "The 24-file exemption set is derived from artefacts present at the base commit; a new pin added later would need the same treatment."
+ ],
+ "status": {
+  "WP_STATUS": "PASS",
+  "TRUNK_STATUS": "PARTIAL (format debt 433 -> 24, all pinned; lint/mypy/collection unchanged)",
+  "CI_STATUS": "NOT_PERFORMED",
+  "RUNTIME_STATUS": "PASS (suite identical to base, 95 red nodes unchanged)",
+  "FALSE_SUCCESS": 0
+ }
+}

@@ -2,6 +2,13 @@
 
 Replaces the TSK-105 stub with a real paper-trade simulator.
 No real orders, no exchange connection, no credentials.
+
+Fail-loud contract (DEF-3, paper operational phase): an order without a
+risk-approved ``notional_usdt`` raises ``BrokerOrderError`` — the broker
+never invents sizing, and silent fallbacks are forbidden on the decision
+path. Exceptions raised here are caught by ``PaperCycleEngine`` (stage
+``broker``, reason recorded, zero orders) or propagate to the session
+runner, which fails the session explicitly.
 """
 
 from __future__ import annotations
@@ -17,6 +24,16 @@ from trading_bot.strategies.types import Signal
 from .types import PaperExecutionSummary
 
 
+class BrokerOrderError(Exception):
+    """Raised when an order cannot be constructed deterministically.
+
+    The paper broker NEVER invents sizing: if a signal arrives without the
+    risk-approved ``notional_usdt`` metadata, this is a pipeline integrity
+    failure (Risk must have sized the order) — fail loud, never fall back to
+    a silent equity percentage.
+    """
+
+
 @dataclass(frozen=True, slots=True)
 class PaperPosition:
     """An open paper position."""
@@ -30,6 +47,9 @@ class PaperPosition:
     take_profit_pct: float
     opened_at: float = field(default_factory=time.time)
     entry_commission: float = 0.0  # tracked for true-net PnL at close
+    # AUDIT-V1 provenance: originating strategy (travels to ClosedTrade for
+    # PnL-by-strategy attribution).
+    strategy_name: str = ""
 
     @property
     def stop_loss_price(self) -> float:
@@ -47,6 +67,21 @@ class PaperPosition:
         if self.side == "buy":
             return (current_price - self.entry_price) * self.quantity
         return (self.entry_price - current_price) * self.quantity
+
+    def to_row(self) -> dict[str, Any]:
+        """JSON-safe row for the durable state store (GAP-R1)."""
+        return {
+            "symbol": self.symbol,
+            "side": self.side,
+            "entry_price": self.entry_price,
+            "quantity": self.quantity,
+            "notional_usdt": self.notional_usdt,
+            "stop_loss_pct": self.stop_loss_pct,
+            "take_profit_pct": self.take_profit_pct,
+            "opened_at": self.opened_at,
+            "entry_commission": self.entry_commission,
+            "strategy_name": self.strategy_name,
+        }
 
     def check_exit(self, current_price: float) -> str | None:
         """Check if SL or TP is hit. Returns 'stop_loss' | 'take_profit' | None."""
@@ -76,6 +111,7 @@ class ClosedTrade:
     exit_reason: str  # stop_loss / take_profit / signal
     opened_at: float
     closed_at: float
+    strategy_name: str = ""  # AUDIT-V1 provenance
 
 
 class PaperBroker:
@@ -105,6 +141,12 @@ class PaperBroker:
         self._closed_trades: list[ClosedTrade] = []
         self._fills_opened = 0
         self._fills_closed = 0
+        # BURN-IN-V1 DEF-101: count of closed trades already reported to the
+        # risk engine. reconcile_session reports ONLY the delta each call,
+        # so the runner never re-feeds historical PnL into RiskManager
+        # (a cumulative double-count that inflated trades_today/daily_pnl
+        # until the daily trade limit vetoed everything).
+        self._risk_reported_closed = 0
         self._risk_events: list[str] = []
         self._log = structlog.get_logger("paper_broker")
 
@@ -115,6 +157,11 @@ class PaperBroker:
     @property
     def positions(self) -> dict[str, PaperPosition]:
         return dict(self._positions)
+
+    @property
+    def closed_trades(self) -> list[ClosedTrade]:
+        """Read-only view of realized trades (observability/recovery)."""
+        return list(self._closed_trades)
 
     def __enter__(self) -> PaperBroker:
         return self
@@ -154,11 +201,17 @@ class PaperBroker:
         else:
             fill_price = signal.price / slippage_mult
 
-        # Compute quantity from position size in metadata
-        notional = signal.metadata.get("notional_usdt", 0.0)
+        # Compute quantity from position size in metadata.
+        # Risk authority invariant: execute_signal is only reachable with a
+        # risk-approved size; a missing/invalid notional means the signal
+        # bypassed the RiskManager rebuild — reject loudly instead of
+        # silently sizing at an arbitrary equity fraction (false success).
+        notional = float(signal.metadata.get("notional_usdt", 0.0) or 0.0)
         if notional <= 0:
-            # Fallback: use 1% of equity
-            notional = self._equity * 0.01
+            raise BrokerOrderError(
+                f"signal for {symbol} lacks risk-approved notional_usdt metadata "
+                "(pipeline integrity: order must be sized by RiskManager)"
+            )
 
         quantity = notional / fill_price
         commission = notional * (self._commission_bps / 10_000.0)
@@ -175,6 +228,7 @@ class PaperBroker:
             stop_loss_pct=sl_pct,
             take_profit_pct=tp_pct,
             entry_commission=commission,
+            strategy_name=str(signal.strategy_name or ""),
         )
 
         self._positions[symbol] = position
@@ -231,6 +285,7 @@ class PaperBroker:
             exit_reason=reason,
             opened_at=pos.opened_at,
             closed_at=time.time(),
+            strategy_name=pos.strategy_name,
         )
 
         self._closed_trades.append(trade)
@@ -256,6 +311,13 @@ class PaperBroker:
         Uses only the close price. For OHLC-based checking, use
         ``check_positions_ohlc`` instead.
 
+        Fail-closed (DEF-205): prices <= 0 are NEVER valid mark prices.
+        An inactive scanner snapshot carries ``last_price=0.0``; honoring
+        it would close positions at price zero (observed in
+        PAPER-BURN-IN-V2: BTC position closed at 0 → -100% notional loss
+        and a cascading Daily loss limit lockout). Such prices are
+        skipped exactly like missing ones.
+
         Returns list of closed trades (if any SL/TP triggered).
         """
         closed: list[ClosedTrade] = []
@@ -264,7 +326,7 @@ class PaperBroker:
             if symbol not in self._positions:
                 continue
             price = prices.get(symbol)
-            if price is None:
+            if price is None or price <= 0:
                 continue
             pos = self._positions[symbol]
             exit_reason = pos.check_exit(price)
@@ -377,6 +439,10 @@ class PaperBroker:
         """Reconcile: check positions against latest snapshot prices.
 
         This is called by PaperSessionRunner after the scanner run.
+        Returns the FULL ledger (observability/reporting), but the
+        ``new_closed_trades`` field carries only the delta since the last
+        call — the runner feeds THAT to RiskManager (DEF-101: re-feeding
+        the whole ledger double-counted PnL and trade counts).
         """
         # Build price map from snapshots
         prices: dict[str, float] = {}
@@ -389,14 +455,109 @@ class PaperBroker:
         # Check positions
         self.check_positions(prices)
 
+        new_closed = tuple(self._closed_trades[self._risk_reported_closed :])
+        # Advance the report cursor: the caller feeds exactly this delta to
+        # the risk engine, so the next reconcile must not re-report it.
+        self._risk_reported_closed = len(self._closed_trades)
         return PaperExecutionSummary(
             fills_opened=self._fills_opened,
             fills_closed=self._fills_closed,
             closed_trades=tuple(self._closed_trades),
+            new_closed_trades=new_closed,
             realized_pnl=sum(t.pnl for t in self._closed_trades),
             ending_equity=self._equity,
             risk_events=tuple(self._risk_events),
         )
 
+    # -- mark-to-market (AUDIT-V1 §13) ----------------------------------------
 
-__all__ = ["ClosedTrade", "PaperBroker", "PaperPosition"]
+    def unrealized_pnl(self, prices: dict[str, float]) -> float:
+        """Sum unrealized PnL over open positions at valid PIT prices.
+
+        Positions without a price in ``prices`` are skipped (never guessed):
+        the caller passes the latest closed-candle closes per symbol.
+        """
+        total = 0.0
+        for symbol, pos in self._positions.items():
+            price = prices.get(symbol)
+            if price is None or price <= 0:
+                continue
+            total += pos.unrealized_pnl(price)
+        return total
+
+    def mark_to_market_equity(self, prices: dict[str, float]) -> float:
+        """cash + realized + unrealized (authoritative equity + open PnL)."""
+        return self._equity + self.unrealized_pnl(prices)
+
+    # -- durable state (GAP-R1) ----------------------------------------------
+
+    def extract_state(self) -> dict[str, Any]:
+        """JSON-safe economic state for the durable store."""
+        return {
+            "equity": self._equity,
+            "initial_equity": self._initial_equity,
+            "fills_opened": self._fills_opened,
+            "fills_closed": self._fills_closed,
+        }
+
+    def closed_trades_rows(self) -> list[dict[str, Any]]:
+        """Realized trades as JSON-safe rows (true-net PnL records)."""
+        return [
+            {
+                "symbol": t.symbol,
+                "side": t.side,
+                "entry_price": t.entry_price,
+                "exit_price": t.exit_price,
+                "quantity": t.quantity,
+                "pnl": t.pnl,
+                "exit_reason": t.exit_reason,
+                "opened_at": t.opened_at,
+                "closed_at": t.closed_at,
+                "strategy_name": t.strategy_name,
+            }
+            for t in self._closed_trades
+        ]
+
+    def restore(
+        self,
+        *,
+        equity: float,
+        initial_equity: float,
+        fills_opened: int,
+        fills_closed: int,
+        open_positions: list[PaperPosition],
+        closed_trades: list[dict[str, Any]],
+    ) -> None:
+        """Replace the in-memory book with the persisted one (deterministic).
+
+        Callers must pass rows produced by ``closed_trades_rows`` (or an
+        identical shape). No validation here beyond types: the equity
+        identity check belongs to the reconciler (fail closed).
+        """
+        self._equity = float(equity)
+        self._initial_equity = float(initial_equity)
+        self._fills_opened = int(fills_opened)
+        self._fills_closed = int(fills_closed)
+        self._positions = {p.symbol: p for p in open_positions}
+        self._closed_trades = [ClosedTrade(**row) for row in closed_trades]
+        # Restored history was ALREADY accounted by Risk before the crash
+        # (counters travel in risk_state) — mark it as reported so the next
+        # reconcile_session does not re-feed it (DEF-101).
+        self._risk_reported_closed = len(self._closed_trades)
+
+    def replace_position(self, position: PaperPosition) -> None:
+        """Upsert one position (crash-recovery of the fill boundary)."""
+        self._positions[position.symbol] = position
+
+    def register_external_fill(self) -> None:
+        """Count an externally-materialized fill (reconciliation bookkeeping)."""
+        self._fills_opened += 1
+
+    def apply_pnl(self, pnl: float) -> None:
+        """Apply a realized PnL to equity without creating a trade row
+        (used only by recovery paths; normal trading always goes through
+        ``_close_position`` so the closed-trade ledger stays complete)."""
+        self._equity += float(pnl)
+
+
+__all__ = ["BrokerOrderError", "ClosedTrade", "PaperBroker", "PaperPosition"]

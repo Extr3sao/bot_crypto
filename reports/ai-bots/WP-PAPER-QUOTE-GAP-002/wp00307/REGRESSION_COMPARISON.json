@@ -1,0 +1,36 @@
+{
+ "schema": "wp00307-regression-comparison/1",
+ "method": "both runs use the same interpreter, the same repository .venv, the same command and the same markers; failures are compared by node id (path::test), not by count, so a test that fails on one side and is merely renumbered on the other cannot hide",
+ "command": "pytest -m \"not slow and not market\" -q --tb=no -p no:cacheprovider",
+ "base": {
+  "sha": "1d2192b0",
+  "tests": 3339,
+  "failures": 81,
+  "errors": 14,
+  "skipped": 31,
+  "passed": 3213,
+  "red_nodes": 95
+ },
+ "head": {
+  "sha": "8c36d9bf",
+  "tests": 3339,
+  "failures": 81,
+  "errors": 14,
+  "skipped": 31,
+  "passed": 3213,
+  "red_nodes": 95
+ },
+ "delta": {
+  "tests": 0,
+  "passed": 0,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "red_nodes": 0
+ },
+ "new_red_nodes": [],
+ "fixed_red_nodes": [],
+ "shared_red_nodes": 95,
+ "collected_node_diff": [],
+ "verdict": "NO_NEW_FAILURES"
+}

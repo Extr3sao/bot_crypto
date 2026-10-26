@@ -1,0 +1,44 @@
+{
+  "hypothesis_id": "HYP-001",
+  "candidate_id": "CAND-046-001",
+  "mechanism": "forced_flows",
+  "source_ids": [
+    "SRC-05",
+    "SRC-04",
+    "SRC-01"
+  ],
+  "statement": "When perpetual funding reaches an extreme negative z-score against its own trailing distribution, leveraged shorts are crowded and paying to stay short; the forced-flow unwind that follows is expressed as a long spot rebound, not as a carry trade.",
+  "falsification": "If long spot entries at funding extremes do not beat the audited round-trip cost of 23.7906 bps net of 1.5x stress, the forced-flow mechanism earns nothing tradable here.",
+  "asset": "BTCUSDT",
+  "strategy": "funding_capitulation",
+  "parameters": {
+    "lookback_settlements": 90,
+    "z_entry": 2.0,
+    "hold_hours": 16
+  },
+  "evidence_level": "OFFICIAL_DATA_SOURCE (SRC-05 funding history) + STRUCTURAL_MECHANISM (RFC-041 trigger B: forced flows); no publication claim registered",
+  "period": {
+    "start_ms": 1727740800000,
+    "end_ms": 1790812800000
+  },
+  "partitions": [
+    {
+      "name": "development",
+      "start_ms": 1727740800000,
+      "end_ms": 1751328000000
+    },
+    {
+      "name": "validation",
+      "start_ms": 1751328000000,
+      "end_ms": 1767225600000
+    },
+    {
+      "name": "final_oos",
+      "start_ms": 1767225600000,
+      "end_ms": 1790812800000
+    }
+  ],
+  "cost_bps": 23.7906,
+  "registered_at_utc": "2026-10-08",
+  "registered_by": "RFC-046 activation (ADR-0024); frozen before any evaluation"
+}

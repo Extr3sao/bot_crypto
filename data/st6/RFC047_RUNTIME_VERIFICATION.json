@@ -1,0 +1,92 @@
+{
+  "artifact": "RFC047_RUNTIME_VERIFICATION",
+  "blocked_by": "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED",
+  "built_at_utc": "2026-10-23T19:22:55Z",
+  "built_by": "scripts/rfc047_builder.py",
+  "candidates_corroborated_by_the_scheduler_register": 20,
+  "chain": [
+    {
+      "available": false,
+      "evidence": {
+        "channel_state": "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED",
+        "records_in_the_store": 0
+      },
+      "link": "windows_scheduled_trigger",
+      "reading": "no external record of a trigger exists: the operational channel is disabled on this host and the change that would enable it was refused without an elevated token"
+    },
+    {
+      "available": true,
+      "evidence": {
+        "exit_code": 0,
+        "process_end_utc": "2026-10-09T16:28:54Z",
+        "process_start_utc": "2026-10-09T16:28:45Z",
+        "run_id": "20261009T162845Z-c949dd7b"
+      },
+      "link": "process_execution",
+      "reading": "the run log records the process, and the scheduler's own register named the same instant while the witness was sampling"
+    },
+    {
+      "available": true,
+      "evidence": {
+        "delta_s": 72.0,
+        "scheduler_reported_instant_utc": "2026-10-09T16:27:33Z",
+        "witness_sample_id": "2026-10-09T16:31:50.326Z-8fb5203b",
+        "witness_sampled_at_utc": "2026-10-09T16:31:50.326Z"
+      },
+      "link": "scheduler_register_corroboration",
+      "reading": "a witness process that is not the tick sampled the Task Scheduler's own reporting and it named this instant; this corroborates an engine launch, never the trigger type, because the channel that names the trigger is disabled"
+    },
+    {
+      "available": true,
+      "evidence": {
+        "run_id": "20261009T162845Z-c949dd7b",
+        "slot_id": "2026-10-09#4"
+      },
+      "link": "st6_run_id",
+      "reading": "the internal identity of the run is recorded in the ledger entry of its slot"
+    },
+    {
+      "available": true,
+      "evidence": {
+        "collection_window_id": "20261009T160324Z",
+        "missed_record": null,
+        "slot_state": "COLLECTED"
+      },
+      "link": "slot_outcome",
+      "reading": "the slot's own outcome is recorded: a window was collected, or the slot was lost with a stated classification"
+    },
+    {
+      "available": true,
+      "evidence": {
+        "raw_evidence_hash": "4394eae495246217895655dac144d715c6d7f238901cf98dfb5b54936dccb33e",
+        "raw_path": null,
+        "uncompressed_sha256": null
+      },
+      "link": "evidence_reference",
+      "reading": "the market evidence of the slot is referenced by hash and re-hashable from the window index"
+    }
+  ],
+  "chain_shown_for": {
+    "collection_window_id": "20261009T160324Z",
+    "delta_s": 72.0,
+    "exit_code": 0,
+    "process_end_utc": "2026-10-09T16:28:54Z",
+    "process_start_utc": "2026-10-09T16:28:45Z",
+    "raw_evidence_hash": "4394eae495246217895655dac144d715c6d7f238901cf98dfb5b54936dccb33e",
+    "result": "SKIPPED_NO_WINDOW_DUE",
+    "run_id": "20261009T162845Z-c949dd7b",
+    "scheduler_reported_instant_utc": "2026-10-09T16:27:33Z",
+    "slot_id": "2026-10-09#4",
+    "slot_state": "COLLECTED",
+    "windows_event_state": "PRE_ENABLE_NOT_OBSERVABLE",
+    "witness_sample_id": "2026-10-09T16:31:50.326Z-8fb5203b",
+    "witness_sampled_at_utc": "2026-10-09T16:31:50.326Z"
+  },
+  "external_trigger_confirmed": false,
+  "no_run_was_induced_for_this": "no run was started by hand and none was forced outside a slot: a chain built from an induced run would prove nothing about the schedule",
+  "reason": "the strongest chain this host can actually support is shown: the process, the run identity, the slot's outcome and its evidence are all held, and the scheduler's own register corroborates the launch — but the link that would make it a *scheduled* execution in Windows' own words is missing, because the operational channel is disabled and the request to enable it was not approved",
+  "requirement": "WP-047-06 and the runtime test of RFC-047: show at least one real correlation between a Windows scheduled trigger, a process execution, an ST-6 run id, the outcome of the slot and the reference to its evidence",
+  "runtime_correlation_achieved": false,
+  "status": "RFC047_RUNTIME_CORRELATION_PARTIAL_INTERNAL_AND_SERVICE_ONLY",
+  "what_would_complete_it": "enable the operational channel with an elevated token, let the schedule run, and read the channel again: a record naming this task's launch would move the slot's external state from PRE_ENABLE_NOT_OBSERVABLE to a confirmation, and the first link of the chain would carry its record id instead of a refusal"
+}

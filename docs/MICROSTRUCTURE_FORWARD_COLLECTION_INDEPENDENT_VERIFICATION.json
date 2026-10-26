@@ -1,0 +1,911 @@
+{
+  "scope": "MICROSTRUCTURE-FORWARD-COLLECTION-V1 (forward dataset)",
+  "head": "6ee84e93fab442787c54b4f217b43a36b656fae7",
+  "environment": {
+    "source_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree",
+    "capture_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward",
+    "capture_root_is_inside_source_root": false,
+    "collector_module_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\collector.py",
+    "collector_module_is_inside_source_root": true,
+    "git_toplevel": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.verify-forward-worktree",
+    "python": "3.11.15"
+  },
+  "checks": [
+    {
+      "check": "discovery plane resolves from this repository and imports no trading runtime",
+      "expected": "no forbidden import, no unresolved module, no module outside the repository",
+      "observed": {
+        "modules": {
+          "trading_bot.research.forward.aggregation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\aggregation.py",
+          "trading_bot.research.forward.collector": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\collector.py",
+          "trading_bot.research.forward.contract": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\contract.py",
+          "trading_bot.research.forward.orderbook": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\orderbook.py",
+          "trading_bot.research.forward.replay": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\replay.py",
+          "trading_bot.research.forward.reporting": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\reporting.py",
+          "trading_bot.research.forward.resources": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\resources.py",
+          "trading_bot.research.forward.storage": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\storage.py"
+        },
+        "problems": [],
+        "unresolved": [],
+        "outside_repository": []
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "every segment fingerprint matches the bytes on disk",
+      "expected": "78 segments, sha256 + row_count",
+      "observed": {
+        "segments_on_disk": 78,
+        "segments_in_manifest": 78,
+        "problems": []
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the capture covers the required technical window",
+      "expected": ">= 3600s with every lossless stream observed",
+      "observed": {
+        "duration_seconds": 3783.341,
+        "started_at": "2026-09-28T15:40:07.810000+00:00",
+        "ended_at": "2026-09-28T16:43:11.151000+00:00",
+        "lossless_streams": {
+          "perp/BTCUSDT/agg_trade": "NO_DATA",
+          "perp/BTCUSDT/book_ticker": "OBSERVED",
+          "perp/BTCUSDT/depth_diff": "OBSERVED",
+          "perp/ETHUSDT/agg_trade": "NO_DATA",
+          "perp/ETHUSDT/book_ticker": "OBSERVED",
+          "perp/ETHUSDT/depth_diff": "OBSERVED",
+          "perp/SOLUSDT/agg_trade": "NO_DATA",
+          "perp/SOLUSDT/book_ticker": "OBSERVED",
+          "perp/SOLUSDT/depth_diff": "OBSERVED",
+          "spot/BTCUSDT/agg_trade": "OBSERVED",
+          "spot/BTCUSDT/book_ticker": "OBSERVED",
+          "spot/BTCUSDT/depth_diff": "OBSERVED",
+          "spot/ETHUSDT/agg_trade": "OBSERVED",
+          "spot/ETHUSDT/book_ticker": "OBSERVED",
+          "spot/ETHUSDT/depth_diff": "OBSERVED",
+          "spot/SOLUSDT/agg_trade": "OBSERVED",
+          "spot/SOLUSDT/book_ticker": "OBSERVED",
+          "spot/SOLUSDT/depth_diff": "OBSERVED"
+        }
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "every persisted row satisfies the raw event contract",
+      "expected": "all contract fields present, one schema version, WS transport, raw kept",
+      "observed": {
+        "rows": 5481951,
+        "schema_versions": [
+          "forward-event-v1"
+        ],
+        "missing_field_counts": {},
+        "high_frequency_rows_over_rest": 0,
+        "high_frequency_rows_without_raw": 0,
+        "keep_raw_payloads": true
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the temporal guarantee holds for every event carrying an exchange clock",
+      "expected": "event_time <= receive_time + tolerance, process_time >= receive_time, receive_time strictly monotonic within each stream",
+      "observed": {
+        "rows_with_exchange_time": 3821793,
+        "worst_network_delay_ms": -19,
+        "max_network_delay_ms": 91857,
+        "clock_tolerance_ms": 500,
+        "process_before_receive_rows": 0,
+        "per_stream_receive_time_regressions": 0,
+        "cross_stream_inversions": 18,
+        "worst_cross_stream_inversion_ms": 2,
+        "cross_stream_note": "inversions are the writer's own detection rows (gap/lifecycle) interleaved with the rows that triggered them, so they are bounded by the stamping resolution rather than by delivery; the enforced invariant is per-stream monotonicity",
+        "cross_stream_tolerance_ms": 50,
+        "manifest_clock_violations": 0
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the aggregate trade id chain is observable and explained",
+      "expected": "every id jump is declared as a gap in the manifest",
+      "observed": {
+        "per_stream": {
+          "spot/SOLUSDT": {
+            "rows": 12102,
+            "duplicates": 0,
+            "regressions": 0,
+            "repaired_out_of_order": 45,
+            "jumps": 6,
+            "max_jump": 19
+          },
+          "spot/BTCUSDT": {
+            "rows": 61471,
+            "duplicates": 0,
+            "regressions": 0,
+            "repaired_out_of_order": 400,
+            "jumps": 6,
+            "max_jump": 112
+          },
+          "spot/ETHUSDT": {
+            "rows": 50659,
+            "duplicates": 0,
+            "regressions": 0,
+            "repaired_out_of_order": 200,
+            "jumps": 6,
+            "max_jump": 54
+          }
+        },
+        "declared_sequence_gaps": 74,
+        "declared_gap_records": 18
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "every book checkpoint is reproducible by an independent implementation",
+      "expected": "coherent checkpoints (HEALTHY/STALE) match; unusable ones (INVALID/RECOVERING) are classified and every INVALID state is followed by a fresher snapshot; no HEALTHY claim on a broken chain; every checkpoint accounted for",
+      "observed": {
+        "books": {
+          "perp/BTCUSDT": {
+            "checkpoints": 118,
+            "health_tally": {
+              "HEALTHY": 114,
+              "RECOVERING": 2,
+              "STALE": 2
+            },
+            "matches": 116,
+            "unverifiable": 2,
+            "declared_unusable": 0,
+            "not_usable_differences": 0,
+            "not_usable_difference_examples": [],
+            "mismatches": 0,
+            "mismatch_examples": [],
+            "healthy_while_chain_broken": 0,
+            "unusable_windows": [
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790610698434,
+                "last_update_id": 11681123082807,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              },
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790612958632,
+                "last_update_id": 11681460384375,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              }
+            ],
+            "invalid_without_fresh_snapshot": [],
+            "unusable_windows_still_open": 0,
+            "ok": true
+          },
+          "perp/ETHUSDT": {
+            "checkpoints": 118,
+            "health_tally": {
+              "HEALTHY": 111,
+              "INVALID": 1,
+              "RECOVERING": 3,
+              "STALE": 3
+            },
+            "matches": 114,
+            "unverifiable": 4,
+            "declared_unusable": 0,
+            "not_usable_differences": 0,
+            "not_usable_difference_examples": [],
+            "mismatches": 0,
+            "mismatch_examples": [],
+            "healthy_while_chain_broken": 0,
+            "unusable_windows": [
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790610698434,
+                "last_update_id": 11681123089915,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              },
+              {
+                "health": "INVALID",
+                "at_ms": 1790611088990,
+                "last_update_id": 11681169168948,
+                "fresh_snapshot_after": true,
+                "closed": true,
+                "next_health": "HEALTHY"
+              },
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790612898549,
+                "last_update_id": 11681451855279,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              },
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790612958632,
+                "last_update_id": 11681460384363,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              }
+            ],
+            "invalid_without_fresh_snapshot": [],
+            "unusable_windows_still_open": 0,
+            "ok": true
+          },
+          "perp/SOLUSDT": {
+            "checkpoints": 118,
+            "health_tally": {
+              "HEALTHY": 110,
+              "INVALID": 1,
+              "RECOVERING": 4,
+              "STALE": 3
+            },
+            "matches": 113,
+            "unverifiable": 4,
+            "declared_unusable": 1,
+            "not_usable_differences": 1,
+            "not_usable_difference_examples": [
+              {
+                "at_ms": 1790611757091,
+                "health": "INVALID",
+                "differences": [
+                  "last_update_id: persisted=11681265233144 independently_rebuilt=11681265376826",
+                  "best_bid_qty: persisted='325.67' independently_rebuilt='616.02'",
+                  "best_ask_qty: persisted='676.32' independently_rebuilt='978.01'",
+                  "bid_depth_notional: persisted='1564517.166100' independently_rebuilt='1647511.874500'"
+                ]
+              }
+            ],
+            "mismatches": 0,
+            "mismatch_examples": [],
+            "healthy_while_chain_broken": 0,
+            "unusable_windows": [
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790610518316,
+                "last_update_id": 11681099137093,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              },
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790610698434,
+                "last_update_id": 11681123085628,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              },
+              {
+                "health": "INVALID",
+                "at_ms": 1790611757091,
+                "last_update_id": 11681265233144,
+                "fresh_snapshot_after": true,
+                "closed": true,
+                "next_health": "HEALTHY"
+              },
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790612418111,
+                "last_update_id": 11681363068004,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              },
+              {
+                "health": "RECOVERING",
+                "at_ms": 1790612958632,
+                "last_update_id": 11681460384097,
+                "fresh_snapshot_after": false,
+                "closed": true,
+                "next_health": "HEALTHY"
+              }
+            ],
+            "invalid_without_fresh_snapshot": [],
+            "unusable_windows_still_open": 0,
+            "ok": true
+          },
+          "spot/BTCUSDT": {
+            "checkpoints": 118,
+            "health_tally": {
+              "HEALTHY": 114,
+              "STALE": 4
+            },
+            "matches": 118,
+            "unverifiable": 0,
+            "declared_unusable": 0,
+            "not_usable_differences": 0,
+            "not_usable_difference_examples": [],
+            "mismatches": 0,
+            "mismatch_examples": [],
+            "healthy_while_chain_broken": 0,
+            "unusable_windows": [],
+            "invalid_without_fresh_snapshot": [],
+            "unusable_windows_still_open": 0,
+            "ok": true
+          },
+          "spot/ETHUSDT": {
+            "checkpoints": 118,
+            "health_tally": {
+              "HEALTHY": 114,
+              "STALE": 4
+            },
+            "matches": 118,
+            "unverifiable": 0,
+            "declared_unusable": 0,
+            "not_usable_differences": 0,
+            "not_usable_difference_examples": [],
+            "mismatches": 0,
+            "mismatch_examples": [],
+            "healthy_while_chain_broken": 0,
+            "unusable_windows": [],
+            "invalid_without_fresh_snapshot": [],
+            "unusable_windows_still_open": 0,
+            "ok": true
+          },
+          "spot/SOLUSDT": {
+            "checkpoints": 118,
+            "health_tally": {
+              "HEALTHY": 114,
+              "STALE": 4
+            },
+            "matches": 118,
+            "unverifiable": 0,
+            "declared_unusable": 0,
+            "not_usable_differences": 0,
+            "not_usable_difference_examples": [],
+            "mismatches": 0,
+            "mismatch_examples": [],
+            "healthy_while_chain_broken": 0,
+            "unusable_windows": [],
+            "invalid_without_fresh_snapshot": [],
+            "unusable_windows_still_open": 0,
+            "ok": true
+          }
+        },
+        "book_rows_streamed": 161181,
+        "rows_retained_for_reconstruction": 0,
+        "checkpoints_classified": {
+          "perp/BTCUSDT": 118,
+          "perp/ETHUSDT": 118,
+          "perp/SOLUSDT": 118,
+          "spot/BTCUSDT": 118,
+          "spot/ETHUSDT": 118,
+          "spot/SOLUSDT": 118
+        },
+        "unclassified_checkpoints": {
+          "perp/BTCUSDT": 0,
+          "perp/ETHUSDT": 0,
+          "perp/SOLUSDT": 0,
+          "spot/BTCUSDT": 0,
+          "spot/ETHUSDT": 0,
+          "spot/SOLUSDT": 0
+        }
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "continuity is claimed only when no data was lost",
+      "expected": "CONTINUOUS_DATA <=> zero data-loss gaps",
+      "observed": {
+        "continuity": "INCOMPLETE_DATA",
+        "data_lost_gaps": 524,
+        "data_lost_gap_seconds": 1.755,
+        "recovered_gaps": 36,
+        "gap_reasons": [
+          "AGG_TRADE_ID_JUMP",
+          "DEPTH_SEQUENCE_BREAK",
+          "WS_DISCONNECT"
+        ]
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the manifest event counts are exactly what is on disk",
+      "expected": "no stream differs",
+      "observed": {
+        "streams": 42,
+        "rows_on_disk": 5481951,
+        "differences": {}
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "replay reconstructs the capture without any network access",
+      "expected": "no socket touched; event counts, book checkpoints and fingerprints agree",
+      "observed": {
+        "replay_run_id": "forward-1790610007-9d07f3df",
+        "offline_replay": true,
+        "event_count_match": true,
+        "book_match": true,
+        "fingerprints_match": true,
+        "feature_match": true,
+        "deterministic": true,
+        "partial_tails": 0,
+        "rows": 5481951
+      },
+      "pass": true,
+      "note": "replay ok=True rows=5481951 checkpoints=708"
+    },
+    {
+      "check": "the phase left the trading core untouched",
+      "expected": "no file under the protected prefixes changed",
+      "observed": {
+        "base": "faf39927b153da2e7e6c1ef532ddd031da00e7c7",
+        "head": "6ee84e93fab442787c54b4f217b43a36b656fae7",
+        "changed_files": 50,
+        "protected_files_changed": [],
+        "changed_prefixes": [
+          "docs",
+          "pyproject.toml",
+          "scripts",
+          "src",
+          "tests",
+          "uv.lock"
+        ]
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "no artifact claims a strategy outcome and the final status is one of three",
+      "expected": "status in ['MICROSTRUCTURE_FORWARD_DATA_VERIFIED', 'MICROSTRUCTURE_FORWARD_DATA_PARTIAL', 'MICROSTRUCTURE_FORWARD_DATA_FAILED']; no profitability vocabulary",
+      "observed": {
+        "final_status": "MICROSTRUCTURE_FORWARD_DATA_VERIFIED",
+        "artifacts_present": [
+          "FORWARD_DATA_QUALITY_REPORT.json",
+          "FORWARD_DATA_REPLAY_VALIDATION.json",
+          "FORWARD_DATA_RESOURCE_REPORT.json",
+          "MICROSTRUCTURE_FORWARD_COLLECTION_FINAL.json"
+        ],
+        "overclaiming_artifacts": {}
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "every gap records an outcome its own numbers support",
+      "expected": "traceable gap_id, status in {RECOVERED_COMPLETE, RECOVERED_PARTIAL, UNRECOVERABLE}, recovered/data_lost never contradict",
+      "observed": {
+        "gaps": 803,
+        "by_status": {
+          "RECOVERED_COMPLETE": 36,
+          "RECOVERED_PARTIAL": 0,
+          "UNRECOVERABLE": 767
+        },
+        "declared_backfilled_events": 15969,
+        "problems": []
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the aggregate trade id space is fully explained by the declared holes",
+      "expected": "zero duplicate rows; missing ids == declared remaining_missing, or an unknown-width loss is declared for the stream",
+      "observed": {
+        "per_stream": {
+          "spot/SOLUSDT": {
+            "rows": 12102,
+            "min": 675653504,
+            "max": 675665605,
+            "duplicates": 0,
+            "regressions": 0,
+            "repaired_out_of_order": 45,
+            "jumps": 6,
+            "max_jump": 19,
+            "last": 675665605,
+            "expected_ids": 12102,
+            "missing_from_id_space": 0,
+            "declared_remaining_missing": 0,
+            "duplicate_rows": 0,
+            "losses_with_unknown_width": 0,
+            "ids": 12102,
+            "unexplained_missing_ids": 0
+          },
+          "spot/BTCUSDT": {
+            "rows": 61471,
+            "min": 4075973855,
+            "max": 4076035325,
+            "duplicates": 0,
+            "regressions": 0,
+            "repaired_out_of_order": 400,
+            "jumps": 6,
+            "max_jump": 112,
+            "last": 4076035325,
+            "expected_ids": 61471,
+            "missing_from_id_space": 0,
+            "declared_remaining_missing": 0,
+            "duplicate_rows": 0,
+            "losses_with_unknown_width": 0,
+            "ids": 61471,
+            "unexplained_missing_ids": 0
+          },
+          "spot/ETHUSDT": {
+            "rows": 50659,
+            "min": 2091102180,
+            "max": 2091152838,
+            "duplicates": 0,
+            "regressions": 0,
+            "repaired_out_of_order": 200,
+            "jumps": 6,
+            "max_jump": 54,
+            "last": 2091152838,
+            "expected_ids": 50659,
+            "missing_from_id_space": 0,
+            "declared_remaining_missing": 0,
+            "duplicate_rows": 0,
+            "losses_with_unknown_width": 0,
+            "ids": 50659,
+            "unexplained_missing_ids": 0
+          }
+        },
+        "problems": []
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "recovered rows are labelled and excluded from the latency distribution",
+      "expected": "backfilled rows carry detail.origin; reported p99 equals the live-only p99",
+      "observed": {
+        "labelled_backfilled_rows": 15969,
+        "manifest_backfilled_events": 15969,
+        "reported_latency_p99_ms": 62308.0,
+        "live_only_latency_p99_ms": 62308.0,
+        "live_samples": 3805824,
+        "live_delay_distinct_values": 66348,
+        "latency_note": "live delivery only; recovered rows are counted in loss.backfilled_events instead of being described as latency"
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the verified root holds exactly one capture run",
+      "expected": "every row belongs to forward-1790610007-9d07f3df",
+      "observed": {
+        "row_run_ids": [
+          "forward-1790610007-9d07f3df"
+        ],
+        "manifest_run_id": "forward-1790610007-9d07f3df"
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the storage footprint is measured, not assumed",
+      "expected": "compression ratio and GB/day recomputed from the files agree with the report",
+      "observed": {
+        "segments": 78,
+        "stored_bytes": 376477867,
+        "uncompressed_bytes": 6593584165,
+        "verifier_compression_ratio": 17.514,
+        "report_compression_ratio": 17.514,
+        "report_stored_gb_per_day": 8.598,
+        "report_raw_gb_per_day": 150.577
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the disk budget is recorded and the capture ended with sealed segments",
+      "expected": "manifest carries max_total_bytes; no segment has a partial tail",
+      "observed": {
+        "max_total_bytes": 1200000000,
+        "stopped_on_disk_budget": false,
+        "segments_with_partial_tail": [],
+        "disk_bytes_per_hour": 358233720.2,
+        "uncompressed_bytes_written": 6593584165
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "captured trade volume agrees with the venue's own klines",
+      "expected": "recomputed ratios match the artifact; worst deviation <= 2%",
+      "observed": {
+        "run_id_in_artifact": "forward-1790610007-9d07f3df",
+        "buckets_compared": 75,
+        "worst_ratio_deviation": 0.0,
+        "median_ratio": 1.0,
+        "arithmetic_agrees": true,
+        "note": "agreement means the persisted trades are the venue's trades for that minute; it is a data-quality check and carries no information about edge or returns"
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the collector coexists with the PAPER runtime without touching it",
+      "expected": "PAPER ran with the collector up (0 orders, 0 failures) and the collector kept writing throughout",
+      "observed": {
+        "paper_run_with_collector": "coexist-with_collector-3d283003",
+        "paper_run_without_collector": "coexist-without_collector-d722b4f0",
+        "with_collector": {
+          "run_id": "coexist-with_collector-3d283003",
+          "asset_cycle_evaluations": 18,
+          "orders_created": 0,
+          "paper_trades": 0,
+          "runtime_failures": 0,
+          "traces_persisted": 18,
+          "no_trades": 18,
+          "risk_APPROVED": 10,
+          "elapsed_seconds": 131.954,
+          "cycle_seconds": 21.992,
+          "collector_run_id": "forward-1790610007-9d07f3df",
+          "collector_events_during": 253119
+        },
+        "without_collector": {
+          "run_id": "coexist-without_collector-d722b4f0",
+          "asset_cycle_evaluations": 18,
+          "orders_created": 0,
+          "paper_trades": 0,
+          "runtime_failures": 0,
+          "traces_persisted": 18,
+          "no_trades": 18,
+          "risk_APPROVED": 18,
+          "elapsed_seconds": 135.119,
+          "cycle_seconds": 22.52
+        },
+        "collector_events_during": 253119
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "every row's transport label matches the source the contract declares",
+      "expected": "lossless streams are ws-only; snapshot and polling streams are never ws",
+      "observed": {
+        "by_event_type": {
+          "agg_trade": {
+            "ws": 124232
+          },
+          "book_checkpoint": {
+            "ws": 708
+          },
+          "book_ticker": {
+            "ws": 5194953
+          },
+          "depth_diff": {
+            "ws": 160219
+          },
+          "depth_snapshot": {
+            "rest_backfill": 254
+          },
+          "funding": {
+            "rest_poll": 174
+          },
+          "gap": {
+            "ws": 839
+          },
+          "heartbeat": {
+            "ws": 58
+          },
+          "lifecycle": {
+            "ws": 166
+          },
+          "mark_price": {
+            "rest_poll": 174
+          },
+          "open_interest": {
+            "rest_poll": 174
+          }
+        },
+        "problems": [],
+        "lossless_examples": [
+          "agg_trade",
+          "book_ticker",
+          "depth_diff"
+        ],
+        "rest_examples": [
+          "depth_snapshot",
+          "open_interest",
+          "funding",
+          "mark_price"
+        ]
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "a WS gap was closed by the public index, persisted once, and deduped",
+      "expected": "recovered gaps declare recovered_events > 0 and data_lost false; labelled backfill rows equal the declared total; a WS overlap was deduped and no duplicate row reached disk",
+      "observed": {
+        "gaps_recovered_complete": 36,
+        "declared_backfilled_events": 15969,
+        "labelled_backfill_rows_on_disk": 15969,
+        "live_rows_deduped_after_backfill": 554,
+        "duplicate_rows_on_disk": 0,
+        "inconsistent_recovered_gaps": [],
+        "backfill_failures": 0,
+        "backfill_deferred": 0
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the health accounting is re-derivable from the gap windows",
+      "expected": "report degraded_seconds == the verifier's union of the recorded windows (the report may add reconnect downtime, which is bounded separately)",
+      "observed": {
+        "gap_windows": 486,
+        "reconnect_downtime_windows": 81,
+        "windows": 567,
+        "union_seconds_from_manifest": 146.65,
+        "reported_degraded_seconds": 146.65,
+        "reported_healthy_seconds": 3636.691,
+        "reported_failed_seconds": 0.0,
+        "reconnect_downtime": {
+          "method": "read-side from the persisted WS_DISCONNECTED -> WS_CONNECTED lifecycle rows",
+          "cycles": 81,
+          "downtime_seconds_total": 147.996,
+          "downtime_ms_min": 1654,
+          "downtime_ms_p50": 1765.0,
+          "downtime_ms_max": 3252,
+          "per_market": {
+            "perp": {
+              "cycles": 75,
+              "downtime_seconds": 136.955,
+              "longest_ms": 3252
+            },
+            "spot": {
+              "cycles": 6,
+              "downtime_seconds": 11.041,
+              "longest_ms": 1989
+            }
+          },
+          "still_down_at_end": []
+        },
+        "collector_state_sticky": true,
+        "accounting_agrees": true
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the disk guard is armed, and a controlled low-budget run stopped cleanly",
+      "expected": "the official run records its budget and finished within it; the controlled run tripped the guard, sealed its segments, finalised its manifest and exited 0",
+      "observed": {
+        "max_total_bytes": 1200000000,
+        "stopped_on_disk_budget_official": false,
+        "controlled_run": "PASS: guard tripped, intake stopped, writer flushed and sealed, manifest finalised, exit 0",
+        "storage_capacity_verdict": "STORAGE_CAPACITY_BLOCKER",
+        "capacity_days_at_observed_rate": 0.263
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the analysis paths stream: memory does not grow with the row count",
+      "expected": "measured growth stays a small fraction of the materialised equivalent",
+      "observed": {
+        "rows_measured": 5481951,
+        "materialised_equivalent_mb": 109660.9,
+        "worst_rss_growth_mb": 42.633,
+        "ratio_vs_materialised": 0.000389,
+        "stages": [
+          "replay",
+          "aggregation",
+          "quality",
+          "daily",
+          "verifier"
+        ],
+        "bounded": true
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the writing path at HEAD is the writing path that produced the capture",
+      "expected": "collector, book, contract and CLI identical; any storage delta unreachable from the names the writer imports",
+      "observed": {
+        "capture_commit": "7fb9429e765dbf0d520e6a58df3dabacc05dbbde",
+        "head": "6ee84e93fab442787c54b4f217b43a36b656fae7",
+        "numstat": {
+          "src/trading_bot/research/forward/collector.py": "unchanged",
+          "src/trading_bot/research/forward/orderbook.py": "unchanged",
+          "src/trading_bot/research/forward/contract.py": "unchanged",
+          "src/trading_bot/research/forward/storage.py": "35\t0\tsrc/trading_bot/research/forward/storage.py",
+          "scripts/forward_collector.py": "unchanged"
+        },
+        "files": {
+          "src/trading_bot/research/forward/collector.py": {
+            "role": "writer",
+            "changed_symbols": [],
+            "identical": true
+          },
+          "src/trading_bot/research/forward/orderbook.py": {
+            "role": "writer",
+            "changed_symbols": [],
+            "identical": true
+          },
+          "src/trading_bot/research/forward/contract.py": {
+            "role": "writer",
+            "changed_symbols": [],
+            "identical": true
+          },
+          "scripts/forward_collector.py": {
+            "role": "writer",
+            "changed_symbols": [],
+            "identical": true
+          },
+          "src/trading_bot/research/forward/storage.py": {
+            "role": "shared module: the capture imports from it, the analysis path extends it",
+            "changed_symbols": [
+              "iter_segment_rows"
+            ],
+            "symbols_the_writer_imports": [
+              "CONTINUITY_CONTINUOUS",
+              "CONTINUITY_INCOMPLETE",
+              "DEFAULT_ROOT",
+              "GAP_STATUSES",
+              "GapRecord",
+              "RunManifest",
+              "SegmentWriter",
+              "StreamManifest",
+              "StreamStats",
+              "format_utc",
+              "load_resume_state",
+              "save_resume_state",
+              "stream_key_from_path"
+            ],
+            "changed_symbols_the_writer_can_reach": [],
+            "writer_binds_the_module_itself": false,
+            "identical": false
+          },
+          "src/trading_bot/research/forward/resources.py": {
+            "role": "shared module: the capture imports from it, the analysis path extends it",
+            "changed_symbols": [
+              "percentile_from_histogram"
+            ],
+            "symbols_the_writer_imports": [
+              "ResourceSampler",
+              "directory_bytes"
+            ],
+            "changed_symbols_the_writer_can_reach": [],
+            "writer_binds_the_module_itself": false,
+            "identical": false
+          }
+        },
+        "shared_modules_extended": 2,
+        "writer_modules_changed": [],
+        "changed_symbols_the_writer_can_reach": [],
+        "writer_binds_a_shared_module_itself": false,
+        "capture_code_equivalent": true,
+        "classification": "CAPTURE_CODE_EQUIVALENT",
+        "note": "the collector, book, contract and CLI are identical definition-by-definition at the capture commit and at HEAD; the shared storage and resource modules only gained read-side helpers whose names the writer never imports, so nothing the capture executed has changed"
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "a hole found inside a backfill page never restarts recovery",
+      "expected": "exactly one index request, no scheduled task, the hole stays recorded",
+      "observed": {
+        "requests": 1,
+        "deferred": 1,
+        "scheduled_tasks": 0,
+        "inner_hole_recorded": true,
+        "error": null,
+        "requested_from_ids": [
+          101
+        ]
+      },
+      "pass": true,
+      "note": ""
+    }
+  ],
+  "failures": [],
+  "status": "VERIFIED",
+  "verifier": "scripts/research_verification.py",
+  "independence_note": "run from a fresh git worktree checked out at the final HEAD; the code under test resolved inside that worktree, the captured bytes were read from an explicit root"
+}

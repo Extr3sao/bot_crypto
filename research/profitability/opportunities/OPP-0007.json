@@ -1,0 +1,52 @@
+{
+ "opportunity_id": "OPP-0007",
+ "title": "Order-flow imbalance / world order flow predicts crypto returns",
+ "source_ids": ["S-08"],
+ "economic_hypothesis": "Net aggressive order flow is the direct footprint of liquidity demand. Aggregated order flow should therefore explain contemporaneous returns and carry out-of-sample predictive power beyond standard predictors.",
+ "market": "cryptocurrency spot venues",
+ "assets": ["BTC", "major crypto"],
+ "timeframe": "intraday to weekly aggregation",
+ "entry_rules": "UNKNOWN (regression-based predictive evidence; no rule set at the level read)",
+ "exit_rules": "UNKNOWN",
+ "risk_rules": "UNKNOWN",
+ "parameters": "UNKNOWN",
+ "claimed_period": "UNKNOWN",
+ "claimed_metrics": "order flow has strong explanatory and predictive power for cryptocurrency returns out of sample, over and above standard economic predictors",
+ "transaction_cost_model": "NONE",
+ "required_data": "exchange order flow (Binance klines carry taker-buy volume, which is a usable aggregate proxy; aggTrades give the tick version)",
+ "external_code": "NONE",
+ "external_results": "Conference paper (EFMA 2025) with out-of-sample predictive results.",
+ "forward_evidence": "NONE",
+ "live_evidence": "NONE",
+ "counter_evidence": [
+  "The project has ALREADY tested this family on its own data and closed it: A-01 flow imbalance (gross +0.481 bps), A-02 large-clip imbalance (+0.031), A-03 flow + breakout (+0.614), A-06 BTC lead/lag (+0.553), all COST_KILLED against a 23.791 bps round trip (docs/AGGTRADES_RESULTS_V1.md).",
+  "The reentry policy forbids re-entering a closed family under renamed rules; a more elaborate aggregation of the same flow is not a new opportunity.",
+  "The claimed edge is a statistical predictive relation; nothing in the source shows a net-of-cost executable line."
+ ],
+ "ambiguities": [
+  "The source's 'world order flow' aggregation is not defined at the level read and is not obviously reconstructible.",
+  "No magnitude in bps per trade is available."
+ ],
+ "replication_difficulty": "LOW technically, but it is a closed line.",
+ "evidence_quality": "MEDIUM-HIGH as statistical evidence, NEGATIVE as an opportunity because the internal, better-controlled test already measured the cost kill.",
+ "selection_bias_risk": "LOW",
+ "overfitting_risk": "MEDIUM",
+ "lookahead_risk": "LOW",
+ "implementation_risk": "LOW",
+ "evidence_scores": {
+  "RULE_COMPLETENESS": 3,
+  "CODE_AVAILABILITY": 1,
+  "DATA_REPRODUCIBILITY": 4,
+  "TRANSACTION_COST_REALISM": 1,
+  "OOS_EVIDENCE": 4,
+  "FORWARD_EVIDENCE": 0,
+  "LIVE_EVIDENCE": 0,
+  "SAMPLE_SIZE": 4,
+  "INDEPENDENT_VALIDATION": 3,
+  "IMPLEMENTATION_FIDELITY": 2
+ },
+ "evidence_score_total": 22,
+ "rank": "REJECT",
+ "status": "REJECTED_CLOSED_INTERNAL_FAMILY",
+ "selection_note": "Registered explicitly so that a future reader cannot mistake the external paper for an untested opportunity: the same family was tested internally with the project's own cost model and died at the cost floor."
+}
