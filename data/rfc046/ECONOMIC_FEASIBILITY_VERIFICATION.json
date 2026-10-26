@@ -1,0 +1,17 @@
+{
+  "artifact": "RFC-046_ECONOMIC_FEASIBILITY_VERIFICATION",
+  "verifier": "scripts/rfc046_economic_gate_verify.py",
+  "builder": "scripts/rfc046_economic_gate.py",
+  "builder_equals_verifier": false,
+  "verified_artifact": "data\\rfc046\\ECONOMIC_FEASIBILITY.json",
+  "verified_artifact_sha256": "35a0a0f28b7fca29632f51efa45703e8d7ce871d74a7cbe0857086645a883b73",
+  "generated_at_utc": "2026-10-08T14:13:54Z",
+  "head": "04fa741ab3dd6fb27a7fc44d42ed4e1e439a27b5",
+  "checks_total": 168,
+  "checks_passed": 168,
+  "mismatches": 0,
+  "failures": [],
+  "false_success": 0,
+  "status": "PASS",
+  "method": "toll recomputed from the frozen JSON constants and cross-checked against the library; horizon medians recomputed from the 1-hour series with shifted windows; family verdicts re-derived from those medians; turnover and size tables recomputed; RFC-046 confirmations re-derived from the recorded artefacts; standing limits read from the governance documents"
+}

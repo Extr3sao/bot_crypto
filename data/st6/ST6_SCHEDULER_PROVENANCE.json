@@ -1,0 +1,1475 @@
+{
+  "artifact": "ST6_SCHEDULER_PROVENANCE",
+  "attendance_policy": {
+    "absence_requires_external_coverage": true,
+    "statement": "attendance may be read from the tick's own log; absence may not. A slot is called unattended only when the external record covers every instant of it and the scheduler's own last-run field named no run inside it. Where the external record does not reach, the class is UNKNOWN or UNKNOWN_RUN_LOG_TRUNCATED, and where the two records disagree the class is a conflict.",
+    "version": 2
+  },
+  "declared_schedule": {
+    "action_arguments": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime.py\" --due --scheduled",
+    "action_command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "duration": "P30D",
+    "interval_minutes": 15,
+    "reading": "the expected trigger of a slot is the declared cadence across the slot: its number is arithmetic on the registration, and no trigger is counted as having fired unless the scheduler's own record named the instant",
+    "repetition_interval": "PT15M",
+    "start_boundary_local": "2026-10-08T19:18:00",
+    "task_name": "TradingAgentic-ST6-Forward"
+  },
+  "external_record": {
+    "can_support": [
+      "the task's registration: it exists, it is enabled, its action is the declared interpreter and script, and it repeats every fifteen minutes",
+      "the most recent run, as the scheduler itself records it, sampled as often as the witness runs",
+      "a live launch, from the process table: a tick whose parent is the Task Scheduler service was launched by the schema, not by a person"
+    ],
+    "cannot_support": [
+      "an absence of execution inside any slot of this period: no external source covers those hours, so a slot with no internal event is UNKNOWN, not proven unattended",
+      "a distinction between a time-trigger launch and an engine launch asked for by hand: both are started by the Task Scheduler service and neither leaves an event here",
+      "a per-run exit status: only the most recent result is readable, and only while it is the most recent"
+    ],
+    "channels": {
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "depth": {
+            "answers_nothing": false,
+            "error": null,
+            "event_date_reading": "the tool prints an event's date in the host's local time and still ends it with a Z; the raw text is kept and the UTC instant beside it is that text minus the host's own offset, so no local instant is presented as a UTC one",
+            "exit_code": 0,
+            "file_size_bytes": 1052672,
+            "host_utc_offset_minutes": 120,
+            "newest_retained_event_raw": "2026-10-09T18:24:57.8700000Z",
+            "newest_retained_event_utc": "2026-10-09T16:24:57Z",
+            "oldest_record_number": 440,
+            "oldest_retained_event_raw": "2025-11-02T04:30:31.7920000Z",
+            "oldest_retained_event_utc": "2025-11-02T02:30:31Z",
+            "queried_with": "wevtutil gli Microsoft-Windows-TaskScheduler/Maintenance / wevtutil qe Microsoft-Windows-TaskScheduler/Maintenance /c:1 /rd:false /f:text",
+            "raw_document": "creationTime: 2025-06-19T02:39:10.3405558Z\nlastAccessTime: 2026-10-09T16:34:33.8183995Z\nlastWriteTime: 2026-10-09T16:31:42.9149201Z\nfileSize: 1052672\nattributes: 32\nnumberOfLogRecords: 2269\noldestRecordNumber: 440",
+            "raw_document_sha256": "0cb9aae75095ff9b9899aa7975c7b0fb4b4715d4335d1f6f80010f4a7383c2da",
+            "reachable": true,
+            "records_held": 2269,
+            "records_lost_reading": "the log is circular: when it fills, the oldest record is evicted and the number of the oldest record still present says how many have already gone. A record that rotated out is not recoverable from this host, and a log that was cleared by hand - a separate action, not performed here - would advance the same number.",
+            "records_no_longer_present_before_the_oldest": 439
+          },
+          "enabled": true,
+          "file": {
+            "bytes": 1052672,
+            "exists": true,
+            "last_write_utc": "2026-10-09T16:25:58Z",
+            "path": "C:\\WINDOWS\\System32\\winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Maintenance.evtx",
+            "reading": "the channel has recorded at least once on this host"
+          },
+          "latest_record_probe": "2708",
+          "log_file_as_declared": "%SystemRoot%\\System32\\Winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Maintenance.evtx",
+          "max_size_bytes": 1052672,
+          "queried_with": "wevtutil gl Microsoft-Windows-TaskScheduler/Maintenance",
+          "query_error": null,
+          "query_exit_code": 0,
+          "raw_document": "name: Microsoft-Windows-TaskScheduler/Maintenance\nenabled: true\ntype: Operational\nowningPublisher: Microsoft-Windows-TaskScheduler\nisolation: Application\nchannelAccess: O:BAG:SYD:(A;;0x2;;;S-1-15-2-1)(A;;0x2;;;S-1-15-3-1024-3153509613-960666767-3724611135-2725662640-12138253-543910227-1950414635-4190290187)(A;;0xf0007;;;SY)(A;;0x7;;;BA)(A;;0x7;;;SO)(A;;0x3;;;IU)(A;;0x3;;;SU)(A;;0x3;;;S-1-5-3)(A;;0x3;;;S-1-5-33)(A;;0x1;;;S-1-5-32-573)\nlogging:\n  logFileName: %SystemRoot%\\System32\\Winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Maintenance.evtx\n  retention: false\n  autoBackup: false\n  maxSize: 1052672\npublishing:\n  fileMax: 1",
+          "raw_document_sha256": "6e7a6723003c78a8404d00b267de19c5c1a17540c3507e6d4bdc81b0b7e6ce1e",
+          "retention_is_archive": false,
+          "retention_reading": "circular: the oldest record is evicted when the log fills"
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "depth": {
+            "answers_nothing": true,
+            "error": null,
+            "event_date_reading": "the tool prints an event's date in the host's local time and still ends it with a Z; the raw text is kept and the UTC instant beside it is that text minus the host's own offset, so no local instant is presented as a UTC one",
+            "exit_code": 0,
+            "file_size_bytes": null,
+            "host_utc_offset_minutes": 120,
+            "newest_retained_event_raw": null,
+            "newest_retained_event_utc": null,
+            "oldest_record_number": null,
+            "oldest_retained_event_raw": null,
+            "oldest_retained_event_utc": null,
+            "queried_with": "wevtutil gli Microsoft-Windows-TaskScheduler/Operational / wevtutil qe Microsoft-Windows-TaskScheduler/Operational /c:1 /rd:false /f:text",
+            "raw_document": "",
+            "raw_document_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "reachable": true,
+            "records_held": null,
+            "records_lost_reading": "the log is circular: when it fills, the oldest record is evicted and the number of the oldest record still present says how many have already gone. A record that rotated out is not recoverable from this host, and a log that was cleared by hand - a separate action, not performed here - would advance the same number.",
+            "records_no_longer_present_before_the_oldest": null
+          },
+          "enabled": false,
+          "file": {
+            "bytes": null,
+            "exists": false,
+            "last_write_utc": null,
+            "path": "C:\\WINDOWS\\System32\\winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Operational.evtx",
+            "reading": "no event file exists, so this channel has never recorded on this host: a channel that was enabled and later disabled keeps its file"
+          },
+          "latest_record_probe": "NO_EVENTS_OR_DENIED",
+          "log_file_as_declared": "%SystemRoot%\\System32\\Winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Operational.evtx",
+          "max_size_bytes": 10485760,
+          "queried_with": "wevtutil gl Microsoft-Windows-TaskScheduler/Operational",
+          "query_error": null,
+          "query_exit_code": 0,
+          "raw_document": "name: Microsoft-Windows-TaskScheduler/Operational\nenabled: false\ntype: Operational\nowningPublisher: Microsoft-Windows-TaskScheduler\nisolation: Application\nchannelAccess: O:BAG:SYD:(A;;0x2;;;S-1-15-2-1)(A;;0x2;;;S-1-15-3-1024-3153509613-960666767-3724611135-2725662640-12138253-543910227-1950414635-4190290187)(A;;0xf0007;;;SY)(A;;0x7;;;BA)(A;;0x7;;;SO)(A;;0x3;;;IU)(A;;0x3;;;SU)(A;;0x3;;;S-1-5-3)(A;;0x3;;;S-1-5-33)(A;;0x1;;;S-1-5-32-573)\nlogging:\n  logFileName: %SystemRoot%\\System32\\Winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Operational.evtx\n  retention: false\n  autoBackup: false\n  maxSize: 10485760\npublishing:\n  fileMax: 1",
+          "raw_document_sha256": "8c40bc8b7d6b1dcf7a39baeb2f3718883f21b4db96fcfdfa4a1e41443b8814c2",
+          "retention_is_archive": false,
+          "retention_reading": "circular: the oldest record is evicted when the log fills"
+        }
+      },
+      "security_log_probe": "DENIED_OR_UNAVAILABLE: Intento de realizar una operaci¢n no v lida.",
+      "security_log_readable": false,
+      "security_log_reading": "the Security channel is not readable from this session, so a per-run process-creation record could not be used even if the audit subcategory were enabled"
+    },
+    "correlation_rule": "a per-run record has to be correlated by the task's full name, its own instance and its action, with the timestamps of the start and of the action's start and finish; LastTaskResult and LastRunTime alone are the most recent values of a task, not a history, and an event id on its own — 100 against 110, a scheduled trigger against a launch asked for by hand — does not establish that the run was scheduled",
+    "event_ids_that_would_carry_a_per_run_record": [
+      {
+        "id": 100,
+        "meaning": "the task's action started: a run of this task began"
+      },
+      {
+        "id": 102,
+        "meaning": "the task's action completed, with the result code it returned"
+      },
+      {
+        "id": 107,
+        "meaning": "the task's trigger fired on its own schedule"
+      },
+      {
+        "id": 110,
+        "meaning": "the task was launched because a person asked for it"
+      },
+      {
+        "id": 200,
+        "meaning": "the action's executable was started"
+      },
+      {
+        "id": 201,
+        "meaning": "the action's executable finished, with its exit code"
+      }
+    ],
+    "event_ids_verified_against_this_installation": false,
+    "reason": "Microsoft-Windows-TaskScheduler/Operational is disabled on this host and no event file exists for it, so the channel has never recorded a single run of this task; the enabled Microsoft-Windows-TaskScheduler/Maintenance channel holds only its own maintenance events, which name no task; and the Security channel, which would carry a process-creation record if that audit subcategory were enabled and if this session could read it, is not readable here",
+    "remediation": {
+      "authorised": false,
+      "command": "wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true",
+      "privilege": "administrator",
+      "what": "enable the Task Scheduler operational channel for this host",
+      "what_it_would_give": "per-run events (100 started, 102 completed, 107/110 triggered, 200/201 action started and finished) with their own record ids, so every slot could be corroborated run by run instead of from a point-in-time sample",
+      "why_not_applied": "it changes a machine-wide audit setting, it needs an administrator, and it cannot recover the runs that have already happened: the channel records from the moment it is enabled"
+    },
+    "rotation": {
+      "artifact": "ST6_EXTERNAL_ROTATION_ASSESSMENT",
+      "channels": {
+        "Microsoft-Windows-TaskScheduler/Maintenance": {
+          "circular": true,
+          "error": null,
+          "full": true,
+          "newest_retained_event_utc": "2026-10-09T16:24:57Z",
+          "oldest_retained_event_utc": "2025-11-02T02:30:31Z",
+          "records_no_longer_present_before_the_oldest": 439,
+          "state": "RECORDS_ROTATED_OUT"
+        },
+        "Microsoft-Windows-TaskScheduler/Operational": {
+          "circular": true,
+          "error": null,
+          "full": false,
+          "newest_retained_event_utc": null,
+          "oldest_retained_event_utc": null,
+          "records_no_longer_present_before_the_oldest": null,
+          "state": "NEVER_RECORDED"
+        }
+      },
+      "does_not_authorise": "clearing, resizing, re-enabling or pruning any log: this reading is taken read-only and the loss it names cannot be repaired for the instants that have already passed",
+      "generated_at_utc": "2026-10-09T16:34:35Z",
+      "reading": "where a log is circular and has filled, its oldest records are already gone: the number of the oldest record still present is the count of what this host can no longer answer for. A channel that cannot be read at all is kept apart from one that never recorded and from an empty log — only a readable, empty channel could support the reading that it holds no run. Either way the loss is a property of the evidence, recorded so that a slot the surviving record does not cover is never called provably unattended",
+      "status": "EXTERNAL_RECORD_ROTATION_LOSS_RECORDED"
+    },
+    "status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+    "witness": {
+      "covered_from_utc": "2026-10-09T14:43:34.545Z",
+      "covered_to_utc": "2026-10-09T16:31:50.326Z",
+      "evidence_document_sha256": "5f73ea52a4cc80fd32ff8211e1fc64d71b826013410ff66d9cc4afcfcf1933b3",
+      "evidence_generated_at_utc": "2026-10-09T16:34:35Z",
+      "external_status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+      "scheduler_instants_observed": [
+        "2026-10-09T14:33:01Z",
+        "2026-10-09T14:48:01Z",
+        "2026-10-09T14:57:05Z",
+        "2026-10-09T14:58:07Z",
+        "2026-10-09T15:03:01Z",
+        "2026-10-09T16:03:01Z",
+        "2026-10-09T16:18:01Z",
+        "2026-10-09T16:24:37Z",
+        "2026-10-09T16:27:33Z"
+      ],
+      "service_launched_ticks_observed": 0,
+      "witness_log": "data/st6/ST6_SCHEDULER_WITNESS.jsonl",
+      "witness_samples": 152
+    }
+  },
+  "generated_at_utc": "2026-10-09T19:59:59Z",
+  "generated_by": "scripts/st6_slot_ledger.py",
+  "origins": {
+    "corroborated_runs": [
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T143302Z-459198d5",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T16:33:00",
+            "grid_instant_utc": "2026-10-09T14:33:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T14:33:01Z while this run event started at 2026-10-09T14:33:02Z (1.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:43:34.545Z-8c5a9569",
+              "sampled_at_utc": "2026-10-09T14:43:34.545Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:33:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:43:45.130Z-bfd0d644",
+              "sampled_at_utc": "2026-10-09T14:43:45.130Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:33:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:44:01.665Z-33f87914",
+              "sampled_at_utc": "2026-10-09T14:44:01.665Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:33:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:44:18.395Z-7d807945",
+              "sampled_at_utc": "2026-10-09T14:44:18.395Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:33:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:44:35.026Z-8c4913b5",
+              "sampled_at_utc": "2026-10-09T14:44:35.026Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:33:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T14:33:10Z",
+        "process_start_utc": "2026-10-09T14:33:02Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T144802Z-2959dd0a",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T16:48:00",
+            "grid_instant_utc": "2026-10-09T14:48:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T14:48:01Z while this run event started at 2026-10-09T14:48:02Z (1.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:48:12.112Z-b8cf9e4b",
+              "sampled_at_utc": "2026-10-09T14:48:12.112Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:48:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:48:28.771Z-9667bb8c",
+              "sampled_at_utc": "2026-10-09T14:48:28.771Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:48:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:48:45.402Z-794b2faa",
+              "sampled_at_utc": "2026-10-09T14:48:45.402Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:48:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:49:02.178Z-c202fc51",
+              "sampled_at_utc": "2026-10-09T14:49:02.178Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:48:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T14:49:18.847Z-8ceeaaae",
+              "sampled_at_utc": "2026-10-09T14:49:18.847Z",
+              "scheduler_reported_instant_utc": "2026-10-09T14:48:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T14:48:10Z",
+        "process_start_utc": "2026-10-09T14:48:02Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T150149Z-b232b634",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T17:03:00",
+            "grid_instant_utc": "2026-10-09T15:03:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T15:03:01Z while this run event started at 2026-10-09T15:01:49Z (72.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 72.0,
+              "sample_id": "2026-10-09T15:03:01.578Z-1862b239",
+              "sampled_at_utc": "2026-10-09T15:03:01.578Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 72.0,
+              "sample_id": "2026-10-09T15:03:07.186Z-8f420714",
+              "sampled_at_utc": "2026-10-09T15:03:07.186Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 72.0,
+              "sample_id": "2026-10-09T15:03:11.949Z-34c2125f",
+              "sampled_at_utc": "2026-10-09T15:03:11.949Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 72.0,
+              "sample_id": "2026-10-09T15:03:12.686Z-c71cde62",
+              "sampled_at_utc": "2026-10-09T15:03:12.686Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 72.0,
+              "sample_id": "2026-10-09T15:03:18.052Z-5619d905",
+              "sampled_at_utc": "2026-10-09T15:03:18.052Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T15:01:59Z",
+        "process_start_utc": "2026-10-09T15:01:49Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T150159Z-03b532dc",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T17:03:00",
+            "grid_instant_utc": "2026-10-09T15:03:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T15:03:01Z while this run event started at 2026-10-09T15:01:59Z (62.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 62.0,
+              "sample_id": "2026-10-09T15:03:01.578Z-1862b239",
+              "sampled_at_utc": "2026-10-09T15:03:01.578Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 62.0,
+              "sample_id": "2026-10-09T15:03:07.186Z-8f420714",
+              "sampled_at_utc": "2026-10-09T15:03:07.186Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 62.0,
+              "sample_id": "2026-10-09T15:03:11.949Z-34c2125f",
+              "sampled_at_utc": "2026-10-09T15:03:11.949Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 62.0,
+              "sample_id": "2026-10-09T15:03:12.686Z-c71cde62",
+              "sampled_at_utc": "2026-10-09T15:03:12.686Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 62.0,
+              "sample_id": "2026-10-09T15:03:18.052Z-5619d905",
+              "sampled_at_utc": "2026-10-09T15:03:18.052Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T15:02:08Z",
+        "process_start_utc": "2026-10-09T15:01:59Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": "another run holds the lease",
+        "exit_code": 2,
+        "internal_run_id": "20261009T150209Z-dcfd4c7e",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T17:03:00",
+            "grid_instant_utc": "2026-10-09T15:03:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T15:03:01Z while this run event started at 2026-10-09T15:02:09Z (52.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 52.0,
+              "sample_id": "2026-10-09T15:03:01.578Z-1862b239",
+              "sampled_at_utc": "2026-10-09T15:03:01.578Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 52.0,
+              "sample_id": "2026-10-09T15:03:07.186Z-8f420714",
+              "sampled_at_utc": "2026-10-09T15:03:07.186Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 52.0,
+              "sample_id": "2026-10-09T15:03:11.949Z-34c2125f",
+              "sampled_at_utc": "2026-10-09T15:03:11.949Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 52.0,
+              "sample_id": "2026-10-09T15:03:12.686Z-c71cde62",
+              "sampled_at_utc": "2026-10-09T15:03:12.686Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 52.0,
+              "sample_id": "2026-10-09T15:03:18.052Z-5619d905",
+              "sampled_at_utc": "2026-10-09T15:03:18.052Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T15:02:10Z",
+        "process_start_utc": "2026-10-09T15:02:09Z",
+        "raw_evidence_hash": null,
+        "result": "ALREADY_RUNNING"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T150302Z-ef1ba616",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T17:03:00",
+            "grid_instant_utc": "2026-10-09T15:03:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T15:03:01Z while this run event started at 2026-10-09T15:03:02Z (1.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T15:03:01.578Z-1862b239",
+              "sampled_at_utc": "2026-10-09T15:03:01.578Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T15:03:07.186Z-8f420714",
+              "sampled_at_utc": "2026-10-09T15:03:07.186Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T15:03:11.949Z-34c2125f",
+              "sampled_at_utc": "2026-10-09T15:03:11.949Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T15:03:12.686Z-c71cde62",
+              "sampled_at_utc": "2026-10-09T15:03:12.686Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T15:03:18.052Z-5619d905",
+              "sampled_at_utc": "2026-10-09T15:03:18.052Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T15:03:11Z",
+        "process_start_utc": "2026-10-09T15:03:02Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T150320Z-25938f66",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T17:03:00",
+            "grid_instant_utc": "2026-10-09T15:03:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T15:03:01Z while this run event started at 2026-10-09T15:03:20Z (19.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 19.0,
+              "sample_id": "2026-10-09T15:03:01.578Z-1862b239",
+              "sampled_at_utc": "2026-10-09T15:03:01.578Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 19.0,
+              "sample_id": "2026-10-09T15:03:07.186Z-8f420714",
+              "sampled_at_utc": "2026-10-09T15:03:07.186Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 19.0,
+              "sample_id": "2026-10-09T15:03:11.949Z-34c2125f",
+              "sampled_at_utc": "2026-10-09T15:03:11.949Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 19.0,
+              "sample_id": "2026-10-09T15:03:12.686Z-c71cde62",
+              "sampled_at_utc": "2026-10-09T15:03:12.686Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 19.0,
+              "sample_id": "2026-10-09T15:03:18.052Z-5619d905",
+              "sampled_at_utc": "2026-10-09T15:03:18.052Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T15:03:29Z",
+        "process_start_utc": "2026-10-09T15:03:20Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T150330Z-d836bb95",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T17:03:00",
+            "grid_instant_utc": "2026-10-09T15:03:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T15:03:01Z while this run event started at 2026-10-09T15:03:30Z (29.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 29.0,
+              "sample_id": "2026-10-09T15:03:01.578Z-1862b239",
+              "sampled_at_utc": "2026-10-09T15:03:01.578Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 29.0,
+              "sample_id": "2026-10-09T15:03:07.186Z-8f420714",
+              "sampled_at_utc": "2026-10-09T15:03:07.186Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 29.0,
+              "sample_id": "2026-10-09T15:03:11.949Z-34c2125f",
+              "sampled_at_utc": "2026-10-09T15:03:11.949Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 29.0,
+              "sample_id": "2026-10-09T15:03:12.686Z-c71cde62",
+              "sampled_at_utc": "2026-10-09T15:03:12.686Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 29.0,
+              "sample_id": "2026-10-09T15:03:18.052Z-5619d905",
+              "sampled_at_utc": "2026-10-09T15:03:18.052Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T15:03:39Z",
+        "process_start_utc": "2026-10-09T15:03:30Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": "another run holds the lease",
+        "exit_code": 2,
+        "internal_run_id": "20261009T150340Z-9091a316",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T17:03:00",
+            "grid_instant_utc": "2026-10-09T15:03:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T15:03:01Z while this run event started at 2026-10-09T15:03:40Z (39.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 39.0,
+              "sample_id": "2026-10-09T15:03:01.578Z-1862b239",
+              "sampled_at_utc": "2026-10-09T15:03:01.578Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 39.0,
+              "sample_id": "2026-10-09T15:03:07.186Z-8f420714",
+              "sampled_at_utc": "2026-10-09T15:03:07.186Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 39.0,
+              "sample_id": "2026-10-09T15:03:11.949Z-34c2125f",
+              "sampled_at_utc": "2026-10-09T15:03:11.949Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 39.0,
+              "sample_id": "2026-10-09T15:03:12.686Z-c71cde62",
+              "sampled_at_utc": "2026-10-09T15:03:12.686Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            },
+            {
+              "delta_s": 39.0,
+              "sample_id": "2026-10-09T15:03:18.052Z-5619d905",
+              "sampled_at_utc": "2026-10-09T15:03:18.052Z",
+              "scheduler_reported_instant_utc": "2026-10-09T15:03:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T15:03:41Z",
+        "process_start_utc": "2026-10-09T15:03:40Z",
+        "raw_evidence_hash": null,
+        "result": "ALREADY_RUNNING"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T160302Z-e1ba5b0b",
+        "market_requests": 22,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:03:00",
+            "grid_instant_utc": "2026-10-09T16:03:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:03:01Z while this run event started at 2026-10-09T16:03:02Z (1.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T16:04:08.042Z-8a3c9a6b",
+              "sampled_at_utc": "2026-10-09T16:04:08.042Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:03:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:03:28Z",
+        "process_start_utc": "2026-10-09T16:03:02Z",
+        "raw_evidence_hash": "4394eae495246217895655dac144d715c6d7f238901cf98dfb5b54936dccb33e",
+        "result": "COLLECTED"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T161649Z-5e0c2b8d",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:18:00",
+            "grid_instant_utc": "2026-10-09T16:18:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:18:01Z while this run event started at 2026-10-09T16:16:49Z (72.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 72.0,
+              "sample_id": "2026-10-09T16:20:38.327Z-0215dffe",
+              "sampled_at_utc": "2026-10-09T16:20:38.327Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:18:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:16:59Z",
+        "process_start_utc": "2026-10-09T16:16:49Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T161700Z-04eeb5d8",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:18:00",
+            "grid_instant_utc": "2026-10-09T16:18:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:18:01Z while this run event started at 2026-10-09T16:17:00Z (61.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 61.0,
+              "sample_id": "2026-10-09T16:20:38.327Z-0215dffe",
+              "sampled_at_utc": "2026-10-09T16:20:38.327Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:18:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:17:09Z",
+        "process_start_utc": "2026-10-09T16:17:00Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": "another run holds the lease",
+        "exit_code": 2,
+        "internal_run_id": "20261009T161709Z-62c70ec0",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:18:00",
+            "grid_instant_utc": "2026-10-09T16:18:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:18:01Z while this run event started at 2026-10-09T16:17:09Z (52.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 52.0,
+              "sample_id": "2026-10-09T16:20:38.327Z-0215dffe",
+              "sampled_at_utc": "2026-10-09T16:20:38.327Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:18:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:17:10Z",
+        "process_start_utc": "2026-10-09T16:17:09Z",
+        "raw_evidence_hash": null,
+        "result": "ALREADY_RUNNING"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T161802Z-c4a9d9b4",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:18:00",
+            "grid_instant_utc": "2026-10-09T16:18:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:18:01Z while this run event started at 2026-10-09T16:18:02Z (1.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 1.0,
+              "sample_id": "2026-10-09T16:20:38.327Z-0215dffe",
+              "sampled_at_utc": "2026-10-09T16:20:38.327Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:18:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:18:11Z",
+        "process_start_utc": "2026-10-09T16:18:02Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": "another run holds the lease",
+        "exit_code": 2,
+        "internal_run_id": "20261009T161858Z-03be233a",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:18:00",
+            "grid_instant_utc": "2026-10-09T16:18:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:18:01Z while this run event started at 2026-10-09T16:18:58Z (57.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 57.0,
+              "sample_id": "2026-10-09T16:20:38.327Z-0215dffe",
+              "sampled_at_utc": "2026-10-09T16:20:38.327Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:18:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:18:59Z",
+        "process_start_utc": "2026-10-09T16:18:58Z",
+        "raw_evidence_hash": null,
+        "result": "ALREADY_RUNNING"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T161959Z-a2ebbdf9",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:18:00",
+            "grid_instant_utc": "2026-10-09T16:18:00Z",
+            "offset_from_grid_s": 1.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "ON_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:18:01Z while this run event started at 2026-10-09T16:19:59Z (118.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 118.0,
+              "sample_id": "2026-10-09T16:20:38.327Z-0215dffe",
+              "sampled_at_utc": "2026-10-09T16:20:38.327Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:18:01Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:20:08Z",
+        "process_start_utc": "2026-10-09T16:19:59Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T162350Z-44b41811",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:18:00",
+            "grid_instant_utc": "2026-10-09T16:18:00Z",
+            "offset_from_grid_s": 397.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "OFF_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:24:37Z while this run event started at 2026-10-09T16:23:50Z (47.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 47.0,
+              "sample_id": "2026-10-09T16:25:26.919Z-b7a64083",
+              "sampled_at_utc": "2026-10-09T16:25:26.919Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:24:37Z"
+            },
+            {
+              "delta_s": 47.0,
+              "sample_id": "2026-10-09T16:27:27.205Z-3912cce9",
+              "sampled_at_utc": "2026-10-09T16:27:27.205Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:24:37Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:24:02Z",
+        "process_start_utc": "2026-10-09T16:23:50Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T162402Z-68108e38",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:18:00",
+            "grid_instant_utc": "2026-10-09T16:18:00Z",
+            "offset_from_grid_s": 397.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "OFF_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:24:37Z while this run event started at 2026-10-09T16:24:02Z (35.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 35.0,
+              "sample_id": "2026-10-09T16:25:26.919Z-b7a64083",
+              "sampled_at_utc": "2026-10-09T16:25:26.919Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:24:37Z"
+            },
+            {
+              "delta_s": 35.0,
+              "sample_id": "2026-10-09T16:27:27.205Z-3912cce9",
+              "sampled_at_utc": "2026-10-09T16:27:27.205Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:24:37Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:24:13Z",
+        "process_start_utc": "2026-10-09T16:24:02Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T162834Z-654c397a",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:33:00",
+            "grid_instant_utc": "2026-10-09T16:33:00Z",
+            "offset_from_grid_s": 327.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "OFF_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:27:33Z while this run event started at 2026-10-09T16:28:34Z (61.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 61.0,
+              "sample_id": "2026-10-09T16:31:50.326Z-8fb5203b",
+              "sampled_at_utc": "2026-10-09T16:31:50.326Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:27:33Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:28:44Z",
+        "process_start_utc": "2026-10-09T16:28:34Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T162845Z-c949dd7b",
+        "market_requests": 0,
+        "origin": "CORROBORATED_ENGINE_LAUNCH",
+        "origin_evidence": {
+          "declared_grid": {
+            "grid_instant_local": "2026-10-09T18:33:00",
+            "grid_instant_utc": "2026-10-09T16:33:00Z",
+            "offset_from_grid_s": 327.0,
+            "reading": "a launch on the declared grid is consistent with the time trigger; the operational channel is disabled on this host, so nothing here names the trigger",
+            "status": "OFF_DECLARED_GRID",
+            "tick_interval_s": 900,
+            "tolerance_s": 150
+          },
+          "detail": "the scheduler's own last-run field named 2026-10-09T16:27:33Z while this run event started at 2026-10-09T16:28:45Z (72.0 s apart), so the Task Scheduler service did launch the task at that instant; the operational channel is disabled here, so the record does not say whether a time trigger or an engine request asked for it",
+          "matches": [
+            {
+              "delta_s": 72.0,
+              "sample_id": "2026-10-09T16:31:50.326Z-8fb5203b",
+              "sampled_at_utc": "2026-10-09T16:31:50.326Z",
+              "scheduler_reported_instant_utc": "2026-10-09T16:27:33Z"
+            }
+          ],
+          "status": "CORROBORATED_ENGINE_LAUNCH_TRIGGER_TYPE_UNKNOWN",
+          "tolerance_s": 120
+        },
+        "process_end_utc": "2026-10-09T16:28:54Z",
+        "process_start_utc": "2026-10-09T16:28:45Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      }
+    ],
+    "counts": {
+      "CORROBORATED_ENGINE_LAUNCH": 20,
+      "INDUCED_BY_THE_VERIFIER": 68,
+      "MANUAL": 46,
+      "SELF_DECLARED_UNVERIFIED": 157,
+      "UNATTRIBUTED": 129
+    },
+    "definition": {
+      "CORROBORATED_ENGINE_LAUNCH": "a witness sample names the scheduler's own last-run instant at this event's start, so the Task Scheduler engine launched the task then; the operational channel is disabled, so the trigger type stays unknown",
+      "INDUCED_BY_THE_VERIFIER": "this repository's own verifier asked the scheduler to run the task; a real launch, and not the schedule's own tick",
+      "MANUAL": "the event declares itself a manual invocation",
+      "SELF_DECLARED_UNVERIFIED": "the event declares itself the schedule and nothing outside the run log corroborates it: a declaration, not proof",
+      "UNATTRIBUTED": "the event declares nothing and no witness sample reaches it"
+    },
+    "induced_runs": [
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T145706Z-3513414c",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live real-execution test: the task was triggered through the scheduler itself",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:57:14Z",
+        "process_start_utc": "2026-10-09T14:57:06Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T145716Z-dc27068e",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live due-idempotency test: two direct ticks that emulate the task's command line",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:57:25Z",
+        "process_start_utc": "2026-10-09T14:57:16Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T145725Z-3b03160e",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live due-idempotency test: two direct ticks that emulate the task's command line",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:57:35Z",
+        "process_start_utc": "2026-10-09T14:57:25Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": "another run holds the lease",
+        "exit_code": 2,
+        "internal_run_id": "20261009T145736Z-011eb53e",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live concurrency test: the second process was refused while the lease was held",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:57:37Z",
+        "process_start_utc": "2026-10-09T14:57:36Z",
+        "raw_evidence_hash": null,
+        "result": "ALREADY_RUNNING"
+      },
+      {
+        "declared_invocation": "MANUAL",
+        "errors": "rounds=0, spacing=5.0, depth-limit=100: a window must declare a positive cadence",
+        "exit_code": 1,
+        "internal_run_id": "20261009T145737Z-70a88707",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live refusal test: a tick with an impossible cadence",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:57:45Z",
+        "process_start_utc": "2026-10-09T14:57:37Z",
+        "raw_evidence_hash": null,
+        "result": "REFUSED_INVALID_ARGUMENTS"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T145808Z-1af1fb69",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live real-execution test: the task was triggered through the scheduler itself",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:58:16Z",
+        "process_start_utc": "2026-10-09T14:58:08Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T145817Z-9e118205",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live due-idempotency test: two direct ticks that emulate the task's command line",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:58:27Z",
+        "process_start_utc": "2026-10-09T14:58:17Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T145827Z-39fd6e24",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live due-idempotency test: two direct ticks that emulate the task's command line",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:58:37Z",
+        "process_start_utc": "2026-10-09T14:58:27Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": "another run holds the lease",
+        "exit_code": 2,
+        "internal_run_id": "20261009T145838Z-c968d08a",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live concurrency test: the second process was refused while the lease was held",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:58:39Z",
+        "process_start_utc": "2026-10-09T14:58:38Z",
+        "raw_evidence_hash": null,
+        "result": "ALREADY_RUNNING"
+      },
+      {
+        "declared_invocation": "MANUAL",
+        "errors": "rounds=0, spacing=5.0, depth-limit=100: a window must declare a positive cadence",
+        "exit_code": 1,
+        "internal_run_id": "20261009T145840Z-8b28f78c",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live refusal test: a tick with an impossible cadence",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T14:58:47Z",
+        "process_start_utc": "2026-10-09T14:58:40Z",
+        "raw_evidence_hash": null,
+        "result": "REFUSED_INVALID_ARGUMENTS"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T160433Z-cb717a7d",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live real-execution test: the task was triggered through the scheduler itself",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:04:42Z",
+        "process_start_utc": "2026-10-09T16:04:33Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T160442Z-4ce757f5",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live due-idempotency test: two direct ticks that emulate the task's command line",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:04:51Z",
+        "process_start_utc": "2026-10-09T16:04:42Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T160452Z-0180d5fe",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live due-idempotency test: two direct ticks that emulate the task's command line",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:05:00Z",
+        "process_start_utc": "2026-10-09T16:04:52Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": "another run holds the lease",
+        "exit_code": 2,
+        "internal_run_id": "20261009T160502Z-9eee3915",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live concurrency test: the second process was refused while the lease was held",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:05:03Z",
+        "process_start_utc": "2026-10-09T16:05:02Z",
+        "raw_evidence_hash": null,
+        "result": "ALREADY_RUNNING"
+      },
+      {
+        "declared_invocation": "MANUAL",
+        "errors": "rounds=0, spacing=5.0, depth-limit=100: a window must declare a positive cadence",
+        "exit_code": 1,
+        "internal_run_id": "20261009T160503Z-8f97983a",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live refusal test: a tick with an impossible cadence",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:05:10Z",
+        "process_start_utc": "2026-10-09T16:05:03Z",
+        "raw_evidence_hash": null,
+        "result": "REFUSED_INVALID_ARGUMENTS"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T161548Z-1840664d",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live real-execution test: the task was triggered through the scheduler itself",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:15:58Z",
+        "process_start_utc": "2026-10-09T16:15:48Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T161602Z-4012f801",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live due-idempotency test: two direct ticks that emulate the task's command line",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:16:12Z",
+        "process_start_utc": "2026-10-09T16:16:02Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": null,
+        "exit_code": 0,
+        "internal_run_id": "20261009T161612Z-f298191f",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live due-idempotency test: two direct ticks that emulate the task's command line",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:16:21Z",
+        "process_start_utc": "2026-10-09T16:16:12Z",
+        "raw_evidence_hash": null,
+        "result": "SKIPPED_NO_WINDOW_DUE"
+      },
+      {
+        "declared_invocation": "SCHEDULED",
+        "errors": "another run holds the lease",
+        "exit_code": 2,
+        "internal_run_id": "20261009T161622Z-63fd198e",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live concurrency test: the second process was refused while the lease was held",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:16:23Z",
+        "process_start_utc": "2026-10-09T16:16:22Z",
+        "raw_evidence_hash": null,
+        "result": "ALREADY_RUNNING"
+      },
+      {
+        "declared_invocation": "MANUAL",
+        "errors": "rounds=0, spacing=5.0, depth-limit=100: a window must declare a positive cadence",
+        "exit_code": 1,
+        "internal_run_id": "20261009T161624Z-6d0a912d",
+        "market_requests": 0,
+        "origin": "INDUCED_BY_THE_VERIFIER",
+        "origin_evidence": {
+          "detail": "live refusal test: a tick with an impossible cadence",
+          "recorded_by": "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl"
+        },
+        "process_end_utc": "2026-10-09T16:16:31Z",
+        "process_start_utc": "2026-10-09T16:16:24Z",
+        "raw_evidence_hash": null,
+        "result": "REFUSED_INVALID_ARGUMENTS"
+      }
+    ],
+    "reading": "a run event's origin is decided outside the tick: by the scheduler's own record, by the verifier's own record of what it induced, or by the event's own declaration, which is the weakest of the three and is labelled as such"
+  },
+  "slots": {
+    "classifications": {},
+    "external_coverage": {
+      "EXTERNAL_COVERAGE_COMPLETE": 0,
+      "EXTERNAL_COVERAGE_NOT_YET_STARTED": 77,
+      "EXTERNAL_COVERAGE_PARTIAL": 2,
+      "SCHEDULER_EVIDENCE_UNAVAILABLE": 5
+    },
+    "planned": 84,
+    "states": {
+      "COLLECTED": 7,
+      "PENDING": 77
+    }
+  },
+  "system_time_utc": "2026-10-09T19:59:59Z",
+  "task_name": "TradingAgentic-ST6-Forward",
+  "what_is_not_claimed": [
+    "that any past slot of this period was provably unattended: no per-run external record covers those hours on this host",
+    "that a run the scheduler's record corroborated was time-triggered: the trigger type is not observable here",
+    "that the schedule will tick in the future: a declared cadence is not a promise"
+  ]
+}

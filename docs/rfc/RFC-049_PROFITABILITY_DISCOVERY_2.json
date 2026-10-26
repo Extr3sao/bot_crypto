@@ -1,0 +1,157 @@
+{
+  "rfc": "RFC-049",
+  "title": "PROFITABILITY DISCOVERY 2 — Evidence-Driven Economic Alpha Research",
+  "status": "RFC049_PREPARED_AWAITING_CAMPAIGN_AUTHORIZATION",
+  "phases": {
+    "A_preparation": "COMPLETE",
+    "B_economic_campaign": "BLOCKED_BY_ACTIVATION_GATE"
+  },
+  "baseline": {
+    "head": "cba8a337e802e66941a7ba72af71c499322bd2fa",
+    "described_as": "RFC-048V delivery (offline-certified futures risk plane)",
+    "rfc048v_status": "RFC048_OFFLINE_CERTIFIED"
+  },
+  "campaign_authorization": {
+    "next_campaign": "NOT_AUTHORIZED",
+    "authorized": false,
+    "gate": "data/rfc049/BASELINE_AUDIT.json#governance_preserved",
+    "consequence": "WP-049-06..10 not executed; no experiment budget consumed"
+  },
+  "work_packages": [
+    {"id": "WP-049-01", "title": "Runtime & evidence audit", "status": "PASS"},
+    {"id": "WP-049-02", "title": "Economic hypothesis sourcing", "status": "PASS", "result": "2 admitted, 1 deferred, 6 rejected before admission"},
+    {"id": "WP-049-03", "title": "Preregistration", "status": "PASS"},
+    {"id": "WP-049-04", "title": "Data integrity", "status": "PASS_PLAN_LEVEL", "note": "executable PIT audit BLOCKED until a campaign"},
+    {"id": "WP-049-05", "title": "Campaign activation gate", "status": "PASS_STOPPED", "note": "NEXT_CAMPAIGN = NOT_AUTHORIZED"},
+    {"id": "WP-049-06", "title": "Strategy runtime implementation", "status": "BLOCKED"},
+    {"id": "WP-049-07", "title": "Economic experiments", "status": "BLOCKED"},
+    {"id": "WP-049-08", "title": "Robustness & falsification", "status": "BLOCKED"},
+    {"id": "WP-049-09", "title": "Independent reproduction", "status": "BLOCKED"},
+    {"id": "WP-049-10", "title": "Final economic decision", "status": "BLOCKED"}
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "H-049-001",
+      "strategy_id": "S-049-001-STABLE_LIQUIDITY_IMPULSE",
+      "mechanism": "stablecoin primary issuance as net dollar inflow into crypto",
+      "status": "SPEC_FROZEN",
+      "spec": "data/rfc049/specs/H-049-001.json",
+      "assets": ["BTCUSDT"],
+      "instrument": "spot long/cash",
+      "timeframe": "1d bars, weekly decision",
+      "sources": ["SRC-049-001", "SRC-049-002", "SRC-049-003", "SRC-049-004", "SRC-049-005"]
+    },
+    {
+      "hypothesis_id": "H-049-002",
+      "strategy_id": "S-049-002-MACRO_NET_LIQUIDITY_REGIME",
+      "mechanism": "USD net liquidity (Fed balance sheet minus RRP minus TGA) as risk-appetite regime",
+      "status": "SPEC_FROZEN",
+      "spec": "data/rfc049/specs/H-049-002.json",
+      "assets": ["BTCUSDT"],
+      "instrument": "spot long/cash",
+      "timeframe": "1d bars, weekly decision",
+      "sources": ["SRC-049-006", "SRC-049-007", "SRC-049-008"]
+    },
+    {
+      "hypothesis_id": "H-049-003",
+      "mechanism": "miner supply stress (hash-ribbon recovery)",
+      "status": "RESEARCH_CANDIDATE",
+      "admitted": false,
+      "reason": "event frequency 1-4/yr cannot support the 20-round-trip sample floor within 24 months",
+      "spec": "data/rfc049/specs/H-049-003.json"
+    }
+  ],
+  "budget": {
+    "max_admitted_hypotheses": 3,
+    "admitted": 2,
+    "parameter_searches": 0,
+    "oos_openings": 1,
+    "new_agents": 0,
+    "new_daemons": 0
+  },
+  "statistical_contract": {
+    "net_profit_factor_min": 1.1,
+    "lcb": "stationary block bootstrap, one-sided 95%, net expectancy > 0",
+    "cost_stress": "1.5x every modelled component",
+    "positive_in_every_partition": true,
+    "sealed_oos": "forward-only after the freeze; opened once after 20 closed round trips or 24 months",
+    "multiple_testing": "BH and Holm across admitted hypotheses",
+    "incremental_controls": ["buy-and-hold", "200-day price-trend state", "sibling hypothesis state"]
+  },
+  "cost_model": {
+    "spot": {
+      "model": "COST_MODEL_V3",
+      "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+      "round_trip_bps_200_usdt": 23.353553391,
+      "round_trip_bps_1000_usdt": 23.790569415,
+      "stress_1_5x_bps_200_usdt": 35.030330086
+    },
+    "futures": "not required by any admitted hypothesis; RFC-048V plane stays behind its gates"
+  },
+  "deliverables": {
+    "documents": [
+      "docs/rfc/RFC-049_PROFITABILITY_DISCOVERY_2.md",
+      "docs/rfc/RFC-049_PROFITABILITY_DISCOVERY_2.json",
+      "docs/research/RFC049_HYPOTHESIS_REGISTRY.md",
+      "docs/research/RFC049_SOURCE_REGISTRY.md",
+      "docs/architecture/RFC049_RUNTIME_FLOW.md",
+      "docs/governance/RFC049_DISCOVERY_ADMISSION.md"
+    ],
+    "evidence": [
+      "data/rfc049/BASELINE_AUDIT.json",
+      "data/rfc049/HYPOTHESIS_REGISTRY.json",
+      "data/rfc049/PREREGISTRATION_MANIFEST.json",
+      "data/rfc049/DATA_EXPOSURE_AUDIT.json",
+      "data/rfc049/ECONOMIC_RESULTS.json",
+      "data/rfc049/ROBUSTNESS_REPORT.json",
+      "data/rfc049/INDEPENDENT_VERIFICATION.json",
+      "data/rfc049/RUN_REPORT.md",
+      "data/rfc049/RUN_REPORT.json",
+      "data/rfc049/FINAL_REPORT.md",
+      "data/rfc049/FINAL_REPORT.json"
+    ],
+    "supporting": [
+      "data/rfc049/specs/H-049-001.json",
+      "data/rfc049/specs/H-049-002.json",
+      "data/rfc049/specs/H-049-003.json",
+      "data/rfc049/vendor/VENDOR_MANIFEST.json",
+      "scripts/rfc049_prepare.py",
+      "scripts/rfc049_verify.py"
+    ]
+  },
+  "acceptance_criteria": {
+    "note": "statuses are Phase A scope; Phase B criteria stay NOT_RUN/BLOCKED until a campaign is authorized",
+    "items": [
+      {"id": "ACC-049-01", "status": "PASS"},
+      {"id": "ACC-049-02", "status": "PASS"},
+      {"id": "ACC-049-03", "status": "PASS"},
+      {"id": "ACC-049-04", "status": "PASS"},
+      {"id": "ACC-049-05", "status": "BLOCKED"},
+      {"id": "ACC-049-06", "status": "PASS"},
+      {"id": "ACC-049-07", "status": "PASS"},
+      {"id": "ACC-049-08", "status": "NOT_RUN"},
+      {"id": "ACC-049-09", "status": "PASS"},
+      {"id": "ACC-049-10", "status": "NOT_RUN"},
+      {"id": "ACC-049-11", "status": "NOT_RUN"},
+      {"id": "ACC-049-12", "status": "PASS_DECLARED"},
+      {"id": "ACC-049-13", "status": "PASS_PHASE_A_SCOPE"},
+      {"id": "ACC-049-14", "status": "PASS_PHASE_A_SCOPE"},
+      {"id": "ACC-049-15", "status": "PASS_PHASE_A_SCOPE"},
+      {"id": "ACC-049-16", "status": "PASS"},
+      {"id": "ACC-049-17", "status": "PASS"},
+      {"id": "ACC-049-18", "status": "PASS"},
+      {"id": "ACC-049-19", "status": "PASS"},
+      {"id": "ACC-049-20", "status": "NOT_RUN"}
+    ]
+  },
+  "governance": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false,
+    "st6_untouched": true,
+    "cost_model_v3_untouched": true
+  },
+  "next_gate": "operator decision: authorize Discovery 2 (NEXT_CAMPAIGN switch) or leave the programme prepared and closed"
+}

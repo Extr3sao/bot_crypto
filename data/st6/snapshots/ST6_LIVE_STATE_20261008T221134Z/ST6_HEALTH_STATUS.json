@@ -1,0 +1,84 @@
+{
+  "artifact": "ST6_HEALTH_STATUS",
+  "credentials_used": 0,
+  "evidence": {
+    "consecutive_failures": 0,
+    "consecutive_failures_over": "non-manual run events only",
+    "declared_slots_ended": 1,
+    "declared_slots_pending": 82,
+    "disk": {
+      "critical_free_bytes": 2147483648,
+      "free_bytes": 21483003904,
+      "free_gib": 20.0076,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+      "status": "HEALTHY",
+      "total_bytes": 255041990656,
+      "total_gib": 237.5264,
+      "used_percent": 91.58,
+      "warning_free_bytes": 5368709120
+    },
+    "heartbeat_age_seconds": 8,
+    "heartbeat_basis": "LAST_NON_MANUAL_RUN",
+    "last_run": {
+      "actual_end_utc": "2026-10-08T22:10:13Z",
+      "exit_code": 0,
+      "result": "SKIPPED_NO_WINDOW_DUE",
+      "run_id": "20261008T221005Z-70b69c5d"
+    },
+    "missed_fraction_of_ended_slots": 0.0,
+    "missed_windows_recorded": 0,
+    "observations": 24,
+    "raw_evidence": {
+      "mismatched": [],
+      "missing": [],
+      "reading": "every window's uncompressed bytes were re-hashed before it was counted",
+      "windows": 2
+    },
+    "run_events": 142,
+    "run_events_by_provenance": {
+      "MANUAL": 3,
+      "SCHEDULED": 10,
+      "UNRECORDED": 129
+    },
+    "scheduler": {
+      "enabled": true,
+      "installed": true,
+      "query_error": null,
+      "query_exit_code": 0,
+      "repetition_interval": "PT15M",
+      "task_name": "TradingAgentic-ST6-Forward"
+    },
+    "tick_grace_seconds": 2700,
+    "unaccounted_slots": [],
+    "windows_completed": 2
+  },
+  "exit_code": 0,
+  "generated_at_utc": "2026-10-08T22:10:21Z",
+  "heartbeat_is_not_evidence": true,
+  "next_expected_window": {
+    "day": "2026-10-09",
+    "ends_at_utc": "2026-10-09T04:00:00Z",
+    "key": "2026-10-09#0",
+    "slot_index": 0
+  },
+  "orders_sent": 0,
+  "period": {
+    "consolidation_present": false,
+    "consolidation_reading": "absent",
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "over": false,
+    "started_at_utc": "2026-10-08T16:21:20Z"
+  },
+  "reading": "a tick that ran and skipped the exchange observed nothing: health is about the schedule and about the evidence on disk, and no heartbeat is ever counted as a sample",
+  "reasons": [
+    "every declared slot so far is either observed or recorded as missed, the raw evidence reproduces, the task is installed and enabled, and storage is healthy"
+  ],
+  "standing_state": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "LIVE_TRADING": "DISABLED",
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "PROFITABILITY_VERIFIED": false,
+    "TRADES_AUTHORIZED": 0
+  },
+  "status": "HEALTHY"
+}

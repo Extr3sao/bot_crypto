@@ -1,0 +1,649 @@
+{
+  "artifact": "RFC049B_FINAL_ADMISSION_REPORT",
+  "generated_at_utc": "2026-10-10T13:15:31Z",
+  "CURRENT_HEAD": "b295dc81be8ea9044d453f3ed34279d302cf850c",
+  "HYPOTHESIS_001_ADMISSION": "READY_FOR_AUTHORIZED_TEST",
+  "HYPOTHESIS_002_ADMISSION": "READY_FOR_AUTHORIZED_TEST",
+  "PIT_VERIFICATION": {
+    "H-049-001": "PIT_CONSERVATIVE_PROXY",
+    "H-049-002": "PIT_VERIFIED",
+    "note": "the weaker of a hypothesis's inputs decides its composite class"
+  },
+  "SOURCE_EVIDENCE": {
+    "read_levels": {
+      "SRC-049-001": "FULL_PAYLOAD_AND_HASH",
+      "SRC-049-002": "ABSTRACT_ONLY",
+      "SRC-049-003": "FULL_TEXT_VERIFIED",
+      "SRC-049-004": "FULL_TEXT_VERIFIED",
+      "SRC-049-005": "ABSTRACT_ONLY",
+      "SRC-049-006": "CLAIM_ONLY",
+      "SRC-049-007": "ABSTRACT_ONLY",
+      "SRC-049-008": "FULL_TEXT_VERIFIED"
+    },
+    "direction_finding": "the paper's own framing is not 'stablecoin inflows predict positive BTC returns': its extracted abstract describes USDT as a primary liquidity lifeline during stress for Ethereum holders, a notably more muted and stabilizing role for Bitcoin, and a network-dependent function. Read in full, this source sits closer to the counter-evidence column for H-049-001's directional claim than the Phase A registry recorded",
+    "citation_correction": "the Phase A registry cites this work as MDPI JRFM 5(3):68. The registration agency record is MDPI *FinTech* 5(3):68, DOI 10.3390/fintech5030068, with a different title from the registered short title. The substance of the counter-evidence stands and is visible in the retrieved abstract, which states that the analysis accounts for the depegging of stablecoins."
+  },
+  "INDEPENDENCE": {
+    "weeks_both_long": 93,
+    "weeks_a_long_only": 85,
+    "weeks_b_long_only": 120,
+    "weeks_both_flat": 107,
+    "state_agreement_rate": 0.49382716049382713,
+    "jaccard_on_long_weeks": 0.31208053691275167,
+    "spearman_rank_correlation_of_drivers": 0.08748981630511161,
+    "transitions_a": 47,
+    "transitions_b": 97
+  },
+  "SAMPLE_FEASIBILITY": {
+    "H-049-001": {
+      "round_trips_per_year": 2.96,
+      "expected_in_24_months": 5.9,
+      "risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION"
+    },
+    "H-049-002": {
+      "round_trips_per_year": 6.18,
+      "expected_in_24_months": 12.4,
+      "risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION"
+    }
+  },
+  "BLOCKERS": [],
+  "DEFECTS": [
+    "RFC049B-DEF-01",
+    "RFC049B-DEF-02",
+    "RFC049B-DEF-03",
+    "RFC049B-DEF-04",
+    "RFC049B-DEF-05",
+    "RFC049B-DEF-06",
+    "RFC049B-DEF-07",
+    "RFC049B-DEF-08",
+    "RFC049B-DEF-09"
+  ],
+  "INDEPENDENT_VERIFICATION": {
+    "status": "PASS",
+    "artifact": "data/rfc049/admission/INDEPENDENT_VERIFICATION.json",
+    "checks_total": 66,
+    "checks_failed": 0,
+    "negative_controls": 12,
+    "false_success": 0,
+    "note": "written by scripts/rfc049b_verify.py after recomputing the audit independently"
+  },
+  "FALSE_SUCCESS": 0,
+  "CAMPAIGN_AUTHORIZATION_STATUS": {
+    "next_campaign": "NOT_AUTHORIZED",
+    "campaign_authorized": false,
+    "experiments_executed": 0,
+    "oos_opened": false,
+    "trades_authorized": 0,
+    "live_trading": "DISABLED",
+    "profitability_verified": false
+  },
+  "NEXT_GATE": "operator decision: authorize Discovery 2 for the candidates listed READY_FOR_AUTHORIZED_TEST",
+  "checks_total": 43,
+  "checks_failed": 0,
+  "checks_blocked": 2,
+  "checks": [
+    {
+      "check": "baseline:spec_unchanged:H-049-001",
+      "result": "PASS",
+      "detail": "frozen spec bytes identical to the freeze-time hash"
+    },
+    {
+      "check": "baseline:spec_unchanged:H-049-002",
+      "result": "PASS",
+      "detail": "frozen spec bytes identical to the freeze-time hash"
+    },
+    {
+      "check": "baseline:dataset_unchanged:BTC-USDT_1d.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:ETH-USDT_1d.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:governance",
+      "result": "PASS",
+      "detail": "{\"DISCOVERY_CAMPAIGN_FAILED\": true, \"LIVE_TRADING\": \"DISABLED\", \"NEXT_CAMPAIGN\": \"NOT_AUTHORIZED\", \"PROFITABILITY_VERIFIED\": false, \"TRADES_AUTHORIZED\": 0}"
+    },
+    {
+      "check": "baseline:rfc048v",
+      "result": "PASS",
+      "detail": "RFC048_OFFLINE_CERTIFIED"
+    },
+    {
+      "check": "baseline:exposure_audit_gate",
+      "result": "PASS",
+      "detail": "Phase A activation-gate flags still read NOT_AUTHORIZED / 0 / DISABLED"
+    },
+    {
+      "check": "evidence:blocked_mdpi.html",
+      "result": "BLOCKED",
+      "detail": "optional evidence unavailable: EvidenceUnavailable: HTTPError: HTTP Error 403: Forbidden -> https://www.mdpi.com/1911-8074/18/9/491"
+    },
+    {
+      "check": "evidence:blocked_ssrn.html",
+      "result": "BLOCKED",
+      "detail": "optional evidence unavailable: EvidenceUnavailable: HTTPError: HTTP Error 403: Forbidden -> https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716"
+    },
+    {
+      "check": "macro:units_WALCL",
+      "result": "PASS",
+      "detail": "{\"units\": \"Millions of U.S. Dollars , Not Seasonally Adjusted Frequency: Weekly, A\", \"frequency\": \"Weekly, As of Wednesday Fullscreen Data in this graph are copyrighted.\", \"release\": \"Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo\"}"
+    },
+    {
+      "check": "macro:units_RRPONTSYD",
+      "result": "PASS",
+      "detail": "{\"units\": \"Billions of US Dollars , Not Seasonally Adjusted Frequency: Daily Fulls\", \"frequency\": \"Daily Fullscreen Data in this graph are copyrighted. Please review the\", \"release\": \"Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo\"}"
+    },
+    {
+      "check": "macro:units_WTREGEN",
+      "result": "PASS",
+      "detail": "{\"units\": \"Millions of U.S. Dollars , Not Seasonally Adjusted Frequency: Weekly, E\", \"frequency\": \"Weekly, Ending Wednesday Fullscreen Data in this graph are copyrighted.\", \"release\": \"Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo\"}"
+    },
+    {
+      "check": "macro:primary_source:rrp_value_identity",
+      "result": "PASS",
+      "detail": "7/7 NY Fed operations match the frozen series exactly"
+    },
+    {
+      "check": "macro:primary_source:h41_total_assets",
+      "result": "PASS",
+      "detail": "H.4.1 total assets 6747560.0 vs frozen WALCL 6747560.0"
+    },
+    {
+      "check": "macro:primary_source:h41_tga_week_average",
+      "result": "PASS",
+      "detail": "H.4.1 week-average TGA [880253.0] vs frozen WTREGEN 880253.0"
+    },
+    {
+      "check": "macro:primary_source:h41_vs_dts",
+      "result": "PASS",
+      "detail": "{\"h41_wed_vs_dts_latest\": {\"h41_wednesday_level\": 885783.0, \"latest_dts_date\": \"2026-10-06\", \"latest_dts_closing_balance\": 885414.0, \"relative_difference\": 0.0004165805846352888, \"note\": \"the DTS has not yet published the H.4.1 reference Wednesday, which is itself evidence of a next-business-day publication lag\", \"matches_within_2pct\": true}, \"dts_weekly\": {\"compared\": 3, \"within\": 2}}"
+    },
+    {
+      "check": "grid:non_empty",
+      "result": "PASS",
+      "detail": "406 weekly decision instants from 2018-12-30 to 2026-10-04"
+    },
+    {
+      "check": "macro:grid_decidable",
+      "result": "PASS",
+      "detail": "first decidable macro week 2018-12-30; 0 Wednesday references with a missing input (fail-closed FLAT); reach-back days used [0, 1, 2]"
+    },
+    {
+      "check": "pit:H-049-001:no_decision_consumes_future_data",
+      "result": "PASS",
+      "detail": "0 availability violations over 406 decision instants; 1 decisions were not yet decidable (fail-closed FLAT, not a PIT defect)"
+    },
+    {
+      "check": "pit:H-049-002:no_decision_consumes_future_data",
+      "result": "PASS",
+      "detail": "0 availability violations over 406 decision instants; 0 decisions were not yet decidable (fail-closed FLAT, not a PIT defect)"
+    },
+    {
+      "check": "pit:incremental_reconstruction",
+      "result": "PASS",
+      "detail": "40 sampled decisions recomputed from a truncated feed; mismatches=0"
+    },
+    {
+      "check": "governance:flags_unchanged",
+      "result": "PASS",
+      "detail": "{\"DISCOVERY_CAMPAIGN_FAILED\": true, \"LIVE_TRADING\": \"DISABLED\", \"NEXT_CAMPAIGN\": \"NOT_AUTHORIZED\", \"PROFITABILITY_VERIFIED\": false, \"TRADES_AUTHORIZED\": 0}"
+    },
+    {
+      "check": "scope:no_returns_computed",
+      "result": "PASS",
+      "detail": "this module computes no return, no PnL, no drawdown and no profit factor"
+    },
+    {
+      "check": "scope:sealed_oos_untouched",
+      "result": "PASS",
+      "detail": "the sealed window starts 2026-10-11T00:00:00Z; no observation from it exists yet"
+    },
+    {
+      "check": "labels:no_forbidden_claim",
+      "result": "PASS",
+      "detail": "clean"
+    }
+  ],
+  "evidence_index": [
+    {
+      "key": "refetch_defillama.json",
+      "url": "https://stablecoins.llama.fi/stablecoincharts/all",
+      "retrieved_at_utc": "2026-10-10T13:13:14Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 1311026,
+      "sha256": "7ed8b074f196c3efe888384f367e0d22f69df90d9ef5cce4617938277fbc6bd4",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "fred_page_WALCL.html",
+      "url": "https://fred.stlouisfed.org/series/WALCL",
+      "retrieved_at_utc": "2026-10-10T12:58:24Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 79560,
+      "sha256": "b769716d73f126ff7f148bdad5ffce12deca03f6d8f56a17b9edcd2d9654bc24",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "fred_page_RRPONTSYD.html",
+      "url": "https://fred.stlouisfed.org/series/RRPONTSYD",
+      "retrieved_at_utc": "2026-10-10T12:58:24Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 80128,
+      "sha256": "328214d68ad5914f2012444215a6a982d61dd473476e8b1c44fd73c768a659be",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "fred_page_WTREGEN.html",
+      "url": "https://fred.stlouisfed.org/series/WTREGEN",
+      "retrieved_at_utc": "2026-10-10T12:58:24Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 79961,
+      "sha256": "c9821f735b78079f749dd4611950994e1c44c41386f4b9b67d0da79a7801d6e9",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WALCL_latest.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL",
+      "retrieved_at_utc": "2026-10-10T12:58:25Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 23348,
+      "sha256": "47cbbf5338e64f39930e6206314bc7f033c616998d153f9b455e0af76f0d5241",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WALCL_2019-03-07.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2019-03-07",
+      "retrieved_at_utc": "2026-10-10T12:58:25Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 15824,
+      "sha256": "c2a58276880b14189385e3fd4947214b0c586fe75d35b2fc0b789296d34da1a2",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WALCL_2023-03-15.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2023-03-15",
+      "retrieved_at_utc": "2026-10-10T12:58:26Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 19795,
+      "sha256": "bcb42655369a25576fc7d968dc6fb586cc78964e5885e17902c2450884532de5",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WTREGEN_latest.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN",
+      "retrieved_at_utc": "2026-10-10T12:58:27Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 21539,
+      "sha256": "73face29afe1d988b8266f421ec45605866f25333f8f1a21c96a0395e633de4b",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WTREGEN_2019-03-07.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2019-03-07",
+      "retrieved_at_utc": "2026-10-10T12:58:28Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 30291,
+      "sha256": "b8fdc0251a315fbcb0710e1143df7cd4994345d1c2a2a4d89f8a7f26af90de29",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WTREGEN_2023-03-15.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2023-03-15",
+      "retrieved_at_utc": "2026-10-10T12:58:28Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 34309,
+      "sha256": "d9bc7d80749d305f3b14a215d99d94c1ad0ed145a3c98673ea2f7605e254a187",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_RRPONTSYD_latest.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD",
+      "retrieved_at_utc": "2026-10-10T12:58:30Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 95451,
+      "sha256": "3cc8e1c8a43625f664f6b65616af780409e4dc01d2592d2f7322fc477c73e18b",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_RRPONTSYD_2019-03-07.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD&vintage_date=2019-03-07",
+      "retrieved_at_utc": "2026-10-10T12:58:30Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 5471,
+      "sha256": "3b5231bb3393fddd0d5be8a31f663e2eef4d2a7fc7db22ed771c8ba328b21144",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_RRPONTSYD_2023-03-15.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD&vintage_date=2023-03-15",
+      "retrieved_at_utc": "2026-10-10T12:58:32Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 78390,
+      "sha256": "383d313a26c9c3ea2536e9873ace86bcdf6fd68e99698d39b0bdf3503ddf98c8",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "h41_current.html",
+      "url": "https://www.federalreserve.gov/releases/h41/current/h41.htm",
+      "retrieved_at_utc": "2026-10-10T12:58:32Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html",
+      "bytes": 701918,
+      "sha256": "bbc62c6b9050fc5986b779e305bcabcf0e92582d559e89af77d28889cc97183d",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "nyfed_rrp_last7.json",
+      "url": "https://markets.newyorkfed.org/api/rp/reverserepo/all/results/last/7.json",
+      "retrieved_at_utc": "2026-10-10T12:58:33Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json;charset=utf-8",
+      "bytes": 4626,
+      "sha256": "26179b56b8d9cbaec4bb0391ba90cc48dbcd385458fdf1d115b5b51a9c8ddc63",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "dts_tga.json",
+      "url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/dts/operating_cash_balance?filter=record_date:gte:2026-09-01&fields=record_date,account_type,open_today_bal,close_today_bal&page[size]=100&sort=record_date",
+      "retrieved_at_utc": "2026-10-10T12:58:33Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 14383,
+      "sha256": "6175152c0f7dc0e3102bf64845c17cbf55dd348e33a4bce4e960540fc3e78d11",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "arxiv_abs.html",
+      "url": "https://arxiv.org/abs/2411.06327v2",
+      "retrieved_at_utc": "2026-10-10T12:58:34Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 41509,
+      "sha256": "0116a86601dafb7440966818682af2de6debcc720c175479a5db811ce8dcefe1",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "arxiv_pdf.pdf",
+      "url": "https://arxiv.org/pdf/2411.06327v2",
+      "retrieved_at_utc": "2026-10-10T13:15:00Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 943315,
+      "sha256": "5ad76d991a2d35319fbad716403e110b7a6f028505aeccf2ed911a0e362b6c07",
+      "raw_retained": false,
+      "status": "ok",
+      "body_truncated_at_deadline": false
+    },
+    {
+      "key": "fedsnote.html",
+      "url": "https://www.federalreserve.gov/econres/notes/feds-notes/primary-and-secondary-markets-for-stablecoins-20240223.html",
+      "retrieved_at_utc": "2026-10-10T12:58:34Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html",
+      "bytes": 135763,
+      "sha256": "990c98060743a0df473cbdbf1461419a0be3d9b3b10c611c387e196677b6bf90",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "philly_wp26-24.pdf",
+      "url": "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
+      "retrieved_at_utc": "2026-10-10T13:15:00Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 1408168,
+      "sha256": "774a970bbdfd44e2873f83d14738911701e0577eb956245fff26366c535d83bc",
+      "raw_retained": false,
+      "status": "ok",
+      "body_truncated_at_deadline": false
+    },
+    {
+      "key": "bis_wp402.html",
+      "url": "https://www.bis.org/publ/work402.htm",
+      "retrieved_at_utc": "2026-10-10T12:58:35Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 125600,
+      "sha256": "95a0f327d7cfdba64049ff8eeae336e14c8ed2053363785d5e9e4e53e0097d53",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "crossref_fintech5030068.json",
+      "url": "https://api.crossref.org/works/10.3390/fintech5030068",
+      "retrieved_at_utc": "2026-10-10T13:10:47Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 13961,
+      "sha256": "fe523dd4f0f346530c32ad79057765893009014b4cdd7a97168a89c3c0fa912c",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "crossref_ssrn4904716.json",
+      "url": "https://api.crossref.org/works?query.bibliographic=Does%20monetary%20liquidity%20affect%20Bitcoin%20price&rows=3&select=DOI,title,container-title,issued,type",
+      "retrieved_at_utc": "2026-10-10T13:10:47Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 745,
+      "sha256": "21616415595e7fd744f2fb8556683281f67acfd8c85dcc2600ed6719579d7491",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "blocked_mdpi.html",
+      "url": "https://www.mdpi.com/1911-8074/18/9/491",
+      "retrieved_at_utc": "2026-10-10T13:15:06Z",
+      "mode": "network",
+      "http_status": null,
+      "bytes": 0,
+      "sha256": null,
+      "raw_retained": false,
+      "status": "unavailable",
+      "note": "EvidenceUnavailable: HTTPError: HTTP Error 403: Forbidden -> https://www.mdpi.com/1911-8074/18/9/491"
+    },
+    {
+      "key": "blocked_ssrn.html",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716",
+      "retrieved_at_utc": "2026-10-10T13:15:13Z",
+      "mode": "network",
+      "http_status": null,
+      "bytes": 0,
+      "sha256": null,
+      "raw_retained": false,
+      "status": "unavailable",
+      "note": "EvidenceUnavailable: HTTPError: HTTP Error 403: Forbidden -> https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716"
+    },
+    {
+      "key": "semantic_scholar.json",
+      "url": "https://api.semanticscholar.org/graph/v1/paper/search",
+      "retrieved_at_utc": "2026-10-10T13:15:28Z",
+      "mode": "network",
+      "http_status": 200,
+      "bytes": 909,
+      "sha256": "ce75a436d10cc7300f1edb247658b96301cc6b3833702c9d7c7cc07612dd5a5c",
+      "raw_retained": true,
+      "status": "ok"
+    },
+    {
+      "key": "philly_wp26-24.extracted.txt",
+      "url": "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
+      "retrieved_at_utc": "2026-10-10T13:15:31Z",
+      "mode": "derived",
+      "http_status": null,
+      "bytes": 167923,
+      "sha256": "4606ece2d567b213dcd32666098f5a9ce6b44da20135b9d23e57ab358e6875ec",
+      "raw_retained": true,
+      "status": "ok",
+      "derived_from": "philly_wp26-24.pdf"
+    }
+  ]
+}

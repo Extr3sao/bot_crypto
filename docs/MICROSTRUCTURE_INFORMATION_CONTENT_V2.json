@@ -1,0 +1,437 @@
+{
+  "model": "MICROSTRUCTURE_INFORMATION_CONTENT_V2",
+  "hypotheses_doc": "docs/MICROSTRUCTURE_HYPOTHESES_V2.md",
+  "candidates": {
+    "M-02-BTC": {
+      "n": 137,
+      "ic_spearman": 0.047921,
+      "top_bottom_bps": 0.6172,
+      "monotone_score": -0.1,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 27,
+          "mean_forward_bps": 0.9164,
+          "x_min": -3.108125,
+          "x_max": -2.358956
+        },
+        {
+          "bucket": 1,
+          "n": 27,
+          "mean_forward_bps": 6.2823,
+          "x_min": -2.334319,
+          "x_max": -2.143113
+        },
+        {
+          "bucket": 2,
+          "n": 27,
+          "mean_forward_bps": -7.4761,
+          "x_min": -2.132732,
+          "x_max": -2.020491
+        },
+        {
+          "bucket": 3,
+          "n": 27,
+          "mean_forward_bps": -4.4208,
+          "x_min": -2.019919,
+          "x_max": 2.197721
+        },
+        {
+          "bucket": 4,
+          "n": 29,
+          "mean_forward_bps": 1.5336,
+          "x_min": 2.198654,
+          "x_max": 3.2108
+        }
+      ],
+      "status": "HAS_INFORMATION"
+    },
+    "M-02-ETH": {
+      "n": 168,
+      "ic_spearman": -0.014102,
+      "top_bottom_bps": 8.075,
+      "monotone_score": 0.1,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 33,
+          "mean_forward_bps": 1.4212,
+          "x_min": -3.250187,
+          "x_max": -2.295174
+        },
+        {
+          "bucket": 1,
+          "n": 33,
+          "mean_forward_bps": 1.7528,
+          "x_min": -2.28554,
+          "x_max": -2.106208
+        },
+        {
+          "bucket": 2,
+          "n": 33,
+          "mean_forward_bps": -0.8455,
+          "x_min": -2.104058,
+          "x_max": 2.071401
+        },
+        {
+          "bucket": 3,
+          "n": 33,
+          "mean_forward_bps": -0.8985,
+          "x_min": 2.09513,
+          "x_max": 2.292842
+        },
+        {
+          "bucket": 4,
+          "n": 36,
+          "mean_forward_bps": 9.4963,
+          "x_min": 2.302781,
+          "x_max": 3.121987
+        }
+      ],
+      "status": "HAS_INFORMATION"
+    },
+    "M-02-SOL": {
+      "n": 131,
+      "ic_spearman": -0.112924,
+      "top_bottom_bps": -2.7611,
+      "monotone_score": -0.5,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 26,
+          "mean_forward_bps": 8.1747,
+          "x_min": -2.976104,
+          "x_max": -2.305889
+        },
+        {
+          "bucket": 1,
+          "n": 26,
+          "mean_forward_bps": 11.1041,
+          "x_min": -2.289575,
+          "x_max": -2.114776
+        },
+        {
+          "bucket": 2,
+          "n": 26,
+          "mean_forward_bps": -1.1708,
+          "x_min": -2.09923,
+          "x_max": 2.047121
+        },
+        {
+          "bucket": 3,
+          "n": 26,
+          "mean_forward_bps": 1.9415,
+          "x_min": 2.048683,
+          "x_max": 2.262621
+        },
+        {
+          "bucket": 4,
+          "n": 27,
+          "mean_forward_bps": 5.4136,
+          "x_min": 2.322312,
+          "x_max": 2.952866
+        }
+      ],
+      "status": "HAS_INFORMATION"
+    },
+    "M-07-BTC": {
+      "n": 0,
+      "ic_spearman": null,
+      "top_bottom_bps": null,
+      "monotone_score": null,
+      "status": "INSUFFICIENT_DATA"
+    },
+    "M-07-ETH": {
+      "n": 0,
+      "ic_spearman": null,
+      "top_bottom_bps": null,
+      "monotone_score": null,
+      "status": "INSUFFICIENT_DATA"
+    },
+    "M-07-SOL": {
+      "n": 0,
+      "ic_spearman": null,
+      "top_bottom_bps": null,
+      "monotone_score": null,
+      "status": "INSUFFICIENT_DATA"
+    },
+    "M-09-BTC_to_ETH": {
+      "n": 3948,
+      "ic_spearman": 0.02701,
+      "top_bottom_bps": 3.6692,
+      "monotone_score": 1.0,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 789,
+          "mean_forward_bps": -2.5764,
+          "x_min": -0.901756,
+          "x_max": -0.318592
+        },
+        {
+          "bucket": 1,
+          "n": 789,
+          "mean_forward_bps": -2.1068,
+          "x_min": -0.317676,
+          "x_max": -0.102521
+        },
+        {
+          "bucket": 2,
+          "n": 789,
+          "mean_forward_bps": -1.3998,
+          "x_min": -0.102504,
+          "x_max": 0.092938
+        },
+        {
+          "bucket": 3,
+          "n": 789,
+          "mean_forward_bps": 0.167,
+          "x_min": 0.093045,
+          "x_max": 0.298768
+        },
+        {
+          "bucket": 4,
+          "n": 792,
+          "mean_forward_bps": 1.0928,
+          "x_min": 0.299542,
+          "x_max": 0.935489
+        }
+      ],
+      "status": "HAS_INFORMATION"
+    },
+    "M-09-BTC_to_SOL": {
+      "n": 3948,
+      "ic_spearman": 0.024735,
+      "top_bottom_bps": 3.1179,
+      "monotone_score": 0.9,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 789,
+          "mean_forward_bps": -2.749,
+          "x_min": -0.901756,
+          "x_max": -0.318592
+        },
+        {
+          "bucket": 1,
+          "n": 789,
+          "mean_forward_bps": -2.5454,
+          "x_min": -0.317676,
+          "x_max": -0.102521
+        },
+        {
+          "bucket": 2,
+          "n": 789,
+          "mean_forward_bps": -0.6675,
+          "x_min": -0.102504,
+          "x_max": 0.092938
+        },
+        {
+          "bucket": 3,
+          "n": 789,
+          "mean_forward_bps": 0.5881,
+          "x_min": 0.093045,
+          "x_max": 0.298768
+        },
+        {
+          "bucket": 4,
+          "n": 792,
+          "mean_forward_bps": 0.369,
+          "x_min": 0.299542,
+          "x_max": 0.935489
+        }
+      ],
+      "status": "HAS_INFORMATION"
+    },
+    "M-10-BTC": {
+      "n": 3962,
+      "ic_spearman": 0.010068,
+      "top_bottom_bps": 0.3498,
+      "monotone_score": 0.7,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 792,
+          "mean_forward_bps": -1.6755,
+          "x_min": -0.823573,
+          "x_max": -0.182732
+        },
+        {
+          "bucket": 1,
+          "n": 792,
+          "mean_forward_bps": -1.6426,
+          "x_min": -0.182498,
+          "x_max": -0.059504
+        },
+        {
+          "bucket": 2,
+          "n": 792,
+          "mean_forward_bps": -0.1629,
+          "x_min": -0.059487,
+          "x_max": 0.053646
+        },
+        {
+          "bucket": 3,
+          "n": 792,
+          "mean_forward_bps": -0.047,
+          "x_min": 0.053729,
+          "x_max": 0.18489
+        },
+        {
+          "bucket": 4,
+          "n": 794,
+          "mean_forward_bps": -1.3257,
+          "x_min": 0.185048,
+          "x_max": 0.940763
+        }
+      ],
+      "status": "HAS_INFORMATION"
+    },
+    "M-10-ETH": {
+      "n": 3962,
+      "ic_spearman": -0.027519,
+      "top_bottom_bps": -2.4866,
+      "monotone_score": -0.9,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 792,
+          "mean_forward_bps": 0.9633,
+          "x_min": -1.019922,
+          "x_max": -0.180129
+        },
+        {
+          "bucket": 1,
+          "n": 792,
+          "mean_forward_bps": 0.1964,
+          "x_min": -0.180104,
+          "x_max": -0.061263
+        },
+        {
+          "bucket": 2,
+          "n": 792,
+          "mean_forward_bps": -0.9468,
+          "x_min": -0.060922,
+          "x_max": 0.042262
+        },
+        {
+          "bucket": 3,
+          "n": 792,
+          "mean_forward_bps": -3.5195,
+          "x_min": 0.042266,
+          "x_max": 0.156745
+        },
+        {
+          "bucket": 4,
+          "n": 794,
+          "mean_forward_bps": -1.5233,
+          "x_min": 0.156763,
+          "x_max": 0.973345
+        }
+      ],
+      "status": "HAS_INFORMATION"
+    },
+    "M-10-SOL": {
+      "n": 3962,
+      "ic_spearman": -0.004312,
+      "top_bottom_bps": 2.5739,
+      "monotone_score": 0.1,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 792,
+          "mean_forward_bps": -3.0552,
+          "x_min": -0.807465,
+          "x_max": -0.166585
+        },
+        {
+          "bucket": 1,
+          "n": 792,
+          "mean_forward_bps": 0.5674,
+          "x_min": -0.166418,
+          "x_max": -0.043522
+        },
+        {
+          "bucket": 2,
+          "n": 792,
+          "mean_forward_bps": -0.21,
+          "x_min": -0.043413,
+          "x_max": 0.06649
+        },
+        {
+          "bucket": 3,
+          "n": 792,
+          "mean_forward_bps": -1.8744,
+          "x_min": 0.066544,
+          "x_max": 0.189196
+        },
+        {
+          "bucket": 4,
+          "n": 794,
+          "mean_forward_bps": -0.4813,
+          "x_min": 0.189223,
+          "x_max": 0.77054
+        }
+      ],
+      "status": "NO_INFORMATION"
+    },
+    "M-10-PANEL-DISPERSION": {
+      "n": 3962,
+      "ic_spearman": -0.003346,
+      "top_bottom_bps": -0.9077,
+      "monotone_score": -0.3,
+      "buckets": [
+        {
+          "bucket": 0,
+          "n": 792,
+          "mean_forward_bps": -1.0031,
+          "x_min": 0.004659,
+          "x_max": 0.095715
+        },
+        {
+          "bucket": 1,
+          "n": 792,
+          "mean_forward_bps": -0.8452,
+          "x_min": 0.095875,
+          "x_max": 0.147191
+        },
+        {
+          "bucket": 2,
+          "n": 792,
+          "mean_forward_bps": -1.0186,
+          "x_min": 0.147194,
+          "x_max": 0.203699
+        },
+        {
+          "bucket": 3,
+          "n": 792,
+          "mean_forward_bps": -0.1326,
+          "x_min": 0.20372,
+          "x_max": 0.27723
+        },
+        {
+          "bucket": 4,
+          "n": 794,
+          "mean_forward_bps": -1.9108,
+          "x_min": 0.277234,
+          "x_max": 0.722833
+        }
+      ],
+      "status": "NO_INFORMATION"
+    }
+  },
+  "classification_counts": {
+    "COST_KILLED": 7,
+    "LIMITED_HISTORY": 3,
+    "NO_INFORMATION": 2
+  },
+  "informative_candidates": [
+    "M-02-BTC",
+    "M-02-ETH",
+    "M-02-SOL",
+    "M-09-BTC_to_ETH",
+    "M-09-BTC_to_SOL",
+    "M-10-BTC",
+    "M-10-ETH"
+  ]
+}

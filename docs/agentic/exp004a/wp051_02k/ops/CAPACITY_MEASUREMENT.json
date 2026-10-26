@@ -1,0 +1,409 @@
+{
+  "schema_version": "EXP004A_WP051_02K_OPS_CAPACITY_V1",
+  "generated_at_utc": "2026-10-24T07:13:10+00:00",
+  "budget": {
+    "frozen_bytes": 15638712264,
+    "frozen_gib": 14.5647,
+    "source": "docs/agentic/exp004a/wp051_02j/CAPACITY_PLAN.json#required.at_p90_bytes",
+    "recomputed_here": false
+  },
+  "sampling": {
+    "samples": 12,
+    "interval_seconds": 20.0,
+    "span_seconds": 220.0,
+    "readings": [
+      {
+        "path": "C:/",
+        "free_bytes": 43812782080,
+        "total_bytes": 255041990656,
+        "free_gib": 40.8038,
+        "used_percent": 82.82,
+        "sample": 0,
+        "at_utc": "2026-10-24T07:09:30+00:00",
+        "margin_bytes": 28174069816,
+        "margin_gib": 26.2391
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43813142528,
+        "total_bytes": 255041990656,
+        "free_gib": 40.8042,
+        "used_percent": 82.82,
+        "sample": 1,
+        "at_utc": "2026-10-24T07:09:50+00:00",
+        "margin_bytes": 28174430264,
+        "margin_gib": 26.2395
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43813236736,
+        "total_bytes": 255041990656,
+        "free_gib": 40.8043,
+        "used_percent": 82.82,
+        "sample": 2,
+        "at_utc": "2026-10-24T07:10:10+00:00",
+        "margin_bytes": 28174524472,
+        "margin_gib": 26.2396
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43811811328,
+        "total_bytes": 255041990656,
+        "free_gib": 40.8029,
+        "used_percent": 82.82,
+        "sample": 3,
+        "at_utc": "2026-10-24T07:10:30+00:00",
+        "margin_bytes": 28173099064,
+        "margin_gib": 26.2382
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43812540416,
+        "total_bytes": 255041990656,
+        "free_gib": 40.8036,
+        "used_percent": 82.82,
+        "sample": 4,
+        "at_utc": "2026-10-24T07:10:50+00:00",
+        "margin_bytes": 28173828152,
+        "margin_gib": 26.2389
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43809038336,
+        "total_bytes": 255041990656,
+        "free_gib": 40.8003,
+        "used_percent": 82.82,
+        "sample": 5,
+        "at_utc": "2026-10-24T07:11:10+00:00",
+        "margin_bytes": 28170326072,
+        "margin_gib": 26.2357
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43510423552,
+        "total_bytes": 255041990656,
+        "free_gib": 40.5222,
+        "used_percent": 82.94,
+        "sample": 6,
+        "at_utc": "2026-10-24T07:11:30+00:00",
+        "margin_bytes": 27871711288,
+        "margin_gib": 25.9576
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43512754176,
+        "total_bytes": 255041990656,
+        "free_gib": 40.5244,
+        "used_percent": 82.94,
+        "sample": 7,
+        "at_utc": "2026-10-24T07:11:50+00:00",
+        "margin_bytes": 27874041912,
+        "margin_gib": 25.9597
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43507421184,
+        "total_bytes": 255041990656,
+        "free_gib": 40.5194,
+        "used_percent": 82.94,
+        "sample": 8,
+        "at_utc": "2026-10-24T07:12:10+00:00",
+        "margin_bytes": 27868708920,
+        "margin_gib": 25.9548
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 43239477248,
+        "total_bytes": 255041990656,
+        "free_gib": 40.2699,
+        "used_percent": 83.05,
+        "sample": 9,
+        "at_utc": "2026-10-24T07:12:30+00:00",
+        "margin_bytes": 27600764984,
+        "margin_gib": 25.7052
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 42734444544,
+        "total_bytes": 255041990656,
+        "free_gib": 39.7996,
+        "used_percent": 83.24,
+        "sample": 10,
+        "at_utc": "2026-10-24T07:12:50+00:00",
+        "margin_bytes": 27095732280,
+        "margin_gib": 25.2349
+      },
+      {
+        "path": "C:/",
+        "free_bytes": 42247122944,
+        "total_bytes": 255041990656,
+        "free_gib": 39.3457,
+        "used_percent": 83.44,
+        "sample": 11,
+        "at_utc": "2026-10-24T07:13:10+00:00",
+        "margin_bytes": 26608410680,
+        "margin_gib": 24.781
+      }
+    ]
+  },
+  "stability": {
+    "free_min_bytes": 42247122944,
+    "free_max_bytes": 43813236736,
+    "free_median_bytes": 43660896256,
+    "free_min_gib": 39.3457,
+    "free_max_gib": 40.8043,
+    "spread_gib": 1.4586,
+    "worst_sample_margin_bytes": 26608410680,
+    "worst_sample_margin_gib": 24.781,
+    "worst_observed_drop_bytes": 505032704,
+    "worst_observed_drop_gib": 0.4703,
+    "drops_gib": [
+      -0.0003,
+      -0.0001,
+      0.0013,
+      -0.0007,
+      0.0033,
+      0.2781,
+      -0.0022,
+      0.005,
+      0.2495,
+      0.4703,
+      0.4539
+    ],
+    "net_change_gib": -1.4581
+  },
+  "inventory": {
+    "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k": {
+      "exists": true,
+      "bytes": 550127235,
+      "gib": 0.5123,
+      "files": 15343
+    },
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff": {
+      "exists": true,
+      "bytes": 873593358,
+      "gib": 0.8136,
+      "files": 25769
+    },
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp": {
+      "exists": true,
+      "bytes": 9579445674,
+      "gib": 8.9216,
+      "files": 77471
+    }
+  },
+  "reclaimable_derived": {
+    "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k": [
+      {
+        "kind": "__pycache__",
+        "bytes": 27215780,
+        "gib": 0.0253
+      },
+      {
+        "kind": ".pytest_cache",
+        "bytes": 6869,
+        "gib": 0.0
+      }
+    ],
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff": [
+      {
+        "kind": "__pycache__",
+        "bytes": 75608553,
+        "gib": 0.0704
+      },
+      {
+        "kind": ".mypy_cache",
+        "bytes": 9138437,
+        "gib": 0.0085
+      },
+      {
+        "kind": ".ruff_cache",
+        "bytes": 19187,
+        "gib": 0.0
+      },
+      {
+        "kind": ".pytest_cache",
+        "bytes": 17619,
+        "gib": 0.0
+      }
+    ],
+    "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp": [
+      {
+        "kind": "__pycache__",
+        "bytes": 12189630,
+        "gib": 0.0114
+      },
+      {
+        "kind": ".pytest_cache",
+        "bytes": 50981,
+        "gib": 0.0
+      }
+    ]
+  },
+  "deletions": [],
+  "deletion_policy": "none: the volume already cleared the frozen budget, so nothing was removed. Deleting evidence or another agent's tree would have been a larger loss than the one this work package is recovering from.",
+  "verdict": "CAPACITY_OK",
+  "verdict_basis": "the worst of the sampled margins, not the best: a budget met once is not a budget met",
+  "processes_seen": [
+    {
+      "name": "afwServ",
+      "pid": 6548
+    },
+    {
+      "name": "AggregatorHost",
+      "pid": 10028
+    },
+    {
+      "name": "ai",
+      "pid": 25852
+    },
+    {
+      "name": "AppActions",
+      "pid": 4184
+    },
+    {
+      "name": "AppHelperCap",
+      "pid": 3676
+    },
+    {
+      "name": "AppleMobileDeviceService",
+      "pid": 6848
+    },
+    {
+      "name": "ApplicationFrameHost",
+      "pid": 7580
+    },
+    {
+      "name": "AppVShNotify",
+      "pid": 5856
+    },
+    {
+      "name": "armsvc",
+      "pid": 39516
+    },
+    {
+      "name": "aswEngSrv",
+      "pid": 10592
+    },
+    {
+      "name": "aswToolsSvc",
+      "pid": 6364
+    },
+    {
+      "name": "atmgr",
+      "pid": 26168
+    },
+    {
+      "name": "AvastSvc",
+      "pid": 4692
+    },
+    {
+      "name": "AvastUI",
+      "pid": 21416
+    },
+    {
+      "name": "AvastUI",
+      "pid": 21484
+    },
+    {
+      "name": "AvastUI",
+      "pid": 8344
+    },
+    {
+      "name": "AvastUI",
+      "pid": 20828
+    },
+    {
+      "name": "bash",
+      "pid": 36356
+    },
+    {
+      "name": "bash",
+      "pid": 37452
+    },
+    {
+      "name": "bash",
+      "pid": 37868
+    },
+    {
+      "name": "bash",
+      "pid": 33700
+    },
+    {
+      "name": "bash",
+      "pid": 30328
+    },
+    {
+      "name": "bash",
+      "pid": 32800
+    },
+    {
+      "name": "bash",
+      "pid": 33436
+    },
+    {
+      "name": "bash",
+      "pid": 42064
+    },
+    {
+      "name": "bash",
+      "pid": 42476
+    },
+    {
+      "name": "bash",
+      "pid": 42816
+    },
+    {
+      "name": "bash",
+      "pid": 41068
+    },
+    {
+      "name": "bash",
+      "pid": 38704
+    },
+    {
+      "name": "bash",
+      "pid": 39196
+    },
+    {
+      "name": "bash",
+      "pid": 39424
+    },
+    {
+      "name": "bash",
+      "pid": 29348
+    },
+    {
+      "name": "bash",
+      "pid": 15864
+    },
+    {
+      "name": "bash",
+      "pid": 17780
+    },
+    {
+      "name": "bash",
+      "pid": 21096
+    },
+    {
+      "name": "bash",
+      "pid": 14696
+    },
+    {
+      "name": "bash",
+      "pid": 2744
+    },
+    {
+      "name": "bash",
+      "pid": 8464
+    },
+    {
+      "name": "bash",
+      "pid": 12676
+    },
+    {
+      "name": "bash",
+      "pid": 25212
+    }
+  ]
+}

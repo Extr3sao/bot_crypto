@@ -1,0 +1,82 @@
+{
+  "experiment_id": "EXP-ARP-021",
+  "strategy_id": "H-XSEC-RISKADJ-RELSTR-001",
+  "arm": "PROJECT_DERIVED_VARIANT",
+  "source_faithful": false,
+  "source_attribution": "NONE — new project hypothesis",
+  "mechanism_family": "cross-sectional momentum / relative strength / factor ranking",
+  "lineage": "NEW. Distinct from EXP-ARP-008 (single-asset time-series momentum). Distinct from EXP-ARP-016 (raw trailing return, no volatility normalisation, no skip window) by using a RISK-ADJUSTED formation score with a 7-day skip.",
+  "mechanism_statement": "Rank the eligible universe cross-sectionally by formation return divided by realized volatility, skipping the most recent 7 days; hold the top decile equal-weight and rotate.",
+  "assets": ["DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)"],
+  "timeframe": "1d",
+  "rules": {
+    "signal": "score_i = (close_{t-skip} / close_{t-skip-formation} - 1) / realized_vol_i, formation=90d skip=7d",
+    "holdings": "long equal-weight top decile of eligible universe (min 5 names, max 20 names)",
+    "rebalance": "every 7 days at UTC close; act next open; only names whose rank changed are traded",
+    "stop": "none (rotation is the exit); max_hold_days force-exits a name at the next open",
+    "position": "long-only; fixed total notional 500 USD spread equally; no compounding"
+  },
+  "parameters": {
+    "lookback_days": 90,
+    "skip_days": 7,
+    "top_fraction": 0.1,
+    "min_members": 5,
+    "rebalance_days": 7,
+    "max_hold_days": 30
+  },
+  "cost_model": {
+    "version": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "source": "live CostEngine (never hardcoded)",
+    "stress_multiples": [0.5, 1.0, 1.25, 1.5, 2.0]
+  },
+  "data": {
+    "corpus": "reports/alpha-diversified-v1/data (130 native 1d USDT markets)",
+    "universe_version": "ARP-006-UNIVERSE-v1",
+    "survivorship_limitation": "SURVIVORSHIP_DATA_LIMITATION"
+  },
+  "splits": {
+    "DEV": ["2019-01-01", "2024-01-01"],
+    "VALIDATION": ["2024-01-01", "2025-07-01"],
+    "OOS_LOCK": ["2026-03-01", "2027-03-01"],
+    "oos_opened": false,
+    "oos_status": "FORWARD_PAPER_ONLY_NOT_AVAILABLE"
+  },
+  "spec_contract": {
+    "experiment_id": "EXP-ARP-021",
+    "strategy_id": "H-XSEC-RISKADJ-RELSTR-001",
+    "timeframe": "1d",
+    "assets": ["DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)"],
+    "lookback_days": 90,
+    "max_hold_days": 30,
+    "entry_rule": "long top-decile risk-adjusted relative strength, rebalance every 7d, act next open",
+    "exit_rule": "exit a name when it leaves the top decile or after max_hold_days; act next open; no bar-close force",
+    "dataset_fingerprint": "abc847bd4e367e2c885d5b320fedbbba7e9a435ae24ca52ef4243018313f2014"
+  },
+  "implementation_config": {
+    "lookback_days": 90,
+    "max_hold_days": 30,
+    "dataset_fingerprint": "abc847bd4e367e2c885d5b320fedbbba7e9a435ae24ca52ef4243018313f2014",
+    "entry_rule": "long top-decile risk-adjusted relative strength, rebalance every 7d, act next open",
+    "exit_rule": "exit a name when it leaves the top decile or after max_hold_days; act next open; no bar-close force",
+    "disposition": "NOT_IMPLEMENTED — pre-registration only; no DEV execution in ARP-008"
+  },
+  "kill_criteria": [
+    "DEV gross expectancy <= 0 -> REJECT_NO_EDGE",
+    "DEV gross expectancy <= cost bps -> REJECT_COSTS",
+    "DEV trades < 20 -> REJECT_INSUFFICIENT_SAMPLE",
+    "single trade > 50% of positive DEV net -> REJECT_FRAGILE",
+    "any look-ahead -> REJECT_PIT",
+    "VALIDATION net <= 0 -> REJECT_VALIDATION"
+  ],
+  "prior_art": {
+    "nearest_experiment": "EXP-ARP-016",
+    "difference": "ARP-016 ranked raw trailing return with no volatility normalisation and no skip; this ranks risk-adjusted return with a 7-day skip."
+  },
+  "gates": {
+    "promotion": "positive net DEV AND positive net VALIDATION AND cost PASS AND robustness PASS AND PIT PASS AND contract PASS AND sample sufficient AND concentration acceptable AND builder != verifier"
+  },
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "frozen_before_results": true,
+  "oos_locked": true
+}
