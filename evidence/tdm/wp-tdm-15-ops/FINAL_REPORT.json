@@ -1,12 +1,12 @@
 {
   "schema_version": "wp-tdm-015-ops-final-v1",
   "work_package": "WP-TDM-015-OPS",
-  "generated_at_utc": "2026-10-26T12:36:38Z",
+  "generated_at_utc": "2026-10-26T12:38:05Z",
   "verdict": "PARTIAL",
   "verdict_reason": "signals, PAPER runtime, restart and dashboard are operating on real market data; AI inference is BLOCKED (no provider credential on this host) and PAPER orders stay blocked by admission, so the work package is not a PASS",
   "run_id": "tdm15-ops-01",
   "base_commit": "c30a826b",
-  "head_commit": "c30a826bbdd7ee15eb9eb9ad3cf34554e706844c",
+  "head_commit": "c9623fd31d37e37aacd977b823b65013c90f7ac1",
   "branch": "feat/tdm-015-ops",
   "no_live_orders": true,
   "execution": {
@@ -439,5 +439,6 @@
       "bytes": 488,
       "sha256": "c1a1009d8ef6da175b3b433e6e29f131a923ad224a973f95d55eda71e20ddbb9"
     }
-  ]
+  ],
+  "closure_note": "the evidence commit follows the code commit it names, because a commit cannot contain its own sha; head_commit is the code+evidence change and the follow-up only records these files"
 }

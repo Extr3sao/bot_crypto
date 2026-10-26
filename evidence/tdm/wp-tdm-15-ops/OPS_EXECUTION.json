@@ -2,8 +2,8 @@
   "schema_version": "rfc-tdm-015-evidence-v1",
   "section": "ops_execution",
   "run_id": "tdm15-ops-01",
-  "generated_at_utc": "2026-10-26T12:37:24Z",
-  "commit": "c30a826bbdd7ee15eb9eb9ad3cf34554e706844c",
+  "generated_at_utc": "2026-10-26T12:37:56Z",
+  "commit": "c9623fd31d37e37aacd977b823b65013c90f7ac1",
   "branch": "feat/tdm-015-ops",
   "plan": {
     "processes": [
@@ -390,14 +390,14 @@
         "status": 200,
         "bytes": 124436,
         "latency_ms": 109.0,
-        "sha256": "37e1b4ca4148ce479e183bc99dac7b6fd34807ad714e5fdd9d09bf8e8646811c"
+        "sha256": "7a1e19462ef231b9765c2209f4ff7916bbd037b34dc5675abc63c1e9e6b5e478"
       },
       {
         "url": "http://127.0.0.1:8793/healthz",
         "ok": true,
         "status": 200,
         "bytes": 52,
-        "latency_ms": 109.0,
+        "latency_ms": 110.0,
         "sha256": "129ae7d34808a45ec543d9e998f96ac47fc3719f8f7807b923950723c99d053d"
       },
       {
@@ -405,8 +405,8 @@
         "ok": true,
         "status": 200,
         "bytes": 200886,
-        "latency_ms": 94.0,
-        "sha256": "997725e1b9bfe96d8b7d3c6c69ef31418978be237a6fc1e62bfce0e1e77fb1d4",
+        "latency_ms": 109.0,
+        "sha256": "25abbf52870dac89b8e4ce9e04eab282aa6a134715f16061193130c7743a0e0f",
         "observed": {
           "system_state": "STOPPED",
           "running": false,
@@ -420,8 +420,8 @@
         "ok": true,
         "status": 200,
         "bytes": 22064,
-        "latency_ms": 109.0,
-        "sha256": "1e9fa2885a26d8746e2e3e85499051cc0dfb87ae11a9fb31a2ff1409eb54350d",
+        "latency_ms": 125.0,
+        "sha256": "6b524e14391a12606da100984f5393b55e6ca355ccbb29130d9f15fac0c73abc",
         "observed": {
           "returned": null,
           "total_matched": null
@@ -432,8 +432,8 @@
         "ok": true,
         "status": 200,
         "bytes": 35605,
-        "latency_ms": 125.0,
-        "sha256": "e3171b6e12abcfab0db5e3c7e0ad1bfcc4da5bd6c8e3a7b4142ba34a595b2501",
+        "latency_ms": 94.0,
+        "sha256": "dab5c92b057275011232b2d447f9b6b728e28856fae71786acb6cb80342aa373",
         "observed": {
           "signals_covered": null,
           "by_status": null

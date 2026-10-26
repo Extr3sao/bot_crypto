@@ -12,6 +12,7 @@ admisión (0 de 24 estrategias) y no se relajó nada para forzar operaciones.
 | --- | --- |
 | Run id | `tdm15-ops-01` |
 | Base publicada | `c30a826b` (`feat/tdm-015-live-paper`) |
+| Commit de código | `c9623fd31d37` |
 | Worktree | `ff-wt-tdm15ops`, rama `feat/tdm-015-ops` |
 | Ventanas ejecutadas | 3 (mismo run id: 2363 s · 192 s · 898 s) |
 | Estado final | `STOPPED`, stop verdict `CLEAN`, 5/5 hijos con exit 0 |

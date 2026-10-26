@@ -1,6 +1,6 @@
 {
   "schema_version": "wp-tdm-015-ops-verify-v1",
-  "generated_at_utc": "2026-10-26T12:37:25Z",
+  "generated_at_utc": "2026-10-26T12:37:57Z",
   "run_id": "tdm15-ops-01",
   "commit": null,
   "ok": true,
@@ -95,7 +95,7 @@
       "/api/status": {
         "status": 200,
         "bytes": 200886,
-        "sha256": "0cc7cbbaf78b6a5abdbb8151f89d1ab4978a963c76991e234880b37589266b07",
+        "sha256": "fb4b9249a9c4dc170428fca197a36ff9972b7e1ee4740de3623affcb414d69d0",
         "system_state": "STOPPED",
         "running": false,
         "run_id": "tdm15-ops-01"
@@ -103,12 +103,12 @@
       "/api/signals?limit=5": {
         "status": 200,
         "bytes": 22064,
-        "sha256": "67b1bb598e71a72f9a7901121de28db3237e8afa671312d38935dffc2002fab1"
+        "sha256": "f25b7cdc56c966a55db216ab7cf920a61a95cf7eeda0a338848e610075179c9e"
       },
       "/api/analysis": {
         "status": 200,
         "bytes": 35605,
-        "sha256": "6d3db52b571b9ac8219fc152a2d6e01a604d65fd95aea41a42f56d35bab71503",
+        "sha256": "34f1d4d96b77f0dbf3cb2c90f748726161171b95c696faa8fba668efe7fe2cc0",
         "store": null
       }
     }
