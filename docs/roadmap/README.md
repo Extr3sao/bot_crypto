@@ -1,6 +1,6 @@
 # Trading Agentic Portable — Roadmap maestro
 
-**Fecha de corte:** 2026-10-25 · **Versión actual:** 1.6 · **Estado:** inventario de gestión, NO certificado de producción.
+**Fecha de corte:** 2026-10-26 · **Versión actual:** 1.7 · **Estado:** inventario de gestión, NO certificado de producción.
 
 Este directorio conserva el seguimiento de Trading Agentic Portable en formato Excel y un espejo de datos fácilmente revisable en Git. La autoridad de cada estado viene de los commits y evidencias de las ramas, **no** de la existencia del RFC.
 
@@ -18,6 +18,13 @@ Este directorio conserva el seguimiento de Trading Agentic Portable en formato E
 4. Cuando un reporte da PASS focal, dejar `VERIFICADO_FOCAL`; NO convertirlo en `CERTIFIED` ni `PRODUCTION_READY`. Si falla la suite global, mantener bloqueo.
 5. Para que la actualización sea autónoma, pegar el resultado nuevo de Codex en el proyecto de ChatGPT o ejecutar la integración autorizada. **El archivo no se refresca solo sin una ejecución/solicitud.**
 6. En GitHub, preferir PR y actualizaciones fast-forward de la rama `project/roadmap-trading-agentic`; no hacer push a ramas en uso por otros agentes.
+
+### v1.7 (2026-10-26) — cierre de la sincronización LOCAL → GITHUB
+
+- 35/35 ramas locales publicadas y verificadas (`SHA local == SHA remoto`), 0 commits sin publicar, 15 ramas de preservación con PR `#19` y `#36`–`#49`.
+- Los cuatro reportes (`LOCAL_GITHUB_SYNC_AUDIT.md/.json`, `FINAL_GITHUB_SYNC_REPORT.md/.json`) y el manifiesto de exclusiones quedan versionados en `sync/uncommitted-main-20261025`.
+- Gates re-meditos en checkout limpio de `e67194e7`: ruff 130 / format 444 / mypy 297 (idénticos a v1.6) y pytest 79 failed / 3274 passed / 34 skipped / 14 errors — rojo **preexistente**, no introducido por la sincronización.
+- Sigue `BLOQUEADO` el PR `#19` (error de colección en `test_failfast.py`); `origin/main` sigue 263 commits por detrás.
 
 ## Estado destacado del corte inicial
 
