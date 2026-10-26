@@ -1,8 +1,8 @@
 {
   "artifact": "ACTIVE_RECOVERY_INDEPENDENT_VERIFICATION",
   "work_package": "WP-5 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-11T19:12:33Z",
-  "head": "eb509aaaffbdc15017f7920df41285016ec0efe8",
+  "generated_at_utc": "2026-10-26T13:04:40Z",
+  "head": "63950a7295d7659fffe894e49d6fa5624d1280a2",
   "verifier": "scripts/recovery_verify.py",
   "builders": [
     "scripts/active_economic_audit.py",
@@ -114,7 +114,7 @@
       "check": "C13",
       "name": "both artefacts' identities recompute from their own published fields",
       "result": "PASS",
-      "detail": "state view e7bee5d8b710640c vs recorded e7bee5d8b710640c; audit 023b66ffd1213b06 vs recorded 023b66ffd1213b06"
+      "detail": "state view e7bee5d8b710640c vs recorded e7bee5d8b710640c; audit c6ea34388745471e vs recorded c6ea34388745471e"
     },
     {
       "check": "C14",
@@ -138,7 +138,7 @@
       "check": "C17",
       "name": "a clean checkout of an ancestor reproduces these artefacts",
       "result": "PASS",
-      "detail": "rehearsal status=PASS on e07ce6cc3c00 (ancestor of HEAD: True); artefacts identical: ['data/recovery/CAMPAIGN_STATE_VIEW.json', 'data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md', 'data/recovery/ACTIVE_ECONOMIC_AUDIT.json', 'data/recovery/ACTIVE_ECONOMIC_AUDIT.md']"
+      "detail": "rehearsal status=PASS on d62ecb76aaec (ancestor of HEAD: True); artefacts identical: ['data/recovery/CAMPAIGN_STATE_VIEW.json', 'data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md', 'data/recovery/ACTIVE_ECONOMIC_AUDIT.json', 'data/recovery/ACTIVE_ECONOMIC_AUDIT.md']"
     },
     {
       "check": "C12",
