@@ -1,0 +1,60 @@
+{
+  "artifact": "RFC049_INDEPENDENT_VERIFICATION",
+  "campaign": "RFC-049 DISCOVERY 2 — Phase A",
+  "verifier": "scripts/rfc049_verify.py (does not import the builder; shares no code)",
+  "generated_at_utc": "2026-10-10T11:26:21Z",
+  "status": "PASS",
+  "checks_total": 72,
+  "checks_failed": 0,
+  "mismatches": [],
+  "false_success": 0,
+  "negative_controls": [
+    {
+      "control": "tampered_hash_is_detected",
+      "expected": "FAIL",
+      "observed": "FAIL"
+    },
+    {
+      "control": "fabricated_result_is_detected",
+      "expected": "FAIL",
+      "observed": "FAIL"
+    },
+    {
+      "control": "governance_drift_is_detected",
+      "expected": "FAIL",
+      "observed": "FAIL"
+    },
+    {
+      "control": "weakened_threshold_is_detected",
+      "expected": "FAIL",
+      "observed": "FAIL"
+    },
+    {
+      "control": "absent_artifact_is_detected",
+      "expected": "FAIL",
+      "observed": "FAIL"
+    }
+  ],
+  "verified_artifacts": {
+    "data/rfc049/BASELINE_AUDIT.json": "5c02875fbd6d5a302a67d916e02aa4d819a100daa5238d5ea1dd168731404cf2",
+    "data/rfc049/HYPOTHESIS_REGISTRY.json": "141e6b654b45a6dd6eab91dd91b09f7a8f7430283a4b215b6704bce91a6ad301",
+    "data/rfc049/PREREGISTRATION_MANIFEST.json": "da878baaf3b5d9ecdafe9888eb284f20eacdbb68274c3176051d5c8f88fc0782",
+    "data/rfc049/DATA_EXPOSURE_AUDIT.json": "a86ff3993bc8d1e4d2d543b5891c0d1d2405e0b71174ac354a018d990f6d4e1d",
+    "data/rfc049/ECONOMIC_RESULTS.json": "79deb36fa94c76493e80767b946925f209a42fabdedbfeb36551d46db388f89d",
+    "data/rfc049/ROBUSTNESS_REPORT.json": "19dc6e4ecfa542ec4544be8d43bb176d63bb62f4ab901f33b2965ba554b9b13c",
+    "data/rfc049/RUN_REPORT.json": "69cb294b9def4207e7326d47aa9745b78430e40291cb57374485e834f29fa872",
+    "data/rfc049/RUN_REPORT.md": "4e5da65b13489220096176322d123ca62ef57d00f91988d89cfcb49dc8af30aa",
+    "data/rfc049/FINAL_REPORT.json": "c3351cc8b66d7f95b98e8dc60feb84eb2eada6a24b0ee55e0bf469a1af9e9a2b",
+    "data/rfc049/FINAL_REPORT.md": "0f64d09da17d92eaf9f881893b330114a30f048bbedeb36eaf5fc25124487c46",
+    "data/rfc049/vendor/VENDOR_MANIFEST.json": "f5613e0cd26365bea48d8d37d900499be7fe35045350257a5d30ae976b973550",
+    "data/rfc049/specs/H-049-001.json": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
+    "data/rfc049/specs/H-049-002.json": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0",
+    "data/rfc049/specs/H-049-003.json": "c77aa9a8c7aa897c2d504ed940c012cd3100a47490ee2ca6b37f08a5a79e26e9"
+  },
+  "scope": "Phase A only: artifact integrity, frozen hashes, governance, no-result discipline and the activation gate. Economic and runtime verification remain NOT_RUN until a campaign is authorized.",
+  "honest_limits": [
+    "coverage parsing trusts vendor field semantics; byte hashes are the authority",
+    "the verification says nothing about any economic hypothesis",
+    "PIT is audited at convention level here; the executable PIT audit is a Phase B gate"
+  ]
+}

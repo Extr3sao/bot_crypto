@@ -1,0 +1,26 @@
+{
+  "command": "python -m pytest tests/unit/research/test_exp004a_wp051_02k.py -q",
+  "covers": [
+    "a pass needs the whole p90 budget, never a fraction of it",
+    "p90 is the budget and the maximum is only reported",
+    "a refusal is history, not a present-tense capacity decision",
+    "appends keep their prefix; rewrites, shrinks and moved shards are caught",
+    "a foreign tree is never SAFE_OWNED; a recent write, a tracked cache and an unanswerable git are protected",
+    "document folders and profile roots are never candidates",
+    "only experiment worktrees may be offered for bundling",
+    "the ask carries a 1 GiB margin, never counts a parent and its child twice, and is cheapest-first"
+  ],
+  "duration_seconds": 1.2,
+  "exit_code": 0,
+  "failed": 0,
+  "generated_at_utc": "2026-10-23T13:44:23Z",
+  "passed": 32,
+  "schema_version": "EXP004A_WP051_02K_TESTS_V1",
+  "skipped": 0,
+  "status": "PASS",
+  "stdout_tail": [
+    "................................                                         [100%]",
+    "32 passed in 0.58s"
+  ],
+  "suite_sha256": "a0e78131e12b98c79d8f6873b83a8f83d6d255f9efdcd90523770f36666f487b"
+}

@@ -117,7 +117,7 @@ def _engine(
                 "regimes": [],
                 "direction": "BOTH",
                 "enabled": True,
-                "status": "CONFIRMED",
+                "status": "PAPER_ACTIVE",
             }
         },
         families={"ema_crossover": _ShapeFamily()},

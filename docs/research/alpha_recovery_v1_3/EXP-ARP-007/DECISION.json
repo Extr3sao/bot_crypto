@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-ARP-007",
+  "final": "REJECT_COSTS",
+  "identity": {
+    "arm": "PROJECT_DERIVED_VARIANT",
+    "note": "NOT a source-faithful test of STRAT-CAND-019 (BLOCKED_NEEDS_SPEC).",
+    "source_attribution": "NONE",
+    "strategy_id": "STRAT-CAND-019-VARIANT-B"
+  },
+  "oos_opened": false,
+  "stages": {
+    "COST": "REJECT_COSTS",
+    "DEV": "PASS",
+    "ROBUSTNESS": "NOT_REACHED",
+    "VALIDATION": "NOT_REACHED"
+  }
+}
