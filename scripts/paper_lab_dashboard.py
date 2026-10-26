@@ -37,6 +37,7 @@ from urllib.parse import parse_qs, urlparse
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
+from trading_bot.autonomous.analysis import AnalysisStatus, AnalysisStore  # noqa: E402
 from trading_bot.autonomous.observability import (  # noqa: E402
     allow_tolerant_console_output,
     build_status,
@@ -116,6 +117,7 @@ def status_payload(args: argparse.Namespace) -> dict[str, Any]:
     # The page and /api/status both carry the signal view, computed once here so
     # the two cannot show different numbers in the same refresh.
     payload["signals_view"] = signals_payload(args, {}, status=payload)
+    payload["analysis_view"] = analysis_payload(args, {}, status=payload)
     return payload
 
 
@@ -289,7 +291,8 @@ def signals_payload(
             "model": analysis.get("model"),
             "latency_ms": analysis.get("latency_ms"),
             "cost_usd": analysis.get("cost_usd"),
-            "error": analysis.get("error"),
+            "error_code": analysis.get("error_code"),
+            "error_message": analysis.get("error_message"),
             "analysis_id": analysis.get("analysis_id"),
         }
         events.append(row)
@@ -336,6 +339,147 @@ def signals_payload(
     return payload
 
 
+def analysis_payload(
+    args: argparse.Namespace,
+    query: dict[str, list[str]] | None = None,
+    *,
+    status: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Read-only view of the AI sidecar: coverage, cost, latency and failures.
+
+    `NOT_CONFIGURED` is surfaced as its own state, with the count of signals it
+    covers, because "the model never ran" and "the model said nothing useful" are
+    different facts and collapsing them is how a missing key starts to look like
+    analysis.
+    """
+    query = query or {}
+    try:
+        limit = int((query.get("limit") or [DEFAULT_PAGE_LIMIT])[0])
+    except ValueError:
+        limit = DEFAULT_PAGE_LIMIT
+    limit = max(1, min(limit, MAX_PAGE_LIMIT))
+    status = status if status is not None else status_payload(args)
+    run_dir = resolve_signal_run_dir(args, status)
+    payload: dict[str, Any] = {
+        "schema_version": "paper-analysis-view-v1",
+        "generated_at_ms": int(time.time() * 1000),
+        "generated_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "read_only": True,
+        "authority_over_orders": False,
+        "run_id": None if run_dir is None else run_dir.name,
+        "available": False,
+        "state": "ABSENT",
+        "signals_total": 0,
+        "coverage": {},
+        "records": [],
+        "page": {"limit": limit, "returned": 0},
+        "heartbeat": None,
+    }
+    if run_dir is None:
+        return payload
+    store = AnalysisStore(run_dir)
+    latest = store.latest_by_signal()
+    signals_total = 0
+    if (run_dir / SIGNAL_FILE).exists():
+        signals_total = sum(1 for _ in SignalLedger(run_dir).iter_rows())
+    by_status: dict[str, int] = {}
+    latencies: list[int] = []
+    cost = 0.0
+    for record in latest.values():
+        by_status[record.status] = by_status.get(record.status, 0) + 1
+        if record.latency_ms:
+            latencies.append(int(record.latency_ms))
+        if record.cost_usd:
+            cost += float(record.cost_usd)
+    analysed = by_status.get(AnalysisStatus.ANALYZED.value, 0)
+    records = sorted(
+        (record.to_dict() for record in latest.values()),
+        key=lambda row: int(row.get("analysis_time_ms") or 0),
+        reverse=True,
+    )[:limit]
+    heartbeat = None
+    heartbeat_path = run_dir / "AI_ANALYST_HEARTBEAT.json"
+    if heartbeat_path.exists():
+        try:
+            heartbeat = json.loads(heartbeat_path.read_text(encoding="utf-8"))
+        except ValueError:
+            heartbeat = None
+    configured = None if heartbeat is None else bool(heartbeat.get("provider_configured"))
+    if configured is False:
+        state = "NOT_CONFIGURED"
+    elif not latest and not signals_total:
+        state = "ABSENT"
+    elif heartbeat is not None:
+        age = max(0.0, time.time() - float(heartbeat.get("passed_at_ms") or 0) / 1000.0)
+        state = "LIVE" if age <= 900 else "STALE"
+    else:
+        # No heartbeat file: the sidecar has never run against this stream. That is
+        # a different fact from "it ran and found nothing", and it is said plainly.
+        state = "NOT_RUN"
+    p95 = None
+    if latencies:
+        ordered = sorted(latencies)
+        # Nearest-rank p95 over what actually ran; with one sample it is that sample.
+        rank = min(len(ordered) - 1, int(0.95 * (len(ordered) - 1) + 0.5))
+        p95 = ordered[rank]
+    payload.update(
+        {
+            "available": True,
+            "state": state,
+            "provider_configured": configured,
+            "signals_total": signals_total,
+            "coverage": {
+                "signals": signals_total,
+                "covered": len(latest),
+                "analysed": analysed,
+                "not_configured": by_status.get(AnalysisStatus.NOT_CONFIGURED.value, 0),
+                "failed": by_status.get(AnalysisStatus.FAILED.value, 0),
+                "pending": by_status.get(AnalysisStatus.PENDING.value, 0),
+                "by_status": by_status,
+                "coverage_pct": (
+                    None if not signals_total else round(100.0 * len(latest) / signals_total, 1)
+                ),
+            },
+            "economics": {
+                "cost_usd_total": round(cost, 6),
+                "cost_usd_per_analysis": (
+                    None if not analysed else round(cost / analysed, 6)
+                ),
+                "latency_ms_p95": p95,
+                "latency_ms_max": max(latencies) if latencies else None,
+            },
+            "records": records,
+            "page": {"limit": limit, "returned": len(records)},
+            "heartbeat": heartbeat,
+        }
+    )
+    return payload
+
+
+def render_analysis_card(payload: dict[str, Any]) -> str:
+    coverage = payload.get("coverage") or {}
+    economics = payload.get("economics") or {}
+    state = str(payload.get("state") or "UNKNOWN")
+    tone = "ok" if state == "LIVE" else ("bad" if state == "STALE" else "warn")
+    return _card(
+        "IA (read-only)",
+        [
+            ("state", state),
+            ("provider configured", payload.get("provider_configured")),
+            ("coverage", f"{coverage.get('covered')}/{coverage.get('signals')} ({coverage.get('coverage_pct')}%)"),
+            ("analysed", coverage.get("analysed")),
+            ("not configured", coverage.get("not_configured")),
+            ("failed", coverage.get("failed")),
+            ("pending", coverage.get("pending")),
+            ("cost (USD)", economics.get("cost_usd_total")),
+            ("latency p95 (ms)", economics.get("latency_ms_p95")),
+            ("authority over orders", payload.get("authority_over_orders")),
+            ("last error", (payload.get("heartbeat") or {}).get("last_error")),
+        ],
+        tone=tone,
+    )
+
+
 def _bps(value: Any) -> str:
     if value is None:
         return "—"
@@ -356,12 +500,14 @@ def render_signals_section(payload: dict[str, Any]) -> str:
     for event in payload.get("events") or []:
         analysis = event.get("analysis") or {}
         outcome = event.get("outcome") or {}
-        ai = (
-            f"{_escape(analysis.get('status') or '—')}"
-            f"<div class='small'>{_escape(analysis.get('claim') or '')}</div>"
-            if analysis
-            else "<span class='small'>no analysis</span>"
-        )
+        if analysis:
+            detail = analysis.get("claim") or analysis.get("error_code") or ""
+            ai = (
+                f"{_escape(analysis.get('status') or '—')}"
+                f"<div class='small'>{_escape(detail)}</div>"
+            )
+        else:
+            ai = "<span class='small'>no analysis</span>"
         evidence = json.dumps(event.get("evidence_refs") or [], ensure_ascii=True)
         candidates = json.dumps(event.get("candidates") or [], ensure_ascii=True)
         outcomes = json.dumps(outcome, ensure_ascii=True) if outcome else "no outcome yet"
@@ -415,7 +561,7 @@ def render_signals_section(payload: dict[str, Any]) -> str:
     return f"""<div id="signals" class="panel">
 <h2 style="font-size:13px;letter-spacing:.08em;color:#8b93a1;margin:0 0 6px">SIGNALS — {_escape(payload.get('run_id') or 'no run')}</h2>
 <div class="banner {tone}">{_escape(state)} — {_escape(payload.get('state_reason'))}</div>
-<div class="small">events {_escape(stats.get('records'))} · stage {_escape(stats.get('by_stage'))} · kind {_escape(stats.get('by_kind'))} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> {next_link}</div>
+<div class="small">events {_escape(stats.get('records'))} · stage {_escape(stats.get('by_stage'))} · kind {_escape(stats.get('by_kind'))} · showing {_escape(page.get('returned'))}/{_escape(page.get('total_matched'))} · retention {_escape(payload.get('retention'))} · <a href="/api/signals?limit={int(page.get('limit') or DEFAULT_PAGE_LIMIT)}" style="color:#7fb2ff">raw JSON</a> · <a href="/api/analysis" style="color:#7fb2ff">AI JSON</a> {next_link}</div>
 <form method="get" action="/#signals" class="filters">
  <input name="symbol" placeholder="BTC/USDT" value="{_escape(filters.get('symbol') or '')}">
  <input name="strategy" placeholder="strategy_id" value="{_escape(filters.get('strategy') or '')}">
@@ -482,6 +628,7 @@ def render_page(payload: dict[str, Any]) -> str:
     controls = payload.get("controls") or {}
     dashboard = payload.get("dashboard") or {}
     signals = payload.get("signals_view") or {}
+    analysis = payload.get("analysis_view") or {}
 
     state = system.get("state") or "UNKNOWN"
     tone = "ok" if state in ("HEALTHY",) and not system.get("heartbeat_is_stale") else (
@@ -586,6 +733,7 @@ def render_page(payload: dict[str, Any]) -> str:
                 ("not yet run", readiness.get("not_yet_run")),
             ],
         ),
+        render_analysis_card(analysis),
         _card(
             "ERRORS",
             [("open findings", errors)] if errors else [("open findings", "none")],
@@ -729,6 +877,14 @@ def make_handler(args: argparse.Namespace) -> type[BaseHTTPRequestHandler]:
             if path == "/signals":
                 section = render_signals_section(signals_payload(args, query))
                 self._send(200, section.encode("utf-8"), "text/html; charset=utf-8")
+                return
+            if path == "/api/analysis":
+                payload = analysis_payload(args, query)
+                self._send(
+                    200,
+                    (json.dumps(payload, indent=2, ensure_ascii=False) + "\n").encode("utf-8"),
+                    "application/json; charset=utf-8",
+                )
                 return
             if path == "/api/signals":
                 payload = signals_payload(args, query)

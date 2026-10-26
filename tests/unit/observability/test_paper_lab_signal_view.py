@@ -254,3 +254,46 @@ def test_page_embeds_the_signal_board(tmp_path: Path, run_dir: Path) -> None:
     assert 'id="signals"' in page
     assert "no analysis" in page  # nothing is invented before the analyst runs
     assert "/api/signals" in page
+
+
+def test_api_analysis_reports_missing_coverage_honestly(tmp_path: Path, run_dir: Path) -> None:
+    with _serving(tmp_path, run_dir) as port:
+        status, content_type, body = _get(port, "/api/analysis")
+    assert status == 200
+    assert "application/json" in content_type
+    payload = json.loads(body)
+    assert payload["read_only"] is True
+    assert payload["authority_over_orders"] is False
+    assert payload["signals_total"] == 7
+    assert payload["coverage"]["covered"] == 0
+    assert payload["coverage"]["coverage_pct"] == 0.0
+    assert payload["state"] == "NOT_RUN"  # the sidecar never ran: not the same as empty
+
+
+def test_api_analysis_counts_not_configured_separately(tmp_path: Path, run_dir: Path) -> None:
+    from trading_bot.autonomous.analysis import (
+        PROMPT_VERSION,
+        AnalysisStore,
+        SignalAnalyst,
+    )
+
+    store = AnalysisStore(run_dir)
+    analyst = SignalAnalyst(store=store, provider=None, prompt_version=PROMPT_VERSION)
+    ledger = SignalLedger(run_dir)
+    for row in list(ledger.read(limit=3).events):
+        analyst.analyze(row)
+    (run_dir / "AI_ANALYST_HEARTBEAT.json").write_text(
+        json.dumps({"provider_configured": False, "passed_at_ms": 1_700_000_000_000}),
+        encoding="utf-8",
+    )
+    with _serving(tmp_path, run_dir) as port:
+        _, _, body = _get(port, "/api/analysis")
+    payload = json.loads(body)
+    assert payload["state"] == "NOT_CONFIGURED"
+    assert payload["provider_configured"] is False
+    assert payload["coverage"]["not_configured"] == 3
+    assert payload["coverage"]["analysed"] == 0
+    # An analysis-free signal is labelled as such on the board, not left blank.
+    with _serving(tmp_path, run_dir) as port:
+        _, _, html = _get(port, "/signals")
+    assert "NOT_CONFIGURED" in html
