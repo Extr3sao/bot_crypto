@@ -1,0 +1,134 @@
+{
+  "artifact": "tdm08-alpha-dataset-v1",
+  "venue": "Binance spot (public klines, no credentials)",
+  "fetched_at_ms": 1792857524550,
+  "window": {
+    "start": "2026-09-25T00:00:00Z",
+    "end_ms": 1792857524550
+  },
+  "sealing_rule": "close_time <= fetched_at AND close_time <= window end",
+  "files": [
+    {
+      "asset": "BTC",
+      "timeframe": "5m",
+      "path": "data/tdm08/BTC_5m.json",
+      "sha256": "3a70c00da7404a233e4bf849f96b8eb1f29a8715feb15d20c51f06c665d2c86c",
+      "bars": 8543,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792857000000,
+      "requests": 9
+    },
+    {
+      "asset": "BTC",
+      "timeframe": "15m",
+      "path": "data/tdm08/BTC_15m.json",
+      "sha256": "b95cf9b70c09b3e2d225b93b8945b7b16bad6f6a24228fc5939434df9f734409",
+      "bars": 2847,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792855800000,
+      "requests": 3
+    },
+    {
+      "asset": "BTC",
+      "timeframe": "30m",
+      "path": "data/tdm08/BTC_30m.json",
+      "sha256": "38c1e473874545721243962eec5d69c01df163a4658f97d766a1fdf49f740d22",
+      "bars": 1423,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792854000000,
+      "requests": 2
+    },
+    {
+      "asset": "BTC",
+      "timeframe": "1h",
+      "path": "data/tdm08/BTC_1h.json",
+      "sha256": "29adf88af85d9c70717d99b02bd22b10e3d428c123db2d3d5b626f217d8a8c98",
+      "bars": 711,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792850400000,
+      "requests": 1
+    },
+    {
+      "asset": "ETH",
+      "timeframe": "5m",
+      "path": "data/tdm08/ETH_5m.json",
+      "sha256": "95808c1dfba8e58173cb8c4d8aeb27c096ad861b09af3a5edc0cb2a316089bac",
+      "bars": 8543,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792857000000,
+      "requests": 9
+    },
+    {
+      "asset": "ETH",
+      "timeframe": "15m",
+      "path": "data/tdm08/ETH_15m.json",
+      "sha256": "2e5ab01fad4d9ad26192e648d9c7a28b68c95b49ac491449df64291ec750273c",
+      "bars": 2847,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792855800000,
+      "requests": 3
+    },
+    {
+      "asset": "ETH",
+      "timeframe": "30m",
+      "path": "data/tdm08/ETH_30m.json",
+      "sha256": "b381aa516055a0ab9c7c884c8130e2c1977494145672f70aee56d59d097960b9",
+      "bars": 1423,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792854000000,
+      "requests": 2
+    },
+    {
+      "asset": "ETH",
+      "timeframe": "1h",
+      "path": "data/tdm08/ETH_1h.json",
+      "sha256": "618a7af43c79e41a40e000f43f728808df9685152ff3bea24a87df26eb54c321",
+      "bars": 711,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792850400000,
+      "requests": 1
+    },
+    {
+      "asset": "SOL",
+      "timeframe": "5m",
+      "path": "data/tdm08/SOL_5m.json",
+      "sha256": "cec3085e2d06b6df663de0b8799b10a4448ddaeb00e18d2e5c84e2facede5448",
+      "bars": 8543,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792857000000,
+      "requests": 9
+    },
+    {
+      "asset": "SOL",
+      "timeframe": "15m",
+      "path": "data/tdm08/SOL_15m.json",
+      "sha256": "f1e6de05aa4472c79b0cead39bca44e473c2c4fc21925220f1f6c2bd16079db2",
+      "bars": 2847,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792855800000,
+      "requests": 3
+    },
+    {
+      "asset": "SOL",
+      "timeframe": "30m",
+      "path": "data/tdm08/SOL_30m.json",
+      "sha256": "d1df8c63248ea8021ff5ada5f29815097614f05e5bf176846cbe045c6310d67e",
+      "bars": 1423,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792854000000,
+      "requests": 2
+    },
+    {
+      "asset": "SOL",
+      "timeframe": "1h",
+      "path": "data/tdm08/SOL_1h.json",
+      "sha256": "697d334065ab7bbb58b36e23f4b06da171d361123f50d7146a11d77eb71c8fae",
+      "bars": 711,
+      "first_bar_ms": 1790294400000,
+      "last_bar_ms": 1792850400000,
+      "requests": 1
+    }
+  ],
+  "total_bars": 40572,
+  "total_requests": 45
+}

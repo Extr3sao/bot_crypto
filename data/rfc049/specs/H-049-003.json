@@ -1,0 +1,91 @@
+{
+  "hypothesis_id": "H-049-003",
+  "strategy_id": "S-049-003-MINER_SUPPLY_STRESS",
+  "spec_version": 1,
+  "status": "RESEARCH_CANDIDATE",
+  "family": "miner_capitulation_supply_side",
+  "economic_mechanism": "Miners are structurally forced sellers of BTC: their revenues are in BTC and their costs are in fiat. When the hashprice falls below the cost of marginal operators, hashrate contracts as unprofitable machines shut off (capitulation) and the sector's net selling pressure peaks; when the surviving network stabilizes and hashrate recovers, the forced selling has already happened. A hashrate recovery after a capitulation episode therefore marks an accumulation window that price-only indicators cannot see, because hashrate reflects real-world capital and energy commitments rather than price.",
+  "source_ids": ["SRC-049-009", "SRC-049-010", "SRC-049-011", "SRC-049-012"],
+  "source_versions": {
+    "SRC-049-009": "blockchain.com charts API (hash-rate, miners-revenue), accessed 2026-10, manifest hashed",
+    "SRC-049-010": "Kubal & Kristoufek (2022), International Review of Financial Analysis",
+    "SRC-049-011": "Fantazzini et al. (2020), JRFM 13(11):263",
+    "SRC-049-012": "Hash ribbons, C. Edwards / Adamant Capital (2019), author method (E5 class)"
+  },
+  "asset_universe": ["BTCUSDT"],
+  "replication_assets": [],
+  "instrument_types": ["spot_long_cash"],
+  "direction": "long_only",
+  "timeframe": "1d bars; daily decision at bar close; execution at the next bar open",
+  "entry_rule": "MA30_t = mean of the last 30 daily hashrate values ending at t; MA60_t = mean of the last 60. A capitulation episode is active from the first day on which MA30 <= MA60 for at least 5 consecutive days. The entry signal fires on the first day after an active capitulation episode on which MA30_t > MA60_t; the position is opened at the next bar open.",
+  "exit_rule": "Close at the next bar open after MA30 < MA60 for 3 consecutive days. The runtime risk engine may close the position independently and unconditionally.",
+  "invalidation": [
+    "the event frequency cannot support the preregistered sample floor",
+    "the effect is indistinguishable from the price-trend baseline",
+    "the effect disappears after the indicator's publication date (post-publication decay)"
+  ],
+  "parameters": {
+    "fast_ma_days": 30,
+    "slow_ma_days": 60,
+    "capitulation_confirmation_days": 5,
+    "death_cross_confirmation_days": 3,
+    "parameter_searches": 0
+  },
+  "indicator_warmup": "60 daily hashrate values",
+  "position_sizing_policy": "Long/cash spot, 1x notional, one position at a time; runtime risk engine owns sizing and limits",
+  "risk_limits": {
+    "leverage": "1x only (spot long/cash)",
+    "max_equity_drawdown_for_admission": 0.25
+  },
+  "holding_policy": "Event-based; typical holding months; no discretionary exit",
+  "funding_policy": "not applicable (spot)",
+  "execution_model": "Taker market orders at the next bar open; COST_MODEL_V3",
+  "cost_model": {
+    "model": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "stress_multiple": 1.5
+  },
+  "market_data_version": {
+    "price": "data/raw/alpha001/BTC-USDT_1d.json",
+    "signal": "data/rfc049/vendor/raw/blockchain_info_hashrate_8y.json (+ miners-revenue for the non-traded comparator)"
+  },
+  "development_period": "2018-10-12 (first daily hashrate observation available at daily resolution) to 2026-10-10",
+  "validation_period": "not assigned (see non-admission reason)",
+  "oos_policy": "not assigned (see non-admission reason)",
+  "statistical_tests": ["same battery as the admitted hypotheses when and if admitted"],
+  "acceptance_thresholds": {"minimum_oos_round_trips_or_months": "20 round trips or 24 months, whichever comes first"},
+  "estimated_turnover": {
+    "basis": "observed event frequency of hash-ribbon episodes in the available daily hashrate history (2018-10 to 2026-10)",
+    "expected_round_trips_per_year": "1 to 4",
+    "note": "at this frequency a sealed forward window of 24 months can accumulate at most a handful of closed round trips, far below the campaign's preregistered 20-trip floor"
+  },
+  "cost_feasibility": "Cost is not the binding constraint (very low turnover); statistical power is.",
+  "expected_market_behavior": "Long-horizon accumulation after hashrate recoveries; expected to be exercised perhaps once per cycle.",
+  "alternative_explanations": [
+    "Hashrate responds to price with a lag, making the signal a slow echo of price rather than new information; the incremental trend test would detect this.",
+    "Post-publication decay: the indicator has been widely followed since 2019 (SRC-049-012 and press coverage), so any edge may already be arbitraged.",
+    "Sample: the daily hashrate series begins in 2018 at daily resolution, covering only two cycles."
+  ],
+  "counter_evidence": [
+    "Press and industry sources (E6 class) claim the signal works; none of the located sources provides a net-of-cost, out-of-sample attribution.",
+    "The 2018-2026 window contains few independent episodes, so no robust statistical claim is possible from history alone."
+  ],
+  "market_regimes": ["capitulation", "recovery", "halving cycles"],
+  "data_requirements": ["daily Bitcoin hashrate (SRC-049-009)", "daily BTCUSDT spot OHLC"],
+  "point_in_time_assumptions": [
+    "a hashrate value dated day t is treated as available at 00:00 UTC of day t+1",
+    "the vendors' 4-day sampled 'all' history is never mixed with the daily series"
+  ],
+  "known_failure_modes": ["insufficient sample", "trend echo", "post-publication decay", "vendor resolution changes"],
+  "testable_predictions": [
+    "episodes identified on the frozen rule match the published hash-ribbon chronology",
+    "forward returns after recovery crossovers exceed the trend baseline"
+  ],
+  "falsification_conditions": [
+    "episode count in history below the minimum needed for inference",
+    "the recovery state's forward net return is not distinguishable from a 200-day trend state"
+  ],
+  "admission_status": "RESEARCH_CANDIDATE",
+  "non_admission_reason": "NOT ADMITTED in Discovery 2: the rule's event frequency (1-4 round trips per year) cannot support the campaign's preregistered sample floor of 20 sealed out-of-sample round trips within 24 months, so the campaign could not reach a PASS or FAIL verdict on it; its historical window (daily resolution) also covers only two cycles. It is retained with its observation rule so that it can be re-proposed when the forward hashrate record and any future information source give it a feasible design. Admitting it now would spend one of the three campaign slots on a design that is foreknown to return INSUFFICIENT_OOS_SAMPLE.",
+  "notes": "No economic result for this hypothesis has been computed. It is registered to make the admission decision auditable, not to be tested in Phase B."
+}

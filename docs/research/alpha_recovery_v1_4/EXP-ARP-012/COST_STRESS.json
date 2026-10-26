@@ -1,0 +1,43 @@
+{
+  "base_cost_bps_rt": 23.559,
+  "break_even_cost_bps": 27.61,
+  "gross_kill_bps": 23.559016994374947,
+  "result": "PASS",
+  "stress": {
+    "0.5x": {
+      "cost_bps_rt": 11.7795,
+      "expectancy_gross_bps": 27.61,
+      "expectancy_net_bps": 15.831,
+      "profit_factor": 1.0562,
+      "trades": 62
+    },
+    "1.0x": {
+      "cost_bps_rt": 23.559,
+      "expectancy_gross_bps": 27.61,
+      "expectancy_net_bps": 4.051,
+      "profit_factor": 1.0141,
+      "trades": 62
+    },
+    "1.25x": {
+      "cost_bps_rt": 29.4488,
+      "expectancy_gross_bps": 27.61,
+      "expectancy_net_bps": -1.839,
+      "profit_factor": 0.9937,
+      "trades": 62
+    },
+    "1.5x": {
+      "cost_bps_rt": 35.3385,
+      "expectancy_gross_bps": 27.61,
+      "expectancy_net_bps": -7.728,
+      "profit_factor": 0.9737,
+      "trades": 62
+    },
+    "2.0x": {
+      "cost_bps_rt": 47.118,
+      "expectancy_gross_bps": 27.61,
+      "expectancy_net_bps": -19.508,
+      "profit_factor": 0.9351,
+      "trades": 62
+    }
+  }
+}

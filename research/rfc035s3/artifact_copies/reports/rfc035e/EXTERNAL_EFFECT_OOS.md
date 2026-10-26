@@ -1,0 +1,380 @@
+# RFC-035E — EXTERNAL_EFFECT_OOS
+
+The same frozen model on data that did not exist when the source was published.
+
+```json
+{
+  "artifact": "EXTERNAL_EFFECT_OOS",
+  "spec_version": "FALCONX_REPLICATION_SPEC_V1",
+  "spec_digest": "d362d6d75129d2337fb1fa4b3434dc8b1412f059816f7091f9e76dc48b8bb9cf",
+  "dataset_hash": "b58adaa74e7c73f93d6c4270eba673b88216727e4ee0c133de5334a354134900",
+  "window": {
+    "start": "2024-10-12",
+    "end": "2026-10-07",
+    "sessions_in_window": 506
+  },
+  "parameter_changes_vs_source_replication": "NONE (same spec digest, same variables, same lags)",
+  "combinations": [
+    {
+      "price_var": "r1",
+      "flow_var": "flow",
+      "sessions": 505,
+      "sessions_in_window": 506,
+      "regression_n": 504,
+      "first_date": "2024-10-15",
+      "last_date": "2026-10-07",
+      "contemporaneous": {
+        "pearson": 0.43613461839068884,
+        "spearman": 0.40675030235942855
+      },
+      "persistence": {
+        "ar1": 0.5145728170896767,
+        "t": 13.456789626877852,
+        "p": 1.822855313350833e-35,
+        "n": 504
+      },
+      "var1": {
+        "n": 504,
+        "price_equation": {
+          "lag_price_coefficient": -0.08274414758089634,
+          "lag_price_t": -1.675553046402858,
+          "lag_flow_coefficient": 8.719714874079696e-06,
+          "lag_flow_t": 2.383541110357777,
+          "lag_flow_p": 0.01751852535043962,
+          "r2": 0.012186234256431838
+        },
+        "flow_equation": {
+          "lag_price_coefficient": 3278.21205351682,
+          "lag_price_t": 5.904458245176776,
+          "lag_price_p": 6.530981251360832e-09,
+          "lag_flow_coefficient": 0.40864487509273545
+        },
+        "granger_flow_to_price": {
+          "F": 5.681268224774402,
+          "p": 0.017518525350352226,
+          "df1": 1,
+          "df2": 501
+        },
+        "granger_price_to_flow": {
+          "F": 98.71361891134632,
+          "p": 2.3643476318190688e-21,
+          "df1": 1,
+          "df2": 501
+        },
+        "coefficients": {
+          "price_equation": [
+            -0.00019596488854159663,
+            -0.08274414758089634,
+            8.719714874079696e-06
+          ],
+          "flow_equation": [
+            42.778707645386966,
+            3278.21205351682,
+            0.40864487509273545
+          ]
+        }
+      }
+    },
+    {
+      "price_var": "r1",
+      "flow_var": "sum7",
+      "sessions": 505,
+      "sessions_in_window": 506,
+      "regression_n": 504,
+      "first_date": "2024-10-15",
+      "last_date": "2026-10-07",
+      "contemporaneous": {
+        "pearson": 0.12855127861593152,
+        "spearman": 0.12467150441752253
+      },
+      "persistence": {
+        "ar1": 0.9523194212798546,
+        "t": 70.05199168595979,
+        "p": 2.6979261320810173e-261,
+        "n": 504
+      },
+      "var1": {
+        "n": 504,
+        "price_equation": {
+          "lag_price_coefficient": -0.03549160846539779,
+          "lag_price_t": -0.7880210094850014,
+          "lag_flow_coefficient": 5.521298360095536e-07,
+          "lag_flow_t": 0.7077385904040555,
+          "lag_flow_p": 0.4794367108380744,
+          "r2": 0.0019823739649622585
+        },
+        "flow_equation": {
+          "lag_price_coefficient": 6047.83215159219,
+          "lag_price_t": 8.121530212942568,
+          "lag_price_p": 3.6076705968829475e-15,
+          "lag_flow_coefficient": 0.9388790988509559
+        },
+        "granger_flow_to_price": {
+          "F": 0.5008939123384241,
+          "p": 0.479436710841886,
+          "df1": 1,
+          "df2": 501
+        },
+        "granger_price_to_flow": {
+          "F": 5298.277531673436,
+          "p": 1.430647434022576e-268,
+          "df1": 1,
+          "df2": 501
+        },
+        "coefficients": {
+          "price_equation": [
+            0.00014746488839391863,
+            -0.03549160846539779,
+            5.521298360095536e-07
+          ],
+          "flow_equation": [
+            27.998074350209848,
+            6047.83215159219,
+            0.9388790988509559
+          ]
+        }
+      }
+    },
+    {
+      "price_var": "r1",
+      "flow_var": "nd",
+      "sessions": 505,
+      "sessions_in_window": 506,
+      "regression_n": 504,
+      "first_date": "2024-10-15",
+      "last_date": "2026-10-07",
+      "contemporaneous": {
+        "pearson": 0.04410992046816484,
+        "spearman": 0.03342483316654647
+      },
+      "persistence": {
+        "ar1": 0.8175568894723697,
+        "t": 31.697067838494135,
+        "p": 6.769384077482889e-122,
+        "n": 504
+      },
+      "var1": {
+        "n": 504,
+        "price_equation": {
+          "lag_price_coefficient": -0.029883532697501478,
+          "lag_price_t": -0.6685569662382137,
+          "lag_flow_coefficient": -0.0013799105558861989,
+          "lag_flow_t": -0.8131618630708393,
+          "lag_flow_p": 0.41651152185966045,
+          "r2": 0.0023013550670694105
+        },
+        "flow_equation": {
+          "lag_price_coefficient": 2.414139460912515,
+          "lag_price_t": 3.5921422256335918,
+          "lag_price_p": 0.00036033022234899925,
+          "lag_flow_coefficient": 0.8137281597646612
+        },
+        "granger_flow_to_price": {
+          "F": 0.6612322155528553,
+          "p": 0.41651152185966045,
+          "df1": 1,
+          "df2": 501
+        },
+        "granger_price_to_flow": {
+          "F": 1017.1387381486969,
+          "p": 1.0694855189147572e-122,
+          "df1": 1,
+          "df2": 501
+        },
+        "coefficients": {
+          "price_equation": [
+            0.0004708795455544505,
+            -0.029883532697501478,
+            -0.0013799105558861989
+          ],
+          "flow_equation": [
+            5.259514922196668e-05,
+            2.414139460912515,
+            0.8137281597646612
+          ]
+        }
+      }
+    },
+    {
+      "price_var": "r7",
+      "flow_var": "flow",
+      "sessions": 505,
+      "sessions_in_window": 506,
+      "regression_n": 504,
+      "first_date": "2024-10-15",
+      "last_date": "2026-10-07",
+      "contemporaneous": {
+        "pearson": 0.47576490974575164,
+        "spearman": 0.5080576691209494
+      },
+      "persistence": {
+        "ar1": 0.5145728170896767,
+        "t": 13.456789626877852,
+        "p": 1.822855313350833e-35,
+        "n": 504
+      },
+      "var1": {
+        "n": 504,
+        "price_equation": {
+          "lag_price_coefficient": 0.7975765703208166,
+          "lag_price_t": 31.058846322824884,
+          "lag_flow_coefficient": 2.386902532766956e-05,
+          "lag_flow_t": 4.705182033600343,
+          "lag_flow_p": 3.2857591524552717e-06,
+          "r2": 0.7438918600447892
+        },
+        "flow_equation": {
+          "lag_price_coefficient": 569.2814475910423,
+          "lag_price_t": 2.6016576412895165,
+          "lag_price_p": 0.009551910844589881,
+          "lag_flow_coefficient": 0.46107021523446007
+        },
+        "granger_flow_to_price": {
+          "F": 22.13873796936906,
+          "p": 3.285759152367508e-06,
+          "df1": 1,
+          "df2": 501
+        },
+        "granger_price_to_flow": {
+          "F": 113.77268087996774,
+          "p": 4.474795710241789e-24,
+          "df1": 1,
+          "df2": 501
+        },
+        "coefficients": {
+          "price_equation": [
+            -0.0011259721972271693,
+            0.7975765703208166,
+            2.386902532766956e-05
+          ],
+          "flow_equation": [
+            38.0381032543166,
+            569.2814475910423,
+            0.46107021523446007
+          ]
+        }
+      }
+    },
+    {
+      "price_var": "r7",
+      "flow_var": "sum7",
+      "sessions": 505,
+      "sessions_in_window": 506,
+      "regression_n": 504,
+      "first_date": "2024-10-15",
+      "last_date": "2026-10-07",
+      "contemporaneous": {
+        "pearson": 0.6874593911139814,
+        "spearman": 0.7032315653925642
+      },
+      "persistence": {
+        "ar1": 0.9523194212798546,
+        "t": 70.05199168595979,
+        "p": 2.6979261320810173e-261,
+        "n": 504
+      },
+      "var1": {
+        "n": 504,
+        "price_equation": {
+          "lag_price_coefficient": 0.8577243374590048,
+          "lag_price_t": 26.988277633554866,
+          "lag_flow_coefficient": -1.790405668039974e-07,
+          "lag_flow_t": -0.12196290814543134,
+          "lag_flow_p": 0.9029772977534603,
+          "r2": 0.7325826121770009
+        },
+        "flow_equation": {
+          "lag_price_coefficient": 2535.8256871483395,
+          "lag_price_t": 6.5100201082198135,
+          "lag_price_p": 1.8277581559430165e-10,
+          "lag_flow_coefficient": 0.87179768737356
+        },
+        "granger_flow_to_price": {
+          "F": 0.014874950956914181,
+          "p": 0.9029772977742189,
+          "df1": 1,
+          "df2": 501
+        },
+        "granger_price_to_flow": {
+          "F": 2347.767433744435,
+          "p": 3.24634171708978e-191,
+          "df1": 1,
+          "df2": 501
+        },
+        "coefficients": {
+          "price_equation": [
+            0.0005401135950481503,
+            0.8577243374590048,
+            -1.790405668039974e-07
+          ],
+          "flow_equation": [
+            56.64505403602303,
+            2535.8256871483395,
+            0.87179768737356
+          ]
+        }
+      }
+    },
+    {
+      "price_var": "r7",
+      "flow_var": "nd",
+      "sessions": 505,
+      "sessions_in_window": 506,
+      "regression_n": 504,
+      "first_date": "2024-10-15",
+      "last_date": "2026-10-07",
+      "contemporaneous": {
+        "pearson": 0.4452018470237043,
+        "spearman": 0.5236051866056173
+      },
+      "persistence": {
+        "ar1": 0.8175568894723697,
+        "t": 31.697067838494135,
+        "p": 6.769384077482889e-122,
+        "n": 504
+      },
+      "var1": {
+        "n": 504,
+        "price_equation": {
+          "lag_price_coefficient": 0.869121960043708,
+          "lag_price_t": 33.76096266513363,
+          "lag_flow_coefficient": -0.0031949616422515016,
+          "lag_flow_t": -1.2258820206080656,
+          "lag_flow_p": 0.22081898722169258,
+          "r2": 0.7333744356083469
+        },
+        "flow_equation": {
+          "lag_price_coefficient": 0.9668154580027559,
+          "lag_price_t": 3.4336033609931356,
+          "lag_price_p": 0.000644982669884887,
+          "lag_flow_coefficient": 0.773941865290652
+        },
+        "granger_flow_to_price": {
+          "F": 1.502786728450072,
+          "p": 0.22081898722170168,
+          "df1": 1,
+          "df2": 501
+        },
+        "granger_price_to_flow": {
+          "F": 737.1020461044963,
+          "p": 1.7286050905918542e-100,
+          "df1": 1,
+          "df2": 501
+        },
+        "coefficients": {
+          "price_equation": [
+            0.00045863717684621207,
+            0.869121960043708,
+            -0.0031949616422515016
+          ],
+          "flow_equation": [
+            -0.0020157439832864756,
+            0.9668154580027559,
+            0.773941865290652
+          ]
+        }
+      }
+    }
+  ]
+}
+```

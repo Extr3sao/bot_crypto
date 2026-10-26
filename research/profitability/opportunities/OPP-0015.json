@@ -1,0 +1,69 @@
+{
+  "opportunity_id": "OPP-0015",
+  "title": "pysystemtrade / Carver's diversified trend-following system",
+  "source_ids": [
+    "S2-14",
+    "S2-13"
+  ],
+  "economic_hypothesis": "the system targets a modest risk-adjusted return from diversified futures trend following, not a per-trade edge",
+  "market": "for this project: the system trades leveraged futures across ~100 markets by default",
+  "assets": "a configured futures instrument list; no crypto spot sleeve by default",
+  "timeframe": "daily",
+  "entry_rules": "in the engine: EWMAC/breakout/carry forecast combination above the configured threshold",
+  "exit_rules": "via position sizing and forecast scaling rather than a price stop; no target is used; not applicable; forecast decay/sign change",
+  "risk_rules": "volatility targeting with forecast scaling and a fixed risk budget; daily rebalance, no session constraint",
+  "parameters": "in the engine's configuration files and the book",
+  "claimed_period": "the book and blog cover multiple decades of futures data",
+  "claimed_metrics": "at this read level (book results, not captured here)",
+  "transaction_cost_model": "the engine carries explicit cost assumptions",
+  "required_data": "user-supplied futures data (a free sample source is included with the engine)",
+  "external_code": "pysystemtrade (open source)",
+  "external_results": "a long-lived open-source implementation of a published system with decades of public discussion",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "reproducing it exactly requires a futures account, margin and 100 markets — none of which this project can trade",
+    "keeping only the trend component on BTC spot would be a new strategy, and the mission forbids relabelling our own design as an external replication",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (the engine carries explicit cost assumptions)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "market",
+    "assets",
+    "exit_target",
+    "exit_time",
+    "original_metrics"
+  ],
+  "replication_difficulty": "NOT_COMPARABLE: the system's edge is a diversified risk premium measured over years, while this project's admission bar is a 23.791 bps round trip on spot crypto trades",
+  "evidence_quality": "E3 — a long-lived open-source implementation of a published system with decades of public discussion",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "LOW",
+  "lookahead_risk": "LOW",
+  "implementation_risk": "LOW",
+  "status": "ROUND_2_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 8,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 4,
+    "OOS_EVIDENCE": 4,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 3,
+    "INDEPENDENT_VALIDATION": 5,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 34,
+  "rank": "REJECT",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "16/21",
+  "gaps_to_p0": [
+    "the instrument class is wrong for this runtime (futures, leverage, shorting)",
+    "a spot-crypto long/cash version would be our own design, not this external strategy"
+  ],
+  "rejection_reason_codes": [
+    "INSTRUMENT_OR_UNIVERSE_MISMATCH",
+    "COST_FLOOR_HEADROOM_NOT_ESTABLISHED"
+  ]
+}

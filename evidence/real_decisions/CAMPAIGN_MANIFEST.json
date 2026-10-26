@@ -1,0 +1,112 @@
+{
+  "alpha_claimed": "NONE",
+  "alpha_research_freeze": "ACTIVE",
+  "analyst_id": "MARKET_ANALYST_V1.0",
+  "analyst_version": "MARKET_ANALYST_V1.0",
+  "assets": [
+    "BINANCE:BTCUSDT",
+    "BINANCE:ETHUSDT",
+    "BINANCE:SOLUSDT",
+    "BINANCE:XRPUSDT"
+  ],
+  "baselines": {
+    "A": {
+      "definition": "MARKET_ANALYST_V1.0 decisions",
+      "id": "A_MARKET_ANALYST_V1"
+    },
+    "B": {
+      "definition": "close > SMA(200) and MACD(12,26,9) and 30 <= RSI(14) <= 70",
+      "frozen": true,
+      "id": "B_DETERMINISTIC_TREND_RULE",
+      "input_bars_1d": 300,
+      "input_bars_4h": 400,
+      "version": "DETERMINISTIC_TREND_RULE_V1_1"
+    },
+    "C": {
+      "definition": "always long, same window",
+      "id": "C_BUY_AND_HOLD"
+    },
+    "D": {
+      "assignment_scope": "DATASET_LEVEL_AT_SCORING_TIME",
+      "definition": "exact permutation of the analyst's own direction multiset",
+      "id": "D_RANDOM_MATCHED_DISTRIBUTION",
+      "seed": 20261003
+    }
+  },
+  "cadence": {
+    "authority": "CAP-003 sealed its four real decisions at the 2026-10-06 16:00 UTC boundary; that slot is reused rather than replaced",
+    "backfill": "FORBIDDEN",
+    "decision_slot_utc_hour": 16,
+    "late_seal_policy": "MISSED_DECISION_SLOT: never filled retroactively",
+    "rule": "one decision per asset per UTC day at the decision slot",
+    "seal_window_seconds": 14400,
+    "slot_grid_seconds": 14400
+  },
+  "campaign_id": "CAP004-REAL-DECISIONS-V1",
+  "campaign_provenance_fields": [
+    "analyst_id",
+    "prompt_version",
+    "prompt_digest",
+    "model",
+    "provider",
+    "temperature",
+    "schema_version",
+    "feature_version",
+    "dataset",
+    "campaign_id",
+    "code_commit"
+  ],
+  "campaign_start": 1791308444,
+  "campaign_start_utc": "2026-10-06T17:40:44Z",
+  "campaign_version": "1.0",
+  "checkpoint_policy": "IDEMPOTENT_APPEND_ONLY: a checkpoint is written once for its population and is never silently rewritten with a different decision set",
+  "checkpoints": [
+    20,
+    50,
+    100
+  ],
+  "code_commit": "30345ac123a867e1947147c27b936567f23cf96a",
+  "cohorts": {
+    "CAP004-REAL-DECISIONS-V1": "decisions sealed by CAP-004 with full campaign provenance",
+    "LEGACY_CAP003_PILOT": "the four CAP-003 pilot decisions, adopted as-is because rewriting their provenance would break ledger immutability"
+  },
+  "cost_model": {
+    "fee_bps_per_side": 10.0,
+    "round_trip_fraction": 0.002,
+    "slippage_bps_per_side": 0.0,
+    "spread_bps_per_side": 0.0
+  },
+  "evaluator": {
+    "id": "DecisionOutcomeEvaluator",
+    "version": "DECISION_OUTCOME_EVALUATOR_V1"
+  },
+  "feature_version": "REAL_MARKET_CONTEXT_V1",
+  "frozen_at": 1791308444,
+  "horizon": "24H",
+  "manifest_version": "CAMPAIGN_MANIFEST_V1",
+  "min_evaluable_decisions": 100,
+  "model_policy": {
+    "model": "freebuff-agent-in-context",
+    "note": "the analyst is the LLM client; the repository never synthesises its answer, and a provider that exposes no sampling parameter must record NOT_EXPOSED",
+    "provider": "freebuff",
+    "temperature": "NOT_EXPOSED"
+  },
+  "next_alpha_rfc_allowed": "NO",
+  "primary_metric": {
+    "definition": "the CAP-003 alpha scorecard conclusion, i.e. all incremental edges of A versus B (frozen deterministic rule), C (buy-and-hold) and D (random matched distribution) strictly positive",
+    "frozen": true,
+    "min_evaluable_decisions": 100,
+    "name": "G_AGENTIC_EDGE",
+    "note": "frozen by CAP-003 and never redefined by CAP-004",
+    "positive_conclusion": "EDGE_POSITIVE_PRELIMINARY_ONLY",
+    "source": "trading_bot.research.alpha_scorecard.alpha_scorecard"
+  },
+  "prompt_digest": "3dcf43a2a1ab644c34e5f657e673c1fd75fe43aacdd9aeeb02583695f8de65df",
+  "prompt_version": "MARKET_ANALYST_V1.0",
+  "provider": "binance_public_ccxt",
+  "runtime_promotion": "FORBIDDEN",
+  "schema_version": "MARKET_ANALYST_OUTPUT_V1",
+  "score_version": "DECISION_OUTCOME_EVALUATOR_V1",
+  "source_type": "REAL_MARKET_DATA",
+  "trades_authorized": 0
+}

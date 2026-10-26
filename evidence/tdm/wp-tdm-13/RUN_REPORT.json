@@ -1,0 +1,324 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "run_id": "tdm13-d7819188",
+  "commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+  "commit_role": "TDM-12 evidence commit whose package this run audits and replays; the TDM-13 commit that carries this report cannot name itself, so its closure is proven by 'python scripts/tdm13_independent_verify.py audit-closure'",
+  "baseline_commit_expected": "504256ec8934b97a6d405c202604ecac81a02346",
+  "branch": "evidence/tdm13",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "git": "git version 2.51.1.windows.1",
+    "offline": true,
+    "replay_clone": "C:\\Users\\GVLLFR0035\\Downloads\\tdm13-clean",
+    "shared_checkout": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+  },
+  "inputs": {
+    "manifest": "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json",
+    "dataset_files": 26,
+    "total_bytes": 10310475,
+    "storage_mode": "BUNDLE_IN_GIT",
+    "input_state": "AVAILABLE",
+    "restore_doc": "evidence/tdm/wp-tdm-13/DATASET_RESTORE.md"
+  },
+  "verifier": {
+    "id": "tdm13-independent-verifier/1",
+    "independence": {
+      "code_path": "INDEPENDENT_DERIVATION",
+      "identity": "NOT_DEMONSTRATED: the same operator wrote TDM-12 and this verifier; the documentation is explicit rather than claiming a second identity"
+    }
+  },
+  "git_integrity": "PASS",
+  "claims_consistency": "PASS",
+  "replay_status": "PASS",
+  "negative_controls_status": "PASS",
+  "result": "VERIFIED_REPRODUCIBLE",
+  "states": {
+    "deliverables_present": "14/14",
+    "required_fields": "17/17",
+    "digests": "16/16",
+    "claims_matched": "16/16",
+    "replay_comparisons": "10/10",
+    "negative_controls": "6/6"
+  },
+  "tests": {
+    "ran": true,
+    "passed": 16,
+    "failed": 0,
+    "file": "tests/unit/research/test_tdm13_independent_verify.py"
+  },
+  "commands": [
+    {
+      "command": "-m ruff check scripts/tdm13_independent_verify.py scripts/tdm13_inputs.py scripts/tdm13_replay.py scripts/tdm13_negative_controls.py scripts/tdm13_report.py tests/unit/research/test_tdm13_independent_verify.py",
+      "duration_seconds": 0.2,
+      "exit_code": 0,
+      "step": "ruff check"
+    },
+    {
+      "command": "-m ruff format --check scripts/tdm13_independent_verify.py scripts/tdm13_inputs.py scripts/tdm13_replay.py scripts/tdm13_negative_controls.py scripts/tdm13_report.py tests/unit/research/test_tdm13_independent_verify.py",
+      "duration_seconds": 0.2,
+      "exit_code": 0,
+      "step": "ruff format --check"
+    },
+    {
+      "command": "-m pytest tests/unit/research/test_tdm13_independent_verify.py -q",
+      "duration_seconds": 1.5,
+      "exit_code": 0,
+      "step": "pytest"
+    },
+    {
+      "command": "scripts/tdm13_inputs.py verify",
+      "duration_seconds": 3.0,
+      "exit_code": 0,
+      "step": "inputs verify"
+    },
+    {
+      "command": "scripts/tdm13_independent_verify.py audit-git",
+      "duration_seconds": 2.6,
+      "exit_code": 0,
+      "step": "audit-git"
+    },
+    {
+      "command": "scripts/tdm13_independent_verify.py audit-claims",
+      "duration_seconds": 0.6,
+      "exit_code": 0,
+      "step": "audit-claims"
+    },
+    {
+      "command": "scripts/tdm13_negative_controls.py",
+      "duration_seconds": 31.9,
+      "exit_code": 0,
+      "step": "negative controls"
+    },
+    {
+      "command": "scripts/tdm13_independent_verify.py verify",
+      "duration_seconds": 0.2,
+      "exit_code": 0,
+      "step": "verify"
+    }
+  ],
+  "errors": [
+    {
+      "id": "E-01",
+      "error": "audit-git reported a false lineage failure on a valid commit",
+      "cause": "'git branch --contains' prefixes checked-out-elsewhere branches with '+', and the parser stripped only '* ' characters",
+      "fix": "parse the trailing token of each branch line",
+      "status": "FIXED"
+    },
+    {
+      "id": "E-02",
+      "error": "every negative control read as PROVEN regardless of its output",
+      "cause": "_control searched for the expected token inside a blob that also contained the token field itself",
+      "fix": "search only the child's stdout/stderr; unit test added",
+      "status": "FIXED"
+    },
+    {
+      "id": "E-03",
+      "error": "replay reported a false 10/10 pass",
+      "cause": "the cloned artifacts had just been restored from the commit by the re-checkout, so comparing them with the blob matched without the pipeline having regenerated anything",
+      "fix": "delete the target artifacts before the phases and require the pipeline to recreate them",
+      "status": "FIXED"
+    },
+    {
+      "id": "E-04",
+      "error": "inventory phase died in 0.1s on the second attempt",
+      "cause": "the runner passed 'scripts/tdm12_inventory.py --reuse' as a single path",
+      "fix": "run_phase takes extra_args separately; the command line is rendered, not concatenated into the path",
+      "status": "FIXED"
+    },
+    {
+      "id": "D-01",
+      "error": "CANDIDATE_REGISTRY.json rows[*].parameter_hash did not reproduce",
+      "cause": "the builder fingerprints sha256(module.__file__) working-tree bytes, so the value depends on the checkout's end-of-line configuration",
+      "fix": "NOT FIXED BY DESIGN: TDM-12 is not modified here. Recorded, proven, and reproduced after matching the bytes (evidence EOL_FINGERPRINT_FINDING.json)",
+      "status": "OPEN (builder defect, outside this RFC's write scope)"
+    }
+  ],
+  "paper_orders": 0,
+  "live_orders": 0,
+  "false_success": 0,
+  "false_success_basis": "no check that failed, timed out or was not run is reported as PASS; the replay verdict is INCOMPLETE or FAIL unless every phase exited 0 and every comparison matched",
+  "generated_at_utc": "2026-10-25T14:03:32.157156+00:00",
+  "evidence_sha256": {
+    "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json": {
+      "path": "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json",
+      "sha256": "dca0ae6d8f642328155c6a85159a9619717154e33a66565249bf12004f233844",
+      "bytes": 36491
+    },
+    "evidence/tdm/wp-tdm-13/DATASET_RESTORE.md": {
+      "path": "evidence/tdm/wp-tdm-13/DATASET_RESTORE.md",
+      "sha256": "5e7c8159ec09685c767a41f40fc2816bdecd4261258c9d21766c43068df1f4e8",
+      "bytes": 4505
+    },
+    "evidence/tdm/wp-tdm-13/EOL_FINGERPRINT_FINDING.json": {
+      "path": "evidence/tdm/wp-tdm-13/EOL_FINGERPRINT_FINDING.json",
+      "sha256": "0092f44adde1578ee244344fe6c4d1ef9dda1cd0cf5402380744d4cd13e39743",
+      "bytes": 1764
+    },
+    "evidence/tdm/wp-tdm-13/FINAL_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-13/FINAL_REPORT.md",
+      "sha256": "d1e342d2308c6335de07f975ae53c4df09f8c02f26ae0721cf087b702c7e12c1",
+      "bytes": 7890
+    },
+    "evidence/tdm/wp-tdm-13/GIT_AND_CLAIMS_AUDIT.json": {
+      "path": "evidence/tdm/wp-tdm-13/GIT_AND_CLAIMS_AUDIT.json",
+      "sha256": "5f51c661ff64986a522f103cd19ae1413c002bea0db2be7687ea5ef0d4c8b0c7",
+      "bytes": 19825
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_15m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_15m.json",
+      "sha256": "b95cf9b70c09b3e2d225b93b8945b7b16bad6f6a24228fc5939434df9f734409",
+      "bytes": 189574
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_1h.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_1h.json",
+      "sha256": "29adf88af85d9c70717d99b02bd22b10e3d428c123db2d3d5b626f217d8a8c98",
+      "bytes": 47853
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_30m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_30m.json",
+      "sha256": "38c1e473874545721243962eec5d69c01df163a4658f97d766a1fdf49f740d22",
+      "bytes": 95347
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_5m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/BTC_5m.json",
+      "sha256": "3a70c00da7404a233e4bf849f96b8eb1f29a8715feb15d20c51f06c665d2c86c",
+      "bytes": 563493
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/DATASET.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/DATASET.json",
+      "sha256": "af7fa95ced41f36381e67909b133d87a675274293ca3457d1901aa1a341d9d84",
+      "bytes": 3932
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/ETH_15m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/ETH_15m.json",
+      "sha256": "2e5ab01fad4d9ad26192e648d9c7a28b68c95b49ac491449df64291ec750273c",
+      "bytes": 179824
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/ETH_1h.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/ETH_1h.json",
+      "sha256": "618a7af43c79e41a40e000f43f728808df9685152ff3bea24a87df26eb54c321",
+      "bytes": 45423
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/ETH_30m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/ETH_30m.json",
+      "sha256": "b381aa516055a0ab9c7c884c8130e2c1977494145672f70aee56d59d097960b9",
+      "bytes": 90406
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/ETH_5m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/ETH_5m.json",
+      "sha256": "95808c1dfba8e58173cb8c4d8aeb27c096ad861b09af3a5edc0cb2a316089bac",
+      "bytes": 534696
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/SOL_15m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/SOL_15m.json",
+      "sha256": "f1e6de05aa4472c79b0cead39bca44e473c2c4fc21925220f1f6c2bd16079db2",
+      "bytes": 168750
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/SOL_1h.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/SOL_1h.json",
+      "sha256": "697d334065ab7bbb58b36e23f4b06da171d361123f50d7146a11d77eb71c8fae",
+      "bytes": 42601
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/SOL_30m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/SOL_30m.json",
+      "sha256": "d1df8c63248ea8021ff5ada5f29815097614f05e5bf176846cbe045c6310d67e",
+      "bytes": 84851
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm08/SOL_5m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm08/SOL_5m.json",
+      "sha256": "cec3085e2d06b6df663de0b8799b10a4448ddaeb00e18d2e5c84e2facede5448",
+      "bytes": 501027
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/BTC_15m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/BTC_15m.json",
+      "sha256": "aa38cfd3678dbe0c938cefd5330ed1ba1efce2c83886b6c3cee8153e784350f2",
+      "bytes": 585337
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/BTC_1h.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/BTC_1h.json",
+      "sha256": "95b3d29655ef9722cfcd342bef935cf6f28f64fe04f3a8218cbe00dbde8be607",
+      "bytes": 147782
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/BTC_30m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/BTC_30m.json",
+      "sha256": "7eed75ae36c74b353781e51c3e94f08a7b389a3687b025a70b447fef15b0700f",
+      "bytes": 294398
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/BTC_5m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/BTC_5m.json",
+      "sha256": "7185907c6c847214797de177b088a9556a83141e4acd4ebaf41b839f87a31f6e",
+      "bytes": 1742651
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/DATASET_DEV.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/DATASET_DEV.json",
+      "sha256": "4a9e30c47b54144c631b0cdc94964693aae033ecf1a3ef41293a57c3a5b2fe23",
+      "bytes": 3951
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/ETH_15m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/ETH_15m.json",
+      "sha256": "d3dc523bff863efb11ddc7c5d198cf9c0c20ac93520eab8c07aaf39c5e3de11b",
+      "bytes": 557957
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/ETH_1h.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/ETH_1h.json",
+      "sha256": "e32c3ed8302c4d687b4d03555f20a0dbb06373ca33dda956afe387fbd3436e72",
+      "bytes": 140803
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/ETH_30m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/ETH_30m.json",
+      "sha256": "957e5b90abf38fdbf8ede2f233bf28b464e1e7cb9bb4bb9bd42e1355b8af7180",
+      "bytes": 280146
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/ETH_5m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/ETH_5m.json",
+      "sha256": "078a70969decbee24b13f70d5b33c0496047689ece06f58b533f1611c4fc06eb",
+      "bytes": 1659013
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/SOL_15m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/SOL_15m.json",
+      "sha256": "b74e8e92a1efb20809479dad8c694d755830bc1b331f2bd6bdeae9126e2a5075",
+      "bytes": 497419
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/SOL_1h.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/SOL_1h.json",
+      "sha256": "96776edbca673e9940fc8022caacfa6d9b81fe082de64ff25834a87f998564d2",
+      "bytes": 125667
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/SOL_30m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/SOL_30m.json",
+      "sha256": "43a004b6b2c423fc433a6feb39a4a821703aa7d0079da7aebb9e3461d6219b13",
+      "bytes": 250153
+    },
+    "evidence/tdm/wp-tdm-13/inputs/tdm10/SOL_5m.json": {
+      "path": "evidence/tdm/wp-tdm-13/inputs/tdm10/SOL_5m.json",
+      "sha256": "3bfdaf60fcc605119d567369e8d56239205138bc7386cb278bd1f32b0d415e64",
+      "bytes": 1477421
+    },
+    "evidence/tdm/wp-tdm-13/NEGATIVE_CONTROLS.json": {
+      "path": "evidence/tdm/wp-tdm-13/NEGATIVE_CONTROLS.json",
+      "sha256": "228c97ef9fd8b48867f77b8c0948b62b9605089cd5409c4d472bfefefa8a114c",
+      "bytes": 7335
+    },
+    "evidence/tdm/wp-tdm-13/REPLAY_ATTEMPT1.json": {
+      "path": "evidence/tdm/wp-tdm-13/REPLAY_ATTEMPT1.json",
+      "sha256": "2f150a14b4d661d8901d79080b67b47e75329c8e33a2cc8ebaf95173bdd64ee8",
+      "bytes": 12215
+    },
+    "evidence/tdm/wp-tdm-13/REPLAY_REPORT.json": {
+      "path": "evidence/tdm/wp-tdm-13/REPLAY_REPORT.json",
+      "sha256": "2becd7e10cafc48749c9fd6419c95270f768931d612816391228baeae793e8f3",
+      "bytes": 5529
+    },
+    "evidence/tdm/wp-tdm-13/RUN_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-13/RUN_REPORT.md",
+      "sha256": "a614968577971261b2793e3c20da4525f95fdff61153556e8418f88a155d7364",
+      "bytes": 4680
+    },
+    "evidence/tdm/wp-tdm-13/verification_result.json": {
+      "path": "evidence/tdm/wp-tdm-13/verification_result.json",
+      "sha256": "7894437f10a1ff753d74448cff23958bed721c4ef05ad9bbcea6adcd9e716c8f",
+      "bytes": 2889
+    }
+  }
+}
