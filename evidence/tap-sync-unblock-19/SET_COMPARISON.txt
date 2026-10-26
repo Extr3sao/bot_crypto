@@ -1,0 +1,19 @@
+TAP-SYNC-UNBLOCK-19 — comparación de conjuntos (base = 6381c9f7, fix = afd2c0c6)
+comandos: grep '^FAILED ' <log> | sed ... | sort -u  y  comm -13 / comm -23
+
+fallos únicos: base=275 final_wt=116 final_clone=118
+fallos SOLO en fix final (worktree) vs base: 0
+fallos SOLO en fix final (clone) vs base: 3
+tests/unit/risk/test_rfc048_provenance_integrity.py::test_the_historical_v1_bundle_is_preserved_untouched
+tests/unit/risk/test_rfc048_provenance_integrity.py::test_the_v1_defect_is_reproducible_and_explained
+tests/unit/risk/test_rfc048_provenance_integrity.py::test_v2_records_the_digest_of_the_bytes_git_delivers
+fallos ARREGLADOS (base -> fix final worktree): 159
+errores(ERROR): base=36 fix=36; nuevos en fix: 0
+
+--- estabilidad: fallos presentes en los 3 primeros runs de fix y que NO fallan en base
+n=115; fuera de la base: 0
+
+--- hallazgos de atribución
+1) 4 fallos solo en run1 (monitor/test_api PUT, 3x st6_scheduler): pasan AISLADOS en ambos árboles (8 passed) -> dependientes de orden/estado.
+2) 3 fallos solo en clones (rfc048): se reproducen IGUAL en un clone del baseline 6381c9f7 (3 failed, 8 passed) por core.autocrlf=true -> ambiental.
+3) 36 errores: conjuntos idénticos base vs fix (0 nuevos).

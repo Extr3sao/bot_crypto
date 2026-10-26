@@ -1,0 +1,38 @@
+TAP-SYNC-UNBLOCK-19 — sonda de comportamiento efectivo de la configuración
+Mismo script en ambos árboles (no escribe en el repo).
+
+### BASELINE — PR #19 head 6381c9f7
+module: C:\Users\GVLLFR0035\Downloads\u19-baseline-wt\src\trading_bot\config\settings.py
+exports_YamlDirectorySource: False
+Settings_bases: ['object']
+has_roundtrip_stub: True
+loaded_type: Settings
+isinstance_BaseSettings: Settings
+yaml_exchange: None
+yaml_universe_type: NoneType | n_symbols: 0
+env_TRADING_MODE=live -> mode: N/A
+
+### FIX — afd2c0c6
+module: C:\Users\GVLLFR0035\Downloads\sync-unblock19-wt\src\trading_bot\config\settings.py
+exports_YamlDirectorySource: True
+Settings_bases: ['BaseSettings']
+has_roundtrip_stub: False
+loaded_type: _Tuned
+isinstance_BaseSettings: _Tuned
+yaml_exchange: binance
+yaml_universe_type: Universe | n_symbols: 0
+env_TRADING_MODE=live -> BLOQUEADO: ValidationError 1 validation error for _Tuned
+
+### Dominios que llegan desde los 6 YAML — FIX
+  universe: scalping_universe_v1 | base: USDT | pairs: 25 | timeframes: ['1m', '3m', '5m', '15m']
+  runtime : paper | exchange_id:  | live: False
+  exchange: binance | sandbox: True
+  risk    : kill_switch_enabled = True | live_trading_enabled = False
+
+### El mismo acceso — BASELINE
+  universe -> ATRIBUTO AUSENTE
+  runtime -> ATRIBUTO AUSENTE
+  exchange -> ATRIBUTO AUSENTE
+  risk -> ATRIBUTO AUSENTE
+  strategies -> ATRIBUTO AUSENTE
+  indicators -> ATRIBUTO AUSENTE

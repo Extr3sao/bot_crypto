@@ -1,0 +1,33 @@
+TAP-SYNC-UNBLOCK-19 — resúmenes de pytest (salida literal de los logs)
+Selección en todos los runs: pytest -m "not slow and not market" -q  (uv run --frozen)
+
+### BASELINE PR#19 head 6381c9f7 (sin test_failfast por fallo de colección)
+log: /tmp/u19_base_full.log
+275 failed, 3187 passed, 31 skipped, 3 deselected, 36 errors in 473.20s (0:07:53)
+BASE_EXIT=1
+
+### FIX worktree r1 4cec0f0b
+log: /tmp/u19_fix_pytest.log
+121 failed, 3352 passed, 34 skipped, 3 deselected, 78 warnings, 36 errors in 459.62s (0:07:39)
+PYTEST_EXIT=1
+
+### FIX worktree r2 4cec0f0b
+log: /tmp/u19_fix_pytest2.log
+116 failed, 3360 passed, 31 skipped, 3 deselected, 78 warnings, 36 errors in 663.54s (0:11:03)
+FIX2_EXIT=1
+
+### VERIFY clone r1 4cec0f0b
+log: /tmp/u19_verify_pytest.log
+119 failed, 3357 passed, 31 skipped, 3 deselected, 78 warnings, 36 errors in 760.14s (0:12:40)
+VERIFY_EXIT=1
+
+### FIX worktree FINAL afd2c0c6
+log: /tmp/u19_fix_final.log
+116 failed, 3360 passed, 31 skipped, 3 deselected, 78 warnings, 36 errors in 700.98s (0:11:40)
+FINAL_EXIT=1
+
+### VERIFY clone FINAL afd2c0c6
+log: /tmp/u19_verify_final.log
+118 failed, 3358 passed, 31 skipped, 3 deselected, 78 warnings, 36 errors in 691.91s (0:11:31)
+VERIFY_FINAL_EXIT=1
+

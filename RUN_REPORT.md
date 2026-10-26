@@ -1,172 +1,214 @@
-# RUN REPORT — PAPER LAB OPS HARDENING V1 / RECOVERY + RE-CERTIFICATION
+# RUN REPORT — TAP-SYNC-UNBLOCK-19 · Recuperar el contrato de configuración
 
 | | |
 |---|---|
-| **run_id** | `recovery-paper-lab-ops-2026-09-29` |
-| **baseline HEAD** | `222078baedd07401b8b590d87bc06ae3307e862e` |
-| **final HEAD** | `1376fa4456e59826608a13de4fad4b2a8faacf2b` |
-| **branch** | `main` |
-| **commits** | `f406a45`, `81dec23`, `06100e7`, `77e9d65`, `1376fa4` |
-| **mode** | PAPER + read-only public market data. No keys, no account, no orders, no capital. |
-| **FALSE_SUCCESS** | **0** |
+| **run_id** | `tap-sync-unblock-19-2026-10-26` |
+| **rama** | `fix/tap-sync-unblock-19` (aislada, derivada de `sync/uncommitted-main-20261025`) |
+| **baseline** | `6381c9f7` = `sync/uncommitted-main-20261025` = `refs/pull/19/head` (PR #19) |
+| **commits de la corrección** | `23359fca`, `4cec0f0b`, `afd2c0c6` |
+| **HEAD sobre el que corrieron todos los gates** | `afd2c0c69e52d833705ce1641119b5ab2b4b0bcb` |
+| **commit de documentación** | el que añade estos informes y `evidence/` (0 ficheros fuente; `git show --name-only <commit> \| grep -v 'RUN_REPORT\|FINAL_REPORT\|evidence/'` → 0). Por eso los gates siguen siendo válidos para `afd2c0c6`; la rama termina en ese commit de documentación (`git log sync/uncommitted-main-20261025..HEAD`). |
+| **ficheros cambiados** | 4 (+541 / −78) |
+| **modo** | sin red de trading, sin órdenes, sin claves, sin fusionar ningún PR |
+| **FALSE_SUCCESS** | **0** (ningún PASS sin ejecución; los gates en rojo se declaran en rojo) |
 
-## 1. What the recovery gate established
+---
 
-The interrupted session **had landed all of its work before it died**: the tree was clean at
-`222078b` with five new commits after the previously certified head, and no work had to be
-rewritten. What had to be established was whether each item *runs*, which is what the rest of this
-report records. Full classification:
-[INTERRUPTED_SESSION_RECOVERY.json](reports/recovery/INTERRUPTED_SESSION_RECOVERY.json).
+## 1. DIAGNÓSTICO
 
-| Item | Status |
+### 1.1 Comparación de `src/trading_bot/config/settings.py` en tres refs
+
+| Ref | Líneas | `YamlDirectorySource` | `Settings` | `load_settings` |
+|---|---|---|---|---|
+| `main` (`e67194e7`) | 346 | clase propia (L82) + `FlatEnvAliasSource` (L127) | `class Settings(BaseSettings)` (L188) + `settings_customise_sources` (L273) | impl. Pydantic real |
+| `admission/integration-002` | 346 | **idéntico a `main`, byte a byte** | idéntico | idéntico |
+| `sync/uncommitted-main-20261025` (`6381c9f7`, PR #19) | **27** | **ausente** (solo se re-exporta desde `types`) | plano, en `config/types.py` | delegado al stub |
+
+`settings.py` en PR #19 se redujo a un *shim*:
+
+```python
+from .types import FLAT_ENV_ALIASES, Settings, load_settings, ROUNDTRIP_COST_BPS, STRATEGY_ADMISSION_CONFIG, ...
+```
+
+### 1.2 Consumidores revisados
+
+`config/types.py`, `config/settings_contract.py`, `config/__init__.py`, `config/__main__.py`,
+`app.py` (6 llamadas a `load_settings`), `execution/live_gate.py`, `scanner/*`, `paper/*`,
+`indicators/registry.py`, `market_data/{wiring,fake,exchange_connector}.py`, y los 6 ficheros
+de test que usan `load_settings`/`get_settings`.
+
+### 1.3 Qué comportamiento **real** se había perdido (no solo símbolos)
+
+Sonda idéntica en ambos árboles ([evidence/tap-sync-unblock-19/BEHAVIOUR_PROBE.txt](evidence/tap-sync-unblock-19/BEHAVIOUR_PROBE.txt)):
+
+| Comportamiento | PR #19 (`6381c9f7`) | Restaurado (`afd2c0c6`) |
+|---|---|---|
+| Dominios `universe/exchange/risk/strategies/indicators/runtime` | **los 6 AUSENTES** (`AttributeError`) | los 6 cargados |
+| Los 6 YAML llegan | **no**: `s.exchange is None`, `s.universe is None` | `universe: scalping_universe_v1, 25 pairs, ['1m','3m','5m','15m']`, `exchange: binance/sandbox=True`, `runtime: paper`, `risk.kill_switch_enabled=True` |
+| Precedencia `env > YAML > defaults` | **rota**: `TRADING_MODE=live` se ignora (`mode: N/A`) | `TRADING_MODE=live` → **`ValidationError`** (bloqueo LIVE en carga) |
+| Validadores de seguridad (kill switch, LIVE vs sandbox, `exchange_id`) | **no se ejecutan** (dataclass sin validadores) | se ejecutan en `load_settings()` |
+| Economías inventadas | `ROUNDTRIP_COST_BPS=891`, `STRATEGY_ADMISSION_CONFIG` presentes | **ausentes** |
+| Identidad de tipo | `Settings` hereda de `object` | `Settings(BaseSettings)` (Pydantic) |
+
+---
+
+## 2. CORRECCIÓN
+
+| Commit | Contenido |
 |---|---|
-| writer-surface fix (P2) | IMPLEMENTED_AND_VERIFIED |
-| exit contract module | IMPLEMENTED_AND_VERIFIED |
-| collector changes | IMPLEMENTED_AND_VERIFIED |
-| supervisor disk levels / failure propagation | IMPLEMENTED_AND_VERIFIED |
-| supervisor stop report | IMPLEMENTED_AND_VERIFIED |
-| disk telemetry wiring | IMPLEMENTED_AND_VERIFIED |
-| poll labelling | IMPLEMENTED_AND_VERIFIED |
-| exit-contract tests | IMPLEMENTED_AND_VERIFIED |
-| data preservation (M-03 / M-07) | IMPLEMENTED_AND_VERIFIED |
-| durable-write helper | IMPLEMENTED_AND_VERIFIED |
-| PAPER entrypoint hardening | IMPLEMENTED_AND_VERIFIED |
-| launcher restart / status / data-root / disk thresholds | IMPLEMENTED_AND_VERIFIED |
-| independent verifier extension | IMPLEMENTED_UNVERIFIED → **now verified, and it had five defects** |
-| read-only localhost dashboard | IMPLEMENTED_UNVERIFIED → **now verified over real HTTP** |
+| `23359fca` | `fix(config): restore the authoritative load_settings and drop the flat stub` — reimplementa `settings.py` (346 líneas: `YamlDirectorySource`, `FlatEnvAliasSource`, `Settings(BaseSettings)`, `load_settings()` con `_Tuned`), reduce `types.py` a re-exportes |
+| `4cec0f0b` | `test(config): format and fully type the new regression tests` — 156 líneas de tests de regresión |
+| `afd2c0c6` | `fix(market_data): read exchange credentials from the nested settings domain` — corrige la regresión detectada en la validación (ver §5.1) |
 
-## 2. Quality gates
-
-| Gate | Result |
-|---|---|
-| `ruff check .` | All checks passed |
-| `mypy .` | Success: no issues found in 350 source files |
-| `pytest` (at `222078b`) | 1194 passed, 78 warnings in 328.74 s |
-| `pytest` (at `f406a45`) | 1201 passed, **1 failed** — the frozen-writer certificate guard |
-| `pytest` (final tree, at `1376fa4`) | **1202 passed**, 78 warnings in 220.08 s |
-| independent verifier (clean worktree, `1376fa4`) | **18/18 PASS, verdict=PASS** |
-
-The single failure at `f406a45` is the guard that exists to notice exactly that: the honesty fixes
-touched `src/trading_bot/research/forward/collector.py`, so the capture certificate no longer
-matched. The resolution was a **new capture**, not a relaxed check.
-
-## 3. Real runtime validation
-
-### 3.1 The exit contract, proven by a real capture
-
-A real capture whose writer cannot write (its `segments` path poisoned with a regular file, no
-doubles anywhere) returned `EXIT_CODE=2` and wrote a manifest that says so:
-
-```json
-{"status": "FAILED", "failure_kind": "STORAGE_WRITE_FAILURE", "stop_reason": "storage failure",
- "exit_code": 2, "integrity": {"write_failures": 1},
- "failure_reason": "STORAGE_WRITE_FAILURE: FileExistsError [WinError 183] ... 'segments'"}
-```
-
-### 3.2 Failure injection end to end — the §4 chain
-
-`paper-lab-failinject-01` ran the **real launcher** against a poisoned data root:
+**Diff exacto** (`git diff --numstat 6381c9f7..afd2c0c6`):
 
 ```
-collector EXIT(exit_code=2, outcome=FAILED)
-  → RESTART_SCHEDULED(delay 5.0)  → RESTARTED
-  → EXIT(2)                       → RESTART_SCHEDULED(15.0) → RESTARTED
-  → EXIT(2)                       → RESTART_SCHEDULED(60.0) → ...
-collector  state=FAILED  exit=2  restarts=4
-           reason="crash loop: 4 restarts inside 900s (budget 3)"
-paper      state=RUNNING restarts=0 for the whole run; final STOPPED exit=0
-stop_report verdict=FAILED  failed_children=[collector]
-            exit_codes {paper: 0, collector: 2, retention: 0, strategy_lab: 0}
+360  16  src/trading_bot/config/settings.py
+18   59  src/trading_bot/config/types.py
+7     3  src/trading_bot/market_data/exchange_connector.py
+156   0  tests/unit/config/test_settings_effective_behaviour.py
 ```
 
-A failed write produced a FAILED manifest, a non-zero exit, a supervisor that treated it as a
-crash with the declared backoff and restart budget, and a PAPER plane that kept deciding.
+**Compatibilidad offline mantenida y aislada:** `types.py` sigue re-exportando
+`Settings`, `load_settings`, `FLAT_ENV_ALIASES` para las herramientas que importan desde ahí
+(`test_settings_effective_behaviour.py::test_types_module_reexports_the_authoritative_objects`).
+Ningún módulo devuelve una configuración ficticia: `ROUNDTRIP_COST_BPS` y
+`STRATEGY_ADMISSION_CONFIG` desaparecieron y `load_settings()` solo devuelve lo que dicen los
+YAML + `.env` + defaults.
 
-### 3.3 A clean stop writes its manifest
+**Preservado sin debilitar:** los seis YAML, precedencia `env > YAML > defaults`
+(`FlatEnvAliasSource`), `EXCHANGE_API_KEY/SECRET/SANDBOX` (mapeo idéntico a `main`), bloqueos de
+LIVE (`live_trading_enabled` + `i_understand_the_risks` + kill switch `risk.kill_switch_enabled`),
+resolución de `runtime.exchange_id` contra `universe.exchanges` (fail-closed) y validaciones de
+riesgo (`risk.py`, `runtime.py` intactos: **cero cambios en `config/risk*` o límites**).
 
-The defect that started this line of work was a lab stop that killed the collector before it could
-finalise, leaving **no manifest** and partial tails. `paper-lab-ops-hardened-01` (23.0 min,
-`stop_reason "STOP file"`):
+**Tests de regresión añadidos** (`tests/unit/config/test_settings_effective_behaviour.py`, 7 tests):
+efectividad de los 6 YAML, re-export desde `types`, keywords canónicos, `get_settings()` real y
+coherente con `load_settings()`, ausencia de constantes del stub y `Settings` como agregador
+Pydantic (no dataclass plano). Se comprueba **efecto**, no firma.
 
-```
-status CONTROLLED_STOP  exit 0  stop_reason "stop file"
-segments 115 / sealed 115 / partial_tails 0 / rows 656278 / write_failures 0
-stop_report verdict CLEAN, every child exit 0
-```
+---
 
-## 4. Re-certification
+## 3. VALIDACIÓN
 
-| | |
-|---|---|
-| run_id | `paper-lab-cert-01` |
-| commit | `f406a459b89f41e7771e5edb0a33f6725f708831` |
-| collector duration | 719.05 s (**≥ 10 min**) |
-| lab duration | 768.5 s, `stop_reason "duration reached"` |
-| children | 4, zero restarts, zero supervisor events, stop report `CLEAN` |
-| manifest | `CONTROLLED_STOP`, exit 0, **89/89 segments sealed, 0 partial tails**, 546,043 rows, 0 write failures |
-| replay | `ok: true`, **89/89 fingerprints**, 0 partial tails, `internet_access: false`, `event_count_match`, `book_match` (4 books, 24/24 checkpoints each), `deterministic: true`, 0 repaired trade rows, `errors: []` |
-| digest | `2f4e90d4f3d31e1187b8f1695e6cdabe26e65803f3ef31659f0c68818564d24a` (identical on both passes) |
+Checkout limpio + `uv run --frozen` (lockfile sin tocar). Tabla completa con los exit codes en
+[evidence/tap-sync-unblock-19/COMMANDS.md](evidence/tap-sync-unblock-19/COMMANDS.md).
 
-`CERTIFIED_CAPTURE_COMMIT` moved from `7b14297` to `f406a45` in its own commit, and the published
-read-side reports now describe that run. M-03 and M-07 remain
-`COLLECTING / TECHNICALLY_READY_NEEDS_HISTORY`, whose **only** remaining blocker is
-*"sample is 12.0 min; 24 h of clean capture is the minimum to begin"* — not a data defect, and the
-certified capture recorded **zero sequence gaps** and four books ending `HEALTHY`.
+### 3.1 Importación y recolección
 
-## 5. Defects found and their disposition
+| Prueba | BASELINE `6381c9f7` | FIX `afd2c0c6` |
+|---|---|---|
+| `from trading_bot.config.settings import YamlDirectorySource, Settings, load_settings` | **`ImportError`** → colección abortada, exit **2** | **exit 0**, `Settings(BaseSettings)` |
+| Recolección de `pytest -m "not slow and not market"` | imposible con `test_failfast.py` | **0 errores de colección** |
+| `_ccxt_connector()` (runtime) | `…api_key='', sandbox=False` (stub) | `…sandbox=True` (desde `config/exchange.yaml`), exit 0 |
 
-| ID | Severity | Status | Summary |
-|---|---|---|---|
-| F1 | P1-adjacent | **FIXED** | a `FAILED` capture published `continuity=CONTINUOUS_DATA`, which `reporting` turns into `permits_continuity_claim` |
-| F2 | P3 | **FIXED** | the status screen rendered `~None h at the observed rate` and `state_age=Nones` |
-| F3 | P3 | documented | `remaining_missing_events` mixes depth **update-id** units into an "events" total |
-| F4 | P2 | pre-existing | the perp `aggTrade` stream never delivers; reported honestly as `NO_DATA` |
-| F5 | P3 | environment | two concurrent pytest processes delete each other's numbered temp dir |
-| F6 | P2 | **FIXED** | `COLLECTOR_READY: yes` next to a collector in a crash loop |
-| F7 | P2 | **FIXED** | `paper_lab_status.py --json` died with `UnicodeEncodeError` on a cp1252 console |
-| F8 | P1 governance | resolved | the frozen-writer guard fired, as designed; resolved by re-certification |
-| F9 | P3 performance | documented | the read-side report makes 4–5 full passes; >12 min of CPU for a 12 min capture |
-| F10 | P3 | **FIXED** | five verifier checks could never pass |
+### 3.2 `tests/unit/config/` (failfast + contrato + models + settings + efectividad)
 
-**F1** mattered because a dead capture could licence a continuity claim downstream. **F6** was the
-single most valuable find: the dashboard showed a red `FAILED — STALE HEARTBEAT` banner *and* a
-green `COLLECTOR_READY: yes` badge at the same time.
+**63 passed, exit 0**, tanto en el worktree como en el clone de verificación.
+Incluye `test_failfast.py` (12), `test_settings_public_api.py` (contrato de
+`settings_contract.py`, 6), `test_settings.py` (carga YAML, precedencia, config inválida,
+bloqueos LIVE/kill switch) y los 7 tests nuevos de efectividad.
 
-**F10** is worth naming plainly: the verifier's own checks had never run successfully.
-`DISK_LEVELS_AND_RATE` demanded `WARNING` at 3 GB free against a 2 GB warning threshold;
-`STORAGE_TIERS_AND_DATA_ROOT` called `forward_retention.parse_args([...])` on a driver whose
-`parse_args()` takes no arguments; `STORAGE_CAPACITY_POLICY` and `FINAL_HEAD_EXECUTED` assumed the
-capture roots live inside the verifier's own worktree; and crashed lambdas were reported as
-`<lambda>`, hiding which check had failed. A verifier that reports `FAIL` for reasons of its own is
-as dangerous as one that reports `PASS` for reasons of its own.
+### 3.3 Suite completa (`pytest -m "not slow and not market"`)
 
-## 6. Operator surface, verified over real HTTP
+| Run | Árbol | failed | passed | skipped | errors | Exit |
+|---|---|---|---|---|---|---|
+| baseline | `6381c9f7` (sin `test_failfast.py`, no recolectable) | 275 | 3187 | 31 | 36 | 1 |
+| fix r1 | `4cec0f0b` | 121 | 3352 | 34 | 36 | 1 |
+| fix r2 | `4cec0f0b` | 116 | 3360 | 31 | 36 | 1 |
+| verify r1 | clone `4cec0f0b` | 119 | 3357 | 31 | 36 | 1 |
+| **fix final** | `afd2c0c6` | **116** | **3360** | 31 | **36** | 1 |
+| **verify final** | clone `afd2c0c6` | **118** | **3358** | 31 | **36** | 1 |
 
-```
-GET /                 → 200 (read-only, auto-refresh 15s, "No LIVE control is presented…")
-POST/PUT/DELETE /     → 405 {"error":"this dashboard is read-only","allowed":["GET"]}
---host 0.0.0.0        → exit 1, "refusing to bind ... loopback-only"
---host 127.0.0.1      → listening on 127.0.0.1:8787 only
-```
+### 3.4 Análisis estático (diferencias vs baseline, sin ocultar el rojo heredado)
 
-The rendered page reported `FAILED — STALE HEARTBEAT` rather than `HEALTHY`, which is the honesty
-requirement that matters most on a monitoring surface.
+| Gate | BASELINE | FIX | VERIFY | Δ |
+|---|---|---|---|---|
+| `ruff check .` | 226 (exit 1) | 197 (exit 1) | 197 (exit 1) | **−29** |
+| `ruff format --check .` | 475 (exit 1) | 473 (exit 1) | 473 (exit 1) | **−2** |
+| `mypy .` | 524 / 69 ficheros (exit 1) | 385 / 54 (exit 1) | 385 / 54 (exit 1) | **−139 / −15** |
+| `ruff`+`format` sobre `settings.py`, `types.py`, test nuevo | — | **0 errores / 3 formateados** | idem | limpio |
+| `mypy` sobre esos 3 ficheros | — | **exit 0** | idem | limpio |
 
-## 7. Final gate results
+Los tres gates siguen en **exit 1**: es el rojo heredado de la rama (y de `main`: 130/444/297).
+`exchange_connector.py` aporta los 22 ruff + 1 formato de mis 4 ficheros y **ya los tenía**
+(verificado con `git show HEAD:<fichero> | ruff format --check` y `ruff check` antes de editar).
 
-* `ruff`: clean. `mypy`: 350 files, no issues.
-* `pytest` on the final tree: **1202 passed**, 78 warnings in 220.08 s — zero failures, zero errors.
-* Independent verifier: **18/18 PASS**.
+---
 
-## 8. Evidence
+## 4. VERIFICACIÓN INDEPENDIENTE (`BUILDER != VERIFIER`)
 
-| Artifact | What it shows |
-|---|---|
-| [reports/recovery/INTERRUPTED_SESSION_RECOVERY.json](reports/recovery/INTERRUPTED_SESSION_RECOVERY.json) | per-item classification bound to files, commits, tests and runtime |
-| [reports/microstructure-forward-cert01/manifest/paper-lab-cert-01.json](reports/microstructure-forward-cert01/manifest/paper-lab-cert-01.json) | the certified capture: 89/89 sealed, 0 partial tails, commit `f406a45` |
-| [reports/cert01_replay.log](reports/cert01_replay.log) | offline replay: `ok: true`, 89/89 fingerprints, deterministic |
-| [reports/paper-lab/paper-lab-cert-01/LAB_RUN_REPORT.json](reports/paper-lab/paper-lab-cert-01/LAB_RUN_REPORT.json) | integrated run: `CLEAN` stop report, 4 children exit 0 |
-| [reports/paper-lab/paper-lab-failinject-01/LAB_RUN_REPORT.json](reports/paper-lab/paper-lab-failinject-01/LAB_RUN_REPORT.json) | the §4 chain: crash loop, PAPER alive, stop verdict `FAILED` |
-| [reports/failure-injection/writer-dead/manifest/failinject-writer.json](reports/failure-injection/writer-dead/manifest/failinject-writer.json) | `FAILED` + `exit_code: 2` from a real CLI run |
-| [docs/PAPER_LAB_INDEPENDENT_VERIFICATION.json](docs/PAPER_LAB_INDEPENDENT_VERIFICATION.json) | 18/18 PASS from a clean worktree |
-| [docs/FORWARD_DATA_QUALITY_REPORT.json](docs/FORWARD_DATA_QUALITY_REPORT.json) | readiness: M-03/M-07 COLLECTING, blocked only on sample length |
+1. **Clone nuevo** `u19-verify-clone` (`git clone --no-hardlinks`, 0 ficheros sucios, `uv sync --frozen`
+   propio) en `afd2c0c6`: imports exit 0, `tests/unit/config/` 63 passed, `ruff 197 / format 473 /
+   mypy 385` **idénticos** al worktree, suite completa 118F/3358P/36E.
+2. **Segundo clone** `u19-base-clone` en `6381c9f7` para atribución de los fallos de clone.
+3. **Comparación de conjuntos** (`grep '^FAILED' … | sort -u` + `comm`), reproducible desde los
+   logs: [evidence/tap-sync-unblock-19/SET_COMPARISON.txt](evidence/tap-sync-unblock-19/SET_COMPARISON.txt)
+
+Resultado de la atribución:
+
+- **0 fallos nuevos** en el worktree final respecto al baseline.
+- **0 errores nuevos**: los 36 errores son conjuntos idénticos (22 `test_ccxt_connector` + 14
+  `test_profitability_gate035`), [evidence/tap-sync-unblock-19/CCXT_PREEXISTENCE.txt](evidence/tap-sync-unblock-19/CCXT_PREEXISTENCE.txt).
+- **159 fallos arreglados**.
+- 115 fallos estables en los 3 primeros runs → **0 fuera de la baseline**.
+- 4 fallos solo en el run1 (`monitor/test_api[PUT]`, 3× `st6_scheduler`) → **pasan aislados en
+  ambos árboles** (8 passed) = dependientes de orden/estado.
+- 3 fallos solo en clones (`rfc048`) → **se reproducen igual en un clone del baseline** por
+  `core.autocrlf=true` = ambiental.
+
+---
+
+## 5. DEFECTOS
+
+### 5.1 Regresión introducida por esta corrección y corregida aquí
+
+`_ccxt_connector()` leía los campos planos del stub (`exchange_api_key/secret/sandbox`); con el
+contrato restaurado eso era `AttributeError` (reproducido antes de corregirlo). Corregido en
+`afd2c0c6` leyendo `settings.exchange.{api_key,api_secret,sandbox}` — la misma ruta anidada que
+usa `app.py`. **Sin** cambios de análisis estático en el fichero (22 ruff / 23 mypy antes y
+después, ambos heredados).
+
+### 5.2 Preexistentes (no introducidos por esta rama; documentados aparte)
+
+| # | Defecto | Evidencia |
+|---|---|---|
+| D1 | `test_ccxt_connector` construye `CCXTExchangeConnector(exchange_cfg)` pero `__init__` es `(api_key, secret, …)` → `TypeError` en el fixture → **22 errores** | mismo `TypeError` en BASELINE y FIX |
+| D2 | 14 errores de fixture en `test_profitability_gate035.py` | igual en ambos |
+| D3 | ~115 fallos estables (`tests/unit/research/**`, `monitor/test_api`, `test_ohlcv_fetcher`, admission ledger…) | todos presentes en la baseline |
+| D4 | Gates estáticos en rojo en todo el repo (197/473/385) | baseline 226/475/524; `main` 130/444/297 |
+| D5 | `wiring._binance_builder` pasa una instancia `Exchange` donde `_ccxt_connector` espera un callable → `TypeError: 'Exchange' object is not callable` | **idéntico en BASELINE y FIX** (sin cobertura de tests; fichero de otro carril, no tocado) |
+| D6 | `data/rfc048/**` falla en un clone limpio con `core.autocrlf=true` (CRLF vs digest LF) | clone del baseline: 3 failed; worktree: 11 passed |
+| D7 | Tests dependientes de orden (4) | pasan aislados en ambos árboles |
+| D8 | `exchange_connector` traga el `ImportError` de `config.settings` y cae a `Settings()` | no es configuración ficticia (ese `Settings()` sigue cargando los 6 YAML vía `settings_customise_sources`), pero oculta errores de importación; **no modificado** (fuera de alcance) |
+
+---
+
+## 6. BLOQUEOS QUE SIGUEN ABIERTOS
+
+1. **La rama no está publicada** (`gh` no está disponible en esta máquina y no se pidió push):
+   el PR que desbloquea #19 hay que abrirlo/pushearlo desde fuera.
+2. **Gates del tronco en rojo** (preexistentes): ruff 197, format 473, mypy 385 y
+   `pytest` con ~116 fallos heredados; cobertura por debajo del 90 %.
+3. **PR #19 sigue `BLOCKED`** hasta que su rama incorpore estos commits (esta rama parte de su
+   HEAD, es fast-forward).
+4. Nada de runtime certificado: `REAL_MODEL_CALLED = false`, PAPER no ejecutado, `PROFITABLE = false`.
+
+## 7. EVIDENCIA
+
+[evidence/tap-sync-unblock-19/](evidence/tap-sync-unblock-19/) — `COMMANDS.md`,
+`PYTEST_SUMMARY.txt`, `SET_COMPARISON.txt`, `STATIC_ANALYSIS.txt`, `BEHAVIOUR_PROBE.txt`,
+`COLLECTION_BASELINE.txt` (fallo de colección original), `CCXT_PREEXISTENCE.txt`.
+
+## 8. PROHIBICIONES CUMPLIDAS
+
+No se fusionó #18 ni #19 · no se ejecutó ninguna orden real · ningún límite de riesgo modificado
+(`config/risk*` intocado) · sin `reset --hard`, `clean`, `push`, `rebase` ni borrado de
+worktrees/ramas/stashes · sin secretos ni `.env` tocados · sin funcionalidad nueva · sin evidencia
+inventada (todos los valores de este informe salen de logs capturados).
+
+## 9. SIGUIENTE ACCIÓN
+
+Publicar `fix/tap-sync-unblock-19` y abrir PR **contra `sync/uncommitted-main-20261025`**
+(fast-forward, sin tocar #18/#19); con ello la colección de #19 pasa a 0 errores. En paralelo,
+el carril de `main` debe atacar D1–D4 (son los que mantienen el tronco en rojo).

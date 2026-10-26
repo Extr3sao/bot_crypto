@@ -1,0 +1,74 @@
+TAP-SYNC-UNBLOCK-19 — análisis estático (exit codes capturados ANTES de cualquier tubería)
+BASELINE = PR #19 head 6381c9f7 (worktree u19-baseline-wt)
+FIX      = afd2c0c6 (worktree sync-unblock19-wt)
+VERIFY   = afd2c0c6 (clone u19-verify-clone, BUILDER != VERIFIER)
+
+### BASELINE ruff check .
+EXIT=1
+
+Found 226 errors.
+[*] 149 fixable with the `--fix` option (40 hidden fixes can be enabled with the `--unsafe-fixes` option).
+
+### BASELINE ruff format --check .
+EXIT=1
+Would reformat: tests\unit\strategy_lifecycle\test_portfolio.py
+Would reformat: tests\unit\strategy_lifecycle\test_router_integration.py
+475 files would be reformatted, 387 files already formatted
+
+### BASELINE mypy .
+EXIT=1
+scripts\start_paper_trading.py:304: error: "Settings" has no attribute "runtime"  [attr-defined]
+scripts\start_paper_trading.py:306: error: "Settings" has no attribute "runtime"  [attr-defined]
+Found 524 errors in 69 files (checked 856 source files)
+
+### FIX ruff check .
+EXIT=1
+
+Found 197 errors.
+[*] 123 fixable with the `--fix` option (40 hidden fixes can be enabled with the `--unsafe-fixes` option).
+
+### FIX ruff format --check .
+EXIT=1
+Would reformat: tests\unit\strategy_lifecycle\test_portfolio.py
+Would reformat: tests\unit\strategy_lifecycle\test_router_integration.py
+473 files would be reformatted, 390 files already formatted
+
+### FIX mypy .
+EXIT=1
+scripts\cap004d_verify.py:212: error: Argument 1 to "evaluate" of "CampaignHealthEvaluator" has incompatible type "**dict[str, object]"; expected "Mapping[str, str] | None"  [arg-type]
+scripts\cap004d_health_check.py:100: error: Unused "type: ignore" comment  [unused-ignore]
+Found 385 errors in 54 files (checked 857 source files)
+
+### VERIFY ruff check . (clone)
+EXIT=1
+
+Found 197 errors.
+[*] 123 fixable with the `--fix` option (40 hidden fixes can be enabled with the `--unsafe-fixes` option).
+
+### VERIFY ruff format --check . (clone)
+EXIT=1
+Would reformat: tests\unit\strategy_lifecycle\test_portfolio.py
+Would reformat: tests\unit\strategy_lifecycle\test_router_integration.py
+473 files would be reformatted, 390 files already formatted
+
+### VERIFY mypy . (clone)
+EXIT=1
+scripts\cap004d_verify.py:212: error: Argument 1 to "evaluate" of "CampaignHealthEvaluator" has incompatible type "**dict[str, object]"; expected "Mapping[str, str] | None"  [arg-type]
+scripts\cap004d_health_check.py:100: error: Unused "type: ignore" comment  [unused-ignore]
+Found 385 errors in 54 files (checked 857 source files)
+
+### FIX — solo los 4 ficheros tocados: ruff check
+EXIT=1
+
+Found 22 errors.
+[*] 18 fixable with the `--fix` option (3 hidden fixes can be enabled with the `--unsafe-fixes` option).
+
+### FIX — solo los 4 ficheros tocados: ruff format --check
+EXIT=1
+Would reformat: src\trading_bot\market_data\exchange_connector.py
+1 file would be reformatted, 3 files already formatted
+
+### FIX — mypy sobre los 3 ficheros propios (excluye exchange_connector, heredado)
+EXIT=0
+Success: no issues found in 3 source files
+
