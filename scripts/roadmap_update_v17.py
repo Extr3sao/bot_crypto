@@ -31,8 +31,9 @@ CSV_FIELDS: list[str] = []
 UPDATES: dict[str, dict[str, str]] = {
     "TAP-072": {
         "Gate": "0 commits locales sin publicar (git rev-list --branches --not --remotes=origin = 0); "
-                "35/35 ramas con SHA local == SHA remoto; respaldo SHA-256 previo a tocar Git",
-        "Evidencia": "5b63f265 / LOCAL_GITHUB_SYNC_AUDIT.md + .json + FINAL_GITHUB_SYNC_REPORT.md + .json "
+                "36/36 ramas con SHA local == SHA remoto (35 de la sincronización + feat/wp-signal-001-003 "
+                "de un agente paralelo); 40 tags sync/orphan-*; respaldo SHA-256 previo a tocar Git",
+        "Evidencia": "6381c9f7 / LOCAL_GITHUB_SYNC_AUDIT.md + .json + FINAL_GITHUB_SYNC_REPORT.md + .json "
                      "+ EXCLUDED_FROM_SYNC_MANIFEST.json (publicados en GitHub)",
         "Actualizacion": DATE,
         "Siguiente_paso": "Revisar y cerrar los 31 PR draft (#19-#35 y #36-#49)",
