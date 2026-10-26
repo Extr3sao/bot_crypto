@@ -4,28 +4,36 @@
   "suites": "tests/unit/research (whole directory) plus a targeted run of the new and directly affected suites",
   "command": "PYTHONPATH=<tree>/src python -m pytest tests/unit/research -q -p no:cacheprovider",
   "exit_code": 0,
-  "passed": 39,
+  "passed": 43,
   "failed": 0,
   "skipped": 0,
   "errors": 0,
-  "duration_seconds": 6.64,
-  "targeted_command": "PYTHONPATH=<tree>/src python -m pytest tests/unit/research/test_source_fingerprint.py tests/unit/research/test_tdm13_independent_verify.py tests/unit/research/test_tdm14a_verifier.py -q -p no:cacheprovider",
+  "duration_seconds": 7.39,
+  "targeted_command": "PYTHONPATH=<tree>/src python -m pytest tests/unit/research/test_source_fingerprint.py tests/unit/research/test_tdm13_independent_verify.py tests/unit/research/test_tdm14a_verifier.py tests/unit/research/test_tdm14a_report.py -q -p no:cacheprovider",
   "targeted_run": {
     "available": true,
-    "log": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt",
-    "log_sha256": "6a3cbf99442d03091d0b3cbcb4ab2948abe1918d3c31a2806db4e8a4709059d3",
+    "log": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt",
+    "log_sha256": "a71be9347293a90506aee621690796e05706e51fa6e7c8632fe64a157d580e9f",
     "failed": 0,
-    "passed": 39,
+    "passed": 43,
     "skipped": 0,
     "errors": 0,
-    "duration_seconds": 6.64,
+    "duration_seconds": 7.39,
     "failures": [],
-    "supersedes": {
-      "log": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a\\.pytest-targeted.log",
-      "log_sha256": "1ec853176cbf962119a52eed3d3e69c29148ddb0dd671b4f783d19b09e73266e",
-      "passed": 32,
-      "why": "WP-14D found a defect in the verifier itself (D-02); the new suite covers it, so the targeted run was repeated after the fix"
-    }
+    "supersedes": [
+      {
+        "log": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm14a\\.pytest-targeted.log",
+        "log_sha256": "1ec853176cbf962119a52eed3d3e69c29148ddb0dd671b4f783d19b09e73266e",
+        "passed": 32,
+        "why": "WP-14D found a defect in the verifier itself (D-02); the new suite covers it, so the targeted run was repeated after the fix"
+      },
+      {
+        "log": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt",
+        "log_sha256": "6a3cbf99442d03091d0b3cbcb4ab2948abe1918d3c31a2806db4e8a4709059d3",
+        "passed": 39,
+        "why": "the closing report renderer was added afterwards, with its own four tests; this run includes them"
+      }
+    ]
   },
   "verifier_defect_fixed_in_wp14d": {
     "id": "D-02",
@@ -43,7 +51,7 @@
     "skipped": 30,
     "duration_seconds": 268.27,
     "exit_code": 1,
-    "measured_before": "tests/unit/research/test_tdm14a_verifier.py did not exist yet; it adds 7 passing tests and no failures, so the head total is 1775 passed, 79 failed, 14 errors, 30 skipped",
+    "measured_before": "tests/unit/research/test_tdm14a_verifier.py and test_tdm14a_report.py did not exist yet; they add 11 passing tests and no failures, so the head total is 1779 passed, 79 failed, 14 errors, 30 skipped",
     "why_not_rerun": "the 79 failures and 14 errors are the pre-existing set proven identical at the baseline; a second full-directory run would cost four minutes and change no conclusion. The new file is covered by the targeted run above."
   },
   "baseline_run": {
@@ -375,8 +383,8 @@
   },
   "failures_only_at_baseline": [],
   "failures_only_at_head": [],
-  "new_tests": 23,
-  "new_tests_suite": "tests/unit/research/test_source_fingerprint.py (16) and tests/unit/research/test_tdm14a_verifier.py (7)",
+  "new_tests": 27,
+  "new_tests_suite": "tests/unit/research/test_source_fingerprint.py (16), test_tdm14a_verifier.py (7) and test_tdm14a_report.py (4)",
   "identical_failure_sets": true,
   "preexisting_failures_note": "79 tests fail at the baseline commit in this environment; they are not caused by this RFC and were not touched. The statement made here is the measured difference between the two trees, not an absolute green suite.",
   "eol_experiment": {

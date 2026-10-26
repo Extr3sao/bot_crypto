@@ -646,9 +646,117 @@ def run_markdown(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def final_markdown(
+    report: dict[str, Any],
+    replay: dict[str, Any],
+    verification: dict[str, Any],
+    closure: dict[str, Any] | None,
+) -> str:
+    """FINAL_REPORT.md: the closing document, assembled from the verdict itself.
+
+    It deliberately repeats the uncomfortable parts (pre-existing failures, no
+    demonstrated independence, inherited economic decision) next to the green
+    ones, because a closing report that only quotes its own PASS is a summary of
+    an intention rather than of a result.
+    """
+    tests = report.get("tests") or {}
+    lines = [
+        "# FINAL_REPORT — RFC-TDM-014A",
+        "",
+        f"**Veredicto:** `{verification['verdict']}`",
+        f"**Baseline:** `{report['baseline_commit']}` · **Árbol cubierto por el cierre:** "
+        f"`{(closure or {}).get('head', 'NOT_RUN')}`",
+        f"**Decisión económica (heredada, no reevaluada):** {report['decision']}",
+        "",
+        "## Qué se ha demostrado",
+        "",
+        "- Dos replays fríos del mismo commit de implementación, uno en checkout LF y otro en "
+        "CRLF, cada uno regenerando review, métricas por celda, inventario y registro sin "
+        "reutilizar nada del intento anterior.",
+        "- La huella v2 coincide entre ambos checkouts mientras los bytes físicos difieren y el "
+        "blob de Git es el mismo: D-01 queda cerrado sin tocar el contenido.",
+        f"- Contratos del replay: {replay['contracts_passing']}/"
+        f"{replay['contracts_compared']} comparados por valor, no solo por hash.",
+        f"- Controles negativos: {report['negative_controls']['proven']}/"
+        f"{report['negative_controls']['total']} demostrados con exit no cero.",
+        f"- Histórico v1: {report['v1_compatibility']['status']} — sin reescritura ni "
+        "atribución retroactiva de huellas v2.",
+        "",
+        "## Qué NO se afirma",
+        "",
+        "- Independencia organizativa: `INDEPENDENCE_NOT_DEMONSTRATED`. Un operador escribió "
+        "constructor y verificador; la ruta de código es distinta, la identidad no.",
+        "- Alpha, rentabilidad, slippage real, funding o fills: fuera de alcance y sin evaluar.",
+        "- Que la suite completa esté verde: "
+        f"{tests.get('directory_run', {}).get('failed')} tests fallan en esta máquina también "
+        "en la baseline, con conjuntos de fallo idénticos entre baseline y HEAD.",
+        "- Que `false_success=0` sea una garantía universal: es el resultado de los controles "
+        "observados, no una propiedad del universo.",
+        "",
+        "## Criterios de aceptación",
+        "",
+        "| ACC | estado |",
+        "| --- | --- |",
+    ]
+    lines += [f"| {c['id']} | {c['status']} |" for c in verification["checks"]]
+    lines += [
+        "",
+        "## Commits de la rama",
+        "",
+    ]
+    lines += [f"- `{c}`" for c in report["commits"]]
+    lines += [
+        "",
+        "## Ejecuciones",
+        "",
+        "| run_id | core.autocrlf | estado | duración | outputs generados |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for run in report["runs"]:
+        lines.append(
+            f"| `{run['run_id']}` | `{run['core_autocrlf']}` | {run['status']} | "
+            f"{run['duration_seconds']} s | {run['outputs_proven']} |"
+        )
+    lines += [
+        "",
+        "## Defectos",
+        "",
+        "| id | estado | detalle |",
+        "| --- | --- | --- |",
+    ]
+    lines += [f"| `{d['id']}` | {d['state']} | {d['detail']} |" for d in report["defects"]]
+    lines += [
+        "",
+        "## Cadena de custodia",
+        "",
+        "Por construcción el informe de cierre se commitea *después* del árbol que verifica, "
+        "así que HEAD puede estar exactamente un commit por delante: el diff entre ambos es "
+        "solo `POST_COMMIT_CLOSURE.json`.",
+        "",
+        f"- ficheros comprobados contra el HEAD del cierre: {(closure or {}).get('files_checked')}",
+        f"- coincidentes: {(closure or {}).get('files_matching_head')}",
+        f"- excluido por construcción: `{(closure or {}).get('self_excluded')}`",
+        f"- estado del cierre: `{(closure or {}).get('status', 'NOT_RUN')}`",
+        "",
+        "## Órdenes",
+        "",
+        f"- `paper_orders = {report['paper_orders']}` · `live_orders = {report['live_orders']}`",
+        f"- `false_success = {report['false_success']}`",
+        "",
+        "## Siguiente paso autorizado",
+        "",
+        "Ninguno dentro de este RFC. Diagnosticar la causa económica de "
+        "`NO_ELIGIBLE_CANDIDATE / REJECTED_ALPHA` requiere un RFC nuevo.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("command", nargs="?", default="all", choices=("tests", "build", "all"))
+    parser.add_argument(
+        "command", nargs="?", default="all", choices=("tests", "build", "all", "final")
+    )
     parser.add_argument("--out-dir", default=str(EVIDENCE))
     args = parser.parse_args(argv)
     out = Path(args.out_dir)
@@ -718,6 +826,13 @@ def main(argv: list[str] | None = None) -> int:
         (out / name).write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
     (out / "REPLAY_REPORT.md").write_text(replay_markdown(replay), encoding="utf-8")
     (out / "RUN_REPORT.md").write_text(run_markdown(run_report), encoding="utf-8")
+    if args.command in {"final", "all"}:
+        # Rendering the closing report is a separate step from the measurements: it
+        # reads the verdict the verifier published, so it cannot disagree with it.
+        closure = load("POST_COMMIT_CLOSURE.json")
+        (out / "FINAL_REPORT.md").write_text(
+            final_markdown(run_report, replay, verification, closure), encoding="utf-8"
+        )
     print(
         json.dumps(
             {

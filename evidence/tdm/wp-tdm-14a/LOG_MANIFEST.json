@@ -73,6 +73,31 @@
       "bytes": 188027,
       "sha256": "9436a79d17029fba7a9eb2179c84dd4bb9efad2d6320a76a35320a76e78ee34e",
       "matches_run_report": true
+    },
+    {
+      "run_id": "tdm14a-wp14d-closure",
+      "label": "TESTS",
+      "phase": "targeted",
+      "kind": "pytest",
+      "source": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-closure.log.txt",
+      "bytes": 101,
+      "sha256": "6a3cbf99442d03091d0b3cbcb4ab2948abe1918d3c31a2806db4e8a4709059d3",
+      "matches_run_report": null,
+      "note": "pytest log, not a replay phase: matches_run_report does not apply"
+    },
+    {
+      "run_id": "tdm14a-wp14d-closure",
+      "label": "TESTS",
+      "phase": "targeted-final",
+      "kind": "pytest",
+      "source": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt",
+      "path": "evidence/tdm/wp-tdm-14a/run-logs/tests/pytest-targeted-final.log.txt",
+      "bytes": 101,
+      "sha256": "192bfb40ed321add6141f838319ce1ba88dc82c460cac9f40e232d3e880f46fc",
+      "matches_run_report": null,
+      "note": "pytest log, not a replay phase: matches_run_report does not apply"
     }
-  ]
+  ],
+  "note": "replay phase logs plus the pytest logs of the WP-14D re-run; a pytest log has no run_report digest to match, so that field is null rather than true"
 }
