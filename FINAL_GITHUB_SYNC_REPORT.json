@@ -1,0 +1,254 @@
+{
+  "report": "FINAL_GITHUB_SYNC_REPORT",
+  "schema_version": "1.0",
+  "generated_at": "2026-10-26T00:00:00+02:00",
+  "repository": "Extr3sao/bot_crypto",
+  "local_checkout": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
+  "origin": "https://github.com/Extr3sao/bot_crypto.git",
+  "status": "PARTIAL_SYNC",
+  "invariants": [
+    "SYNC_COMPLETE != MAIN_INTEGRATED != RUNTIME_CERTIFIED != PROFITABLE",
+    "BUILDER != VERIFIER",
+    "TEST_TARGET == RUNTIME_TARGET",
+    "FALSE_SUCCESS = 0"
+  ],
+  "executive_summary": {
+    "what_was_local_only": "226 commits sin publicar en 17 ramas; 15 worktrees sucios (1338 entradas en el checkout principal + 246 ficheros sin commit en otros 14); 0 stashes; 0 huerfanos reflog",
+    "what_was_published": "35/35 ramas con SHA local == SHA remoto; 0 commits inalcanzables desde origin/*; 15 ramas de preservacion; 31 PR draft (#19-#35, #36-#49); roadmap v1.7; 4 reportes + manifiesto de exclusiones",
+    "what_was_integrated": "nada: origin/main sigue en 5e6f9632, 263 commits por detras; sin push a main, sin merge, sin rebase, sin force",
+    "what_is_blocked": [
+      "gates de main en rojo: ruff 130 / format 444 / mypy 297 / pytest 79F-3274P-34S-14E (baseline preexistente)",
+      "PR #19 BLOCKED: tests/unit/config/test_failfast.py no puede importar YamlDirectorySource (commit c16c241b)",
+      "31 PR en draft: NOT_VERIFIED (gates no ejecutados sobre esas ramas)",
+      "recovery/mt0003-kill-switch-60455b46: critico de riesgo, exige revision de risk-manager",
+      "REAL_MODEL_CALLED=false: el runtime no ha invocado ningun modelo LLM real"
+    ],
+    "what_is_missing_for_paper": [
+      "integrar el linaje (PR #18) y poner los gates en verde",
+      "restaurar load_settings/YamlDirectorySource para desbloquear el PR #19",
+      "autorizacion de host + lease WP-005H (TAP-071, issue #16)",
+      "ninguna estrategia admitida y gates de rentabilidad en rojo: PROFITABLE=false"
+    ]
+  },
+  "inventory": {
+    "repositories": 1,
+    "worktrees_initial": 26,
+    "worktrees_at_close": 46,
+    "worktrees_removed": 0,
+    "worktrees_added_during_session": [
+      "Downloads/sync-preserve/* (14: reconstruccion del trabajo sucio sin tocar los originales)",
+      "Downloads/gate-main-20261026 (checkout limpio de validacion)",
+      "AppData/Local/Temp/wt-originmain",
+      "Downloads/clean-sync-branch",
+      "Downloads/roadmap-wt",
+      "Downloads/tdm14a-base",
+      "Downloads/bot freebuff/tdm14a-base"
+    ],
+    "local_branches_initial": 19,
+    "local_branches_final": 35,
+    "remote_branches_final": 88,
+    "stashes": 0,
+    "recoverable_orphans": 0,
+    "dirty_worktrees_initial": {
+      "bot freebuff": 1338,
+      "ff-wt-tdm06": 81,
+      "ff-wt-tdm11": 47,
+      "ff-wt-tdm09-repro": 36,
+      "ff-wt-tdm12": 29,
+      "exp004a-recovery-02k": 20,
+      "ff-wt-tdm08": 20,
+      "ff-wt-tdm13": 10,
+      "ff-wt-trunkfmt": 7,
+      "ff-wt-tdm14a": 6,
+      "recovery-rehearsal-9vicsg7h/checkout": 5,
+      "ff-wt-base": 2,
+      "ff-wt-adm002": 1,
+      "ff-wt-eco001": 1,
+      "ff-wt-g7": 1
+    },
+    "untracked_files_preserved_and_published": 246,
+    "backup": {
+      "path": "C:/Users/GVLLFR0035/Downloads/sync-backup-20261025",
+      "files": 554,
+      "sha256_manifest": "SHA256SUMS.txt",
+      "integrity_recheck_20261026": "554/554 OK"
+    },
+    "excluded_files": {
+      "manifest": "EXCLUDED_FROM_SYNC_MANIFEST.json",
+      "files": 24959,
+      "approx_size_mb": 846,
+      "reasons": [
+        "wt-sup001/ y tdm14a-base/: worktrees anidados cuyo contenido ya esta publicado en codepaper/supervisor-001 y fix/tdm14a",
+        ".venv_recovery005/ y .venv/: entornos virtuales (politica .gitignore)",
+        ".tmp/: scratch local (.git/info/exclude)",
+        "__pycache__ y *.egg-info: generado",
+        ".mypy_cache/.pytest_cache/.ruff_cache/.hypothesis: generado",
+        "reports/, logs/, data/raw/: politica .gitignore"
+      ],
+      "none_counted_as_synced": true
+    }
+  },
+  "publication": {
+    "unpublished_commits_initial": 226,
+    "unpublished_commits_final": 0,
+    "branches_without_remote_initial": 17,
+    "branches_without_remote_final": 0,
+    "branches_verified_local_equals_remote": 35,
+    "diverged_or_overwritten_branches": 0,
+    "commands_used": [
+      "git fetch --all --prune",
+      "git rev-list --branches --not --remotes=origin --count",
+      "git rev-list --count origin/<b>..<b> / <b>..origin/<b>",
+      "git ls-remote --heads origin"
+    ],
+    "preservation_branches": [
+      {"branch": "sync/uncommitted-main-20261025", "sha": "5b63f265", "source": "checkout principal", "files": 153, "commits": 8, "pr": 19},
+      {"branch": "sync/uncommitted-ff-wt-tdm06-20261025", "sha": "f6429009", "source": "ff-wt-tdm06", "files": 74, "pr": 36},
+      {"branch": "sync/uncommitted-ff-wt-tdm11-20261025", "sha": "1010e3f8", "source": "ff-wt-tdm11", "files": 47, "pr": 37},
+      {"branch": "sync/uncommitted-ff-wt-tdm09-repro-20261025", "sha": "809e1b71", "source": "ff-wt-tdm09-repro", "files": 34, "pr": 38},
+      {"branch": "sync/uncommitted-ff-wt-tdm12-20261025", "sha": "81119831", "source": "ff-wt-tdm12", "files": 29, "pr": 39},
+      {"branch": "sync/uncommitted-exp004a-recovery-02k-20261025", "sha": "4304a8ed", "source": "exp004a-recovery-02k", "files": 19, "pr": 40},
+      {"branch": "sync/uncommitted-ff-wt-tdm08-20261025", "sha": "87e47c01", "source": "ff-wt-tdm08", "files": 19, "pr": 41},
+      {"branch": "sync/uncommitted-ff-wt-tdm13-20261025", "sha": "57ea2e70", "source": "ff-wt-tdm13", "files": 10, "pr": 42},
+      {"branch": "sync/uncommitted-ff-wt-tdm14a-20261025", "sha": "c9122043", "source": "ff-wt-tdm14a", "files": 7, "pr": 43},
+      {"branch": "sync/uncommitted-ff-wt-trunkfmt-20261025", "sha": "76f94096", "source": "ff-wt-trunkfmt", "files": 7, "pr": 44},
+      {"branch": "sync/uncommitted-recovery-rehearsal-9vicsg7h-20261025", "sha": "a69fc7e6", "source": "%TEMP%/recovery-rehearsal-9vicsg7h/checkout", "files": 4, "pr": 45},
+      {"branch": "sync/uncommitted-ff-wt-base-20261025", "sha": "3247989a", "source": "ff-wt-base", "files": 2, "pr": 46},
+      {"branch": "sync/uncommitted-ff-wt-adm002-20261025", "sha": "7fae86c6", "source": "ff-wt-adm002", "files": 1, "pr": 47},
+      {"branch": "sync/uncommitted-ff-wt-eco001-20261025", "sha": "b8874ac7", "source": "ff-wt-eco001", "files": 1, "pr": 48},
+      {"branch": "sync/uncommitted-ff-wt-g7-20261025", "sha": "3e3d6c6f", "source": "ff-wt-g7", "files": 1, "pr": 49}
+    ],
+    "prs_created": [19, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+    "prs_open_total": 38,
+    "prs_ready": 7,
+    "prs_draft": 31,
+    "prs_without_pr": {
+      "audit/economic-blocker-001": "puntero identico a main; se rastrea por rama+SHA (evita duplicar el diff del PR #18)",
+      "main": "su integracion es el PR #18"
+    },
+    "secret_scan": {
+      "scope": "89 MB de parches de los ~240 commits a publicar",
+      "patterns": ["private keys", "ghp_", "github_pat_", "AKIA", "xox[bars]-", "sk-", "AIza", "Bearer"],
+      "findings": 0,
+      "env_file_versioned": false,
+      "env_example_versioned": true
+    },
+    "before_after": {
+      "unpublished_commits": {"before": 226, "after": 0},
+      "branches_without_remote": {"before": 17, "after": 0},
+      "content_of_main_on_github": {"before": false, "after": true, "via": "origin/admission/integration-002 (PR #18)"},
+      "roadmap_version": {"before": "v1.6", "after": "v1.7"}
+    }
+  },
+  "integration": {
+    "merged_into_main": [],
+    "local_main": "e67194e7",
+    "origin_main": "5e6f9632",
+    "ahead_of_origin_main": 263,
+    "behind_origin_main": 0,
+    "push_to_main_performed": false,
+    "vehicle": "PR #18 (admission/integration-002 -> main, ready)",
+    "conflicts": "no evaluados: no se ejecuto merge; origin/main es ancestro del linaje local (integracion potencialmente fast-forward)",
+    "missing_dependencies": [],
+    "ci": {
+      "workflows": ["ci.yml (CI Baseline)", "cost-barrier-gate.yml", "recovery-determinism.yml"],
+      "ci_baseline_on_branches": "failure",
+      "ci_baseline_on_origin_main": "failure (2026-07-10 y 2026-09-22) -> rojo preexistente",
+      "recovery_determinism": "success en fix/tdm14a, paper/reald-data-001, evidence/tdm13; failure en audit/g7-real-paper, audit/mt0004-negative-controls"
+    },
+    "security_governance_blockers": [
+      "recovery/mt0003-kill-switch-60455b46: no fusionar sin risk-manager",
+      "ningun cambio de capital, limites, leverage o permisos LIVE introducido",
+      "no se ejecuto trading real ni se incurrio en costes de API"
+    ]
+  },
+  "validation": {
+    "clean_checkout": {
+      "path": "C:/Users/GVLLFR0035/Downloads/gate-main-20261026",
+      "method": "git worktree add --detach gate-main-20261026 e67194e7",
+      "files": 2018,
+      "target_commit": "e67194e7",
+      "pythonpath": "<clean>/src para que TEST_TARGET == RUNTIME_TARGET"
+    },
+    "commands": [
+      {"cmd": "python -m ruff check .", "result": "130 errors (81 fixable)", "exit": 1},
+      {"cmd": "python -m ruff format --check .", "result": "444 would be reformatted, 374 already formatted", "exit": 1},
+      {"cmd": "python -m mypy .", "result": "297 errors in 38 files (812 checked)", "exit": 1},
+      {"cmd": "python -m pytest -q", "result": "79 failed, 3274 passed, 34 skipped, 14 errors in 512s", "exit": 1},
+      {"cmd": "python -m pytest --collect-only -q", "result": "3401 tests collected, 0 collection errors", "exit": 0},
+      {"cmd": "python -m pytest --collect-only -q (sobre 5b63f265)", "result": "3532 collected + 1 error: ImportError YamlDirectorySource", "exit": 2},
+      {"cmd": "sha256sum -c SHA256SUMS.txt (respaldo)", "result": "554/554 OK", "exit": 0}
+    ],
+    "baseline_comparison": {
+      "prior_run_same_commit": "2026-10-25: 90 failed, 3263 passed, 31 skipped, 3 deselected, 14 errors",
+      "run_20261026": "79 failed, 3274 passed, 34 skipped, 14 errors",
+      "ruff_format_mypy_reproduced": "130 / 444 / 297 identicos a los medidos en v1.6",
+      "failing_files_common_with_baseline": "19 de 20",
+      "failure_concentration": "tests/unit/research/** (RFC-035, cost-barrier, profitability-035, ST6) + 14 errores de fixture en test_profitability_gate035.py",
+      "verdict": "rojo preexistente, NO introducido por la sincronizacion",
+      "flaky_delta": "~11 tests de hashes/timestamps cambian entre ejecuciones"
+    },
+    "runtime_executed": {
+      "full_pytest_on_main": true,
+      "collection_check_on_pr19_tip": true,
+      "paper_runtime_with_real_data": "publicado en paper/reald-data-001, NO ejecutado en esta auditoria",
+      "real_model_called": false,
+      "live_trading": false,
+      "api_costs_incurred": false
+    },
+    "independent_verification": [
+      "git rev-list / git ls-remote sobre las 35 ramas",
+      "sha256sum -c sobre el respaldo (554 ficheros)",
+      "ejecucion de gates en checkout limpio separado del checkout de trabajo",
+      "escaneo de secretos sobre los parches generados"
+    ],
+    "false_success": 0
+  },
+  "roadmap": {
+    "master_files": [
+      "docs/roadmap/ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx",
+      "docs/roadmap/ROADMAP_MASTER_DATA.json",
+      "docs/roadmap/ROADMAP_MASTER.csv",
+      "docs/roadmap/README.md"
+    ],
+    "version": "v1.7",
+    "previous_version": "v1.6",
+    "branch": "project/roadmap-trading-agentic",
+    "commit": "b95c3119",
+    "commit_pushed": true,
+    "rows_updated": ["TAP-072", "TAP-073", "TAP-075", "TAP-076"],
+    "states": {
+      "TAP-072": "VERIFICADO_FOCAL",
+      "TAP-073": "BLOQUEADO",
+      "TAP-075": "PENDIENTE",
+      "TAP-076": "BLOQUEADO"
+    },
+    "promoted_to_certified": false,
+    "pr": 15
+  },
+  "definition_of_done": {
+    "1_all_publishable_work_on_github": true,
+    "2_no_unpublished_commits": true,
+    "3_worktrees_intact": true,
+    "4_no_branches_overwritten_or_data_deleted": true,
+    "5_no_secrets_published": true,
+    "6_remote_commits_verified": true,
+    "7_pending_integrations_traced": true,
+    "8_report_reflects_real_results": true,
+    "overall": "PARTIAL_SYNC",
+    "false_success": 0
+  },
+  "next_blockers": {
+    "operational_to_start_paper": [
+      "Fusionar PR #18 para que main represente el runtime actual (263 commits)",
+      "Poner en verde ruff/format/mypy/pytest en el tronco",
+      "Restaurar load_settings/YamlDirectorySource (desbloquea PR #19 y la recoleccion)",
+      "Autorizacion de host + lease WP-005H (TAP-071, issue #16) para arrancar PAPER"
+    ],
+    "economic_to_demonstrate_profitability": [
+      "Ninguna estrategia admitida: gates de rentabilidad (profitability_gate035, cost_barrier) en rojo en la baseline",
+      "Ningun escenario reproducible con costes + slippage superados",
+      "REAL_MODEL_CALLED=false: los agentes no usan ningun modelo real aun"
+    ]
+  }
+}
