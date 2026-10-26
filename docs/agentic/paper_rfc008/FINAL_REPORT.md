@@ -28,7 +28,8 @@ Lo que **no** se puede afirmar y no se afirma:
 
 | Elemento | Valor |
 | --- | --- |
-| Dashboard | `http://127.0.0.1:8981/` (loopback, read-only, auto-recarga 60 s) |
+| Dashboard certificado | `http://127.0.0.1:8981/` (run `live-02`, cerrado; loopback, read-only) |
+| Ventana abierta | `http://127.0.0.1:8983/` (run `live-03`, 2 h, operando) |
 | Run certificado | `paper-lab-rfc008-live-02` |
 | Datos | `ccxt` / `binance-public-rest` / `MAINNET` / `source=REAL` |
 | Símbolos / temporalidad | BTC, ETH, SOL · `5m` |
@@ -184,6 +185,15 @@ además se detiene en un test de *clean-checkout rehearsal* que exige un árbol 
    controlada de pérdida de red.
 5. **CI de la rama** — no hay workflow ejecutado para `feat/rfc-paper-008`; el estado
    de CI es desconocido, no “verde”.
+
+## 12.bis Ventana abierta al cierre de este informe
+
+Al cerrar el informe se dejó operando una tercera ventana independiente,
+`paper-lab-rfc008-live-03` (2 h, mismo binario y mismo commit), en
+`http://127.0.0.1:8983/`. Su primer cierre de vela (13:25 UTC) produjo 3 señales
+`source=REAL` para BTC/ETH/SOL, 3 análisis `NOT_CONFIGURED` (100 % de cobertura) y
+el verificador independiente pasó (`3/3`). No forma parte de la certificación de
+`live-02`: es la prueba de que el sistema arranca limpio con el código actual.
 
 ## 13. Reproducción
 
