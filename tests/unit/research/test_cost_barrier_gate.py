@@ -410,6 +410,19 @@ def fake_tree(tmp_path: Path) -> Path:
     return tmp_path
 
 
+def admissible(status: str, gate) -> bool:
+    """The manifest's own byte contract: identical content in either line convention.
+
+    ``PRODUCER_PINS.json`` declares that a consumer must accept a producer whose bytes
+    equal the pinned content in LF or CRLF form, and the gate's producer matrix already
+    treats only ``DRIFT``/``ABSENT`` as failure. A checkout that rewrites line endings
+    (``core.autocrlf``, or a Linux runner reading a CRLF-authored pin) therefore shows
+    ``EOL_ONLY`` on a file nobody edited - requiring ``EXACT`` here made CI red for a
+    difference no commit caused. Content drift is still drift, and is still asserted.
+    """
+    return status in (gate.PIN_EXACT, gate.PIN_EOL)
+
+
 def test_the_pinned_producers_match_their_manifest():
     gate = load_gate()
     manifest, defects = gate.load_producer_pins()
@@ -418,7 +431,14 @@ def test_the_pinned_producers_match_their_manifest():
     rows, row_defects = gate.producer_rows(manifest)
     assert row_defects == []
     assert [row["path"] for row in rows] == list(gate.PRODUCERS)
-    assert all(row["pin_status"] == gate.PIN_EXACT for row in rows)
+    assert all(admissible(row["pin_status"], gate) for row in rows), [
+        row for row in rows if not admissible(row["pin_status"], gate)
+    ]
+    # The manifest's authority is the content, so both content forms must be recorded and
+    # the raw digest may never be the only admissible one.
+    published = json.loads(PRODUCER_PINS.read_text(encoding="utf-8"))
+    for row in published["producers"]:
+        assert row["sha256_lf"] and row["sha256_crlf"], row["path"]
 
 
 def test_a_changed_producer_is_a_named_failure(tmp_path, monkeypatch):
@@ -429,7 +449,7 @@ def test_a_changed_producer_is_a_named_failure(tmp_path, monkeypatch):
 
     clean_rows, clean_defects = gate.producer_rows(manifest)
     assert clean_defects == []
-    assert all(row["pin_status"] == gate.PIN_EXACT for row in clean_rows)
+    assert all(admissible(row["pin_status"], gate) for row in clean_rows)
 
     edited = tree / "scripts" / "cost_barrier.py"
     edited.write_text(edited.read_text(encoding="utf-8") + "\n# an unrecorded edit\n", encoding="utf-8")
@@ -437,6 +457,55 @@ def test_a_changed_producer_is_a_named_failure(tmp_path, monkeypatch):
     drifted = [row for row in rows if row["pin_status"] == gate.PIN_DRIFT]
     assert defects == []
     assert [row["path"] for row in drifted] == ["scripts/cost_barrier.py"]
+
+
+def test_a_producer_is_the_same_content_in_either_line_ending_convention(
+    tmp_path, monkeypatch
+):
+    """B13: a checkout's line ending is not an edit, under either convention.
+
+    The same commit presents CRLF to a Windows checkout and LF to a Linux runner. Both
+    are the pinned content, and neither may be reported as drift; an edit is drift in
+    either one.
+    """
+    gate = load_gate()
+    tree = fake_tree(tmp_path)
+    monkeypatch.setattr(gate, "ROOT", tree)
+    manifest, _ = gate.load_producer_pins()
+
+    for rel in PRODUCERS:
+        path = tree / rel
+        lf = path.read_bytes().replace(b"\r\n", b"\n")
+        for form in (lf, lf.replace(b"\n", b"\r\n")):
+            path.write_bytes(form)
+            rows, defects = gate.producer_rows(manifest)
+            assert defects == [], (rel, defects)
+            assert all(admissible(row["pin_status"], gate) for row in rows), (
+                rel, [(row["path"], row["pin_status"]) for row in rows]
+            )
+
+    edited = tree / "scripts" / "cost_barrier.py"
+    lf = edited.read_bytes().replace(b"\r\n", b"\n")
+    for form in (lf + b"\n# an unrecorded edit\n", lf.replace(b"\n", b"\r\n") + b"# x\n"):
+        edited.write_bytes(form)
+        rows, _ = gate.producer_rows(manifest)
+        drifted = [row["path"] for row in rows if row["pin_status"] == gate.PIN_DRIFT]
+        assert drifted == ["scripts/cost_barrier.py"], (form[-20:], drifted)
+
+
+def test_an_absent_producer_is_never_a_match(tmp_path, monkeypatch):
+    gate = load_gate()
+    tree = fake_tree(tmp_path)
+    monkeypatch.setattr(gate, "ROOT", tree)
+    manifest, _ = gate.load_producer_pins()
+    (tree / "scripts" / "cost_barrier_verify.py").unlink()
+
+    rows, defects = gate.producer_rows(manifest)
+    assert defects == []
+    absent = [row for row in rows if not row["present"]]
+    assert [row["path"] for row in absent] == ["scripts/cost_barrier_verify.py"]
+    assert absent[0]["pin_status"] == gate.PIN_ABSENT
+    assert not admissible(absent[0]["pin_status"], gate)
 
 
 def test_the_manifest_may_not_pin_the_checker_itself(tmp_path, monkeypatch):

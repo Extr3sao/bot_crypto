@@ -1148,25 +1148,158 @@ def payload_hash(payload: dict[str, Any]) -> str:
     return hashlib.sha256(json.dumps(body, indent=2, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true", help="recompute and compare with the stored payload hash")
-    args = parser.parse_args()
+CHECK_NAME = "determinism:payload_sha256_stable"
+PUBLISHED_JSON = "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+PUBLISHED_MD = "data/recovery/ACTIVE_ECONOMIC_AUDIT.md"
 
-    OUT.mkdir(parents=True, exist_ok=True)
+EXIT_CURRENT = 0
+EXIT_STALE = 1
+EXIT_UNUSABLE = 2
+
+#: Sections a published audit must carry before it may be compared at all. A truncated
+#: artefact that happens to hash to itself would otherwise clear a hash-only check: the
+#: hash proves the body is intact, not that the body is the audit.
+REQUIRED_SECTIONS: tuple[str, ...] = (
+    "artifact", "strategy_count", "strategies", "aggregates", "entrypoints",
+    "cost_plane", "checks", "checks_total", "payload_sha256",
+)
+
+#: Sections that describe where the audit was built rather than what it found. A rebuild
+#: that moves only these is stale provenance; anything else moving is an economic finding
+#: that must be named as such instead of being smoothed over as a hash difference.
+PROVENANCE_ONLY_KEYS: tuple[str, ...] = (
+    "artifact", "work_package", "generated_at_utc", "head", "branch", "mode", "method",
+    "sources", "input_authority", "local_observations", "entrypoints", "scope",
+)
+
+
+def identity_body(payload: dict[str, Any]) -> dict[str, Any]:
+    """What ``payload_hash`` hashes: the body without the moment or the machine."""
+    return {key: value for key, value in payload.items() if key not in VOLATILE_KEYS}
+
+
+def findings(payload: dict[str, Any]) -> dict[str, Any]:
+    """The economic conclusions, with provenance and per-machine observations removed."""
+    excluded = set(VOLATILE_KEYS) | set(PROVENANCE_ONLY_KEYS)
+    return {key: value for key, value in payload.items() if key not in excluded}
+
+
+def changed_sections(left: dict[str, Any], right: dict[str, Any]) -> list[str]:
+    return sorted(key for key in set(left) | set(right) if left.get(key) != right.get(key))
+
+
+def check_against_published(rebuilt: dict[str, Any]) -> int:
+    """Compare a rebuilt audit with the published artefact - without writing anything.
+
+    ``--check`` is a statement about the tree, so it must not be able to make the tree
+    agree with itself: the old contract wrote both artefacts before comparing, which
+    turned a stale audit into a current one and then reported a pass. The comparison is
+    ordered by what a failure means:
+
+    * ``MISSING`` / ``UNREADABLE`` / ``INCOMPLETE`` - there is no audit to compare;
+    * ``TAMPERED`` - the published self-hash does not recompute from its own body, or
+      its failure count contradicts its own checks;
+    * ``ECONOMIC_DRIFT`` - the rebuilt findings differ from the published ones;
+    * ``STALE_PROVENANCE`` - only the provenance moved (an entrypoint or input digest);
+    * ``CURRENT`` - the identities are equal.
+
+    Every state but ``CURRENT`` exits non-zero.
+    """
+    path = OUT / "ACTIVE_ECONOMIC_AUDIT.json"
+    report: dict[str, Any] = {
+        "check": CHECK_NAME,
+        "mode": "read-only",
+        "published": PUBLISHED_JSON,
+    }
+
+    def finish(result: str, classification: str, detail: str, code: int) -> int:
+        report.update({"result": result, "classification": classification,
+                       "detail": detail, "exit_code": code})
+        print(json.dumps(report, ensure_ascii=False))
+        return code
+
+    if not path.exists():
+        return finish("FAIL", "MISSING",
+                      f"{PUBLISHED_JSON} is absent; build it without --check first",
+                      EXIT_UNUSABLE)
+    try:
+        stored = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return finish("FAIL", "UNREADABLE", f"{PUBLISHED_JSON} is not readable JSON: {exc}",
+                      EXIT_UNUSABLE)
+    if not isinstance(stored, dict):
+        return finish("FAIL", "UNREADABLE", f"{PUBLISHED_JSON} is not a JSON object",
+                      EXIT_UNUSABLE)
+
+    missing = [key for key in REQUIRED_SECTIONS if key not in stored]
+    if missing:
+        return finish("FAIL", "INCOMPLETE",
+                      f"{PUBLISHED_JSON} is missing required section(s): {missing}",
+                      EXIT_UNUSABLE)
+    checks = stored.get("checks")
+    if not isinstance(checks, list) or not checks:
+        return finish("FAIL", "INCOMPLETE", f"{PUBLISHED_JSON} carries no checks",
+                      EXIT_UNUSABLE)
+    declared_failed = stored.get("checks_failed")
+    counted_failed = sum(1 for item in checks if item.get("result") != "PASS")
+    if declared_failed != counted_failed:
+        return finish("FAIL", "TAMPERED",
+                      f"the published checks_failed={declared_failed!r} contradicts its own "
+                      f"check list ({counted_failed} not PASS)", EXIT_UNUSABLE)
+
+    recomputed = payload_hash(stored)
+    if str(stored.get("payload_sha256")) != recomputed:
+        return finish("FAIL", "TAMPERED",
+                      f"the published payload_sha256 {str(stored.get('payload_sha256'))[:16]}... "
+                      f"does not recompute from its own body ({recomputed[:16]}...): the "
+                      "artefact was edited without being rebuilt", EXIT_UNUSABLE)
+
+    if int(rebuilt.get("checks_failed") or 0):
+        failed = [item.get("check") for item in rebuilt.get("checks") or []
+                  if item.get("result") != "PASS"]
+        return finish("FAIL", "INCOMPLETE",
+                      f"the rebuild failed its own check(s) {failed}; it cannot certify the "
+                      "published artefact", EXIT_UNUSABLE)
+
+    if str(stored["payload_sha256"]) == str(rebuilt["payload_sha256"]):
+        return finish("PASS", "CURRENT",
+                      f"{recomputed[:16]}... matches the published artefact", EXIT_CURRENT)
+
+    moved = changed_sections(identity_body(stored), identity_body(rebuilt))
+    drift = changed_sections(findings(stored), findings(rebuilt))
+    classification = "ECONOMIC_DRIFT" if drift else "STALE_PROVENANCE"
+    detail = (
+        f"rebuilt {str(rebuilt['payload_sha256'])[:16]}... vs published "
+        f"{str(stored['payload_sha256'])[:16]}...; changed section(s): {moved}"
+    )
+    detail += (
+        f"; economic finding(s) moved: {drift}" if drift
+        else "; only provenance moved (no finding changed)"
+    )
+    return finish("FAIL", classification, detail, EXIT_STALE)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--check", action="store_true",
+        help="recompute in memory and compare with the published artefact (never writes)",
+    )
+    args = parser.parse_args(argv)
+
     payload = build()
     payload["payload_sha256"] = payload_hash(payload)
-    (OUT / "ACTIVE_ECONOMIC_AUDIT.json").write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-    )
-    (OUT / "ACTIVE_ECONOMIC_AUDIT.md").write_text(render_markdown(payload), encoding="utf-8")
 
     if args.check:
-        stored = read_json("data/recovery/ACTIVE_ECONOMIC_AUDIT.json") or {}
-        same = stored.get("payload_sha256") == payload["payload_sha256"]
-        print(json.dumps({"check": "determinism:payload_sha256_stable", "result": "PASS" if same else "FAIL",
-                          "detail": f"{payload['payload_sha256'][:16]} vs {str(stored.get('payload_sha256'))[:16]}"}))
-        return 0 if same else 1
+        return check_against_published(payload)
+
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "ACTIVE_ECONOMIC_AUDIT.json").write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
+    )
+    (OUT / "ACTIVE_ECONOMIC_AUDIT.md").write_text(
+        render_markdown(payload), encoding="utf-8", newline="\n"
+    )
 
     print(json.dumps({
         "strategies": payload["strategy_count"],

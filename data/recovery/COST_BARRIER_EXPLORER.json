@@ -1,9 +1,9 @@
 {
   "artifact": "COST_BARRIER_EXPLORER",
   "work_package": "POST RFC-049 / ACTIVE RECOVERY - WP-6 (cost-barrier exploration)",
-  "generated_at_utc": "2026-10-11T18:36:08Z",
-  "head": "66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0",
-  "branch": "main",
+  "generated_at_utc": "2026-10-26T12:01:34Z",
+  "head": "a83ac16532f2a8b5ea131b25910d4b57abf9fe0e",
+  "branch": "fix/ci-repro-003",
   "mode": "OFFLINE read-only: no keys, no orders, no capital, no live path",
   "ladder": "This is WP-6 of the ACTIVE recovery lane: WP-1 closed RFC-049, WP-2 reconstructed campaign state, WP-3 audited the 24 cells, WP-4/5 reported. WP-6 turns the cost plane from a gate into a searched surface: which (venue, execution mode, size, liquidity) lines any cell can clear, and at which horizon.",
   "cells": [
@@ -10628,8 +10628,8 @@
       "role": "ACTIVE economic audit (WP-3): the 24 cells and their zero-cost gross edge",
       "exists": true,
       "tracked": true,
-      "sha256": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3",
-      "state_sha256": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53"
+      "sha256": "0d1f930cd7407121be03251e271c9e8f7bff0ea259fd16b2cdcd74e00c16659e",
+      "state_sha256": "c6ea34388745471edbae3fd093ce63b9453a58be5226bc10a296989f98f0cf23"
     },
     {
       "path": "reports/strategy-baseline/COST_BARRIER.json",
@@ -10644,7 +10644,7 @@
       "role": "tracked admission ledger: the only source of 'may this run PAPER?'",
       "exists": true,
       "tracked": true,
-      "sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+      "sha256": "92aab5415d92ff39219e7db68cb8057f746e4d7e6d6a6fb46a3971754bfc65e2",
       "state_sha256": null
     },
     {
@@ -10668,7 +10668,7 @@
     {
       "check": "audit:payload_sha256_reproduces",
       "result": "PASS",
-      "detail": "recomputed 023b66ffd1213b06 vs stored 023b66ffd1213b06"
+      "detail": "recomputed c6ea34388745471e vs stored c6ea34388745471e"
     },
     {
       "check": "sources:all_present",
@@ -10798,5 +10798,5 @@
     "false_success": 0
   },
   "scope": "Derived, read-only map. Every cost is the repository's own COST_MODEL_V3 evaluated at the stated configuration; every edge is the WP-3 audit's published zero-cost gross. No metric is estimated here and no runtime behaviour is changed.",
-  "payload_sha256": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb"
+  "payload_sha256": "0ab1ac23dc1471ac406698a844309374b8fd49e056472d0d4d4a1921d7a78741"
 }
