@@ -114,9 +114,13 @@ def _ccxt_connector(settings_getter=None):
     if settings_getter is None:
         settings_getter = get_settings
     settings = settings_getter()
-    api_key = settings.exchange_api_key
-    secret = settings.exchange_secret
-    sandbox = settings.exchange_sandbox
+    # Credenciales del dominio anidado ``settings.exchange`` (la misma ruta
+    # que lee ``app.py``): el plano plano ``exchange_api_key`` solo existia
+    # en el stub y desaparecio con el contrato restaurado.
+    exchange = settings.exchange
+    api_key = exchange.api_key
+    secret = exchange.api_secret
+    sandbox = exchange.sandbox
     return _ccxt and CCXTExchangeConnector(api_key=api_key, secret=secret, sandbox=sandbox)
 
 
